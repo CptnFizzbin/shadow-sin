@@ -1,8 +1,6 @@
-import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { selectGameEffectsByType } from "#/system/gameEffects/gameEffectSelectors.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
@@ -43,40 +41,40 @@ function selectAttrAugmentedMax(key: AttributeKey): AttrValueSelector {
   }
 }
 
-/** Relies on {@link selectGameEffectsByType}, so it's memoized like any other selector composition. */
-const selectAttrModifierTotal = createCurriedSelector(
-  [
-    (state: RunnerData, _key: AttributeKey) => selectGameEffectsByType(GameEffectType.attrMod)(state),
-    (_state: RunnerData, key: AttributeKey) => key,
-  ],
-  (attrModEffects: GameEffectData[], key: AttributeKey) => {
-    return attrModEffects
+/**
+ * The already-memoized `attrMod` effects list, built once at module scope. `selectAttrModifierTotal`
+ * and `selectAttrValue` below are plain functions wrapped around this single cached selector, not
+ * separate reselect compositions of their own — reselect's memoization only holds up when its
+ * helpers are constructed once in module scope, and these are recreated on every `forAttr` call.
+ */
+const selectAttrModEffects = selectGameEffectsByType(GameEffectType.attrMod)
+
+function selectAttrModifierTotal(key: AttributeKey): (state: RunnerData) => number {
+  return (state) =>
+    selectAttrModEffects(state)
       .filter((effect) => effect.target === key)
       .reduce((sum, effect) => sum + effect.value, 0)
-  },
-)
+}
 
 /**
  * The attribute's current effective rating, after modifiers, augments, and drugs (all carried as
- * `attrMod` GameEffects), clamped to `[min, augmentedMax]`. Composes the other `forAttr`
- * selectors, so it's memoized to avoid re-deriving on every read.
+ * `attrMod` GameEffects), clamped to `[min, augmentedMax]`.
  */
-const selectAttrValue = createCurriedSelector(
-  [
-    (state: RunnerData, key: AttributeKey) => selectAttrBaseValue(key)(state),
-    (state: RunnerData, key: AttributeKey) => selectAttrModifierTotal(key)(state),
-    (state: RunnerData, key: AttributeKey) => selectAttrMin(key)(state),
-    (state: RunnerData, key: AttributeKey) => selectAttrAugmentedMax(key)(state),
-  ],
-  (baseValue: number | null, modifierTotal: number, min: number | null, augmentedMax: number | null) => {
+function selectAttrValue(key: AttributeKey): AttrValueSelector {
+  return (state) => {
+    const baseValue = selectAttrBaseValue(key)(state)
     if (baseValue === null) return null
+
+    const modifierTotal = selectAttrModifierTotal(key)(state)
+    const min = selectAttrMin(key)(state)
+    const augmentedMax = selectAttrAugmentedMax(key)(state)
 
     return NumberUtils.clamp(baseValue + modifierTotal, {
       min: min ?? undefined,
       max: augmentedMax ?? undefined,
     })
-  },
-)
+  }
+}
 
 export interface AttrSelectors {
   /** Current value of the attribute, after modifiers, augments, and drugs. */
