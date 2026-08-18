@@ -1,3 +1,5 @@
+import { createSelector } from "reselect"
+
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -16,8 +18,21 @@ export type AttrValueSelector = (state: RunnerData) => number | null
 const isAwakeningAttr = (key: AttributeKey): key is AttributeKey.magic | AttributeKey.resonance =>
   key === AttributeKey.magic || key === AttributeKey.resonance
 
+function selectEntityAttr(attributes: RunnerData["attributes"], attrKey: AttributeKey): number | null {
+  return attributes[attrKey] ?? null
+}
+
+/** Built once at module scope so it stays memoized across the repeated `forAttr` calls that use it. */
+const selectRunnerAttr = createSelector(
+  [
+    (state: RunnerData) => state.attributes,
+    (_state: RunnerData, attrKey: AttributeKey) => attrKey,
+  ],
+  selectEntityAttr,
+)
+
 function selectAttrBaseValue(key: AttributeKey): AttrValueSelector {
-  return (state) => state.attributes[key] ?? null
+  return (state) => selectRunnerAttr(state, key)
 }
 
 function selectAttrMin(key: AttributeKey): AttrValueSelector {
