@@ -12,6 +12,12 @@ reused across Runner and every Entity kind, instead of each domain re-implementi
 attribute/damage access. Closes the open "Shared abstraction?" question in
 [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md).
 
+Also retires `EntityData.rating`'s string-sentinel pattern (`Rating<TSentinel>`): `rating` becomes
+a plain `number`, and the three current sentinel users (`SinData`/`LicenseData`'s `"real"`,
+`LanguageSkillData`'s `"native"`) each become a discriminated union with an explicit `isReal`/
+`isNative` flag instead. This is a migration on **shipped** behavior, not a green-field type
+change — see Constraints below.
+
 ## Open Questions
 
 - [ ] **Zod schema composition** — no `EntityDataSchema` exists today; `MatrixNodeDataSchema`
@@ -31,6 +37,14 @@ attribute/damage access. Closes the open "Shared abstraction?" question in
       retroactively to existing persisted Entities via migration, or only to newly created ones?
 - [ ] **Program "loaded"/"running" states** (raised in discussion, not designed here) — needs its
       own pass against `docs/features/0014-matrix-interactions.md`'s `ActiveProgram` model.
+- [ ] **Rating sentinel migration path** — `SinData`/`LicenseData`/`LanguageSkillData` are
+      **shipped, persisted data** with `rating: "real" | number` / `rating: "native" | number`
+      today (License Check, License Quick-Buy). Moving to `{ isReal: true } | { isReal: false,
+      rating: number }` needs a real migration (`"real"`/`"native"` string values → `isReal`/
+      `isNative: true`, numeric values → `isReal`/`isNative: false` + that same `rating`), plus a
+      full pass over the ~20 call sites currently doing `rating === "real"` / `rating === "native"`
+      (dice-pool sizing, cost calculation, display, form fields — see `docs/features/
+      0011-license-check-dialog.md` and the language skill list/improvement components).
 
 ## Constraints
 
@@ -52,6 +66,17 @@ attribute/damage access. Closes the open "Shared abstraction?" question in
   implementation.
 - Every structural change here needs new, additive migrations — no editing existing migration
   files.
+- `SinData`/`LicenseData`/`LanguageSkillData` become 2-member discriminated unions
+  (`{ isReal: true } | { isReal: false, rating: number }`, `isNative` equivalent for Language) —
+  not just `{ isReal: boolean; rating?: number }`, which would still permit illegal states
+  (`isReal: true` with a `rating` set, or `isReal: false` with `rating` absent) that a real
+  discriminated union rules out at compile time.
+- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) hard-codes the
+  current `"real" | number` shape as a Constraint and in its Rough Interface Sketch — updated
+  alongside this doc so the two don't contradict each other. Its own Issues (`#391`, `#393`,
+  `#394`) are already closed/completed, so this is a follow-up migration on shipped code, not a
+  change to in-flight implementation work; only `#389` (unrelated House Rules infrastructure)
+  remains open.
 
 ## Domain Notes
 
@@ -71,6 +96,13 @@ attribute/damage access. Closes the open "Shared abstraction?" question in
 - **`kind`** also resolves a need independent of selector ergonomics: polymorphic spellcaster
   resolution, where a Spell's caster may be a Runner or a Spirit and the resolving code can't
   assume which at compile time.
+- **Rating** (`CONTEXT.md`) — revised: drops "a few ratings use a special sentinel instead of a
+  number for an unrated/default case." `rating` is always a plain `number` now; the previous
+  sentinel cases each get their own explicit flag (`isReal` on SIN/Licence, `isNative` on Language)
+  instead of overloading `rating` itself.
+- **`isReal`**, **`isNative`** — new terms, to be added to `CONTEXT.md`. `isReal` already existed
+  informally as a derived local variable in License Quick-Buy
+  (`docs/features/0001-license-quick-buy.md`); this promotes it to a real stored field.
 
 ## Rough Interface Sketches
 
@@ -89,7 +121,7 @@ interface EntityData {
   description?: string
   source?: SourceData
   effects?: GameEffectData[]
-  rating?: Rating<string>
+  rating?: number
 }
 
 /** Anything with a stat block. `attributes` is always the full AttributeKey-keyed bag; entries
@@ -123,6 +155,28 @@ interface WithItems {
 // selectEntityAttr dispatches per `kind` internally (memoized for computed cases, e.g. Spirit's
 // force/spiritType-derived attributes), so callers get one accessor regardless of storage shape.
 declare function selectEntityAttr(key: AttributeKey): (entity: EntityData & EntityWithAttrs) => number
+
+// Rating's string-sentinel pattern (Rating<TSentinel>) is retired; EntityData.rating is a plain
+// number. The three current sentinel users become discriminated unions instead of overloading
+// `rating` with a string case:
+
+interface SinDataBase extends ItemData {
+  itemType: ItemType.sin
+}
+type SinData =
+  | (SinDataBase & { isReal: true })
+  | (SinDataBase & { isReal: false, rating: number })
+
+interface LicenseDataBase extends ItemData {
+  itemType: ItemType.license
+}
+type LicenseData =
+  | (LicenseDataBase & { isReal: true })
+  | (LicenseDataBase & { isReal: false, rating: number })
+
+type LanguageSkillData =
+  | { name: string, isNative: true, lingo?: string }
+  | { name: string, isNative: false, rating: number, lingo?: string }
 ```
 
 ## Out of Scope
@@ -148,3 +202,9 @@ declare function selectEntityAttr(key: AttributeKey): (entity: EntityData & Enti
   selector* layer. The two should be read together, not conflated.
 - [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) — this doc's
   `AttributeKey` extension continues ADR-0012's attribute-unification decision.
+- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) — its Constraint
+  and Rough Interface Sketch depended on the now-retired `rating: "real" | number` shape; updated
+  to match. Its own Issues are closed/completed, so this is a follow-up migration on shipped
+  behavior, not a change to work in flight.
+- [`docs/features/0001-license-quick-buy.md`](./0001-license-quick-buy.md) — already derives
+  `isReal` informally from `rating`; this doc promotes it to a real stored field.

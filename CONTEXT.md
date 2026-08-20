@@ -199,9 +199,10 @@ The shared card-rendering system for Entities, replacing the old `DataCard`. See
 **Rating**:
 An optional numeric field representing the strength or level of an Entity — e.g. Armor's
 protection rating, an Adept Power's rating, a Spirit's Force, software/Complex Form/Device
-ratings. Not every Entity populates it (Spells have none). A few ratings use a special sentinel
-instead of a number for an unrated/default case (e.g. a Real SIN or Licence, a native Language
-skill) — see `docs/adr/0010-entity-card-composition.md` for the type design.
+ratings. Not every Entity populates it (Spells have none). Always a plain number — an unrated/
+default case (a Real SIN or Licence, a native Language skill) is expressed with its own explicit
+flag (**isReal**, **isNative**) rather than a sentinel value on `rating` itself; see
+`docs/features/0015-entity-interface-decomposition.md`.
 
 ### Magic & Matrix
 
