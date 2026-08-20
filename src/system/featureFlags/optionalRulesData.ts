@@ -1,5 +1,3 @@
-import { z } from "zod"
-
 import type { FeatureFlagValue } from "./featureFlag.ts"
 import type { OptionalRuleKey, optionalRulesRegistry } from "./optionalRulesRegistry.ts"
 
@@ -10,10 +8,3 @@ import type { OptionalRuleKey, optionalRulesRegistry } from "./optionalRulesRegi
 export type OptionalRulesData = {
   [K in OptionalRuleKey]?: FeatureFlagValue<(typeof optionalRulesRegistry)[K]>
 }
-/**
- * Zod schema for {@link OptionalRulesData}.
- * Keep in sync with {@link optionalRulesRegistry}.
- */
-export const OptionalRulesDataSchema = z.object({
-  encumbranceEnabled: z.boolean().optional(),
-}) satisfies z.ZodType<OptionalRulesData>

@@ -1,7 +1,4 @@
-import { z } from "zod"
-
 import type { OptionalRulesData } from "./optionalRulesData.ts"
-import { OptionalRulesDataSchema } from "./optionalRulesData.ts"
 
 /**
  * Container for all feature flag namespaces on a Runner or in a GameConfig.
@@ -16,7 +13,3 @@ export interface FeatureFlagsData {
    */
   optionalRules?: OptionalRulesData
 }
-
-export const FeatureFlagsDataSchema = z.object({
-  optionalRules: OptionalRulesDataSchema.optional(),
-}) satisfies z.ZodType<FeatureFlagsData>
