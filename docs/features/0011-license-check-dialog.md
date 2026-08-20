@@ -99,8 +99,12 @@ included):
   (Forbidden) has no legal Licence path (`AvailabilityChip`, `availabilityInfo.ts`). Forbidden
   gear must never be offered a roll — matches the existing Licence Quick-Buy rule that Forbidden
   items get no quick-buy trigger either.
-- `LicenseData.rating` / `SinData.rating` are `"real" | number` — a `"real"` value must always
-  auto-clear and must never be rolled.
+- `LicenseData` / `SinData` carry an `isReal` flag (`rating` present only when `isReal` is
+  `false`) — a real credential (`isReal: true`) must always auto-clear and must never be rolled.
+  Superseded from the original `"real" | number` sentinel shape by
+  [`docs/features/0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md);
+  this feature's own Issues (`#391`, `#393`, `#394`) are already closed, so this is a follow-up
+  migration on shipped code, not a change to this doc's own implementation plan.
 - Licence → SIN is the existing Attachment relationship (`Licence.parentId` = SIN id). Gear →
   Licence is the existing flat reference (`ItemData.licenseId`). No new relationship fields are
   needed to build the lane groupings.
@@ -149,7 +153,8 @@ ephemeral checked/unchecked selection instead (see Resolved Design Decisions abo
 _High-level shapes only — no implementation code._
 
 ```ts
-type CredentialRating = "real" | number // matches existing SinData/LicenseData.rating
+// Matches SinData/LicenseData's shape post-0015: rating present only when isReal is false.
+type Credential = { isReal: true } | { isReal: false, rating: number }
 
 interface VerificationLane {
   key: string // a SIN's id, or "unlicensed" / "forbidden"
@@ -202,3 +207,7 @@ interface LicenseCheckResult {
 - [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — License Check ended up not
   depending on this; its checklist's checked/unchecked state is its own ephemeral mechanic, not a
   consumer of `ItemData.stashed`
+- [`docs/features/0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md)
+  — retires the `rating: "real" | number` sentinel this doc originally depended on, replacing it
+  with an explicit `isReal` flag; this doc's Constraint and Rough Interface Sketch are updated to
+  match
