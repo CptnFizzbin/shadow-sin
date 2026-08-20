@@ -20,38 +20,55 @@ change — see Constraints below.
 
 ## Open Questions
 
-- [ ] **Zod schema composition** — no `EntityDataSchema` exists today; `MatrixNodeDataSchema`
-      hand-duplicates `EntityData`'s fields instead of composing them. Do the new capability
-      interfaces get their own composable Zod fragments (`EntityWithAttrsSchema`, etc.), and do
-      existing hand-duplicated schemas get refactored to compose from them?
-- [ ] **Migration sequencing** — the full ordered list of `NNN_*.ts` migrations needed: adding
-      `kind` across `RunnerData`/`SpiritData`/`SpriteData`/`VehicleData`/`MatrixNodeData`;
-      restructuring `attributes` for Vehicle/MatrixNode/Spirit exposure; restructuring `damage`
-      to the universal `Partial<Record<DamageTrackKey, number>>` shape; nesting Attachment fields
-      under `items`. Needs a concrete sequence, respecting "never edit an existing migration."
-- [ ] **Exact `EntityKind` value set** — confirm the full list and whether `ItemData.itemType`
-      stays a second-level discriminant under `kind: "item"`, or gets folded into `kind` directly.
+- [ ] **Exact `EntityKind` string values** — the full list is settled in shape (every Entity
+      including Item gets `kind`, `itemType`/`spiritType`/etc. stay as second-level discriminants
+      under it) but the literal string union isn't fully enumerated yet.
 - [ ] **`attributes` fallback when `rating` is also absent** — assumed to resolve to `0`, matching
       `selectAttrBase`'s existing `?? 0` convention. Confirm.
 - [ ] **Backfill vs. forward-only** — does `WithMatrixPresence`'s `matrix: true` default apply
       retroactively to existing persisted Entities via migration, or only to newly created ones?
 - [ ] **Program "loaded"/"running" states** (raised in discussion, not designed here) — needs its
       own pass against `docs/features/0014-matrix-interactions.md`'s `ActiveProgram` model.
-- [ ] **Rating sentinel migration path** — `SinData`/`LicenseData`/`LanguageSkillData` are
-      **shipped, persisted data** with `rating: "real" | number` / `rating: "native" | number`
-      today (License Check, License Quick-Buy). Moving to `{ isReal: true } | { isReal: false,
-      rating: number }` needs a real migration (`"real"`/`"native"` string values → `isReal`/
-      `isNative: true`, numeric values → `isReal`/`isNative: false` + that same `rating`), plus a
-      full pass over the ~20 call sites currently doing `rating === "real"` / `rating === "native"`
-      (dice-pool sizing, cost calculation, display, form fields — see `docs/features/
-      0011-license-check-dialog.md` and the language skill list/improvement components).
+- [ ] **`accel`/`pilot`/`sensor` AttributeKey membership needs a real rulebook citation** before
+      implementation — `pilot`/`sensor` are provisionally in (join `AttributeKey`), `accel` is
+      provisionally out (stays a plain Vehicle field, same as `speed`), per discussion, but per
+      AGENTS.md's citation policy this isn't implementation-ready until cited.
+
+## Migration Plan
+
+Six independently-shippable slices; `kind` is the only foundational one (everything else's
+per-`kind` selector dispatch depends on it existing first). Numbers below start at `026` (next
+available) but are illustrative — actual numbers depend on what else lands first.
+
+| # | Slice | Migration(s) | PRD ticket(s) |
+|---|-------|--------------|----------------|
+| 1 | `kind` discriminant | **One** migration (`026_addEntityKind.ts`) covering every `RunnerData` subtree (`gear`, `spirits`, `sprites`, `gameState.matrix.knownNodes`, `qualities`, `spells`, `complexForms`, `adeptPowers`) plus `RunnerData` itself — one coherent concern, not split per-collection | One ticket |
+| 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | One ticket, blocked on the `accel`/`pilot`/`sensor` citation above |
+| 3 | `damage` universalization | **None** — existing `SpiritData`/`SpriteData`/`VehicleData` damage shapes already satisfy `Partial<Record<DamageTrackKey, number>>` structurally; this is a type-only change | — |
+| 4 | `MatrixNodeData.matrix` rename + presence flag | One migration: copy `matrix`'s stats value to a new `attributes` field, replace `matrix` with the new boolean (default `true`) | One ticket |
+| 5 | Attachment → nested `items` | One migration nesting `parentId`/`childIds` under `items` | One ticket |
+| 6 | Rating sentinel → `isReal`/`isNative` | **Three** migrations, one each for `SinData`, `LicenseData`, `LanguageSkillData` (same transform shape, different record types — matches the `024_normalizeArmorRating.ts` precedent), each with its own `*.test.ts` | **One** ticket covering all three — same feature, ships together, despite the file-level split |
+
+Slice 6 also needs a full pass over the ~20 call sites currently doing `rating === "real"` /
+`rating === "native"` (dice-pool sizing, cost calculation, display, form fields — see
+`docs/features/0011-license-check-dialog.md` and the language skill list/improvement components).
 
 ## Constraints
 
 - `AttributeKey` remains the single, dice-pool-test-relevant enum. New members added for Vehicle
-  stats (`handling`, `armor`, ...) must each have a real Attribute+Skill-style test use per
-  SR4A rules — not added merely because a value exists on some Entity. `speed` stays outside
-  `AttributeKey` (not independently tested).
+  stats must each have a real Attribute+Skill-style test use per SR4A rules — not added merely
+  because a value exists on some Entity. Settled: `handling`, `armor`, `body`, `pilot`, `sensor`
+  join `AttributeKey`; `accel` and `speed` stay as Vehicle's own plain fields (not independently
+  tested) — `accel`/`pilot`/`sensor` still need a real rulebook citation before implementation,
+  see Open Questions.
+- No new codebase-wide Zod schema-composition pattern. Every existing schema (`ArmorDataSchema`,
+  `MatrixNodeDataSchema`, ~12 others) hand-duplicates its full field list today, several not yet
+  wired to a real validator ("kept for parity" per `ArmorDataSchema`'s own comment) — cleaning
+  that up is a separate dead-code pass, not this feature's problem. The only place this feature
+  introduces any reuse is inside each new discriminated-union schema (`SinDataSchema`,
+  `LicenseDataSchema`, `LanguageSkillDataSchema`): a private, file-local base `z.object` that both
+  union branches `.extend()`, so the ~15 shared `ItemData`/`EntityData` fields aren't duplicated
+  twice in the same file. That base is never exported and doesn't touch any other schema.
 - `WithItems` (Attachment) stays strictly Item-to-Item and single-parent. The
   `MatrixNode`-hosts-`Program` relationship is many-to-many (`docs/features/0014`'s
   `ActiveProgram`) and must never be forced through Attachment's single-`parentId` shape.
@@ -183,11 +200,12 @@ type LanguageSkillData =
 
 - Program "loaded"/"running" lifecycle states — belongs to a future pass on
   `docs/features/0014-matrix-interactions.md`'s `ActiveProgram` model, not this decomposition.
-- Zod schema composition mechanics — flagged as an open question; not designed here.
+- Retrofitting the rest of the codebase's flat, duplicated Zod schemas onto a composable pattern —
+  out of scope entirely; this feature's own new schemas use a private per-file base only.
 - MatrixNode/Commlink StatusSheet UI, Matrix Test dice pool computation — unrelated to this doc.
-- Confirming which specific Vehicle stats are legitimately testable under SR4A rules beyond the
-  `handling`/`armor` examples discussed — needs a rulebook citation before implementation per
-  AGENTS.md's citation policy, not assumed complete here.
+- Citing the actual SR4A rulebook passage justifying `accel`/`pilot`/`sensor`'s `AttributeKey`
+  membership — provisional calls are recorded in Constraints/Open Questions above, but a real
+  citation is required before implementation per AGENTS.md's citation policy.
 
 ## Related Features
 
