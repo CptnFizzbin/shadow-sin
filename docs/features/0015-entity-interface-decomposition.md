@@ -6,7 +6,7 @@
 > <!-- Added after running /to-prd. -->
 
 Decompose the flat `EntityData` interface into composable capability interfaces
-(`EntityWithAttrs`, `EntityWithDamage`, `WithMatrixPresence`, `WithItems`) so that selectors
+(`EntityWithAttrs`, `EntityWithDamage`, `WithMatrixPresence`, `EntityWithItems`) so that selectors
 (`AttrSelector`, `DamageSelector`, ...) can be written once against a capability interface and
 reused across Runner and every Entity kind, instead of each domain re-implementing its own
 attribute/damage access. Closes the open "Shared abstraction?" question in
@@ -46,7 +46,7 @@ available) but are illustrative — actual numbers depend on what else lands fir
 | 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | One ticket, blocked on the `accel`/`pilot`/`sensor` citation above |
 | 3 | `damage` universalization | **None** — existing `SpiritData`/`SpriteData`/`VehicleData` damage shapes already satisfy `Partial<Record<DamageTrackKey, number>>` structurally; this is a type-only change | — |
 | 4 | `MatrixNodeData.matrix` rename + presence flag | One migration: copy `matrix`'s stats value to a new `attributes` field, replace `matrix` with the new boolean (default `true`) | One ticket |
-| 5 | Attachment → nested `items` | One migration nesting `parentId`/`childIds` under `items` | One ticket |
+| 5 | `EntityWithItems` + `_data_` split | One migration: nest `ItemData.parentId`/`childIds` under `items` (names unchanged); add `items: { parentId: null, childIds: [] }` to `RunnerData`; move `RunnerData.gear` → `RunnerData._data_.items` | One ticket |
 | 6 | Rating sentinel → `isReal`/`isNative` | **Three** migrations, one each for `SinData`, `LicenseData`, `LanguageSkillData` (same transform shape, different record types — matches the `024_normalizeArmorRating.ts` precedent), each with its own `*.test.ts` | **One** ticket covering all three — same feature, ships together, despite the file-level split |
 
 Slice 6 also needs a full pass over the ~20 call sites currently doing `rating === "real"` /
@@ -69,9 +69,19 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   `LicenseDataSchema`, `LanguageSkillDataSchema`): a private, file-local base `z.object` that both
   union branches `.extend()`, so the ~15 shared `ItemData`/`EntityData` fields aren't duplicated
   twice in the same file. That base is never exported and doesn't touch any other schema.
-- `WithItems` (Attachment) stays strictly Item-to-Item and single-parent. The
+- `EntityWithItems` (Attachment position) stays single-parent. `RunnerData` implements it
+  (always-degenerate `{ parentId: null, childIds: [] }`) alongside `ItemData`, but no other Entity
+  kind does — see the Rough Interface Sketch for why the line is drawn there. The
   `MatrixNode`-hosts-`Program` relationship is many-to-many (`docs/features/0014`'s
-  `ActiveProgram`) and must never be forced through Attachment's single-`parentId` shape.
+  `ActiveProgram`) and must never be forced through this single-`parentId` shape.
+- `parentId`/`childIds` keep their current names — `CONTEXT.md`'s existing note about a pending
+  rename to `attachmentIds`/`attachedToId` is superseded by this decision and needs removing, not
+  just left stale, as part of this feature's `CONTEXT.md` edits.
+- `RunnerData._data_` is a new, Runner-only, generalized internal-storage field — sibling to the
+  existing `_meta_` (migration-version bookkeeping) and `ItemData._state` (transient tracking)
+  underscore-wrapped fields, not a blanket addition to `EntityData`. `RunnerData.gear` moves into
+  `_data_.items: ItemContainer`; nothing else lives there yet, but the field exists as a general
+  escape hatch, not a single-purpose one.
 - Spirit's attributes stay derived (`calculateSpiritAttributes`), never materialized into stored
   data — matches the "derive, don't snapshot" precedent from
   [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) (Entity Matrix
@@ -108,8 +118,11 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   flag now that `attributes` is the single universal bag for every Entity kind — see Rough
   Interface Sketches below. The `MatrixStats` type is retired; "fully specced" (Commlink,
   MatrixNode) is now just "explicit values are already present in `attributes`."
-- **`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`WithItems`**, **`kind`**
-  — new terms, to be added to `CONTEXT.md`.
+- **`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`EntityWithItems`**,
+  **`kind`** — new terms, to be added to `CONTEXT.md`.
+- **Attachment** (`CONTEXT.md` Relationships section) — revised: drop the note about a pending
+  `attachmentIds`/`attachedToId` rename, superseded by keeping `parentId`/`childIds` as-is. Add
+  that `RunnerData` also implements `EntityWithItems`, always with a degenerate empty value.
 - **`kind`** also resolves a need independent of selector ergonomics: polymorphic spellcaster
   resolution, where a Spell's caster may be a Runner or a Spirit and the resolving code can't
   assume which at compile time.
@@ -161,12 +174,36 @@ interface WithMatrixPresence {
   matrix: boolean
 }
 
-/** Item-to-Item Attachment only — never implemented by non-Item Entity kinds. */
-interface WithItems {
+/** Item-to-Item Attachment position. Implemented by `ItemData` (real values) and `RunnerData`
+ *  (always `{ parentId: null, childIds: [] }` — Runner is never a child and never attaches to
+ *  anything itself; it exists on Runner only so a caller holding any `EntityWithItems` doesn't
+ *  need a special case). Every other Entity kind (Spirit, Sprite, MatrixNode, Quality, Spell,
+ *  ComplexForm, AdeptPower) does NOT implement this — unlike `kind`, which is always meaningful
+ *  everywhere, this would be permanent, unconditional dead weight for anything that isn't Item or
+ *  Runner, so the line is drawn narrower here. */
+interface EntityWithItems {
   items: {
-    parentId?: string
+    parentId: string | null
     childIds: string[]
   }
+}
+
+/** The actual bulk item collection — what `RunnerData.gear` is today. Deliberately NOT part of
+ *  `EntityWithItems` or any capability interface: it's internal storage, not a per-Entity
+ *  capability, and giving it the field name `items` would collide with `EntityWithItems.items`
+ *  on the one type (`RunnerData`) that needs both. */
+type ItemContainer = Record<UUID, ItemData>
+
+interface RunnerData extends EntityWithItems {
+  _meta_: RunnerMeta
+  /** Generalized internal storage, sibling to `_meta_` — not domain data itself, a bucket for it.
+   *  `items` is the first (and so far only) occupant. Pulled out via its own hook
+   *  (e.g. `useRunnerItemsData()`) for passing into any selector that needs to dereference an
+   *  `EntityWithItems.items.childIds` list into real `ItemData` objects. */
+  _data_: {
+    items: ItemContainer
+  }
+  // ...existing fields
 }
 
 // selectEntityAttr dispatches per `kind` internally (memoized for computed cases, e.g. Spirit's
@@ -213,7 +250,7 @@ type LanguageSkillData =
   answers 0008's open "Shared abstraction?" question.
 - [`docs/features/0014-matrix-interactions.md`](./0014-matrix-interactions.md) — this doc revises
   0014's `EntityData.matrix?: true | MatrixStats` sketch to a plain boolean; 0014's `ActiveProgram`
-  many-to-many relationship is explicitly out of `WithItems`'s scope and stays untouched.
+  many-to-many relationship is explicitly out of `EntityWithItems`'s scope and stays untouched.
 - [`docs/adr/0010-entity-card-composition.md`](../adr/0010-entity-card-composition.md) — precedent
   this doc must stay compatible with: ADR-0010 solved Entity category variance at the *component*
   layer (tiered `CardElements`); this doc solves a related but distinct variance at the *data/

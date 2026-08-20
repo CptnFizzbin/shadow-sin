@@ -442,10 +442,13 @@ _Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet 
 **Attachment**:
 An Item that is mounted on, installed in, or otherwise associated with a parent Item. Attachments
 may themselves have attachments (e.g. a scope on a rifle that also has a laser sight). Stored as
-sibling entries in `RunnerData.gear`; the relationship is expressed via `attachmentIds` on the
-parent and `attachedToId` on the child. _(Note: a migration is planned to rename the current
-`childIds` / `parentId` fields to `attachmentIds` / `attachedToId`.)_
-_Avoid_: child item, accessory (too weapon-specific), mod
+sibling entries in `RunnerData.gear`; the relationship is expressed via `parentId` on the child and
+`childIds` on the parent, nested under `EntityWithItems.items` (see
+`docs/features/0015-entity-interface-decomposition.md`). `RunnerData` also implements
+`EntityWithItems`, always with a degenerate `{ parentId: null, childIds: [] }` — it is never a
+child and never attaches to anything itself.
+_Avoid_: child item, accessory (too weapon-specific), mod, attachmentIds/attachedToId (an earlier
+planned rename, superseded — the field names stay as `parentId`/`childIds`)
 
 **SIN** _(System Identification Number)_:
 A matrix identity stored as an Item (`ItemType.sin`). Runners typically carry one or more fake
@@ -663,10 +666,11 @@ _Avoid_: upgrade, patch, update (use migration)
   under a single GM _(Game not yet implemented)_
 - A **Runner** belongs to exactly one **StorageSource** at a time; copying to another source
   generates a new **RunnerId** (new UUID + new source prefix) — the copy is a distinct Runner
-- **RunnerData** holds a flat collection of Items keyed by id for gear — **Attachment**
-  relationships are expressed via `attachmentIds` on the parent and `attachedToId` on the child;
-  attachments may nest recursively _(field names are pending migration from `childIds` /
-  `parentId`)_
+- **RunnerData** holds its item collection at `_data_.items` (an `ItemContainer`, keyed by id) —
+  **Attachment** relationships are expressed via `parentId` on the child and `childIds` on the
+  parent, nested under `EntityWithItems.items`; attachments may nest recursively. `RunnerData`
+  itself implements `EntityWithItems` too, always with a degenerate empty value — see
+  `docs/features/0015-entity-interface-decomposition.md`
 - **GameEffect** entries attach to a subset of **Entities** — Items, Qualities, Spells, Complex
   Forms, and Adept Powers, not Spirits/Sprites/Agents — never stored directly on base attributes.
   Each entry's **Scope** is resolved relative to its own source's position in the Item ownership
