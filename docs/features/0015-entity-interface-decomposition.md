@@ -1,9 +1,15 @@
 # Entity Interface Decomposition
 
-> **Status:** Draft
+> **Status:** Ready to Implement
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. -->
+> [#530](https://github.com/CptnFizzbin/shadow-sin/issues/530) (Slice 1: `kind` discriminant),
+> [#531](https://github.com/CptnFizzbin/shadow-sin/issues/531) (Slice 2: Vehicle → `attributes`),
+> [#532](https://github.com/CptnFizzbin/shadow-sin/issues/532) (Slice 3: `damage` universalization),
+> [#533](https://github.com/CptnFizzbin/shadow-sin/issues/533) (Slice 4: `MatrixNodeData.matrix`
+> rename + presence flag), [#534](https://github.com/CptnFizzbin/shadow-sin/issues/534) (Slice 5:
+> `EntityWithItems` + `_data_` split), [#535](https://github.com/CptnFizzbin/shadow-sin/issues/535)
+> (Slice 6: Rating sentinel → `isReal`/`isNative`)
 
 Decompose the flat `EntityData` interface into composable capability interfaces
 (`EntityWithAttrs`, `EntityWithDamage`, `WithMatrixPresence`, `EntityWithItems`) so that selectors
@@ -20,19 +26,28 @@ change — see Constraints below.
 
 ## Open Questions
 
-- [ ] **Exact `EntityKind` string values** — the full list is settled in shape (every Entity
-      including Item gets `kind`, `itemType`/`spiritType`/etc. stay as second-level discriminants
-      under it) but the literal string union isn't fully enumerated yet.
-- [ ] **`attributes` fallback when `rating` is also absent** — assumed to resolve to `0`, matching
-      `selectAttrBase`'s existing `?? 0` convention. Confirm.
-- [ ] **Backfill vs. forward-only** — does `WithMatrixPresence`'s `matrix: true` default apply
-      retroactively to existing persisted Entities via migration, or only to newly created ones?
-- [ ] **Program "loaded"/"running" states** (raised in discussion, not designed here) — needs its
-      own pass against `docs/features/0014-matrix-interactions.md`'s `ActiveProgram` model.
-- [ ] **`accel`/`pilot`/`sensor` AttributeKey membership needs a real rulebook citation** before
-      implementation — `pilot`/`sensor` are provisionally in (join `AttributeKey`), `accel` is
-      provisionally out (stays a plain Vehicle field, same as `speed`), per discussion, but per
-      AGENTS.md's citation policy this isn't implementation-ready until cited.
+All resolved as of `/to-prd` (see linked Issues above for the per-slice PRDs each resolution feeds
+into):
+
+- [x] **Exact `EntityKind` string values** — settled as the Rough Interface Sketch's union below:
+      `"runner" | "item" | "spirit" | "sprite" | "matrixNode" | "quality" | "spell" |
+      "complexForm" | "adeptPower"`. `itemType`/`spiritType`/etc. stay as second-level
+      discriminants under `kind`. See #530.
+- [x] **`attributes` fallback when `rating` is also absent** — confirmed: resolves to `0`, matching
+      `selectAttrBase`'s existing `?? 0` convention. See #530.
+- [x] **Backfill vs. forward-only** — resolved: `WithMatrixPresence`'s `matrix: true` default is
+      backfilled retroactively via migration onto existing persisted Entities (currently:
+      MatrixNode, the only shipped kind carrying Matrix stats today), not left forward-only. See
+      #533.
+- [x] **Program "loaded"/"running" states** — resolved as deferred, not designed here; stays out of
+      scope for this feature and remains tracked as future work against
+      `docs/features/0014-matrix-interactions.md`'s `ActiveProgram` model. See Out of Scope below.
+- [x] **`accel`/`pilot`/`sensor` AttributeKey membership rulebook citation** — resolved by explicit
+      project decision to waive the citation requirement for this feature: `pilot`/`sensor` join
+      `AttributeKey`, `accel` stays a plain Vehicle field (same as `speed`), per the provisional
+      call already recorded below — **no SR4A page citation was obtained**. This is a deliberate,
+      recorded exception to AGENTS.md's citation policy for this feature only, not a precedent for
+      skipping citations elsewhere. See #531.
 
 ## Migration Plan
 
@@ -42,12 +57,12 @@ available) but are illustrative — actual numbers depend on what else lands fir
 
 | # | Slice | Migration(s) | PRD ticket(s) |
 |---|-------|--------------|----------------|
-| 1 | `kind` discriminant | **One** migration (`026_addEntityKind.ts`) covering every `RunnerData` subtree (`gear`, `spirits`, `sprites`, `gameState.matrix.knownNodes`, `qualities`, `spells`, `complexForms`, `adeptPowers`) plus `RunnerData` itself — one coherent concern, not split per-collection | One ticket |
-| 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | One ticket, blocked on the `accel`/`pilot`/`sensor` citation above |
-| 3 | `damage` universalization | **One** migration for Vehicle only: `SpiritData`/`SpriteData` already declare `damage` as required and structurally satisfy `Partial<Record<DamageTrackKey, number>>` (type-only, no migration). `VehicleData.damage` is currently optional — `021_flattenVehicleDamage.ts` only rewrote the old nested shape, it never guaranteed the field's presence — so a vehicle that predates damage tracking can still have no `damage` at all. Making `VehicleData` implement `EntityWithDamage` requires dropping the `?` and backfilling `damage: {}` on any Vehicle missing it | One ticket |
-| 4 | `MatrixNodeData.matrix` rename + presence flag | One migration: copy `matrix`'s stats value to a new `attributes` field, replace `matrix` with the new boolean (default `true`) | One ticket |
-| 5 | `EntityWithItems` + `_data_` split | One migration: nest `ItemData.parentId`/`childIds` under `items` (names unchanged); add `items: { parentId: null, childIds: [] }` to `RunnerData`; move `RunnerData.gear` → `RunnerData._data_.items` | One ticket |
-| 6 | Rating sentinel → `isReal`/`isNative` | **Three** migrations, one each for `SinData`, `LicenseData`, `LanguageSkillData` (same transform shape, different record types — matches the `024_normalizeArmorRating.ts` precedent), each with its own `*.test.ts` | **One** ticket covering all three — same feature, ships together, despite the file-level split |
+| 1 | `kind` discriminant | **One** migration (`026_addEntityKind.ts`) covering every `RunnerData` subtree (`gear`, `spirits`, `sprites`, `gameState.matrix.knownNodes`, `qualities`, `spells`, `complexForms`, `adeptPowers`) plus `RunnerData` itself — one coherent concern, not split per-collection | #530 |
+| 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | #531 (citation requirement waived, see Open Questions) |
+| 3 | `damage` universalization | **One** migration for Vehicle only: `SpiritData`/`SpriteData` already declare `damage` as required and structurally satisfy `Partial<Record<DamageTrackKey, number>>` (type-only, no migration). `VehicleData.damage` is currently optional — `021_flattenVehicleDamage.ts` only rewrote the old nested shape, it never guaranteed the field's presence — so a vehicle that predates damage tracking can still have no `damage` at all. Making `VehicleData` implement `EntityWithDamage` requires dropping the `?` and backfilling `damage: {}` on any Vehicle missing it | #532 |
+| 4 | `MatrixNodeData.matrix` rename + presence flag | One migration: copy `matrix`'s stats value to a new `attributes` field, replace `matrix` with the new boolean (default `true`) | #533 |
+| 5 | `EntityWithItems` + `_data_` split | One migration: nest `ItemData.parentId`/`childIds` under `items` (names unchanged); add `items: { parentId: null, childIds: [] }` to `RunnerData`; move `RunnerData.gear` → `RunnerData._data_.items` | #534 |
+| 6 | Rating sentinel → `isReal`/`isNative` | **Three** migrations, one each for `SinData`, `LicenseData`, `LanguageSkillData` (same transform shape, different record types — matches the `024_normalizeArmorRating.ts` precedent), each with its own `*.test.ts` | #535 — one ticket covering all three, same feature, ships together, despite the file-level split |
 
 Slice 6 also needs a full pass over the ~20 call sites currently doing `rating === "real"` /
 `rating === "native"` (dice-pool sizing, cost calculation, display, form fields — see
@@ -59,8 +74,8 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   stats must each have a real Attribute+Skill-style test use per SR4A rules — not added merely
   because a value exists on some Entity. Settled: `handling`, `armor`, `body`, `pilot`, `sensor`
   join `AttributeKey`; `accel` and `speed` stay as Vehicle's own plain fields (not independently
-  tested) — `accel`/`pilot`/`sensor` still need a real rulebook citation before implementation,
-  see Open Questions.
+  tested) — `pilot`/`sensor`'s membership ships without a rulebook citation, an explicit,
+  recorded waiver of AGENTS.md's citation policy for this feature only (see Open Questions).
 - No new codebase-wide Zod schema-composition pattern. Every existing schema (`ArmorDataSchema`,
   `MatrixNodeDataSchema`, ~12 others) hand-duplicates its full field list today, several not yet
   wired to a real validator ("kept for parity" per `ArmorDataSchema`'s own comment) — cleaning
@@ -139,7 +154,7 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
 _High-level shapes only — no implementation code._
 
 ```ts
-// Exact value set is an open question above.
+// Settled — see Open Questions above.
 type EntityKind =
   | "runner" | "item" | "spirit" | "sprite" | "matrixNode"
   | "quality" | "spell" | "complexForm" | "adeptPower"
@@ -240,9 +255,9 @@ type LanguageSkillData =
 - Retrofitting the rest of the codebase's flat, duplicated Zod schemas onto a composable pattern —
   out of scope entirely; this feature's own new schemas use a private per-file base only.
 - MatrixNode/Commlink StatusSheet UI, Matrix Test dice pool computation — unrelated to this doc.
-- Citing the actual SR4A rulebook passage justifying `accel`/`pilot`/`sensor`'s `AttributeKey`
-  membership — provisional calls are recorded in Constraints/Open Questions above, but a real
-  citation is required before implementation per AGENTS.md's citation policy.
+- Citing the actual SR4A rulebook passage justifying `pilot`/`sensor`'s `AttributeKey`
+  membership — the requirement was explicitly waived for this feature (see Open Questions); no
+  follow-up citation task is implied by this doc.
 
 ## Related Features
 
