@@ -17,7 +17,8 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ComplexFormsSelectors } from "#/lib/stores/runner/complexForms/complexFormsSlice.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type {
   ComplexFormIncreaseEntry,
@@ -36,7 +37,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 
 export const ImprovementComplexFormList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const knownComplexForms = useRunnerStoreSelector((sheet) => sheet.complexForms)
+  const knownComplexForms = useRunnerSelector(ComplexFormsSelectors.selectAll)
   const resonance = useRunnerStoreSelector(Selectors.attributes.selectAttrBase(AttributeKey.resonance))
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)

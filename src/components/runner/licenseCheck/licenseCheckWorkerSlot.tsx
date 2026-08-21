@@ -4,7 +4,8 @@ import type { FC } from "react"
 
 import { useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
 import { useLicenseCheckWorker } from "#/lib/hooks/runner/licenseCheck/useLicenseCheckWorker.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { HouseRulesSelectors } from "#/lib/stores/runner/houseRules/houseRulesSlice.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"
 import type { VerificationQueue } from "./licenseCheckQueue.ts"
@@ -46,9 +47,9 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
 }) => {
   const { scannerRating } = useLicenseCheck()
   const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
-  const ratingPlusRating = useRunnerStoreSelector(
-    Selectors.houseRules.select("items.licenseCheck.ratingPlusRating"),
-  )
+  const ratingPlusRating = useRunnerSelector(HouseRulesSelectors.select, {
+    key: "items.licenseCheck.ratingPlusRating",
+  })
 
   const { currentCheck, currentOutcome, credentialDice, scannerDice } = useLicenseCheckWorker({
     queue,

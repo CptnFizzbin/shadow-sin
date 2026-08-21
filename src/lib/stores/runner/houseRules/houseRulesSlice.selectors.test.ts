@@ -2,18 +2,18 @@ import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
-import { select } from "./houseRulesSlice.selectors.ts"
+import { HouseRulesSelectors } from "./houseRulesSlice.selectors.ts"
 
-describe("select", () => {
+describe("HouseRulesSelectors.select", () => {
   it("returns true for the known items.licenseCheck.ratingPlusRating key", () => {
-    const sheet = runnerDataFactory()
+    const runner = runnerDataFactory()
 
-    expect(select("items.licenseCheck.ratingPlusRating")(sheet)).toBe(true)
+    expect(HouseRulesSelectors.select({ runner }, { key: "items.licenseCheck.ratingPlusRating" })).toBe(true)
   })
 
   it("returns false for an unknown key", () => {
-    const sheet = runnerDataFactory()
+    const runner = runnerDataFactory()
 
-    expect(select("unknown.key")(sheet)).toBe(false)
+    expect(HouseRulesSelectors.select({ runner }, { key: "unknown.key" })).toBe(false)
   })
 })

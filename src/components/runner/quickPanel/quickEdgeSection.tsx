@@ -10,16 +10,17 @@ import type { FC } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { EdgeSelectors } from "#/lib/stores/runner/edge/edgeSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog()
   const dispatch = useRunnerStoreDispatch()
 
-  const max = useRunnerStoreSelector(Selectors.edge.selectEdgeMax)
-  const current = useRunnerStoreSelector(Selectors.edge.selectEdgeCurrent)
+  const max = useRunnerSelector(EdgeSelectors.selectMax)
+  const current = useRunnerSelector(EdgeSelectors.selectCurrent)
 
   const onBurnClick = async () => {
     if (

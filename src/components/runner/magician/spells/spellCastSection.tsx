@@ -14,8 +14,8 @@ import { withTheme } from "#/integrations/mui/muiUtils.ts"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectTradition } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
@@ -31,7 +31,7 @@ interface SpellCastSectionProps {
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
   const magicAttr = useAttrValue(AttributeKey.magic)
-  const tradition = useRunnerStoreSelector(selectTradition)
+  const tradition = useRunnerSelector(TraditionSelectors.select)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const [force, setForce] = useState<number>(Math.max(1, magicAttr))
