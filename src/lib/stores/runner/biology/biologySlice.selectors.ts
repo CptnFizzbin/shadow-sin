@@ -1,7 +1,6 @@
 import { createSelector } from "reselect"
 
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { AwakeningData } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
@@ -44,13 +43,13 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace BiologySelectors {
-  export const select: Selector<RunnerState, RunnerData["biology"]> = (state) => legacy.selectBiology(state.runner)
-  export const selectMetatype: Selector<RunnerState, RunnerData["biology"]["metatype"]> = (state) =>
-    legacy.selectMetatype(state.runner)
-  export const selectAwakening: Selector<RunnerState, RunnerData["biology"]["awakening"]> = (state) =>
-    legacy.selectAwakening(state.runner)
-  export const selectMetatypeInfo: Selector<RunnerState, MetatypeData> = (state) =>
-    legacy.selectMetatypeData(state.runner)
-  export const selectAwakeningInfo: Selector<RunnerState, AwakeningData> = (state) =>
-    legacy.selectAwakeningData(state.runner)
+  export const select: Selector<RunnerData, RunnerData["biology"]> = (state) => legacy.selectBiology(state)
+  export const selectMetatype: Selector<RunnerData, RunnerData["biology"]["metatype"]> = (state) =>
+    legacy.selectMetatype(state)
+  export const selectAwakening: Selector<RunnerData, RunnerData["biology"]["awakening"]> = (state) =>
+    legacy.selectAwakening(state)
+  export const selectMetatypeInfo: Selector<RunnerData, MetatypeData> = (state) =>
+    legacy.selectMetatypeData(state)
+  export const selectAwakeningInfo: Selector<RunnerData, AwakeningData> = (state) =>
+    legacy.selectAwakeningData(state)
 }

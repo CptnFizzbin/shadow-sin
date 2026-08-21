@@ -1,5 +1,4 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -13,5 +12,5 @@ const legacy = { selectSpells }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace SpellsSelectors {
-  export const selectAll: Selector<RunnerState, SpellData[]> = (state) => legacy.selectSpells(state.runner)
+  export const selectAll: Selector<RunnerData, SpellData[]> = (state) => legacy.selectSpells(state)
 }

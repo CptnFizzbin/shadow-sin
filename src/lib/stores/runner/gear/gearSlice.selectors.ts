@@ -7,7 +7,7 @@ import type { UUID } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import type { ItemCatalog, ItemDataFor, ItemDataRecord, ItemsState } from "#/system/items/itemUtils.ts"
+import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
 import { filterRecordByType, itemIsType } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -145,46 +145,45 @@ export const other = { selectById: makeSelectByIdOfType(ItemType.other) }
 
 /**
  * Standardized, namespaced selectors for the Item (gear) domain — see
- * docs/adr/0014-selector-input-decomposition.md. `TState` is `ItemsState` (`{ items: ItemCatalog }`),
- * deliberately narrower than `RunnerState`/`RunnerData` — once 0015 Slice 5 moves
- * `RunnerData.gear` to `RunnerData._data_.items`, a caller just passes `{ items: runner._data_.items }`
- * and nothing here needs to change. Because `TState` no longer carries the whole Runner, these
- * selectors can't delegate to the legacy exports above (which need a full `RunnerData`) — they
- * reimplement the same, small filter/lookup logic directly against `ItemCatalog` instead. Existing
- * exports and call sites above are untouched.
+ * docs/adr/0014-selector-input-decomposition.md. `TState` is `ItemCatalog`, deliberately narrower
+ * than `RunnerData` — once 0015 Slice 5 moves `RunnerData.gear` to `RunnerData._data_.items`, a
+ * caller just passes `runner._data_.items` and nothing here needs to change. Because `TState` no
+ * longer carries the whole Runner, these selectors can't delegate to the legacy exports above
+ * (which need a full `RunnerData`) — they reimplement the same, small filter/lookup logic directly
+ * against `ItemCatalog` instead. Existing exports and call sites above are untouched.
  */
 export namespace ItemSelectors {
-  export const selectAll: StandardSelector<ItemsState, ItemCatalog> = (state) => state.items
+  export const selectAll: StandardSelector<ItemCatalog, ItemCatalog> = (state) => state
 
-  export const selectAvailable: StandardSelector<ItemsState, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => !item.stashed)
+  export const selectAvailable: StandardSelector<ItemCatalog, ItemData[]> = (state) =>
+    Object.values(state).filter((item) => !item.stashed)
 
-  export const selectEquipped: StandardSelector<ItemsState, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => item.equipped)
+  export const selectEquipped: StandardSelector<ItemCatalog, ItemData[]> = (state) =>
+    Object.values(state).filter((item) => item.equipped)
 
-  export const selectStashed: StandardSelector<ItemsState, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => item.stashed)
+  export const selectStashed: StandardSelector<ItemCatalog, ItemData[]> = (state) =>
+    Object.values(state).filter((item) => item.stashed)
 
-  export const selectById: StandardSelector<ItemsState, ItemData, { itemId: UUID }> = createSelector(
+  export const selectById: StandardSelector<ItemCatalog, ItemData, { itemId: UUID }> = createSelector(
     [
-      (state: ItemsState) => state.items,
-      (_state: ItemsState, options: { itemId: UUID }) => options.itemId,
+      (state: ItemCatalog) => state,
+      (_state: ItemCatalog, options: { itemId: UUID }) => options.itemId,
     ],
     (items, itemId) => items[itemId],
   )
 
-  export const selectByType: StandardSelector<ItemsState, ItemDataRecord, { itemType: ItemType }> = createSelector(
+  export const selectByType: StandardSelector<ItemCatalog, ItemDataRecord, { itemType: ItemType }> = createSelector(
     [
-      (state: ItemsState) => state.items,
-      (_state: ItemsState, options: { itemType: ItemType }) => options.itemType,
+      (state: ItemCatalog) => state,
+      (_state: ItemCatalog, options: { itemType: ItemType }) => options.itemType,
     ],
     (items, itemType) => filterRecordByType(items, itemType),
   )
 
-  export const selectChildrenOf: StandardSelector<ItemsState, ItemDataRecord, { itemId: UUID }> = createSelector(
+  export const selectChildrenOf: StandardSelector<ItemCatalog, ItemDataRecord, { itemId: UUID }> = createSelector(
     [
-      (state: ItemsState) => state.items,
-      (_state: ItemsState, options: { itemId: UUID }) => options.itemId,
+      (state: ItemCatalog) => state,
+      (_state: ItemCatalog, options: { itemId: UUID }) => options.itemId,
     ],
     (items, itemId) => {
       const parent = items[itemId]
@@ -207,15 +206,15 @@ export namespace ItemSelectors {
   }
 
   export namespace Armor {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.armor> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.armor)
-    export const selectEquipped: StandardSelector<ItemsState, ItemDataFor<ItemType.armor>[]> = (state) =>
-      Object.values(filterRecordByType(state.items, ItemType.armor)).filter((item) => item.equipped)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.armor> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.armor)
+    export const selectEquipped: StandardSelector<ItemCatalog, ItemDataFor<ItemType.armor>[]> = (state) =>
+      Object.values(filterRecordByType(state, ItemType.armor)).filter((item) => item.equipped)
   }
 
   export namespace Implants {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.implant> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.implant)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.implant> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.implant)
   }
 
   export namespace Firearms {
@@ -224,52 +223,52 @@ export namespace ItemSelectors {
     // `weaponType: WeaponType.firearm` (see weaponData.ts). The legacy `firearms` export this
     // mirrors is consequently unreachable against real data today — kept here only for structural
     // parity with the other per-type groupings, not fixed (pre-existing, out of this pass's scope).
-    export const selectById: StandardSelector<ItemsState, ItemData | undefined, { itemId: UUID }> =
+    export const selectById: StandardSelector<ItemCatalog, ItemData | undefined, { itemId: UUID }> =
       (state, { itemId }) => {
-        const item = state.items[itemId]
+        const item = state[itemId]
         return item?.itemType === ItemType.firearm ? item : undefined
       }
   }
 
   export namespace Software {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.software> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.software)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.software> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.software)
   }
 
   export namespace Vehicles {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.vehicle> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.vehicle)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.vehicle> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.vehicle)
   }
 
   export namespace Weapons {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.weapon> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.weapon)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.weapon> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.weapon)
   }
 
   export namespace Devices {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.device> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.device)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.device> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.device)
   }
 
   export namespace FirearmAccessories {
     export const selectById: StandardSelector<
-      ItemsState, ItemDataFor<ItemType.firearmAccessory> | undefined, { itemId: UUID }
-    > = (state, { itemId }) => itemOfType(state.items, itemId, ItemType.firearmAccessory)
+      ItemCatalog, ItemDataFor<ItemType.firearmAccessory> | undefined, { itemId: UUID }
+    > = (state, { itemId }) => itemOfType(state, itemId, ItemType.firearmAccessory)
   }
 
   export namespace Sins {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.sin> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.sin)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.sin> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.sin)
   }
 
   export namespace Credsticks {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.credstick> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.credstick)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.credstick> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.credstick)
   }
 
   export namespace Programs {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.program> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.program)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.program> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.program)
   }
 
   export namespace Other {
@@ -277,25 +276,25 @@ export namespace ItemSelectors {
     // subtype for "other" items (they're plain `ItemData`), even though real items do carry
     // `itemType: ItemType.other`. `ItemData` is the accurate type here, not a narrower one, so this
     // doesn't use the `itemOfType` helper (which is typed for the `ItemDataFor<T>` case).
-    export const selectById: StandardSelector<ItemsState, ItemData | undefined, { itemId: UUID }> =
+    export const selectById: StandardSelector<ItemCatalog, ItemData | undefined, { itemId: UUID }> =
       (state, { itemId }) => {
-        const item = state.items[itemId]
+        const item = state[itemId]
         return item?.itemType === ItemType.other ? item : undefined
       }
   }
 
   export namespace Licenses {
-    export const selectById: StandardSelector<ItemsState, ItemDataFor<ItemType.license> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.license)
+    export const selectById: StandardSelector<ItemCatalog, ItemDataFor<ItemType.license> | undefined, { itemId: UUID }> =
+      (state, { itemId }) => itemOfType(state, itemId, ItemType.license)
 
-    export const selectForItem: StandardSelector<ItemsState, LicenseData | null, { itemId: UUID }> =
+    export const selectForItem: StandardSelector<ItemCatalog, LicenseData | null, { itemId: UUID }> =
       (state, { itemId }) => {
-        const item = state.items[itemId]
+        const item = state[itemId]
         if (!item?.licenseId) return null
-        return itemOfType(state.items, item.licenseId, ItemType.license) ?? null
+        return itemOfType(state, item.licenseId, ItemType.license) ?? null
       }
 
-    export const selectItemsForId: StandardSelector<ItemsState, ItemData[], { licenseId: UUID }> =
-      (state, { licenseId }) => Object.values(state.items).filter((item) => item.licenseId === licenseId)
+    export const selectItemsForId: StandardSelector<ItemCatalog, ItemData[], { licenseId: UUID }> =
+      (state, { licenseId }) => Object.values(state).filter((item) => item.licenseId === licenseId)
   }
 }
