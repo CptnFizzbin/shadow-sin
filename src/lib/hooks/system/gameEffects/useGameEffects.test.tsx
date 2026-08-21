@@ -30,7 +30,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toEqual([])
@@ -52,7 +52,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -73,7 +73,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -94,7 +94,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toEqual([])
@@ -123,7 +123,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -146,7 +146,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -171,7 +171,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -212,7 +212,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toHaveLength(3)
@@ -227,7 +227,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects(sheet)
+    const effects = selectAllGameEffects({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toEqual([])
@@ -244,7 +244,7 @@ describe("selectGameEffectsByType", () => {
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectGameEffectsByType(GameEffectType.attrMod)(sheet)
+    const effects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(effects).toEqual([])
@@ -269,7 +269,7 @@ describe("selectGameEffectsByType", () => {
     })
 
     // Act
-    const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)(sheet)
+    const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(attrModEffects).toHaveLength(1)
@@ -306,7 +306,7 @@ describe("selectGameEffectsByType", () => {
     })
 
     // Act
-    const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)(sheet)
+    const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: sheet.gear })
 
     // Assert
     expect(initiativeEffects).toHaveLength(2)

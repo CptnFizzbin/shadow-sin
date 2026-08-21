@@ -6,7 +6,8 @@ import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 import { useGearBuildPoints } from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()
@@ -46,7 +47,7 @@ export const useGearAlerts = (): AlertInfo[] => {
     })
   }
 
-  const gear = useRunnerStoreSelector((s) => s.gear)
+  const gear = useRunnerSelector(ItemSelectors.selectAll)
   if (Object.keys(gear).length === 0) {
     alerts.push({
       section: "Gear",
