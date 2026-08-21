@@ -3,10 +3,12 @@ import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.s
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `EdgeSelectors.selectMax` via `useRunnerSelector` instead. */
 export function selectEdgeMax(state: RunnerData): number {
   return selectAttrBase(AttributeKey.edge)(state)
 }
 
+/** @deprecated Use `EdgeSelectors.selectCurrent` via `useRunnerSelector` instead. */
 export function selectEdgeCurrent(state: RunnerData): number {
   return state.edge.current
 }

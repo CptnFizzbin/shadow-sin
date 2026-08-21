@@ -1,14 +1,17 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `NuyenSelectors.select` via `useRunnerSelector` instead. */
 export function selectNuyen(state: RunnerData): RunnerData["nuyen"] {
   return state.nuyen
 }
 
+/** @deprecated Use `NuyenSelectors.selectAmount` via `useRunnerSelector` instead. */
 export function selectNuyenAmount(state: RunnerData): number {
   return state.nuyen.current
 }
 
+/** @deprecated Use `NuyenSelectors.selectLoans` via `useRunnerSelector` instead. */
 export function selectLoans(state: RunnerData): RunnerData["nuyen"]["loans"] {
   return state.nuyen.loans
 }

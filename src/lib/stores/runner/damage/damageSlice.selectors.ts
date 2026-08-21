@@ -13,6 +13,7 @@ export interface DamageTrackInfo {
   woundInterval: number
 }
 
+/** @deprecated Use `DamageSelectors.selectPhysical` via `useRunnerSelector` instead. */
 export function selectPhysicalTrack(state: RunnerData): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(selectAttrBase(AttributeKey.body)(state) / 2),
@@ -21,6 +22,7 @@ export function selectPhysicalTrack(state: RunnerData): DamageTrackInfo {
   }
 }
 
+/** @deprecated Use `DamageSelectors.selectStun` via `useRunnerSelector` instead. */
 export function selectStunTrack(state: RunnerData): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(selectAttrBase(AttributeKey.willpower)(state) / 2),
@@ -29,6 +31,7 @@ export function selectStunTrack(state: RunnerData): DamageTrackInfo {
   }
 }
 
+/** @deprecated Use `DamageSelectors.selectMatrix` via `useRunnerSelector` instead. */
 export function selectMatrixTrack(state: RunnerData, system: number = 0): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(system / 2),

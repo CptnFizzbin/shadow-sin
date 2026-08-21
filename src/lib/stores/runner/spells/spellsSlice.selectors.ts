@@ -2,6 +2,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `SpellsSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectSpells(state: RunnerData): SpellData[] {
   return state.spells
 }

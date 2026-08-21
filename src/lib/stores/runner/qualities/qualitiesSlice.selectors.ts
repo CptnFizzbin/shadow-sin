@@ -2,6 +2,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `QualitiesSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectQualities(state: RunnerData): QualityData[] {
   return state.qualities
 }

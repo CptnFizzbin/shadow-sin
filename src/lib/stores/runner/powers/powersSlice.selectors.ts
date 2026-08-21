@@ -2,6 +2,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `PowersSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectPowers(state: RunnerData): AdeptPowerData[] {
   return state.powers
 }

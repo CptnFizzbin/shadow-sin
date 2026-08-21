@@ -11,22 +11,27 @@ import type { SkillInfo } from "#/system/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
+/** @deprecated Use `SkillsSelectors.selectActiveSkills` via `useRunnerSelector` instead. */
 export function selectActiveSkills(state: RunnerData): ActiveSkillData[] {
   return state.skills.activeSkills
 }
 
+/** @deprecated Use `SkillsSelectors.selectSkillGroups` via `useRunnerSelector` instead. */
 export function selectSkillGroups(state: RunnerData): SkillGroupData[] {
   return state.skills.skillGroups
 }
 
+/** @deprecated Use `SkillsSelectors.selectKnowledgeSkills` via `useRunnerSelector` instead. */
 export function selectKnowledgeSkills(state: RunnerData): KnowledgeSkillData[] {
   return state.skills.knowledgeSkills
 }
 
+/** @deprecated Use `SkillsSelectors.selectLanguageSkills` via `useRunnerSelector` instead. */
 export function selectLanguageSkills(state: RunnerData): LanguageSkillData[] {
   return state.skills.languageSkills
 }
 
+/** @deprecated Use `SkillsSelectors.selectValue` via `useRunnerSelector` instead. */
 export function selectSkillValue(skillName: SkillKey) {
   return (state: RunnerData): number => {
     const skillInfo = skillList[skillName]
@@ -36,12 +41,14 @@ export function selectSkillValue(skillName: SkillKey) {
   }
 }
 
+/** @deprecated Use `SkillsSelectors.selectSpecialization` via `useRunnerSelector` instead. */
 export function selectSkillSpecialization(skillName: SkillKey) {
   return (state: RunnerData): string | undefined => {
     return state.skills.activeSkills.find((s) => s.name === skillName)?.specialization
   }
 }
 
+/** @deprecated Use `SkillsSelectors.selectAllowedActive` via `useRunnerSelector` instead. */
 export const selectAllowedActiveSkills: (state: RunnerData) => Partial<Record<SkillKey, SkillInfo>> = createSelector([
   selectAwakening,
 ], (awakeningType) => {

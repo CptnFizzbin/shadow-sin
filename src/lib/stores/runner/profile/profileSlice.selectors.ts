@@ -4,39 +4,50 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `ProfileSelectors.select` via `useRunnerSelector` instead. */
 export function selectProfile(state: RunnerData): RunnerData["profile"] {
   return state.profile
 }
 
+/** @deprecated Use `ProfileSelectors.selectName` via `useRunnerSelector` instead. */
 export function selectProfileName(state: RunnerData): string {
   return state.profile.name
 }
 
+/** @deprecated Use `ProfileSelectors.selectAlias` via `useRunnerSelector` instead. */
 export function selectProfileAlias(state: RunnerData): string {
   return state.profile.alias
 }
 
-/** The Runner's alias, falling back to their legal name when no alias is set. */
+/**
+ * The Runner's alias, falling back to their legal name when no alias is set.
+ * @deprecated Use `ProfileSelectors.selectDisplayName` via `useRunnerSelector` instead.
+ */
 export function selectProfileDisplayName(state: RunnerData): string {
   return state.profile.alias || state.profile.name
 }
 
+/** @deprecated Use `ProfileSelectors.selectLifestyle` via `useRunnerSelector` instead. */
 export function selectLifestyle(state: RunnerData): RunnerData["profile"]["lifestyle"] {
   return state.profile.lifestyle
 }
 
+/** @deprecated Use `ProfileSelectors.selectStreetCred` via `useRunnerSelector` instead. */
 export function selectStreetCred(state: RunnerData): number {
   return state.profile.streetCred
 }
 
+/** @deprecated Use `ProfileSelectors.selectNotoriety` via `useRunnerSelector` instead. */
 export function selectNotoriety(state: RunnerData): number {
   return state.profile.notoriety
 }
 
+/** @deprecated Use `ProfileSelectors.selectPublicAwarenessModifier` via `useRunnerSelector` instead. */
 export function selectPublicAwarenessModifier(state: RunnerData): number {
   return state.profile.publicAwarenessModifier ?? 0
 }
 
+/** @deprecated Use `ProfileSelectors.selectPublicAwareness` via `useRunnerSelector` instead. */
 export const selectPublicAwareness = createSelector(
   selectStreetCred,
   selectNotoriety,
@@ -45,16 +56,19 @@ export const selectPublicAwareness = createSelector(
     Math.max(0, Math.floor((streetCred + notoriety) / 3) + publicAwarenessModifier),
 )
 
+/** @deprecated Use `ProfileSelectors.selectLifestyleQuality` via `useRunnerSelector` instead. */
 export const selectLifestyleQuality = createSelector(
   selectLifestyle,
   (lifestyle) => lifestyle?.quality,
 )
 
+/** @deprecated Use `ProfileSelectors.selectLifestyleMonthsPaid` via `useRunnerSelector` instead. */
 export const selectLifestyleMonthsPaid = createSelector(
   selectLifestyle,
   (lifestyle) => lifestyle?.monthsPaid,
 )
 
+/** @deprecated Use `ProfileSelectors.selectLifestyleInfo` via `useRunnerSelector` instead. */
 export const selectLifestyleInfo = createSelector(
   selectLifestyleQuality,
   (quality) => quality ? Lifestyles[quality] : undefined,

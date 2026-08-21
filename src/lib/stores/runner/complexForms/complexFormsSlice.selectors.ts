@@ -2,6 +2,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `ComplexFormsSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectComplexForms(state: RunnerData): ComplexFormData[] {
   return state.complexForms
 }

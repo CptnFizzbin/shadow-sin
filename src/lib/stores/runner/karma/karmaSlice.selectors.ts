@@ -1,14 +1,17 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `KarmaSelectors.select` via `useRunnerSelector` instead. */
 export function selectKarma(state: RunnerData): RunnerData["karma"] {
   return state.karma
 }
 
+/** @deprecated Use `KarmaSelectors.selectCurrent` via `useRunnerSelector` instead. */
 export function selectCurrentKarma(state: RunnerData): number {
   return state.karma.current
 }
 
+/** @deprecated Use `KarmaSelectors.selectTotal` via `useRunnerSelector` instead. */
 export function selectTotalKarma(state: RunnerData): number {
   return state.karma.total
 }

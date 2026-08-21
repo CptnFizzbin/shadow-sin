@@ -1,6 +1,7 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `TraditionSelectors.select` via `useRunnerSelector` instead. */
 export function selectTradition(state: RunnerData): RunnerData["tradition"] {
   return state.tradition
 }

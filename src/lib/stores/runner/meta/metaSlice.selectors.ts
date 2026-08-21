@@ -1,6 +1,7 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `MetaSelectors.selectLastExportDate` via `useRunnerSelector` instead. */
 export function selectLastExportDate(state: RunnerData): RunnerData["_meta_"]["lastExportDate"] {
   return state._meta_.lastExportDate
 }

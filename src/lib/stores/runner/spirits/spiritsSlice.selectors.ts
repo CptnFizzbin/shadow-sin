@@ -2,6 +2,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `SpiritsSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectSpirits(state: RunnerData): SpiritData[] {
   return state.spirits
 }

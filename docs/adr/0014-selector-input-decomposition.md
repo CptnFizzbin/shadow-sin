@@ -11,10 +11,11 @@ with anything real, and the dispatch layer itself kept simplifying away to nothi
 same day.
 
 `useRunnerSelector`/`useEntitySelector` (or equivalents) remain the intended destination. This ADR
-is the prerequisite step, not a replacement of that ambition: it changes what a selector's *input*
-looks like, so that the two things ADR-0013 got tangled up in — data-model reuse and call-site
-dispatch — can each land on their own, in the right order, once there's something real underneath
-each one.
+started as the prerequisite step, changing what a selector's *input* looks like so the two things
+ADR-0013 got tangled up in — data-model reuse and call-site dispatch — could land separately. It now
+also includes `useRunnerSelector` itself (`useEntitySelector` is still future work) — see "Building
+`useRunnerSelector` now, without repeating ADR-0013" below for why this doesn't reintroduce
+ADR-0013's problem.
 
 ## What has to be true before ADR-0013's goal is safe to attempt again
 
@@ -122,9 +123,38 @@ Nested groupings (gear's existing per-item-type `armor`/`implants`/`licenses`/..
 nested namespaces (`ItemSelectors.Armor`, `ItemSelectors.Licenses`, ...) rather than folding the
 distinction into a stringly-typed option.
 
-**Purely additive.** Every existing exported selector stays exactly as it is — same name, same
-signature, same call sites. The namespace is new code alongside it, not a replacement; nothing
-outside the touched `*.selectors.ts` files changes in this pass.
+**Purely additive.** Every existing exported selector keeps its name, signature, and behavior
+unchanged; nothing calling one has to change. Each one now also carries a `@deprecated` JSDoc tag
+naming its namespaced replacement (and `useRunnerSelector`, where that's the intended call path) —
+annotation only, not a migration: no call site among the ~145 that currently call
+`useRunnerStoreSelector`, nor any that import a legacy selector directly, is touched by this pass.
+Migrating a call site is left to whoever next touches that file, guided by the deprecation notice.
+
+## Building `useRunnerSelector` now, without repeating ADR-0013
+
+`useRunnerSelector` (`src/lib/stores/runner/runnerStore.selectors.ts`) is a real piece of the
+dispatch layer ADR-0013 tried and failed to build — worth being explicit about why building it now
+doesn't reintroduce either of ADR-0013's two problems (see its Postmortem):
+
+- **No dependency on a capability interface that doesn't exist yet.** `useRunnerSelector` only
+  assembles `{ runner: RunnerData }` — `RunnerData` is real today, nothing about it depends on
+  0015. It fits every Runner-domain namespace except `AttrSelectors` (`{ entity: ... }`) and
+  `ItemSelectors` (`{ items: ... }`), which stay unserved by any hook until `useEntitySelector`
+  lands — this isn't a gap being papered over, it's the honest boundary of what `RunnerData` alone
+  can assemble.
+- **No catalog/dispatch/`picker` layer.** ADR-0013's hooks took a `picker: (catalog) => Selector<...>`
+  indirection whose entire value proposition eroded under review. `useRunnerSelector` takes the
+  selector directly — `useRunnerSelector(ProfileSelectors.selectName)` — with no catalog object, no
+  picker function, and no per-domain hook to maintain. It is a thin, single-purpose wrapper around
+  the pre-existing `useRunnerStoreSelector`, doing exactly one thing: building the `{ runner: ... }`
+  wrapper object every namespaced selector's `TState` already expects, so a call site doesn't have
+  to.
+
+`useEntitySelector` (for `{ entity: ... }`-shaped selectors, resolving *which* entity — the Runner
+itself, or a nearer one via Context, per the "nearest entity" need ADR-0013's `useAttrSelector`
+identified) is real future work, deliberately not attempted here: it needs at least one more Entity
+kind actually implementing a capability trait before "resolve the nearest entity" is answering a
+real question instead of a hypothetical one.
 
 ## Scope
 
@@ -202,7 +232,10 @@ nothing binds to it yet; it exists purely as a documented preview of the shape 0
   comment pointing at this. Fixing `ItemType.firearm`'s modeling is out of scope for this pass.
 - 0015's own slices are unaffected in sequencing or scope by this ADR — this pass changes selector
   *input* shape only, never the underlying `RunnerData` fields those inputs read.
-- `useRunnerSelector`/`useEntitySelector` are not built here. They remain future work, to be
-  attempted again once enough of 0015's capability interfaces are real and enough domains have
-  gone through this input-decomposition pass that the dispatch layer would have real cross-entity
-  reuse to offer — not before.
+- `useRunnerSelector` is built (`src/lib/stores/runner/runnerStore.selectors.ts`) — see "Building
+  `useRunnerSelector` now, without repeating ADR-0013" above for why it's scoped narrowly enough not
+  to need 0015's capability interfaces. `useEntitySelector` is not built here and remains future
+  work, attempted once at least one Entity kind actually implements a capability trait — not before.
+- Every legacy selector export across `src/lib/stores/runner/**`, plus `useRunnerStoreSelector` and
+  the `Selectors` aggregator, now carries `@deprecated` — annotation only, per "Purely additive"
+  above; no call site is migrated in this pass.

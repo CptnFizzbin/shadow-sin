@@ -11,22 +11,27 @@ import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/it
 import { filterRecordByType, itemIsType } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `ItemSelectors.selectAll` instead. */
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
   return state.gear
 }
 
+/** @deprecated Use `ItemSelectors.selectAvailable` instead. */
 export function selectAvailable(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => !item.stashed)
 }
 
+/** @deprecated Use `ItemSelectors.selectEquipped` instead. */
 export function selectEquipped(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => item.equipped)
 }
 
+/** @deprecated Use `ItemSelectors.selectStashed` instead. */
 export function selectStashed(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => item.stashed)
 }
 
+/** @deprecated Use `ItemSelectors.selectById` instead. */
 export const selectById: (id: UUID) => Selector<RunnerData, ItemData> = createCurriedSelector(
   [
     selectAllGear,
@@ -45,6 +50,7 @@ const gearSelectorsByType: Partial<Record<
   ItemDataSelector<ItemData>
 >> = {}
 
+/** @deprecated Use `ItemSelectors.selectByType` instead. */
 export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<ItemDataFor<T>> => {
   if (gearSelectorsByType) {
     gearSelectorsByType[type] = createSelector(
@@ -63,6 +69,7 @@ export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<
   return gearSelectorsByType[type] as ItemDataSelector<ItemDataFor<T>>
 }
 
+/** @deprecated Use `ItemSelectors.selectChildrenOf` instead. */
 export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRecord> = createCurriedSelector(
   [
     selectAllGear,
@@ -79,6 +86,7 @@ export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRe
   },
 )
 
+/** @deprecated Use `ItemSelectors.Licenses` instead. */
 export const licenses = {
   selectById: createCurriedSelector(
     [
@@ -121,6 +129,7 @@ function makeSelectByIdOfType(type: ItemType) {
   )
 }
 
+/** @deprecated Use `ItemSelectors.Armor` instead. */
 export const armor = {
   selectById: makeSelectByIdOfType(ItemType.armor),
 
@@ -131,16 +140,27 @@ export const armor = {
   }),
 }
 
+/** @deprecated Use `ItemSelectors.Implants` instead. */
 export const implants = { selectById: makeSelectByIdOfType(ItemType.implant) }
+/** @deprecated Use `ItemSelectors.Firearms` instead. */
 export const firearms = { selectById: makeSelectByIdOfType(ItemType.firearm) }
+/** @deprecated Use `ItemSelectors.Software` instead. */
 export const software = { selectById: makeSelectByIdOfType(ItemType.software) }
+/** @deprecated Use `ItemSelectors.Vehicles` instead. */
 export const vehicles = { selectById: makeSelectByIdOfType(ItemType.vehicle) }
+/** @deprecated Use `ItemSelectors.Weapons` instead. */
 export const weapons = { selectById: makeSelectByIdOfType(ItemType.weapon) }
+/** @deprecated Use `ItemSelectors.Devices` instead. */
 export const devices = { selectById: makeSelectByIdOfType(ItemType.device) }
+/** @deprecated Use `ItemSelectors.FirearmAccessories` instead. */
 export const firearmAccessories = { selectById: makeSelectByIdOfType(ItemType.firearmAccessory) }
+/** @deprecated Use `ItemSelectors.Sins` instead. */
 export const sins = { selectById: makeSelectByIdOfType(ItemType.sin) }
+/** @deprecated Use `ItemSelectors.Credsticks` instead. */
 export const credsticks = { selectById: makeSelectByIdOfType(ItemType.credstick) }
+/** @deprecated Use `ItemSelectors.Programs` instead. */
 export const programs = { selectById: makeSelectByIdOfType(ItemType.program) }
+/** @deprecated Use `ItemSelectors.Other` instead. */
 export const other = { selectById: makeSelectByIdOfType(ItemType.other) }
 
 /**

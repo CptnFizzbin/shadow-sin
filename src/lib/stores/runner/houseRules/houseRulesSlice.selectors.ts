@@ -7,6 +7,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 // (docs/adr/0005-house-rules-feature-flag-namespace.md). Once `RunnerData.featureFlags.houseRules`
 // exists, replace this switch with a real lookup (stored override ?? registry default), following
 // the `optionalRules` namespace's pattern.
+/** @deprecated Use `HouseRulesSelectors.select` via `useRunnerSelector` instead. */
 export function select(key: string) {
   return (_state: RunnerData): boolean => {
     switch (key) {

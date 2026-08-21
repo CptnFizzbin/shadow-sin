@@ -7,25 +7,34 @@ import type { MetatypeData } from "#/system/metatypeData.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** @deprecated Use `BiologySelectors.select` via `useRunnerSelector` instead. */
 export function selectBiology(state: RunnerData): RunnerData["biology"] {
   return state.biology
 }
 
+/** @deprecated Use `BiologySelectors.selectMetatype` via `useRunnerSelector` instead. */
 export function selectMetatype(state: RunnerData): RunnerData["biology"]["metatype"] {
   return state.biology.metatype
 }
 
+/** @deprecated Use `BiologySelectors.selectAwakening` via `useRunnerSelector` instead. */
 export function selectAwakening(state: RunnerData): RunnerData["biology"]["awakening"] {
   return state.biology.awakening
 }
 
-/** Denormalized {@link MetatypeData} looked up via {@link selectMetatype}. */
+/**
+ * Denormalized {@link MetatypeData} looked up via {@link selectMetatype}.
+ * @deprecated Use `BiologySelectors.selectMetatypeInfo` via `useRunnerSelector` instead.
+ */
 export const selectMetatypeData: (state: RunnerData) => MetatypeData = createSelector(
   selectMetatype,
   (metatype) => metatypes[metatype],
 )
 
-/** Denormalized {@link AwakeningData} looked up via {@link selectAwakening}. */
+/**
+ * Denormalized {@link AwakeningData} looked up via {@link selectAwakening}.
+ * @deprecated Use `BiologySelectors.selectAwakeningInfo` via `useRunnerSelector` instead.
+ */
 export const selectAwakeningData: (state: RunnerData) => AwakeningData = createSelector(
   selectAwakening,
   (awakening) => awakenings[awakening],
