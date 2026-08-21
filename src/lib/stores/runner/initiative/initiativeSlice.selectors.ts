@@ -1,4 +1,5 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export function selectPassesCompleted(state: RunnerData): ReadonlySet<number> {
@@ -28,8 +29,11 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace InitiativeSelectors {
-  export const selectPassesCompleted: Selector<RunnerData, ReadonlySet<number>> = legacy.selectPassesCompleted
-  export const selectRolledResults: Selector<RunnerData, number[] | undefined> = legacy.selectRolledResults
-  export const selectGoingFirst: Selector<RunnerData, boolean> = legacy.selectGoingFirst
-  export const selectExtraPasses: Selector<RunnerData, number> = legacy.selectExtraPasses
+  export const selectPassesCompleted: Selector<RunnerState, ReadonlySet<number>> = (state) =>
+    legacy.selectPassesCompleted(state.runner)
+  export const selectRolledResults: Selector<RunnerState, number[] | undefined> = (state) =>
+    legacy.selectRolledResults(state.runner)
+  export const selectGoingFirst: Selector<RunnerState, boolean> = (state) => legacy.selectGoingFirst(state.runner)
+  export const selectExtraPasses: Selector<RunnerState, number> = (state) =>
+    legacy.selectExtraPasses(state.runner)
 }

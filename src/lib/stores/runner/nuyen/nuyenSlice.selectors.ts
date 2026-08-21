@@ -1,4 +1,5 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export function selectNuyen(state: RunnerData): RunnerData["nuyen"] {
@@ -19,7 +20,8 @@ const legacy = { selectNuyen, selectNuyenAmount, selectLoans }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace NuyenSelectors {
-  export const select: Selector<RunnerData, RunnerData["nuyen"]> = legacy.selectNuyen
-  export const selectAmount: Selector<RunnerData, number> = legacy.selectNuyenAmount
-  export const selectLoans: Selector<RunnerData, RunnerData["nuyen"]["loans"]> = legacy.selectLoans
+  export const select: Selector<RunnerState, RunnerData["nuyen"]> = (state) => legacy.selectNuyen(state.runner)
+  export const selectAmount: Selector<RunnerState, number> = (state) => legacy.selectNuyenAmount(state.runner)
+  export const selectLoans: Selector<RunnerState, RunnerData["nuyen"]["loans"]> = (state) =>
+    legacy.selectLoans(state.runner)
 }

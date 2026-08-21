@@ -2,6 +2,7 @@ import { createSelector } from "reselect"
 
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
@@ -68,27 +69,31 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace SkillsSelectors {
-  export const selectActiveSkills: Selector<RunnerData, ActiveSkillData[]> = legacy.selectActiveSkills
-  export const selectSkillGroups: Selector<RunnerData, SkillGroupData[]> = legacy.selectSkillGroups
-  export const selectKnowledgeSkills: Selector<RunnerData, KnowledgeSkillData[]> = legacy.selectKnowledgeSkills
-  export const selectLanguageSkills: Selector<RunnerData, LanguageSkillData[]> = legacy.selectLanguageSkills
-  export const selectAllowedActive: Selector<RunnerData, Partial<Record<SkillKey, SkillInfo>>> =
-    legacy.selectAllowedActiveSkills
+  export const selectActiveSkills: Selector<RunnerState, ActiveSkillData[]> = (state) =>
+    legacy.selectActiveSkills(state.runner)
+  export const selectSkillGroups: Selector<RunnerState, SkillGroupData[]> = (state) =>
+    legacy.selectSkillGroups(state.runner)
+  export const selectKnowledgeSkills: Selector<RunnerState, KnowledgeSkillData[]> = (state) =>
+    legacy.selectKnowledgeSkills(state.runner)
+  export const selectLanguageSkills: Selector<RunnerState, LanguageSkillData[]> = (state) =>
+    legacy.selectLanguageSkills(state.runner)
+  export const selectAllowedActive: Selector<RunnerState, Partial<Record<SkillKey, SkillInfo>>> = (state) =>
+    legacy.selectAllowedActiveSkills(state.runner)
 
-  export const selectValue: Selector<RunnerData, number, { skillName: SkillKey }> = createSelector(
+  export const selectValue: Selector<RunnerState, number, { skillName: SkillKey }> = createSelector(
     [
-      (state: RunnerData) => state,
-      (_state: RunnerData, options: { skillName: SkillKey }) => options.skillName,
+      (state: RunnerState) => state.runner,
+      (_state: RunnerState, options: { skillName: SkillKey }) => options.skillName,
     ],
-    (state, skillName) => legacy.selectSkillValue(skillName)(state),
+    (runner, skillName) => legacy.selectSkillValue(skillName)(runner),
   )
 
-  export const selectSpecialization: Selector<RunnerData, string | undefined, { skillName: SkillKey }> =
+  export const selectSpecialization: Selector<RunnerState, string | undefined, { skillName: SkillKey }> =
     createSelector(
       [
-        (state: RunnerData) => state,
-        (_state: RunnerData, options: { skillName: SkillKey }) => options.skillName,
+        (state: RunnerState) => state.runner,
+        (_state: RunnerState, options: { skillName: SkillKey }) => options.skillName,
       ],
-      (state, skillName) => legacy.selectSkillSpecialization(skillName)(state),
+      (runner, skillName) => legacy.selectSkillSpecialization(skillName)(runner),
     )
 }

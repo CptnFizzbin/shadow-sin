@@ -1,4 +1,5 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -12,5 +13,5 @@ const legacy = { selectPowers }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace PowersSelectors {
-  export const selectAll: Selector<RunnerData, AdeptPowerData[]> = legacy.selectPowers
+  export const selectAll: Selector<RunnerState, AdeptPowerData[]> = (state) => legacy.selectPowers(state.runner)
 }

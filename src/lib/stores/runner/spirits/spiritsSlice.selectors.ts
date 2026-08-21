@@ -1,4 +1,5 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -12,5 +13,5 @@ const legacy = { selectSpirits }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace SpiritsSelectors {
-  export const selectAll: Selector<RunnerData, SpiritData[]> = legacy.selectSpirits
+  export const selectAll: Selector<RunnerState, SpiritData[]> = (state) => legacy.selectSpirits(state.runner)
 }

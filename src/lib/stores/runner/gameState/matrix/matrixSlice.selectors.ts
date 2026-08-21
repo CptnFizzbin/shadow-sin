@@ -1,4 +1,5 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import type { ActiveProgram } from "#/system/matrix/activeProgram.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -31,8 +32,12 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace MatrixSelectors {
-  export const selectKnownNodes: Selector<RunnerData, KnownNode[]> = legacy.selectKnownNodes
-  export const selectActiveNodeId: Selector<RunnerData, string | undefined> = legacy.selectActiveNodeId
-  export const selectActiveNode: Selector<RunnerData, KnownNode | undefined> = legacy.selectActiveNode
-  export const selectActivePrograms: Selector<RunnerData, ActiveProgram[]> = legacy.selectActivePrograms
+  export const selectKnownNodes: Selector<RunnerState, KnownNode[]> = (state) =>
+    legacy.selectKnownNodes(state.runner)
+  export const selectActiveNodeId: Selector<RunnerState, string | undefined> = (state) =>
+    legacy.selectActiveNodeId(state.runner)
+  export const selectActiveNode: Selector<RunnerState, KnownNode | undefined> = (state) =>
+    legacy.selectActiveNode(state.runner)
+  export const selectActivePrograms: Selector<RunnerState, ActiveProgram[]> = (state) =>
+    legacy.selectActivePrograms(state.runner)
 }

@@ -3,6 +3,7 @@ import { createSelector } from "reselect"
 import { selectWoundInterval } from "#/components/system/damage/damageUtils.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
+import type { RunnerState } from "#/lib/stores/runner/runnerState.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -43,14 +44,16 @@ const legacy = { selectPhysicalTrack, selectStunTrack, selectMatrixTrack }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace DamageSelectors {
-  export const selectPhysical: Selector<RunnerData, DamageTrackInfo> = legacy.selectPhysicalTrack
-  export const selectStun: Selector<RunnerData, DamageTrackInfo> = legacy.selectStunTrack
+  export const selectPhysical: Selector<RunnerState, DamageTrackInfo> = (state) =>
+    legacy.selectPhysicalTrack(state.runner)
+  export const selectStun: Selector<RunnerState, DamageTrackInfo> = (state) =>
+    legacy.selectStunTrack(state.runner)
 
-  export const selectMatrix: Selector<RunnerData, DamageTrackInfo, { system?: number }> = createSelector(
+  export const selectMatrix: Selector<RunnerState, DamageTrackInfo, { system?: number }> = createSelector(
     [
-      (state: RunnerData) => state,
-      (_state: RunnerData, options: { system?: number }) => options.system ?? 0,
+      (state: RunnerState) => state.runner,
+      (_state: RunnerState, options: { system?: number }) => options.system ?? 0,
     ],
-    (state, system) => legacy.selectMatrixTrack(state, system),
+    (runner, system) => legacy.selectMatrixTrack(runner, system),
   )
 }

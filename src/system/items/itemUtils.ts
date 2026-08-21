@@ -14,6 +14,25 @@ import type { ItemType } from "#/system/itemType.ts"
 
 export type ItemDataRecord<TData extends ItemData = ItemData> = Record<UUID, TData>
 
+/**
+ * The bulk item collection — what `RunnerData.gear` is today, and what
+ * `docs/features/0015-entity-interface-decomposition.md` Slice 5 moves to `RunnerData._data_.items`.
+ * Named separately from `ItemDataRecord` because this is specifically the selector-layer `TState`
+ * value (see `ItemsState` below and docs/adr/0014-selector-input-decomposition.md), not just "a
+ * record of items" in general.
+ */
+export type ItemCatalog = ItemDataRecord
+
+/**
+ * The `TState` shape for `ItemSelectors` (`gearSlice.selectors.ts`) — an `ItemCatalog` wrapped
+ * under a named key, deliberately narrower than `RunnerState` (`{ runner: RunnerData }`). Once
+ * 0015 Slice 5 lands, a caller passes `{ items: state.runner._data_.items }` and nothing about
+ * `ItemSelectors`'s own accessors or combiners needs to change.
+ */
+export interface ItemsState {
+  items: ItemCatalog
+}
+
 export type AnyItemData =
   | ArmorData
   | AnyWeaponData

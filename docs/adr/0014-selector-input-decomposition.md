@@ -81,19 +81,35 @@ just names the resulting shape consistently. A selector with nothing to derive (
 read) stays a plain function typed against the same `Selector<..., never>` shape rather than being
 forced through `createSelector` for no memoization benefit.
 
+**`TState` is always a wrapper object, never a bare stateful type.** A selector's `TState` is a
+small interface naming what it holds — `{ runner: RunnerData }` (`RunnerState`,
+`src/lib/stores/runner/runnerState.ts`), `{ entity: TEntity }` (`EntityState<TEntity>`,
+`src/integrations/reselect/selectorUtils.ts`), `{ items: ItemCatalog }` (`ItemsState`,
+`src/system/items/itemUtils.ts`) — never `RunnerData`/`EntityWithAttrs`/`ItemCatalog` passed bare.
+The point is composability: a selector needing more than one stateful source intersects the
+wrapper types it needs (`RunnerState & ItemsState`, or a Matrix-relative selector's
+`RunnerState & { activeNode: MatrixNodeData }`) instead of every multi-source selector inventing
+its own bespoke combined state shape. A caller assembles the wrapper object once
+(`{ runner: state }`, `{ entity: runner }`, `{ items: runner.gear }`), which is also what
+decouples a selector's own logic from *where* its state lives — `ItemSelectors` reads
+`state.items` regardless of whether the caller derived that value from `RunnerData.gear` (today)
+or `RunnerData._data_.items` (after 0015 Slice 5); only the caller's assembly line changes.
+
 **Namespacing.** Each domain's new, standardized selectors live in a `PascalCase` `namespace`
 declared in that domain's existing `*Slice.selectors.ts` file (`AttrSelectors`,
-`ItemSelectors`, ...), not a new file. A real TS `namespace` — not a plain object — because members
-routinely need to reference sibling members by bare identifier (`ItemSelectors.selectByType`
-calling the same lookup `ItemSelectors.selectById` needs), and a plain object can't do that without
-either a self-reference footgun (an object literal referencing its own not-yet-bound name) or
-awkward two-step construction. A namespace's members occupy their own scope, so they can share a
-name with the legacy top-level export they wrap (`ProfileSelectors.selectLifestyle` alongside the
-module-level `selectLifestyle`) without colliding — the wrapper reaches the legacy implementation
-through a small `legacy = { ... }` local alias object declared just above the namespace,
-capturing what it needs by reference before the namespace's own declarations exist to shadow it.
-`@typescript-eslint/no-namespace` and `no-shadow` are both explicitly re-enabled everywhere outside
-`*.selectors.ts` — this is a deliberate, narrow exception, not a general relaxation.
+`ItemSelectors`, ...), not a new file. A real TS `namespace` — not a plain object — for two
+reasons: members routinely need to reference sibling members by bare identifier (every
+`ItemSelectors.<Type>.selectById` calls the shared, non-exported `itemOfType` helper declared once
+at the `ItemSelectors` level — a plain object can't hold a private helper its nested groupings can
+still see without exporting it publicly), and a namespace's members occupy their own scope, so they
+can share a name with the legacy top-level export they wrap (`ProfileSelectors.selectLifestyle`
+alongside the module-level `selectLifestyle`) without colliding — the wrapper reaches the legacy
+implementation through a small `legacy = { ... }` local alias object declared just above the
+namespace, capturing what it needs by reference before the namespace's own declarations exist to
+shadow it. (`ItemSelectors` is the one file that doesn't use this `legacy` alias — see Consequences
+for why.) `@typescript-eslint/no-namespace` and `no-shadow` are both explicitly re-enabled
+everywhere outside `*.selectors.ts` — this is a deliberate, narrow exception, not a general
+relaxation.
 
 Nested groupings (gear's existing per-item-type `armor`/`implants`/`licenses`/... objects) become
 nested namespaces (`ItemSelectors.Armor`, `ItemSelectors.Licenses`, ...) rather than folding the
@@ -114,12 +130,13 @@ on Runner.
 Two stub capability-interface files exist ahead of 0015 landing them for real, under
 `src/system/entities/traits/`: `entityBase.ts` (a re-export of the already-shipped `EntityData`),
 `entityWithAttrs.ts`, and `entityWithItems.ts`. Only `EntityWithAttrs` is actually used by a
-selector in this pass — `AttrSelectors` binds to it instead of `RunnerData` because
-`RunnerData.attributes` already structurally satisfies `EntityWithAttrs` today, so that one domain
-gets cross-entity-reusable typing for free, without waiting on any migration. `EntityWithItems` is
-not yet structurally satisfied by anything (`RunnerData.gear` isn't shaped like
-`{ items: { parentId, childIds } }`), so `ItemSelectors` still binds to `RunnerData` concretely
-until Slice 5 actually moves the field — using the trait now would just be a false type.
+selector in this pass — `AttrSelectors`'s `TState` is `EntityState<EntityWithAttrs>` rather than
+`RunnerState` because `RunnerData.attributes` already structurally satisfies `EntityWithAttrs`
+today, so that one domain gets cross-entity-reusable typing for free (a caller just passes
+`{ entity: runner }`), without waiting on any migration. `EntityWithItems` (the per-item
+`{ parentId, childIds }` attachment position — not to be confused with `ItemsState`'s bulk
+`ItemCatalog`) is not yet structurally satisfied by anything, so nothing binds to it yet; it exists
+purely as a documented preview of the shape 0015 will introduce.
 
 ## Considered options
 
@@ -130,11 +147,12 @@ until Slice 5 actually moves the field — using the trait now would just be a f
   cleanly. Existing curried exports are unaffected and remain valid; this only governs the shape of
   new, namespaced selectors.
 - **Plain `const Namespace = { ... }` objects instead of TS `namespace`.** Considered first, and is
-  fine wherever a namespace's members don't need to reference each other or an identically-named
-  legacy export. Rejected as the general convention specifically because several domains need
-  exactly that (`ItemSelectors.selectByType` delegating to `ItemSelectors.selectById`-shaped
-  lookups, `ProfileSelectors.selectLifestyleInfo` composing `ProfileSelectors.selectLifestyle`) and
-  a plain object forces either a self-reference bug or a second re-export pass to route around it.
+  fine wherever a namespace's members don't need to reference each other, a shared private helper,
+  or an identically-named legacy export. Rejected as the general convention specifically because
+  several domains need exactly that (`ItemSelectors`'s nested type groupings all sharing one
+  non-exported `itemOfType` helper; `ProfileSelectors.selectLifestyle` needing the same name as the
+  module-level `selectLifestyle` it wraps) and a plain object forces either a self-reference bug or
+  a second re-export pass to route around it.
 - **Force every selector, including bare field reads, through `createSelector`.** Rejected —
   wrapping a raw property access in `reselect` memoization adds a cache lookup and a closure for a
   case with nothing to memoize. Only selectors with options or multi-input derivations get the full
@@ -153,17 +171,28 @@ until Slice 5 actually moves the field — using the trait now would just be a f
   `Sins`, `Software`, `Vehicles`, `Weapons`), `KarmaSelectors`, `MatrixSelectors`,
   `MetaSelectors`, `NuyenSelectors`, `PowersSelectors`, `ProfileSelectors`, `QualitiesSelectors`,
   `SkillsSelectors`, `SpellsSelectors`, `SpiritsSelectors`, `SpritesSelectors`, `TraditionSelectors`.
-- `src/integrations/reselect/selectorUtils.ts` gains the `Selector<TState, TReturn, TOptions>` type
-  alongside the existing `createCurriedSelector`.
+- `src/integrations/reselect/selectorUtils.ts` gains `Selector<TState, TReturn, TOptions>` and the
+  generic `EntityState<TEntity>` wrapper, alongside the existing `createCurriedSelector`.
+  `src/lib/stores/runner/runnerState.ts` is new, exporting `RunnerState`. `ItemCatalog` and
+  `ItemsState` are new exports on `src/system/items/itemUtils.ts`, alongside the existing
+  `ItemDataRecord`.
 - `eslint.config.ts` gains one override block for `src/lib/stores/**/*.selectors.ts` disabling
   `@typescript-eslint/no-namespace` and `no-shadow`.
+- Most namespaces wrap their file's legacy exports by delegation (`(state) => legacy.selectX(state.runner)`),
+  since `RunnerState` carries the same `RunnerData` those exports already expect. `ItemSelectors` is
+  the exception: because its `TState` (`ItemsState`) is deliberately *narrower* than `RunnerState`,
+  it can't call the `RunnerData`-shaped legacy exports at all — its selectors reimplement the same
+  small filter/lookup logic directly against `ItemCatalog` instead. The duplication is intentional
+  and small (a handful of one-line filters plus one shared `itemOfType` helper); the alternative —
+  binding `ItemSelectors` to `RunnerState` "for now" — would recreate exactly the coupling Slice 5
+  needs this pass to avoid.
 - **Discovered in passing, not fixed here:** `gearSlice.selectors.ts`'s `firearms` grouping
   (`makeSelectByIdOfType(ItemType.firearm)`) is dead — no real `ItemData` ever has
   `itemType: ItemType.firearm`; a Firearm is `itemType: ItemType.weapon` with
   `weaponType: WeaponType.firearm` (`weaponData.ts`). `ItemDataFor<ItemType.firearm>` resolves to
-  `never`. `ItemSelectors.Firearms` wraps the same (non-functional) legacy grouping for structural
-  parity and is typed `ItemData`, not the more specific (and impossible) type, with a comment
-  pointing at this. Fixing `ItemType.firearm`'s modeling is out of scope for this pass.
+  `never`. `ItemSelectors.Firearms` mirrors the same (non-functional) legacy grouping for structural
+  parity and is typed `ItemData | undefined`, not the more specific (and impossible) type, with a
+  comment pointing at this. Fixing `ItemType.firearm`'s modeling is out of scope for this pass.
 - 0015's own slices are unaffected in sequencing or scope by this ADR — this pass changes selector
   *input* shape only, never the underlying `RunnerData` fields those inputs read.
 - `useRunnerSelector`/`useEntitySelector` are not built here. They remain future work, to be
