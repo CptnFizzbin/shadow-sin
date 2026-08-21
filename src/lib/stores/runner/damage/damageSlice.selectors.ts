@@ -7,6 +7,12 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
+ *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
+interface RunnerState {
+  runner: RunnerData
+}
+
 export interface DamageTrackInfo {
   max: number
   current: number
@@ -43,15 +49,15 @@ const legacy = { selectPhysicalTrack, selectStunTrack, selectMatrixTrack }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace DamageSelectors {
-  export const selectPhysical: Selector<RunnerData, DamageTrackInfo> = (state) =>
-    legacy.selectPhysicalTrack(state)
-  export const selectStun: Selector<RunnerData, DamageTrackInfo> = (state) =>
-    legacy.selectStunTrack(state)
+  export const selectPhysical: Selector<RunnerState, DamageTrackInfo> = (state) =>
+    legacy.selectPhysicalTrack(state.runner)
+  export const selectStun: Selector<RunnerState, DamageTrackInfo> = (state) =>
+    legacy.selectStunTrack(state.runner)
 
-  export const selectMatrix: Selector<RunnerData, DamageTrackInfo, { system?: number }> = createSelector(
+  export const selectMatrix: Selector<RunnerState, DamageTrackInfo, { system?: number }> = createSelector(
     [
-      (state: RunnerData) => state,
-      (_state: RunnerData, options: { system?: number }) => options.system ?? 0,
+      (state: RunnerState) => state.runner,
+      (_state: RunnerState, options: { system?: number }) => options.system ?? 0,
     ],
     (runner, system) => legacy.selectMatrixTrack(runner, system),
   )
