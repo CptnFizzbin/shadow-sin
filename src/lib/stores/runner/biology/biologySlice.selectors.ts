@@ -1,5 +1,6 @@
 import { createSelector } from "reselect"
 
+import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { AwakeningData } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
@@ -29,3 +30,22 @@ export const selectAwakeningData: (state: RunnerData) => AwakeningData = createS
   selectAwakening,
   (awakening) => awakenings[awakening],
 )
+
+const legacy = {
+  selectBiology,
+  selectMetatype,
+  selectAwakening,
+  selectMetatypeData,
+  selectAwakeningData,
+}
+
+/** Standardized, namespaced selectors for the Biology domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
+ *  sites are unaffected. */
+export namespace BiologySelectors {
+  export const select: Selector<RunnerData, RunnerData["biology"]> = legacy.selectBiology
+  export const selectMetatype: Selector<RunnerData, RunnerData["biology"]["metatype"]> = legacy.selectMetatype
+  export const selectAwakening: Selector<RunnerData, RunnerData["biology"]["awakening"]> = legacy.selectAwakening
+  export const selectMetatypeInfo: Selector<RunnerData, MetatypeData> = legacy.selectMetatypeData
+  export const selectAwakeningInfo: Selector<RunnerData, AwakeningData> = legacy.selectAwakeningData
+}

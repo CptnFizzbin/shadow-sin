@@ -1,5 +1,6 @@
 import { createSelector } from "reselect"
 
+import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -58,3 +59,40 @@ export const selectLifestyleInfo = createSelector(
   selectLifestyleQuality,
   (quality) => quality ? Lifestyles[quality] : undefined,
 )
+
+const legacy = {
+  selectProfile,
+  selectProfileName,
+  selectProfileAlias,
+  selectProfileDisplayName,
+  selectLifestyle,
+  selectStreetCred,
+  selectNotoriety,
+  selectPublicAwarenessModifier,
+  selectPublicAwareness,
+  selectLifestyleQuality,
+  selectLifestyleMonthsPaid,
+  selectLifestyleInfo,
+}
+
+/** Standardized, namespaced selectors for the Profile domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
+ *  sites are unaffected. */
+export namespace ProfileSelectors {
+  export const select: Selector<RunnerData, RunnerData["profile"]> = legacy.selectProfile
+  export const selectName: Selector<RunnerData, string> = legacy.selectProfileName
+  export const selectAlias: Selector<RunnerData, string> = legacy.selectProfileAlias
+  export const selectDisplayName: Selector<RunnerData, string> = legacy.selectProfileDisplayName
+  export const selectLifestyle: Selector<RunnerData, RunnerData["profile"]["lifestyle"]> = legacy.selectLifestyle
+  export const selectStreetCred: Selector<RunnerData, number> = legacy.selectStreetCred
+  export const selectNotoriety: Selector<RunnerData, number> = legacy.selectNotoriety
+  export const selectPublicAwarenessModifier: Selector<RunnerData, number> =
+    legacy.selectPublicAwarenessModifier
+  export const selectPublicAwareness: Selector<RunnerData, number> = legacy.selectPublicAwareness
+  export const selectLifestyleQuality: Selector<RunnerData, ReturnType<typeof legacy.selectLifestyleQuality>> =
+    legacy.selectLifestyleQuality
+  export const selectLifestyleMonthsPaid: Selector<RunnerData, ReturnType<typeof legacy.selectLifestyleMonthsPaid>> =
+    legacy.selectLifestyleMonthsPaid
+  export const selectLifestyleInfo: Selector<RunnerData, ReturnType<typeof legacy.selectLifestyleInfo>> =
+    legacy.selectLifestyleInfo
+}
