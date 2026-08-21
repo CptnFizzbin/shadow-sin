@@ -1,9 +1,10 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { QualitiesSelectors } from "#/lib/stores/runner/qualities/qualitiesSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
-  const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
+  const qualities = useRunnerSelector(QualitiesSelectors.selectAll)
   const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []

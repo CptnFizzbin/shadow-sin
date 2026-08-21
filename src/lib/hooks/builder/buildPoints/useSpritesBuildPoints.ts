@@ -3,10 +3,11 @@ import { BuilderSectionId } from "#/components/builder/sections/builderSectionId
 import { getSpriteTasksBp } from "#/components/builder/sections/resources/technomancer/sprites/spritesUtils.ts"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import { useSprites } from "#/lib/hooks/runner/technomancer/spritesHooks.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useSpritesBuildPoints = (): BpLineItem => {
-  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const sprites = useSprites()
 
   const spritesBp = sprites
