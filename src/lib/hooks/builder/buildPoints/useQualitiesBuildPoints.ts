@@ -1,6 +1,7 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { QualitiesSelectors } from "#/lib/stores/runner/qualities/qualitiesSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface QualitiesBuildPoints extends BpLineItem {
   positive: number
@@ -8,7 +9,7 @@ interface QualitiesBuildPoints extends BpLineItem {
 }
 
 export const useQualitiesBuildPoints = (): QualitiesBuildPoints => {
-  const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
+  const qualities = useRunnerSelector(QualitiesSelectors.selectAll)
 
   const positiveQualities = qualities
     .filter((q) => q.type === "positive")

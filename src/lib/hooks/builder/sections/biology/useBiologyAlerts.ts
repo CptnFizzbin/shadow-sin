@@ -1,10 +1,11 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useBiologyAlerts = (): AlertInfo[] => {
   const statuses: AlertInfo[] = []
 
-  const metatype = useRunnerStoreSelector((s) => s.biology.metatype)
+  const metatype = useRunnerSelector(BiologySelectors.selectMetatype)
   if (!metatype) {
     statuses.push({
       section: "Biology",
@@ -15,7 +16,7 @@ export const useBiologyAlerts = (): AlertInfo[] => {
     })
   }
 
-  const awakening = useRunnerStoreSelector((s) => s.biology.awakening)
+  const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
   if (!awakening) {
     statuses.push({
       section: "Biology",
