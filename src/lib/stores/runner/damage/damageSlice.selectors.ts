@@ -1,4 +1,7 @@
+import { createSelector } from "reselect"
+
 import { selectWoundInterval } from "#/components/system/damage/damageUtils.ts"
+import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -32,4 +35,22 @@ export function selectMatrixTrack(state: RunnerData, system: number = 0): Damage
     current: state.damage.matrix,
     woundInterval: 3,
   }
+}
+
+const legacy = { selectPhysicalTrack, selectStunTrack, selectMatrixTrack }
+
+/** Standardized, namespaced selectors for the Damage domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
+ *  sites are unaffected. */
+export namespace DamageSelectors {
+  export const selectPhysical: Selector<RunnerData, DamageTrackInfo> = legacy.selectPhysicalTrack
+  export const selectStun: Selector<RunnerData, DamageTrackInfo> = legacy.selectStunTrack
+
+  export const selectMatrix: Selector<RunnerData, DamageTrackInfo, { system?: number }> = createSelector(
+    [
+      (state: RunnerData) => state,
+      (_state: RunnerData, options: { system?: number }) => options.system ?? 0,
+    ],
+    (state, system) => legacy.selectMatrixTrack(state, system),
+  )
 }

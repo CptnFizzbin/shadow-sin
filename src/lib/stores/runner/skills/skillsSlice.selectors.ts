@@ -1,5 +1,6 @@
 import { createSelector } from "reselect"
 
+import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
@@ -52,3 +53,42 @@ export const selectAllowedActiveSkills: (state: RunnerData) => Partial<Record<Sk
 
   return Object.fromEntries(skillEntries)
 })
+
+const legacy = {
+  selectActiveSkills,
+  selectSkillGroups,
+  selectKnowledgeSkills,
+  selectLanguageSkills,
+  selectSkillValue,
+  selectSkillSpecialization,
+  selectAllowedActiveSkills,
+}
+
+/** Standardized, namespaced selectors for the Skills domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
+ *  sites are unaffected. */
+export namespace SkillsSelectors {
+  export const selectActiveSkills: Selector<RunnerData, ActiveSkillData[]> = legacy.selectActiveSkills
+  export const selectSkillGroups: Selector<RunnerData, SkillGroupData[]> = legacy.selectSkillGroups
+  export const selectKnowledgeSkills: Selector<RunnerData, KnowledgeSkillData[]> = legacy.selectKnowledgeSkills
+  export const selectLanguageSkills: Selector<RunnerData, LanguageSkillData[]> = legacy.selectLanguageSkills
+  export const selectAllowedActive: Selector<RunnerData, Partial<Record<SkillKey, SkillInfo>>> =
+    legacy.selectAllowedActiveSkills
+
+  export const selectValue: Selector<RunnerData, number, { skillName: SkillKey }> = createSelector(
+    [
+      (state: RunnerData) => state,
+      (_state: RunnerData, options: { skillName: SkillKey }) => options.skillName,
+    ],
+    (state, skillName) => legacy.selectSkillValue(skillName)(state),
+  )
+
+  export const selectSpecialization: Selector<RunnerData, string | undefined, { skillName: SkillKey }> =
+    createSelector(
+      [
+        (state: RunnerData) => state,
+        (_state: RunnerData, options: { skillName: SkillKey }) => options.skillName,
+      ],
+      (state, skillName) => legacy.selectSkillSpecialization(skillName)(state),
+    )
+}
