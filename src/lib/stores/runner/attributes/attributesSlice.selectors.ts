@@ -5,14 +5,14 @@ import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityWithAttrs } from "#/system/entities/traits/entityWithAttrs.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** @deprecated Use `AttrSelectors.selectAll` (via the future `useEntitySelector`) instead. */
+/** @deprecated Use `AttrSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAttributes(state: RunnerData): RunnerData["attributes"] {
   return state.attributes
 }
 
 /**
  * The raw stored value for `key`, or `0` if unset — never includes derived modifiers.
- * @deprecated Use `AttrSelectors.selectBase` (via the future `useEntitySelector`) instead.
+ * @deprecated Use `AttrSelectors.selectBase` via `useRunnerSelector` instead.
  */
 export function selectAttrBase(key: AttributeKey) {
   return (state: RunnerData): number => state.attributes[key] ?? 0
@@ -20,7 +20,7 @@ export function selectAttrBase(key: AttributeKey) {
 
 /**
  * The effective value for `key` used in tests and dice pools, or `0` if unset or inapplicable.
- * @deprecated Use `AttrSelectors.selectValue` (via the future `useEntitySelector`) instead.
+ * @deprecated Use `AttrSelectors.selectValue` via `useRunnerSelector` instead.
  */
 export function selectAttrValue(key: AttributeKey) {
   return (state: RunnerData): number => selectAttrBase(key)(state)
@@ -32,8 +32,10 @@ export function selectAttrValue(key: AttributeKey) {
  * `{ entity: EntityWithAttrs }` rather than `{ runner: RunnerData }`: `RunnerData.attributes`
  * already structurally satisfies `EntityWithAttrs` (`system/entities/traits/entityWithAttrs.ts`)
  * today, so this domain gets cross-entity reuse for free, ahead of any Entity kind formally
- * implementing the trait — a caller just passes `{ entity: runner }`. Wraps the legacy exports
- * above; existing call sites are unaffected.
+ * implementing the trait. `useRunnerSelector` (`runnerStore.selectors.ts`) assembles the
+ * `{ entity: runner }` these selectors need automatically, alongside every other domain's
+ * `{ runner: ... }`/`{ items: ... }` shapes — a call site never assembles this by hand. Wraps the
+ * legacy exports above; existing call sites are unaffected.
  */
 export namespace AttrSelectors {
   export const selectAll: Selector<{ entity: EntityWithAttrs }, EntityWithAttrs["attributes"]> =

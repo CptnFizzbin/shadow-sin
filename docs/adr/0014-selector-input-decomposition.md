@@ -136,25 +136,28 @@ Migrating a call site is left to whoever next touches that file, guided by the d
 dispatch layer ADR-0013 tried and failed to build — worth being explicit about why building it now
 doesn't reintroduce either of ADR-0013's two problems (see its Postmortem):
 
-- **No dependency on a capability interface that doesn't exist yet.** `useRunnerSelector` only
-  assembles `{ runner: RunnerData }` — `RunnerData` is real today, nothing about it depends on
-  0015. It fits every Runner-domain namespace except `AttrSelectors` (`{ entity: ... }`) and
-  `ItemSelectors` (`{ items: ... }`), which stay unserved by any hook until `useEntitySelector`
-  lands — this isn't a gap being papered over, it's the honest boundary of what `RunnerData` alone
-  can assemble.
+- **No dependency on a capability interface that doesn't exist yet.** `useRunnerSelector` only ever
+  assembles from `RunnerData` — real today, nothing about it depends on 0015. Its internal
+  `assembleRunnerState(runner)` builds `{ runner, entity: runner, items: runner.gear }` in one
+  shot: `runner` is `RunnerData` itself, `entity` is `RunnerData` again (already structurally
+  satisfying `EntityWithAttrs`, so `AttrSelectors` is served by the same call), and `items` is
+  `runner.gear` (satisfying `ItemSelectors`'s `ItemCatalog`). A selector only ever reads the one or
+  two fields its own `TState` names; the rest are simply unused. This covers every namespace in this
+  pass with one hook, not because a capability interface was generalized over, but because
+  `RunnerData` today happens to structurally satisfy all three shapes at once.
 - **No catalog/dispatch/`picker` layer.** ADR-0013's hooks took a `picker: (catalog) => Selector<...>`
   indirection whose entire value proposition eroded under review. `useRunnerSelector` takes the
-  selector directly — `useRunnerSelector(ProfileSelectors.selectName)` — with no catalog object, no
-  picker function, and no per-domain hook to maintain. It is a thin, single-purpose wrapper around
-  the pre-existing `useRunnerStoreSelector`, doing exactly one thing: building the `{ runner: ... }`
-  wrapper object every namespaced selector's `TState` already expects, so a call site doesn't have
-  to.
+  selector directly — `useRunnerSelector(ProfileSelectors.selectName)`,
+  `useRunnerSelector(AttrSelectors.selectValue, { key })`,
+  `useRunnerSelector(ItemSelectors.selectById, { itemId })` — with no catalog object, no picker
+  function, and no per-domain hook to maintain. It is a thin, single-purpose wrapper around the
+  pre-existing `useRunnerStoreSelector` plus one assembly function, not a dispatch mechanism.
 
-`useEntitySelector` (for `{ entity: ... }`-shaped selectors, resolving *which* entity — the Runner
-itself, or a nearer one via Context, per the "nearest entity" need ADR-0013's `useAttrSelector`
-identified) is real future work, deliberately not attempted here: it needs at least one more Entity
-kind actually implementing a capability trait before "resolve the nearest entity" is answering a
-real question instead of a hypothetical one.
+`useEntitySelector` remains distinct, future work: it resolves a specific *other* entity — the
+nearest one via Context (a drone, a spirit, ADR-0013's `useAttrSelector` need), not the Runner's own
+data — which `useRunnerSelector` was never trying to do. It's deliberately not attempted here: it
+needs at least one more Entity kind actually implementing a capability trait before "resolve the
+nearest entity" is answering a real question instead of a hypothetical one.
 
 ## Scope
 

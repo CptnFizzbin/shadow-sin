@@ -11,27 +11,27 @@ import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/it
 import { filterRecordByType, itemIsType } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** @deprecated Use `ItemSelectors.selectAll` instead. */
+/** @deprecated Use `ItemSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
   return state.gear
 }
 
-/** @deprecated Use `ItemSelectors.selectAvailable` instead. */
+/** @deprecated Use `ItemSelectors.selectAvailable` via `useRunnerSelector` instead. */
 export function selectAvailable(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => !item.stashed)
 }
 
-/** @deprecated Use `ItemSelectors.selectEquipped` instead. */
+/** @deprecated Use `ItemSelectors.selectEquipped` via `useRunnerSelector` instead. */
 export function selectEquipped(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => item.equipped)
 }
 
-/** @deprecated Use `ItemSelectors.selectStashed` instead. */
+/** @deprecated Use `ItemSelectors.selectStashed` via `useRunnerSelector` instead. */
 export function selectStashed(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter((item) => item.stashed)
 }
 
-/** @deprecated Use `ItemSelectors.selectById` instead. */
+/** @deprecated Use `ItemSelectors.selectById` via `useRunnerSelector` instead. */
 export const selectById: (id: UUID) => Selector<RunnerData, ItemData> = createCurriedSelector(
   [
     selectAllGear,
@@ -50,7 +50,7 @@ const gearSelectorsByType: Partial<Record<
   ItemDataSelector<ItemData>
 >> = {}
 
-/** @deprecated Use `ItemSelectors.selectByType` instead. */
+/** @deprecated Use `ItemSelectors.selectByType` via `useRunnerSelector` instead. */
 export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<ItemDataFor<T>> => {
   if (gearSelectorsByType) {
     gearSelectorsByType[type] = createSelector(
@@ -69,7 +69,7 @@ export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<
   return gearSelectorsByType[type] as ItemDataSelector<ItemDataFor<T>>
 }
 
-/** @deprecated Use `ItemSelectors.selectChildrenOf` instead. */
+/** @deprecated Use `ItemSelectors.selectChildrenOf` via `useRunnerSelector` instead. */
 export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRecord> = createCurriedSelector(
   [
     selectAllGear,
@@ -86,7 +86,7 @@ export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRe
   },
 )
 
-/** @deprecated Use `ItemSelectors.Licenses` instead. */
+/** @deprecated Use `ItemSelectors.Licenses` via `useRunnerSelector` instead. */
 export const licenses = {
   selectById: createCurriedSelector(
     [
@@ -129,7 +129,7 @@ function makeSelectByIdOfType(type: ItemType) {
   )
 }
 
-/** @deprecated Use `ItemSelectors.Armor` instead. */
+/** @deprecated Use `ItemSelectors.Armor` via `useRunnerSelector` instead. */
 export const armor = {
   selectById: makeSelectByIdOfType(ItemType.armor),
 
@@ -140,35 +140,36 @@ export const armor = {
   }),
 }
 
-/** @deprecated Use `ItemSelectors.Implants` instead. */
+/** @deprecated Use `ItemSelectors.Implants` via `useRunnerSelector` instead. */
 export const implants = { selectById: makeSelectByIdOfType(ItemType.implant) }
-/** @deprecated Use `ItemSelectors.Firearms` instead. */
+/** @deprecated Use `ItemSelectors.Firearms` via `useRunnerSelector` instead. */
 export const firearms = { selectById: makeSelectByIdOfType(ItemType.firearm) }
-/** @deprecated Use `ItemSelectors.Software` instead. */
+/** @deprecated Use `ItemSelectors.Software` via `useRunnerSelector` instead. */
 export const software = { selectById: makeSelectByIdOfType(ItemType.software) }
-/** @deprecated Use `ItemSelectors.Vehicles` instead. */
+/** @deprecated Use `ItemSelectors.Vehicles` via `useRunnerSelector` instead. */
 export const vehicles = { selectById: makeSelectByIdOfType(ItemType.vehicle) }
-/** @deprecated Use `ItemSelectors.Weapons` instead. */
+/** @deprecated Use `ItemSelectors.Weapons` via `useRunnerSelector` instead. */
 export const weapons = { selectById: makeSelectByIdOfType(ItemType.weapon) }
-/** @deprecated Use `ItemSelectors.Devices` instead. */
+/** @deprecated Use `ItemSelectors.Devices` via `useRunnerSelector` instead. */
 export const devices = { selectById: makeSelectByIdOfType(ItemType.device) }
-/** @deprecated Use `ItemSelectors.FirearmAccessories` instead. */
+/** @deprecated Use `ItemSelectors.FirearmAccessories` via `useRunnerSelector` instead. */
 export const firearmAccessories = { selectById: makeSelectByIdOfType(ItemType.firearmAccessory) }
-/** @deprecated Use `ItemSelectors.Sins` instead. */
+/** @deprecated Use `ItemSelectors.Sins` via `useRunnerSelector` instead. */
 export const sins = { selectById: makeSelectByIdOfType(ItemType.sin) }
-/** @deprecated Use `ItemSelectors.Credsticks` instead. */
+/** @deprecated Use `ItemSelectors.Credsticks` via `useRunnerSelector` instead. */
 export const credsticks = { selectById: makeSelectByIdOfType(ItemType.credstick) }
-/** @deprecated Use `ItemSelectors.Programs` instead. */
+/** @deprecated Use `ItemSelectors.Programs` via `useRunnerSelector` instead. */
 export const programs = { selectById: makeSelectByIdOfType(ItemType.program) }
-/** @deprecated Use `ItemSelectors.Other` instead. */
+/** @deprecated Use `ItemSelectors.Other` via `useRunnerSelector` instead. */
 export const other = { selectById: makeSelectByIdOfType(ItemType.other) }
 
 /**
  * Standardized, namespaced selectors for the Item (gear) domain — see
  * docs/adr/0014-selector-input-decomposition.md. `TState` is the inline object type
  * `{ items: ItemCatalog }`, deliberately narrower than `RunnerData` — once 0015 Slice 5 moves
- * `RunnerData.gear` to `RunnerData._data_.items`, a caller just passes `{ items: runner._data_.items }`
- * and nothing here needs to change. Because `TState` no longer carries the whole Runner, these
+ * `RunnerData.gear` to `RunnerData._data_.items`, only `useRunnerSelector`'s
+ * (`runnerStore.selectors.ts`) one assembly line (`items: runner.gear` → `items: runner._data_.items`)
+ * needs to change, not these selectors. Because `TState` no longer carries the whole Runner, these
  * selectors can't delegate to the legacy exports above (which need a full `RunnerData`) — they
  * reimplement the same, small filter/lookup logic directly against `ItemCatalog` instead. Existing
  * exports and call sites above are untouched.
