@@ -1,4 +1,7 @@
+import { createSelector } from "reselect"
+
 import { selectWoundInterval } from "#/components/system/damage/damageUtils.ts"
+import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -10,6 +13,7 @@ export interface DamageTrackInfo {
   woundInterval: number
 }
 
+/** @deprecated Use `DamageSelectors.selectPhysical` via `useRunnerSelector` instead. */
 export function selectPhysicalTrack(state: RunnerData): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(selectAttrBase(AttributeKey.body)(state) / 2),
@@ -18,6 +22,7 @@ export function selectPhysicalTrack(state: RunnerData): DamageTrackInfo {
   }
 }
 
+/** @deprecated Use `DamageSelectors.selectStun` via `useRunnerSelector` instead. */
 export function selectStunTrack(state: RunnerData): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(selectAttrBase(AttributeKey.willpower)(state) / 2),
@@ -26,10 +31,31 @@ export function selectStunTrack(state: RunnerData): DamageTrackInfo {
   }
 }
 
+/** @deprecated Use `DamageSelectors.selectMatrix` via `useRunnerSelector` instead. */
 export function selectMatrixTrack(state: RunnerData, system: number = 0): DamageTrackInfo {
   return {
     max: 8 + Math.ceil(system / 2),
     current: state.damage.matrix,
     woundInterval: 3,
   }
+}
+
+const legacy = { selectPhysicalTrack, selectStunTrack, selectMatrixTrack }
+
+/** Standardized, namespaced selectors for the Damage domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
+ *  sites are unaffected. */
+export namespace DamageSelectors {
+  export const selectPhysical: Selector<{ runner: RunnerData }, DamageTrackInfo> = (state) =>
+    legacy.selectPhysicalTrack(state.runner)
+  export const selectStun: Selector<{ runner: RunnerData }, DamageTrackInfo> = (state) =>
+    legacy.selectStunTrack(state.runner)
+
+  export const selectMatrix: Selector<{ runner: RunnerData }, DamageTrackInfo, { system?: number }> = createSelector(
+    [
+      (state: { runner: RunnerData }) => state.runner,
+      (_state: { runner: RunnerData }, options: { system?: number }) => options.system ?? 0,
+    ],
+    (runner, system) => legacy.selectMatrixTrack(runner, system),
+  )
 }

@@ -171,6 +171,21 @@ export default defineConfig([
     },
   },
   {
+    // Namespaced selector catalogs (see docs/adr/0014-selector-input-decomposition.md) rely on
+    // the TS `namespace` construct so members can reference each other by bare identifier without
+    // clashing with the legacy top-level selectors kept in the same file. That's also why
+    // `no-shadow` is off here: a namespace member deliberately reusing a legacy selector's name
+    // (e.g. `ProfileSelectors.selectLifestyle` alongside the module-level `selectLifestyle`) is
+    // the intended shape, not an accidental shadow.
+    files: [
+      "src/lib/stores/**/*.selectors.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-namespace": "off",
+      "no-shadow": "off",
+    },
+  },
+  {
     files: [
       "./env.node.ts",
       "./vite.config.ts",
