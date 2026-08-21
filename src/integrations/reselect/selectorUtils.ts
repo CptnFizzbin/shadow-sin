@@ -21,18 +21,6 @@ export type Selector<
   ? (state: TState) => TReturn
   : (state: TState, options: TOptions) => TReturn
 
-/**
- * The generic form of a `TState` wrapper: some stateful entity, named `entity` so a selector
- * bound to a capability interface (`EntityWithAttrs`, `EntityWithDamage`, ...) reads
- * `{ entity: EntityWithAttrs }` rather than the bare interface. Kept generic and dependency-free
- * here (no import of `EntityData` or any concrete Entity kind) so this file stays a plain
- * `reselect` integration layer; domain-specific wrapper shapes (`RunnerState`, `ItemsState`) live
- * next to the domain they wrap. See docs/adr/0014-selector-input-decomposition.md.
- */
-export interface EntityState<TEntity extends object> {
-  entity: TEntity
-}
-
 const currySelector = <
   State,
   Result,
