@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import type { LearnQualityEntry, QualityBuyOffEntry } from "./improvementEntry.ts"
@@ -17,7 +18,7 @@ describe("applyImprovement — learnQuality", () => {
     const entry: LearnQualityEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnQuality,
-      quality: { id: "q1" as UUID, name: "Toughness", type: "positive", bpValue: 15 },
+      quality: { kind: EntityKind.quality, id: "q1" as UUID, name: "Toughness", type: "positive", bpValue: 15 },
     }
     const sheet = runnerDataFactory((draft) => {
       draft.karma.current = 30
@@ -44,7 +45,7 @@ describe("applyImprovement — qualityBuyOff", () => {
       bpValue: 20,
     }
     const sheet = runnerDataFactory((draft) => {
-      draft.qualities = [{ id: "q1" as UUID, name: "Uneducated", type: "negative", bpValue: 20 }]
+      draft.qualities = [{ kind: EntityKind.quality, id: "q1" as UUID, name: "Uneducated", type: "negative", bpValue: 20 }]
       draft.karma.current = 40
       return draft
     })

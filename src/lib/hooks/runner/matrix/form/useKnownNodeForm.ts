@@ -1,10 +1,12 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import { NodeType } from "#/system/matrix/nodeType.ts"
 
 const defaultValues: KnownNode = {
+  kind: EntityKind.matrixNode,
   id: NullUuid,
   name: "",
   matrix: {

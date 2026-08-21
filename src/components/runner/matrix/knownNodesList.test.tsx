@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import type { MatrixGameState } from "#/system/matrix/matrixGameState.ts"
@@ -13,6 +14,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { KnownNodesList } from "./knownNodesList.tsx"
 
 const arcologyNode: KnownNode = {
+  kind: EntityKind.matrixNode,
   id: "node-1",
   name: "Renraku Arcology",
   matrix: { system: 4, firewall: 5, response: 3, signal: 6 },

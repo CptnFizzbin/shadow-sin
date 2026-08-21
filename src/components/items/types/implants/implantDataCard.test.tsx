@@ -3,6 +3,7 @@ import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -12,6 +13,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ImplantDataCard } from "./implantDataCard.tsx"
 
 const alphaImplant: ImplantData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Wired Reflexes 2",
   itemType: ItemType.implant,
@@ -23,6 +25,7 @@ const alphaImplant: ImplantData = {
 }
 
 const standardImplant: ImplantData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Datajack",
   itemType: ItemType.implant,
@@ -33,6 +36,7 @@ const standardImplant: ImplantData = {
 }
 
 const accessory: ItemData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Reflex Recorder",
   itemType: ItemType.other,

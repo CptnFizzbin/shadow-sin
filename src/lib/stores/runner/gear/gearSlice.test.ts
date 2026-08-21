@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -9,6 +10,7 @@ import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
+  kind: EntityKind.item,
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,

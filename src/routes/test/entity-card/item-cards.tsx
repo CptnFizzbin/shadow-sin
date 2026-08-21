@@ -19,6 +19,7 @@ import { VehicleDataCard } from "#/components/items/types/vehicles/vehicleDataCa
 import { WeaponDataCard } from "#/components/items/types/weapons/weaponDataCard.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
@@ -220,6 +221,7 @@ const WEAPON_ID = crypto.randomUUID()
 const WEAPON_ACCESSORY_ID = crypto.randomUUID()
 
 const BASE_CREDSTICK: CredstickData = {
+  kind: EntityKind.item,
   id: CREDSTICK_ID,
   name: "Personalized Credstick",
   itemType: ItemType.credstick,
@@ -238,6 +240,7 @@ const BASE_CREDSTICK: CredstickData = {
 }
 
 const BASE_LICENSE: LicenseData = {
+  kind: EntityKind.item,
   id: LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -252,6 +255,7 @@ const BASE_LICENSE: LicenseData = {
 }
 
 const BASE_SIN: SinData = {
+  kind: EntityKind.item,
   id: SIN_ID,
   name: "Fake SIN (Chicago)",
   itemType: ItemType.sin,
@@ -266,6 +270,7 @@ const BASE_SIN: SinData = {
 }
 
 const COVERED_LICENSE: LicenseData = {
+  kind: EntityKind.item,
   id: COVERED_LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -300,6 +305,7 @@ function buildSin(toggles: SinFieldToggles): SinData {
  * field-coverage check — so each item is seeded with its subitems/children.
  */
 const DEMO_ARMOR: ArmorData = {
+  kind: EntityKind.item,
   id: ARMOR_ID,
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -314,6 +320,7 @@ const DEMO_ARMOR: ArmorData = {
 }
 
 const DEMO_ARMOR_MOD: ArmorData = {
+  kind: EntityKind.item,
   id: ARMOR_MOD_ID,
   name: "Helmet",
   itemType: ItemType.armor,
@@ -324,6 +331,7 @@ const DEMO_ARMOR_MOD: ArmorData = {
 }
 
 const DEMO_DEVICE: DeviceData = {
+  kind: EntityKind.item,
   id: DEVICE_ID,
   name: "Erika Elite",
   itemType: ItemType.device,
@@ -343,6 +351,7 @@ const DEMO_DEVICE: DeviceData = {
 }
 
 const DEMO_PROGRAM: ProgramData = {
+  kind: EntityKind.item,
   id: PROGRAM_ID,
   name: "Analyze",
   itemType: ItemType.program,
@@ -355,6 +364,7 @@ const DEMO_PROGRAM: ProgramData = {
 }
 
 const DEMO_IMPLANT: ImplantData = {
+  kind: EntityKind.item,
   id: IMPLANT_ID,
   name: "Wired Reflexes",
   itemType: ItemType.implant,
@@ -371,6 +381,7 @@ const DEMO_IMPLANT: ImplantData = {
 }
 
 const DEMO_IMPLANT_ACCESSORY: ImplantData = {
+  kind: EntityKind.item,
   id: IMPLANT_ACCESSORY_ID,
   name: "Rating 3 Upgrade",
   itemType: ItemType.implant,
@@ -379,6 +390,7 @@ const DEMO_IMPLANT_ACCESSORY: ImplantData = {
 }
 
 const DEMO_VEHICLE: VehicleData = {
+  kind: EntityKind.item,
   id: VEHICLE_ID,
   name: "Ares Roadmaster",
   itemType: ItemType.vehicle,
@@ -400,6 +412,7 @@ const DEMO_VEHICLE: VehicleData = {
 }
 
 const DEMO_VEHICLE_MOD: ItemData = {
+  kind: EntityKind.item,
   id: VEHICLE_MOD_ID,
   name: "Run-Flat Tires",
   itemType: ItemType.other,
@@ -407,6 +420,7 @@ const DEMO_VEHICLE_MOD: ItemData = {
 }
 
 const DEMO_WEAPON: FirearmData = {
+  kind: EntityKind.item,
   id: WEAPON_ID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -427,6 +441,7 @@ const DEMO_WEAPON: FirearmData = {
 }
 
 const DEMO_WEAPON_ACCESSORY: ItemData = {
+  kind: EntityKind.item,
   id: WEAPON_ACCESSORY_ID,
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,

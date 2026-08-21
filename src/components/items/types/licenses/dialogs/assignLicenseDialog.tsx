@@ -27,6 +27,7 @@ import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -225,6 +226,7 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
     if (!selectedSinId) return
 
     const licenseDraft: Omit<LicenseData, "id"> = {
+      kind: EntityKind.item,
       itemType: ItemType.license,
       name: `License: ${item.name}`,
       rating,

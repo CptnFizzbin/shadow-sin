@@ -3,6 +3,7 @@ import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
@@ -12,6 +13,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DeviceDataCard } from "./deviceDataCard.tsx"
 
 const commlink: DeviceData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Renraku Sensei",
   itemType: ItemType.device,
@@ -25,6 +27,7 @@ const commlink: DeviceData = {
 }
 
 const runningProgram: ProgramData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Analyze",
   itemType: ItemType.program,

@@ -6,6 +6,7 @@ import { produce } from "immer"
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
@@ -100,6 +101,7 @@ export const getImprovementCost = (entry: ImprovementEntry) => {
       return ImprovementsConfig.qualities.positive.karmaCost.addQuality(entry.quality)
     case ImprovementType.qualityBuyOff:
       return ImprovementsConfig.qualities.negative.karamaCost.removeQuality({
+        kind: EntityKind.quality,
         id: entry.qualityId,
         name: entry.qualityName,
         type: "negative",

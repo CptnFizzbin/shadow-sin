@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -14,7 +15,7 @@ const idChild2 = "00000000-0000-0000-0000-0000000000b2"
 const idOther = "00000000-0000-0000-0000-0000000000c1"
 
 function makeItem(overrides: Partial<ItemData> & Pick<ItemData, "id" | "name">): ItemData {
-  return { itemType: ItemType.other, ...overrides }
+  return { kind: EntityKind.item, itemType: ItemType.other, ...overrides }
 }
 
 describe("searchGear", () => {

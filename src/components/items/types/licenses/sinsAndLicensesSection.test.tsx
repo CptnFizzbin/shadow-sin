@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -10,6 +11,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
 
 const fakeSin: SinData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "National ID (Fake)",
   itemType: ItemType.sin,

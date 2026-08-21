@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -11,6 +12,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { VehiclesList } from "./vehiclesList.tsx"
 
 const bike: VehicleData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Suzuki Mirage",
   itemType: ItemType.vehicle,

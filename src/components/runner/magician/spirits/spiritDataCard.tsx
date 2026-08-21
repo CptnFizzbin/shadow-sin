@@ -27,7 +27,7 @@ export const SpiritDataCard: FC<SpiritDataCardProps> = ({ spirit, onEdit, onRemo
   const registry = SpiritRegistry[spirit.spiritType]
 
   return (
-    <SpiritCard id={spirit.id} name={title} onEdit={onEdit} onRemove={onRemove}>
+    <SpiritCard id={spirit.id} name={title} kind={spirit.kind} onEdit={onEdit} onRemove={onRemove}>
       {spirit.name && (
         <SpiritCard.Layout.HeaderRow>
           <SpiritCard.SubType label={SpiritTypeLabels[spirit.spiritType]} />

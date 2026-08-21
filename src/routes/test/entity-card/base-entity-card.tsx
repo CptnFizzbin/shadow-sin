@@ -9,6 +9,7 @@ import type { FC, ReactNode } from "react"
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 export const Route = createFileRoute("/test/entity-card/base-entity-card")({
@@ -32,6 +33,7 @@ const Section: FC<SectionProps> = ({ title, children }) => (
 
 /** Every common `EntityData` field populated, so `EntityCard` renders every one of its own elements. */
 const TEST_ENTITY: EntityData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Test Entity — All Elements",
   description: "A synthetic entity with every common field populated, for visual QA.",
@@ -65,7 +67,7 @@ function EntityCardTestPage() {
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Minimal — name only, no rating/effects/source">
-            <EntityCard entity={{ id: crypto.randomUUID(), name: "Minimal Entity" }} />
+            <EntityCard entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Minimal Entity" }} />
           </Section>
         </Stack>
       </Paper>
@@ -73,7 +75,7 @@ function EntityCardTestPage() {
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Sentinel rating (e.g. a Real SIN)">
-            <EntityCard entity={{ id: crypto.randomUUID(), name: "Real SIN", rating: "real" }} />
+            <EntityCard entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Real SIN", rating: "real" }} />
           </Section>
         </Stack>
       </Paper>
@@ -119,6 +121,7 @@ function EntityCardTestPage() {
           <Section title="Long name — wrapping check">
             <EntityCard
               entity={{
+                kind: EntityKind.item,
                 id: crypto.randomUUID(),
                 name: "A Very Long Entity Name That Should Wrap Or Truncate Gracefully In The Header Row",
                 rating: 12,

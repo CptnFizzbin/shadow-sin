@@ -2,12 +2,13 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import type { EntityData } from "#/system/entityData.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { EntityCard } from "./entityCard.tsx"
 import { EntityCardElements } from "./entityCardElements.tsx"
 
-const entity: EntityData = { id: "00000000-0000-0000-0000-000000000001", name: "Ares Predator V" }
+const entity: EntityData = { kind: EntityKind.item, id: "00000000-0000-0000-0000-000000000001", name: "Ares Predator V" }
 
 describe("EntityCard", () => {
   it("renders the entity's name, rating, and source automatically, with no extra children", () => {

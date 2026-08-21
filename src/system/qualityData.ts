@@ -1,5 +1,6 @@
 import type { UUID } from "node:crypto"
 
+import type { EntityKind } from "./entityKind.ts"
 import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 import type { SourceData } from "./sourceData.ts"
 
@@ -7,6 +8,7 @@ import type { SourceData } from "./sourceData.ts"
  * Represents a quality (positive or negative) that a runner can possess.
  */
 export interface QualityData {
+  kind: EntityKind.quality
   id: UUID
   name: string
   type: "positive" | "negative"

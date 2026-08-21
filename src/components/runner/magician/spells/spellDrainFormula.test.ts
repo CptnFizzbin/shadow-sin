@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
 
@@ -7,6 +8,7 @@ import { computeDrainValue, formatDrainFormula } from "./spellDrainFormula.ts"
 
 function makeForceSpell(drainValueMod: number): SpellData {
   return {
+    kind: EntityKind.spell,
     id: "00000000-0000-0000-0000-000000000001",
     name: "Test Spell",
     type: SpellType.Mana,
@@ -22,6 +24,7 @@ function makeForceSpell(drainValueMod: number): SpellData {
 
 function makeFixedSpell(drainValue: number): SpellData {
   return {
+    kind: EntityKind.spell,
     id: "00000000-0000-0000-0000-000000000002",
     name: "Test Curative Spell",
     type: SpellType.Mana,

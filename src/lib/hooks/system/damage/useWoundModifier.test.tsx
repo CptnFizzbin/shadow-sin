@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -48,6 +49,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 4
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
@@ -74,6 +76,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -101,6 +104,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -184,6 +188,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 5
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -213,6 +218,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 7
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -239,6 +245,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 6
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -265,6 +272,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 3
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -291,6 +299,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 7
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -317,6 +326,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -343,6 +353,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 2
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
@@ -369,6 +380,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 4
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
@@ -395,6 +407,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 8
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -403,6 +416,7 @@ describe("useWoundModifier", () => {
           ],
         },
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",

@@ -1,6 +1,7 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { attributesReducer } from "./attributes/attributesSlice.ts"
@@ -31,6 +32,13 @@ const idSlice = createSlice({
   reducers: {},
 })
 
+// `kind` is a fixed constant for every RunnerData — never dispatched, mirrors idSlice above.
+const kindSlice = createSlice({
+  name: "kind",
+  initialState: EntityKind.runner as RunnerData["kind"],
+  reducers: {},
+})
+
 // Magic-advancement grades are only ever written by the karma-improvement
 // apply flow (a direct `setState(produce(...))`, like spells/qualities), so
 // no dispatched actions are needed — mirrors idSlice above.
@@ -48,6 +56,7 @@ const submersionGradeSlice = createSlice({
 
 export const runnerRootReducer = combineReducers({
   id: idSlice.reducer,
+  kind: kindSlice.reducer,
   _meta_: metaReducer,
   attributes: attributesReducer,
   qualities: qualitiesReducer,

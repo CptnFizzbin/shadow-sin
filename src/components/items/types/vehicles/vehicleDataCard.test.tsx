@@ -3,6 +3,7 @@ import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -12,6 +13,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
 const car: VehicleData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Americar",
   itemType: ItemType.vehicle,
@@ -27,6 +29,7 @@ const car: VehicleData = {
 }
 
 const mod: ItemData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Anti-Theft System",
   itemType: ItemType.other,

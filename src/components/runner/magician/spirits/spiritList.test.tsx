@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritType } from "#/system/magic/spiritData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -12,6 +13,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SpiritList } from "./spiritList.tsx"
 
 const fireSpirit: SpiritData = {
+  kind: EntityKind.spirit,
   id: NullUuid,
   name: "Ember",
   spiritType: SpiritType.fire,

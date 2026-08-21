@@ -11,6 +11,7 @@ import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useMaxSpriteTasks } from "#/lib/hooks/runner/technomancer/spritesHooks.ts"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 interface SpriteDialogProps extends ControlledDialogProps<SpriteData> {
@@ -34,6 +35,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
       return
     }
     ctrl.close({
+      kind: EntityKind.sprite,
       id: sprite?.id ?? NullUuid,
       name: name.trim(),
       force: sprite?.force ?? 0,

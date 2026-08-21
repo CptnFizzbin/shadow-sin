@@ -2,12 +2,14 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { PowerCard } from "./powerCard.tsx"
 
 const improvedReflexes: AdeptPowerData = {
+  kind: EntityKind.adeptPower,
   type: "adeptPower",
   id: "00000000-0000-0000-0000-000000000001",
   name: "Improved Reflexes",

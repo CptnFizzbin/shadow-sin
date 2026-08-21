@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -26,7 +27,7 @@ describe("hasAptitudeFor", () => {
   it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
-      draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
       return draft
     })
 
@@ -37,7 +38,7 @@ describe("hasAptitudeFor", () => {
   it("returns false when the quality targets a different skill", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
-      draft.qualities = [{ id: NullUuid, name: "Aptitude (Longarms)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Longarms)", type: "positive" }]
       return draft
     })
 
@@ -59,7 +60,7 @@ describe("hasExceptionalAttributeFor", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
       draft.qualities = [
-        { id: NullUuid, name: "Exceptional Attribute (Logic)", type: "positive" },
+        { kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Logic)", type: "positive" },
       ]
       return draft
     })
@@ -71,7 +72,7 @@ describe("hasExceptionalAttributeFor", () => {
   it("matches the attribute abbreviation", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
-      draft.qualities = [{ id: NullUuid, name: "Exceptional (LOG)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Exceptional (LOG)", type: "positive" }]
       return draft
     })
 
@@ -83,7 +84,7 @@ describe("hasExceptionalAttributeFor", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
       draft.qualities = [
-        { id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" },
+        { kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" },
       ]
       return draft
     })
@@ -105,7 +106,7 @@ describe("getActiveSkillCap", () => {
   it("returns the Aptitude cap (7) when the runner has Aptitude for the skill", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
-      draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
       return draft
     })
 
@@ -138,7 +139,7 @@ describe("getAttributeCap", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
       draft.biology.metatype = MetatypeType.Human
-      draft.qualities = [{ id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" }]
       return draft
     })
 

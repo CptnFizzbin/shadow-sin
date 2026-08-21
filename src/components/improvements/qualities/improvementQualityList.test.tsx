@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { SpendKarmaDialogProvider } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -50,7 +51,7 @@ describe("ImprovementQualityList", () => {
     // Arrange
     renderList((sheet) => {
       sheet.qualities = [
-        { id: "00000000-0000-0000-0000-000000000001", name: "Uneducated", type: "negative", bpValue: 20 },
+        { kind: EntityKind.quality, id: "00000000-0000-0000-0000-000000000001", name: "Uneducated", type: "negative", bpValue: 20 },
       ]
       sheet.karma.current = 50
     })
@@ -65,7 +66,7 @@ describe("ImprovementQualityList", () => {
     // Arrange
     renderList((sheet) => {
       sheet.qualities = [
-        { id: "00000000-0000-0000-0000-000000000001", name: "Toughness", type: "positive", bpValue: 15 },
+        { kind: EntityKind.quality, id: "00000000-0000-0000-0000-000000000001", name: "Toughness", type: "positive", bpValue: 15 },
       ]
     })
 
@@ -79,7 +80,7 @@ describe("ImprovementQualityList", () => {
     // Arrange
     renderList((sheet) => {
       sheet.qualities = [
-        { id: "00000000-0000-0000-0000-000000000001", name: "Uneducated", type: "negative", bpValue: 20 },
+        { kind: EntityKind.quality, id: "00000000-0000-0000-0000-000000000001", name: "Uneducated", type: "negative", bpValue: 20 },
       ]
       sheet.karma.current = 50
     })

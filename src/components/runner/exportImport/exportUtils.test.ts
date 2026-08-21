@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { Artemis } from "#/data/fixtures/artemis.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -182,8 +183,16 @@ describe("gearToTree", () => {
     const licenseId = crypto.randomUUID()
 
     const gear: Record<string, ItemData> = {
-      [sinId]: { id: sinId, name: "Handcrafted SIN", itemType: ItemType.sin, rating: 4, childIds: [licenseId] },
+      [sinId]: {
+        kind: EntityKind.item,
+        id: sinId,
+        name: "Handcrafted SIN",
+        itemType: ItemType.sin,
+        rating: 4,
+        childIds: [licenseId],
+      },
       [licenseId]: {
+        kind: EntityKind.item,
         id: licenseId,
         name: "Handcrafted License",
         itemType: ItemType.license,

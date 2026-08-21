@@ -8,6 +8,7 @@ import { FormDialog } from "#/components/ui/dialog/formDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
 interface ComplexFormDialogProps extends ControlledDialogProps<ComplexFormData> {
@@ -29,6 +30,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
 
   const appForm = useAppForm({
     defaultValues: {
+      kind: EntityKind.complexForm,
       id: recordId,
       name: form?.name ?? "",
       rating: form?.rating ?? 1,

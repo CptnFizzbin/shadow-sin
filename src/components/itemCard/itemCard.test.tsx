@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
@@ -10,6 +11,7 @@ import { ItemCard } from "./itemCard.tsx"
 import { ItemCardElements } from "./itemCardElements.tsx"
 
 const baseItem: ItemData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.other,

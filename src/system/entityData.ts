@@ -1,4 +1,5 @@
 import type { DamageTrackKey } from "./damageTrackKey.ts"
+import type { EntityKind } from "./entityKind.ts"
 import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 import type { Rating } from "./rating.ts"
 import type { SourceData } from "./sourceData.ts"
@@ -19,6 +20,7 @@ export type EntityDamage<TTrack extends DamageTrackKey = DamageTrackKey> = { [tr
  * with this base declaration.
  */
 export interface EntityData {
+  kind: EntityKind
   id: string
   name: string
   description?: string

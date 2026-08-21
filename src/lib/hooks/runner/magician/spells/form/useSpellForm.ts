@@ -1,5 +1,6 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import {
   SpellCategory,
@@ -12,6 +13,7 @@ import {
 } from "#/system/magic/spellData.ts"
 
 const defaultValues: SpellData = {
+  kind: EntityKind.spell,
   id: NullUuid,
   name: "",
   type: SpellType.Physical,

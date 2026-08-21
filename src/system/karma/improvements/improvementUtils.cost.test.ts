@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -262,7 +263,7 @@ describe("getImprovementCost — magic and resonance entries", () => {
     const entry: LearnComplexFormEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnComplexForm,
-      complexForm: { id: "cf1", name: "Resonance Spike", rating: 1 },
+      complexForm: { kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 1 },
     }
 
     // Act
@@ -296,7 +297,7 @@ describe("getImprovementCost — qualities", () => {
     const entry: LearnQualityEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnQuality,
-      quality: { id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
+      quality: { kind: EntityKind.quality, id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
     }
 
     // Act
@@ -311,7 +312,7 @@ describe("getImprovementCost — qualities", () => {
     const entry: LearnQualityEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnQuality,
-      quality: { id: FAKE_ID, name: "Home-brewed Quality", type: "positive" },
+      quality: { kind: EntityKind.quality, id: FAKE_ID, name: "Home-brewed Quality", type: "positive" },
     }
 
     // Act

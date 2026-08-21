@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import {
@@ -17,6 +18,7 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { SpellCard } from "./spellCard.tsx"
 
 const manabolt: SpellData = {
+  kind: EntityKind.spell,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Manabolt",
   type: SpellType.Mana,

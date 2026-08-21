@@ -9,6 +9,7 @@ import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { builderStoreReducer } from "#/lib/stores/builder/builderStore.reducer.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -19,6 +20,7 @@ import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {
   return {
+    kind: EntityKind.item,
     itemType: ItemType.implant,
     implantType: ImplantType.cyberware,
     essenceCost: 1,

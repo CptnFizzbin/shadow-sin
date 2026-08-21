@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
@@ -9,6 +10,7 @@ import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "./itemDetailsSlot.tsx"
 
 const baseItem: ItemData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.other,
@@ -63,6 +65,7 @@ describe("ItemDetailsRoot", () => {
   it("composes stats, damage track, subitems, and footer slots", () => {
     const onDamageChange = vi.fn()
     const accessory: ItemData = {
+      kind: EntityKind.item,
       id: "00000000-0000-0000-0000-000000000002",
       name: "GPS Jammer",
       itemType: ItemType.software,

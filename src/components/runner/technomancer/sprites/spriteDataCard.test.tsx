@@ -1,12 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { SpriteDataCard } from "./spriteDataCard.tsx"
 
 const courierSprite: SpriteData = {
+  kind: EntityKind.sprite,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Courier",
   force: 4,

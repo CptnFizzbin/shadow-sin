@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import { NodeType } from "#/system/matrix/nodeType.ts"
@@ -13,6 +14,7 @@ import {
 } from "./matrixSlice.selectors.ts"
 
 const node: KnownNode = {
+  kind: EntityKind.matrixNode,
   id: "node-1",
   name: "Renraku Arcology",
   matrix: { system: 4 },

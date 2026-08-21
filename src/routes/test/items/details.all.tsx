@@ -6,6 +6,7 @@ import { useState } from "react"
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { Icons } from "#/lib/icons.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/test/items/details/all")({
 
 /** Every common `ItemData` field populated, so `ItemDetailsRoot` renders every one of its own sections. */
 const TEST_ITEM: ItemData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Test Item — All Slots",
   itemType: ItemType.other,
@@ -36,6 +38,7 @@ const TEST_ITEM: ItemData = {
 }
 
 const SUBITEM_A: ItemData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Attached Widget",
   itemType: ItemType.other,
@@ -43,6 +46,7 @@ const SUBITEM_A: ItemData = {
 }
 
 const SUBITEM_B: ItemData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Attached Gadget",
   itemType: ItemType.other,

@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
@@ -92,6 +93,7 @@ describe("ArmorFormDialog", () => {
   it("populates fields when editing an existing armor item", () => {
     // Arrange
     const existingArmor: ArmorData = {
+      kind: EntityKind.item,
       id: "test-id" as ArmorData["id"],
       itemType: ItemType.armor,
       name: "Full Body Armor",
