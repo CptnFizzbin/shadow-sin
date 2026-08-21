@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -40,6 +41,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Analytical Mind",
           type: "positive",
@@ -103,6 +105,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.spells = [
         {
+          kind: EntityKind.spell,
           id: NullUuid,
           name: "Increase Reflexes",
           type: SpellType.Physical,
@@ -132,6 +135,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.complexForms = [
         {
+          kind: EntityKind.complexForm,
           id: NullUuid,
           name: "Resonance Spike",
           rating: 3,
@@ -154,6 +158,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.powers = [
         {
+          kind: EntityKind.adeptPower,
           type: "adeptPower",
           id: NullUuid,
           name: "Killing Hands",
@@ -184,6 +189,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Analytical Mind",
           type: "positive",
@@ -193,6 +199,7 @@ describe("selectAllGameEffects", () => {
       s.gear = createItemMap([implant])
       s.powers = [
         {
+          kind: EntityKind.adeptPower,
           type: "adeptPower",
           id: NullUuid,
           name: "Killing Hands",
@@ -214,8 +221,8 @@ describe("selectAllGameEffects", () => {
   it("handles sources with no effects field gracefully", () => {
     // Arrange
     const sheet = runnerDataFactory((s) => {
-      s.qualities = [{ id: NullUuid, name: "Toughness", type: "positive" }]
-      s.powers = [{ type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
+      s.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Toughness", type: "positive" }]
+      s.powers = [{ kind: EntityKind.adeptPower, type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
       return s
     })
 
@@ -248,6 +255,7 @@ describe("selectGameEffectsByType", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Aptitude",
           type: "positive",
@@ -279,6 +287,7 @@ describe("selectGameEffectsByType", () => {
     const sheet = runnerDataFactory((s) => {
       s.spells = [
         {
+          kind: EntityKind.spell,
           id: NullUuid,
           name: "Increase Reflexes",
           type: SpellType.Physical,
@@ -328,6 +337,7 @@ describe("useGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Aptitude",
           type: "positive",
@@ -352,6 +362,7 @@ describe("useGameEffects", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Aptitude",
           type: "positive",

@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -58,8 +59,8 @@ describe("buildLicenseCheckResult", () => {
   })
 
   it("adds a multiple-sins alert naming every scanned SIN, even if every outcome clears", () => {
-    const johnSmith: SinData = { id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const janeDoe: SinData = { id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
+    const johnSmith: SinData = { kind: EntityKind.item, id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const janeDoe: SinData = { kind: EntityKind.item, id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
     const gear = gearMap(johnSmith, janeDoe)
 
     const checks: VerificationCheck[] = [

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -321,6 +322,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("Indirect: defense uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
+          kind: EntityKind.item,
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -356,6 +358,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("includes the worn effective armor value for a physical attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
+          kind: EntityKind.item,
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -382,6 +385,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("does not apply armor for a spell attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
+          kind: EntityKind.item,
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,

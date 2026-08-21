@@ -185,12 +185,29 @@ _Avoid_: creature, critter (same reasoning as Spirit)
 
 **Entity**:
 The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
-stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
-**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and
-**MatrixNode**. (**Program** and **Agent** are `Item` subtypes, not separate entries in this
-list — see below.)
+stat-bearing thing, not just carried equipment. Includes **Runner** itself, alongside every kind
+listed by the `kind` discriminant below — the discriminant is the source of truth for which
+kinds are covered, not this entry.
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
+
+**`kind`** _(`EntityData.kind: EntityKind`)_:
+The discriminant every Entity carries — `EntityKind` is a closed string union: `"runner" |
+"item" | "spirit" | "sprite" | "matrixNode" | "quality" | "spell" | "complexForm" |
+"adeptPower"`. Lets code that needs to tell Entity kinds apart (e.g. resolving a Spell's caster,
+which may be a Runner or a Spirit) dispatch without ad hoc, per-domain checks. Each kind's own
+second-level discriminant (`itemType`, `spiritType`, ...) stays nested under `kind` where it
+already exists — e.g. every Vehicle, Weapon, or Armor is `kind: "item"` with `itemType`
+distinguishing them further. See `docs/features/0015-entity-interface-decomposition.md`.
+
+**`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`EntityWithItems`**:
+Composable capability interfaces an Entity kind implements when it has a stat block
+(`EntityWithAttrs`), a damage track (`EntityWithDamage`), a Matrix presence
+(`WithMatrixPresence`), or an Attachment position (`EntityWithItems`) — so selectors
+(`AttrSelector`, `DamageSelector`, ...) can be written once against the capability instead of
+each domain re-implementing its own access. See
+`docs/features/0015-entity-interface-decomposition.md` for each interface's shape and which
+Entity kinds implement it.
 
 **EntityCard**:
 The shared card-rendering system for Entities, replacing the old `DataCard`. See

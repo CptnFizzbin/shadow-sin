@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritType } from "#/system/magic/spiritData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
@@ -8,6 +9,7 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { SpiritDataCard } from "./spiritDataCard.tsx"
 
 const namedFireSpirit: SpiritData = {
+  kind: EntityKind.spirit,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ember",
   spiritType: SpiritType.fire,
@@ -20,6 +22,7 @@ const namedFireSpirit: SpiritData = {
 }
 
 const unnamedSpirit: SpiritData = {
+  kind: EntityKind.spirit,
   id: "00000000-0000-0000-0000-000000000002",
   name: "",
   spiritType: SpiritType.earth,

@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -10,6 +11,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { LicenseDataCard } from "./licenseDataCard.tsx"
 
 const fakeLicense: LicenseData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -17,6 +19,7 @@ const fakeLicense: LicenseData = {
 }
 
 const realLicense: LicenseData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "License: Legal Firearm",
   itemType: ItemType.license,

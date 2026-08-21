@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -16,6 +17,7 @@ import {
 
 describe("isLicenseQuickBuyEligible", () => {
   const baseItem: ItemData = {
+    kind: EntityKind.item,
     id: "00000000-0000-0000-0000-000000000001",
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -65,6 +67,7 @@ describe("isItemLicensed", () => {
   const licenseId = "00000000-0000-0000-0000-000000000003"
 
   const item: ItemData = {
+    kind: EntityKind.item,
     id: "00000000-0000-0000-0000-000000000002",
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -72,6 +75,7 @@ describe("isItemLicensed", () => {
   }
 
   const license: LicenseData = {
+    kind: EntityKind.item,
     id: licenseId,
     itemType: ItemType.license,
     name: "License",
@@ -99,6 +103,7 @@ describe("isItemLicensed", () => {
 
 describe("findLicenseableSiblings", () => {
   const makePistol = (id: UUID, overrides: Partial<ItemData> = {}): ItemData => ({
+    kind: EntityKind.item,
     id,
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -134,7 +139,7 @@ describe("findLicenseableSiblings", () => {
     const item = makePistol("00000000-0000-0000-0000-000000000001")
     const licenseId = "00000000-0000-0000-0000-000000000099"
     const licensedSibling = makePistol("00000000-0000-0000-0000-000000000002", { licenseId })
-    const license: LicenseData = { id: licenseId, itemType: ItemType.license, name: "License", rating: 4 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, itemType: ItemType.license, name: "License", rating: 4 }
 
     // Act
     const siblings = findLicenseableSiblings(item, [item, licensedSibling], [license])

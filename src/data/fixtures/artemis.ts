@@ -1,6 +1,7 @@
 import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
@@ -48,6 +49,7 @@ const janeMeleeLicense = createItem<LicenseData>({
 })
 
 export const Artemis: RunnerData = {
+  kind: EntityKind.runner,
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 

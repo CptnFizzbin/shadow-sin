@@ -5,6 +5,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -16,6 +17,7 @@ interface ImplantFormOptions {
 }
 
 const defaultFormValues: ImplantData = {
+  kind: EntityKind.item,
   itemType: ItemType.implant,
   id: NullUuid,
   name: "",

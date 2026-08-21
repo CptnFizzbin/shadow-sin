@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { Rating } from "#/system/rating.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
@@ -11,6 +12,7 @@ import type { PowerData } from "./powerData.ts"
  * Cost is measured in Magic points per rating.
  */
 export interface AdeptPowerData extends PowerData {
+  kind: EntityKind.adeptPower
   type: "adeptPower"
   /** Plain `number` in practice — Adept Powers have no sentinel case — typed as `Rating` for consistency with the rest of the Entity system. */
   rating: Rating
@@ -21,6 +23,7 @@ export interface AdeptPowerData extends PowerData {
  * Zod schema for validating AdeptPowerData.
  */
 export const AdeptPowerDataSchema = z.object({
+  kind: z.literal(EntityKind.adeptPower),
   type: z.literal("adeptPower"),
   id: z.uuid(),
   name: z.string().min(1, "Name is required"),

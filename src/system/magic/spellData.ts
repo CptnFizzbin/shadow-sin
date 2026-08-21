@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
@@ -41,6 +42,7 @@ export enum SpellDrainType {
 }
 
 export interface SpellData {
+  kind: EntityKind.spell
   id: string
   name: string
   type: SpellType
@@ -62,6 +64,7 @@ export interface SpellData {
 }
 
 export const SpellDataSchema = z.object({
+  kind: z.literal(EntityKind.spell),
   id: z.uuid(),
   name: z.string().min(1, "Name is required"),
   type: z.enum(SpellType),

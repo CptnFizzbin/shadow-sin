@@ -17,7 +17,7 @@ export const SpriteDataCard: FC<SpriteDataCardProps> = ({ sprite, onEdit, onRemo
   const matrixMax = 8 + Math.ceil(sprite.force / 2)
 
   return (
-    <SpriteCard id={sprite.id} name={sprite.name} onEdit={onEdit} onRemove={onRemove}>
+    <SpriteCard id={sprite.id} name={sprite.name} kind={sprite.kind} onEdit={onEdit} onRemove={onRemove}>
       <SpriteCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
         <SpriteCard.Stat label="Force" value={sprite.force} />
         <SpriteCard.Stat label="Services" value={`${sprite.services.used}/${sprite.services.max}`} />

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -12,6 +13,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
 const fakeSin: SinData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
@@ -19,6 +21,7 @@ const fakeSin: SinData = {
 }
 
 const realSin: SinData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,
@@ -26,6 +29,7 @@ const realSin: SinData = {
 }
 
 const coveredLicense: LicenseData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,

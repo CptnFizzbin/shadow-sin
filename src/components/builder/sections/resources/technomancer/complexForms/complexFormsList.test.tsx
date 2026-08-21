@@ -6,12 +6,14 @@ import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { ComplexFormsList } from "./complexFormsList.tsx"
 
 const diagnostics: ComplexFormData = {
+  kind: EntityKind.complexForm,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Diagnostics",
   rating: 2,

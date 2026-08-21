@@ -4,6 +4,7 @@ import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData, MeleeWeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
@@ -18,6 +19,7 @@ interface WeaponFormOptions {
 // Unified form state that accommodates all weapon subtypes so a single form
 // can handle melee, firearms, thrown, and projectile weapons.
 const defaultFormValues = {
+  kind: EntityKind.item as const,
   id: NullUuid,
   itemType: ItemType.weapon,
   name: "",
@@ -80,6 +82,7 @@ export const weaponFormOpts = formOptions({
  */
 function toWeaponData(values: WeaponFormState): WeaponData {
   const base = {
+    kind: EntityKind.item as const,
     id: values.id,
     itemType: ItemType.weapon as typeof ItemType.weapon,
     name: values.name,

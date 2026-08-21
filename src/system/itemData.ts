@@ -2,12 +2,14 @@ import type { UUID } from "node:crypto"
 
 import type { AvailabilityInfo } from "./availabilityInfo.ts"
 import type { EntityData } from "./entityData.ts"
+import { EntityKind } from "./entityKind.ts"
 import type { ItemType } from "./itemType.ts"
 
 /**
  * Base interface for all gear items, weapons, armor, etc.
  */
 export interface ItemData extends EntityData {
+  kind: EntityKind.item
   id: UUID
   itemType: ItemType
 
@@ -45,21 +47,21 @@ export interface ItemData extends EntityData {
  * Utility to create a gear item with unique IDs and optional attached items (e.g. accessories).
  */
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "childIds">,
+  data: Omit<TItem, "id" | "childIds" | "kind">,
 ): ItemData[]
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "childIds">,
+  data: Omit<TItem, "id" | "childIds" | "kind">,
   attached: (ItemData | ItemData[])[],
 ): ItemData[]
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "childIds">,
+  data: Omit<TItem, "id" | "childIds" | "kind">,
   attached: (ItemData | ItemData[])[] = [],
 ): ItemData[] {
   const id = crypto.randomUUID()
   const childIds = attached.flat().map((item) => item.id)
 
   return [
-    { ...data, id, childIds },
+    { ...data, id, childIds, kind: EntityKind.item },
     ...attached.flat().map((item) => ({ ...item, parentId: id })),
   ]
 }

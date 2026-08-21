@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import type { ComplexFormIncreaseEntry } from "./improvementEntry.ts"
@@ -22,7 +23,7 @@ describe("applyImprovement — complexFormIncrease", () => {
       newRating: 3,
     }
     const sheet = runnerDataFactory((draft) => {
-      draft.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 2 }]
+      draft.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 2 }]
       draft.karma.current = 20
       return draft
     })
@@ -45,7 +46,7 @@ describe("applyImprovement — complexFormIncrease", () => {
       newRating: 2,
     }
     const sheet = runnerDataFactory((draft) => {
-      draft.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 1 }]
+      draft.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 1 }]
       return draft
     })
 

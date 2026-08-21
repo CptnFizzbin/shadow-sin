@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { FirearmData, MeleeWeaponData } from "#/system/gear/weaponData.ts"
 import { WeaponType } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -16,6 +17,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { useWeaponAttackDialog } from "./weaponAttackDialog.tsx"
 
 const pistol: FirearmData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Test Pistol",
   itemType: ItemType.weapon,
@@ -32,6 +34,7 @@ const pistol: FirearmData = {
 }
 
 const knife: MeleeWeaponData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000002",
   name: "Combat Knife",
   itemType: ItemType.weapon,

@@ -5,6 +5,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -16,6 +17,7 @@ interface ProgramFormOptions {
 }
 
 const defaultFormValues: ProgramData = {
+  kind: EntityKind.item,
   id: NullUuid,
   itemType: ItemType.program,
   name: "",

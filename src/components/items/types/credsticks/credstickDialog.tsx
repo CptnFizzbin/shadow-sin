@@ -17,6 +17,7 @@ import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
   CredstickMaxBalance,
@@ -76,6 +77,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       dispatch(Actions.item.setItem(updatedCredstick))
     } else {
       const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
+        kind: EntityKind.item,
         name: credstickName,
         itemType: ItemType.credstick,
         credstickType,

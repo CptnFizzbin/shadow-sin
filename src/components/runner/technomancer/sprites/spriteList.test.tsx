@@ -5,12 +5,14 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { SpriteList } from "./spriteList.tsx"
 
 const courierSprite: SpriteData = {
+  kind: EntityKind.sprite,
   id: NullUuid,
   name: "Courier",
   force: 4,

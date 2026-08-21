@@ -1,5 +1,6 @@
 import type { AttributeInfo } from "./attributeInfo.ts"
 import type { AttributeKey } from "./attributeKey.ts"
+import { EntityKind } from "./entityKind.ts"
 import type { MovementData } from "./movementData.ts"
 import type { CritterPowerData } from "./powers/critterPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
@@ -192,12 +193,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     ],
     innateQualities: [
       {
+        kind: EntityKind.quality,
         id: "6c1d4e5f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
         name: "Vanish",
         type: "negative",
         source: { book: "RC", page: 85 },
       },
       {
+        kind: EntityKind.quality,
         id: "7d2e5f6a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
         name: "Uneducated",
         type: "negative",

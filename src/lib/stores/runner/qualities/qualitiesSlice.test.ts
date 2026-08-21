@@ -2,12 +2,14 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
 import { addQuality, removeQuality, updateQuality } from "./qualitiesSlice.actions.ts"
 import { qualitiesReducer } from "./qualitiesSlice.ts"
 
 const makeQuality = (overrides: Partial<QualityData> = {}): QualityData => ({
+  kind: EntityKind.quality,
   id: crypto.randomUUID() as UUID,
   name: "Pain Tolerance",
   type: "positive",

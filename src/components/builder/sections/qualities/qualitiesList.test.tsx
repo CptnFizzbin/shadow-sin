@@ -5,12 +5,14 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { QualitiesList } from "./qualitiesList.tsx"
 
 const toughness: QualityData = {
+  kind: EntityKind.quality,
   id: NullUuid,
   name: "Toughness",
   type: "positive",

@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -303,6 +304,7 @@ describe("ItemDialog", () => {
 
   it("shows the correct title when passed in", () => {
     const existingItem: ItemData = {
+      kind: EntityKind.item,
       id: "test-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>,
       itemType: ItemType.other,
       name: "Old Name",
@@ -327,6 +329,7 @@ describe("ItemDialog", () => {
     it("shows the equipped switch when the existing item has an equipped value", async () => {
       // Arrange
       const item: ItemData = {
+        kind: EntityKind.item,
         id: existingItemId,
         itemType: ItemType.other,
         name: "Holster",
@@ -345,6 +348,7 @@ describe("ItemDialog", () => {
     it("shows the rating counter when the existing item has a non-zero rating", async () => {
       // Arrange
       const item: ItemData = {
+        kind: EntityKind.item,
         id: existingItemId,
         itemType: ItemType.other,
         name: "Rated Gear",
@@ -363,6 +367,7 @@ describe("ItemDialog", () => {
     it("shows the quantity field when the existing item has a non-zero quantity", async () => {
       // Arrange
       const item: ItemData = {
+        kind: EntityKind.item,
         id: existingItemId,
         itemType: ItemType.other,
         name: "Bulk Item",
@@ -382,6 +387,7 @@ describe("ItemDialog", () => {
       // Arrange
       const parentId = crypto.randomUUID()
       const item: ItemData = {
+        kind: EntityKind.item,
         id: existingItemId,
         itemType: ItemType.other,
         name: "Sub-Item",
@@ -405,6 +411,7 @@ describe("ItemDialog", () => {
       // Arrange
       const onSave = vi.fn()
       const item: ItemData = {
+        kind: EntityKind.item,
         id: existingItemId,
         itemType: ItemType.other,
         name: "Gear",

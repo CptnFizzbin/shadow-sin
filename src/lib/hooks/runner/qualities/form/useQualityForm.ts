@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
 interface QualityFormOptions {
@@ -10,6 +11,7 @@ interface QualityFormOptions {
 }
 
 const defaultValues: QualityData = {
+  kind: EntityKind.quality,
   id: NullUuid,
   name: "",
   type: "positive",

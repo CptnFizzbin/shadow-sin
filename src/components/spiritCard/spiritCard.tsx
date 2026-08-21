@@ -9,24 +9,28 @@ import { CardElementSubType } from "#/components/entityCard/elements/cardElement
 import type { EntityCardProps } from "#/components/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { EntityCardElements } from "#/components/entityCard/entityCardElements.tsx"
+import type { EntityKind } from "#/system/entityKind.ts"
 
 interface SpiritCardProps extends Omit<EntityCardProps, "entity"> {
   id: string
   name: string
+  /** `EntityKind.spirit` via `SpiritCard`, `EntityKind.sprite` via `SpriteCard` — see below. */
+  kind: EntityKind.spirit | EntityKind.sprite
 }
 
 /**
  * Category tier from ADR-0010 for Spirit and Sprite — both conjured/compiled beings with a stat
  * block, Force/Level rating, and Services owed, but neither implements `EntityData` (no `source`
- * field, ratings aren't `EntityData.rating`), so this constructs a minimal entity (`id`/`name`
- * only) rather than accepting one. `EntityCard`'s own Rating/Source/Effects are dropped from the
- * re-exposed elements for the same reason — there's nothing on Spirit/Sprite to feed them.
- * `SkillList`/`PowerList`/`AttributeBlock`/`Notes` are this tier's own incremental elements;
- * `DamageTrack` is `CardElementDamageTrack`, shared with `ItemCard`'s Vehicle usage rather than
- * owned by either tier (see the feature doc). `SpriteCard` (below) shares this exact shape.
+ * field, ratings aren't `EntityData.rating`), so this constructs a minimal entity (`id`/`name`/
+ * `kind` only) rather than accepting one. `EntityCard`'s own Rating/Source/Effects are dropped
+ * from the re-exposed elements for the same reason — there's nothing on Spirit/Sprite to feed
+ * them. `SkillList`/`PowerList`/`AttributeBlock`/`Notes` are this tier's own incremental
+ * elements; `DamageTrack` is `CardElementDamageTrack`, shared with `ItemCard`'s Vehicle usage
+ * rather than owned by either tier (see the feature doc). `SpriteCard` (below) shares this exact
+ * shape.
  */
-const SpiritCardRoot: FC<SpiritCardProps> = ({ id, name, children, ...props }) => (
-  <EntityCard entity={{ id, name }} {...props}>
+const SpiritCardRoot: FC<SpiritCardProps> = ({ id, name, kind, children, ...props }) => (
+  <EntityCard entity={{ id, name, kind }} {...props}>
     {children}
   </EntityCard>
 )

@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -24,6 +25,7 @@ import {
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
+  kind: EntityKind.item,
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -34,6 +36,7 @@ describe("licenses.create", () => {
   it("adds the licence under a freshly generated id", () => {
     // Arrange
     const licenseDraft: Omit<LicenseData, "id"> = {
+      kind: EntityKind.item,
       itemType: ItemType.license,
       name: "License: Ares Predator V",
       rating: 3,

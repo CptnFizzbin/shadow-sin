@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -9,6 +10,7 @@ import { initializeOptions } from "./useItemOptions.ts"
 const existingItemId = crypto.randomUUID()
 
 const baseItem: ItemData = {
+  kind: EntityKind.item,
   id: existingItemId,
   name: "Test Item",
   itemType: ItemType.other,

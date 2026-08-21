@@ -1,6 +1,7 @@
 import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
 import { SpiritType } from "#/system/magic/traditionData.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
@@ -8,6 +9,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const Hexen: RunnerData = {
+  kind: EntityKind.runner,
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
   _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
@@ -94,6 +96,7 @@ export const Hexen: RunnerData = {
 
   spells: [
     {
+      kind: EntityKind.spell,
       id: "hex-spell-001",
       name: "Manabolt",
       category: SpellCategory.Combat,
@@ -108,6 +111,7 @@ export const Hexen: RunnerData = {
         "A direct mana attack that strikes the target's life force directly. Only affects living or magical beings.",
     },
     {
+      kind: EntityKind.spell,
       id: "hex-spell-002",
       name: "Powerbolt",
       category: SpellCategory.Combat,
@@ -121,6 +125,7 @@ export const Hexen: RunnerData = {
       description: "A bolt of raw magical energy that deals physical damage to the target.",
     },
     {
+      kind: EntityKind.spell,
       id: "hex-spell-003",
       name: "Detect Enemies (Extended)",
       category: SpellCategory.Detection,
@@ -134,6 +139,7 @@ export const Hexen: RunnerData = {
       description: "Detects all entities within range that have hostile intent toward the caster.",
     },
     {
+      kind: EntityKind.spell,
       id: "hex-spell-004",
       name: "Heal",
       category: SpellCategory.Health,
@@ -148,6 +154,7 @@ export const Hexen: RunnerData = {
         "Heals physical damage. Each net hit removes one box of physical damage. The Force sets the maximum damage that can be healed in one casting.",
     },
     {
+      kind: EntityKind.spell,
       id: "hex-spell-005",
       name: "Invisibility",
       category: SpellCategory.Illusion,
@@ -162,6 +169,7 @@ export const Hexen: RunnerData = {
         "Renders the subject invisible to normal vision and cameras. The subject becomes visible again when they attack.",
     },
     {
+      kind: EntityKind.spell,
       id: "hex-spell-006",
       name: "Chaos",
       category: SpellCategory.Manipulation,

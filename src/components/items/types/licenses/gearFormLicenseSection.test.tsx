@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { ArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -12,6 +13,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 const restrictedArmor: ArmorData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-0000000000a1",
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -27,6 +29,7 @@ const unrestrictedArmor: ArmorData = {
 }
 
 const fakeSin: SinData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000s01",
   name: "Fake SIN",
   itemType: ItemType.sin,
@@ -34,6 +37,7 @@ const fakeSin: SinData = {
 }
 
 const existingLicense: LicenseData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000c001",
   name: "License: Armor Jacket",
   itemType: ItemType.license,
@@ -42,6 +46,7 @@ const existingLicense: LicenseData = {
 }
 
 const secondLicense: LicenseData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000c002",
   name: "License: Other Gear",
   itemType: ItemType.license,

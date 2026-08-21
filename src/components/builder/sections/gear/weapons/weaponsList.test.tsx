@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { FirearmData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
@@ -14,6 +15,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { WeaponsList } from "./weaponsList.tsx"
 
 const pistol: FirearmData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator",
   itemType: ItemType.weapon,

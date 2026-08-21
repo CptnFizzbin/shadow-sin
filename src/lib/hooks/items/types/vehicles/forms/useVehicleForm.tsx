@@ -3,6 +3,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -14,6 +15,7 @@ interface VehicleFormOptions {
 }
 
 const defaultFormValues = {
+  kind: EntityKind.item as const,
   id: NullUuid,
   itemType: ItemType.vehicle as typeof ItemType.vehicle,
   vehicleCategory: VehicleCategory.vehicle,
@@ -59,6 +61,7 @@ export const vehicleFormOpts = formOptions({
 
 function toVehicleData(values: VehicleFormState): VehicleData {
   return {
+    kind: EntityKind.item,
     id: values.id,
     itemType: ItemType.vehicle,
     vehicleCategory: values.vehicleCategory,

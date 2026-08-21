@@ -6,6 +6,7 @@ import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import {
   SpellCategory,
@@ -21,6 +22,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import { SpellsList } from "./spellsList.tsx"
 
 const manabolt: SpellData = {
+  kind: EntityKind.spell,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Manabolt",
   type: SpellType.Mana,

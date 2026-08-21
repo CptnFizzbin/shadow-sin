@@ -3,6 +3,7 @@ import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -11,6 +12,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ArmorDataCard } from "./armorDataCard.tsx"
 
 const jacket: ArmorData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -20,6 +22,7 @@ const jacket: ArmorData = {
 }
 
 const helmet: ItemData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000002",
   name: "Helmet",
   itemType: ItemType.armor,

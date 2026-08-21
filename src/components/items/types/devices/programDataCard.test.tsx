@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -9,6 +10,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ProgramDataCard } from "./programDataCard.tsx"
 
 const fakeProgram: ProgramData = {
+  kind: EntityKind.item,
   id: crypto.randomUUID(),
   name: "Exploit",
   itemType: ItemType.program,

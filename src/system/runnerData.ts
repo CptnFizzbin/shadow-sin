@@ -5,6 +5,7 @@ import { z } from "zod"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
+import type { EntityKind } from "./entityKind.ts"
 import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
 import type { ItemData } from "./itemData.ts"
 import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
@@ -43,6 +44,7 @@ export const RunnerMetaSchema = z.object({
  * The root structure of a Shadowrun 4e runner sheet.
  */
 export interface RunnerData {
+  kind: EntityKind.runner
   id: UUID
   _meta_: RunnerMeta
 

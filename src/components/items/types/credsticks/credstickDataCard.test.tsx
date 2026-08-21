@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { CredstickType } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -12,6 +13,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { CredstickDataCard } from "./credstickDataCard.tsx"
 
 const streetStick: CredstickData = {
+  kind: EntityKind.item,
   id: NullUuid,
   name: "Street Cred",
   itemType: ItemType.credstick,

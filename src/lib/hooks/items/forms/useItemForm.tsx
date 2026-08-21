@@ -5,6 +5,7 @@ import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -15,6 +16,7 @@ interface ItemFormOptions<TData extends ItemData = ItemData> {
 }
 
 export const itemDefaults: ItemData = {
+  kind: EntityKind.item,
   id: NullUuid,
   itemType: ItemType.other,
   name: "",

@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type {
   ImprovementEntry,
   SkillIncreaseEntry,
@@ -124,7 +125,7 @@ describe("sectionForEntry", () => {
     const learnEntry: ImprovementEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnQuality,
-      quality: { id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
+      quality: { kind: EntityKind.quality, id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
     }
     const buyOffEntry: ImprovementEntry = {
       id: FAKE_ID,

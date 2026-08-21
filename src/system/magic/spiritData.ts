@@ -5,6 +5,7 @@ import { z } from "zod"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 
 export enum SpiritType {
   wind = "wind",
@@ -71,6 +72,7 @@ export const SpiritTypePluralLabels: Record<SpiritType, string> = {
 }
 
 export interface SpiritData {
+  kind: EntityKind.spirit
   id: UUID
   name: string
   spiritType: SpiritType
@@ -86,6 +88,7 @@ export interface SpiritData {
 }
 
 export const SpiritDataSchema = z.object({
+  kind: z.literal(EntityKind.spirit),
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),
   spiritType: z.enum(SpiritType),

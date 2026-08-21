@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { WeaponType } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -13,6 +14,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { AnyItemDetails } from "./anyItemDetails.tsx"
 
 const weapon: WeaponData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -35,6 +37,7 @@ describe("AnyItemDetails", () => {
 
   it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
     const item: ItemData = {
+      kind: EntityKind.item,
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",
       itemType: ItemType.other,

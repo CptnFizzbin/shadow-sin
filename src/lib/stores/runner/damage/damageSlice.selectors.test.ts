@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
@@ -23,6 +24,7 @@ describe("selectPhysicalTrack / selectStunTrack", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
@@ -44,6 +46,7 @@ describe("selectPhysicalTrack / selectStunTrack", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -65,6 +68,7 @@ describe("selectPhysicalTrack / selectStunTrack", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
@@ -86,6 +90,7 @@ describe("selectPhysicalTrack / selectStunTrack", () => {
     const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
+          kind: EntityKind.quality,
           id: NullUuid,
           name: "Extreme Pain Intolerance",
           type: "negative",

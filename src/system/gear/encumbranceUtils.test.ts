@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import type { ArmorData } from "./armorData.ts"
@@ -8,6 +9,7 @@ import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty }
 
 function armor(overrides: Partial<ArmorData>): ArmorData {
   return {
+    kind: EntityKind.item,
     id: NullUuid,
     itemType: ItemType.armor,
     name: "Armor",

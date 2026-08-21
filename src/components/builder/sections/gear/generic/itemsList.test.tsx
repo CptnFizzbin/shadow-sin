@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -12,6 +13,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { ItemsList } from "./itemsList.tsx"
 
 const trodes: ItemData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Trodes",
   itemType: ItemType.other,

@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import {
@@ -20,6 +21,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SpellCastSection } from "./spellCastSection.tsx"
 
 const manaball: SpellData = {
+  kind: EntityKind.spell,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Manaball",
   type: SpellType.Mana,

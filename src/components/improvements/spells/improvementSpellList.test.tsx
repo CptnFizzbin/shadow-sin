@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { SpendKarmaDialogProvider } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
+import { EntityKind } from "#/system/entityKind.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -48,6 +49,7 @@ describe("ImprovementSpellList", () => {
     // Arrange
     renderList((sheet) => {
       sheet.spells = [{
+        kind: EntityKind.spell,
         id: "00000000-0000-0000-0000-000000000001",
         name: "Manabolt",
         type: SpellType.Mana,

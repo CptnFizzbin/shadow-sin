@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, MeleeWeaponType, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
@@ -14,6 +15,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { WeaponDataCard } from "./weaponDataCard.tsx"
 
 const weapon: WeaponData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -34,6 +36,7 @@ const firearm: FirearmData = {
 }
 
 const meleeWeapon: MeleeWeaponData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000002",
   name: "Combat Knife",
   itemType: ItemType.weapon,
@@ -45,6 +48,7 @@ const meleeWeapon: MeleeWeaponData = {
 }
 
 const accessory: ItemData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000003",
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,

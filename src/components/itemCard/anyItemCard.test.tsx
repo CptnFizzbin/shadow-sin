@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { WeaponType } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -13,6 +14,7 @@ import { renderWithProviders, ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { AnyItemCard } from "./anyItemCard.tsx"
 
 const weapon: WeaponData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -34,6 +36,7 @@ describe("AnyItemCard", () => {
 
   it("falls back to ItemCard for item types without a typed card", () => {
     const item: ItemData = {
+      kind: EntityKind.item,
       id: "00000000-0000-0000-0000-000000000002",
       name: "Cyberdeck Firmware",
       itemType: ItemType.software,
@@ -46,6 +49,7 @@ describe("AnyItemCard", () => {
 
   it("dispatches miscellaneous items to OtherDataCard", () => {
     const item: ItemData = {
+      kind: EntityKind.item,
       id: "00000000-0000-0000-0000-000000000003",
       name: "Survival Kit",
       itemType: ItemType.other,

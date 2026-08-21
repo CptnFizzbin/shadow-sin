@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -12,6 +13,7 @@ import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 import { LicenseFormDialog } from "./dialogs/licenseFormDialog.tsx"
 
 const license: LicenseData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000d001",
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -19,6 +21,7 @@ const license: LicenseData = {
 }
 
 const otherLicense: LicenseData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000d002",
   name: "License: Other Gear",
   itemType: ItemType.license,
@@ -26,6 +29,7 @@ const otherLicense: LicenseData = {
 }
 
 const coveredItem: ArmorData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000d101",
   name: "Ares Predator #1",
   itemType: ItemType.armor,
@@ -36,6 +40,7 @@ const coveredItem: ArmorData = {
 }
 
 const unlicensedItem: ArmorData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000d102",
   name: "Ares Predator #2",
   itemType: ItemType.armor,
@@ -45,6 +50,7 @@ const unlicensedItem: ArmorData = {
 }
 
 const itemLicensedElsewhere: ArmorData = {
+  kind: EntityKind.item,
   id: "00000000-0000-0000-0000-00000000d103",
   name: "Ares Predator #3",
   itemType: ItemType.armor,

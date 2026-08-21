@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { SpendKarmaDialogProvider } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { EntityKind } from "#/system/entityKind.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -40,7 +41,7 @@ describe("ImprovementComplexFormList", () => {
   it("lists known complex forms by name", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 2 }]
+      sheet.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 2 }]
       sheet.attributes[AttributeKey.resonance] = 4
     })
 
@@ -53,7 +54,7 @@ describe("ImprovementComplexFormList", () => {
   it("clicking an affordable complex form row queues a rating raise", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 2 }]
+      sheet.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 2 }]
       sheet.attributes[AttributeKey.resonance] = 4
       sheet.karma.current = 50
     })
@@ -69,7 +70,7 @@ describe("ImprovementComplexFormList", () => {
   it("shows a Max chip when a complex form's rating equals Resonance", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 3 }]
+      sheet.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 3 }]
       sheet.attributes[AttributeKey.resonance] = 3
     })
 

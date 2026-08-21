@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/system/entityKind.ts"
 import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import { NodeType } from "#/system/matrix/nodeType.ts"
@@ -16,6 +17,7 @@ import {
 import { matrixReducer } from "./matrixSlice.ts"
 
 const makeNode = (overrides: Partial<KnownNode> = {}): KnownNode => ({
+  kind: EntityKind.matrixNode,
   id: "node-1",
   name: "Renraku Arcology",
   matrix: { system: 4, firewall: 5, response: 3, signal: 6 },
