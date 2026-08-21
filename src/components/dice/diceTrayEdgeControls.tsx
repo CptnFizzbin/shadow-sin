@@ -6,9 +6,10 @@ import type { FC } from "react"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
+import { EdgeSelectors } from "#/lib/stores/runner/edge/edgeSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   selectIsRolling,
   selectWasRolled,
@@ -23,8 +24,8 @@ export const DiceTrayEdgeControls: FC = () => {
   const wasRolled = useDiceRollerSelector(diceTrayApi.roller, selectWasRolled)
 
   const dispatch = useRunnerStoreDispatch()
-  const maxEdge = useRunnerStoreSelector(Selectors.edge.selectEdgeMax)
-  const currentEdge = useRunnerStoreSelector(Selectors.edge.selectEdgeCurrent)
+  const maxEdge = useRunnerSelector(EdgeSelectors.selectMax)
+  const currentEdge = useRunnerSelector(EdgeSelectors.selectCurrent)
 
   if (physicalMode) return null
 

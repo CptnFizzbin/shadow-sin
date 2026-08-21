@@ -7,14 +7,15 @@ import { useSpriteDialog } from "#/components/runner/technomancer/dialogs/sprite
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SpritesSelectors } from "#/lib/stores/runner/sprites/spritesSlice.selectors.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 import { SpriteDataCard } from "./spriteDataCard.tsx"
 
 export const SpriteList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const sprites = useRunnerStoreSelector(Selectors.sprites.selectSprites)
+  const sprites = useRunnerSelector(SpritesSelectors.selectAll)
   const spriteDialog = useSpriteDialog()
   const confirmDialog = useConfirmDialog()
 

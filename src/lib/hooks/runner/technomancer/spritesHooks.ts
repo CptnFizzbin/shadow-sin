@@ -1,13 +1,14 @@
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SpritesSelectors } from "#/lib/stores/runner/sprites/spritesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSprites = () => {
   const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
-  const sprites = useRunnerStoreSelector(Selectors.sprites.selectSprites)
+  const sprites = useRunnerSelector(SpritesSelectors.selectAll)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

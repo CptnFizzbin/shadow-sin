@@ -7,7 +7,8 @@ import { ItemList } from "#/components/items/card/itemList.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SpiritsSelectors } from "#/lib/stores/runner/spirits/spiritsSlice.selectors.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 
@@ -16,7 +17,7 @@ import { SpiritDataCard } from "./spiritDataCard.tsx"
 
 export const SpiritList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const spirits = useRunnerStoreSelector(Selectors.spirits.selectSpirits)
+  const spirits = useRunnerSelector(SpiritsSelectors.selectAll)
   const confirmDialog = useConfirmDialog()
 
   const [dialogOpen, setDialogOpen] = useState(false)

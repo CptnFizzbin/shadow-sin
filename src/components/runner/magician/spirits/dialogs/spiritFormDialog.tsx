@@ -7,8 +7,8 @@ import { SpiritFormFields } from "#/components/runner/magician/spirits/form/spir
 import { SummoningSection } from "#/components/runner/magician/spirits/summoningSection.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useSpiritForm } from "#/lib/hooks/runner/magician/spirits/form/useSpiritForm.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectTradition } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {
@@ -24,7 +24,7 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
   onClosed,
   spirit,
 }) => {
-  const tradition = useRunnerStoreSelector(selectTradition)
+  const tradition = useRunnerSelector(TraditionSelectors.select)
 
   const form = useSpiritForm({
     spirit,

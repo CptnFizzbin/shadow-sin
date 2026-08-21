@@ -12,7 +12,8 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpiritType } from "#/system/magic/spiritData.ts"
@@ -27,7 +28,7 @@ interface SummoningSectionProps {
 
 export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force, isBound }) => {
   const magicAttr = useAttrValue(AttributeKey.magic)
-  const tradition = useRunnerStoreSelector(Selectors.tradition.selectTradition)
+  const tradition = useRunnerSelector(TraditionSelectors.select)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const isOverforce = force > magicAttr
