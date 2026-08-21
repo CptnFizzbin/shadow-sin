@@ -2,12 +2,6 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
- *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
-interface RunnerState {
-  runner: RunnerData
-}
-
 export function selectPowers(state: RunnerData): AdeptPowerData[] {
   return state.powers
 }
@@ -18,5 +12,5 @@ const legacy = { selectPowers }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace PowersSelectors {
-  export const selectAll: Selector<RunnerState, AdeptPowerData[]> = (state) => legacy.selectPowers(state.runner)
+  export const selectAll: Selector<{ runner: RunnerData }, AdeptPowerData[]> = (state) => legacy.selectPowers(state.runner)
 }

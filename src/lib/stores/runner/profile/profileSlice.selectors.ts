@@ -4,12 +4,6 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
- *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
-interface RunnerState {
-  runner: RunnerData
-}
-
 export function selectProfile(state: RunnerData): RunnerData["profile"] {
   return state.profile
 }
@@ -85,23 +79,23 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace ProfileSelectors {
-  export const select: Selector<RunnerState, RunnerData["profile"]> = (state) => legacy.selectProfile(state.runner)
-  export const selectName: Selector<RunnerState, string> = (state) => legacy.selectProfileName(state.runner)
-  export const selectAlias: Selector<RunnerState, string> = (state) => legacy.selectProfileAlias(state.runner)
-  export const selectDisplayName: Selector<RunnerState, string> = (state) =>
+  export const select: Selector<{ runner: RunnerData }, RunnerData["profile"]> = (state) => legacy.selectProfile(state.runner)
+  export const selectName: Selector<{ runner: RunnerData }, string> = (state) => legacy.selectProfileName(state.runner)
+  export const selectAlias: Selector<{ runner: RunnerData }, string> = (state) => legacy.selectProfileAlias(state.runner)
+  export const selectDisplayName: Selector<{ runner: RunnerData }, string> = (state) =>
     legacy.selectProfileDisplayName(state.runner)
-  export const selectLifestyle: Selector<RunnerState, RunnerData["profile"]["lifestyle"]> = (state) =>
+  export const selectLifestyle: Selector<{ runner: RunnerData }, RunnerData["profile"]["lifestyle"]> = (state) =>
     legacy.selectLifestyle(state.runner)
-  export const selectStreetCred: Selector<RunnerState, number> = (state) => legacy.selectStreetCred(state.runner)
-  export const selectNotoriety: Selector<RunnerState, number> = (state) => legacy.selectNotoriety(state.runner)
-  export const selectPublicAwarenessModifier: Selector<RunnerState, number> = (state) =>
+  export const selectStreetCred: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectStreetCred(state.runner)
+  export const selectNotoriety: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectNotoriety(state.runner)
+  export const selectPublicAwarenessModifier: Selector<{ runner: RunnerData }, number> = (state) =>
     legacy.selectPublicAwarenessModifier(state.runner)
-  export const selectPublicAwareness: Selector<RunnerState, number> = (state) =>
+  export const selectPublicAwareness: Selector<{ runner: RunnerData }, number> = (state) =>
     legacy.selectPublicAwareness(state.runner)
-  export const selectLifestyleQuality: Selector<RunnerState, ReturnType<typeof legacy.selectLifestyleQuality>> =
+  export const selectLifestyleQuality: Selector<{ runner: RunnerData }, ReturnType<typeof legacy.selectLifestyleQuality>> =
     (state) => legacy.selectLifestyleQuality(state.runner)
-  export const selectLifestyleMonthsPaid: Selector<RunnerState, ReturnType<typeof legacy.selectLifestyleMonthsPaid>> =
+  export const selectLifestyleMonthsPaid: Selector<{ runner: RunnerData }, ReturnType<typeof legacy.selectLifestyleMonthsPaid>> =
     (state) => legacy.selectLifestyleMonthsPaid(state.runner)
-  export const selectLifestyleInfo: Selector<RunnerState, ReturnType<typeof legacy.selectLifestyleInfo>> = (state) =>
+  export const selectLifestyleInfo: Selector<{ runner: RunnerData }, ReturnType<typeof legacy.selectLifestyleInfo>> = (state) =>
     legacy.selectLifestyleInfo(state.runner)
 }

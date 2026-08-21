@@ -3,12 +3,6 @@ import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.s
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
- *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
-interface RunnerState {
-  runner: RunnerData
-}
-
 export function selectEdgeMax(state: RunnerData): number {
   return selectAttrBase(AttributeKey.edge)(state)
 }
@@ -23,6 +17,6 @@ const legacy = { selectEdgeMax, selectEdgeCurrent }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace EdgeSelectors {
-  export const selectMax: Selector<RunnerState, number> = (state) => legacy.selectEdgeMax(state.runner)
-  export const selectCurrent: Selector<RunnerState, number> = (state) => legacy.selectEdgeCurrent(state.runner)
+  export const selectMax: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectEdgeMax(state.runner)
+  export const selectCurrent: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectEdgeCurrent(state.runner)
 }

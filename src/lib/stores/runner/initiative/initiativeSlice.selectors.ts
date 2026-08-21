@@ -1,12 +1,6 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
- *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
-interface RunnerState {
-  runner: RunnerData
-}
-
 export function selectPassesCompleted(state: RunnerData): ReadonlySet<number> {
   return new Set(state.initiative?.passesCompleted ?? [])
 }
@@ -34,11 +28,11 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace InitiativeSelectors {
-  export const selectPassesCompleted: Selector<RunnerState, ReadonlySet<number>> = (state) =>
+  export const selectPassesCompleted: Selector<{ runner: RunnerData }, ReadonlySet<number>> = (state) =>
     legacy.selectPassesCompleted(state.runner)
-  export const selectRolledResults: Selector<RunnerState, number[] | undefined> = (state) =>
+  export const selectRolledResults: Selector<{ runner: RunnerData }, number[] | undefined> = (state) =>
     legacy.selectRolledResults(state.runner)
-  export const selectGoingFirst: Selector<RunnerState, boolean> = (state) => legacy.selectGoingFirst(state.runner)
-  export const selectExtraPasses: Selector<RunnerState, number> = (state) =>
+  export const selectGoingFirst: Selector<{ runner: RunnerData }, boolean> = (state) => legacy.selectGoingFirst(state.runner)
+  export const selectExtraPasses: Selector<{ runner: RunnerData }, number> = (state) =>
     legacy.selectExtraPasses(state.runner)
 }

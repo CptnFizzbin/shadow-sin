@@ -81,23 +81,26 @@ just names the resulting shape consistently. A selector with nothing to derive (
 read) stays a plain function typed against the same `Selector<..., never>` shape rather than being
 forced through `createSelector` for no memoization benefit.
 
-**`TState` is a named wrapper object naming what it holds — `{ runner: RunnerData }`,
+**`TState` is a wrapper object naming what it holds — `{ runner: RunnerData }`,
 `{ entity: EntityWithAttrs }`, `{ items: ItemCatalog }` — never the bare stateful type passed
 directly.** The point is composability: a selector needing more than one stateful source intersects
-the wrapper types it needs (e.g. a Matrix-relative selector's
-`RunnerState & { activeNode: MatrixNodeData }`) instead of inventing a bespoke combined shape, and a
-caller assembles the wrapper once (`{ runner: state }`, `{ entity: runner }`,
+the wrapper shapes it needs (e.g. a Matrix-relative selector's
+`{ runner: RunnerData } & { activeNode: MatrixNodeData }`) instead of inventing a bespoke combined
+shape, and a caller assembles the wrapper once (`{ runner: state }`, `{ entity: runner }`,
 `{ items: runner.gear }`) rather than every multi-source selector doing it differently.
 
-**Each wrapper type is declared locally, in the file it belongs to — never as a shared, imported
-helper.** `RunnerState` lives in each Runner-domain `*Slice.selectors.ts` file that needs it (a
-small, identical, non-exported `interface RunnerState { runner: RunnerData }` repeated per file,
-not a single shared type everyone imports); `ItemsState` lives in `gearSlice.selectors.ts`;
-`AttrState` lives in `attributesSlice.selectors.ts`. A shared cross-file module for these
-(`src/lib/stores/runner/runnerState.ts` at one point) was tried and dropped — these types are cheap
-enough to redeclare locally, and a dedicated shared file for a two-line interface added an import
-and a module for no real benefit; the file-local declaration is also exactly where a reader looking
-at one selector file needs the type to be, not one hop away in another module.
+**There is no named type for any of these wrapper shapes — not shared, not even file-local.** Every
+selector spells out the exact fields it needs as an inline object type, right where it's used:
+`Selector<{ runner: RunnerData }, TReturn>`, `(state: { entity: EntityWithAttrs }) => ...`. Two
+named-type options were tried first and both dropped: a shared cross-file module
+(`src/lib/stores/runner/runnerState.ts` exporting `RunnerState`) added an import and a module for a
+two-line shape, and hid what a selector actually reads behind a type name a reader had to go look
+up; a file-local named interface (`interface RunnerState { runner: RunnerData }` redeclared
+per-file) was less indirection but still named something that didn't need a name — every selector
+in a file used the exact same shape anyway, so the interface added a level of indirection between
+the selector and the fields it reads without adding any information. Repeating
+`{ runner: RunnerData }` at each `Selector<...>` is more verbose, but it means a selector's
+signature alone says exactly what state it reads — nothing to cross-reference.
 
 **Namespacing.** Each domain's new, standardized selectors live in a `PascalCase` `namespace`
 declared in that domain's existing `*Slice.selectors.ts` file (`AttrSelectors`,
@@ -134,14 +137,13 @@ on Runner.
 Two stub capability-interface files exist ahead of 0015 landing them for real, under
 `src/system/entities/traits/`: `entityBase.ts` (a re-export of the already-shipped `EntityData`),
 `entityWithAttrs.ts`, and `entityWithItems.ts`. Only `EntityWithAttrs` is actually used by a
-selector in this pass — `AttrSelectors`'s `TState` is `AttrState` (`{ entity: EntityWithAttrs }`,
-declared locally in `attributesSlice.selectors.ts`) rather than `RunnerState`, because
-`RunnerData.attributes` already structurally satisfies `EntityWithAttrs` today: a caller passes
-`{ entity: runner }` and gets a selector that's already reusable across any future Entity kind
-implementing the trait, without waiting on any migration. `EntityWithItems` (the per-item
-`{ parentId, childIds }` attachment position — not to be confused with `ItemCatalog`, the bulk
-collection) is not yet structurally satisfied by anything, so nothing binds to it yet; it exists
-purely as a documented preview of the shape 0015 will introduce.
+selector in this pass — `AttrSelectors`'s `TState` is the inline `{ entity: EntityWithAttrs }`
+rather than `{ runner: RunnerData }`, because `RunnerData.attributes` already structurally
+satisfies `EntityWithAttrs` today: a caller passes `{ entity: runner }` and gets a selector that's
+already reusable across any future Entity kind implementing the trait, without waiting on any
+migration. `EntityWithItems` (the per-item `{ parentId, childIds }` attachment position — not to be
+confused with `ItemCatalog`, the bulk collection) is not yet structurally satisfied by anything, so
+nothing binds to it yet; it exists purely as a documented preview of the shape 0015 will introduce.
 
 ## Considered options
 
@@ -177,21 +179,20 @@ purely as a documented preview of the shape 0015 will introduce.
   `MetaSelectors`, `NuyenSelectors`, `PowersSelectors`, `ProfileSelectors`, `QualitiesSelectors`,
   `SkillsSelectors`, `SpellsSelectors`, `SpiritsSelectors`, `SpritesSelectors`, `TraditionSelectors`.
 - `src/integrations/reselect/selectorUtils.ts` gains only `Selector<TState, TReturn, TOptions>`,
-  alongside the existing `createCurriedSelector` — no wrapper types live here. `ItemCatalog` is a
-  new export on `src/system/items/itemUtils.ts`, alongside the existing `ItemDataRecord`. Every
-  Runner-domain `*.selectors.ts` file declares its own local, non-exported
-  `interface RunnerState { runner: RunnerData }`; `gearSlice.selectors.ts` likewise declares a
-  local `ItemsState`; `attributesSlice.selectors.ts` declares a local `AttrState`.
+  alongside the existing `createCurriedSelector` — no wrapper types live here, or anywhere else.
+  `ItemCatalog` is a new export on `src/system/items/itemUtils.ts`, alongside the existing
+  `ItemDataRecord`. Every selector spells its `TState` out inline at its own declaration.
 - `eslint.config.ts` gains one override block for `src/lib/stores/**/*.selectors.ts` disabling
   `@typescript-eslint/no-namespace` and `no-shadow`.
 - Most namespaces wrap their file's legacy exports by delegation
-  (`(state) => legacy.selectX(state.runner)`), since `RunnerState` carries the same `RunnerData`
-  those exports already expect. `ItemSelectors` is the exception: because its `TState`
-  (`ItemsState`) is deliberately *narrower* than `RunnerState`, it can't call the `RunnerData`-shaped
-  legacy exports at all — its selectors reimplement the same small filter/lookup logic directly
-  against `ItemCatalog` instead. The duplication is intentional and small (a handful of one-line
-  filters plus one shared `itemOfType` helper); the alternative — binding `ItemSelectors` to
-  `RunnerState` "for now" — would recreate exactly the coupling Slice 5 needs this pass to avoid.
+  (`(state) => legacy.selectX(state.runner)`), since `{ runner: RunnerData }` carries the same
+  `RunnerData` those exports already expect. `ItemSelectors` is the exception: because its `TState`
+  (`{ items: ItemCatalog }`) is deliberately *narrower* than `{ runner: RunnerData }`, it can't call
+  the `RunnerData`-shaped legacy exports at all — its selectors reimplement the same small
+  filter/lookup logic directly against `ItemCatalog` instead. The duplication is intentional and
+  small (a handful of one-line filters plus one shared `itemOfType` helper); the alternative —
+  binding `ItemSelectors` to `{ runner: RunnerData }` "for now" — would recreate exactly the
+  coupling Slice 5 needs this pass to avoid.
 - **Discovered in passing, not fixed here:** `gearSlice.selectors.ts`'s `firearms` grouping
   (`makeSelectByIdOfType(ItemType.firearm)`) is dead — no real `ItemData` ever has
   `itemType: ItemType.firearm`; a Firearm is `itemType: ItemType.weapon` with

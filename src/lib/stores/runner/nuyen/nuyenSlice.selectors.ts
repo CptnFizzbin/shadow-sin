@@ -1,12 +1,6 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** `TState` for the namespace below — file-local, same pattern as `AttrState` in
- *  `attributesSlice.selectors.ts`, not a shared cross-file helper. */
-interface RunnerState {
-  runner: RunnerData
-}
-
 export function selectNuyen(state: RunnerData): RunnerData["nuyen"] {
   return state.nuyen
 }
@@ -25,8 +19,8 @@ const legacy = { selectNuyen, selectNuyenAmount, selectLoans }
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace NuyenSelectors {
-  export const select: Selector<RunnerState, RunnerData["nuyen"]> = (state) => legacy.selectNuyen(state.runner)
-  export const selectAmount: Selector<RunnerState, number> = (state) => legacy.selectNuyenAmount(state.runner)
-  export const selectLoans: Selector<RunnerState, RunnerData["nuyen"]["loans"]> = (state) =>
+  export const select: Selector<{ runner: RunnerData }, RunnerData["nuyen"]> = (state) => legacy.selectNuyen(state.runner)
+  export const selectAmount: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectNuyenAmount(state.runner)
+  export const selectLoans: Selector<{ runner: RunnerData }, RunnerData["nuyen"]["loans"]> = (state) =>
     legacy.selectLoans(state.runner)
 }
