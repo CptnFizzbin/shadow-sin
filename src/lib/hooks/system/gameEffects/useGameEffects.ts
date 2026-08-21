@@ -2,8 +2,12 @@ import { createSelector } from "reselect"
 
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { ComplexFormsSelectors } from "#/lib/stores/runner/complexForms/complexFormsSlice.selectors.ts"
 import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { PowersSelectors } from "#/lib/stores/runner/powers/powersSlice.selectors.ts"
+import { QualitiesSelectors } from "#/lib/stores/runner/qualities/qualitiesSlice.selectors.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SpellsSelectors } from "#/lib/stores/runner/spells/spellsSlice.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
@@ -20,11 +24,11 @@ type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
 
 export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   [
-    (state: GameEffectsState) => state.runner.qualities,
-    (state: GameEffectsState) => ItemSelectors.selectEquipped(state),
-    (state: GameEffectsState) => state.runner.spells,
-    (state: GameEffectsState) => state.runner.complexForms,
-    (state: GameEffectsState) => state.runner.powers,
+    QualitiesSelectors.selectAll,
+    ItemSelectors.selectEquipped,
+    SpellsSelectors.selectAll,
+    ComplexFormsSelectors.selectAll,
+    PowersSelectors.selectAll,
   ],
   (qualities, equippedGear, spells, complexForms, powers): GameEffectData[] => {
     return [
