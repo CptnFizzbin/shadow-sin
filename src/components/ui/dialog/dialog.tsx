@@ -23,9 +23,10 @@ interface DialogComponent {
  *
  * See `docs/ui/dialog.md` for detailed examples.
  */
-export const Dialog = DialogRoot as unknown as DialogComponent
-Dialog.Title = DialogTitle
-Dialog.Content = DialogContent
-Dialog.Actions = DialogActions
+export const Dialog = Object.assign(DialogRoot, {
+  Title: DialogTitle,
+  Content: DialogContent,
+  Actions: DialogActions,
+}) as DialogComponent
 
 export { ControlledDialog } from "./controlledDialog.tsx"

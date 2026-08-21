@@ -19,7 +19,6 @@ interface PrototypeComponent {
  *
  * See `docs/ui/prototype.md` for usage examples.
  */
-export const Prototype = PrototypeRoot as unknown as PrototypeComponent
-Prototype.Item = PrototypeItem
+export const Prototype = Object.assign(PrototypeRoot, { Item: PrototypeItem }) as PrototypeComponent
 
 export type { PrototypeItemProps, PrototypeRootProps, PrototypeVersion }

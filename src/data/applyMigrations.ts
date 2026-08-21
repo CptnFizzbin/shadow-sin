@@ -10,7 +10,11 @@ interface MigrationDraft {
   _meta_: {
     version: number
   }
-  [key: string]: unknown
+  // `any` rather than `unknown` so the final single `as RunnerData` cast below is structurally
+  // valid — migrations are expected to produce a fully valid RunnerData, but the type system
+  // can't verify that.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
 }
 
 const migrationsInOrder = sort(migrations).asc((migration) => migration.version)
@@ -53,6 +57,5 @@ export function applyMigrations(runner: object): RunnerData {
     draft.gameState ??= { matrix: { knownNodes: [], activePrograms: [] } }
   })
 
-  // Using `as` here as migrations are expected to produce a fully valid RunnerData, but the type system can't verify that.
-  return migrated as unknown as RunnerData
+  return migrated as RunnerData
 }

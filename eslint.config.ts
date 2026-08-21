@@ -65,6 +65,15 @@ export default defineConfig([
         "max-depth": ["error", 4],
         "no-eval": "error",
         "no-inner-declarations": "error",
+        "no-restricted-syntax": [
+          "error",
+          {
+            selector: "TSAsExpression > TSAsExpression[typeAnnotation.type=\"TSUnknownKeyword\"]",
+            message:
+              "Do not use \"as unknown as T\" (double type assertion) — it bypasses structural checks entirely. " +
+              "See AGENTS.md § Type assertions for alternatives.",
+          },
+        ],
         "no-shadow": "error",
         "no-unused-vars": "off",
         "require-await": "error",
