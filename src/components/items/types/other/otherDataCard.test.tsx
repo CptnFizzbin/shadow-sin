@@ -91,7 +91,7 @@ describe("OtherDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[survivalKit.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[flashlight.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState()._data_.items[survivalKit.id]).toBeUndefined())
+    expect(runnerStore.getState()._data_.items[flashlight.id]).toBeUndefined()
   })
 })

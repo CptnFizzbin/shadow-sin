@@ -86,6 +86,6 @@ describe("LicenseDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[fakeLicense.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState()._data_.items[fakeLicense.id]).toBeUndefined())
   })
 })

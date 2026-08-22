@@ -4,11 +4,27 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { awakenings, AwakeningType } from "./awakeningType.ts"
 import { EntityKind } from "./entityKind.ts"
+import type { ItemCatalog } from "./items/itemUtils.ts"
 import { LifestyleType } from "./lifestyleType.ts"
 import { metatypes, MetatypeType } from "./metatypeData.ts"
 import type { RunnerData } from "./runnerData.ts"
 
-export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData): RunnerData => {
+export type RunnerFactoryOverrideFn = (data: RunnerData & { gear: ItemCatalog }) => RunnerData
+
+/** @deprecated use runnerDataFactory({ override: () => {}}) instead */
+export function runnerDataFactory(overrideFn: RunnerFactoryOverrideFn): RunnerData
+export function runnerDataFactory(options?: {
+  items?: ItemCatalog
+  override?: RunnerFactoryOverrideFn
+}): RunnerData
+export function runnerDataFactory(
+  optionsOrOverride?:
+    | RunnerFactoryOverrideFn
+    | { items?: ItemCatalog, override?: RunnerFactoryOverrideFn },
+): RunnerData {
+  const overrideFn = typeof optionsOrOverride === "function" ? optionsOrOverride : optionsOrOverride?.override
+  const items = typeof optionsOrOverride === "object" ? optionsOrOverride.items : undefined
+
   const data = {
     kind: EntityKind.runner,
     id: NullUuid,
@@ -81,8 +97,6 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
     initiateGrade: 0,
     submersionGrade: 0,
 
-    gear: {},
-
     karma: {
       total: 0,
       current: 0,
@@ -94,8 +108,19 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
       loans: [],
     },
 
-    featureFlags: {},
-  } satisfies RunnerData
+    _data_: {
+      featureFlags: {},
+      items: items ?? {},
+    },
+
+    get gear(): ItemCatalog {
+      return data._data_.items
+    },
+
+    set gear(value: ItemCatalog) {
+      data._data_.items = value
+    },
+  } satisfies RunnerData & { gear: ItemCatalog }
 
   if (overrideFn) {
     return overrideFn(data)

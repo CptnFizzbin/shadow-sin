@@ -41,9 +41,8 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
 })
 
 const withGear = (...items: ItemData[]) =>
-  runnerDataFactory((data) => {
-    data.gear = Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem]))
-    return data
+  runnerDataFactory({
+    items: Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem])),
   })
 
 describe.concurrent("selectEquipped", () => {
@@ -119,7 +118,7 @@ describe.concurrent("selectAllGear", () => {
     const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(selectAllGear(runner)).toBe(runner.gear)
+    expect(selectAllGear(runner)).toBe(runner._data_.items)
   })
 })
 

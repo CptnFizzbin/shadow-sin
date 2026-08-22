@@ -330,7 +330,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet.gear[jacket.id] = jacket
+        sheet._data_.items[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))
@@ -367,7 +367,7 @@ describe("DefenseCalculatorDialogContent", () => {
           impact: 6,
           damage: { ballistic: 2, impact: 1 },
         }
-        sheet.gear[jacket.id] = jacket
+        sheet._data_.items[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
@@ -393,7 +393,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet.gear[jacket.id] = jacket
+        sheet._data_.items[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))

@@ -25,7 +25,7 @@ export function mapToLegacySelector<TReturn, TOptions extends object | never = n
     {
       runner,
       entity: runner,
-      items: runner.gear as ItemCatalog,
+      items: runner._data_.items,
     },
     options as TOptions,
   )

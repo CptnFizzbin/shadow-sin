@@ -1,26 +1,8 @@
-import { render, screen } from "@testing-library/react"
-import type { FC, PropsWithChildren } from "react"
+import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-
-import { RunnerHeaderSummary } from "./runnerHeaderSummary.tsx"
-
-function renderWithRunner(overrideFn: Parameters<typeof runnerDataFactory>[0]) {
-  const runnerData = runnerDataFactory(overrideFn)
-  const store = new RunnerDataStore(runnerData)
-
-  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
-  )
-
-  render(<RunnerHeaderSummary />, { wrapper: Wrapper })
-
-  return store
-}
+import { renderWithRunner } from "#testUtils/renderWithRunner.tsx"
 
 describe("RunnerHeaderSummary", () => {
   it("shows the Runner's alias when one is set", () => {

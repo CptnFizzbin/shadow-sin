@@ -92,7 +92,7 @@ describe("VehicleDataCard", () => {
 
     // Assert
     expect(screen.getByText("Damage 3/10")).toBeDefined()
-    expect((runnerStore.getState().gear[car.id] as VehicleData).damage?.physical).toBe(3)
+    expect((runnerStore.getState()._data_.items[car.id] as VehicleData).damage?.physical).toBe(3)
   })
 
   it("renders attached mods as nested subitems", () => {
@@ -126,7 +126,7 @@ describe("VehicleDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[carWithMod.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[mod.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState()._data_.items[carWithMod.id]).toBeUndefined())
+    expect(runnerStore.getState()._data_.items[mod.id]).toBeUndefined()
   })
 })

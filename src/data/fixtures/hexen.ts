@@ -2,7 +2,14 @@ import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { EntityKind } from "#/system/entityKind.ts"
-import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
+import {
+  SpellCategory,
+  SpellDamage,
+  SpellDrainType,
+  SpellDuration,
+  SpellRange,
+  SpellType,
+} from "#/system/magic/spellData.ts"
 import { SpiritType } from "#/system/magic/traditionData.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -36,8 +43,6 @@ export const Hexen: RunnerData = {
   initiative: {
     passesCompleted: [],
   },
-
-  featureFlags: {},
 
   karma: {
     total: 0,
@@ -185,8 +190,6 @@ export const Hexen: RunnerData = {
     },
   ],
 
-  gear: {},
-
   skills: {
     activeSkills: [
       {
@@ -238,4 +241,9 @@ export const Hexen: RunnerData = {
 
   initiateGrade: 0,
   submersionGrade: 0,
+
+  _data_: {
+    featureFlags: {},
+    items: {},
+  }
 }

@@ -131,7 +131,7 @@ describe("DeviceDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[deviceWithProgram.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[runningProgram.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState()._data_.items[deviceWithProgram.id]).toBeUndefined())
+    expect(runnerStore.getState()._data_.items[runningProgram.id]).toBeUndefined()
   })
 })

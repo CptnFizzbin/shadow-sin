@@ -102,7 +102,7 @@ describe("ArmorDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Unequip" }))
 
     // Assert
-    expect(runnerStore.getState().gear[jacket.id].equipped).toBe(false)
+    expect(runnerStore.getState()._data_.items[jacket.id].equipped).toBe(false)
   })
 
   it("removing the armor dispatches removeItem for it and its mods", async () => {
@@ -114,7 +114,7 @@ describe("ArmorDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[jacket.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[helmet.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState()._data_.items[jacket.id]).toBeUndefined())
+    expect(runnerStore.getState()._data_.items[helmet.id]).toBeUndefined()
   })
 })

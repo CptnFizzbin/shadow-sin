@@ -12,28 +12,28 @@ import type { UUID } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
+import type { ItemCatalog, ItemCatalogTree, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
 import { filterRecordByType, itemIsType } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `ItemSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
-  return state.gear
+  return state._data_.items
 }
 
 /** @deprecated Use `ItemSelectors.selectAvailable` via `useRunnerSelector` instead. */
 export function selectAvailable(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => !item.stashed)
+  return Object.values(state._data_.items).filter((item) => !item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectEquipped` via `useRunnerSelector` instead. */
 export function selectEquipped(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => item.equipped)
+  return Object.values(state._data_.items).filter((item) => item.equipped)
 }
 
 /** @deprecated Use `ItemSelectors.selectStashed` via `useRunnerSelector` instead. */
 export function selectStashed(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => item.stashed)
+  return Object.values(state._data_.items).filter((item) => item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectById` via `useRunnerSelector` instead. */
@@ -182,6 +182,11 @@ export namespace ItemSelectors {
   export const selectAll = createSelector(
     ViewerStateSelectors.selectItems,
   ) satisfies ItemSelector<ItemCatalog>
+
+  export const selectAllTree = createSelector(
+    ViewerStateSelectors.selectItems,
+    toItemCatalogTree,
+  ) satisfies ItemSelector<ItemCatalogTree>
 
   export const selectAvailable = createMemoizedSelector(
     ViewerStateSelectors.selectItems,

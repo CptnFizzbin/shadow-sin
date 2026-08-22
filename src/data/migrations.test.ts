@@ -156,7 +156,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(migrated.complexForms).toHaveLength(0)
 
     // gear is a Record, empty items stripped, itemTypes normalised
-    const gearValues = Object.values(migrated.gear)
+    const gearValues = Object.values(migrated._data_.items)
     const weapon = gearValues.find((item) => item.name === "SM-4")
     expect(weapon?.itemType).toBe("weapon")
     const device = gearValues.find((item) => item.name === "Contact Lenses 3")
@@ -167,10 +167,10 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(vehicle?.itemType).toBe("vehicle")
 
     // license linked to SIN via parentId
-    const sin = migrated.gear[TEST_OLD_FORMAT_SIN_ID]
+    const sin = migrated._data_.items[TEST_OLD_FORMAT_SIN_ID]
     expect(sin).toBeDefined()
     expect(sin.itemType).toBe("sin")
-    const license = migrated.gear[TEST_OLD_FORMAT_LICENSE_ID]
+    const license = migrated._data_.items[TEST_OLD_FORMAT_LICENSE_ID]
     expect(license).toBeDefined()
     expect(license.itemType).toBe("license")
     expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
@@ -208,7 +208,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(runner.powers).toHaveLength(4)
 
     // gear is a Record, empty entries stripped, itemTypes normalised
-    const gearValues = Object.values(runner.gear)
+    const gearValues = Object.values(runner._data_.items)
     expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toBe("weapon")
     expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toBe("device")
     expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toBe("other")

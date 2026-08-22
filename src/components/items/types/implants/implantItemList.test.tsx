@@ -36,10 +36,7 @@ interface WrapperProps extends PropsWithChildren {
 
 const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
   const runnerStore = useMemo(() => {
-    return new RunnerDataStore({
-      ...runnerDataFactory(),
-      gear,
-    })
+    return new RunnerDataStore(runnerDataFactory({ items: gear }))
   }, [gear])
 
   const builderStore = useMemo(() => {

@@ -23,6 +23,25 @@ import type { ItemType } from "#/system/itemType.ts"
  */
 export type ItemCatalog<TData extends ItemData = ItemData> = Record<UUID, TData>
 
+export type ItemCatalogTree = Record<UUID, { item: ItemData, children?: ItemCatalogTree }>
+
+export function toItemCatalogTree(catalog: ItemCatalog): ItemCatalogTree {
+  const isRoot = (item: ItemData) => item.parentId === undefined || !(item.parentId in catalog)
+
+  const buildNode = (id: UUID): [UUID, ItemCatalogTree[UUID]] => {
+    const item = catalog[id]
+    const childIds = item.childIds?.filter((childId) => childId in catalog) ?? []
+
+    return childIds.length > 0
+      ? [id, { item, children: Object.fromEntries(childIds.map(buildNode)) }]
+      : [id, { item }]
+  }
+
+  const rootIds = (Object.keys(catalog) as UUID[]).filter((id) => isRoot(catalog[id]))
+
+  return Object.fromEntries(rootIds.map(buildNode))
+}
+
 /** @deprecated Use {@link ItemCatalog} instead. */
 export type ItemDataRecord = ItemCatalog
 

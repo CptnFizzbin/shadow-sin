@@ -50,11 +50,11 @@ export function useRunnerStoreSelector<T>(
  * at which point only this one assembly line changes). A selector only declares the field(s) its
  * own `TState` actually needs; the others are simply ignored.
  */
-function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
+export function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
   return {
     runner,
     entity: runner,
-    items: runner.gear,
+    items: runner._data_.items,
   }
 }
 

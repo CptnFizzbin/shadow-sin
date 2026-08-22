@@ -9,7 +9,7 @@ import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import type { GearTreeNode } from "./exportUtils.ts"
-import { runnerDataToYaml, gearFromTree, gearToTree, yamlToRunnerData } from "./exportUtils.ts"
+import { gearFromTree, gearToTree, runnerDataToYaml, yamlToRunnerData } from "./exportUtils.ts"
 
 describe.concurrent("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
@@ -283,8 +283,8 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     expect(restored.profile.alias).toBe(original.profile.alias)
     expect(restored.profile.name).toBe(original.profile.name)
     expect(restored.biology.metatype).toBe(original.biology.metatype)
-    expect(Object.keys(restored.gear)).toHaveLength(1)
-    expect(Object.values(restored.gear)[0].name).toBe("Sara McCabe")
+    expect(Object.keys(restored._data_.items)).toHaveLength(1)
+    expect(Object.values(restored._data_.items)[0].name).toBe("Sara McCabe")
   })
 
   it("round-trips a runner with nested gear (SIN + licenses)", () => {
@@ -299,10 +299,10 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
 
-    expect(Object.keys(restored.gear)).toHaveLength(3)
+    expect(Object.keys(restored._data_.items)).toHaveLength(3)
 
-    const sinItem = Object.values(restored.gear).find((item) => item.itemType === ItemType.sin)
-    const licenseItems = Object.values(restored.gear).filter((item) => item.itemType === ItemType.license)
+    const sinItem = Object.values(restored._data_.items).find((item) => item.itemType === ItemType.sin)
+    const licenseItems = Object.values(restored._data_.items).filter((item) => item.itemType === ItemType.license)
 
     expect(sinItem).toBeDefined()
     expect(licenseItems).toHaveLength(2)
@@ -316,7 +316,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
 
-    expect(restored.gear).toEqual({})
+    expect(restored._data_.items).toEqual({})
   })
 
   it("preserves all scalar fields through a round-trip", () => {
@@ -348,8 +348,8 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     const originalSin = gear[sinItem.id]
     const originalLicense = licenses[0]
 
-    const restoredSin = restored.gear[sinItem.id]
-    const restoredLicense = restored.gear[originalLicense.id]
+    const restoredSin = restored._data_.items[sinItem.id]
+    const restoredLicense = restored._data_.items[originalLicense.id]
 
     expect(restoredSin).toBeDefined()
     expect(restoredLicense).toBeDefined()

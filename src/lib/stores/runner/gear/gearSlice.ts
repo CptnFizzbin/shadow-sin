@@ -1,18 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 
 import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./gearSlice.actions.ts"
 
-const initialState: RunnerData["gear"] = {}
+const initialState: ItemCatalog = {}
 
 /**
  * Keeps `parentId`/`childIds` consistent across the whole gear record whenever `item` is
  * added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item` explicitly
  * lists its own `childIds` — those children's `parentId` is set or cleared to match.
  */
-function relinkItem(state: RunnerData["gear"], item: ItemData) {
+function relinkItem(state: ItemCatalog, item: ItemData) {
   for (const savedItem of Object.values(state)) {
     savedItem.childIds ??= []
 
@@ -35,7 +36,7 @@ function relinkItem(state: RunnerData["gear"], item: ItemData) {
 }
 
 /** Deletes `id` and drops it from its parent's `childIds`. Leaves any children orphaned. */
-function removeItemById(state: RunnerData["gear"], id: string) {
+function removeItemById(state: ItemCatalog, id: UUID) {
   const target = state[id]
   if (!target) return
 
@@ -48,7 +49,7 @@ function removeItemById(state: RunnerData["gear"], id: string) {
 }
 
 /** Deletes `id` and every descendant reachable through `childIds`. */
-function removeItemTree(state: RunnerData["gear"], id: string) {
+function removeItemTree(state: ItemCatalog, id: UUID) {
   const target = state[id]
   if (!target) return
 

@@ -45,14 +45,7 @@ export function gearToTree(
 export function runnerDataToYaml(
   state: RunnerData,
 ): string {
-  const { gear, ...rest } = state
-
-  const exportPayload = {
-    ...rest,
-    gear: gearToTree(gear),
-  }
-
-  return dump(exportPayload, { lineWidth: 120 })
+  return dump(state, { lineWidth: 120 })
 }
 
 /**

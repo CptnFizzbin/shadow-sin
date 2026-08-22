@@ -88,7 +88,7 @@ directly.** The point is composability: a selector needing more than one statefu
 the wrapper shapes it needs (e.g. a Matrix-relative selector's
 `{ runner: RunnerData } & { activeNode: MatrixNodeData }`) instead of inventing a bespoke combined
 shape, and a caller assembles the wrapper once (`{ runner: state }`, `{ entity: runner }`,
-`{ items: runner.gear }`) rather than every multi-source selector doing it differently.
+`{ items: runner._data_.items }`) rather than every multi-source selector doing it differently.
 
 **There is no named type for any of these wrapper shapes — not shared, not even file-local.** Every
 selector spells out the exact fields it needs as an inline object type, right where it's used:
@@ -138,10 +138,10 @@ doesn't reintroduce either of ADR-0013's two problems (see its Postmortem):
 
 - **No dependency on a capability interface that doesn't exist yet.** `useRunnerSelector` only ever
   assembles from `RunnerData` — real today, nothing about it depends on 0015. Its internal
-  `assembleRunnerState(runner)` builds `{ runner, entity: runner, items: runner.gear }` in one
+  `assembleRunnerState(runner)` builds `{ runner, entity: runner, items: runner._data_.items }` in one
   shot: `runner` is `RunnerData` itself, `entity` is `RunnerData` again (already structurally
   satisfying `EntityWithAttrs`, so `AttrSelectors` is served by the same call), and `items` is
-  `runner.gear` (satisfying `ItemSelectors`'s `ItemCatalog`). A selector only ever reads the one or
+  `runner._data_.items` (satisfying `ItemSelectors`'s `ItemCatalog`). A selector only ever reads the one or
   two fields its own `TState` names; the rest are simply unused. This covers every namespace in this
   pass with one hook, not because a capability interface was generalized over, but because
   `RunnerData` today happens to structurally satisfy all three shapes at once.

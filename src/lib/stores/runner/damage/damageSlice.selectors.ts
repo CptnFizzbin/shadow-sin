@@ -55,7 +55,7 @@ export namespace DamageSelectors {
         }
       }
 
-      for (const item of Object.values(runner.gear)) {
+      for (const item of Object.values(runner._data_.items)) {
         if (item.equipped !== true) continue
         for (const effect of item.effects ?? []) {
           if (
@@ -94,7 +94,7 @@ export namespace DamageSelectors {
         }
       }
 
-      for (const item of Object.values(runner.gear)) {
+      for (const item of Object.values(runner._data_.items)) {
         if (item.equipped !== true) continue
         for (const effect of item.effects ?? []) {
           if (

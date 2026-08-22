@@ -76,8 +76,10 @@ export const runnerRootReducer = combineReducers({
   damage: damageReducer,
   gameState: combineReducers({ matrix: matrixReducer }),
   initiative: initiativeReducer,
-  gear: gearReducer,
-  featureFlags: featureFlagsReducer,
   initiateGrade: initiateGradeSlice.reducer,
   submersionGrade: submersionGradeSlice.reducer,
+  _data_: combineReducers({
+    featureFlags: featureFlagsReducer,
+    items: gearReducer,
+  }),
 })

@@ -142,7 +142,7 @@ describe("WeaponDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
     // Assert
-    expect(runnerStore.getState().gear[weapon.id].equipped).toBe(true)
+    expect(runnerStore.getState()._data_.items[weapon.id].equipped).toBe(true)
   })
 
   it("offers a Remove action", () => {

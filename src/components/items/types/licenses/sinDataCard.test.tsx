@@ -104,7 +104,7 @@ describe("SinDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[fakeSin.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState()._data_.items[fakeSin.id]).toBeUndefined())
     expect(screen.queryByRole("dialog")).toBeNull()
   })
 
@@ -118,13 +118,13 @@ describe("SinDataCard", () => {
 
     // Assert
     expect(await screen.findByRole("dialog")).toBeDefined()
-    expect(runnerStore.getState().gear[sinWithLicense.id]).toBeDefined()
+    expect(runnerStore.getState()._data_.items[sinWithLicense.id]).toBeDefined()
 
     // Act: confirm
     fireEvent.click(screen.getByRole("button", { name: "Remove SIN" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[sinWithLicense.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState()._data_.items[sinWithLicense.id]).toBeUndefined())
   })
 
   it("navigates via onOpen when tapped", () => {
