@@ -9,7 +9,7 @@ import type { AttributeKey } from "#/system/attributeKey.ts"
  * are always the Runner's own — a metatype/awakening-derived concept with no "nearest entity"
  * equivalent for devices, spirits, or sprites.
  */
-export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
+export const useAllRunnerAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useRunnerSelector(BiologySelectors.selectMetatypeInfo)
   const awakening = useRunnerSelector(BiologySelectors.selectAwakeningInfo)
 
@@ -20,6 +20,6 @@ export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
  * Returns the metadata (min, max, augMax) for the given attribute, derived from the runner's
  * metatype and awakening type.
  */
-export const useAttrInfo = (attr: AttributeKey): AttributeInfo => {
-  return useAllAttrInfos()[attr]
+export const useRunnerAttrInfo = (attr: AttributeKey): AttributeInfo => {
+  return useAllRunnerAttrInfos()[attr]
 }

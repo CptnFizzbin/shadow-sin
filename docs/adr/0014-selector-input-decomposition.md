@@ -171,8 +171,9 @@ whose display name lives at `profile.name` rather than a top-level `name`) struc
 the same way `useRunnerSelector`'s `assembleRunnerState` narrows `RunnerData`. Attribute *bounds*
 (min/max/augMax, formerly `AttributesProvider`'s `infos`) did not move onto `EntityProvider`: they're
 derived from the Runner's own metatype/awakening data with no "nearest entity" equivalent for a
-device, spirit, or sprite, so they stayed a plain Runner-scoped hook (`useAttrInfo`/`useAllAttrInfos`,
-`src/lib/hooks/runner/attributes/useAttrInfo.ts`) instead.
+device, spirit, or sprite, so they stayed a plain Runner-scoped hook
+(`useRunnerAttrInfo`/`useAllRunnerAttrInfos`, `src/lib/hooks/runner/attributes/useRunnerAttrInfo.ts`)
+instead.
 
 ## Scope
 

@@ -4,7 +4,7 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
@@ -27,7 +27,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const store = useRunnerStoreContext()
   const attrKey = props.attr
   const attrValue = useEntitySelector(AttrSelectors.selectValue, { key: attrKey })
-  const attrInfo = useAttrInfo(attrKey)
+  const attrInfo = useRunnerAttrInfo(attrKey)
   const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false
