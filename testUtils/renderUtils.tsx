@@ -1,6 +1,13 @@
 import { ThemeProvider } from "@mui/material/styles"
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterContextProvider,
+} from "@tanstack/react-router"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
+import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
@@ -20,6 +27,22 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )
 
+/**
+ * Provides `@tanstack/react-router` context so components under test can call
+ * `useNavigate`/`useRouter` (e.g. to open an item's detail route) without
+ * logging "useRouter must be used inside a <RouterProvider> component!" on
+ * every render. Uses `RouterContextProvider` rather than `RouterProvider`:
+ * it only supplies the router via context, it doesn't render matched routes,
+ * so a bare root route is enough and no route loaders run.
+ */
+const TestRouterProvider: FC<PropsWithChildren> = ({ children }) => {
+  const router = useMemo(
+    () => createRouter({ routeTree: createRootRoute(), history: createMemoryHistory() }),
+    [],
+  )
+  return <RouterContextProvider router={router}>{children}</RouterContextProvider>
+}
+
 export interface RenderWithProvidersOptions {
   runnerStore?: RunnerStore
 }
@@ -38,7 +61,9 @@ export function renderWithProviders(
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
-        <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
+        <TestRouterProvider>
+          <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
+        </TestRouterProvider>
       </ThemeProvider>
     )
   }
@@ -69,9 +94,11 @@ export function renderInBuilder(
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
-        <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
-          {children}
-        </BuilderStoreProvider>
+        <TestRouterProvider>
+          <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
+            {children}
+          </BuilderStoreProvider>
+        </TestRouterProvider>
       </ThemeProvider>
     )
   }
