@@ -25,7 +25,7 @@ export function runnerDataFactory(
   const overrideFn = typeof optionsOrOverride === "function" ? optionsOrOverride : optionsOrOverride?.override
   const items = typeof optionsOrOverride === "object" ? optionsOrOverride.items : undefined
 
-  const data = {
+  const data: RunnerData = {
     kind: EntityKind.runner,
     id: NullUuid,
     _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
@@ -108,23 +108,43 @@ export function runnerDataFactory(
       loans: [],
     },
 
+    items: { parentId: null, childIds: [] },
+
     _data_: {
       featureFlags: {},
       items: items ?? {},
     },
+  }
 
-    get gear(): ItemCatalog {
-      return data._data_.items
+  // Back-compat for override functions still written against the pre-Slice-5 `data.gear` field
+  // name (see RunnerFactoryOverrideFn's @deprecated note) — a getter/setter keeps `data.gear` and
+  // `data._data_.items` in sync for direct mutation (`data.gear = {...}`). It's non-enumerable so
+  // it doesn't leak into `{ ...data }`-style overrides or show up as an unexpected key when this
+  // data becomes a Redux store's preloadedState.
+  Object.defineProperty(data, "gear", {
+    configurable: true,
+    get(this: RunnerData) {
+      return this._data_.items
     },
-
-    set gear(value: ItemCatalog) {
-      data._data_.items = value
+    set(this: RunnerData, value: ItemCatalog) {
+      this._data_.items = value
     },
-  } satisfies RunnerData & { gear: ItemCatalog }
+  })
 
-  if (overrideFn) {
-    return overrideFn(data)
-  } else {
+  if (!overrideFn) {
     return data
   }
+
+  const result = overrideFn(data as RunnerData & { gear: ItemCatalog })
+
+  // A spread-style override (`{ ...data, gear: {...} }`) produces a *new* object that doesn't
+  // carry the getter/setter above, leaving its explicit `gear` value disconnected from
+  // `_data_.items` — reconcile it back before handing the result off.
+  const resultWithGear = result as RunnerData & { gear?: ItemCatalog }
+  if (Object.hasOwn(resultWithGear, "gear")) {
+    resultWithGear._data_.items = resultWithGear.gear as ItemCatalog
+    delete resultWithGear.gear
+  }
+
+  return result
 }

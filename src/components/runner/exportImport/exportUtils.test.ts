@@ -273,7 +273,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     )
     const original = {
       ...Artemis,
-      gear,
+      _data_: { ...Artemis._data_, items: gear },
     }
 
     const yaml = runnerDataToYaml(original)
@@ -294,7 +294,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
         createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
-    const original = { ...Artemis, gear }
+    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
@@ -311,7 +311,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   })
 
   it("round-trips a runner with no gear", () => {
-    const original = { ...Artemis, gear: {} }
+    const original = { ...Artemis, _data_: { ...Artemis._data_, items: {} } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
@@ -340,7 +340,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
       [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 })],
     )
     const gear = createItemMap([sinItem, ...licenses])
-    const original = { ...Artemis, gear }
+    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)

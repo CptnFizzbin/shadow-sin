@@ -242,8 +242,10 @@ export const Hexen: RunnerData = {
   initiateGrade: 0,
   submersionGrade: 0,
 
+  items: { parentId: null, childIds: [] },
+
   _data_: {
     featureFlags: {},
     items: {},
-  }
+  },
 }

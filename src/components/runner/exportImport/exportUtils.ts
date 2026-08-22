@@ -10,6 +10,12 @@ export interface GearTreeNode extends Omit<ItemData, "parentId" | "childIds"> {
   children?: GearTreeNode[]
 }
 
+/** YAML export shape: `RunnerData` with `_data_.items` replaced by a nested `gear` tree. */
+type RunnerExportPayload = Omit<RunnerData, "_data_"> & {
+  _data_: Omit<RunnerData["_data_"], "items">
+  gear: GearTreeNode[]
+}
+
 /**
  * Convert a flat gear map (Record<id, ItemData>) into a tree of nested GearTreeNodes.
  * Root items (those without a parentId) appear at the top level.
@@ -40,17 +46,26 @@ export function gearToTree(
 
 /**
  * Serialise a RunnerData to a YAML string.
- * The gear map is converted to a nested tree before serialisation.
+ * `_data_.items` (the flat gear map) is converted to a nested `gear` tree before serialisation.
  */
 export function runnerDataToYaml(
   state: RunnerData,
 ): string {
-  return dump(state, { lineWidth: 120 })
+  const { _data_, ...rest } = state
+  const { items, ...restData } = _data_
+
+  const exportPayload: RunnerExportPayload = {
+    ...rest,
+    _data_: restData,
+    gear: gearToTree(items),
+  }
+
+  return dump(exportPayload, { lineWidth: 120 })
 }
 
 /**
  * Flatten a tree of GearTreeNodes back into a Record<id, ItemData> suitable
- * for storing on RunnerData.gear.  parentId and childIds are reconstructed
+ * for storing on RunnerData._data_.items.  parentId and childIds are reconstructed
  * from the tree structure.
  */
 export function gearFromTree(
@@ -101,9 +116,12 @@ export function yamlToRunnerData(
     ? parsed
     : {
         ...parsed,
-        gear: gearFromTree(
-          Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : [],
-        ),
+        _data_: {
+          ...(parsed._data_ as object | undefined),
+          items: gearFromTree(
+            Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : [],
+          ),
+        },
       }
 
   return applyMigrations(payload)
