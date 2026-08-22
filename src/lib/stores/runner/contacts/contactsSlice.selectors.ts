@@ -1,17 +1,17 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { ContactData } from "#/system/contactData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `ContactsSelectors.selectAll` via `useRunnerSelector` instead. */
-export function selectContacts(state: RunnerData): ContactData[] {
-  return state.contacts
+export function selectContacts(runner: RunnerData): ContactData[] {
+  return mapToLegacySelector(runner, ContactsSelectors.selectAll)
 }
 
-const legacy = { selectContacts }
-
-/** Standardized, namespaced selectors for the Contacts domain — see
- *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
- *  sites are unaffected. */
 export namespace ContactsSelectors {
-  export const selectAll: Selector<{ runner: RunnerData }, ContactData[]> = (state) => legacy.selectContacts(state.runner)
+  export const selectAll = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.contacts,
+  )
 }

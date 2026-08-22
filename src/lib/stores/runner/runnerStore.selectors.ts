@@ -50,12 +50,18 @@ export function useRunnerStoreSelector<T>(
  * at which point only this one assembly line changes). A selector only declares the field(s) its
  * own `TState` actually needs; the others are simply ignored.
  */
-function assembleRunnerState(runner: RunnerData) {
+function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
   return {
     runner,
     entity: runner,
-    items: runner.gear as ItemCatalog,
+    items: runner.gear,
   }
+}
+
+export interface RunnerSelectorState {
+  runner: RunnerData
+  entity: RunnerData
+  items: ItemCatalog
 }
 
 /**
@@ -76,16 +82,16 @@ function assembleRunnerState(runner: RunnerData) {
  * entity (e.g. the nearest one via Context), where this hook only ever assembles the Runner's own
  * state. See docs/adr/0014-selector-input-decomposition.md.
  */
-export function useRunnerSelector<TState extends object, TReturn>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn>(
   selector: Selector<TState, TReturn>,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends object, TReturn, TOptions extends object>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
   selector: Selector<TState, TReturn, TOptions>,
   options: TOptions,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends object, TReturn, TOptions extends object>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
   selector: (state: TState, options?: TOptions) => TReturn,
   optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
   compare?: (prev: TReturn, next: TReturn) => boolean,

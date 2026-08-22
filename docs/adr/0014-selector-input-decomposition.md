@@ -210,7 +210,7 @@ nothing binds to it yet; it exists purely as a documented preview of the shape 0
   `Devices`, `FirearmAccessories`, `Firearms`, `Implants`, `Licenses`, `Other`, `Programs`,
   `Sins`, `Software`, `Vehicles`, `Weapons`), `KarmaSelectors`, `MatrixSelectors`,
   `MetaSelectors`, `NuyenSelectors`, `PowersSelectors`, `ProfileSelectors`, `QualitiesSelectors`,
-  `SkillsSelectors`, `SpellsSelectors`, `SpiritsSelectors`, `SpritesSelectors`, `TraditionSelectors`.
+  `SkillsSelectors`, `SpellsSelectors`, `SpiritsSelectors`, `SpriteSelectors`, `TraditionSelectors`.
 - `src/integrations/reselect/selectorUtils.ts` gains only `Selector<TState, TReturn, TOptions>`,
   alongside the existing `createCurriedSelector` — no wrapper types live here, or anywhere else.
   `ItemCatalog` is a new export on `src/system/items/itemUtils.ts`, alongside the existing

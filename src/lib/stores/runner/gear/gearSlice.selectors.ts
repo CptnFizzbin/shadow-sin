@@ -1,8 +1,13 @@
 import type { Selector } from "reselect"
-import { createSelector } from "reselect"
 
 import type { Selector as StandardSelector } from "#/integrations/reselect/selectorUtils.ts"
-import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import {
+  createCurriedSelector,
+  createMemoizedSelector,
+  createSelector,
+  selectorOption,
+} from "#/integrations/reselect/selectorUtils.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -53,7 +58,7 @@ const gearSelectorsByType: Partial<Record<
 /** @deprecated Use `ItemSelectors.selectByType` via `useRunnerSelector` instead. */
 export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<ItemDataFor<T>> => {
   if (gearSelectorsByType) {
-    gearSelectorsByType[type] = createSelector(
+    gearSelectorsByType[type] = createMemoizedSelector(
       [
         selectAllGear,
       ],
@@ -133,7 +138,7 @@ function makeSelectByIdOfType(type: ItemType) {
 export const armor = {
   selectById: makeSelectByIdOfType(ItemType.armor),
 
-  selectEquipped: createSelector([
+  selectEquipped: createMemoizedSelector([
     selectGearOfType(ItemType.armor),
   ], (allArmor) => {
     return Object.values(allArmor).filter((item) => item.equipped)
@@ -163,53 +168,54 @@ export const programs = { selectById: makeSelectByIdOfType(ItemType.program) }
 /** @deprecated Use `ItemSelectors.Other` via `useRunnerSelector` instead. */
 export const other = { selectById: makeSelectByIdOfType(ItemType.other) }
 
-/**
- * Standardized, namespaced selectors for the Item (gear) domain — see
- * docs/adr/0014-selector-input-decomposition.md. `TState` is the inline object type
- * `{ items: ItemCatalog }`, deliberately narrower than `RunnerData` — once 0015 Slice 5 moves
- * `RunnerData.gear` to `RunnerData._data_.items`, only `useRunnerSelector`'s
- * (`runnerStore.selectors.ts`) one assembly line (`items: runner.gear` → `items: runner._data_.items`)
- * needs to change, not these selectors. Because `TState` no longer carries the whole Runner, these
- * selectors can't delegate to the legacy exports above (which need a full `RunnerData`) — they
- * reimplement the same, small filter/lookup logic directly against `ItemCatalog` instead. Existing
- * exports and call sites above are untouched.
- */
 export namespace ItemSelectors {
-  export const selectAll: StandardSelector<{ items: ItemCatalog }, ItemCatalog> = (state) => state.items
+  export type ItemSelector<TReturn, TOptions extends object | never = never> = StandardSelector<
+    { items: ItemCatalog }, TReturn, TOptions
+  >
 
-  export const selectAvailable: StandardSelector<{ items: ItemCatalog }, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => !item.stashed)
+  export const Options = {
+    itemId: selectorOption<{ itemId: UUID }>("itemId"),
+    itemType: selectorOption<{ itemType: ItemType }>("itemType"),
+    licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
+  }
 
-  export const selectEquipped: StandardSelector<{ items: ItemCatalog }, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => item.equipped)
+  export const selectAll = createSelector(
+    ViewerStateSelectors.selectItems,
+  ) satisfies ItemSelector<ItemCatalog>
 
-  export const selectStashed: StandardSelector<{ items: ItemCatalog }, ItemData[]> = (state) =>
-    Object.values(state.items).filter((item) => item.stashed)
+  export const selectAvailable = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    (items) => Object.values(items).filter((item) => !item.stashed),
+  ) satisfies ItemSelector<ItemData[]>
 
-  export const selectById: StandardSelector<{ items: ItemCatalog }, ItemData, { itemId: UUID }> = createSelector(
-    [
-      (state: { items: ItemCatalog }) => state.items,
-      (_state: { items: ItemCatalog }, options: { itemId: UUID }) => options.itemId,
-    ],
+  export const selectEquipped = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    (items) => Object.values(items).filter((item) => item.equipped),
+  ) satisfies ItemSelector<ItemData[]>
+
+  export const selectStashed = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    (items) => Object.values(items).filter((item) => item.stashed),
+  ) satisfies ItemSelector<ItemData[]>
+
+  export const selectById = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    Options.itemId,
     (items, itemId) => items[itemId],
-  )
+  ) satisfies ItemSelector<ItemData, { itemId: UUID }>
 
-  export const selectByType: StandardSelector<{ items: ItemCatalog }, ItemDataRecord, { itemType: ItemType }> = createSelector(
-    [
-      (state: { items: ItemCatalog }) => state.items,
-      (_state: { items: ItemCatalog }, options: { itemType: ItemType }) => options.itemType,
-    ],
+  export const selectByType = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    Options.itemType,
     (items, itemType) => filterRecordByType(items, itemType),
-  )
+  ) satisfies ItemSelector<ItemCatalog, { itemType: ItemType }>
 
-  export const selectChildrenOf: StandardSelector<{ items: ItemCatalog }, ItemDataRecord, { itemId: UUID }> = createSelector(
-    [
-      (state: { items: ItemCatalog }) => state.items,
-      (_state: { items: ItemCatalog }, options: { itemId: UUID }) => options.itemId,
-    ],
+  export const selectChildrenOf = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    Options.itemId,
     (items, itemId) => {
       const parent = items[itemId]
-      const children: ItemDataRecord = {}
+      const children: ItemCatalog = {}
 
       for (const childId of parent?.childIds ?? []) {
         children[childId] = items[childId]
@@ -217,80 +223,100 @@ export namespace ItemSelectors {
 
       return children
     },
-  )
+  ) satisfies ItemSelector<ItemCatalog, { itemId: UUID }>
 
-  /** Shared by every per-type sub-namespace below: looks the item up by id first (cheaper than
-   *  filtering the whole catalog by type), then confirms it's actually of `type` via the same type
-   *  guard `filterRecordByType` uses. */
+  /**
+   * The item at `itemId`, narrowed to `type` — `undefined` if no such item exists or it isn't of
+   * that type. Shared by every per-type sub-namespace below.
+   */
   function itemOfType<T extends ItemType>(items: ItemCatalog, itemId: UUID, type: T): ItemDataFor<T> | undefined {
     const item = items[itemId]
     return item !== undefined && itemIsType(item, type) ? item : undefined
   }
 
   export namespace Armor {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.armor> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.armor)
-    export const selectEquipped: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.armor>[]> = (state) =>
-      Object.values(filterRecordByType(state.items, ItemType.armor)).filter((item) => item.equipped)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.armor),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.armor> | undefined, { itemId: UUID }>
+
+    export const selectEquipped = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      (items) => Object.values(filterRecordByType(items, ItemType.armor)).filter((item) => item.equipped),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.armor>[]>
   }
 
   export namespace Implants {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.implant> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.implant)
-  }
-
-  export namespace Firearms {
-    // Note: `ItemDataFor<ItemType.firearm>` resolves to `never` — no real `ItemData` ever has
-    // `itemType: ItemType.firearm`; a Firearm is `itemType: ItemType.weapon` with
-    // `weaponType: WeaponType.firearm` (see weaponData.ts). The legacy `firearms` export this
-    // mirrors is consequently unreachable against real data today — kept here only for structural
-    // parity with the other per-type groupings, not fixed (pre-existing, out of this pass's scope).
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemData | undefined, { itemId: UUID }> =
-      (state, { itemId }) => {
-        const item = state.items[itemId]
-        return item?.itemType === ItemType.firearm ? item : undefined
-      }
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.implant),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.implant> | undefined, { itemId: UUID }>
   }
 
   export namespace Software {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.software> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.software)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.software),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.software> | undefined, { itemId: UUID }>
   }
 
   export namespace Vehicles {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.vehicle> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.vehicle)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.vehicle),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.vehicle> | undefined, { itemId: UUID }>
   }
 
   export namespace Weapons {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.weapon> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.weapon)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.weapon),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.weapon> | undefined, { itemId: UUID }>
   }
 
   export namespace Devices {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.device> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.device)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.device),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.device> | undefined, { itemId: UUID }>
   }
 
   export namespace FirearmAccessories {
-    export const selectById: StandardSelector<
-      { items: ItemCatalog }, ItemDataFor<ItemType.firearmAccessory> | undefined, { itemId: UUID }
-    > = (state, { itemId }) => itemOfType(state.items, itemId, ItemType.firearmAccessory)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.firearmAccessory),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.firearmAccessory> | undefined, { itemId: UUID }>
   }
 
   export namespace Sins {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.sin> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.sin)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.sin),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.sin> | undefined, { itemId: UUID }>
   }
 
   export namespace Credsticks {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.credstick> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.credstick)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.credstick),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.credstick> | undefined, { itemId: UUID }>
   }
 
   export namespace Programs {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.program> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.program)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.program),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.program> | undefined, { itemId: UUID }>
   }
 
   export namespace Other {
@@ -298,25 +324,37 @@ export namespace ItemSelectors {
     // subtype for "other" items (they're plain `ItemData`), even though real items do carry
     // `itemType: ItemType.other`. `ItemData` is the accurate type here, not a narrower one, so this
     // doesn't use the `itemOfType` helper (which is typed for the `ItemDataFor<T>` case).
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemData | undefined, { itemId: UUID }> =
-      (state, { itemId }) => {
-        const item = state.items[itemId]
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => {
+        const item = items[itemId]
         return item?.itemType === ItemType.other ? item : undefined
-      }
+      },
+    ) satisfies ItemSelector<ItemData | undefined, { itemId: UUID }>
   }
 
   export namespace Licenses {
-    export const selectById: StandardSelector<{ items: ItemCatalog }, ItemDataFor<ItemType.license> | undefined, { itemId: UUID }> =
-      (state, { itemId }) => itemOfType(state.items, itemId, ItemType.license)
+    export const selectById = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => itemOfType(items, itemId, ItemType.license),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.license> | undefined, { itemId: UUID }>
 
-    export const selectForItem: StandardSelector<{ items: ItemCatalog }, LicenseData | null, { itemId: UUID }> =
-      (state, { itemId }) => {
-        const item = state.items[itemId]
+    export const selectForItem = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.itemId,
+      (items, itemId) => {
+        const item = items[itemId]
         if (!item?.licenseId) return null
-        return itemOfType(state.items, item.licenseId, ItemType.license) ?? null
-      }
+        return itemOfType(items, item.licenseId, ItemType.license) ?? null
+      },
+    ) satisfies ItemSelector<LicenseData | null, { itemId: UUID }>
 
-    export const selectItemsForId: StandardSelector<{ items: ItemCatalog }, ItemData[], { licenseId: UUID }> =
-      (state, { licenseId }) => Object.values(state.items).filter((item) => item.licenseId === licenseId)
+    export const selectItemsForId = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      Options.licenseId,
+      (items, licenseId) => Object.values(items).filter((item) => item.licenseId === licenseId),
+    ) satisfies ItemSelector<ItemData[], { licenseId: UUID }>
   }
 }

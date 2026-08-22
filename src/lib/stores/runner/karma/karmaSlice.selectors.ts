@@ -1,28 +1,36 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `KarmaSelectors.select` via `useRunnerSelector` instead. */
-export function selectKarma(state: RunnerData): RunnerData["karma"] {
-  return state.karma
+export function selectKarma(runner: RunnerData): RunnerData["karma"] {
+  return mapToLegacySelector(runner, KarmaSelectors.select)
 }
 
 /** @deprecated Use `KarmaSelectors.selectCurrent` via `useRunnerSelector` instead. */
-export function selectCurrentKarma(state: RunnerData): number {
-  return state.karma.current
+export function selectCurrentKarma(runner: RunnerData): number {
+  return mapToLegacySelector(runner, KarmaSelectors.selectCurrent)
 }
 
 /** @deprecated Use `KarmaSelectors.selectTotal` via `useRunnerSelector` instead. */
-export function selectTotalKarma(state: RunnerData): number {
-  return state.karma.total
+export function selectTotalKarma(runner: RunnerData): number {
+  return mapToLegacySelector(runner, KarmaSelectors.selectTotal)
 }
 
-const legacy = { selectKarma, selectCurrentKarma, selectTotalKarma }
-
-/** Standardized, namespaced selectors for the Karma domain — see
- *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
- *  sites are unaffected. */
 export namespace KarmaSelectors {
-  export const select: Selector<{ runner: RunnerData }, RunnerData["karma"]> = (state) => legacy.selectKarma(state.runner)
-  export const selectCurrent: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectCurrentKarma(state.runner)
-  export const selectTotal: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectTotalKarma(state.runner)
+  export const select = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.karma,
+  )
+
+  export const selectCurrent = createMemoizedSelector(
+    select,
+    (karma) => karma.current,
+  )
+
+  export const selectTotal = createMemoizedSelector(
+    select,
+    (karma) => karma.total,
+  )
 }
