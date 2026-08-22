@@ -11,7 +11,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { ArmorList } from "./armorList.tsx"
 
 const jacket: ArmorData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Armor Jacket",
   itemType: ItemType.armor,

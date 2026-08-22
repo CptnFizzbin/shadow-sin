@@ -14,7 +14,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
 const fakeSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
@@ -22,7 +22,7 @@ const fakeSin: SinData = {
 }
 
 const realSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,
@@ -35,10 +35,10 @@ const coveredLicense: LicenseData = {
   name: "License: Ares Predator",
   itemType: ItemType.license,
   rating: 4,
-  parentId: fakeSin.id,
+  items: { parentId: fakeSin.id, childIds: [] },
 }
 
-const sinWithLicense: SinData = { ...fakeSin, childIds: [coveredLicense.id] }
+const sinWithLicense: SinData = { ...fakeSin, items: { ...fakeSin.items, childIds: [coveredLicense.id] } }
 
 /** `SinDataCard` reads its own covered licenses from the store via `sin.id`, so every render needs the SIN itself seeded into gear. */
 const renderSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}, onOpen?: () => void) => {

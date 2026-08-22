@@ -93,7 +93,7 @@ describe("ArmorFormDialog", () => {
   it("populates fields when editing an existing armor item", () => {
     // Arrange
     const existingArmor: ArmorData = {
-      kind: EntityKind.item,
+      kind: EntityKind.item, items: { parentId: null, childIds: [] },
       id: "test-id" as ArmorData["id"],
       itemType: ItemType.armor,
       name: "Full Body Armor",

@@ -25,9 +25,9 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("builds a SIN lane with the SIN itself and its licensed gear nested underneath", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
 
     const lanes = buildVerificationLanes(gearMap(sin, license, weapon))
 
@@ -44,8 +44,8 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("routes a Restricted item with a missing or dangling licenseId to the Unlicensed lane", () => {
-    const missing: ItemData = { kind: EntityKind.item, id: itemId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
-    const dangling: ItemData = { kind: EntityKind.item, id: itemId2, name: "Dangling", itemType: ItemType.weapon, availability: { rating: 4, restricted: true }, licenseId: "00000000-0000-0000-0000-000000000099" as UUID }
+    const missing: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const dangling: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Dangling", itemType: ItemType.weapon, availability: { rating: 4, restricted: true }, licenseId: "00000000-0000-0000-0000-000000000099" as UUID }
 
     const lanes = buildVerificationLanes(gearMap(missing, dangling))
 
@@ -61,10 +61,10 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("never routes a Forbidden item into the Unlicensed or a SIN lane, even with a stray licenseId", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
     const forbidden: ItemData = {
-      kind: EntityKind.item,
+      kind: EntityKind.item, items: { parentId: null, childIds: [] },
       id: itemId,
       name: "Forbidden Gun",
       itemType: ItemType.weapon,
@@ -91,13 +91,13 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("never lists unrestricted gear in any lane", () => {
-    const mundane: ItemData = { kind: EntityKind.item, id: itemId, name: "Backpack", itemType: ItemType.other, availability: { rating: 0 } }
+    const mundane: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Backpack", itemType: ItemType.other, availability: { rating: 0 } }
 
     expect(buildVerificationLanes(gearMap(mundane))).toEqual([])
   })
 
   it("still lists a SIN with no licensed gear submitted for verification — it's independently selectable", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
 
     expect(buildVerificationLanes(gearMap(sin))).toEqual([
       {
@@ -109,8 +109,8 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("still lists a SIN whose Licence has no gear pointing at it", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
 
     expect(buildVerificationLanes(gearMap(sin, license))).toEqual([
       {
@@ -122,12 +122,12 @@ describe.concurrent("buildVerificationLanes", () => {
   })
 
   it("lists every owned SIN as its own lane, with or without licensed gear", () => {
-    const checkedSin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const checkedSin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
 
     const emptySinId = "00000000-0000-0000-0000-000000000005" as UUID
-    const emptySin: SinData = { kind: EntityKind.item, id: emptySinId, name: "Jane Doe", itemType: ItemType.sin, rating: 2 }
+    const emptySin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: emptySinId, name: "Jane Doe", itemType: ItemType.sin, rating: 2 }
 
     const lanes = buildVerificationLanes(gearMap(checkedSin, license, weapon, emptySin))
 

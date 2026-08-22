@@ -12,7 +12,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { VehiclesList } from "./vehiclesList.tsx"
 
 const bike: VehicleData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Suzuki Mirage",
   itemType: ItemType.vehicle,

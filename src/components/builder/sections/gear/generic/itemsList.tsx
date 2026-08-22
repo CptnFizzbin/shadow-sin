@@ -26,16 +26,16 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
-  const topLevelItems = items.filter((item) => !item.parentId)
+  const topLevelItems = items.filter((item) => !item.items.parentId)
 
   const handleAdd = async (parentId?: UUID) => {
     const label = parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ itemType, label })
-    if (saved) saveItem(parentId ? { ...saved, parentId } : saved)
+    if (saved) saveItem(parentId ? { ...saved, items: { ...saved.items, parentId } } : saved)
   }
 
   const handleEdit = async (item: ItemData) => {
-    const label = item.parentId ? `${itemLabel} sub-item` : itemLabel
+    const label = item.items.parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ item, itemType, label })
     if (saved) saveItem(saved)
   }

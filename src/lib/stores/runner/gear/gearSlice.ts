@@ -9,28 +9,24 @@ import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from
 const initialState: ItemCatalog = {}
 
 /**
- * Keeps `parentId`/`childIds` consistent across the whole gear record whenever `item` is
- * added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item` explicitly
- * lists its own `childIds` — those children's `parentId` is set or cleared to match.
+ * Keeps `items.parentId`/`items.childIds` consistent across the whole gear record whenever `item`
+ * is added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item`
+ * explicitly lists its own `childIds` — those children's `parentId` is set or cleared to match.
  */
 function relinkItem(state: ItemCatalog, item: ItemData) {
   for (const savedItem of Object.values(state)) {
-    savedItem.childIds ??= []
-
-    if (savedItem.id === item.parentId) {
-      if (!savedItem.childIds.includes(item.id)) {
-        savedItem.childIds.push(item.id)
+    if (savedItem.id === item.items.parentId) {
+      if (!savedItem.items.childIds.includes(item.id)) {
+        savedItem.items.childIds.push(item.id)
       }
     } else {
-      savedItem.childIds = savedItem.childIds.filter((id) => id !== item.id)
+      savedItem.items.childIds = savedItem.items.childIds.filter((id) => id !== item.id)
     }
 
-    if (item.childIds !== undefined) {
-      if (item.childIds.includes(savedItem.id)) {
-        savedItem.parentId = item.id
-      } else if (savedItem.parentId === item.id) {
-        savedItem.parentId = undefined
-      }
+    if (item.items.childIds.includes(savedItem.id)) {
+      savedItem.items.parentId = item.id
+    } else if (savedItem.items.parentId === item.id) {
+      savedItem.items.parentId = null
     }
   }
 }
@@ -42,9 +38,9 @@ function removeItemById(state: ItemCatalog, id: UUID) {
 
   delete state[id]
 
-  const parent = target.parentId ? state[target.parentId] : undefined
+  const parent = target.items.parentId ? state[target.items.parentId] : undefined
   if (parent) {
-    parent.childIds = parent.childIds?.filter((childId) => childId !== id)
+    parent.items.childIds = parent.items.childIds.filter((childId) => childId !== id)
   }
 }
 
@@ -53,7 +49,7 @@ function removeItemTree(state: ItemCatalog, id: UUID) {
   const target = state[id]
   if (!target) return
 
-  for (const childId of target.childIds ?? []) {
+  for (const childId of target.items.childIds) {
     removeItemTree(state, childId)
   }
 

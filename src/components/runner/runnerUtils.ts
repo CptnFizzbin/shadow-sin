@@ -74,7 +74,7 @@ export const useEssenceInfo = () => {
   const implants = useGearByType<ImplantData>(ItemType.implant)
 
   const implantEssence = implants
-    .filter((implant) => !implant.parentId) // implant accessories cost Capacity, not Essence
+    .filter((implant) => !implant.items.parentId) // implant accessories cost Capacity, not Essence
     .map((implant) => ({
       implantType: implant.implantType,
       essenceCost: getImplantEffectiveEssenceCost(implant),

@@ -12,7 +12,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { LicenseDataCard } from "./licenseDataCard.tsx"
 
 const fakeLicense: LicenseData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -20,7 +20,7 @@ const fakeLicense: LicenseData = {
 }
 
 const realLicense: LicenseData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "License: Legal Firearm",
   itemType: ItemType.license,

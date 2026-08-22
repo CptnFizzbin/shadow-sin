@@ -134,7 +134,7 @@ describe.concurrent("gearToTree", () => {
     expect(burnerSin!.children).toBeUndefined()
   })
 
-  it("omits parentId and childIds from every exported node", () => {
+  it("omits the items (parentId/childIds) attachment field from every exported node", () => {
     // Arrange
     const gear = createItemMap(
       createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
@@ -156,8 +156,7 @@ describe.concurrent("gearToTree", () => {
 
     // Assert
     for (const node of allNodes) {
-      expect(node).not.toHaveProperty("parentId")
-      expect(node).not.toHaveProperty("childIds")
+      expect(node).not.toHaveProperty("items")
     }
   })
 
@@ -178,8 +177,8 @@ describe.concurrent("gearToTree", () => {
     expect(rootNames).not.toContain("Driver License")
   })
 
-  it("handles a gear map built without createItem (items with no childIds field)", () => {
-    // Simulate items that may lack childIds (e.g. loaded from older storage)
+  it("handles a gear map built without createItem (hand-rolled items)", () => {
+    // Simulate items assembled by hand rather than via createItem's helper
     const sinId = crypto.randomUUID()
     const licenseId = crypto.randomUUID()
 
@@ -190,7 +189,7 @@ describe.concurrent("gearToTree", () => {
         name: "Handcrafted SIN",
         itemType: ItemType.sin,
         rating: 4,
-        childIds: [licenseId],
+        items: { parentId: null, childIds: [licenseId] },
       },
       [licenseId]: {
         kind: EntityKind.item,
@@ -198,7 +197,7 @@ describe.concurrent("gearToTree", () => {
         name: "Handcrafted License",
         itemType: ItemType.license,
         rating: 4,
-        parentId: sinId,
+        items: { parentId: sinId, childIds: [] },
       },
     }
 
@@ -231,7 +230,7 @@ describe.concurrent("gearFromTree", () => {
     expect(result.id).toBe(original.id)
     expect(result.name).toBe(original.name)
     expect(result.itemType).toBe(original.itemType)
-    expect(result.parentId).toBeUndefined()
+    expect(result.items.parentId).toBeNull()
   })
 
   it("round-trips parent/child relationships", () => {
@@ -251,8 +250,8 @@ describe.concurrent("gearFromTree", () => {
 
     expect(sinEntry).toBeDefined()
     expect(licenseEntry).toBeDefined()
-    expect(licenseEntry!.parentId).toBe(sinEntry!.id)
-    expect(sinEntry!.childIds).toContain(licenseEntry!.id)
+    expect(licenseEntry!.items.parentId).toBe(sinEntry!.id)
+    expect(sinEntry!.items.childIds).toContain(licenseEntry!.id)
   })
 
   it("restores items without parentId for root nodes", () => {
@@ -263,7 +262,7 @@ describe.concurrent("gearFromTree", () => {
     const restored = gearFromTree(tree)
 
     const item = Object.values(restored)[0]
-    expect(item.parentId).toBeUndefined()
+    expect(item.items.parentId).toBeNull()
   })
 })
 
@@ -307,8 +306,8 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
 
     expect(sinItem).toBeDefined()
     expect(licenseItems).toHaveLength(2)
-    expect(licenseItems.every((lic) => lic.parentId === sinItem!.id)).toBe(true)
-    expect(sinItem!.childIds).toHaveLength(2)
+    expect(licenseItems.every((lic) => lic.items.parentId === sinItem!.id)).toBe(true)
+    expect(sinItem!.items.childIds).toHaveLength(2)
   })
 
   it("round-trips a runner with no gear", () => {
@@ -354,7 +353,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
 
     expect(restoredSin).toBeDefined()
     expect(restoredLicense).toBeDefined()
-    expect(restoredSin.childIds).toEqual(originalSin.childIds)
-    expect(restoredLicense.parentId).toBe(originalLicense.parentId)
+    expect(restoredSin.items.childIds).toEqual(originalSin.items.childIds)
+    expect(restoredLicense.items.parentId).toBe(originalLicense.items.parentId)
   })
 })

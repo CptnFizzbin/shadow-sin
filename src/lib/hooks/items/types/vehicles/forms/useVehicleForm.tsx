@@ -34,6 +34,7 @@ const defaultFormValues = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] } as VehicleData["items"],
   effects: [] as VehicleData["effects"],
   stashed: false,
 
@@ -73,6 +74,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     quantity: values.quantity,
     availability: values.availability,
     source: values.source,
+    items: values.items,
     effects: values.effects,
     stashed: values.stashed,
     handling: values.handling,
@@ -110,6 +112,7 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
       book: vehicle.source?.book ?? "",
       page: vehicle.source?.page ?? 0,
     },
+    items: vehicle.items,
     effects: vehicle.effects ?? [],
     stashed: vehicle.stashed ?? false,
     handling: vehicle.handling,

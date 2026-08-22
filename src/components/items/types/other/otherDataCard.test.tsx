@@ -12,7 +12,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { OtherDataCard } from "./otherDataCard.tsx"
 
 const survivalKit: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Survival Kit",
   itemType: ItemType.other,
@@ -24,7 +24,7 @@ const flashlight: ItemData = {
   id: "00000000-0000-0000-0000-000000000002",
   name: "Flashlight",
   itemType: ItemType.other,
-  parentId: survivalKit.id,
+  items: { parentId: survivalKit.id, childIds: [] },
 }
 
 interface RemovableOtherCardProps {
@@ -56,7 +56,7 @@ describe("OtherDataCard", () => {
 
   it("renders attached items as nested subitems", () => {
     // Arrange
-    const survivalKitWithFlashlight = { ...survivalKit, childIds: [flashlight.id] }
+    const survivalKitWithFlashlight = { ...survivalKit, items: { ...survivalKit.items, childIds: [flashlight.id] } }
 
     // Act
     renderWithRunner(
@@ -83,7 +83,7 @@ describe("OtherDataCard", () => {
   it("removing the item dispatches removeItem for it and its subitems", async () => {
     // Arrange
     const runnerStore = renderRemovableOtherCard(
-      { ...survivalKit, childIds: [flashlight.id] },
+      { ...survivalKit, items: { ...survivalKit.items, childIds: [flashlight.id] } },
       { [flashlight.id]: flashlight },
     )
 

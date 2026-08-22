@@ -1,3 +1,4 @@
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
 import type { QualityData } from "#/system/qualityData.ts"
@@ -8,13 +9,14 @@ export type EntityBase = EntityData
 
 /**
  * The `{ parentId, childIds }` attachment position of an item within the parent/child gear
- * hierarchy. Not yet implemented by any real type — a preview of the shape
- * `docs/features/0015-entity-interface-decomposition.md` Slice 5 introduces.
+ * hierarchy. Implemented by `ItemData` (real values) and `RunnerData` (always a degenerate
+ * `{ parentId: null, childIds: [] }` — Runner is never a child and never attaches to anything
+ * itself). See CONTEXT.md's **Attachment** entry.
  */
 export interface EntityWithItems {
   items: {
-    parentId: string | null
-    childIds: string[]
+    parentId: UUID | null
+    childIds: UUID[]
   }
 }
 

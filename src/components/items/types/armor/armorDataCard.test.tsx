@@ -13,7 +13,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ArmorDataCard } from "./armorDataCard.tsx"
 
 const jacket: ArmorData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -27,7 +27,7 @@ const helmet: ItemData = {
   id: "00000000-0000-0000-0000-000000000002",
   name: "Helmet",
   itemType: ItemType.armor,
-  parentId: jacket.id,
+  items: { parentId: jacket.id, childIds: [] },
 }
 
 const renderArmorCard = (armor: ArmorData, extraGear: Record<string, ItemData> = {}) =>
@@ -64,7 +64,7 @@ describe("ArmorDataCard", () => {
 
   it("renders attached mods as nested subitems", () => {
     // Arrange / Act
-    renderArmorCard({ ...jacket, childIds: [helmet.id] }, { [helmet.id]: helmet })
+    renderArmorCard({ ...jacket, items: { ...jacket.items, childIds: [helmet.id] } }, { [helmet.id]: helmet })
 
     // Assert
     expect(screen.getByText("Helmet")).toBeDefined()
@@ -108,7 +108,7 @@ describe("ArmorDataCard", () => {
 
   it("removing the armor dispatches removeItem for it and its mods", async () => {
     // Arrange
-    const runnerStore = renderRemovableArmorCard({ ...jacket, childIds: [helmet.id] }, { [helmet.id]: helmet })
+    const runnerStore = renderRemovableArmorCard({ ...jacket, items: { ...jacket.items, childIds: [helmet.id] } }, { [helmet.id]: helmet })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))

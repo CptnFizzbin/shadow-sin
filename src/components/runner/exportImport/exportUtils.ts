@@ -7,7 +7,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 
-export interface GearTreeNode extends Omit<ItemData, "parentId" | "childIds"> {
+export interface GearTreeNode extends Omit<ItemData, "items"> {
   children?: GearTreeNode[]
 }
 
@@ -21,17 +21,17 @@ type RunnerExportPayload = Omit<RunnerData, "_data_"> & {
  * Convert a flat gear map (Record<id, ItemData>) into a tree of nested GearTreeNodes.
  * Root items (those without a parentId) appear at the top level.
  * Each item's children are nested under a `children` array.
- * The `parentId` and `childIds` reference fields are omitted from every node.
+ * The `items` (`parentId`/`childIds`) attachment field is omitted from every node.
  */
 export function gearToTree(
   gear: Record<string, ItemData>,
 ): GearTreeNode[] {
   const buildNode = (item: ItemData): GearTreeNode => {
-    const { childIds, parentId, ...rest } = item
+    const { items, ...rest } = item
 
     const children =
-      childIds && childIds.length > 0
-        ? childIds
+      items.childIds.length > 0
+        ? items.childIds
             .map((childId) => gear[childId])
             .filter((child): child is ItemData => child !== undefined)
             .map(buildNode)
@@ -41,7 +41,7 @@ export function gearToTree(
   }
 
   return Object.values(gear)
-    .filter((item) => !item.parentId)
+    .filter((item) => !item.items.parentId)
     .map(buildNode)
 }
 
@@ -66,12 +66,12 @@ export function runnerDataToYaml(
 
 /**
  * Flatten a tree of GearTreeNodes back into a Record<id, ItemData> suitable
- * for storing on RunnerData._data_.items.  parentId and childIds are reconstructed
- * from the tree structure.
+ * for storing on RunnerData._data_.items.  The `items` attachment field
+ * (`parentId`/`childIds`) is reconstructed from the tree structure.
  */
 export function gearFromTree(
   nodes: GearTreeNode[],
-  parentId?: UUID,
+  parentId: UUID | null = null,
 ): Record<string, ItemData> {
   const result: Record<string, ItemData> = {}
 
@@ -81,8 +81,7 @@ export function gearFromTree(
 
     const item: ItemData = {
       ...rest,
-      childIds: childIds.length > 0 ? childIds : undefined,
-      parentId,
+      items: { parentId, childIds },
     }
 
     result[item.id] = item

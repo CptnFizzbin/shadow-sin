@@ -67,7 +67,7 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ..
   const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
-    .filter((item) => item.parentId === implantId)
+    .filter((item) => item.items.parentId === implantId)
     .reduce((sum, child) => sum + (child.capacityCost ?? 0), 0)
 
   return (
@@ -78,7 +78,7 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ..
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
   render: function Render({ group }) {
-    const parentId = useSelector(group.store, (state) => state.values.parentId)
+    const parentId = useSelector(group.store, (state) => state.values.items.parentId)
     const itemId = useSelector(group.store, (state) => state.values.id)
 
     return (

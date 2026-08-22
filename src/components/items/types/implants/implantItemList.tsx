@@ -19,7 +19,7 @@ export const ImplantItemList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const openItemDetails = useOpenItemDetails()
   const implants = useGearByType<ImplantData>(ItemType.implant)
-  const rootImplants = implants.filter((implant) => !implant.parentId)
+  const rootImplants = implants.filter((implant) => !implant.items.parentId)
   const implantFormDialog = useImplantFormDialog()
 
   const handleAddImplant = async (props?: UseImplantFormProps) => {

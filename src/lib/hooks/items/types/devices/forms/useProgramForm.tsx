@@ -35,6 +35,7 @@ const defaultFormValues: ProgramData = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] },
   effects: [],
   stashed: false,
 }
@@ -48,7 +49,7 @@ export const programFormOpts = formOptions({
 export const useProgramForm = ({ program, parentId, onSubmit }: ProgramFormOptions) => {
   return useItemForm<ProgramData>({
     item: program,
-    defaultValues: { ...defaultFormValues, parentId },
+    defaultValues: { ...defaultFormValues, items: { ...defaultFormValues.items, parentId: parentId ?? null } },
     onSubmit,
   })
 }

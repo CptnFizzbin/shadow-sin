@@ -34,6 +34,7 @@ const defaultFormValues: ArmorData = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] },
   effects: [],
 }
 

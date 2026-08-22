@@ -14,7 +14,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DeviceDataCard } from "./deviceDataCard.tsx"
 
 const commlink: DeviceData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Renraku Sensei",
   itemType: ItemType.device,
@@ -34,10 +34,10 @@ const runningProgram: ProgramData = {
   itemType: ItemType.program,
   rating: 2,
   programType: ProgramType.dataSearch,
-  parentId: commlink.id,
+  items: { parentId: commlink.id, childIds: [] },
 }
 
-const deviceWithProgram: DeviceData = { ...commlink, childIds: [runningProgram.id] }
+const deviceWithProgram: DeviceData = { ...commlink, items: { ...commlink.items, childIds: [runningProgram.id] } }
 
 const renderDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}, onOpen?: () => void) =>
   renderWithRunner(<DeviceDataCard device={device} onOpen={onOpen} />, { [device.id]: device, ...extraGear })

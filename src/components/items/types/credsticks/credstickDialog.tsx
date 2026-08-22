@@ -76,7 +76,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       const updatedCredstick: CredstickData = { ...credstick, name: credstickName, balance: clampedBalance }
       dispatch(Actions.item.setItem(updatedCredstick))
     } else {
-      const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
+      const credstickItemData: Omit<CredstickData, "id" | "items"> = {
         kind: EntityKind.item,
         name: credstickName,
         itemType: ItemType.credstick,

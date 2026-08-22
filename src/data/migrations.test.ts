@@ -174,8 +174,8 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const license = getItemCatalog(migrated)[TEST_OLD_FORMAT_LICENSE_ID]
     expect(license).toBeDefined()
     expect(license.itemType).toBe("license")
-    expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
-    expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
+    expect(license.items.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
+    expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // fully migrated
     expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
@@ -219,8 +219,8 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const license = gearValues.find((item) => item.itemType === "license")
     expect(sin).toBeDefined()
     expect(license).toBeDefined()
-    expect(license!.parentId).toBe(sin!.id)
-    expect(sin!.childIds).toContain(license!.id)
+    expect(license!.items.parentId).toBe(sin!.id)
+    expect(sin!.items.childIds).toContain(license!.id)
 
     // fully migrated
     expect(runner._meta_.version).toBe(CURRENT_RUNNER_VERSION)

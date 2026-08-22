@@ -45,7 +45,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
 
   const handleAddAccessory = async () => {
     const saved = await accessoryFormDialog.open({ label: "Accessory" })
-    if (saved) dispatch(Actions.item.addItem({ ...saved, parentId: weapon.id }))
+    if (saved) dispatch(Actions.item.addItem({ ...saved, items: { ...saved.items, parentId: weapon.id } }))
   }
 
   return (

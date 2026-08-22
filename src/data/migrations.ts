@@ -26,6 +26,7 @@ import _024_normalizeArmorRating from "./migrations/024_normalizeArmorRating.ts"
 import _025_addMatrixGameState from "./migrations/025_addMatrixGameState.ts"
 import _026_addEntityKind from "./migrations/026_addEntityKind.ts"
 import _027_moveItems from "./migrations/027_moveItems.ts"
+import _028_nestItemAttachment from "./migrations/028_nestItemAttachment.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -60,6 +61,7 @@ export const migrations: AnyCharacterMigration[] = [
   _025_addMatrixGameState,
   _026_addEntityKind,
   _027_moveItems,
+  _028_nestItemAttachment,
 ]
 
 migrations.forEach((migration, index) => {

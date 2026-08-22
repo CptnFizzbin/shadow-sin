@@ -14,7 +14,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
 const car: VehicleData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Americar",
   itemType: ItemType.vehicle,
@@ -34,10 +34,10 @@ const mod: ItemData = {
   id: crypto.randomUUID(),
   name: "Anti-Theft System",
   itemType: ItemType.other,
-  parentId: car.id,
+  items: { parentId: car.id, childIds: [] },
 }
 
-const carWithMod: VehicleData = { ...car, childIds: [mod.id] }
+const carWithMod: VehicleData = { ...car, items: { ...car.items, childIds: [mod.id] } }
 
 const renderVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) =>
   renderWithRunner(<VehicleDataCard vehicle={vehicle} onOpen={onOpen} />, { [vehicle.id]: vehicle, ...extraGear })

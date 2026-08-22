@@ -31,13 +31,20 @@ import {
   weapons,
 } from "./gearSlice.selectors.ts"
 
-const item: ItemData = { kind: EntityKind.item, id: NullUuid, name: "Test Item", itemType: ItemType.other }
+const item: ItemData = {
+  kind: EntityKind.item,
+  id: NullUuid,
+  name: "Test Item",
+  itemType: ItemType.other,
+  items: { parentId: null, childIds: [] },
+}
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   kind: EntityKind.item,
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
+  items: { parentId: null, childIds: [] },
   ...overrides,
 })
 

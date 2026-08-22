@@ -36,12 +36,11 @@ const defaultFormValues: ImplantData = {
     book: "",
     page: 0,
   },
-  parentId: NullUuid,
+  items: { parentId: NullUuid, childIds: [NullUuid] },
   capacity: 0,
   capacityCost: 0,
   quantity: 0,
   rating: undefined as number | undefined,
-  childIds: [NullUuid],
   notes: "",
   equipped: false,
   stashed: false,
@@ -62,7 +61,7 @@ export const implantFormOpts = formOptions({
 export const useImplantForm = ({ implant, parentId, onSubmit }: ImplantFormOptions) => {
   return useItemForm<ImplantData>({
     item: implant,
-    defaultValues: { ...defaultFormValues, parentId },
+    defaultValues: { ...defaultFormValues, items: { ...defaultFormValues.items, parentId: parentId ?? null } },
     onSubmit,
   })
 }
