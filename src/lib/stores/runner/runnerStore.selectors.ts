@@ -1,7 +1,5 @@
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import type { ProvidedEntity } from "#/lib/contexts/entity/EntityProvider.ts"
-import { useEntity } from "#/lib/contexts/entity/EntityProvider.ts"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -52,7 +50,7 @@ export function useRunnerStoreSelector<T>(
  * at which point only this one assembly line changes). A selector only declares the field(s) its
  * own `TState` actually needs; the others are simply ignored.
  */
-export function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
+function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
   return {
     runner,
     entity: runner,
@@ -105,46 +103,6 @@ export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, T
   return useRunnerStoreSelector(
     (runner) => selector(assembleRunnerState(runner) as TState, options),
     resolvedCompare,
-  )
-}
-
-export interface EntitySelectorState {
-  runner: RunnerData
-  entity: ProvidedEntity
-  items: ItemCatalog
-}
-
-export function useEntitySelector<TState extends EntitySelectorState, TReturn>(
-  selector: Selector<TState, TReturn>,
-  compare?: (prev: TReturn, next: TReturn) => boolean,
-): TReturn
-export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
-  selector: Selector<TState, TReturn, TOptions>,
-  options: TOptions,
-  compare?: (prev: TReturn, next: TReturn) => boolean,
-): TReturn
-export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
-  selector: (state: TState, options?: TOptions) => TReturn,
-  optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
-  compare?: (prev: TReturn, next: TReturn) => boolean,
-): TReturn {
-  const store = useRunnerStoreContext()
-  const entity = useEntity()
-
-  const isCompareArg = typeof optionsOrCompare === "function"
-  const options = isCompareArg ? undefined : optionsOrCompare
-  const resolvedCompare = isCompareArg ? optionsOrCompare : compare
-
-  return useSelector(store,
-    (runner) => selector(
-      {
-        runner,
-        entity,
-        items: runner.gear,
-      } as TState,
-      options,
-    ),
-    { compare: resolvedCompare },
   )
 }
 
