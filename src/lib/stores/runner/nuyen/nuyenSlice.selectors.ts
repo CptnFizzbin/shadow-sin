@@ -1,29 +1,43 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `NuyenSelectors.select` via `useRunnerSelector` instead. */
-export function selectNuyen(state: RunnerData): RunnerData["nuyen"] {
-  return state.nuyen
+export function selectNuyen(runner: RunnerData): RunnerData["nuyen"] {
+  return mapToLegacySelector(runner, NuyenSelectors.select)
 }
 
 /** @deprecated Use `NuyenSelectors.selectAmount` via `useRunnerSelector` instead. */
-export function selectNuyenAmount(state: RunnerData): number {
-  return state.nuyen.current
+export function selectNuyenAmount(runner: RunnerData): number {
+  return mapToLegacySelector(runner, NuyenSelectors.selectAmount)
 }
 
 /** @deprecated Use `NuyenSelectors.selectLoans` via `useRunnerSelector` instead. */
-export function selectLoans(state: RunnerData): RunnerData["nuyen"]["loans"] {
-  return state.nuyen.loans
+export function selectLoans(runner: RunnerData): RunnerData["nuyen"]["loans"] {
+  return mapToLegacySelector(runner, NuyenSelectors.selectLoans)
 }
 
-const legacy = { selectNuyen, selectNuyenAmount, selectLoans }
-
 /** Standardized, namespaced selectors for the Nuyen domain — see
- *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
- *  sites are unaffected. */
+ *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace NuyenSelectors {
-  export const select: Selector<{ runner: RunnerData }, RunnerData["nuyen"]> = (state) => legacy.selectNuyen(state.runner)
-  export const selectAmount: Selector<{ runner: RunnerData }, number> = (state) => legacy.selectNuyenAmount(state.runner)
-  export const selectLoans: Selector<{ runner: RunnerData }, RunnerData["nuyen"]["loans"]> = (state) =>
-    legacy.selectLoans(state.runner)
+  export type NuyenSelector<TReturn, TOptions extends object | never = never> = Selector<
+    { runner: RunnerData }, TReturn, TOptions
+  >
+
+  export const select = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.nuyen,
+  ) satisfies NuyenSelector<RunnerData["nuyen"]>
+
+  export const selectAmount = createMemoizedSelector(
+    select,
+    (nuyen) => nuyen.current,
+  ) satisfies NuyenSelector<number>
+
+  export const selectLoans = createMemoizedSelector(
+    select,
+    (nuyen) => nuyen.loans,
+  ) satisfies NuyenSelector<RunnerData["nuyen"]["loans"]>
 }
