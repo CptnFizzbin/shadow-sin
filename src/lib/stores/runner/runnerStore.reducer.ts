@@ -1,3 +1,4 @@
+import type { Reducer, UnknownAction } from "@reduxjs/toolkit"
 import { combineReducers, createSlice } from "@reduxjs/toolkit"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -54,7 +55,7 @@ const submersionGradeSlice = createSlice({
   reducers: {},
 })
 
-export const runnerRootReducer = combineReducers({
+const domainReducer = combineReducers({
   id: idSlice.reducer,
   kind: kindSlice.reducer,
   _meta_: metaReducer,
@@ -81,3 +82,18 @@ export const runnerRootReducer = combineReducers({
   initiateGrade: initiateGradeSlice.reducer,
   submersionGrade: submersionGradeSlice.reducer,
 })
+
+/**
+ * Mirrors `RunnerData.name` (the `EntityBase.name` field) from `profile.alias || profile.name`.
+ * Unlike every reducer `domainReducer` composes above, this can't be a `combineReducers` leaf: a
+ * leaf only ever sees its own previous slice value, but the mirror needs whichever of
+ * `profile.alias`/`profile.name` *didn't* just change too — so `runnerRootReducer` calls it
+ * directly against `domainReducer`'s already-updated output instead of registering it under a
+ * `name` key.
+ */
+const nameReducer = (profile: RunnerData["profile"]): RunnerData["name"] => profile.alias || profile.name
+
+export const runnerRootReducer: Reducer<RunnerData> = (state, action: UnknownAction) => {
+  const next = domainReducer(state, action)
+  return { ...next, name: nameReducer(next.profile) }
+}

@@ -25,6 +25,7 @@ import addMatrixNode from "./migrations/023_addMatrixNode.ts"
 import normalizeArmorRating from "./migrations/024_normalizeArmorRating.ts"
 import addMatrixGameState from "./migrations/025_addMatrixGameState.ts"
 import addEntityKind from "./migrations/026_addEntityKind.ts"
+import addRunnerName from "./migrations/027_addRunnerName.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -58,6 +59,7 @@ export const migrations: AnyCharacterMigration[] = [
   normalizeArmorRating,
   addMatrixGameState,
   addEntityKind,
+  addRunnerName,
 ]
 
 /** The current RunnerData schema version — the highest migration `version` registered above. */

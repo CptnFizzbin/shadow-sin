@@ -11,6 +11,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 export const Hexen: RunnerData = {
   kind: EntityKind.runner,
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
+  name: "Hexen",
   _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
   biology: {

@@ -6,10 +6,10 @@ import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
 /**
  * The Entity currently in scope for `useEntitySelector`. Kept as `object` rather than
- * `EntityBase` — not every Entity kind this can hold (starting with `RunnerData`, which keys its
- * display name under `profile.name` rather than a top-level `name`) structurally satisfies
- * `EntityData`'s full shape. Callers narrow to whatever trait(s) their selector's `TState` needs
- * (`EntityWithAttrs`, ...), the same way `useRunnerSelector` narrows `RunnerData`.
+ * `EntityBase` — not every Entity kind this can hold (e.g. Spirit/Sprite, which have no `source`
+ * field and don't use `EntityData.rating`) structurally satisfies `EntityData`'s full shape.
+ * Callers narrow to whatever trait(s) their selector's `TState` needs (`EntityWithAttrs`, ...),
+ * the same way `useRunnerSelector` narrows `RunnerData`.
  */
 const EntityContext = createContext<object | null>(null)
 
