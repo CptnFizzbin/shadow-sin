@@ -45,6 +45,23 @@ describe.concurrent("gearReducer", () => {
     expect(next[original.id]).toEqual(updated)
   })
 
+  it("set on a real store's frozen output doesn't throw when the payload's items field is untouched", () => {
+    // Arrange — Immer freezes every dispatch's resulting state (including nested objects like
+    // `items`) in development; a save that never touches attachment fields (e.g. the item edit
+    // form when the item isn't a sub-item) reuses that exact frozen `items` reference in its
+    // payload. relinkItem must replace `items` wholesale rather than mutate it in place, or this
+    // throws "Cannot assign to read only property" on dispatch.
+    const added = gearReducer({}, addItem(makeItem({ name: "Engineering Shop" })))
+    const [stored] = Object.values(added)
+    const renamed = { ...stored, name: "Medkit" }
+
+    // Act
+    const next = gearReducer(added, setItem(renamed))
+
+    // Assert
+    expect(next[stored.id].name).toBe("Medkit")
+  })
+
   it("set adds the item's id to its parent's childIds", () => {
     // Arrange
     const parent = makeItem({ name: "Smartgun" })

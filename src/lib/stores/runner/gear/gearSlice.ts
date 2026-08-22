@@ -12,22 +12,34 @@ const initialState: ItemCatalog = {}
  * Keeps `items.parentId`/`items.childIds` consistent across the whole gear record whenever `item`
  * is added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item`
  * explicitly lists its own `childIds` — those children's `parentId` is set or cleared to match.
+ *
+ * Always replaces `savedItem.items` wholesale rather than mutating its `parentId`/`childIds`
+ * fields in place: `item` (and therefore `item.items`) can be a payload dispatched straight from
+ * a form that never touched attachment fields, so it may still be the exact object reference the
+ * store handed out on a previous read — Immer freezes that on the way out, and writing into a
+ * frozen nested object throws.
  */
 function relinkItem(state: ItemCatalog, item: ItemData) {
   for (const savedItem of Object.values(state)) {
+    let childIds = savedItem.items.childIds
+
     if (savedItem.id === item.items.parentId) {
-      if (!savedItem.items.childIds.includes(item.id)) {
-        savedItem.items.childIds.push(item.id)
+      if (!childIds.includes(item.id)) {
+        childIds = [...childIds, item.id]
       }
     } else {
-      savedItem.items.childIds = savedItem.items.childIds.filter((id) => id !== item.id)
+      childIds = childIds.filter((id) => id !== item.id)
     }
 
+    let parentId = savedItem.items.parentId
+
     if (item.items.childIds.includes(savedItem.id)) {
-      savedItem.items.parentId = item.id
-    } else if (savedItem.items.parentId === item.id) {
-      savedItem.items.parentId = null
+      parentId = item.id
+    } else if (parentId === item.id) {
+      parentId = null
     }
+
+    savedItem.items = { parentId, childIds }
   }
 }
 
@@ -40,7 +52,7 @@ function removeItemById(state: ItemCatalog, id: UUID) {
 
   const parent = target.items.parentId ? state[target.items.parentId] : undefined
   if (parent) {
-    parent.items.childIds = parent.items.childIds.filter((childId) => childId !== id)
+    parent.items = { ...parent.items, childIds: parent.items.childIds.filter((childId) => childId !== id) }
   }
 }
 
