@@ -16,6 +16,7 @@ import {
   SpellType,
 } from "#/system/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { selectAllGameEffects, selectGameEffectsByType, useGameEffects } from "./useGameEffects.ts"
@@ -30,7 +31,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -52,7 +53,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -73,7 +74,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -94,7 +95,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -123,7 +124,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -146,7 +147,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -171,7 +172,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -212,7 +213,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(3)
@@ -227,7 +228,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: sheet._data_.items })
+    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -244,7 +245,7 @@ describe("selectGameEffectsByType", () => {
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: sheet._data_.items })
+    const effects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -269,7 +270,7 @@ describe("selectGameEffectsByType", () => {
     })
 
     // Act
-    const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: sheet._data_.items })
+    const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(attrModEffects).toHaveLength(1)
@@ -306,7 +307,7 @@ describe("selectGameEffectsByType", () => {
     })
 
     // Act
-    const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: sheet._data_.items })
+    const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(initiativeEffects).toHaveLength(2)

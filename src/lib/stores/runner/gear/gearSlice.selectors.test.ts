@@ -7,6 +7,7 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 import {
   armor,
@@ -118,7 +119,7 @@ describe.concurrent("selectAllGear", () => {
     const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(selectAllGear(runner)).toBe(runner._data_.items)
+    expect(selectAllGear(runner)).toBe(getItemCatalog(runner))
   })
 })
 

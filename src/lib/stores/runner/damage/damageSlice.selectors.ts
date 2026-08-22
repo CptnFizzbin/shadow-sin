@@ -8,6 +8,7 @@ import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityWithDamage, EntityWithQualities } from "#/system/entities/entityTraits.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 export interface DamageTrackInfo {
   max: number
@@ -55,7 +56,7 @@ export namespace DamageSelectors {
         }
       }
 
-      for (const item of Object.values(runner._data_.items)) {
+      for (const item of Object.values(getItemCatalog(runner))) {
         if (item.equipped !== true) continue
         for (const effect of item.effects ?? []) {
           if (
@@ -94,7 +95,7 @@ export namespace DamageSelectors {
         }
       }
 
-      for (const item of Object.values(runner._data_.items)) {
+      for (const item of Object.values(getItemCatalog(runner))) {
         if (item.equipped !== true) continue
         for (const effect of item.effects ?? []) {
           if (

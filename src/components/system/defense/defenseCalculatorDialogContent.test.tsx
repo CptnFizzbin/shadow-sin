@@ -8,6 +8,7 @@ import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -330,7 +331,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet._data_.items[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))
@@ -367,7 +368,7 @@ describe("DefenseCalculatorDialogContent", () => {
           impact: 6,
           damage: { ballistic: 2, impact: 1 },
         }
-        sheet._data_.items[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
@@ -393,7 +394,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet._data_.items[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))

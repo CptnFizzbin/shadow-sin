@@ -5,6 +5,7 @@ import { dump, load } from "js-yaml"
 import { applyMigrations } from "#/data/applyMigrations.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 export interface GearTreeNode extends Omit<ItemData, "parentId" | "childIds"> {
   children?: GearTreeNode[]
@@ -52,12 +53,12 @@ export function runnerDataToYaml(
   state: RunnerData,
 ): string {
   const { _data_, ...rest } = state
-  const { items, ...restData } = _data_
+  const { items: _items, ...restData } = _data_
 
   const exportPayload: RunnerExportPayload = {
     ...rest,
     _data_: restData,
-    gear: gearToTree(items),
+    gear: gearToTree(getItemCatalog(state)),
   }
 
   return dump(exportPayload, { lineWidth: 120 })

@@ -1,6 +1,7 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 /**
  * Runs a standardized `{ runner, entity, items }` selector against a bare `RunnerData`, for a
@@ -25,7 +26,7 @@ export function mapToLegacySelector<TReturn, TOptions extends object | never = n
     {
       runner,
       entity: runner,
-      items: runner._data_.items,
+      items: getItemCatalog(runner),
     },
     options as TOptions,
   )

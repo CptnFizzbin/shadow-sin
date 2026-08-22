@@ -7,6 +7,7 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ArmorDataCard } from "./armorDataCard.tsx"
@@ -102,7 +103,7 @@ describe("ArmorDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Unequip" }))
 
     // Assert
-    expect(runnerStore.getState()._data_.items[jacket.id].equipped).toBe(false)
+    expect(getItemCatalog(runnerStore.getState())[jacket.id].equipped).toBe(false)
   })
 
   it("removing the armor dispatches removeItem for it and its mods", async () => {
@@ -114,7 +115,7 @@ describe("ArmorDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState()._data_.items[jacket.id]).toBeUndefined())
-    expect(runnerStore.getState()._data_.items[helmet.id]).toBeUndefined()
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[jacket.id]).toBeUndefined())
+    expect(getItemCatalog(runnerStore.getState())[helmet.id]).toBeUndefined()
   })
 })

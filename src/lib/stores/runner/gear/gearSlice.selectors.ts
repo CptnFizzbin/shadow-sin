@@ -15,25 +15,26 @@ import { ItemType } from "#/system/itemType.ts"
 import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
 import { filterRecordByType, itemIsType, toItemCatalogTree } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 /** @deprecated Use `ItemSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
-  return state._data_.items
+  return getItemCatalog(state)
 }
 
 /** @deprecated Use `ItemSelectors.selectAvailable` via `useRunnerSelector` instead. */
 export function selectAvailable(state: RunnerData): ItemData[] {
-  return Object.values(state._data_.items).filter((item) => !item.stashed)
+  return Object.values(getItemCatalog(state)).filter((item) => !item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectEquipped` via `useRunnerSelector` instead. */
 export function selectEquipped(state: RunnerData): ItemData[] {
-  return Object.values(state._data_.items).filter((item) => item.equipped)
+  return Object.values(getItemCatalog(state)).filter((item) => item.equipped)
 }
 
 /** @deprecated Use `ItemSelectors.selectStashed` via `useRunnerSelector` instead. */
 export function selectStashed(state: RunnerData): ItemData[] {
-  return Object.values(state._data_.items).filter((item) => item.stashed)
+  return Object.values(getItemCatalog(state)).filter((item) => item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectById` via `useRunnerSelector` instead. */

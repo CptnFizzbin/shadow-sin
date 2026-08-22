@@ -8,6 +8,7 @@ import type { ItemCatalog } from "./items/itemUtils.ts"
 import { LifestyleType } from "./lifestyleType.ts"
 import { metatypes, MetatypeType } from "./metatypeData.ts"
 import type { RunnerData } from "./runnerData.ts"
+import { getItemCatalog } from "./runnerTraits.ts"
 
 export type RunnerFactoryOverrideFn = (data: RunnerData & { gear: ItemCatalog }) => RunnerData
 
@@ -124,7 +125,7 @@ export function runnerDataFactory(
   Object.defineProperty(data, "gear", {
     configurable: true,
     get(this: RunnerData) {
-      return this._data_.items
+      return getItemCatalog(this)
     },
     set(this: RunnerData, value: ItemCatalog) {
       this._data_.items = value

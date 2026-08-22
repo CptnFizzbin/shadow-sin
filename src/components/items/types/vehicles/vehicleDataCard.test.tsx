@@ -8,6 +8,7 @@ import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
@@ -92,7 +93,7 @@ describe("VehicleDataCard", () => {
 
     // Assert
     expect(screen.getByText("Damage 3/10")).toBeDefined()
-    expect((runnerStore.getState()._data_.items[car.id] as VehicleData).damage?.physical).toBe(3)
+    expect((getItemCatalog(runnerStore.getState())[car.id] as VehicleData).damage?.physical).toBe(3)
   })
 
   it("renders attached mods as nested subitems", () => {
@@ -126,7 +127,7 @@ describe("VehicleDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState()._data_.items[carWithMod.id]).toBeUndefined())
-    expect(runnerStore.getState()._data_.items[mod.id]).toBeUndefined()
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[carWithMod.id]).toBeUndefined())
+    expect(getItemCatalog(runnerStore.getState())[mod.id]).toBeUndefined()
   })
 })

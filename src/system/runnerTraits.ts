@@ -12,3 +12,12 @@ export interface RunnerWithData {
     items: ItemCatalog
   }
 }
+
+/**
+ * The runner's item catalog (`RunnerData._data_.items`). `_data_` is generalized internal
+ * storage — sibling to `_meta_` — and isn't meant to be reached into directly; call sites that
+ * want the item catalog go through this instead.
+ */
+export function getItemCatalog(runner: RunnerWithData): ItemCatalog {
+  return runner._data_.items
+}

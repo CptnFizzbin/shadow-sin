@@ -3,6 +3,7 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 import * as attributesSelectors from "./attributes/attributesSlice.selectors.ts"
 import * as biologySelectors from "./biology/biologySlice.selectors.ts"
@@ -46,15 +47,14 @@ export function useRunnerStoreSelector<T>(
  * Everything `useRunnerSelector` can currently assemble from `RunnerData` alone: itself
  * (`runner`), as an entity (`entity` — `RunnerData` already structurally satisfies
  * `EntityWithAttrs`, so this covers `AttrSelectors` too), and its item collection (`items`,
- * today's `RunnerData.gear` — this is what moves to `RunnerData._data_.items` under 0015 Slice 5,
- * at which point only this one assembly line changes). A selector only declares the field(s) its
+ * `RunnerData._data_.items` — see `getItemCatalog`). A selector only declares the field(s) its
  * own `TState` actually needs; the others are simply ignored.
  */
 export function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
   return {
     runner,
     entity: runner,
-    items: runner._data_.items,
+    items: getItemCatalog(runner),
   }
 }
 
