@@ -1,46 +1,56 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { ActiveProgram } from "#/system/matrix/activeProgram.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `MatrixSelectors.selectKnownNodes` via `useRunnerSelector` instead. */
-export function selectKnownNodes(state: RunnerData): KnownNode[] {
-  return state.gameState.matrix.knownNodes
+export function selectKnownNodes(runner: RunnerData): KnownNode[] {
+  return mapToLegacySelector(runner, MatrixSelectors.selectKnownNodes)
 }
 
 /** @deprecated Use `MatrixSelectors.selectActiveNodeId` via `useRunnerSelector` instead. */
-export function selectActiveNodeId(state: RunnerData): string | undefined {
-  return state.gameState.matrix.activeNodeId
+export function selectActiveNodeId(runner: RunnerData): string | undefined {
+  return mapToLegacySelector(runner, MatrixSelectors.selectActiveNodeId)
 }
 
 /** @deprecated Use `MatrixSelectors.selectActiveNode` via `useRunnerSelector` instead. */
-export function selectActiveNode(state: RunnerData): KnownNode | undefined {
-  const { knownNodes, activeNodeId } = state.gameState.matrix
-  return knownNodes.find((node) => node.id === activeNodeId)
+export function selectActiveNode(runner: RunnerData): KnownNode | undefined {
+  return mapToLegacySelector(runner, MatrixSelectors.selectActiveNode)
 }
 
 /** @deprecated Use `MatrixSelectors.selectActivePrograms` via `useRunnerSelector` instead. */
-export function selectActivePrograms(state: RunnerData): ActiveProgram[] {
-  return state.gameState.matrix.activePrograms
-}
-
-const legacy = {
-  selectKnownNodes,
-  selectActiveNodeId,
-  selectActiveNode,
-  selectActivePrograms,
+export function selectActivePrograms(runner: RunnerData): ActiveProgram[] {
+  return mapToLegacySelector(runner, MatrixSelectors.selectActivePrograms)
 }
 
 /** Standardized, namespaced selectors for the Matrix game-state domain — see
- *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
- *  sites are unaffected. */
+ *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace MatrixSelectors {
-  export const selectKnownNodes: Selector<{ runner: RunnerData }, KnownNode[]> = (state) =>
-    legacy.selectKnownNodes(state.runner)
-  export const selectActiveNodeId: Selector<{ runner: RunnerData }, string | undefined> = (state) =>
-    legacy.selectActiveNodeId(state.runner)
-  export const selectActiveNode: Selector<{ runner: RunnerData }, KnownNode | undefined> = (state) =>
-    legacy.selectActiveNode(state.runner)
-  export const selectActivePrograms: Selector<{ runner: RunnerData }, ActiveProgram[]> = (state) =>
-    legacy.selectActivePrograms(state.runner)
+  export type MatrixSelector<TReturn, TOptions extends object | never = never> = Selector<
+    { runner: RunnerData }, TReturn, TOptions
+  >
+
+  export const selectKnownNodes = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.gameState.matrix.knownNodes,
+  ) satisfies MatrixSelector<KnownNode[]>
+
+  export const selectActiveNodeId = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.gameState.matrix.activeNodeId,
+  ) satisfies MatrixSelector<string | undefined>
+
+  export const selectActiveNode = createMemoizedSelector(
+    selectKnownNodes,
+    selectActiveNodeId,
+    (knownNodes, activeNodeId) => knownNodes.find((node) => node.id === activeNodeId),
+  ) satisfies MatrixSelector<KnownNode | undefined>
+
+  export const selectActivePrograms = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => runner.gameState.matrix.activePrograms,
+  ) satisfies MatrixSelector<ActiveProgram[]>
 }
