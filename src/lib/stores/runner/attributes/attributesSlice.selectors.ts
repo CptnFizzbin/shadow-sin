@@ -31,8 +31,6 @@ export function selectAttrValue(key: AttributeKey) {
   }
 }
 
-/** Standardized, namespaced selectors for the Attributes domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace AttrSelectors {
   export type AttrSelector<TReturn, TOptions extends object | never = never> = Selector<{
     entity: EntityBase & EntityWithAttrs

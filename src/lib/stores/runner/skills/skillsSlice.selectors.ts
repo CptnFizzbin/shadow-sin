@@ -1,4 +1,3 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
@@ -51,13 +50,7 @@ export function selectAllowedActiveSkills(runner: RunnerData): Partial<Record<Sk
   return mapToLegacySelector(runner, SkillsSelectors.selectAllowedActive)
 }
 
-/** Standardized, namespaced selectors for the Skills domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace SkillsSelectors {
-  export type SkillsSelector<TReturn, TOptions extends object | never = never> = Selector<
-    { runner: RunnerData }, TReturn, TOptions
-  >
-
   export const Options = {
     skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
   }
@@ -65,22 +58,22 @@ export namespace SkillsSelectors {
   export const selectActiveSkills = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.activeSkills,
-  ) satisfies SkillsSelector<ActiveSkillData[]>
+  )
 
   export const selectSkillGroups = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.skillGroups,
-  ) satisfies SkillsSelector<SkillGroupData[]>
+  )
 
   export const selectKnowledgeSkills = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.knowledgeSkills,
-  ) satisfies SkillsSelector<KnowledgeSkillData[]>
+  )
 
   export const selectLanguageSkills = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.languageSkills,
-  ) satisfies SkillsSelector<LanguageSkillData[]>
+  )
 
   export const selectAllowedActive = createMemoizedSelector(
     BiologySelectors.selectAwakening,
@@ -93,7 +86,7 @@ export namespace SkillsSelectors {
 
       return Object.fromEntries(skillEntries) as Partial<Record<SkillKey, SkillInfo>>
     },
-  ) satisfies SkillsSelector<Partial<Record<SkillKey, SkillInfo>>>
+  )
 
   export const selectValue = createMemoizedSelector(
     selectActiveSkills,
@@ -105,11 +98,11 @@ export namespace SkillsSelectors {
       const groupRating = skillGroups.find((g) => g.name === skillInfo.group)?.rating ?? 0
       return Math.max(skillRating, groupRating, 0)
     },
-  ) satisfies SkillsSelector<number, { skillName: SkillKey }>
+  )
 
   export const selectSpecialization = createMemoizedSelector(
     selectActiveSkills,
     Options.skillName,
     (activeSkills, skillName) => activeSkills.find((s) => s.name === skillName)?.specialization,
-  ) satisfies SkillsSelector<string | undefined, { skillName: SkillKey }>
+  )
 }

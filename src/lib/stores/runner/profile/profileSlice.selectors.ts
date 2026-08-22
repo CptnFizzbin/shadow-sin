@@ -1,4 +1,3 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
@@ -68,54 +67,48 @@ export function selectLifestyleInfo(runner: RunnerData): ReturnType<typeof Profi
   return mapToLegacySelector(runner, ProfileSelectors.selectLifestyleInfo)
 }
 
-/** Standardized, namespaced selectors for the Profile domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace ProfileSelectors {
-  export type ProfileSelector<TReturn, TOptions extends object | never = never> = Selector<
-    { runner: RunnerData }, TReturn, TOptions
-  >
-
   export const select = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.profile,
-  ) satisfies ProfileSelector<RunnerData["profile"]>
+  )
 
   export const selectName = createMemoizedSelector(
     select,
     (profile) => profile.name,
-  ) satisfies ProfileSelector<string>
+  )
 
   export const selectAlias = createMemoizedSelector(
     select,
     (profile) => profile.alias,
-  ) satisfies ProfileSelector<string>
+  )
 
   /** The Runner's alias, falling back to their legal name when no alias is set. */
   export const selectDisplayName = createMemoizedSelector(
     selectAlias,
     selectName,
     (alias, name) => alias || name,
-  ) satisfies ProfileSelector<string>
+  )
 
   export const selectLifestyle = createMemoizedSelector(
     select,
     (profile) => profile.lifestyle,
-  ) satisfies ProfileSelector<RunnerData["profile"]["lifestyle"]>
+  )
 
   export const selectStreetCred = createMemoizedSelector(
     select,
     (profile) => profile.streetCred,
-  ) satisfies ProfileSelector<number>
+  )
 
   export const selectNotoriety = createMemoizedSelector(
     select,
     (profile) => profile.notoriety,
-  ) satisfies ProfileSelector<number>
+  )
 
   export const selectPublicAwarenessModifier = createMemoizedSelector(
     select,
     (profile) => profile.publicAwarenessModifier ?? 0,
-  ) satisfies ProfileSelector<number>
+  )
 
   export const selectPublicAwareness = createMemoizedSelector(
     selectStreetCred,
@@ -123,7 +116,7 @@ export namespace ProfileSelectors {
     selectPublicAwarenessModifier,
     (streetCred, notoriety, publicAwarenessModifier) =>
       Math.max(0, Math.floor((streetCred + notoriety) / 3) + publicAwarenessModifier),
-  ) satisfies ProfileSelector<number>
+  )
 
   export const selectLifestyleQuality = createMemoizedSelector(
     selectLifestyle,
@@ -133,7 +126,7 @@ export namespace ProfileSelectors {
   export const selectLifestyleMonthsPaid = createMemoizedSelector(
     selectLifestyle,
     (lifestyle) => lifestyle?.monthsPaid,
-  ) satisfies ProfileSelector<number | undefined>
+  )
 
   export const selectLifestyleInfo = createMemoizedSelector(
     selectLifestyleQuality,

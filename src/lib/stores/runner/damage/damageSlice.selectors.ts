@@ -31,18 +31,7 @@ export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
   return mapToLegacySelector(runner, DamageSelectors.track.matrix, { system })
 }
 
-/** Standardized, namespaced selectors for the Damage domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace DamageSelectors {
-  export type DamageSelector<TReturn, TOptions extends object | never = never> = Selector<
-    {
-      runner: RunnerData
-      entity: EntityWithDamage
-    },
-    TReturn,
-    TOptions
-  >
-
   export const Options = {
     system: selectorOption<{ system?: number }>("system"),
     track: selectorOption<{ track: DamageTrackKey }>("track"),

@@ -1,4 +1,3 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
@@ -39,35 +38,29 @@ export function selectAwakeningData(runner: RunnerData): AwakeningData {
   return mapToLegacySelector(runner, BiologySelectors.selectAwakeningInfo)
 }
 
-/** Standardized, namespaced selectors for the Biology domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace BiologySelectors {
-  export type BiologySelector<TReturn, TOptions extends object | never = never> = Selector<
-    { runner: RunnerData }, TReturn, TOptions
-  >
-
   export const select = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.biology,
-  ) satisfies BiologySelector<RunnerData["biology"]>
+  )
 
   export const selectMetatype = createMemoizedSelector(
     select,
     (biology) => biology.metatype,
-  ) satisfies BiologySelector<RunnerData["biology"]["metatype"]>
+  )
 
   export const selectAwakening = createMemoizedSelector(
     select,
     (biology) => biology.awakening,
-  ) satisfies BiologySelector<RunnerData["biology"]["awakening"]>
+  )
 
   export const selectMetatypeInfo = createMemoizedSelector(
     selectMetatype,
     (metatype) => metatypes[metatype],
-  ) satisfies BiologySelector<MetatypeData>
+  )
 
   export const selectAwakeningInfo = createMemoizedSelector(
     selectAwakening,
     (awakening) => awakenings[awakening],
-  ) satisfies BiologySelector<AwakeningData>
+  )
 }

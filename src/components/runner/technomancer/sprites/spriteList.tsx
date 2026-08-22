@@ -8,14 +8,14 @@ import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { SpritesSelectors } from "#/lib/stores/runner/sprites/spritesSlice.selectors.ts"
+import { SpriteSelectors } from "#/lib/stores/runner/sprites/spritesSlice.selectors.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 import { SpriteDataCard } from "./spriteDataCard.tsx"
 
 export const SpriteList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const sprites = useRunnerSelector(SpritesSelectors.selectAll)
+  const sprites = useRunnerSelector(SpriteSelectors.selectAll)
   const spriteDialog = useSpriteDialog()
   const confirmDialog = useConfirmDialog()
 

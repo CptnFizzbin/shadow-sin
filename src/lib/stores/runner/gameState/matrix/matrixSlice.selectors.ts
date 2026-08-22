@@ -1,4 +1,3 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
@@ -26,31 +25,25 @@ export function selectActivePrograms(runner: RunnerData): ActiveProgram[] {
   return mapToLegacySelector(runner, MatrixSelectors.selectActivePrograms)
 }
 
-/** Standardized, namespaced selectors for the Matrix game-state domain — see
- *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace MatrixSelectors {
-  export type MatrixSelector<TReturn, TOptions extends object | never = never> = Selector<
-    { runner: RunnerData }, TReturn, TOptions
-  >
-
   export const selectKnownNodes = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.gameState.matrix.knownNodes,
-  ) satisfies MatrixSelector<KnownNode[]>
+  )
 
   export const selectActiveNodeId = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.gameState.matrix.activeNodeId,
-  ) satisfies MatrixSelector<string | undefined>
+  )
 
   export const selectActiveNode = createMemoizedSelector(
     selectKnownNodes,
     selectActiveNodeId,
     (knownNodes, activeNodeId) => knownNodes.find((node) => node.id === activeNodeId),
-  ) satisfies MatrixSelector<KnownNode | undefined>
+  )
 
   export const selectActivePrograms = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.gameState.matrix.activePrograms,
-  ) satisfies MatrixSelector<ActiveProgram[]>
+  )
 }
