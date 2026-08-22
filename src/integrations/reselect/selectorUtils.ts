@@ -56,15 +56,15 @@ export const createCurriedSelector = <
 }
 
 /**
- * `TOptions` names the whole `{ key: ValueType }` shape up front rather than just the value type, so
- * each `Options.*` entry is self-documenting at the call site: `selectorOption<{ track: DamageTrackKey
- * }>("track")` shows the key and its type together. This is a single (non-curried) call because
- * `key` doesn't need its own inferred type parameter — it's just checked against the already-explicit
- * `keyof TOptions`, so there's nothing left over for TypeScript's "explicit type args disable
- * inference for the rest of the call" rule to break (see `injectOption` below for a case where that
- * rule does still bite, since its `TOptions` there is inferred rather than given).
+ * Builds a `(state, options) => value` accessor for `key` of `TOptions`, for use as a reselect
+ * input selector. Naming the whole `TOptions` shape up front (rather than just the value type)
+ * makes each `Options.*` entry self-documenting at the call site: `selectorOption<{ track:
+ * DamageTrackKey }>("track")` shows the key and its type together.
  */
 export function selectorOption<TOptions extends object>(key: keyof TOptions & string) {
+  // Explicit type args disable inference for the rest of a call, but there's no other inferred
+  // parameter here for that rule to break — unlike `injectOption` below, where `TOptions` is
+  // inferred rather than given — so this can stay a single call instead of a curried one.
   return (_state: unknown, options: TOptions): TOptions[keyof TOptions] => options[key]
 }
 
@@ -74,14 +74,12 @@ export function createSelector<TState, TReturn, TOption extends object | never =
   return selector
 }
 
-/**
- * The options a selector still needs after `TInjected`'s keys are pre-filled — `never` (rather than
- * an empty object) once nothing remains, so the resulting `Selector` collapses back to the
- * single-argument call signature instead of requiring an empty `{}` at every call site.
- */
+/** The options a selector still needs after `TInjected`'s keys are pre-filled. */
 type RemainingOptions<TOptions extends object, TInjected extends object> =
   Omit<TOptions, keyof TInjected> extends infer TRemaining
     ? keyof TRemaining extends never
+      // `never` rather than `{}` so the resulting `Selector` collapses back to the single-argument
+      // call signature instead of requiring an empty options object at every call site.
       ? never
       : TRemaining
     : never
