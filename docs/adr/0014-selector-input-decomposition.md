@@ -159,6 +159,21 @@ data — which `useRunnerSelector` was never trying to do. It's deliberately not
 needs at least one more Entity kind actually implementing a capability trait before "resolve the
 nearest entity" is answering a real question instead of a hypothetical one.
 
+**Update:** `useEntitySelector` has since been built (`src/lib/contexts/entity/entityProvider.tsx`),
+replacing `AttributesProvider`/`useAttrValue`. It doesn't wait on a second Entity kind implementing
+a capability trait after all — `RunnerData` already implements `EntityWithAttrs` directly (not just
+structurally), so `AttrSelectors.selectValue` is already reusable across the Runner and any future
+Entity kind implementing the same trait; `EntityProvider` only needed a home for "the nearest entity
+in scope," which `AttributesProvider`'s Context already modeled. Its `TState` is kept as bare
+`object` rather than `EntityBase` — not every Entity kind provided here (starting with `RunnerData`,
+whose display name lives at `profile.name` rather than a top-level `name`) structurally satisfies
+`EntityData`'s full shape — so callers narrow to whichever trait(s) their selector's `TState` needs,
+the same way `useRunnerSelector`'s `assembleRunnerState` narrows `RunnerData`. Attribute *bounds*
+(min/max/augMax, formerly `AttributesProvider`'s `infos`) did not move onto `EntityProvider`: they're
+derived from the Runner's own metatype/awakening data with no "nearest entity" equivalent for a
+device, spirit, or sprite, so they stayed a plain Runner-scoped hook (`useAttrInfo`/`useAllAttrInfos`,
+`src/lib/hooks/runner/attributes/useAttrInfo.ts`) instead.
+
 ## Scope
 
 `src/lib/stores/runner/**` only — the ~20 domain selector files backing `RunnerData`, matching
@@ -237,8 +252,8 @@ nothing binds to it yet; it exists purely as a documented preview of the shape 0
   *input* shape only, never the underlying `RunnerData` fields those inputs read.
 - `useRunnerSelector` is built (`src/lib/stores/runner/runnerStore.selectors.ts`) — see "Building
   `useRunnerSelector` now, without repeating ADR-0013" above for why it's scoped narrowly enough not
-  to need 0015's capability interfaces. `useEntitySelector` is not built here and remains future
-  work, attempted once at least one Entity kind actually implements a capability trait — not before.
+  to need 0015's capability interfaces. `useEntitySelector` was not built in this pass; it has since
+  been added (`src/lib/contexts/entity/entityProvider.tsx`) — see the "Update" note above.
 - Every legacy selector export across `src/lib/stores/runner/**`, plus `useRunnerStoreSelector` and
   the `Selectors` aggregator, now carries `@deprecated` — annotation only, per "Purely additive"
   above; no call site is migrated in this pass.

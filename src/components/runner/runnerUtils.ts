@@ -1,7 +1,9 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useAllAttrInfos, useAttrInfo, useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useAllAttrInfos, useAttrInfo } from "#/lib/hooks/runner/attributes/useAttrInfo.ts"
 import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -11,7 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
-// Re-exported for convenience — see attributesProvider.tsx for full documentation.
+// Re-exported for convenience — see useAttrInfo.ts for full documentation.
 export { useAllAttrInfos, useAttrInfo }
 
 /**
@@ -56,7 +58,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
-  const attribute = useAttrValue(skillInfo.attr)
+  const attribute = useEntitySelector(AttrSelectors.selectValue, { key: skillInfo.attr })
 
   const skillMods = useGameEffects(GameEffectType.skillMod)
   const totalMod = skillMods

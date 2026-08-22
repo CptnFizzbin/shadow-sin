@@ -6,8 +6,9 @@ import type { FC } from "react"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
@@ -21,7 +22,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
 
   const store = useRunnerStoreContext()
   const attrApi = useAttrInfo(props.attr)
-  const attrValue = useAttrValue(props.attr)
+  const attrValue = useEntitySelector(AttrSelectors.selectValue, { key: props.attr })
   const editorMode = useEditorMode()
 
   let disabled = false

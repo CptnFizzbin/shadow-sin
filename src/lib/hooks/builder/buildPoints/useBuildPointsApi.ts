@@ -7,7 +7,8 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { selectAwakeningData, selectMetatypeData } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
@@ -100,8 +101,8 @@ const useActiveSkillsBuildPoints = () => {
 }
 
 const useKnowledgeSkillsBuildPoints = () => {
-  const logicAttr = useAttrValue(AttributeKey.logic)
-  const intuitionAttr = useAttrValue(AttributeKey.intuition)
+  const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })
+  const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
 
   const knowledgeSkills = useRunnerStoreSelector(selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(selectLanguageSkills)

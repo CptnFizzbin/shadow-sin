@@ -1,12 +1,13 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {
-  const logicAttr = useAttrValue(AttributeKey.logic)
-  const intuitionAttr = useAttrValue(AttributeKey.intuition)
+  const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })
+  const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
 
   const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)

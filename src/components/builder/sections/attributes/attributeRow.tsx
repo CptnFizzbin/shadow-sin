@@ -4,7 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
@@ -18,7 +19,7 @@ interface AttributeRowProps {
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const attrLabel = AttributeLabels[props.attr]
   const attrInfo = useAttrInfo(props.attr)
-  const attrValue = useAttrValue(props.attr)
+  const attrValue = useEntitySelector(AttrSelectors.selectValue, { key: props.attr })
 
   return (
     <Stack direction="row" sx={{ alignItems: "center" }}>

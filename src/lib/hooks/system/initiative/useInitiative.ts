@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
@@ -12,8 +13,8 @@ interface InitiativeInfo {
 }
 
 export const useInitiative = (): InitiativeInfo => {
-  const reactionAttr = useAttrValue(AttributeKey.reaction)
-  const intuitionAttr = useAttrValue(AttributeKey.intuition)
+  const reactionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
+  const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
   const initiativeBonuses = useGameEffects(GameEffectType.initiativeBonus)
   const extraPassEffects = useGameEffects(GameEffectType.extraInitiativePasses)
   const extraDiceEffects = useGameEffects(GameEffectType.extraInitiativeDice)

@@ -9,7 +9,8 @@ import type { FC } from "react"
 
 import { DrainResistanceDicePool } from "#/components/runner/magician/spells/drainResistanceDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
@@ -27,7 +28,7 @@ interface SummoningSectionProps {
 }
 
 export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force, isBound }) => {
-  const magicAttr = useAttrValue(AttributeKey.magic)
+  const magicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const tradition = useRunnerSelector(TraditionSelectors.select)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 

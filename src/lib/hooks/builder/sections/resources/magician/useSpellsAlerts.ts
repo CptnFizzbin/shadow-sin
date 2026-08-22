@@ -3,14 +3,15 @@ import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
-  const magicAttribute = useAttrValue(AttributeKey.magic)
+  const magicAttribute = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)

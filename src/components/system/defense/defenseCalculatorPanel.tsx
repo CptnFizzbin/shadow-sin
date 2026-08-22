@@ -21,7 +21,7 @@ import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/dice
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useWoundModifier } from "#/lib/hooks/system/damage/useWoundModifier.ts"
 import {
   useActiveSkillDiceGroup,
@@ -29,6 +29,7 @@ import {
   useWoundDiceGroup,
 } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
@@ -91,9 +92,9 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
-  const reaction = useAttrValue(AttributeKey.reaction)
-  const body = useAttrValue(AttributeKey.body)
-  const willpower = useAttrValue(AttributeKey.willpower)
+  const reaction = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
+  const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
+  const willpower = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.willpower })
 
   const dodgeRating = useActiveSkillRating(SkillKey.dodge)
   const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
