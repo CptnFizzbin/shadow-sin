@@ -8,10 +8,11 @@ import type { FC } from "react"
 
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { useComplexFormsBuildPoints } from "#/lib/hooks/builder/buildPoints/useComplexFormsBuildPoints.ts"
 import { useComplexForms, useMaxComplexForms } from "#/lib/hooks/runner/technomancer/complexFormsHooks.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -22,7 +23,7 @@ import {
 } from "./complexFormsListItem.tsx"
 
 export const ComplexFormsList: FC = () => {
-  const resonance = useAttrValue(AttributeKey.resonance)
+  const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })
   const dispatch = useRunnerStoreDispatch()
   const complexForms = useComplexForms()
   const complexFormsBp = useComplexFormsBuildPoints()

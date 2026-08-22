@@ -4,9 +4,8 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { useAttributesBuildPoints } from "#/lib/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
 import { useHasMaxxedAttribute } from "#/lib/hooks/runner/attributes/useHasMaxxedAttribute.ts"
@@ -25,8 +24,8 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
 
   const store = useRunnerStoreContext()
   const attrKey = props.attr
-  const attrValue = useAttrValue(attrKey)
-  const attrInfo = useAttrInfo(attrKey)
+  const attrInfo = useRunnerAttrInfo(attrKey)
+  const attrValue = attrInfo.current
   const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false

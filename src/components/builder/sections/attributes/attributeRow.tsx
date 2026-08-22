@@ -3,8 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
@@ -17,8 +16,8 @@ interface AttributeRowProps {
 
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const attrLabel = AttributeLabels[props.attr]
-  const attrInfo = useAttrInfo(props.attr)
-  const attrValue = useAttrValue(props.attr)
+  const attrInfo = useRunnerAttrInfo(props.attr)
+  const attrValue = attrInfo.current
 
   return (
     <Stack direction="row" sx={{ alignItems: "center" }}>

@@ -11,7 +11,8 @@ import { useState } from "react"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withTheme } from "#/integrations/mui/muiUtils.ts"
-import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
@@ -30,7 +31,7 @@ interface SpellCastSectionProps {
 }
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
-  const magicAttr = useAttrValue(AttributeKey.magic)
+  const magicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const tradition = useRunnerSelector(TraditionSelectors.select)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 

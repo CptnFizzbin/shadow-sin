@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from "react"
 import { RunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
 
-import { RunnerAttributesProvider } from "./runnerAttributesProvider.tsx"
+import { RunnerEntityProvider } from "./runnerEntityProvider.tsx"
 
 interface RunnerDataProviderProps extends PropsWithChildren {
   store: RunnerStore
@@ -19,9 +19,9 @@ export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
 }) => {
   return (
     <RunnerStoreContext.Provider value={store}>
-      <RunnerAttributesProvider>
+      <RunnerEntityProvider>
         {children}
-      </RunnerAttributesProvider>
+      </RunnerEntityProvider>
     </RunnerStoreContext.Provider>
   )
 }
