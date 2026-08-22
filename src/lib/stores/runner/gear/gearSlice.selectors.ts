@@ -225,9 +225,10 @@ export namespace ItemSelectors {
     },
   ) satisfies ItemSelector<ItemCatalog, { itemId: UUID }>
 
-  /** Shared by every per-type sub-namespace below: looks the item up by id first (cheaper than
-   *  filtering the whole catalog by type), then confirms it's actually of `type` via the same type
-   *  guard `filterRecordByType` uses. */
+  /**
+   * The item at `itemId`, narrowed to `type` — `undefined` if no such item exists or it isn't of
+   * that type. Shared by every per-type sub-namespace below.
+   */
   function itemOfType<T extends ItemType>(items: ItemCatalog, itemId: UUID, type: T): ItemDataFor<T> | undefined {
     const item = items[itemId]
     return item !== undefined && itemIsType(item, type) ? item : undefined

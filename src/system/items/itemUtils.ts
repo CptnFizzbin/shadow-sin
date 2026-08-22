@@ -12,9 +12,18 @@ import type { AnyWeaponData, FirearmAccessoryData } from "#/system/gear/weaponDa
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
+/**
+ * The bulk item collection — what `RunnerData.gear` is today, and what
+ * `docs/features/0015-entity-interface-decomposition.md` Slice 5 moves to `RunnerData._data_.items`.
+ * This is specifically the shape `ItemSelectors`'s (`gearSlice.selectors.ts`) `TState`
+ * (`{ items: ItemCatalog }`) wraps — see docs/adr/0014-selector-input-decomposition.md — not just
+ * "a record of items" in general. Once Slice 5 lands, a caller passes
+ * `{ items: runner._data_.items }` and nothing about `ItemSelectors`'s own accessors or combiners
+ * needs to change.
+ */
 export type ItemCatalog<TData extends ItemData = ItemData> = Record<UUID, TData>
 
-/** @deprecated - use {@link ItemCatalog} instead */
+/** @deprecated Use {@link ItemCatalog} instead. */
 export type ItemDataRecord = ItemCatalog
 
 export type AnyItemData =

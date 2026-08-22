@@ -16,24 +16,23 @@ export interface DamageTrackInfo {
   woundIntervalOffset: number
 }
 
-/** @deprecated Use `DamageSelectors.selectPhysical` via `useRunnerSelector` instead. */
+/** @deprecated Use `DamageSelectors.track.physical` via `useRunnerSelector` instead. */
 export function selectPhysicalTrack(runner: RunnerData): DamageTrackInfo {
   return mapToLegacySelector(runner, DamageSelectors.track.physical)
 }
 
-/** @deprecated Use `DamageSelectors.selectStun` via `useRunnerSelector` instead. */
+/** @deprecated Use `DamageSelectors.track.stun` via `useRunnerSelector` instead. */
 export function selectStunTrack(runner: RunnerData): DamageTrackInfo {
   return mapToLegacySelector(runner, DamageSelectors.track.stun)
 }
 
-/** @deprecated Use `DamageSelectors.selectMatrix` via `useRunnerSelector` instead. */
+/** @deprecated Use `DamageSelectors.track.matrix` via `useRunnerSelector` instead. */
 export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
   return mapToLegacySelector(runner, DamageSelectors.track.matrix, { system })
 }
 
 /** Standardized, namespaced selectors for the Damage domain — see
- *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
- *  sites are unaffected. */
+ *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace DamageSelectors {
   export type DamageSelector<TReturn, TOptions extends object | never = never> = Selector<
     {
