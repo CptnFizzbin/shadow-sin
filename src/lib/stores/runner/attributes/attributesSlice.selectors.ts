@@ -12,7 +12,7 @@ export function selectAttributes(runner: RunnerData): RunnerData["attributes"] {
 }
 
 /**
- * The raw stored value for `key`, or `0` if unset - before modifiers, drugs, or gameEffects
+ * The raw stored value for `key`, or `0` if unset — before modifiers, drugs, or game effects apply.
  * @deprecated Use `AttrSelectors.selectBase` via `useRunnerSelector` instead.
  */
 export function selectAttrBase(key: AttributeKey) {
@@ -31,6 +31,8 @@ export function selectAttrValue(key: AttributeKey) {
   }
 }
 
+/** Standardized, namespaced selectors for the Attributes domain — see
+ *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace AttrSelectors {
   export type AttrSelector<TReturn, TOptions extends object | never = never> = Selector<{
     entity: EntityBase & EntityWithAttrs
@@ -45,7 +47,7 @@ export namespace AttrSelectors {
     (entity) => entity.attributes,
   )
 
-  /** The raw stored value for `key`, or `0` if unset - before modifiers, drugs, or gameEffects */
+  /** The raw stored value for `key`, or `0` if unset — before modifiers, drugs, or game effects apply. */
   export const selectBase = createMemoizedSelector(
     selectAll,
     Options.key,
