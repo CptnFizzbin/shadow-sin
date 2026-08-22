@@ -1,5 +1,7 @@
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import type { ProvidedEntity } from "#/lib/contexts/entity/EntityProvider.ts"
+import { useEntity } from "#/lib/contexts/entity/EntityProvider.ts"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -50,12 +52,18 @@ export function useRunnerStoreSelector<T>(
  * at which point only this one assembly line changes). A selector only declares the field(s) its
  * own `TState` actually needs; the others are simply ignored.
  */
-export function assembleRunnerState(runner: RunnerData) {
+export function assembleRunnerState(runner: RunnerData): RunnerSelectorState {
   return {
     runner,
     entity: runner,
-    items: runner.gear as ItemCatalog,
+    items: runner.gear,
   }
+}
+
+export interface RunnerSelectorState {
+  runner: RunnerData
+  entity: RunnerData
+  items: ItemCatalog
 }
 
 /**
@@ -76,16 +84,16 @@ export function assembleRunnerState(runner: RunnerData) {
  * entity (e.g. the nearest one via Context), where this hook only ever assembles the Runner's own
  * state. See docs/adr/0014-selector-input-decomposition.md.
  */
-export function useRunnerSelector<TState extends object, TReturn>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn>(
   selector: Selector<TState, TReturn>,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends object, TReturn, TOptions extends object>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
   selector: Selector<TState, TReturn, TOptions>,
   options: TOptions,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends object, TReturn, TOptions extends object>(
+export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
   selector: (state: TState, options?: TOptions) => TReturn,
   optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
   compare?: (prev: TReturn, next: TReturn) => boolean,
@@ -97,6 +105,46 @@ export function useRunnerSelector<TState extends object, TReturn, TOptions exten
   return useRunnerStoreSelector(
     (runner) => selector(assembleRunnerState(runner) as TState, options),
     resolvedCompare,
+  )
+}
+
+export interface EntitySelectorState {
+  runner: RunnerData
+  entity: ProvidedEntity
+  items: ItemCatalog
+}
+
+export function useEntitySelector<TState extends EntitySelectorState, TReturn>(
+  selector: Selector<TState, TReturn>,
+  compare?: (prev: TReturn, next: TReturn) => boolean,
+): TReturn
+export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
+  selector: Selector<TState, TReturn, TOptions>,
+  options: TOptions,
+  compare?: (prev: TReturn, next: TReturn) => boolean,
+): TReturn
+export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
+  selector: (state: TState, options?: TOptions) => TReturn,
+  optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
+  compare?: (prev: TReturn, next: TReturn) => boolean,
+): TReturn {
+  const store = useRunnerStoreContext()
+  const entity = useEntity()
+
+  const isCompareArg = typeof optionsOrCompare === "function"
+  const options = isCompareArg ? undefined : optionsOrCompare
+  const resolvedCompare = isCompareArg ? optionsOrCompare : compare
+
+  return useSelector(store,
+    (runner) => selector(
+      {
+        runner,
+        entity,
+        items: runner.gear,
+      } as TState,
+      options,
+    ),
+    { compare: resolvedCompare },
   )
 }
 

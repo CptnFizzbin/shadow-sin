@@ -5,9 +5,10 @@ import { RiArrowLeftLine } from "@remixicon/react"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
 import { AnyItemDetails } from "#/components/items/details/anyItemDetails.tsx"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 
 export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
@@ -26,7 +27,7 @@ function ItemDetailsRoute() {
   const navigate = Route.useNavigate()
   const router = useRouter()
   const dispatch = useRunnerStoreDispatch()
-  const item = useRunnerStoreSelector(Selectors.gear.selectById(itemId as UUID))
+  const item = useRunnerSelector(ItemSelectors.selectById, { itemId: itemId as UUID })
 
   const handleBack = () => router.history.back()
 

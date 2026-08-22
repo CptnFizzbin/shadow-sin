@@ -36,7 +36,7 @@ export const AttributesProvider: FC<AttributesProviderProps> = ({ values, infos,
   )
 }
 
-const useAttributesContext = (): AttributesContextValue => {
+export const useAttributesContext = (): AttributesContextValue => {
   const context = useContext(AttributesContext)
 
   if (!context) {
