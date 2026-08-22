@@ -1,6 +1,5 @@
-import { createSelector } from "reselect"
-
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 // TODO: Stubbed pending the persisted House Rules registry
@@ -10,9 +9,17 @@ import type { RunnerData } from "#/system/runnerData.ts"
 /** Standardized, namespaced selector for the House Rules domain — see
  *  docs/adr/0014-selector-input-decomposition.md. */
 export namespace HouseRulesSelectors {
-  export const select: Selector<{ runner: RunnerData }, boolean, { key: string }> = createSelector(
+  export type HouseRulesSelector<TReturn, TOptions extends object | never = never> = Selector<
+    { runner: RunnerData }, TReturn, TOptions
+  >
+
+  export const Options = {
+    key: selectorOption<{ key: string }>("key"),
+  }
+
+  export const select = createMemoizedSelector(
     [
-      (_state: { runner: RunnerData }, options: { key: string }) => options.key,
+      Options.key,
     ],
     (key) => {
       switch (key) {
@@ -22,5 +29,5 @@ export namespace HouseRulesSelectors {
           return false
       }
     },
-  )
+  ) satisfies HouseRulesSelector<boolean, { key: string }>
 }

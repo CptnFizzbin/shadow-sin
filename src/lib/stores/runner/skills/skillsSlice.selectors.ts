@@ -1,7 +1,7 @@
-import { createSelector } from "reselect"
-
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
@@ -49,7 +49,7 @@ export function selectSkillSpecialization(skillName: SkillKey) {
 }
 
 /** @deprecated Use `SkillsSelectors.selectAllowedActive` via `useRunnerSelector` instead. */
-export const selectAllowedActiveSkills: (state: RunnerData) => Partial<Record<SkillKey, SkillInfo>> = createSelector([
+export const selectAllowedActiveSkills: (state: RunnerData) => Partial<Record<SkillKey, SkillInfo>> = createMemoizedSelector([
   selectAwakening,
 ], (awakeningType) => {
   const skillEntries = Object.entries(skillList)
@@ -75,31 +75,44 @@ const legacy = {
  *  docs/adr/0014-selector-input-decomposition.md. Wraps the legacy exports above; existing call
  *  sites are unaffected. */
 export namespace SkillsSelectors {
-  export const selectActiveSkills: Selector<{ runner: RunnerData }, ActiveSkillData[]> = (state) =>
-    legacy.selectActiveSkills(state.runner)
-  export const selectSkillGroups: Selector<{ runner: RunnerData }, SkillGroupData[]> = (state) =>
-    legacy.selectSkillGroups(state.runner)
-  export const selectKnowledgeSkills: Selector<{ runner: RunnerData }, KnowledgeSkillData[]> = (state) =>
-    legacy.selectKnowledgeSkills(state.runner)
-  export const selectLanguageSkills: Selector<{ runner: RunnerData }, LanguageSkillData[]> = (state) =>
-    legacy.selectLanguageSkills(state.runner)
-  export const selectAllowedActive: Selector<{ runner: RunnerData }, Partial<Record<SkillKey, SkillInfo>>> = (state) =>
-    legacy.selectAllowedActiveSkills(state.runner)
+  export type SkillsSelector<TReturn, TOptions extends object | never = never> = Selector<
+    { runner: RunnerData }, TReturn, TOptions
+  >
 
-  export const selectValue: Selector<{ runner: RunnerData }, number, { skillName: SkillKey }> = createSelector(
-    [
-      (state: { runner: RunnerData }) => state.runner,
-      (_state: { runner: RunnerData }, options: { skillName: SkillKey }) => options.skillName,
-    ],
+  export const Options = {
+    skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
+  }
+
+  export const selectActiveSkills = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => legacy.selectActiveSkills(runner),
+  ) satisfies SkillsSelector<ActiveSkillData[]>
+  export const selectSkillGroups = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => legacy.selectSkillGroups(runner),
+  ) satisfies SkillsSelector<SkillGroupData[]>
+  export const selectKnowledgeSkills = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => legacy.selectKnowledgeSkills(runner),
+  ) satisfies SkillsSelector<KnowledgeSkillData[]>
+  export const selectLanguageSkills = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => legacy.selectLanguageSkills(runner),
+  ) satisfies SkillsSelector<LanguageSkillData[]>
+  export const selectAllowedActive = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    (runner) => legacy.selectAllowedActiveSkills(runner),
+  ) satisfies SkillsSelector<Partial<Record<SkillKey, SkillInfo>>>
+
+  export const selectValue = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    Options.skillName,
     (runner, skillName) => legacy.selectSkillValue(skillName)(runner),
-  )
+  ) satisfies SkillsSelector<number, { skillName: SkillKey }>
 
-  export const selectSpecialization: Selector<{ runner: RunnerData }, string | undefined, { skillName: SkillKey }> =
-    createSelector(
-      [
-        (state: { runner: RunnerData }) => state.runner,
-        (_state: { runner: RunnerData }, options: { skillName: SkillKey }) => options.skillName,
-      ],
-      (runner, skillName) => legacy.selectSkillSpecialization(skillName)(runner),
-    )
+  export const selectSpecialization = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    Options.skillName,
+    (runner, skillName) => legacy.selectSkillSpecialization(skillName)(runner),
+  ) satisfies SkillsSelector<string | undefined, { skillName: SkillKey }>
 }
