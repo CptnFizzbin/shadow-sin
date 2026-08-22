@@ -4,7 +4,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { selectLastExportDate } from "./metaSlice.selectors.ts"
 
-describe("selectLastExportDate", () => {
+describe.concurrent("selectLastExportDate", () => {
   it("returns null when the runner has never been exported", () => {
     // Arrange
     const runnerData = runnerDataFactory()

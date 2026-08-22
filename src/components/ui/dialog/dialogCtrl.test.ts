@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { DialogCtrl } from "./dialogCtrl.ts"
 import { isAnyOverlayOpen } from "./openOverlayTracker.ts"
 
-describe("DialogCtrl", () => {
+describe.concurrent("DialogCtrl", () => {
   it("result() resolves with the value passed to close()", async () => {
     const ctrl = new DialogCtrl<string>()
 

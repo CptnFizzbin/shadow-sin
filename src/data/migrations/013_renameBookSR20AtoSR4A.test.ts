@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./013_renameBookSR20AtoSR4A.ts"
 
-describe("013_renameBookSR20AtoSR4A", () => {
+describe.concurrent("013_renameBookSR20AtoSR4A", () => {
   it("does nothing when character has no source-bearing fields", () => {
     // Arrange
     const character = {}

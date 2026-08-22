@@ -10,7 +10,7 @@ const makeKarma = (overrides: Partial<ReturnType<typeof karmaReducer>> = {}) => 
   ...overrides,
 })
 
-describe("addKarma", () => {
+describe.concurrent("addKarma", () => {
   it("increases both current and total by the given amount", () => {
     // Arrange
     const state = makeKarma({ current: 5, total: 10 })
@@ -63,7 +63,7 @@ describe("addKarma", () => {
   })
 })
 
-describe("spendKarma", () => {
+describe.concurrent("spendKarma", () => {
   it("decreases current by the given amount", () => {
     // Arrange
     const state = makeKarma({ current: 10, total: 10 })

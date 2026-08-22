@@ -4,7 +4,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { selectPublicAwareness } from "./profileSlice.selectors.ts"
 
-describe("selectPublicAwareness", () => {
+describe.concurrent("selectPublicAwareness", () => {
   it("computes floor((streetCred + notoriety) / 3) plus the modifier", () => {
     // Arrange
     const state = runnerDataFactory((data) => {

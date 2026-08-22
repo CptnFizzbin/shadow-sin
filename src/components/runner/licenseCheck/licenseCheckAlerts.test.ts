@@ -17,7 +17,7 @@ function gearMap(...items: ItemData[]): Record<string, ItemData> {
   return Object.fromEntries(items.map((item) => [item.id, item]))
 }
 
-describe("buildLicenseCheckResult", () => {
+describe.concurrent("buildLicenseCheckResult", () => {
   it("produces no alerts when a single SIN check clears entirely", () => {
     const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }]
     const outcomes: VerificationOutcome[] = [

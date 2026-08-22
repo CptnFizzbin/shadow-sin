@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { mergeArrays, mergeObjects } from "./mergeUtils.ts"
 
-describe("mergeArrays", () => {
+describe.concurrent("mergeArrays", () => {
   it("deduplicates primitive values and preserves order", () => {
     // Arrange
     const a1 = [1, 2]
@@ -44,7 +44,7 @@ describe("mergeArrays", () => {
   })
 })
 
-describe("mergeObjects", () => {
+describe.concurrent("mergeObjects", () => {
   it("merges nested objects recursively", () => {
     // Arrange
     type ObjectWithNested = { a: { x?: number, y?: number } }

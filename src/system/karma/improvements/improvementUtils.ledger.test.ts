@@ -18,7 +18,7 @@ import { applyImprovements } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("applyImprovements — karma ledger writes", () => {
+describe.concurrent("applyImprovements — karma ledger writes", () => {
   it("appends one ledger entry per applied improvement", () => {
     // Arrange — two improvements: Body 3→4 (20k) and learn Pistols rating 1 (4k)
     const sheet = runnerDataFactory((draft) => {

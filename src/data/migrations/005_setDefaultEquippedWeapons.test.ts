@@ -4,7 +4,7 @@ import { WeaponType } from "#/system/gear/weaponData.ts"
 
 import migration from "./005_setDefaultEquippedWeapons.ts"
 
-describe("005_setDefaultEquippedWeapons", () => {
+describe.concurrent("005_setDefaultEquippedWeapons", () => {
   it("returns the character unchanged when there is no gear", () => {
     // Arrange
     const character = {}

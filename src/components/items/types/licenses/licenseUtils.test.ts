@@ -15,7 +15,7 @@ import {
   isLicenseQuickBuyEligible,
 } from "./licenseUtils.ts"
 
-describe("isLicenseQuickBuyEligible", () => {
+describe.concurrent("isLicenseQuickBuyEligible", () => {
   const baseItem: ItemData = {
     kind: EntityKind.item,
     id: "00000000-0000-0000-0000-000000000001",
@@ -63,7 +63,7 @@ describe("isLicenseQuickBuyEligible", () => {
   })
 })
 
-describe("isItemLicensed", () => {
+describe.concurrent("isItemLicensed", () => {
   const licenseId = "00000000-0000-0000-0000-000000000003"
 
   const item: ItemData = {
@@ -101,7 +101,7 @@ describe("isItemLicensed", () => {
   })
 })
 
-describe("findLicenseableSiblings", () => {
+describe.concurrent("findLicenseableSiblings", () => {
   const makePistol = (id: UUID, overrides: Partial<ItemData> = {}): ItemData => ({
     kind: EntityKind.item,
     id,
@@ -162,7 +162,7 @@ describe("findLicenseableSiblings", () => {
   })
 })
 
-describe("getLicenseCost", () => {
+describe.concurrent("getLicenseCost", () => {
   it("is free for a real SIN's licence", () => {
     // Arrange / Act / Assert
     expect(getLicenseCost("real")).toBe(0)
@@ -174,7 +174,7 @@ describe("getLicenseCost", () => {
   })
 })
 
-describe("DefaultFakeLicenseRating", () => {
+describe.concurrent("DefaultFakeLicenseRating", () => {
   it("is rating 3", () => {
     // Arrange / Act / Assert
     expect(DefaultFakeLicenseRating).toBe(3)

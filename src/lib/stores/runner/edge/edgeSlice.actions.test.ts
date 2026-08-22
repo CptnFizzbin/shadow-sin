@@ -7,7 +7,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { burnEdge, spendEdge } from "./edgeSlice.actions.ts"
 
-describe("spendEdge", () => {
+describe.concurrent("spendEdge", () => {
   it("clamps to the current edge, not a caller-supplied value", async () => {
     // Arrange
     const runner = runnerDataFactory((data) => {
@@ -54,7 +54,7 @@ describe("spendEdge", () => {
   })
 })
 
-describe("burnEdge", () => {
+describe.concurrent("burnEdge", () => {
   it("resets current to 0 and permanently reduces max by 1, in one atomic write", () => {
     // Arrange
     const runner = runnerDataFactory((data) => {

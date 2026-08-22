@@ -61,9 +61,15 @@ const config = defineConfig({
     include: ["**/*.test.{ts,tsx}"],
     setupFiles: ["./testUtils/setup.ts"],
     environment: "happy-dom",
-    // Concurrent test execution is disabled because tests using
-    // `vi.useFakeTimers()` (notably `src/system/dice/diceRoller.test.ts`)
-    // share a global timer mock and can interleave when run in parallel.
+    // Concurrent execution is opt-in per suite (`describe.concurrent`) rather than the file-wide
+    // default, because most `*.test.tsx` component tests render via `@testing-library/react`:
+    // its `screen` queries and `cleanup()` (`testUtils/renderUtils.tsx`) act on the single shared
+    // `document`, so two such tests interleaving would see (and tear down) each other's DOM.
+    // Suites are opted in only once confirmed to hold no state across `it` blocks — see AGENTS.md
+    // for the criteria. Left sequential for the same reason: any suite using `vi.useFakeTimers()`
+    // (they share one global timer mock, e.g. `src/system/dice/diceRoller.test.ts`) and
+    // `src/components/ui/dialog/openOverlayTracker.test.ts`, whose tests intentionally chain off
+    // the module-level counter under test.
     sequence: {
       concurrent: false,
     },

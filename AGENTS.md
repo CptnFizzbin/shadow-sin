@@ -222,6 +222,25 @@ it("does something", () => {
 })
 ```
 
+### Concurrent test execution
+
+Vitest's `sequence.concurrent` defaults to `false` (`vite.config.ts`), so suites run sequentially unless a
+`describe` block explicitly opts in with `describe.concurrent(...)`. Prefer opting a suite in when every `it`
+inside it (including nested `describe`s, which inherit the parent's concurrency) is self-contained — each test
+builds its own state in its own `// Arrange` step, per the AAA convention above, rather than reading a `let`
+variable a `beforeEach` reassigns (a shared closure variable races across concurrently-running tests) or a
+module-level singleton the tests mutate. `#/components/dice/diceTrayApi.test.ts` and `#/data/migrations.test.ts`
+show the `beforeEach`-to-inline-Arrange refactor this requires.
+
+Do **not** mark a suite concurrent when it:
+
+- Renders via `@testing-library/react` (`render`/`renderHook`) — those tests query and tear down (`cleanup()`,
+  `testUtils/renderUtils.tsx`) the single shared `document`, so interleaved tests corrupt each other's DOM.
+- Uses `vi.useFakeTimers()`/`vi.setSystemTime()` — fake timers are a single global mock shared by every test in
+  the file.
+- Tests a module-level singleton where the test bodies intentionally chain off each other's mutations (e.g.
+  `openOverlayTracker.test.ts`) rather than each arranging independent state.
+
 ## Code comments
 
 Every comment in the codebase is one of two styles — **Documentation** or **Explanation**. Comments that don't fit

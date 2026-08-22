@@ -19,7 +19,7 @@ function armor(overrides: Partial<ArmorData>): ArmorData {
   }
 }
 
-describe("calculateArmorTotals", () => {
+describe.concurrent("calculateArmorTotals", () => {
   it("takes the highest rating among base armor rather than summing them", () => {
     // Arrange
     const equipped = [
@@ -81,7 +81,7 @@ describe("calculateArmorTotals", () => {
   })
 })
 
-describe("calculateArmorBulk", () => {
+describe.concurrent("calculateArmorBulk", () => {
   it("sums every equipped item's rating regardless of Base/Modifier", () => {
     // Arrange
     const equipped = [
@@ -116,7 +116,7 @@ describe("calculateArmorBulk", () => {
   })
 })
 
-describe("calculateEncumbrancePenalty", () => {
+describe.concurrent("calculateEncumbrancePenalty", () => {
   it("returns zero when totals are within the body threshold", () => {
     expect(calculateEncumbrancePenalty(6, 4, 4)).toBe(0)
   })

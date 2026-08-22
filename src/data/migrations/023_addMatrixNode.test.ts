@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./023_addMatrixNode.ts"
 
-describe("023_addMatrixNode", () => {
+describe.concurrent("023_addMatrixNode", () => {
   it("defaults all matrix node fields when matrix is absent", () => {
     // Arrange
     const character = {}

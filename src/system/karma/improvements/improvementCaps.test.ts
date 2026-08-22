@@ -23,7 +23,7 @@ import {
   hasExceptionalAttributeFor,
 } from "./improvementCaps.ts"
 
-describe("hasAptitudeFor", () => {
+describe.concurrent("hasAptitudeFor", () => {
   it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
@@ -55,7 +55,7 @@ describe("hasAptitudeFor", () => {
   })
 })
 
-describe("hasExceptionalAttributeFor", () => {
+describe.concurrent("hasExceptionalAttributeFor", () => {
   it("matches the attribute key", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {
@@ -94,7 +94,7 @@ describe("hasExceptionalAttributeFor", () => {
   })
 })
 
-describe("getActiveSkillCap", () => {
+describe.concurrent("getActiveSkillCap", () => {
   it("returns the base cap (6) without Aptitude", () => {
     // Arrange
     const sheet = runnerDataFactory()
@@ -115,7 +115,7 @@ describe("getActiveSkillCap", () => {
   })
 })
 
-describe("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => {
+describe.concurrent("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => {
   it("returns the SR4A defaults", () => {
     expect(getSkillGroupCap()).toBe(BASE_SKILL_GROUP_CAP)
     expect(getKnowledgeSkillCap()).toBe(BASE_KNOWLEDGE_SKILL_CAP)
@@ -123,7 +123,7 @@ describe("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => 
   })
 })
 
-describe("getAttributeCap", () => {
+describe.concurrent("getAttributeCap", () => {
   it("returns the metatype max for a regular attribute (Human Body = 6)", () => {
     // Arrange
     const sheet = runnerDataFactory((draft) => {

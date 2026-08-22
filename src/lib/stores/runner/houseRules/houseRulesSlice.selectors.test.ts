@@ -4,7 +4,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { HouseRulesSelectors } from "./houseRulesSlice.selectors.ts"
 
-describe("HouseRulesSelectors.select", () => {
+describe.concurrent("HouseRulesSelectors.select", () => {
   it("returns true for the known items.licenseCheck.ratingPlusRating key", () => {
     const runner = runnerDataFactory()
 

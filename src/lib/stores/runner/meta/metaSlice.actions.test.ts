@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { recordLastExport } from "./metaSlice.actions.ts"
 import { metaReducer } from "./metaSlice.ts"
 
-describe("recordLastExport", () => {
+describe.concurrent("recordLastExport", () => {
   it("sets lastExportDate to the given timestamp", () => {
     // Arrange
     const state = metaReducer(undefined, { type: "@@INIT" })

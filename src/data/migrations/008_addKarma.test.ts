@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./008_addKarma.ts"
 
-describe("008_addKarma", () => {
+describe.concurrent("008_addKarma", () => {
   it("sets karma to { current: 0, total: 0 } when the field is missing", () => {
     // Arrange
     const character = {}

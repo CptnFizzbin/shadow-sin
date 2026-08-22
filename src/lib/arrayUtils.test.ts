@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ArrayUtils } from "./arrayUtils.ts"
 
-describe("shuffle", () => {
+describe.concurrent("shuffle", () => {
   it("returns an array with the same elements", () => {
     const result = ArrayUtils.shuffle([1, 2, 3, 4, 5])
     expect([...result].sort()).toEqual([1, 2, 3, 4, 5])

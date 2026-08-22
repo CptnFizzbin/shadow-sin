@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./003_addLoanIdAndInterestRate.ts"
 
-describe("003_addLoanIdAndInterestRate", () => {
+describe.concurrent("003_addLoanIdAndInterestRate", () => {
   it("initialises an empty nuyen object when missing", () => {
     // Arrange
     const character = {}

@@ -9,7 +9,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { selectPhysicalTrack, selectStunTrack } from "./damageSlice.selectors.ts"
 
-describe("selectPhysicalTrack / selectStunTrack", () => {
+describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
   it("returns default wound interval of 3 with no pain tolerance effects", () => {
     // Arrange
     const sheet = runnerDataFactory()

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./010_addSpiritDamage.ts"
 
-describe("010_addSpiritDamage", () => {
+describe.concurrent("010_addSpiritDamage", () => {
   it("does nothing when spirits array is absent", () => {
     const character = {}
 

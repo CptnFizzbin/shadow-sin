@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./002_addSpellThreshold.ts"
 
-describe("002_addSpellThreshold", () => {
+describe.concurrent("002_addSpellThreshold", () => {
   it("initialises spells to an empty array when missing", () => {
     // Arrange
     const character = {}

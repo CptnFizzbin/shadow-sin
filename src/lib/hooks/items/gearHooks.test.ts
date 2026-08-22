@@ -18,7 +18,7 @@ function makeItem(overrides: Partial<ItemData> & Pick<ItemData, "id" | "name">):
   return { kind: EntityKind.item, itemType: ItemType.other, ...overrides }
 }
 
-describe("searchGear", () => {
+describe.concurrent("searchGear", () => {
   it("returns every item when there are no search terms", () => {
     // Arrange
     const gear = {

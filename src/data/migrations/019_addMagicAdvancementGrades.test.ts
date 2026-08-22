@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./019_addMagicAdvancementGrades.ts"
 
-describe("019_addMagicAdvancementGrades", () => {
+describe.concurrent("019_addMagicAdvancementGrades", () => {
   it("defaults both grades to 0 when neither field is present", () => {
     // Arrange
     const character = {}

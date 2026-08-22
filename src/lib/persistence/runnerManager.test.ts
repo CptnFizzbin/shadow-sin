@@ -1,19 +1,14 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { RunnerManager } from "./runnerManager.ts"
 
-describe("RunnerManager.listRunnersWithErrors", () => {
-  let manager: RunnerManager
-
-  beforeEach(() => {
-    manager = makeTestRunnerManager().manager
-  })
-
+describe.concurrent("RunnerManager.listRunnersWithErrors", () => {
   it("returns an empty result when storage is empty", async () => {
-    // Arrange — no setup needed
+    // Arrange
+    const { manager } = makeTestRunnerManager()
 
     // Act
     const result = await manager.listRunnersWithErrors()
@@ -69,15 +64,10 @@ describe("RunnerManager.listRunnersWithErrors", () => {
   })
 })
 
-describe("RunnerManager.saveRunner / getRunner", () => {
-  let manager: RunnerManager
-
-  beforeEach(() => {
-    manager = makeTestRunnerManager().manager
-  })
-
+describe.concurrent("RunnerManager.saveRunner / getRunner", () => {
   it("persists the runner so getRunner returns it immediately after saveRunner resolves", async () => {
     // Arrange
+    const { manager } = makeTestRunnerManager()
     const runner = { ...runnerDataFactory(), id: crypto.randomUUID() }
 
     // Act
@@ -91,6 +81,7 @@ describe("RunnerManager.saveRunner / getRunner", () => {
 
   it("throws RunnerNotFoundError for an unknown runner id", async () => {
     // Arrange
+    const { manager } = makeTestRunnerManager()
     const unknownId = crypto.randomUUID()
 
     // Act / Assert
@@ -98,7 +89,7 @@ describe("RunnerManager.saveRunner / getRunner", () => {
   })
 })
 
-describe("RunnerManager.listRunners", () => {
+describe.concurrent("RunnerManager.listRunners", () => {
   it("returns saved runner metadata from the index", async () => {
     // Arrange
     const { manager } = makeTestRunnerManager()
@@ -115,7 +106,7 @@ describe("RunnerManager.listRunners", () => {
   })
 })
 
-describe("RunnerManager.deleteRunner", () => {
+describe.concurrent("RunnerManager.deleteRunner", () => {
   it("removes the runner so subsequent getRunner throws", async () => {
     // Arrange
     const { manager } = makeTestRunnerManager()
@@ -130,7 +121,7 @@ describe("RunnerManager.deleteRunner", () => {
   })
 })
 
-describe("RunnerManager.save (debounced)", () => {
+describe.concurrent("RunnerManager.save (debounced)", () => {
   it("debounces rapid saves so only the last value is persisted to storage", async () => {
     // Arrange
     const { manager: writingManager, storage } = makeTestRunnerManager()
