@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./022_pruneLegacyMetaFields.ts"
 
-describe("022_pruneLegacyMetaFields", () => {
+describe.concurrent("022_pruneLegacyMetaFields", () => {
   it("returns the character unchanged", () => {
     // Arrange
     const character = { profile: { alias: "Blur" } }

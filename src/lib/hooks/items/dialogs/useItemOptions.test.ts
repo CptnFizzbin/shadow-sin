@@ -21,7 +21,7 @@ const newItem: ItemData = {
   id: NullUuid,
 }
 
-describe("initializeOptions", () => {
+describe.concurrent("initializeOptions", () => {
   describe("new item (isEditMode = false)", () => {
     it("returns all toggleable options disabled by default", () => {
       // Arrange & Act

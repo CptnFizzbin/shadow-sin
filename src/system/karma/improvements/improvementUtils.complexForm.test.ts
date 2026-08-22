@@ -12,7 +12,7 @@ import { applyImprovement } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("applyImprovement — complexFormIncrease", () => {
+describe.concurrent("applyImprovement — complexFormIncrease", () => {
   it("raises the rating of the matching complex form and deducts karma", () => {
     // Arrange — 2 → 3 costs 3*1 = 3
     const entry: ComplexFormIncreaseEntry = {

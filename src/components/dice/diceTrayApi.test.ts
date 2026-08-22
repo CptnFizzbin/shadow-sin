@@ -1,23 +1,25 @@
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import { DiceTrayApi } from "./diceTrayApi.ts"
 import { TestType } from "./testType.ts"
 
-describe("DiceTrayApi", () => {
-  let api: DiceTrayApi
+// Each test gets its own `DiceTrayApi` (and spied roller) so the suite can run
+// concurrently — a shared instance from `beforeEach` would race across tests.
+function makeApi(): DiceTrayApi {
+  const api = new DiceTrayApi()
+  vi.spyOn(api.roller, "rollAll").mockResolvedValue(api.roller)
+  vi.spyOn(api.roller, "rollMisses").mockResolvedValue(api.roller)
+  vi.spyOn(api.roller, "addDice").mockReturnValue(api.roller)
+  vi.spyOn(api.roller, "rollDice").mockResolvedValue(api.roller)
+  vi.spyOn(api.roller, "reset").mockReturnValue(api.roller)
+  vi.spyOn(api.roller, "setPoolSize").mockReturnValue(api.roller)
+  return api
+}
 
-  beforeEach(() => {
-    api = new DiceTrayApi()
-    vi.spyOn(api.roller, "rollAll").mockResolvedValue(api.roller)
-    vi.spyOn(api.roller, "rollMisses").mockResolvedValue(api.roller)
-    vi.spyOn(api.roller, "addDice").mockReturnValue(api.roller)
-    vi.spyOn(api.roller, "rollDice").mockResolvedValue(api.roller)
-    vi.spyOn(api.roller, "reset").mockReturnValue(api.roller)
-    vi.spyOn(api.roller, "setPoolSize").mockReturnValue(api.roller)
-  })
-
+describe.concurrent("DiceTrayApi", () => {
   describe("setDice", () => {
     it("opens the tray, sets pool size, and clears edge state", () => {
+      const api = makeApi()
       api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
       api.setDice(8)
@@ -28,6 +30,8 @@ describe("DiceTrayApi", () => {
     })
 
     it("clamps pool size to a minimum of 0", () => {
+      const api = makeApi()
+
       api.setDice(0)
 
       expect(api.store.getState().poolSize).toBe(0)
@@ -36,6 +40,8 @@ describe("DiceTrayApi", () => {
 
   describe("rollEdge", () => {
     it("marks edge as spent and delegates to the roller", () => {
+      const api = makeApi()
+
       api.rollEdge(3)
 
       expect(api.store.getState().edgeSpent).toBe(true)
@@ -43,6 +49,7 @@ describe("DiceTrayApi", () => {
     })
 
     it("is a no-op when edge is already spent", () => {
+      const api = makeApi()
       api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
       api.rollEdge(3)
@@ -51,6 +58,8 @@ describe("DiceTrayApi", () => {
     })
 
     it("is a no-op when edge count is 0 or less", () => {
+      const api = makeApi()
+
       api.rollEdge(0)
 
       expect(api.store.getState().edgeSpent).toBe(false)
@@ -60,6 +69,8 @@ describe("DiceTrayApi", () => {
 
   describe("rerollMisses", () => {
     it("marks edge as spent and delegates to the roller", () => {
+      const api = makeApi()
+
       api.rerollMisses()
 
       expect(api.store.getState().edgeSpent).toBe(true)
@@ -67,6 +78,7 @@ describe("DiceTrayApi", () => {
     })
 
     it("is a no-op when edge is already spent", () => {
+      const api = makeApi()
       api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
       api.rerollMisses()
@@ -77,7 +89,9 @@ describe("DiceTrayApi", () => {
 
   describe("close", () => {
     it("sets open to false", () => {
+      const api = makeApi()
       api.open()
+
       api.close()
 
       expect(api.store.getState().open).toBe(false)
@@ -86,6 +100,7 @@ describe("DiceTrayApi", () => {
 
   describe("reset", () => {
     it("clears edgeSpent and extendedHistory", () => {
+      const api = makeApi()
       api.store.setState((prev) => ({
         ...prev,
         edgeSpent: true,
@@ -101,6 +116,7 @@ describe("DiceTrayApi", () => {
 
   describe("setTestType", () => {
     it("resets state while preserving poolSize, physicalMode, and open", () => {
+      const api = makeApi()
       api.setDice(10)
       api.store.setState((prev) => ({ ...prev, edgeSpent: true, physicalMode: true }))
 

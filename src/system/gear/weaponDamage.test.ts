@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { applyNetHitsToDamage, parseDamageValue } from "./weaponDamage.ts"
 
-describe("parseDamageValue", () => {
+describe.concurrent("parseDamageValue", () => {
   it("splits a simple damage string into base and suffix", () => {
     // Arrange / Act
     const result = parseDamageValue("4P")
@@ -28,7 +28,7 @@ describe("parseDamageValue", () => {
   })
 })
 
-describe("applyNetHitsToDamage", () => {
+describe.concurrent("applyNetHitsToDamage", () => {
   it("adds positive net hits to the base damage", () => {
     // Arrange / Act
     const result = applyNetHitsToDamage("4P", 2)

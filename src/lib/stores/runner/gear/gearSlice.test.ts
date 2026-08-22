@@ -17,7 +17,7 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   ...overrides,
 })
 
-describe("gearReducer", () => {
+describe.concurrent("gearReducer", () => {
   it("add stores the item under a freshly generated id", () => {
     // Arrange
     const item = makeItem()

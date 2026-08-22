@@ -16,7 +16,7 @@ const makeQuality = (overrides: Partial<QualityData> = {}): QualityData => ({
   ...overrides,
 })
 
-describe("qualitiesReducer", () => {
+describe.concurrent("qualitiesReducer", () => {
   it("add appends the given quality", () => {
     // Arrange
     const quality = makeQuality()

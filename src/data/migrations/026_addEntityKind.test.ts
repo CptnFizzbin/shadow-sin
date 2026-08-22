@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./026_addEntityKind.ts"
 
-describe("026_addEntityKind", () => {
+describe.concurrent("026_addEntityKind", () => {
   it("stamps kind: \"runner\" on an otherwise-empty character", () => {
     // Arrange
     const character = {}

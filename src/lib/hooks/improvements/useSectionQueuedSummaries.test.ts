@@ -28,7 +28,7 @@ function makeSkillIncrease(skillType: SkillIncreaseEntry["skillType"]): SkillInc
   }
 }
 
-describe("sectionForEntry", () => {
+describe.concurrent("sectionForEntry", () => {
   it("maps attribute increases to the attribute section", () => {
     // Arrange
     const entry: ImprovementEntry = {

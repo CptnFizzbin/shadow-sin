@@ -11,7 +11,7 @@ import {
 
 // ─── calculateSpiritAttributes ───────────────────────────────────────────────
 
-describe("calculateSpiritAttributes", () => {
+describe.concurrent("calculateSpiritAttributes", () => {
   describe("wind spirit (Spirit of Air)", () => {
     it("applies the correct modifiers at force 5", () => {
       const force = 5
@@ -106,7 +106,7 @@ describe("calculateSpiritAttributes", () => {
 
 // ─── calculateSpiritInitiative ───────────────────────────────────────────────
 
-describe("calculateSpiritInitiative", () => {
+describe.concurrent("calculateSpiritInitiative", () => {
   it("gives wind spirits (F×2)+3 physical score (SR4A fixed per-type pool)", () => {
     const force = 6
     const { physicalScore, physicalIp } = calculateSpiritInitiative(force, SpiritType.wind)
@@ -168,7 +168,7 @@ describe("calculateSpiritInitiative", () => {
 
 // ─── calculateSpiritConditionMonitor ─────────────────────────────────────────
 
-describe("calculateSpiritConditionMonitor", () => {
+describe.concurrent("calculateSpiritConditionMonitor", () => {
   it("computes physical CM as 8 + ceil(Body/2) and stun CM as 8 + ceil(Willpower/2)", () => {
     const force = 5
     // Beast at force 5: body = F+2 = 7, willpower = F = 5

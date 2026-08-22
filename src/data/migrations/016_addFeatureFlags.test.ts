@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./016_addFeatureFlags.ts"
 
-describe("016_addFeatureFlags", () => {
+describe.concurrent("016_addFeatureFlags", () => {
   it("adds an empty featureFlags object when the field is absent", () => {
     // Arrange
     const character = {}

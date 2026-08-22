@@ -12,7 +12,7 @@ import { applyImprovement } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("applyImprovement — learnQuality", () => {
+describe.concurrent("applyImprovement — learnQuality", () => {
   it("adds the new quality to the sheet and deducts karma", () => {
     // Arrange — bpValue 15 × 2 = 30 karma
     const entry: LearnQualityEntry = {
@@ -34,7 +34,7 @@ describe("applyImprovement — learnQuality", () => {
   })
 })
 
-describe("applyImprovement — qualityBuyOff", () => {
+describe.concurrent("applyImprovement — qualityBuyOff", () => {
   it("removes the matching negative quality and deducts karma", () => {
     // Arrange — bpValue 20 × 2 = 40 karma
     const entry: QualityBuyOffEntry = {

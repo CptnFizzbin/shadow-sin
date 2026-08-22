@@ -4,7 +4,7 @@ import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 import migration from "./004_addVehicleCategory.ts"
 
-describe("004_addVehicleCategory", () => {
+describe.concurrent("004_addVehicleCategory", () => {
   it("returns the character unchanged when there is no gear", () => {
     // Arrange
     const character = {}

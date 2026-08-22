@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { applyMigrations } from "./applyMigrations.ts"
 import { CURRENT_RUNNER_VERSION, migrations } from "./migrations.ts"
 
-describe("applyMigrations", () => {
+describe.concurrent("applyMigrations", () => {
   it("stamps the current version when starting from {}", () => {
     // Arrange
     const runner = {}

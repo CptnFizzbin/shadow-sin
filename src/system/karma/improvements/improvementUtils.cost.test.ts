@@ -27,7 +27,7 @@ import { getImprovementCost } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("getImprovementCost — SR4A rating-increase multipliers", () => {
+describe.concurrent("getImprovementCost — SR4A rating-increase multipliers", () => {
   it("attribute increase charges new-rating × 5 per step", () => {
     // Arrange — 3 → 5: (4*5) + (5*5) = 20 + 25 = 45
     const entry: AttrIncreaseEntry = {
@@ -117,7 +117,7 @@ describe("getImprovementCost — SR4A rating-increase multipliers", () => {
   })
 })
 
-describe("getImprovementCost — SR4A learn-with-rating", () => {
+describe.concurrent("getImprovementCost — SR4A learn-with-rating", () => {
   it("learning a skill group at rating 3 uses × 5 per raise (10 base + 2*5 + 3*5 = 35)", () => {
     // Arrange
     const entry: LearnSkillGroupEntry = {
@@ -164,7 +164,7 @@ describe("getImprovementCost — SR4A learn-with-rating", () => {
   })
 })
 
-describe("getImprovementCost — Aptitude double-cost beyond rating 6", () => {
+describe.concurrent("getImprovementCost — Aptitude double-cost beyond rating 6", () => {
   it("uses normal cost when raising from 5 to 6 (no double-cost)", () => {
     // Arrange — 5 → 6 with Aptitude: 6*2 = 12 (no double-up below 7)
     const entry: SkillIncreaseEntry = {
@@ -242,7 +242,7 @@ describe("getImprovementCost — Aptitude double-cost beyond rating 6", () => {
   })
 })
 
-describe("getImprovementCost — magic and resonance entries", () => {
+describe.concurrent("getImprovementCost — magic and resonance entries", () => {
   it("learning a spell is a flat 5 karma", () => {
     // Arrange
     const entry: LearnSpellEntry = {
@@ -291,7 +291,7 @@ describe("getImprovementCost — magic and resonance entries", () => {
   })
 })
 
-describe("getImprovementCost — qualities", () => {
+describe.concurrent("getImprovementCost — qualities", () => {
   it("a new positive quality costs BP value × 2 in karma", () => {
     // Arrange
     const entry: LearnQualityEntry = {
@@ -340,7 +340,7 @@ describe("getImprovementCost — qualities", () => {
   })
 })
 
-describe("getImprovementCost — Initiation and Submersion grades", () => {
+describe.concurrent("getImprovementCost — Initiation and Submersion grades", () => {
   it("raising Initiate Grade costs 10 + (new grade × 3)", () => {
     // Arrange — grade 0 → 1: 10 + 1*3 = 13
     const entry: InitiationIncreaseEntry = {

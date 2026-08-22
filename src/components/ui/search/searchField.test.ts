@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { filterBySearch } from "./searchField.tsx"
 
-describe("filterBySearch", () => {
+describe.concurrent("filterBySearch", () => {
   type Item = { name: string, tags: string[] }
 
   const rows: Item[] = [

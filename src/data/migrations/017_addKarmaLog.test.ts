@@ -6,7 +6,7 @@ import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
 
 import migration from "./017_addKarmaLog.ts"
 
-describe("017_addKarmaLog", () => {
+describe.concurrent("017_addKarmaLog", () => {
   it("adds an empty log array when the karma object has no log field", () => {
     // Arrange
     const character = { karma: { current: 10, total: 25 } }

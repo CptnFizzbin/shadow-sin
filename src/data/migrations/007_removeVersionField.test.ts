@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./007_removeVersionField.ts"
 
-describe("007_removeVersionField", () => {
+describe.concurrent("007_removeVersionField", () => {
   it("removes the top-level version field when present", () => {
     // Arrange
     const character = { version: 3 }

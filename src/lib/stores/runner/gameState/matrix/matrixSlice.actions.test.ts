@@ -26,7 +26,7 @@ const makeNode = (overrides: Partial<KnownNode> = {}): KnownNode => ({
   ...overrides,
 })
 
-describe("addKnownNode", () => {
+describe.concurrent("addKnownNode", () => {
   it("appends the node with a freshly generated id", () => {
     // Arrange
     const state = matrixReducer(undefined, { type: "@@INIT" })
@@ -41,7 +41,7 @@ describe("addKnownNode", () => {
   })
 })
 
-describe("updateKnownNode", () => {
+describe.concurrent("updateKnownNode", () => {
   it("replaces the matching node in place", () => {
     // Arrange
     const node = makeNode()
@@ -57,7 +57,7 @@ describe("updateKnownNode", () => {
   })
 })
 
-describe("removeKnownNode", () => {
+describe.concurrent("removeKnownNode", () => {
   it("removes the node", () => {
     // Arrange
     const state = matrixReducer(undefined, addKnownNode(makeNode()))
@@ -112,7 +112,7 @@ describe("removeKnownNode", () => {
   })
 })
 
-describe("setActiveNode / clearActiveNode", () => {
+describe.concurrent("setActiveNode / clearActiveNode", () => {
   it("sets and clears the active node id", () => {
     // Arrange
     const state = matrixReducer(undefined, { type: "@@INIT" })
@@ -127,7 +127,7 @@ describe("setActiveNode / clearActiveNode", () => {
   })
 })
 
-describe("startActiveProgram / stopActiveProgram", () => {
+describe.concurrent("startActiveProgram / stopActiveProgram", () => {
   it("starts a program without duplicating an already-running (sourceId, nodeId) pair", () => {
     // Arrange
     const state = matrixReducer(undefined, { type: "@@INIT" })

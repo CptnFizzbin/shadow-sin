@@ -46,7 +46,7 @@ const withGear = (...items: ItemData[]) =>
     return data
   })
 
-describe("selectEquipped", () => {
+describe.concurrent("selectEquipped", () => {
   it("returns only items with equipped === true", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
@@ -68,7 +68,7 @@ describe("selectEquipped", () => {
   })
 })
 
-describe("selectStashed", () => {
+describe.concurrent("selectStashed", () => {
   it("returns only stashed items", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
@@ -90,7 +90,7 @@ describe("selectStashed", () => {
   })
 })
 
-describe("selectAvailable", () => {
+describe.concurrent("selectAvailable", () => {
   it("returns items that are not stashed", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
@@ -112,7 +112,7 @@ describe("selectAvailable", () => {
   })
 })
 
-describe("selectAllGear", () => {
+describe.concurrent("selectAllGear", () => {
   it("returns the gear record", () => {
     // Arrange
     const gearItem = makeItem()
@@ -123,7 +123,7 @@ describe("selectAllGear", () => {
   })
 })
 
-describe("selectById", () => {
+describe.concurrent("selectById", () => {
   it("finds an item by id", () => {
     // Arrange
     const gearItem = makeItem()
@@ -142,7 +142,7 @@ describe("selectById", () => {
   })
 })
 
-describe("selectGearOfType", () => {
+describe.concurrent("selectGearOfType", () => {
   it("filters gear down to the given item type", () => {
     // Arrange
     const weapon = makeItem({ itemType: ItemType.weapon })
@@ -163,7 +163,7 @@ describe("selectGearOfType", () => {
   })
 })
 
-describe("licenses.selectById", () => {
+describe.concurrent("licenses.selectById", () => {
   it("finds a licence by id", () => {
     // Arrange
     const license = makeItem({ itemType: ItemType.license, rating: 3 })
@@ -183,7 +183,7 @@ describe("licenses.selectById", () => {
   })
 })
 
-describe("licenses.selectForItem", () => {
+describe.concurrent("licenses.selectForItem", () => {
   it("returns the licence an item points at", () => {
     // Arrange
     const license = makeItem({ itemType: ItemType.license, rating: 3 })
@@ -221,7 +221,7 @@ describe("licenses.selectForItem", () => {
   })
 })
 
-describe("licenses.selectItemsForId", () => {
+describe.concurrent("licenses.selectItemsForId", () => {
   it("returns every item covered by a licence", () => {
     // Arrange
     const licenseId = crypto.randomUUID() as UUID

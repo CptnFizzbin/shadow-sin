@@ -1,9 +1,7 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import { runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
-import type { RunnerManager } from "#/lib/persistence/runnerManager.ts"
-import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -18,22 +16,21 @@ import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.
 
 import { CURRENT_RUNNER_VERSION } from "./migrations.ts"
 
-describe("runner migrations + yaml round-trip", () => {
-  let manager: RunnerManager
-  let storage: AsyncJsonStorage
+// Each test seeds its own manager/storage (rather than sharing one from `beforeEach`) so the
+// suite can run concurrently.
+async function makeMigratedRunnerManager() {
+  const { manager, storage } = makeTestRunnerManager()
+  await storage.setItem(
+    `characters/${TEST_CHARACTER_ID}`,
+    toJsonValue(characterV1),
+  )
+  return { manager, storage }
+}
 
-  beforeEach(async () => {
-    const result = makeTestRunnerManager()
-    manager = result.manager
-    storage = result.storage
-    await storage.setItem(
-      `characters/${TEST_CHARACTER_ID}`,
-      toJsonValue(characterV1),
-    )
-  })
-
+describe.concurrent("runner migrations + yaml round-trip", () => {
   it("applies all pending migrations to a partially-migrated runner", async () => {
-    // Arrange — runner already saved in beforeEach, at _meta_.version 7
+    // Arrange — a runner at _meta_.version 7
+    const { manager } = await makeMigratedRunnerManager()
 
     // Act
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
@@ -80,6 +77,7 @@ describe("runner migrations + yaml round-trip", () => {
 
   it("yaml export/import round-trips a fully migrated runner", async () => {
     // Arrange — migrate the partially-migrated runner
+    const { manager } = await makeMigratedRunnerManager()
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Act
@@ -95,6 +93,7 @@ describe("runner migrations + yaml round-trip", () => {
 
   it("yaml-imported runner is already at the current version", async () => {
     // Arrange — migrate then export/import
+    const { manager } = await makeMigratedRunnerManager()
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
     const yaml = runnerDataToYaml(migrated)
     const restored = yamlToRunnerData(yaml)

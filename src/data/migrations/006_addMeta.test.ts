@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./006_addMeta.ts"
 
-describe("006_addMeta", () => {
+describe.concurrent("006_addMeta", () => {
   it("creates an empty _meta_ object when missing", () => {
     // Arrange
     const character = {}

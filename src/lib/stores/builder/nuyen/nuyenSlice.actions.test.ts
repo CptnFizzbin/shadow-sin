@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { setStartingNuyen } from "./nuyenSlice.actions.ts"
 import { nuyenReducer } from "./nuyenSlice.ts"
 
-describe("setStartingNuyen", () => {
+describe.concurrent("setStartingNuyen", () => {
   it("sets startingNuyen from null", () => {
     // Arrange
     const state = { starting: null }

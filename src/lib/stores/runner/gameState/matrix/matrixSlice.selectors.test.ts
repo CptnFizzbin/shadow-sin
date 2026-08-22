@@ -22,7 +22,7 @@ const node: KnownNode = {
   accessLevel: AccessLevel.public,
 }
 
-describe("matrixSlice selectors", () => {
+describe.concurrent("matrixSlice selectors", () => {
   it("selects known nodes and active programs", () => {
     // Arrange
     const sheet = runnerDataFactory((data) => {

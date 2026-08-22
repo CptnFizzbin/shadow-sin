@@ -16,7 +16,7 @@ import { applyImprovement } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("applyImprovement — grouped active skill without the group on sheet", () => {
+describe.concurrent("applyImprovement — grouped active skill without the group on sheet", () => {
   it("raises a standalone active skill that belongs to a group, without erroring", () => {
     // Arrange — runner has Banishing (a Conjuring-group skill) standalone, no Conjuring group
     const entry: SkillIncreaseEntry = {

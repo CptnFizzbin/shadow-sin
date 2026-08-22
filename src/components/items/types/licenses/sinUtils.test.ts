@@ -4,7 +4,7 @@ import { SinNameList } from "#/system/gear/sinNameList.ts"
 
 import { getRandomSinName } from "./sinUtils.ts"
 
-describe("getRandomSinName", () => {
+describe.concurrent("getRandomSinName", () => {
   it("returns a name from SinNameList", () => {
     // Act
     const name = getRandomSinName()

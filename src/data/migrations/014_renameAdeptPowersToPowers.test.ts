@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./014_renameAdeptPowersToPowers.ts"
 
-describe("014_renameAdeptPowersToPowers", () => {
+describe.concurrent("014_renameAdeptPowersToPowers", () => {
   it("renames adeptPowers to powers", () => {
     // Arrange
     const character = {

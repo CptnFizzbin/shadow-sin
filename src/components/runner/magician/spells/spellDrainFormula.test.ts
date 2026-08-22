@@ -38,7 +38,7 @@ function makeFixedSpell(drainValue: number): SpellData {
   }
 }
 
-describe("formatDrainFormula", () => {
+describe.concurrent("formatDrainFormula", () => {
   describe("force-based spells", () => {
     it("returns 'F/2' when the modifier is 0", () => {
       // Arrange
@@ -108,7 +108,7 @@ describe("formatDrainFormula", () => {
   })
 })
 
-describe("computeDrainValue", () => {
+describe.concurrent("computeDrainValue", () => {
   describe("force-based spells", () => {
     it("rounds force/2 down (SR4e p. 163)", () => {
       // Arrange

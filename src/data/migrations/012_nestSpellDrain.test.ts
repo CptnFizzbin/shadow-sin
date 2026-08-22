@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./012_nestSpellDrain.ts"
 
-describe("012_nestSpellDrain", () => {
+describe.concurrent("012_nestSpellDrain", () => {
   it("does nothing when spells array is absent", () => {
     // Arrange
     const character = {}

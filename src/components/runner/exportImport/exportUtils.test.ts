@@ -11,7 +11,7 @@ import { ItemType } from "#/system/itemType.ts"
 import type { GearTreeNode } from "./exportUtils.ts"
 import { runnerDataToYaml, gearFromTree, gearToTree, yamlToRunnerData } from "./exportUtils.ts"
 
-describe("gearToTree", () => {
+describe.concurrent("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
     // Arrange & Act
     const result = gearToTree({})
@@ -212,7 +212,7 @@ describe("gearToTree", () => {
   })
 })
 
-describe("gearFromTree", () => {
+describe.concurrent("gearFromTree", () => {
   it("returns an empty object for an empty array", () => {
     expect(gearFromTree([])).toEqual({})
   })
@@ -266,7 +266,7 @@ describe("gearFromTree", () => {
   })
 })
 
-describe("yamlToRunnerData / runnerDataToYaml round-trip", () => {
+describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   it("round-trips a simple runner sheet", () => {
     const gear = createItemMap(
       createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),

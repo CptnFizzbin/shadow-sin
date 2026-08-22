@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./011_splitPainToleranceEffects.ts"
 
-describe("011_splitPainToleranceEffects", () => {
+describe.concurrent("011_splitPainToleranceEffects", () => {
   it("converts positive painTolerance in qualities to highPainTolerance", () => {
     // Arrange
     const character = {

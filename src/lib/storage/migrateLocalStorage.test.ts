@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import { migrateOldLocalStorageFormat } from "./migrateLocalStorage.ts"
 
@@ -30,16 +30,11 @@ function makeStorage(): Storage {
   return storage
 }
 
-describe("migrateOldLocalStorageFormat", () => {
-  let ls: Storage
-
-  beforeEach(() => {
-    ls = makeStorage()
-  })
-
+describe.concurrent("migrateOldLocalStorageFormat", () => {
   describe("character migration", () => {
     it("migrates an old envelope-wrapped character to the new flat format", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const characterData = { id: characterId, profile: { alias: "Blur" } }
       ls.setItem(
@@ -58,6 +53,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("removes the old character key after migration", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       ls.setItem(
         `shadow-sin:json:characters/${characterId}.json`,
@@ -73,6 +69,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("does not overwrite a character that was already migrated to the new format", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const existingData = { id: characterId, profile: { alias: "AlreadyMigrated" } }
       ls.setItem(`shadowsin:characters/${characterId}`, JSON.stringify(existingData))
@@ -91,6 +88,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("handles a character whose value is at the envelope root (no .value wrapper)", () => {
       // Arrange — old key contained the character directly with no envelope
+      const ls = makeStorage()
       const characterId = "abc-456"
       const characterData = { id: characterId, profile: { alias: "NoEnvelope" } }
       ls.setItem(`shadow-sin:json:characters/${characterId}.json`, JSON.stringify(characterData))
@@ -105,6 +103,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("skips unparseable character entries without removing them", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "bad-id"
       ls.setItem(`shadow-sin:json:characters/${characterId}.json`, "not valid json{{{")
 
@@ -120,6 +119,7 @@ describe("migrateOldLocalStorageFormat", () => {
   describe("builder state migration", () => {
     it("migrates an old builder draft to the new path", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const builderState = { character: { id: characterId }, builder: { startingNuyen: 5000 } }
       ls.setItem(`shadow-sin:character-form:${characterId}`, JSON.stringify(builderState))
@@ -135,6 +135,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("removes the old builder key after migration", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       ls.setItem(`shadow-sin:character-form:${characterId}`, JSON.stringify({}))
 
@@ -147,6 +148,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("does not overwrite a builder draft that was already migrated", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const existing = JSON.stringify({ character: { id: characterId }, builder: { startingNuyen: 9999 } })
       ls.setItem(`shadowsin:builder/character-form/${characterId}`, existing)
@@ -163,6 +165,7 @@ describe("migrateOldLocalStorageFormat", () => {
   describe("index rebuild", () => {
     it("creates an index entry from the migrated character's alias", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const characterData = { id: characterId, profile: { alias: "Blur" } }
       ls.setItem(
@@ -182,6 +185,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("uses the character id as the name when no profile.alias is present", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-999"
       ls.setItem(
         `shadow-sin:json:characters/${characterId}.json`,
@@ -198,6 +202,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("appends to an existing index without duplicating already-indexed characters", () => {
       // Arrange
+      const ls = makeStorage()
       const existingId = "existing-char"
       ls.setItem("shadowsin:index", JSON.stringify([{ id: existingId, name: "Existing", lastModified: "2024-01-01T00:00:00.000Z" }]))
       const newId = "new-char"
@@ -218,6 +223,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("does not create an index when only builder state is migrated (no characters)", () => {
       // Arrange
+      const ls = makeStorage()
       ls.setItem(`shadow-sin:character-form:abc-123`, JSON.stringify({}))
 
       // Act
@@ -231,6 +237,7 @@ describe("migrateOldLocalStorageFormat", () => {
   describe("idempotency", () => {
     it("is idempotent — running twice produces the same result", () => {
       // Arrange
+      const ls = makeStorage()
       const characterId = "abc-123"
       const characterData = { id: characterId, profile: { alias: "Blur" } }
       ls.setItem(
@@ -254,6 +261,7 @@ describe("migrateOldLocalStorageFormat", () => {
   describe("no-op when storage is empty", () => {
     it("does nothing when there are no old-format keys", () => {
       // Arrange — storage already empty
+      const ls = makeStorage()
 
       // Act
       migrateOldLocalStorageFormat(ls)
@@ -264,6 +272,7 @@ describe("migrateOldLocalStorageFormat", () => {
 
     it("does not touch unrelated keys", () => {
       // Arrange
+      const ls = makeStorage()
       ls.setItem("some-other-app:data", "untouched")
 
       // Act

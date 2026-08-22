@@ -32,7 +32,7 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   ...overrides,
 })
 
-describe("licenses.create", () => {
+describe.concurrent("licenses.create", () => {
   it("adds the licence under a freshly generated id", () => {
     // Arrange
     const licenseDraft: Omit<LicenseData, "id"> = {
@@ -52,7 +52,7 @@ describe("licenses.create", () => {
   })
 })
 
-describe("licenses.destroy", () => {
+describe.concurrent("licenses.destroy", () => {
   it("removes the licence item", () => {
     // Arrange
     const license = makeItem({ itemType: ItemType.license, rating: 3 })
@@ -65,7 +65,7 @@ describe("licenses.destroy", () => {
   })
 })
 
-describe("licenses.setLicenseForItem", () => {
+describe.concurrent("licenses.setLicenseForItem", () => {
   it("patches only licenseId on the target item", () => {
     // Arrange
     const item = makeItem({ equipped: true })
@@ -112,7 +112,7 @@ describe("licenses.setLicenseForItem", () => {
   })
 })
 
-describe("licenses.clearLicenseForItem", () => {
+describe.concurrent("licenses.clearLicenseForItem", () => {
   it("clears an existing licenseId", () => {
     // Arrange
     const licenseId = crypto.randomUUID() as UUID

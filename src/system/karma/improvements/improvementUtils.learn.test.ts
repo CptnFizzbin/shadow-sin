@@ -21,7 +21,7 @@ import {
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("getImprovementCost — learn entries", () => {
+describe.concurrent("getImprovementCost — learn entries", () => {
   it("charges 4k for a new active skill at rating 1", () => {
     // Arrange
     const entry: LearnActiveSkillEntry = {
@@ -98,7 +98,7 @@ describe("getImprovementCost — learn entries", () => {
   })
 })
 
-describe("applyImprovement — learn entries", () => {
+describe.concurrent("applyImprovement — learn entries", () => {
   it("pushes the new active skill onto the runner sheet", () => {
     // Arrange
     const entry: LearnActiveSkillEntry = {

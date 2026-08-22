@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { setNotoriety, setStreetCred } from "./profileSlice.actions.ts"
 import { profileReducer } from "./profileSlice.ts"
 
-describe("setStreetCred", () => {
+describe.concurrent("setStreetCred", () => {
   it("sets streetCred to the given value", () => {
     // Arrange
     const state = profileReducer(undefined, { type: "@@INIT" })
@@ -16,7 +16,7 @@ describe("setStreetCred", () => {
   })
 })
 
-describe("setNotoriety", () => {
+describe.concurrent("setNotoriety", () => {
   it("sets notoriety to the given value", () => {
     // Arrange
     const state = profileReducer(undefined, { type: "@@INIT" })

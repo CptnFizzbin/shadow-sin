@@ -11,7 +11,7 @@ import { applyImprovement } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
-describe("applyImprovement — initiationIncrease", () => {
+describe.concurrent("applyImprovement — initiationIncrease", () => {
   it("raises the initiate grade and deducts karma", () => {
     // Arrange — grade 0 → 1 costs 10 + 1*3 = 13
     const entry: InitiationIncreaseEntry = {
@@ -34,7 +34,7 @@ describe("applyImprovement — initiationIncrease", () => {
   })
 })
 
-describe("applyImprovement — submersionIncrease", () => {
+describe.concurrent("applyImprovement — submersionIncrease", () => {
   it("raises the submersion grade and deducts karma", () => {
     // Arrange — grade 0 → 1 costs 10 + 1*3 = 13
     const entry: SubmersionIncreaseEntry = {

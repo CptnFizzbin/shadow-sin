@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./021_flattenVehicleDamage.ts"
 
-describe("021_flattenVehicleDamage", () => {
+describe.concurrent("021_flattenVehicleDamage", () => {
   it("returns the character unchanged when there is no gear", () => {
     // Arrange
     const character = {}

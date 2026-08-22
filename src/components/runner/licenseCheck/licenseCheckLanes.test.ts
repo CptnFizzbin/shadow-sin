@@ -19,7 +19,7 @@ function gearMap(...items: ItemData[]): Record<string, ItemData> {
   return Object.fromEntries(items.map((item) => [item.id, item]))
 }
 
-describe("buildVerificationLanes", () => {
+describe.concurrent("buildVerificationLanes", () => {
   it("returns an empty array for no gear", () => {
     expect(buildVerificationLanes({})).toEqual([])
   })
