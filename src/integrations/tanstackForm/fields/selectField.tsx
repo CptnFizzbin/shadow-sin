@@ -44,6 +44,13 @@ export const SelectField: FC<SelectFieldProps> = ({
   const field = useFieldContext<string>()
   const errors = useFieldErrors()
 
+  const currentValue = field.state.value ?? ""
+  // A field's stored value can outlive the option it once matched — e.g. `parentId` pointing at
+  // a since-deleted gear item (see `removeItemById`'s "leaves any children orphaned" comment).
+  // MUI's Select warns when its `value` doesn't match any rendered MenuItem, so an orphaned
+  // value gets a hidden placeholder item to match against instead of dropping the reference.
+  const hasCurrentOption = currentValue === "" || options.some((option) => option.value === currentValue)
+
   const noGroupSymbol = Symbol("ungrouped").toString()
   const optionsByGroup = Object.groupBy(options, (option) => option.group ?? noGroupSymbol)
 
@@ -56,7 +63,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     <FormControl error={errors !== null} {...props} {...slotProps?.formControl}>
       <InputLabel {...slotProps?.inputLabel}>{label}</InputLabel>
       <Select
-        value={field.state.value ?? ""}
+        value={currentValue}
         label={label}
         onBlur={field.handleBlur}
         onChange={(e) => {
@@ -67,6 +74,8 @@ export const SelectField: FC<SelectFieldProps> = ({
         }}
         {...slotProps?.select}
       >
+        {!hasCurrentOption && <MenuItem value={currentValue} sx={{ display: "none" }} />}
+
         {groupKeys.map((groupKey) => {
           const items: ReactNode[] = []
 

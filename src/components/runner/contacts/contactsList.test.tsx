@@ -125,9 +125,9 @@ describe("ContactsList", () => {
     fireEvent.click(screen.getByRole("button", { name: "Legwork" }))
     const dialog = await screen.findByRole("dialog", { name: "Legwork: Mr. Johnson" })
 
-    // Assert: GM pool is Connection + Connection
+    // Assert: GM pool is Connection + Loyalty
     expect(within(dialog).getByText("Contact Knowledge Test")).toBeDefined()
-    expect(within(dialog).getAllByText("Connection")).toHaveLength(2)
+    expect(within(dialog).getByText("Connection")).toBeDefined()
 
     // Assert: Player pool is Charisma + Etiquette + Loyalty. Only the
     // defaulting (negative-size) group is a penalty, so DicePool shows it
@@ -136,6 +136,9 @@ describe("ContactsList", () => {
     expect(within(dialog).getByText("Legwork Test")).toBeDefined()
     expect(within(dialog).getByText("CHA")).toBeDefined()
     expect(within(dialog).getAllByText("Etiquette - Defaulting")).toHaveLength(2)
-    expect(within(dialog).getByText("Loyalty")).toBeDefined()
+    // Loyalty is a positive-size group in both pools (the GM's Connection +
+    // Loyalty pool, and the Player's Charisma + Etiquette + Loyalty pool), so
+    // its ledger entry appears once per pool.
+    expect(within(dialog).getAllByText("Loyalty")).toHaveLength(2)
   })
 })

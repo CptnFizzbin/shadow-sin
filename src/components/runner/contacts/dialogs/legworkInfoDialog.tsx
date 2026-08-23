@@ -33,7 +33,7 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
   const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
     { name: "Connection", size: contact.connection },
-    { name: "Connection", size: contact.connection },
+    { name: "Loyalty", size: contact.loyalty },
   ])
 
   const playerPool = createDicePool("legwork.player", "Legwork Test", [
