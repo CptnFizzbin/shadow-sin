@@ -1,12 +1,14 @@
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeOrder } from "#/system/attributeKey.ts"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 
 export const useActiveAttributes = () => {
-  const attributes = useRunnerStoreSelector(Selectors.attributes.selectAttributes)
-  const metatype = useRunnerStoreSelector(Selectors.biology.selectMetatypeData)
-  const awakening = useRunnerStoreSelector(Selectors.biology.selectAwakeningData)
+  const attributes = useRunnerSelector(AttrSelectors.selectAll)
+  const metatype = useRunnerSelector(BiologySelectors.selectMetatypeInfo)
+  const awakening = useRunnerSelector(BiologySelectors.selectAwakeningInfo)
 
   // AttributeOrder — not Object.values(AttributeKey) — excludes the four Matrix stats, which
   // aren't Runner attribute rows (see #438).

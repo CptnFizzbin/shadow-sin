@@ -1,4 +1,5 @@
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -10,7 +11,7 @@ export function useGearByType<TItem extends ItemData>(itemType: ItemType): TItem
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
-  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const gear = useRunnerSelector(ItemSelectors.selectAll)
   return Object.values(gear).filter(filter)
 }
 

@@ -2,21 +2,20 @@ import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { PowersSelectors } from "#/lib/stores/runner/powers/powersSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
-  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const magicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
-  const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
+  const powerPointsUsed = useRunnerSelector(PowersSelectors.selectUsed)
 
   const statuses: AlertInfo[] = []
 
   if (!isAdept(awakeningType)) return statuses
 
-  const powerPointsUsed = adeptPowers
-    .map((power) => power.costPerRating * power.rating)
-    .reduce((total, cost) => total + cost, 0)
   const powerPointsMax = magicAttr
 
   if (powerPointsUsed > powerPointsMax) {

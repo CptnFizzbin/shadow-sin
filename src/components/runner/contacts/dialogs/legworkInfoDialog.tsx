@@ -32,8 +32,11 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
   const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
-    { name: "Connection", size: contact.connection },
-    { name: "Connection", size: contact.connection },
+    // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
+    // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
+    // rows from colliding on the same React key.
+    { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
+    { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
   ])
 
   const playerPool = createDicePool("legwork.player", "Legwork Test", [

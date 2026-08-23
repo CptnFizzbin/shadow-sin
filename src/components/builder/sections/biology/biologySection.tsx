@@ -49,8 +49,12 @@ export const BiologySection: FC = () => {
             }))
           }}
         >
-          {Object.values(metatypes).filter(({ name }) => name !== MetatypeType.AI).map(({ name, cost }) => (
-            <MenuItem value={name} key={name} sx={{ display: "flex" }}>
+          {Object.values(metatypes).map(({ name, cost }) => (
+            // AI isn't buildable through this form (no build-point costed path onto an AI runner
+            // exists yet), so its item stays present but disabled — a pre-seeded AI runner still
+            // needs its current value to match a rendered MenuItem, or MUI logs an out-of-range
+            // Select warning.
+            <MenuItem value={name} key={name} disabled={name === MetatypeType.AI} sx={{ display: "flex" }}>
               <Stack
                 direction="row"
                 sx={{ justifyContent: "space-between", width: "100%" }}

@@ -9,6 +9,7 @@ import {
 } from "#/integrations/reselect/selectorUtils.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
+import type { ArmorRating } from "#/system/gear/armorData.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -251,10 +252,31 @@ export namespace ItemSelectors {
       (items, itemId) => itemOfType(items, itemId, ItemType.armor),
     )
 
-    export const selectEquipped = createMemoizedSelector(
+    export const selectAll = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      (items) => Object.values(filterRecordByType(items, ItemType.armor)).filter((item) => item.equipped),
-    )
+      (items) => Object.values(filterRecordByType(items, ItemType.armor)),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.armor>[]>
+
+    export const selectEquipped = createMemoizedSelector(
+      selectAll,
+      (armor) => armor.filter((item) => item.equipped),
+    ) satisfies ItemSelector<ItemDataFor<ItemType.armor>[]>
+
+    export const selectTotal = createMemoizedSelector(
+      selectEquipped,
+      (equipped): ArmorRating => ({
+        ballistic: equipped.reduce((sum, item) => sum + item.ballistic, 0),
+        impact: equipped.reduce((sum, item) => sum + item.impact, 0),
+      }),
+    ) satisfies ItemSelector<ArmorRating>
+
+    export const selectEffective = createMemoizedSelector(
+      selectEquipped,
+      (equipped): ArmorRating => ({
+        ballistic: Math.max(0, ...equipped.map((item) => item.ballistic)),
+        impact: Math.max(0, ...equipped.map((item) => item.impact)),
+      }),
+    ) satisfies ItemSelector<ArmorRating>
   }
 
   export namespace Implants {

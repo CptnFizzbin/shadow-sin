@@ -3,7 +3,8 @@ import { useMemo, useState } from "react"
 import { buildLicenseCheckResult } from "#/components/runner/licenseCheck/licenseCheckAlerts.ts"
 import { buildVerificationChecks } from "#/components/runner/licenseCheck/licenseCheckChecks.ts"
 import type { LicenseCheckResult, VerificationCheck, VerificationOutcome } from "#/components/runner/licenseCheck/licenseCheckTypes.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 export type LicenseCheckStep = "setup" | "scanning" | "result"
@@ -33,7 +34,7 @@ export interface LicenseCheckState {
  * instead of receiving it as drilled props.
  */
 export function useLicenseCheckState(): LicenseCheckState {
-  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const allGear = useRunnerSelector(ItemSelectors.selectAll)
 
   const [step, setStep] = useState<LicenseCheckStep>("setup")
   const [scannerRating, setScannerRating] = useState(3)

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
+import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -10,6 +12,9 @@ import { AttrSelectors, selectAttrBase, selectAttributes, selectAttrValue } from
  *  `useRunnerSelector` assembles from a `RunnerData` alone (see `mapToLegacySelector.ts`); a
  *  `RunnerData` structurally satisfies both traits, so tests assemble it the same way. */
 const stateFor = (runner: RunnerData) => ({ entity: runner })
+
+/** `selectBounds`/`selectAllInfo`/`selectInfo` additionally read `{ runner }` (via `BiologySelectors`). */
+const runnerStateFor = (runner: RunnerData) => ({ runner, entity: runner })
 
 describe("selectAttributes", () => {
   it("returns the runner's attributes record", () => {
@@ -139,5 +144,59 @@ describe("AttrSelectors.forAttr", () => {
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.body).selectBase(stateFor(runner))).toBe(2)
     expect(AttrSelectors.forAttr(AttributeKey.reaction).selectBase(stateFor(runner))).toBe(9)
+  })
+})
+
+describe("AttrSelectors.selectBounds", () => {
+  it("uses the runner's metatype bounds for a physical attribute", () => {
+    // Arrange
+    const runner = runnerDataFactory((s) => {
+      s.biology.metatype = MetatypeType.Human
+      return s
+    })
+
+    // Act / Assert
+    expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.body]).toEqual({ min: 1, max: 6, augMax: 9 })
+  })
+
+  it("uses the runner's awakening bounds for magic/resonance", () => {
+    // Arrange
+    const runner = runnerDataFactory((s) => {
+      s.biology.awakening = AwakeningType.Mundane
+      return s
+    })
+
+    // Act / Assert
+    expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.magic]).toEqual({ min: 0, max: 0 })
+  })
+})
+
+describe("AttrSelectors.selectAllInfo", () => {
+  it("pairs each attribute's bounds with its base and current value", () => {
+    // Arrange
+    const runner = runnerDataFactory((s) => {
+      s.attributes[AttributeKey.body] = 4
+      return s
+    })
+
+    // Act
+    const info = AttrSelectors.selectAllInfo(runnerStateFor(runner))
+
+    // Assert
+    expect(info[AttributeKey.body]).toEqual({ min: 1, max: 6, augMax: 9, base: 4, current: 4 })
+  })
+})
+
+describe("AttrSelectors.selectInfo", () => {
+  it("returns the same info as selectAllInfo for the given key", () => {
+    // Arrange
+    const runner = runnerDataFactory((s) => {
+      s.attributes[AttributeKey.willpower] = 5
+      return s
+    })
+
+    // Act / Assert
+    expect(AttrSelectors.selectInfo(runnerStateFor(runner), { key: AttributeKey.willpower }))
+      .toEqual(AttrSelectors.selectAllInfo(runnerStateFor(runner))[AttributeKey.willpower])
   })
 })
