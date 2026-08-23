@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import type { Combatant } from "#/lib/stores/initiativeTracker/initiativeTrackerData.ts"
 import {
   addCombatant,
@@ -17,6 +15,7 @@ import {
   useInitiativeTrackerDispatch,
   useInitiativeTrackerSelector,
 } from "#/lib/stores/initiativeTracker/initiativeTrackerStore.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 
 export const useInitiativeTracker = () => {
   const dispatch = useInitiativeTrackerDispatch()

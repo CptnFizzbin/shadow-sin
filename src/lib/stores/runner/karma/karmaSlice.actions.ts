@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { createAction } from "@reduxjs/toolkit"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
 
 export const addKarma = createAction("karma/addKarma", (amount: number) => {

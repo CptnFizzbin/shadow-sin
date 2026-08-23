@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type {

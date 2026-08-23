@@ -1,8 +1,7 @@
-import type { UUID } from "node:crypto"
-
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 

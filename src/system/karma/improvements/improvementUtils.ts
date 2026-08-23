@@ -1,11 +1,10 @@
-import type { UUID } from "node:crypto"
-
 import type { Draft } from "immer"
 import { produce } from "immer"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"

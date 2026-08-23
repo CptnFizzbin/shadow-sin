@@ -1,6 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { createAction } from "@reduxjs/toolkit"
+
+import type { UUID } from "#/lib/uuidUtils.ts"
 
 import type { Combatant } from "./initiativeTrackerData.ts"
 
