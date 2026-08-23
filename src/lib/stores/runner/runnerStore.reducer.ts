@@ -106,7 +106,7 @@ const domainReducer = combineReducers({
 })
 
 /**
- * Mirrors `RunnerData.name` (the `EntityData.name` field) from `profile.alias || profile.name`.
+ * Mirrors `RunnerData.name` (the `EntityBase.name` field) from `profile.alias || profile.name`.
  * `namePassthroughSlice` above satisfies `combineReducers`'s key-shape check but can't compute
  * the actual mirror: a leaf only ever sees its own previous slice value, not whichever of
  * `profile.alias`/`profile.name` *didn't* just change. So `runnerRootReducer` calls this directly

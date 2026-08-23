@@ -14,7 +14,7 @@ interface OldRunner {
 
 /**
  * Backfills the root `name` field (see `docs/features/0015-entity-interface-decomposition.md`'s
- * `EntityData` shape) from `profile.alias || profile.name` — the same mirror `nameReducer`
+ * `EntityBase` shape) from `profile.alias || profile.name` — the same mirror `nameReducer`
  * (`runnerStore.reducer.ts`) keeps in sync going forward.
  */
 const migration: CharacterMigration<OldRunner> = {

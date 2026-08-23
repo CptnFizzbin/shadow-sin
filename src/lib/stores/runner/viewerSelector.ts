@@ -2,9 +2,9 @@ import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-// Kept as `object` rather than `EntityData` — not every Entity kind this can hold (starting with
+// Kept as `object` rather than `EntityBase` — not every Entity kind this can hold (starting with
 // `RunnerData`, which keys its display name under `profile.name` rather than a top-level `name`)
-// structurally satisfies `EntityData`'s full shape. See `EntityProvider`'s doc comment for the
+// structurally satisfies `EntityBase`'s full shape. See `EntityProvider`'s doc comment for the
 // same call; `withTrait` below narrows to whatever trait(s) a selector's `TState` actually needs.
 const selectEntity = createSelector<{ entity: object }, object>((state) => state.entity)
 

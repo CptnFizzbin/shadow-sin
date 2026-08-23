@@ -8,7 +8,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AttrSelectors, selectAttrBase, selectAttributes, selectAttrValue } from "./attributesSlice.selectors.ts"
 
-/** `AttrSelectors`' `TState` — `{ entity: EntityData & EntityWithAttrs }` — is what
+/** `AttrSelectors`' `TState` — `{ entity: EntityBase & EntityWithAttrs }` — is what
  *  `useRunnerSelector` assembles from a `RunnerData` alone (see `mapToLegacySelector.ts`); a
  *  `RunnerData` structurally satisfies both traits, so tests assemble it the same way. */
 const stateFor = (runner: RunnerData) => ({ entity: runner })

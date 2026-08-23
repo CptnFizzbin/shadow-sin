@@ -3,10 +3,10 @@ import { z } from "zod"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 /** An Entity with attribute ratings. Implemented by `RunnerData`; consumed by `AttrSelectors`
- *  (`attributesSlice.selectors.ts`). Deliberately standalone rather than `extends EntityData` —
+ *  (`attributesSlice.selectors.ts`). Deliberately standalone rather than `extends EntityBase` —
  *  not every Entity kind a capability trait like this could apply to (e.g. Spirit/Sprite, which
- *  have no `source` field and don't use `EntityData.rating`) structurally satisfies
- *  `EntityData`'s full shape. See `EntityProvider`'s doc comment for the same call. */
+ *  have no `source` field and don't use `EntityBase.rating`) structurally satisfies
+ *  `EntityBase`'s full shape. See `EntityProvider`'s doc comment for the same call. */
 export interface EntityWithAttrs {
   attributes: Partial<Record<AttributeKey, number>>
 }
