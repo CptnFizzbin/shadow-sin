@@ -1,9 +1,10 @@
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getContactBpCost } from "#/components/builder/sections/contacts/contactsBuilderUtils.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/lib/stores/runner/contacts/contactsSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useContactsBuildPoints = () => {
-  const contacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
+  const contacts = useRunnerSelector(ContactsSelectors.selectAll)
   return {
     sectionId: BuilderSectionId.contacts,
     label: "Contacts",

@@ -1,5 +1,6 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/lib/stores/runner/contacts/contactsSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {
   const alerts: AlertInfo[] = []
@@ -8,7 +9,7 @@ export const useContactsAlerts = (): AlertInfo[] => {
     alerts.push({ section: "Contacts", ...alert })
   }
 
-  const contacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
+  const contacts = useRunnerSelector(ContactsSelectors.selectAll)
 
   if (contacts.length === 0) {
     addAlert({

@@ -2,14 +2,15 @@ import pluralize from "pluralize"
 
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 
 import {
   useKnowledgeSkillPoints,
 } from "./useKnowledgeSkillPoints.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
-  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
+  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
   const editorMode = useEditorMode()
 

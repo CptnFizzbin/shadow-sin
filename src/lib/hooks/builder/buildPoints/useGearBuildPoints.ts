@@ -3,20 +3,17 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
 import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
-import { useRunnerSelector, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const useGearTotalCost = () => {
   const gear = useRunnerSelector(ItemSelectors.selectAll)
   const allGear = Object.values(gear)
 
-  const lifestyle = useRunnerStoreSelector((state) => {
-    const lifestyleType = state.profile.lifestyle?.quality ?? LifestyleType.Street
-    return Lifestyles[lifestyleType]
-  })
-  const lifestyleMonths = useRunnerStoreSelector(
-    (state) => state.profile.lifestyle?.monthsPaid ?? 1,
-  )
+  const lifestyleQuality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality)
+  const lifestyle = Lifestyles[lifestyleQuality ?? LifestyleType.Street]
+  const lifestyleMonths = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
 
   const gearCost = getTotalCost(...allGear)
   const lifestyleCost = lifestyle.upkeep * lifestyleMonths
