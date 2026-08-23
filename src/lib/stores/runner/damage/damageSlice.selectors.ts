@@ -5,7 +5,7 @@ import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import type { EntityWithDamage, EntityWithQualities } from "#/system/entities/entityTraits.ts"
+import { isEntityWithDamage, isEntityWithQualities } from "#/system/entities/entityTraits.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -39,9 +39,9 @@ export namespace DamageSelectors {
 
   export const selectWoundIntervalModifier = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
-    ViewerStateSelectors.selectEntity.withTrait<EntityWithQualities>(),
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     Options.track,
-    (runner, entity, track) => {
+    (runner: RunnerData, entity, track) => {
       let modifier = 0
 
       for (const quality of entity.qualities) {
@@ -78,9 +78,9 @@ export namespace DamageSelectors {
 
   export const selectWoundIntervalOffset = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
-    ViewerStateSelectors.selectEntity.withTrait<EntityWithQualities>(),
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     Options.track,
-    (runner, entity, track) => {
+    (runner: RunnerData, entity, track) => {
       let offset = 0
 
       for (const quality of entity.qualities) {
@@ -110,10 +110,14 @@ export namespace DamageSelectors {
     },
   )
 
-  export const selectWoundModForTrack = createMemoizedSelector(
+  export const selectWoundModForTrack: Selector<
+    { runner: RunnerData, entity: object },
+    number,
+    { track: DamageTrackKey }
+  > = createMemoizedSelector(
     selectWoundInterval,
     selectWoundIntervalOffset,
-    ViewerStateSelectors.selectEntity.withTrait<EntityWithDamage>(),
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithDamage),
     Options.track,
     (woundInterval, intervalOffset, entity, track) => {
       const damage = entity.damage[track]
@@ -128,7 +132,7 @@ export namespace DamageSelectors {
   )
 
   export const selectDamage = createMemoizedSelector(
-    ViewerStateSelectors.selectEntity.withTrait<EntityWithDamage>(),
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithDamage),
     Options.track,
     (entity, track) => entity.damage[track],
   )

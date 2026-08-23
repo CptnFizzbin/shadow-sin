@@ -4,6 +4,7 @@ import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
+import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /** @deprecated Use `AttrSelectors.selectAll` via `useRunnerSelector` instead. */
@@ -41,7 +42,7 @@ export namespace AttrSelectors {
   }
 
   export const selectAll = createMemoizedSelector(
-    ViewerStateSelectors.selectEntity.withTrait<EntityWithAttrs>(),
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
     (entity) => entity.attributes,
   )
 
