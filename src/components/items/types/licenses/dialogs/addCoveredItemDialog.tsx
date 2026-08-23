@@ -37,6 +37,14 @@ export const AddCoveredItemDialog: FC<AddCoveredItemDialogProps> = ({ ctrl, lice
 
   const [selectedItemId, setSelectedItemId] = useState(unlicensed[0]?.id ?? licensedElsewhere[0]?.id ?? "")
 
+  // handleAdd's dispatch below moves the selected item onto this license, which drops it from
+  // `candidates` (it now satisfies `item.licenseId === license.id`) a render before `ctrl.close`
+  // unmounts this dialog — without a matching MenuItem for that last render, MUI logs an
+  // out-of-range Select warning.
+  const selectedItemStillOffered = !selectedItemId
+    || unlicensed.some((item) => item.id === selectedItemId)
+    || licensedElsewhere.some((item) => item.id === selectedItemId)
+
   const handleAdd = () => {
     if (!selectedItemId) return
     dispatch(Actions.item.licenses.setLicenseForItem({
@@ -66,6 +74,8 @@ export const AddCoveredItemDialog: FC<AddCoveredItemDialogProps> = ({ ctrl, lice
                     value={selectedItemId}
                     onChange={(e) => setSelectedItemId(e.target.value)}
                   >
+                    {!selectedItemStillOffered && <MenuItem value={selectedItemId} sx={{ display: "none" }} />}
+
                     {unlicensed.length > 0 && [
                       <ListSubheader key="unlicensed-header">Unlicensed</ListSubheader>,
                       ...unlicensed.map((item) => (
