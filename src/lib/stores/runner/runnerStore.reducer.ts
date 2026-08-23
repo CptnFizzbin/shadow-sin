@@ -55,9 +55,20 @@ const submersionGradeSlice = createSlice({
   reducers: {},
 })
 
+// `combineReducers` warns ("Unexpected key...") about any state key it doesn't have a matching
+// reducer for — since `name` is a real `RunnerData` key, it needs a leaf here even though
+// `nameReducer` below (not this one) is what actually computes its value on every dispatch. This
+// leaf's own output is irrelevant — `runnerRootReducer` overwrites it right after.
+const namePassthroughSlice = createSlice({
+  name: "name",
+  initialState: "" as RunnerData["name"],
+  reducers: {},
+})
+
 const domainReducer = combineReducers({
   id: idSlice.reducer,
   kind: kindSlice.reducer,
+  name: namePassthroughSlice.reducer,
   _meta_: metaReducer,
   attributes: attributesReducer,
   qualities: qualitiesReducer,
@@ -85,11 +96,11 @@ const domainReducer = combineReducers({
 
 /**
  * Mirrors `RunnerData.name` (the `EntityBase.name` field) from `profile.alias || profile.name`.
- * Unlike every reducer `domainReducer` composes above, this can't be a `combineReducers` leaf: a
- * leaf only ever sees its own previous slice value, but the mirror needs whichever of
- * `profile.alias`/`profile.name` *didn't* just change too — so `runnerRootReducer` calls it
- * directly against `domainReducer`'s already-updated output instead of registering it under a
- * `name` key.
+ * `namePassthroughSlice` above satisfies `combineReducers`'s key-shape check but can't compute
+ * the actual mirror: a leaf only ever sees its own previous slice value, not whichever of
+ * `profile.alias`/`profile.name` *didn't* just change. So `runnerRootReducer` calls this directly
+ * against `domainReducer`'s already-updated output instead, overwriting whatever the passthrough
+ * leaf produced.
  */
 const nameReducer = (profile: RunnerData["profile"]): RunnerData["name"] => profile.alias || profile.name
 
