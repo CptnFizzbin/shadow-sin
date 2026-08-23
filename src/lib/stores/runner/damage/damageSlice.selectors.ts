@@ -42,7 +42,7 @@ export namespace DamageSelectors {
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     Options.track,
-    (runner, entity, track) => {
+    (runner: RunnerData, entity, track) => {
       let modifier = 0
 
       for (const quality of entity.qualities) {
@@ -81,7 +81,7 @@ export namespace DamageSelectors {
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     Options.track,
-    (runner, entity, track) => {
+    (runner: RunnerData, entity, track) => {
       let offset = 0
 
       for (const quality of entity.qualities) {
