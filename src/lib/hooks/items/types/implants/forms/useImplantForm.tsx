@@ -41,7 +41,6 @@ const defaultFormValues: ImplantData = {
   capacityCost: 0,
   quantity: 0,
   rating: undefined as number | undefined,
-  childIds: [NullUuid],
   notes: "",
   equipped: false,
   stashed: false,
