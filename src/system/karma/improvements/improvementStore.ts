@@ -1,9 +1,8 @@
-import type { UUID } from "node:crypto"
-
 import { produce } from "immer"
 
 import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 
 import type { ImprovementEntry } from "./improvementEntry.ts"
 

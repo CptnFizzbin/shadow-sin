@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
@@ -8,6 +6,7 @@ import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFo
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { programFieldMap, useProgramForm } from "#/lib/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

@@ -1,6 +1,5 @@
-import type { UUID } from "node:crypto"
-
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { QualityData } from "#/system/qualityData.ts"

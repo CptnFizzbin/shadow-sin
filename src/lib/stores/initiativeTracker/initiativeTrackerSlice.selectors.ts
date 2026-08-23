@@ -1,6 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { createSelector } from "reselect"
+
+import type { UUID } from "#/lib/uuidUtils.ts"
 
 import type { Combatant, InitiativeTrackerState } from "./initiativeTrackerData.ts"
 import { sortCombatants } from "./initiativeTrackerData.ts"

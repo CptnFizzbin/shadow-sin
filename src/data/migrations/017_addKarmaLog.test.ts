@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
 
 import migration from "./017_addKarmaLog.ts"

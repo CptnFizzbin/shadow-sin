@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import { AsyncDebouncer } from "@tanstack/pacer"
 
 import { applyMigrations } from "#/data/applyMigrations.ts"
@@ -8,6 +6,7 @@ import { RunnerNotFoundError } from "#/lib/errors/runnerNotFoundError.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { RunnerMetaSchema } from "#/system/runnerData.ts"
 

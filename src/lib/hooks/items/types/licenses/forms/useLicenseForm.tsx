@@ -1,8 +1,7 @@
-import type { UUID } from "node:crypto"
-
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { DefaultFakeLicenseRating, getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import { useItemForm, itemDefaults } from "#/lib/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import { ItemType } from "#/system/itemType.ts"

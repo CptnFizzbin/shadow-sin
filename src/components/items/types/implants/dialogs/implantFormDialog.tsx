@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import type { FC } from "react"
 
 import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
@@ -9,6 +7,7 @@ import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { implantFieldMap, useImplantForm } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {

@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { createAction } from "@reduxjs/toolkit"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
@@ -21,7 +20,7 @@ export const addItem = createAction("gear/add", (item: Omit<ItemData, "id">) => 
 
 export const setItem = createAction<ItemData>("gear/set")
 
-export const patchItem = createAction<{ itemId: string, data: Partial<ItemData> }>("gear/patch")
+export const patchItem = createAction<{ itemId: UUID, data: Partial<ItemData> }>("gear/patch")
 
 export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("gear/remove")
 

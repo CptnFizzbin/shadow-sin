@@ -1,5 +1,4 @@
-import type { UUID } from "node:crypto"
-
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
 export interface SkillEntry {

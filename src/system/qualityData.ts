@@ -1,4 +1,4 @@
-import type { UUID } from "node:crypto"
+import type { UUID } from "#/lib/uuidUtils.ts"
 
 import type { EntityKind } from "./entityKind.ts"
 import type { GameEffectData } from "./gameEffects/gameEffectData.ts"

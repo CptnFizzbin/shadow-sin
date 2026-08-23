@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { z } from "zod"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
