@@ -1,7 +1,8 @@
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/items/types/licenses/licenseUtils.ts"
 import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -24,7 +25,7 @@ export const getTotalCost = (...items: ItemCostInfo[]) => {
 }
 
 export const useGearAvailabilityIssues = () => {
-  const gear = useRunnerStoreSelector((state) => state.gear)
+  const gear = useRunnerSelector(ItemSelectors.selectAll)
   const allGear = Object.values(gear)
 
   const invalidSections = new Set<SectionHeader>()

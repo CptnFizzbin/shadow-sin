@@ -8,6 +8,7 @@ import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -322,7 +323,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("Indirect: defense uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item,
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -330,7 +331,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet.gear[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))
@@ -358,7 +359,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("includes the worn effective armor value for a physical attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item,
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -367,7 +368,7 @@ describe("DefenseCalculatorDialogContent", () => {
           impact: 6,
           damage: { ballistic: 2, impact: 1 },
         }
-        sheet.gear[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
@@ -385,7 +386,7 @@ describe("DefenseCalculatorDialogContent", () => {
     it("does not apply armor for a spell attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item,
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -393,7 +394,7 @@ describe("DefenseCalculatorDialogContent", () => {
           ballistic: 8,
           impact: 6,
         }
-        sheet.gear[jacket.id] = jacket
+        getItemCatalog(sheet)[jacket.id] = jacket
       })
 
       fireEvent.click(screen.getByRole("button", { name: /spell/i }))

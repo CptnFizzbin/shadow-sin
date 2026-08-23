@@ -5,6 +5,7 @@ import { CredstickType } from "#/system/gear/credstickData.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 import { selectNetWorth } from "./useNetWorth.tsx"
 
@@ -17,7 +18,7 @@ describe("selectNetWorth", () => {
     })
 
     // Act
-    const netWorth = selectNetWorth({ runner: sheet, items: sheet.gear })
+    const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(netWorth).toBe(5_000)
@@ -39,7 +40,7 @@ describe("selectNetWorth", () => {
     })
 
     // Act
-    const netWorth = selectNetWorth({ runner: sheet, items: sheet.gear })
+    const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(netWorth).toBe(3_000)
@@ -61,7 +62,7 @@ describe("selectNetWorth", () => {
     })
 
     // Act
-    const netWorth = selectNetWorth({ runner: sheet, items: sheet.gear })
+    const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(netWorth).toBe(2_000)
@@ -78,7 +79,7 @@ describe("selectNetWorth", () => {
     })
 
     // Act
-    const netWorth = selectNetWorth({ runner: sheet, items: sheet.gear })
+    const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(netWorth).toBe(3_500)

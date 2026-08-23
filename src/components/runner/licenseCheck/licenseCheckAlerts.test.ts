@@ -58,8 +58,8 @@ describe.concurrent("buildLicenseCheckResult", () => {
   })
 
   it("adds a multiple-sins alert naming every scanned SIN, even if every outcome clears", () => {
-    const johnSmith: SinData = { kind: EntityKind.item, id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const janeDoe: SinData = { kind: EntityKind.item, id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
+    const johnSmith: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const janeDoe: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
     const gear = gearMap(johnSmith, janeDoe)
 
     const checks: VerificationCheck[] = [

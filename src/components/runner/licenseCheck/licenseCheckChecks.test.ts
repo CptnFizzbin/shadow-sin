@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -25,9 +24,9 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("keeps a checked SIN's own credential alongside its checked licensed gear", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
     const checks = buildVerificationChecks(gear, [weapon])
@@ -40,9 +39,9 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("drops a SIN entirely when neither it nor any of its licensed gear is checked", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
     const checks = buildVerificationChecks(gear, [])
@@ -51,9 +50,9 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("keeps a SIN's own credential when it is checked directly, even with no licensed gear checked", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
     const checks = buildVerificationChecks(gear, [sin])
@@ -62,10 +61,10 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("keeps only the checked licensed-gear item when a SIN carries more than one", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const checkedWeapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
-    const uncheckedWeapon: ItemData = { kind: EntityKind.item, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const checkedWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const uncheckedWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, checkedWeapon, uncheckedWeapon)
 
     const checks = buildVerificationChecks(gear, [checkedWeapon])
@@ -78,14 +77,14 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("drops a SIN with multiple licensed gear items when every one of them is unchecked", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const firstWeapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
-    const secondWeapon: ItemData = { kind: EntityKind.item, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const firstWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const secondWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
 
     // Something else stays checked, proving this isn't just "nothing at all is checked".
     const unrelatedId = "00000000-0000-0000-0000-000000000005" as UUID
-    const unrelatedUnlicensed: ItemData = { kind: EntityKind.item, id: unrelatedId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const unrelatedUnlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: unrelatedId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
     const gear = gearMap(sin, license, firstWeapon, secondWeapon, unrelatedUnlicensed)
 
     const checks = buildVerificationChecks(gear, [unrelatedUnlicensed])
@@ -95,8 +94,8 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("drops an unchecked Unlicensed or Forbidden item but keeps a checked one", () => {
-    const checkedUnlicensed: ItemData = { kind: EntityKind.item, id: itemId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
-    const uncheckedForbidden: ItemData = { kind: EntityKind.item, id: itemId2, name: "Forbidden Gun", itemType: ItemType.weapon, availability: { rating: 12, forbidden: true } }
+    const checkedUnlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const uncheckedForbidden: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Forbidden Gun", itemType: ItemType.weapon, availability: { rating: 12, forbidden: true } }
     const gear = gearMap(checkedUnlicensed, uncheckedForbidden)
 
     const checks = buildVerificationChecks(gear, [checkedUnlicensed])
@@ -105,10 +104,10 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("shuffles the combined checks rather than preserving lane order", () => {
-    const sin: SinData = { kind: EntityKind.item, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
-    const weapon: ItemData = { kind: EntityKind.item, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
-    const unlicensed: ItemData = { kind: EntityKind.item, id: itemId2, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const unlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
     const gear = gearMap(sin, license, weapon, unlicensed)
 
     const checks = buildVerificationChecks(gear, [weapon, unlicensed])

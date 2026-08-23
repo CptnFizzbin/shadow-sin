@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -25,7 +24,7 @@ import {
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -36,7 +35,7 @@ describe.concurrent("licenses.create", () => {
   it("adds the licence under a freshly generated id", () => {
     // Arrange
     const licenseDraft: Omit<LicenseData, "id"> = {
-      kind: EntityKind.item,
+      kind: EntityKind.item, items: { parentId: null, childIds: [] },
       itemType: ItemType.license,
       name: "License: Ares Predator V",
       rating: 3,
@@ -155,7 +154,7 @@ describe.each([
   describe("create", () => {
     it("adds the item under a freshly generated id", () => {
       // Arrange
-      const draft = { itemType, name: "Test Item" }
+      const draft = { itemType, name: "Test Item", items: { parentId: null, childIds: [] } }
 
       // Act
       const next = gearReducer({}, namespace.create(draft as never))

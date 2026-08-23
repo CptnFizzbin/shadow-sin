@@ -1,6 +1,5 @@
 import { z } from "zod"
 
-import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { QualityData } from "#/system/qualityData.ts"
@@ -8,7 +7,7 @@ import { SourceDataSchema } from "#/system/sourceData.ts"
 
 const QualityDataSchema = z.object({
   kind: z.literal(EntityKind.quality),
-  id: z.uuid() as z.ZodType<UUID>,
+  id: z.uuid(),
   name: z.string(),
   type: z.enum(["positive", "negative"]),
   bpValue: z.number().optional(),

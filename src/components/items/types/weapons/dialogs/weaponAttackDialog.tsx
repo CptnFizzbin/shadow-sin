@@ -26,7 +26,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({ ctrl, weapon }) => {
   const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
 
   const equippedWeapons = useGearByType<WeaponData>(ItemType.weapon)
-    .filter((item) => !item.parentId && item.equipped)
+    .filter((item) => !item.items.parentId && item.equipped)
   const weapons = equippedWeapons.some((item) => item.id === weapon.id)
     ? equippedWeapons
     : [weapon, ...equippedWeapons]

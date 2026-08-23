@@ -39,7 +39,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
 
   const handleAddMod = async () => {
     const saved = await modFormDialog.open({ label: "Mod" })
-    if (saved) dispatch(Actions.item.addItem({ ...saved, parentId: armor.id }))
+    if (saved) dispatch(Actions.item.addItem({ ...saved, items: { ...saved.items, parentId: armor.id } }))
   }
 
   return (

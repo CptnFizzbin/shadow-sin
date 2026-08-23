@@ -15,12 +15,13 @@ export const GearAttachmentFieldGroup = withFieldGroup({
   render: ({ group, isFixed, parentItemOptions, fieldLabel, attachmentSlot }) => {
     return (
       <>
-        <group.AppField name="parentId">
+        <group.AppField name="items.parentId">
           {(field) => (
             <field.SelectField
               label={fieldLabel}
               size="small"
               fullWidth
+              nullable
               options={[{ label: "—", value: "" }, ...parentItemOptions]}
               slotProps={{
                 select: { disabled: isFixed },

@@ -29,6 +29,7 @@ const defaultFormValues: DeviceData = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] },
   effects: [],
   stashed: false,
   deviceType: "commlink",

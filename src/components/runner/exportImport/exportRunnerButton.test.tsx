@@ -1,12 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react"
-import type { FC, PropsWithChildren } from "react"
+import { fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { renderWithRunner } from "#testUtils/renderWithRunner.tsx"
 
-import { ExportRunnerButton } from "./exportRunnerButton.tsx"
 import type * as ExportUtils from "./exportUtils.ts"
 import { downloadTextFile, yamlToRunnerData } from "./exportUtils.ts"
 
@@ -14,19 +10,6 @@ vi.mock("./exportUtils.ts", async (importOriginal) => {
   const actual = await importOriginal<typeof ExportUtils>()
   return { ...actual, downloadTextFile: vi.fn() }
 })
-
-function renderWithRunner(overrideFn?: Parameters<typeof runnerDataFactory>[0]) {
-  const runnerData = runnerDataFactory(overrideFn)
-  const store = new RunnerDataStore(runnerData)
-
-  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
-  )
-
-  render(<ExportRunnerButton />, { wrapper: Wrapper })
-
-  return store
-}
 
 describe("ExportRunnerButton", () => {
   beforeEach(() => {

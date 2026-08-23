@@ -17,7 +17,7 @@ export const Route = createFileRoute("/test/items/details/all")({
 
 /** Every common `ItemData` field populated, so `ItemDetailsRoot` renders every one of its own sections. */
 const TEST_ITEM: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Test Item — All Slots",
   itemType: ItemType.other,
@@ -38,7 +38,7 @@ const TEST_ITEM: ItemData = {
 }
 
 const SUBITEM_A: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Attached Widget",
   itemType: ItemType.other,
@@ -46,7 +46,7 @@ const SUBITEM_A: ItemData = {
 }
 
 const SUBITEM_B: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Attached Gadget",
   itemType: ItemType.other,

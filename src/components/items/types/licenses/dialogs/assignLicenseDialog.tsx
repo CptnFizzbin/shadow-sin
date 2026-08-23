@@ -27,6 +27,7 @@ import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -56,7 +57,7 @@ const ExistingLicenseSection: FC<ExistingLicenseSectionProps> = ({
       onChange={(e) => onSelect(e.target.value)}
     >
       {licenses.map((license) => {
-        const sin = sins.find((s) => s.id === license.parentId)
+        const sin = sins.find((s) => s.id === license.items.parentId)
         return (
           <MenuItem key={license.id} value={license.id}>
             {license.name}
@@ -231,7 +232,7 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
       name: `License: ${item.name}`,
       rating,
       cost,
-      parentId: selectedSinId as LicenseData["parentId"],
+      items: { parentId: selectedSinId as UUID, childIds: [] },
     }
     const addLicenseAction = Actions.item.licenses.create(licenseDraft)
     dispatch(addLicenseAction)

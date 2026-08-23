@@ -20,7 +20,7 @@ export interface LicenseItemDetailsProps {
 export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRemoved }) => {
   const dispatch = useRunnerStoreDispatch()
   const licenseFormDialog = useLicenseFormDialog()
-  const sin = useRunnerStoreSelector(Selectors.gear.selectById(license.parentId as UUID)) as SinData | undefined
+  const sin = useRunnerStoreSelector(Selectors.gear.selectById(license.items.parentId as UUID)) as SinData | undefined
 
   const removeLicense = () => {
     dispatch(Actions.item.licenses.destroy(license.id))

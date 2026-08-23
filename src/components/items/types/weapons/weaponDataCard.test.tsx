@@ -9,13 +9,14 @@ import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { WeaponDataCard } from "./weaponDataCard.tsx"
 
 const weapon: WeaponData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -36,7 +37,7 @@ const firearm: FirearmData = {
 }
 
 const meleeWeapon: MeleeWeaponData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000002",
   name: "Combat Knife",
   itemType: ItemType.weapon,
@@ -52,7 +53,7 @@ const accessory: ItemData = {
   id: "00000000-0000-0000-0000-000000000003",
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,
-  parentId: weapon.id,
+  items: { parentId: weapon.id, childIds: [] },
 }
 
 const renderWeaponCard = (data: WeaponData, extraGear: Record<string, ItemData> = {}) => {
@@ -105,7 +106,7 @@ describe("WeaponDataCard", () => {
 
   it("renders accessories as nested subitems", () => {
     // Arrange / Act
-    renderWeaponCard({ ...weapon, childIds: [accessory.id] }, { [accessory.id]: accessory })
+    renderWeaponCard({ ...weapon, items: { ...weapon.items, childIds: [accessory.id] } }, { [accessory.id]: accessory })
 
     // Assert
     expect(screen.getByText("Smartgun System")).toBeDefined()
@@ -142,7 +143,7 @@ describe("WeaponDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
     // Assert
-    expect(runnerStore.getState().gear[weapon.id].equipped).toBe(true)
+    expect(getItemCatalog(runnerStore.getState())[weapon.id].equipped).toBe(true)
   })
 
   it("offers a Remove action", () => {

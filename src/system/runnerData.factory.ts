@@ -4,12 +4,29 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { awakenings, AwakeningType } from "./awakeningType.ts"
 import { EntityKind } from "./entityKind.ts"
+import type { ItemCatalog } from "./items/itemUtils.ts"
 import { LifestyleType } from "./lifestyleType.ts"
 import { metatypes, MetatypeType } from "./metatypeData.ts"
 import type { RunnerData } from "./runnerData.ts"
+import { getItemCatalog } from "./runnerTraits.ts"
 
-export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData): RunnerData => {
-  const data = {
+export type RunnerFactoryOverrideFn = (data: RunnerData & { gear: ItemCatalog }) => RunnerData
+
+/** @deprecated use runnerDataFactory({ override: () => {}}) instead */
+export function runnerDataFactory(overrideFn: RunnerFactoryOverrideFn): RunnerData
+export function runnerDataFactory(options?: {
+  items?: ItemCatalog
+  override?: RunnerFactoryOverrideFn
+}): RunnerData
+export function runnerDataFactory(
+  optionsOrOverride?:
+    | RunnerFactoryOverrideFn
+    | { items?: ItemCatalog, override?: RunnerFactoryOverrideFn },
+): RunnerData {
+  const overrideFn = typeof optionsOrOverride === "function" ? optionsOrOverride : optionsOrOverride?.override
+  const items = typeof optionsOrOverride === "object" ? optionsOrOverride.items : undefined
+
+  const data: RunnerData = {
     kind: EntityKind.runner,
     id: NullUuid,
     name: "",
@@ -82,8 +99,6 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
     initiateGrade: 0,
     submersionGrade: 0,
 
-    gear: {},
-
     karma: {
       total: 0,
       current: 0,
@@ -95,12 +110,43 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
       loans: [],
     },
 
-    featureFlags: {},
-  } satisfies RunnerData
+    items: { parentId: null, childIds: [] },
 
-  if (overrideFn) {
-    return overrideFn(data)
-  } else {
+    _data_: {
+      featureFlags: {},
+      items: items ?? {},
+    },
+  }
+
+  // Back-compat for override functions still written against the pre-Slice-5 `data.gear` field
+  // name (see RunnerFactoryOverrideFn's @deprecated note) — a getter/setter keeps `data.gear` and
+  // `data._data_.items` in sync for direct mutation (`data.gear = {...}`). It's non-enumerable so
+  // it doesn't leak into `{ ...data }`-style overrides or show up as an unexpected key when this
+  // data becomes a Redux store's preloadedState.
+  Object.defineProperty(data, "gear", {
+    configurable: true,
+    get(this: RunnerData) {
+      return getItemCatalog(this)
+    },
+    set(this: RunnerData, value: ItemCatalog) {
+      this._data_.items = value
+    },
+  })
+
+  if (!overrideFn) {
     return data
   }
+
+  const result = overrideFn(data as RunnerData & { gear: ItemCatalog })
+
+  // A spread-style override (`{ ...data, gear: {...} }`) produces a *new* object that doesn't
+  // carry the getter/setter above, leaving its explicit `gear` value disconnected from
+  // `_data_.items` — reconcile it back before handing the result off.
+  const resultWithGear = result as RunnerData & { gear?: ItemCatalog }
+  if (Object.hasOwn(resultWithGear, "gear")) {
+    resultWithGear._data_.items = resultWithGear.gear as ItemCatalog
+    delete resultWithGear.gear
+  }
+
+  return result
 }
