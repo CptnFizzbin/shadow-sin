@@ -86,7 +86,8 @@ export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRe
     const children: ItemDataRecord = {}
 
     for (const childId of parentItem?.items.childIds ?? []) {
-      children[childId] = allGear[childId]
+      const child = allGear[childId]
+      if (child) children[childId] = child
     }
 
     return children
@@ -229,7 +230,8 @@ export namespace ItemSelectors {
       const children: ItemCatalog = {}
 
       for (const childId of parent?.items.childIds ?? []) {
-        children[childId] = items[childId]
+        const child = items[childId]
+        if (child) children[childId] = child
       }
 
       return children

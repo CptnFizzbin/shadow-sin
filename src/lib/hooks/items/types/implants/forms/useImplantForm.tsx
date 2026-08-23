@@ -35,7 +35,7 @@ const defaultFormValues: ImplantData = {
     book: "",
     page: 0,
   },
-  items: { parentId: NullUuid, childIds: [NullUuid] },
+  items: { parentId: NullUuid, childIds: [] },
   capacity: 0,
   capacityCost: 0,
   quantity: 0,
