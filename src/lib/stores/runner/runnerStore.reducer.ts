@@ -40,6 +40,14 @@ const kindSlice = createSlice({
   reducers: {},
 })
 
+// `RunnerData` implements `EntityWithItems` with an always-degenerate value (Runner is never a
+// child and never attaches to anything) — never dispatched, mirrors idSlice above.
+const itemsSlice = createSlice({
+  name: "items",
+  initialState: { parentId: null, childIds: [] } as RunnerData["items"],
+  reducers: {},
+})
+
 // Magic-advancement grades are only ever written by the karma-improvement
 // apply flow (a direct `setState(produce(...))`, like spells/qualities), so
 // no dispatched actions are needed — mirrors idSlice above.
@@ -66,10 +74,11 @@ const namePassthroughSlice = createSlice({
 })
 
 const domainReducer = combineReducers({
-  id: idSlice.reducer,
   kind: kindSlice.reducer,
+  id: idSlice.reducer,
   name: namePassthroughSlice.reducer,
   _meta_: metaReducer,
+  items: itemsSlice.reducer,
   attributes: attributesReducer,
   qualities: qualitiesReducer,
   karma: karmaReducer,
@@ -88,10 +97,12 @@ const domainReducer = combineReducers({
   damage: damageReducer,
   gameState: combineReducers({ matrix: matrixReducer }),
   initiative: initiativeReducer,
-  gear: gearReducer,
-  featureFlags: featureFlagsReducer,
   initiateGrade: initiateGradeSlice.reducer,
   submersionGrade: submersionGradeSlice.reducer,
+  _data_: combineReducers({
+    featureFlags: featureFlagsReducer,
+    items: gearReducer,
+  }),
 })
 
 /**

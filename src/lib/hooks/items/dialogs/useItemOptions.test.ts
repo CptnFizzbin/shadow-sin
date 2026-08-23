@@ -10,7 +10,7 @@ import { initializeOptions } from "./useItemOptions.ts"
 const existingItemId = crypto.randomUUID()
 
 const baseItem: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: existingItemId,
   name: "Test Item",
   itemType: ItemType.other,
@@ -132,7 +132,7 @@ describe.concurrent("initializeOptions", () => {
 
     it("keeps isSubItem disabled in edit mode when force-disabled", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, parentId: crypto.randomUUID() }
+      const item: ItemData = { ...baseItem, items: { ...baseItem.items, parentId: crypto.randomUUID() } }
 
       // Act
       const options = initializeOptions(item, true, { isSubItem: { forced: true, enabled: false } })
@@ -222,7 +222,7 @@ describe.concurrent("initializeOptions", () => {
 
     it("enables isSubItem when editing an item that has a parentId", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, parentId: crypto.randomUUID() }
+      const item: ItemData = { ...baseItem, items: { ...baseItem.items, parentId: crypto.randomUUID() } }
 
       // Act
       const options = initializeOptions(item, true)
@@ -271,7 +271,7 @@ describe.concurrent("initializeOptions", () => {
         equipped: true,
         rating: 3,
         quantity: 5,
-        parentId: crypto.randomUUID(),
+        items: { ...newItem.items, parentId: crypto.randomUUID() },
         effects: [],
       }
 

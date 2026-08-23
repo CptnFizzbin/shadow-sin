@@ -13,7 +13,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 const restrictedArmor: ArmorData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-0000000000a1",
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -29,7 +29,7 @@ const unrestrictedArmor: ArmorData = {
 }
 
 const fakeSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000s01",
   name: "Fake SIN",
   itemType: ItemType.sin,
@@ -42,7 +42,7 @@ const existingLicense: LicenseData = {
   name: "License: Armor Jacket",
   itemType: ItemType.license,
   rating: 4,
-  parentId: fakeSin.id,
+  items: { parentId: fakeSin.id, childIds: [] },
 }
 
 const secondLicense: LicenseData = {
@@ -51,7 +51,7 @@ const secondLicense: LicenseData = {
   name: "License: Other Gear",
   itemType: ItemType.license,
   rating: 2,
-  parentId: fakeSin.id,
+  items: { parentId: fakeSin.id, childIds: [] },
 }
 
 function getLastDialog() {

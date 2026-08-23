@@ -33,7 +33,7 @@ export const itemDefaults: ItemData = {
     book: "",
     page: 0,
   },
-  parentId: undefined,
+  items: { parentId: null, childIds: [] },
   effects: [],
   stashed: false,
 }

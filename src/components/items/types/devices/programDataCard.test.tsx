@@ -5,12 +5,13 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ProgramDataCard } from "./programDataCard.tsx"
 
 const fakeProgram: ProgramData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Exploit",
   itemType: ItemType.program,
@@ -67,6 +68,6 @@ describe("ProgramDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[fakeProgram.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[fakeProgram.id]).toBeUndefined())
   })
 })

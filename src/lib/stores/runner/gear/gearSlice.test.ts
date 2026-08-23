@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -14,6 +13,7 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
+  items: { parentId: null, childIds: [] },
   ...overrides,
 })
 
@@ -44,62 +44,79 @@ describe.concurrent("gearReducer", () => {
     expect(next[original.id]).toEqual(updated)
   })
 
+  it("set on a real store's frozen output doesn't throw when the payload's items field is untouched", () => {
+    // Arrange — Immer freezes every dispatch's resulting state (including nested objects like
+    // `items`) in development; a save that never touches attachment fields (e.g. the item edit
+    // form when the item isn't a sub-item) reuses that exact frozen `items` reference in its
+    // payload. relinkItem must replace `items` wholesale rather than mutate it in place, or this
+    // throws "Cannot assign to read only property" on dispatch.
+    const added = gearReducer({}, addItem(makeItem({ name: "Engineering Shop" })))
+    const [stored] = Object.values(added)
+    const renamed = { ...stored, name: "Medkit" }
+
+    // Act
+    const next = gearReducer(added, setItem(renamed))
+
+    // Assert
+    expect(next[stored.id].name).toBe("Medkit")
+  })
+
   it("set adds the item's id to its parent's childIds", () => {
     // Arrange
     const parent = makeItem({ name: "Smartgun" })
-    const child = makeItem({ name: "Gas-Vent 3 System", parentId: parent.id })
+    const child = makeItem({ name: "Gas-Vent 3 System", items: { parentId: parent.id, childIds: [] } })
 
     // Act
     const next = gearReducer({ [parent.id]: parent }, setItem(child))
 
     // Assert
-    expect(next[parent.id].childIds).toEqual([child.id])
+    expect(next[parent.id].items.childIds).toEqual([child.id])
   })
 
   it("set removes the item's id from a former parent's childIds when parentId changes", () => {
     // Arrange
-    const oldParent = makeItem({ name: "Smartgun", childIds: [] })
+    const oldParent = makeItem({ name: "Smartgun" })
     const newParent = makeItem({ name: "Backpack" })
-    const child = makeItem({ name: "Gas-Vent 3 System", parentId: oldParent.id })
-    oldParent.childIds = [child.id]
+    const child = makeItem({ name: "Gas-Vent 3 System", items: { parentId: oldParent.id, childIds: [] } })
+    oldParent.items.childIds = [child.id]
 
     // Act
     const next = gearReducer(
       { [oldParent.id]: oldParent, [newParent.id]: newParent, [child.id]: child },
-      setItem({ ...child, parentId: newParent.id }),
+      setItem({ ...child, items: { ...child.items, parentId: newParent.id } }),
     )
 
     // Assert
-    expect(next[oldParent.id].childIds).toEqual([])
-    expect(next[newParent.id].childIds).toEqual([child.id])
+    expect(next[oldParent.id].items.childIds).toEqual([])
+    expect(next[newParent.id].items.childIds).toEqual([child.id])
   })
 
   it("set syncs children's parentId when the item explicitly declares childIds", () => {
     // Arrange
     const child = makeItem({ name: "Gas-Vent 3 System" })
-    const parent = makeItem({ name: "Smartgun", childIds: [child.id] })
+    const parent = makeItem({ name: "Smartgun", items: { parentId: null, childIds: [child.id] } })
 
     // Act
     const next = gearReducer({ [child.id]: child, [parent.id]: parent }, setItem(parent))
 
     // Assert
-    expect(next[child.id].parentId).toBe(parent.id)
+    expect(next[child.id].items.parentId).toBe(parent.id)
   })
 
   it("set clears a child's parentId when dropped from the parent's declared childIds", () => {
     // Arrange
     const child = makeItem({ name: "Gas-Vent 3 System" })
-    const parent = makeItem({ name: "Smartgun", childIds: [child.id] })
-    child.parentId = parent.id
+    const parent = makeItem({ name: "Smartgun", items: { parentId: null, childIds: [child.id] } })
+    child.items.parentId = parent.id
 
     // Act
     const next = gearReducer(
       { [child.id]: child, [parent.id]: parent },
-      setItem({ ...parent, childIds: [] }),
+      setItem({ ...parent, items: { ...parent.items, childIds: [] } }),
     )
 
     // Assert
-    expect(next[child.id].parentId).toBeUndefined()
+    expect(next[child.id].items.parentId).toBeNull()
   })
 
   it("remove deletes the item", () => {
@@ -116,8 +133,8 @@ describe.concurrent("gearReducer", () => {
   it("remove drops the item from its parent's childIds", () => {
     // Arrange
     const child = makeItem({ name: "Gas-Vent 3 System" })
-    const parent = makeItem({ name: "Smartgun", childIds: [child.id] })
-    child.parentId = parent.id
+    const parent = makeItem({ name: "Smartgun", items: { parentId: null, childIds: [child.id] } })
+    child.items.parentId = parent.id
 
     // Act
     const next = gearReducer(
@@ -126,14 +143,14 @@ describe.concurrent("gearReducer", () => {
     )
 
     // Assert
-    expect(next[parent.id].childIds).toEqual([])
+    expect(next[parent.id].items.childIds).toEqual([])
   })
 
   it("remove without removeChildren orphans children instead of deleting them", () => {
     // Arrange
     const child = makeItem({ name: "Gas-Vent 3 System" })
-    const parent = makeItem({ name: "Smartgun", childIds: [child.id] })
-    child.parentId = parent.id
+    const parent = makeItem({ name: "Smartgun", items: { parentId: null, childIds: [child.id] } })
+    child.items.parentId = parent.id
 
     // Act
     const next = gearReducer(
@@ -149,10 +166,10 @@ describe.concurrent("gearReducer", () => {
   it("remove with removeChildren deletes the whole subtree", () => {
     // Arrange
     const grandchild = makeItem({ name: "Smartgun Interface" })
-    const child = makeItem({ name: "Gas-Vent 3 System", childIds: [grandchild.id] })
-    const parent = makeItem({ name: "Smartgun", childIds: [child.id] })
-    grandchild.parentId = child.id
-    child.parentId = parent.id
+    const child = makeItem({ name: "Gas-Vent 3 System", items: { parentId: null, childIds: [grandchild.id] } })
+    const parent = makeItem({ name: "Smartgun", items: { parentId: null, childIds: [child.id] } })
+    grandchild.items.parentId = child.id
+    child.items.parentId = parent.id
 
     // Act
     const next = gearReducer(

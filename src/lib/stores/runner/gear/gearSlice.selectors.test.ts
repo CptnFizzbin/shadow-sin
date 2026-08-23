@@ -1,12 +1,12 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 import {
   armor,
@@ -30,20 +30,26 @@ import {
   weapons,
 } from "./gearSlice.selectors.ts"
 
-const item: ItemData = { kind: EntityKind.item, id: NullUuid, name: "Test Item", itemType: ItemType.other }
+const item: ItemData = {
+  kind: EntityKind.item,
+  id: NullUuid,
+  name: "Test Item",
+  itemType: ItemType.other,
+  items: { parentId: null, childIds: [] },
+}
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   kind: EntityKind.item,
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
+  items: { parentId: null, childIds: [] },
   ...overrides,
 })
 
 const withGear = (...items: ItemData[]) =>
-  runnerDataFactory((data) => {
-    data.gear = Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem]))
-    return data
+  runnerDataFactory({
+    items: Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem])),
   })
 
 describe.concurrent("selectEquipped", () => {
@@ -119,7 +125,7 @@ describe.concurrent("selectAllGear", () => {
     const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(selectAllGear(runner)).toBe(runner.gear)
+    expect(selectAllGear(runner)).toBe(getItemCatalog(runner))
   })
 })
 

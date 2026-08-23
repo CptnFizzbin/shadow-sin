@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
@@ -10,6 +8,7 @@ import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -26,16 +25,16 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
-  const topLevelItems = items.filter((item) => !item.parentId)
+  const topLevelItems = items.filter((item) => !item.items.parentId)
 
   const handleAdd = async (parentId?: UUID) => {
     const label = parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ itemType, label })
-    if (saved) saveItem(parentId ? { ...saved, parentId } : saved)
+    if (saved) saveItem(parentId ? { ...saved, items: { ...saved.items, parentId } } : saved)
   }
 
   const handleEdit = async (item: ItemData) => {
-    const label = item.parentId ? `${itemLabel} sub-item` : itemLabel
+    const label = item.items.parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ item, itemType, label })
     if (saved) saveItem(saved)
   }

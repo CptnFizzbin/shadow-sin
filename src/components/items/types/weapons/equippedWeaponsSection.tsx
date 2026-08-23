@@ -18,7 +18,7 @@ export const EquippedWeaponsSection: FC = () => {
   const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
 
   const equippedWeapons = allWeapons.filter(
-    (weapon) => !weapon.parentId && isWeaponData(weapon) && weapon.equipped,
+    (weapon) => !weapon.items.parentId && isWeaponData(weapon) && weapon.equipped,
   )
 
   if (equippedWeapons.length === 0) {

@@ -11,7 +11,7 @@ import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.ts
 import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
 
 const fakeSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "National ID (Fake)",
   itemType: ItemType.sin,

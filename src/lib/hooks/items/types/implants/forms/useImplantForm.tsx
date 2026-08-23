@@ -1,9 +1,8 @@
-import type { UUID } from "node:crypto"
-
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -36,12 +35,11 @@ const defaultFormValues: ImplantData = {
     book: "",
     page: 0,
   },
-  parentId: NullUuid,
+  items: { parentId: NullUuid, childIds: [NullUuid] },
   capacity: 0,
   capacityCost: 0,
   quantity: 0,
   rating: undefined as number | undefined,
-  childIds: [NullUuid],
   notes: "",
   equipped: false,
   stashed: false,
@@ -62,7 +60,7 @@ export const implantFormOpts = formOptions({
 export const useImplantForm = ({ implant, parentId, onSubmit }: ImplantFormOptions) => {
   return useItemForm<ImplantData>({
     item: implant,
-    defaultValues: { ...defaultFormValues, parentId },
+    defaultValues: { ...defaultFormValues, items: { ...defaultFormValues.items, parentId: parentId ?? null } },
     onSubmit,
   })
 }

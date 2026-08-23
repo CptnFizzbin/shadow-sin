@@ -14,7 +14,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { AnyItemDetails } from "./anyItemDetails.tsx"
 
 const weapon: WeaponData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -37,7 +37,7 @@ describe("AnyItemDetails", () => {
 
   it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
     const item: ItemData = {
-      kind: EntityKind.item,
+      kind: EntityKind.item, items: { parentId: null, childIds: [] },
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",
       itemType: ItemType.other,

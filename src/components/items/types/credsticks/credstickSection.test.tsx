@@ -12,7 +12,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { CredstickSection } from "./credstickSection.tsx"
 
 const streetStick: CredstickData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Street Cred",
   itemType: ItemType.credstick,

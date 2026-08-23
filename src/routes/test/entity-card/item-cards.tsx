@@ -221,7 +221,7 @@ const WEAPON_ID = crypto.randomUUID()
 const WEAPON_ACCESSORY_ID = crypto.randomUUID()
 
 const BASE_CREDSTICK: CredstickData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: CREDSTICK_ID,
   name: "Personalized Credstick",
   itemType: ItemType.credstick,
@@ -240,7 +240,7 @@ const BASE_CREDSTICK: CredstickData = {
 }
 
 const BASE_LICENSE: LicenseData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -255,7 +255,7 @@ const BASE_LICENSE: LicenseData = {
 }
 
 const BASE_SIN: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: SIN_ID,
   name: "Fake SIN (Chicago)",
   itemType: ItemType.sin,
@@ -270,12 +270,11 @@ const BASE_SIN: SinData = {
 }
 
 const COVERED_LICENSE: LicenseData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: SIN_ID, childIds: [] },
   id: COVERED_LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
   rating: 4,
-  parentId: SIN_ID,
 }
 
 function buildCredstick(toggles: CredstickFieldToggles): CredstickData {
@@ -292,9 +291,10 @@ function buildLicense(toggles: CommonFieldToggles): LicenseData {
 }
 
 function buildSin(toggles: SinFieldToggles): SinData {
+  const sin = withCommonFields(BASE_SIN, toggles)
   return {
-    ...withCommonFields(BASE_SIN, toggles),
-    childIds: toggles.coveredLicense ? [COVERED_LICENSE_ID] : undefined,
+    ...sin,
+    items: { ...sin.items, childIds: toggles.coveredLicense ? [COVERED_LICENSE_ID] : [] },
   }
 }
 
@@ -305,7 +305,7 @@ function buildSin(toggles: SinFieldToggles): SinData {
  * field-coverage check — so each item is seeded with its subitems/children.
  */
 const DEMO_ARMOR: ArmorData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [ARMOR_MOD_ID] },
   id: ARMOR_ID,
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -316,22 +316,20 @@ const DEMO_ARMOR: ArmorData = {
   quantity: 1,
   availability: { rating: 6 },
   equipped: true,
-  childIds: [ARMOR_MOD_ID],
 }
 
 const DEMO_ARMOR_MOD: ArmorData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: ARMOR_ID, childIds: [] },
   id: ARMOR_MOD_ID,
   name: "Helmet",
   itemType: ItemType.armor,
   ballistic: 1,
   impact: 1,
   isModifier: true,
-  parentId: ARMOR_ID,
 }
 
 const DEMO_DEVICE: DeviceData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [PROGRAM_ID] },
   id: DEVICE_ID,
   name: "Erika Elite",
   itemType: ItemType.device,
@@ -347,11 +345,10 @@ const DEMO_DEVICE: DeviceData = {
   quantity: 1,
   availability: { rating: 8, restricted: true },
   equipped: true,
-  childIds: [PROGRAM_ID],
 }
 
 const DEMO_PROGRAM: ProgramData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: DEVICE_ID, childIds: [] },
   id: PROGRAM_ID,
   name: "Analyze",
   itemType: ItemType.program,
@@ -360,11 +357,10 @@ const DEMO_PROGRAM: ProgramData = {
   source: { book: "SR4A", page: 333 },
   cost: 400,
   quantity: 1,
-  parentId: DEVICE_ID,
 }
 
 const DEMO_IMPLANT: ImplantData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [IMPLANT_ACCESSORY_ID] },
   id: IMPLANT_ID,
   name: "Wired Reflexes",
   itemType: ItemType.implant,
@@ -377,20 +373,18 @@ const DEMO_IMPLANT: ImplantData = {
   quantity: 1,
   availability: { rating: 8, restricted: true },
   equipped: true,
-  childIds: [IMPLANT_ACCESSORY_ID],
 }
 
 const DEMO_IMPLANT_ACCESSORY: ImplantData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: IMPLANT_ID, childIds: [] },
   id: IMPLANT_ACCESSORY_ID,
   name: "Rating 3 Upgrade",
   itemType: ItemType.implant,
   essenceCost: 0.5,
-  parentId: IMPLANT_ID,
 }
 
 const DEMO_VEHICLE: VehicleData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [VEHICLE_MOD_ID] },
   id: VEHICLE_ID,
   name: "Ares Roadmaster",
   itemType: ItemType.vehicle,
@@ -408,19 +402,17 @@ const DEMO_VEHICLE: VehicleData = {
   cost: 45_000,
   quantity: 1,
   availability: { rating: 8 },
-  childIds: [VEHICLE_MOD_ID],
 }
 
 const DEMO_VEHICLE_MOD: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: VEHICLE_ID, childIds: [] },
   id: VEHICLE_MOD_ID,
   name: "Run-Flat Tires",
   itemType: ItemType.other,
-  parentId: VEHICLE_ID,
 }
 
 const DEMO_WEAPON: FirearmData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [WEAPON_ACCESSORY_ID] },
   id: WEAPON_ID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -437,15 +429,13 @@ const DEMO_WEAPON: FirearmData = {
   quantity: 1,
   availability: { rating: 4, restricted: true },
   equipped: true,
-  childIds: [WEAPON_ACCESSORY_ID],
 }
 
 const DEMO_WEAPON_ACCESSORY: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: WEAPON_ID, childIds: [] },
   id: WEAPON_ACCESSORY_ID,
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,
-  parentId: WEAPON_ID,
 }
 
 /**

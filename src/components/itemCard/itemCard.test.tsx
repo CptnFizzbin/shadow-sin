@@ -11,7 +11,7 @@ import { ItemCard } from "./itemCard.tsx"
 import { ItemCardElements } from "./itemCardElements.tsx"
 
 const baseItem: ItemData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.other,

@@ -13,7 +13,7 @@ import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {
   return {
-    kind: EntityKind.item,
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
     itemType: ItemType.implant,
     implantType: ImplantType.cyberware,
     essenceCost: 1,
@@ -24,7 +24,7 @@ function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | 
 }
 
 function renderWithGear(gear: Record<string, ImplantData>) {
-  const runnerStore = new RunnerDataStore({ ...runnerDataFactory(), gear })
+  const runnerStore = new RunnerDataStore(runnerDataFactory({ items: gear }))
   renderInBuilder(<ImplantItemList />, { runnerStore })
 }
 
@@ -37,12 +37,12 @@ describe("ImplantItemList", () => {
     const parentImplant = makeImplant({
       id: parentId,
       name: "Wired Reflexes 1",
-      childIds: [accessoryId],
+      items: { parentId: null, childIds: [accessoryId] },
     })
     const accessory = makeImplant({
       id: accessoryId,
       name: "Alphaware Upgrade",
-      parentId,
+      items: { parentId, childIds: [] },
     })
 
     renderWithGear({ [parentId]: parentImplant, [accessoryId]: accessory })

@@ -75,7 +75,7 @@ export function initializeOptions(
       || (!isForceDisabled(defaults?.multiple) && isEditMode && (initialValues.quantity ?? 0) > 1),
     isSubItem:
       resolveEnabled(defaults?.isSubItem)
-      || (!isForceDisabled(defaults?.isSubItem) && isEditMode && initialValues.parentId !== undefined),
+      || (!isForceDisabled(defaults?.isSubItem) && isEditMode && initialValues.items.parentId !== null),
     fixed: initialValues.fixed ?? false,
     hasEffects:
       resolveEnabled(defaults?.hasEffects)
@@ -116,8 +116,8 @@ function clearStaleOptionField(
       }
       break
     case "isSubItem":
-      if (!form.state.values.parentId) {
-        form.setFieldValue("parentId", undefined)
+      if (!form.state.values.items.parentId) {
+        form.setFieldValue("items.parentId", null)
       }
       break
     case "hasEffects": {

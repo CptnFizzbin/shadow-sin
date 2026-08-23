@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -156,7 +157,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(migrated.complexForms).toHaveLength(0)
 
     // gear is a Record, empty items stripped, itemTypes normalised
-    const gearValues = Object.values(migrated.gear)
+    const gearValues = Object.values(getItemCatalog(migrated))
     const weapon = gearValues.find((item) => item.name === "SM-4")
     expect(weapon?.itemType).toBe("weapon")
     const device = gearValues.find((item) => item.name === "Contact Lenses 3")
@@ -167,14 +168,14 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(vehicle?.itemType).toBe("vehicle")
 
     // license linked to SIN via parentId
-    const sin = migrated.gear[TEST_OLD_FORMAT_SIN_ID]
+    const sin = getItemCatalog(migrated)[TEST_OLD_FORMAT_SIN_ID]
     expect(sin).toBeDefined()
     expect(sin.itemType).toBe("sin")
-    const license = migrated.gear[TEST_OLD_FORMAT_LICENSE_ID]
+    const license = getItemCatalog(migrated)[TEST_OLD_FORMAT_LICENSE_ID]
     expect(license).toBeDefined()
     expect(license.itemType).toBe("license")
-    expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
-    expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
+    expect(license.items.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
+    expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // fully migrated
     expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
@@ -208,7 +209,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(runner.powers).toHaveLength(4)
 
     // gear is a Record, empty entries stripped, itemTypes normalised
-    const gearValues = Object.values(runner.gear)
+    const gearValues = Object.values(getItemCatalog(runner))
     expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toBe("weapon")
     expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toBe("device")
     expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toBe("other")
@@ -218,8 +219,8 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const license = gearValues.find((item) => item.itemType === "license")
     expect(sin).toBeDefined()
     expect(license).toBeDefined()
-    expect(license!.parentId).toBe(sin!.id)
-    expect(sin!.childIds).toContain(license!.id)
+    expect(license!.items.parentId).toBe(sin!.id)
+    expect(sin!.items.childIds).toContain(license!.id)
 
     // fully migrated
     expect(runner._meta_.version).toBe(CURRENT_RUNNER_VERSION)

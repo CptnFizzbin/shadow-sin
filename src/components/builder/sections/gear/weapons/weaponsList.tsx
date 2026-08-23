@@ -23,7 +23,7 @@ export const WeaponsList: FC = () => {
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
-  const topLevelWeapons = weapons.filter((weapon) => !weapon.parentId)
+  const topLevelWeapons = weapons.filter((weapon) => !weapon.items.parentId)
 
   const handleEditWeapon = async (weapon?: WeaponData) => {
     const saved = await weaponFormDialog.open({ weapon })

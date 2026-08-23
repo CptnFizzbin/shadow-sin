@@ -38,8 +38,8 @@ export function searchGear(gear: Record<string, ItemData>, terms: string[]): Ite
   for (const item of allItems) {
     if (itemMatchesTerms(item)) {
       includedIds.add(item.id)
-      if (item.parentId) includedIds.add(item.parentId)
-      for (const childId of item.childIds ?? []) {
+      if (item.items.parentId) includedIds.add(item.items.parentId)
+      for (const childId of item.items.childIds) {
         includedIds.add(childId)
       }
     }

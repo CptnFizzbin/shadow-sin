@@ -8,12 +8,13 @@ import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { DeviceDataCard } from "./deviceDataCard.tsx"
 
 const commlink: DeviceData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Renraku Sensei",
   itemType: ItemType.device,
@@ -33,10 +34,10 @@ const runningProgram: ProgramData = {
   itemType: ItemType.program,
   rating: 2,
   programType: ProgramType.dataSearch,
-  parentId: commlink.id,
+  items: { parentId: commlink.id, childIds: [] },
 }
 
-const deviceWithProgram: DeviceData = { ...commlink, childIds: [runningProgram.id] }
+const deviceWithProgram: DeviceData = { ...commlink, items: { ...commlink.items, childIds: [runningProgram.id] } }
 
 const renderDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}, onOpen?: () => void) =>
   renderWithRunner(<DeviceDataCard device={device} onOpen={onOpen} />, { [device.id]: device, ...extraGear })
@@ -131,7 +132,7 @@ describe("DeviceDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[deviceWithProgram.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[runningProgram.id]).toBeUndefined()
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[deviceWithProgram.id]).toBeUndefined())
+    expect(getItemCatalog(runnerStore.getState())[runningProgram.id]).toBeUndefined()
   })
 })
