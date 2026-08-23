@@ -51,6 +51,7 @@ const janeMeleeLicense = createItem<LicenseData>({
 export const Artemis: RunnerData = {
   kind: EntityKind.runner,
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
+  name: "Artemis",
   _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
   biology: {

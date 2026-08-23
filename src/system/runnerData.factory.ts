@@ -12,6 +12,7 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
   const data = {
     kind: EntityKind.runner,
     id: NullUuid,
+    name: "",
     _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
     profile: {

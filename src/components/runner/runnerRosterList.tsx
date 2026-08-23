@@ -98,6 +98,9 @@ export default function RunnerRosterList({
     const duplicated: RunnerData = {
       ...runner,
       id: crypto.randomUUID(),
+      // Bypasses the store's nameReducer mirroring, so `name` needs the same
+      // `profile.alias || profile.name` formula applied here.
+      name: newAlias || runner.profile.name,
       profile: { ...runner.profile, alias: newAlias },
     }
     await runnerManager.saveRunner(duplicated)

@@ -5,7 +5,7 @@ import { z } from "zod"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
-import type { EntityWithAttrs, EntityWithDamage, EntityWithQualities } from "./entities/entityTraits.ts"
+import type { EntityBase, EntityWithAttrs, EntityWithDamage, EntityWithQualities } from "./entities/entityTraits.ts"
 import type { EntityKind } from "./entityKind.ts"
 import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
 import type { ItemData } from "./itemData.ts"
@@ -44,10 +44,18 @@ export const RunnerMetaSchema = z.object({
 /**
  * The root structure of a Shadowrun 4e runner sheet.
  */
-export interface RunnerData extends EntityWithDamage, EntityWithAttrs, EntityWithQualities {
+export interface RunnerData extends EntityBase, EntityWithDamage, EntityWithAttrs, EntityWithQualities {
   kind: EntityKind.runner
   id: UUID
   _meta_: RunnerMeta
+
+  /**
+   * The Runner's display name — always equal to `profile.alias || profile.name`
+   * (`ProfileSelectors.selectDisplayName`). Write `profile.alias`/`profile.name` instead of this
+   * field directly; it mirrors them automatically. Exists so `RunnerData` satisfies
+   * `EntityBase.name` structurally.
+   */
+  name: string
 
   profile: {
     alias: string
