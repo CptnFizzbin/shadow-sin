@@ -5,8 +5,9 @@ import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
-import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
+import type { EntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
+import type { EntityData } from "#/system/entityData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /**
@@ -45,7 +46,7 @@ export function selectAttrValue(key: AttributeKey) {
 
 export namespace AttrSelectors {
   export type AttrSelector<TReturn, TOptions extends object | never = never> = Selector<{
-    entity: EntityBase & EntityWithAttrs
+    entity: EntityData & EntityWithAttrs
   }, TReturn, TOptions>
 
   export const Options = {

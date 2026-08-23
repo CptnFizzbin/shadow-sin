@@ -165,7 +165,7 @@ a capability trait after all — `RunnerData` already implements `EntityWithAttr
 structurally), so `AttrSelectors.selectValue` is already reusable across the Runner and any future
 Entity kind implementing the same trait; `EntityProvider` only needed a home for "the nearest entity
 in scope," which `AttributesProvider`'s Context already modeled. Its `TState` is kept as bare
-`object` rather than `EntityBase` — not every Entity kind provided here (starting with `RunnerData`,
+`object` rather than `EntityData` — not every Entity kind provided here (starting with `RunnerData`,
 whose display name lives at `profile.name` rather than a top-level `name`) structurally satisfies
 `EntityData`'s full shape — so callers narrow to whichever trait(s) their selector's `TState` needs,
 the same way `useRunnerSelector`'s `assembleRunnerState` narrows `RunnerData`. Attribute *bounds*
