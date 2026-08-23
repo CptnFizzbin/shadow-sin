@@ -1,10 +1,12 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
-import type { EntityBase } from "#/system/entities/entityTraits.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-const selectEntity = createSelector<{ entity: EntityBase }, EntityBase>((state) => state.entity)
+// Kept as `object` rather than `EntityBase` — not every Entity kind this can hold (starting with
+// `RunnerData`, which keys its display name under `profile.name` rather than a top-level `name`)
+// structurally satisfies `EntityBase`'s full shape. See `EntityProvider`'s doc comment for the
+// same call; `withTrait` below narrows to whatever trait(s) a selector's `TState` actually needs.
+const selectEntity = createSelector<{ entity: object }, object>((state) => state.entity)
 
 /**
  * The building-block accessors every domain's namespaced selectors compose from: the bare
@@ -17,12 +19,19 @@ export const ViewerStateSelectors = {
     selectEntity,
     {
       /** `selectEntity` narrowed to a specific capability trait (e.g. `EntityWithAttrs`), for a
-       *  selector whose `TState` only needs that trait rather than the full `EntityBase`. */
-      withTrait<TEntityTrait>() {
-        // state.entity is read identically regardless of TEntityTrait, so this only widens the
-        // return type for the caller — TypeScript can't verify that structurally, hence the cast.
-        // eslint-disable-next-line no-restricted-syntax
-        return selectEntity as unknown as Selector<{ entity: TEntityTrait }, TEntityTrait>
+       *  selector whose `TState` only needs that trait rather than the full entity. Throws if the
+       *  entity in scope doesn't actually carry the trait — every caller composes this into a
+       *  selector graph that assumes the narrowed shape unconditionally (see `DamageSelectors`),
+       *  so a mismatch is a data-integrity bug to surface loudly, not a `null` to thread through
+       *  every combiner downstream. */
+      withTrait<TEntityTrait extends object>(traitTestFn: (entity: object) => entity is TEntityTrait) {
+        return createSelector<{ entity: object }, TEntityTrait>((state) => {
+          const entity = selectEntity(state)
+          if (!traitTestFn(entity)) {
+            throw new Error("Entity in scope doesn't have the expected trait")
+          }
+          return entity
+        })
       },
     },
   ),
