@@ -1,10 +1,11 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {
-  const active = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
-  const knowledge = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
-  const language = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
+  const active = useRunnerSelector(SkillsSelectors.selectActiveSkills)
+  const knowledge = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
+  const language = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
 
   if (active.length === 0 && knowledge.length === 0 && language.length === 0) {
     return [{

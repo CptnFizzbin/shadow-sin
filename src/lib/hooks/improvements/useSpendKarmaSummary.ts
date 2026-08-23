@@ -1,6 +1,7 @@
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#/lib/stores/runner/karma/karmaSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   selectHasImprovements,
   selectImprovementsTotalCost,
@@ -24,7 +25,7 @@ export const useSpendKarmaSummary = (): SpendKarmaSummary => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const runnerDataStore = useRunnerStoreContext()
 
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const karmaCost = useImprovementSelector(selectImprovementsTotalCost)
   const hasImprovements = useImprovementSelector(selectHasImprovements)
 

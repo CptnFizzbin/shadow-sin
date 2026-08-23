@@ -5,16 +5,18 @@ import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SpellsSelectors } from "#/lib/stores/runner/spells/spellsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
-  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const magicAttribute = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
-  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
+  const spells = useRunnerSelector(SpellsSelectors.selectAll)
   const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []

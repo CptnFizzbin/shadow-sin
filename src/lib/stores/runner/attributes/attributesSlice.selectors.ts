@@ -1,11 +1,22 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
+import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+
+/**
+ * {@link AttributeInfo} bounds plus the runner's own base (raw stored) and current (effective)
+ * values for one attribute.
+ */
+export interface RunnerAttrInfo extends AttributeInfo {
+  base: number
+  current: number
+}
 
 /** @deprecated Use `AttrSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAttributes(runner: RunnerData): RunnerData["attributes"] {
@@ -60,4 +71,43 @@ export namespace AttrSelectors {
     selectBase: injectOption(selectBase, { key: attr }),
     selectValue: injectOption(selectValue, { key: attr }),
   })
+
+  /**
+   * Bounds (`min`/`max`/`augMax`) for every attribute, derived from the runner's metatype and
+   * awakening type — always the Runner's own, regardless of `EntityProvider` nesting; there's no
+   * "nearest entity" equivalent for a device, spirit, or sprite.
+   */
+  export const selectBounds = createMemoizedSelector(
+    BiologySelectors.selectMetatypeInfo,
+    BiologySelectors.selectAwakeningInfo,
+    (metatype, awakening): Record<AttributeKey, AttributeInfo> => ({
+      ...metatype.attributes,
+      ...awakening.attributes,
+    }),
+  )
+
+  /** {@link RunnerAttrInfo} for every attribute the runner's metatype/awakening defines bounds for. */
+  export const selectAllInfo = createMemoizedSelector(
+    selectBounds,
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
+    (bounds: Record<AttributeKey, AttributeInfo>, entity): Record<AttributeKey, RunnerAttrInfo> => {
+      return Object.fromEntries(
+        Object.entries(bounds).map(([key, info]) => [
+          key,
+          {
+            ...info,
+            base: selectBase({ entity }, { key: key as AttributeKey }),
+            current: selectValue({ entity }, { key: key as AttributeKey }),
+          },
+        ]),
+      ) as Record<AttributeKey, RunnerAttrInfo>
+    },
+  )
+
+  /** {@link RunnerAttrInfo} for `key`. */
+  export const selectInfo = createMemoizedSelector(
+    selectAllInfo,
+    Options.key,
+    (allInfo, key) => allInfo[key],
+  )
 }

@@ -9,14 +9,9 @@ import {
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { selectAwakeningData, selectMetatypeData } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import {
-  selectActiveSkills,
-  selectKnowledgeSkills,
-  selectLanguageSkills,
-  selectSkillGroups,
-} from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
@@ -59,8 +54,8 @@ export const useBuilderBuildPointsApi = () => {
 }
 
 const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeCost = useRunnerStoreSelector(selectMetatypeData).cost
-  const awakeningCost = useRunnerStoreSelector(selectAwakeningData).cost
+  const metatypeCost = useRunnerSelector(BiologySelectors.selectMetatypeInfo).cost
+  const awakeningCost = useRunnerSelector(BiologySelectors.selectAwakeningInfo).cost
 
   return {
     sectionId: BuilderSectionId.biology,
@@ -85,8 +80,8 @@ export const useBuilderSkillsBuildPoints = () => {
 }
 
 const useActiveSkillsBuildPoints = () => {
-  const activeSkills = useRunnerStoreSelector(selectActiveSkills)
-  const activeSkillGroups = useRunnerStoreSelector(selectSkillGroups)
+  const activeSkills = useRunnerSelector(SkillsSelectors.selectActiveSkills)
+  const activeSkillGroups = useRunnerSelector(SkillsSelectors.selectSkillGroups)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
@@ -104,8 +99,8 @@ const useKnowledgeSkillsBuildPoints = () => {
   const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })
   const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
 
-  const knowledgeSkills = useRunnerStoreSelector(selectKnowledgeSkills)
-  const languageSkills = useRunnerStoreSelector(selectLanguageSkills)
+  const knowledgeSkills = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
+  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
 
   const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
     knowledgeSkills,

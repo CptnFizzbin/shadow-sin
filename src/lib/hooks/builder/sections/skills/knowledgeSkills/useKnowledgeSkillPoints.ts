@@ -2,15 +2,16 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
 import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {
   const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })
   const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
 
-  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
-  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
+  const knowledgeSkills = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
+  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
 
   const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
     return total + getKnowledgeSkillSp(skill)

@@ -1,5 +1,6 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {
   const addAlert = (alert: Omit<AlertInfo, "section">) => {
@@ -8,7 +9,7 @@ export const useProfileAlerts = (): AlertInfo[] => {
 
   const alerts: AlertInfo[] = []
 
-  const alias = useRunnerStoreSelector(Selectors.profile.selectProfileAlias)
+  const alias = useRunnerSelector(ProfileSelectors.selectAlias)
   if (!alias) {
     addAlert({
       severity: "error",
@@ -18,7 +19,7 @@ export const useProfileAlerts = (): AlertInfo[] => {
     })
   }
 
-  const name = useRunnerStoreSelector(Selectors.profile.selectProfileName)
+  const name = useRunnerSelector(ProfileSelectors.selectName)
   if (!name) {
     addAlert({
       severity: "error",
