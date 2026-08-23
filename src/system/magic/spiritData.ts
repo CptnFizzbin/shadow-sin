@@ -88,7 +88,7 @@ export interface SpiritData {
 
 export const SpiritDataSchema = z.object({
   kind: z.literal(EntityKind.spirit),
-  id: z.uuid() as z.ZodType<UUID>,
+  id: z.uuid(),
   name: z.string(),
   spiritType: z.enum(SpiritType),
   force: z.number().int().min(1).max(20),

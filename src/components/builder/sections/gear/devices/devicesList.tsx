@@ -20,7 +20,7 @@ export const DevicesList: FC = () => {
   const saveItem = (item: DeviceData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
-  const rootDevices = devices.filter((device) => !device.parentId)
+  const rootDevices = devices.filter((device) => !device.items.parentId)
 
   const handleEditDevice = async (device?: DeviceData) => {
     const saved = await deviceFormDialog.open({ device })

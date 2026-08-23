@@ -8,12 +8,13 @@ import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
 const car: VehicleData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Americar",
   itemType: ItemType.vehicle,
@@ -33,10 +34,10 @@ const mod: ItemData = {
   id: crypto.randomUUID(),
   name: "Anti-Theft System",
   itemType: ItemType.other,
-  parentId: car.id,
+  items: { parentId: car.id, childIds: [] },
 }
 
-const carWithMod: VehicleData = { ...car, childIds: [mod.id] }
+const carWithMod: VehicleData = { ...car, items: { ...car.items, childIds: [mod.id] } }
 
 const renderVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) =>
   renderWithRunner(<VehicleDataCard vehicle={vehicle} onOpen={onOpen} />, { [vehicle.id]: vehicle, ...extraGear })
@@ -92,7 +93,7 @@ describe("VehicleDataCard", () => {
 
     // Assert
     expect(screen.getByText("Damage 3/10")).toBeDefined()
-    expect((runnerStore.getState().gear[car.id] as VehicleData).damage?.physical).toBe(3)
+    expect((getItemCatalog(runnerStore.getState())[car.id] as VehicleData).damage?.physical).toBe(3)
   })
 
   it("renders attached mods as nested subitems", () => {
@@ -126,7 +127,7 @@ describe("VehicleDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[carWithMod.id]).toBeUndefined())
-    expect(runnerStore.getState().gear[mod.id]).toBeUndefined()
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[carWithMod.id]).toBeUndefined())
+    expect(getItemCatalog(runnerStore.getState())[mod.id]).toBeUndefined()
   })
 })

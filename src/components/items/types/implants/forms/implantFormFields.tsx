@@ -1,5 +1,3 @@
-import type { UUID } from "node:crypto"
-
 import Box from "@mui/material/Box"
 import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
@@ -13,6 +11,7 @@ import { z } from "zod"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { implantFormOpts } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [
@@ -67,7 +66,7 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ..
   const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
-    .filter((item) => item.parentId === implantId)
+    .filter((item) => item.items.parentId === implantId)
     .reduce((sum, child) => sum + (child.capacityCost ?? 0), 0)
 
   return (
@@ -78,7 +77,7 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ..
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
   render: function Render({ group }) {
-    const parentId = useSelector(group.store, (state) => state.values.parentId)
+    const parentId = useSelector(group.store, (state) => state.values.items.parentId)
     const itemId = useSelector(group.store, (state) => state.values.id)
 
     return (

@@ -14,27 +14,28 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
-import { filterRecordByType, itemIsType } from "#/system/items/itemUtils.ts"
+import { filterRecordByType, itemIsType, toItemCatalogTree } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 /** @deprecated Use `ItemSelectors.selectAll` via `useRunnerSelector` instead. */
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
-  return state.gear
+  return getItemCatalog(state)
 }
 
 /** @deprecated Use `ItemSelectors.selectAvailable` via `useRunnerSelector` instead. */
 export function selectAvailable(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => !item.stashed)
+  return Object.values(getItemCatalog(state)).filter((item) => !item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectEquipped` via `useRunnerSelector` instead. */
 export function selectEquipped(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => item.equipped)
+  return Object.values(getItemCatalog(state)).filter((item) => item.equipped)
 }
 
 /** @deprecated Use `ItemSelectors.selectStashed` via `useRunnerSelector` instead. */
 export function selectStashed(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter((item) => item.stashed)
+  return Object.values(getItemCatalog(state)).filter((item) => item.stashed)
 }
 
 /** @deprecated Use `ItemSelectors.selectById` via `useRunnerSelector` instead. */
@@ -84,7 +85,7 @@ export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRe
   (allGear, parentItem) => {
     const children: ItemDataRecord = {}
 
-    for (const childId of parentItem.childIds ?? []) {
+    for (const childId of parentItem?.items.childIds ?? []) {
       const child = allGear[childId]
       if (child) children[childId] = child
     }
@@ -183,34 +184,43 @@ export namespace ItemSelectors {
 
   export const selectAll = createSelector(
     ViewerStateSelectors.selectItems,
-  ) satisfies ItemSelector<ItemCatalog>
+  )
+
+  export const selectCatalog = createSelector(
+    ViewerStateSelectors.selectItems,
+  )
+
+  export const selectCatalogTree = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    (items) => toItemCatalogTree(items),
+  )
 
   export const selectAvailable = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     (items) => Object.values(items).filter((item) => !item.stashed),
-  ) satisfies ItemSelector<ItemData[]>
+  )
 
   export const selectEquipped = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     (items) => Object.values(items).filter((item) => item.equipped),
-  ) satisfies ItemSelector<ItemData[]>
+  )
 
   export const selectStashed = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     (items) => Object.values(items).filter((item) => item.stashed),
-  ) satisfies ItemSelector<ItemData[]>
+  )
 
   export const selectById = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     Options.itemId,
     (items, itemId) => items[itemId],
-  ) satisfies ItemSelector<ItemData, { itemId: UUID }>
+  )
 
   export const selectByType = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     Options.itemType,
     (items, itemType) => filterRecordByType(items, itemType),
-  ) satisfies ItemSelector<ItemCatalog, { itemType: ItemType }>
+  )
 
   export const selectChildrenOf = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
@@ -219,14 +229,14 @@ export namespace ItemSelectors {
       const parent = items[itemId]
       const children: ItemCatalog = {}
 
-      for (const childId of parent?.childIds ?? []) {
+      for (const childId of parent?.items.childIds ?? []) {
         const child = items[childId]
         if (child) children[childId] = child
       }
 
       return children
     },
-  ) satisfies ItemSelector<ItemCatalog, { itemId: UUID }>
+  )
 
   /**
    * The item at `itemId`, narrowed to `type` — `undefined` if no such item exists or it isn't of
@@ -242,7 +252,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.armor),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.armor> | undefined, { itemId: UUID }>
+    )
 
     export const selectAll = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
@@ -276,7 +286,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.implant),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.implant> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Software {
@@ -284,7 +294,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.software),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.software> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Vehicles {
@@ -292,7 +302,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.vehicle),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.vehicle> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Weapons {
@@ -300,7 +310,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.weapon),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.weapon> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Devices {
@@ -308,7 +318,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.device),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.device> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace FirearmAccessories {
@@ -316,7 +326,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.firearmAccessory),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.firearmAccessory> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Sins {
@@ -324,7 +334,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.sin),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.sin> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Credsticks {
@@ -332,7 +342,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.credstick),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.credstick> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Programs {
@@ -340,7 +350,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.program),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.program> | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Other {
@@ -355,7 +365,7 @@ export namespace ItemSelectors {
         const item = items[itemId]
         return item?.itemType === ItemType.other ? item : undefined
       },
-    ) satisfies ItemSelector<ItemData | undefined, { itemId: UUID }>
+    )
   }
 
   export namespace Licenses {
@@ -363,7 +373,7 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       Options.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.license),
-    ) satisfies ItemSelector<ItemDataFor<ItemType.license> | undefined, { itemId: UUID }>
+    )
 
     export const selectForItem = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
@@ -373,12 +383,12 @@ export namespace ItemSelectors {
         if (!item?.licenseId) return null
         return itemOfType(items, item.licenseId, ItemType.license) ?? null
       },
-    ) satisfies ItemSelector<LicenseData | null, { itemId: UUID }>
+    )
 
     export const selectItemsForId = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
       Options.licenseId,
       (items, licenseId) => Object.values(items).filter((item) => item.licenseId === licenseId),
-    ) satisfies ItemSelector<ItemData[], { licenseId: UUID }>
+    )
   }
 }

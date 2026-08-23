@@ -53,6 +53,7 @@ export function applyMigrations(runner: object): RunnerData {
     draft.qualities ??= []
     draft.contacts ??= []
     draft.tradition ??= null
+    draft.items ??= { parentId: null, childIds: [] }
     draft.initiative ??= { passesCompleted: [] }
     draft.gameState ??= { matrix: { knownNodes: [], activePrograms: [] } }
   })

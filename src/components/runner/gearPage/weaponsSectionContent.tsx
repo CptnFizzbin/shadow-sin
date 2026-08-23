@@ -1,4 +1,6 @@
+import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
+import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
@@ -17,7 +19,7 @@ export const WeaponsSectionContent: FC = () => {
   const weapons = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.weapon))
   const weaponFormDialog = useWeaponFormDialog()
 
-  const handleEditWeapon = async (weapon: WeaponData) => {
+  const handleEditWeapon = async (weapon?: WeaponData) => {
     const saved = await weaponFormDialog.open({ weapon })
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
@@ -32,6 +34,17 @@ export const WeaponsSectionContent: FC = () => {
           onEdit={() => handleEditWeapon(item)}
         />
       ))}
+
+      <Button
+        variant="outlined"
+        size="small"
+        startIcon={<RiAddLine size={14} />}
+        onClick={() => handleEditWeapon()}
+        color="secondary"
+        fullWidth
+      >
+        Add Weapon
+      </Button>
 
       {weaponFormDialog.dialog}
     </Stack>

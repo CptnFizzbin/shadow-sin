@@ -26,7 +26,9 @@ import normalizeArmorRating from "./migrations/024_normalizeArmorRating.ts"
 import addMatrixGameState from "./migrations/025_addMatrixGameState.ts"
 import addEntityKind from "./migrations/026_addEntityKind.ts"
 import addRunnerName from "./migrations/027_addRunnerName.ts"
-import pruneNullUuidChildIds from "./migrations/028_pruneNullUuidChildIds.ts"
+import moveItems from "./migrations/028_moveItems.ts"
+import nestItemAttachment from "./migrations/029_nestItemAttachment.ts"
+import pruneNullUuidChildIds from "./migrations/030_pruneNullUuidChildIds.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -61,8 +63,16 @@ export const migrations: AnyCharacterMigration[] = [
   addMatrixGameState,
   addEntityKind,
   addRunnerName,
+  moveItems,
+  nestItemAttachment,
   pruneNullUuidChildIds,
 ]
+
+migrations.forEach((migration, index) => {
+  if (migration.version !== index + 1) {
+    throw new Error(`Invalide version. Expected ${index + 1}, migration was version ${migration.version}`)
+  }
+})
 
 /** The current RunnerData schema version — the highest migration `version` registered above. */
 export const CURRENT_RUNNER_VERSION: number = Math.max(...migrations.map((m) => m.version))

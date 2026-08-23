@@ -1,9 +1,8 @@
-import type { UUID } from "node:crypto"
-
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
@@ -35,6 +34,7 @@ const defaultFormValues: ProgramData = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] },
   effects: [],
   stashed: false,
 }
@@ -48,7 +48,7 @@ export const programFormOpts = formOptions({
 export const useProgramForm = ({ program, parentId, onSubmit }: ProgramFormOptions) => {
   return useItemForm<ProgramData>({
     item: program,
-    defaultValues: { ...defaultFormValues, parentId },
+    defaultValues: { ...defaultFormValues, items: { ...defaultFormValues.items, parentId: parentId ?? null } },
     onSubmit,
   })
 }

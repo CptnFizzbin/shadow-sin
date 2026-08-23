@@ -8,12 +8,13 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { SinDataCard } from "./sinDataCard.tsx"
 
 const fakeSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
@@ -21,7 +22,7 @@ const fakeSin: SinData = {
 }
 
 const realSin: SinData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,
@@ -34,10 +35,10 @@ const coveredLicense: LicenseData = {
   name: "License: Ares Predator",
   itemType: ItemType.license,
   rating: 4,
-  parentId: fakeSin.id,
+  items: { parentId: fakeSin.id, childIds: [] },
 }
 
-const sinWithLicense: SinData = { ...fakeSin, childIds: [coveredLicense.id] }
+const sinWithLicense: SinData = { ...fakeSin, items: { ...fakeSin.items, childIds: [coveredLicense.id] } }
 
 /** `SinDataCard` reads its own covered licenses from the store via `sin.id`, so every render needs the SIN itself seeded into gear. */
 const renderSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}, onOpen?: () => void) => {
@@ -104,7 +105,7 @@ describe("SinDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[fakeSin.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[fakeSin.id]).toBeUndefined())
     expect(screen.queryByRole("dialog")).toBeNull()
   })
 
@@ -118,13 +119,13 @@ describe("SinDataCard", () => {
 
     // Assert
     expect(await screen.findByRole("dialog")).toBeDefined()
-    expect(runnerStore.getState().gear[sinWithLicense.id]).toBeDefined()
+    expect(getItemCatalog(runnerStore.getState())[sinWithLicense.id]).toBeDefined()
 
     // Act: confirm
     fireEvent.click(screen.getByRole("button", { name: "Remove SIN" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[sinWithLicense.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[sinWithLicense.id]).toBeUndefined())
   })
 
   it("navigates via onOpen when tapped", () => {

@@ -19,7 +19,7 @@ export const MiscSectionContent: FC = () => {
   const items = useGearByType<ItemData>(ItemType.other)
   const itemFormDialog = useItemFormDialog()
 
-  const rootItems = items.filter((item) => !item.parentId)
+  const rootItems = items.filter((item) => !item.items.parentId)
 
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))

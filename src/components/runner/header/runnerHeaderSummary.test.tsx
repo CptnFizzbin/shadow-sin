@@ -5,11 +5,12 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { RunnerFactoryOverrideFn } from "#/system/runnerData.factory.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { RunnerHeaderSummary } from "./runnerHeaderSummary.tsx"
 
-function renderWithRunner(overrideFn: Parameters<typeof runnerDataFactory>[0]) {
+function renderWithRunner(overrideFn: RunnerFactoryOverrideFn) {
   const runnerData = runnerDataFactory(overrideFn)
   const store = new RunnerDataStore(runnerData)
 

@@ -223,7 +223,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
     const runner = runnerDataFactory((s) => {
       s.gear = {
         [NullUuid]: {
-          kind: EntityKind.item,
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
           id: NullUuid,
           name: "Trauma Damper",
           itemType: ItemType.other,
@@ -245,7 +245,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
     const runner = runnerDataFactory((s) => {
       s.gear = {
         [NullUuid]: {
-          kind: EntityKind.item,
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
           id: NullUuid,
           name: "Trauma Damper",
           itemType: ItemType.other,

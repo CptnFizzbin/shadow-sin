@@ -19,13 +19,13 @@ const defaultValues: LicenseData = {
   name: "",
   rating: DefaultFakeLicenseRating,
   cost: 0,
-  parentId: NullUuid,
+  items: { parentId: NullUuid, childIds: [] },
 }
 
 export const useLicenseForm = ({ parentId, license, onSubmit }: LicenseFormOptions) => {
   return useItemForm<LicenseData>({
     item: license,
-    defaultValues: { ...defaultValues, parentId },
+    defaultValues: { ...defaultValues, items: { ...defaultValues.items, parentId: parentId ?? null } },
     onSubmit: (value, meta) => {
       onSubmit({ ...value, cost: getLicenseCost(value.rating) }, meta)
     },

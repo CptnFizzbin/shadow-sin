@@ -26,6 +26,9 @@ export interface SelectOption {
 interface SelectFieldProps extends FormControlProps {
   label: ReactNode
   options: SelectOption[]
+  /** The field stores `null` (rather than `""`) for "nothing selected" — used for optional
+   *  foreign-key-style fields (e.g. an item's parent). */
+  nullable?: boolean
   slotProps?: {
     select?: Partial<Omit<SelectProps, "value" | "onBlur" | "onChange">>
     menuItem?: Partial<MenuItemProps>
@@ -38,10 +41,11 @@ interface SelectFieldProps extends FormControlProps {
 export const SelectField: FC<SelectFieldProps> = ({
   options,
   label,
+  nullable = false,
   slotProps,
   ...props
 }) => {
-  const field = useFieldContext<string>()
+  const field = useFieldContext<string | null>()
   const errors = useFieldErrors()
 
   const currentValue = field.state.value ?? ""
@@ -69,7 +73,7 @@ export const SelectField: FC<SelectFieldProps> = ({
         onChange={(e) => {
           if ("value" in e.target) {
             const value = e.target.value as string
-            field.handleChange(value)
+            field.handleChange(nullable && value === "" ? null : value)
           }
         }}
         {...slotProps?.select}

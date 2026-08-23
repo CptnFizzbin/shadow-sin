@@ -1,7 +1,6 @@
-import type { UUID } from "node:crypto"
-
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -17,7 +16,7 @@ import {
 
 describe.concurrent("isLicenseQuickBuyEligible", () => {
   const baseItem: ItemData = {
-    kind: EntityKind.item,
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
     id: "00000000-0000-0000-0000-000000000001",
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -67,7 +66,7 @@ describe.concurrent("isItemLicensed", () => {
   const licenseId = "00000000-0000-0000-0000-000000000003"
 
   const item: ItemData = {
-    kind: EntityKind.item,
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
     id: "00000000-0000-0000-0000-000000000002",
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -75,7 +74,7 @@ describe.concurrent("isItemLicensed", () => {
   }
 
   const license: LicenseData = {
-    kind: EntityKind.item,
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
     id: licenseId,
     itemType: ItemType.license,
     name: "License",
@@ -103,7 +102,7 @@ describe.concurrent("isItemLicensed", () => {
 
 describe.concurrent("findLicenseableSiblings", () => {
   const makePistol = (id: UUID, overrides: Partial<ItemData> = {}): ItemData => ({
-    kind: EntityKind.item,
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
     id,
     itemType: ItemType.weapon,
     name: "Ares Predator",
@@ -139,7 +138,7 @@ describe.concurrent("findLicenseableSiblings", () => {
     const item = makePistol("00000000-0000-0000-0000-000000000001")
     const licenseId = "00000000-0000-0000-0000-000000000099"
     const licensedSibling = makePistol("00000000-0000-0000-0000-000000000002", { licenseId })
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, itemType: ItemType.license, name: "License", rating: 4 }
+    const license: LicenseData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: licenseId, itemType: ItemType.license, name: "License", rating: 4 }
 
     // Act
     const siblings = findLicenseableSiblings(item, [item, licensedSibling], [license])

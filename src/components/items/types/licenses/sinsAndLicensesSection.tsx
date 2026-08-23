@@ -43,7 +43,7 @@ export const SinsAndLicensesSection: FC = () => {
       sin,
       onDelete: sin
         ? () => {
-            const sinLicenses = licenses.filter((l) => l.parentId === sin.id)
+            const sinLicenses = licenses.filter((l) => l.items.parentId === sin.id)
             void handleRemoveSin(sin, sinLicenses.length > 0)
           }
         : undefined,

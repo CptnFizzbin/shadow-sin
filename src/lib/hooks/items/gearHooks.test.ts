@@ -15,7 +15,7 @@ const idChild2 = "00000000-0000-0000-0000-0000000000b2"
 const idOther = "00000000-0000-0000-0000-0000000000c1"
 
 function makeItem(overrides: Partial<ItemData> & Pick<ItemData, "id" | "name">): ItemData {
-  return { kind: EntityKind.item, itemType: ItemType.other, ...overrides }
+  return { kind: EntityKind.item, items: { parentId: null, childIds: [] }, itemType: ItemType.other, ...overrides }
 }
 
 describe.concurrent("searchGear", () => {
@@ -74,8 +74,8 @@ describe.concurrent("searchGear", () => {
   it("includes a matching child's parent for context", () => {
     // Arrange
     const gear = {
-      [idParent]: makeItem({ id: idParent, name: "Ares Predator", childIds: [idChild] }),
-      [idChild]: makeItem({ id: idChild, name: "Smartgun System", parentId: idParent }),
+      [idParent]: makeItem({ id: idParent, name: "Ares Predator", items: { parentId: null, childIds: [idChild] } }),
+      [idChild]: makeItem({ id: idChild, name: "Smartgun System", items: { parentId: idParent, childIds: [] } }),
       [idOther]: makeItem({ id: idOther, name: "Commlink" }),
     }
 
@@ -89,9 +89,9 @@ describe.concurrent("searchGear", () => {
   it("includes all children of a directly-matching parent", () => {
     // Arrange
     const gear = {
-      [idParent]: makeItem({ id: idParent, name: "Ares Predator", childIds: [idChild1, idChild2] }),
-      [idChild1]: makeItem({ id: idChild1, name: "Smartgun System", parentId: idParent }),
-      [idChild2]: makeItem({ id: idChild2, name: "Silencer", parentId: idParent }),
+      [idParent]: makeItem({ id: idParent, name: "Ares Predator", items: { parentId: null, childIds: [idChild1, idChild2] } }),
+      [idChild1]: makeItem({ id: idChild1, name: "Smartgun System", items: { parentId: idParent, childIds: [] } }),
+      [idChild2]: makeItem({ id: idChild2, name: "Silencer", items: { parentId: idParent, childIds: [] } }),
       [idOther]: makeItem({ id: idOther, name: "Commlink" }),
     }
 

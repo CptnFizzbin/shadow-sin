@@ -18,7 +18,7 @@ function buildSinLane(
   licenses: LicenseData[],
   allItems: ItemData[],
 ): VerificationLane {
-  const sinLicenses = licenses.filter((license) => license.parentId === sin.id)
+  const sinLicenses = licenses.filter((license) => license.items.parentId === sin.id)
 
   // Forbidden gear must never be offered a roll, even with a stray licenseId pointing at a real
   // Licence — guard structurally here rather than relying on `kind` alone.

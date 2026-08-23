@@ -1,58 +1,67 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 
 import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./gearSlice.actions.ts"
 
-const initialState: RunnerData["gear"] = {}
+const initialState: ItemCatalog = {}
 
 /**
- * Keeps `parentId`/`childIds` consistent across the whole gear record whenever `item` is
- * added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item` explicitly
- * lists its own `childIds` — those children's `parentId` is set or cleared to match.
+ * Keeps `items.parentId`/`items.childIds` consistent across the whole gear record whenever `item`
+ * is added/updated: `item`'s parent gains (or loses) it in `childIds`, and — when `item`
+ * explicitly lists its own `childIds` — those children's `parentId` is set or cleared to match.
+ *
+ * Always replaces `savedItem.items` wholesale rather than mutating its `parentId`/`childIds`
+ * fields in place: `item` (and therefore `item.items`) can be a payload dispatched straight from
+ * a form that never touched attachment fields, so it may still be the exact object reference the
+ * store handed out on a previous read — Immer freezes that on the way out, and writing into a
+ * frozen nested object throws.
  */
-function relinkItem(state: RunnerData["gear"], item: ItemData) {
+function relinkItem(state: ItemCatalog, item: ItemData) {
   for (const savedItem of Object.values(state)) {
-    savedItem.childIds ??= []
+    let childIds = savedItem.items.childIds
 
-    if (savedItem.id === item.parentId) {
-      if (!savedItem.childIds.includes(item.id)) {
-        savedItem.childIds.push(item.id)
+    if (savedItem.id === item.items.parentId) {
+      if (!childIds.includes(item.id)) {
+        childIds = [...childIds, item.id]
       }
     } else {
-      savedItem.childIds = savedItem.childIds.filter((id) => id !== item.id)
+      childIds = childIds.filter((id) => id !== item.id)
     }
 
-    if (item.childIds !== undefined) {
-      if (item.childIds.includes(savedItem.id)) {
-        savedItem.parentId = item.id
-      } else if (savedItem.parentId === item.id) {
-        savedItem.parentId = undefined
-      }
+    let parentId = savedItem.items.parentId
+
+    if (item.items.childIds.includes(savedItem.id)) {
+      parentId = item.id
+    } else if (parentId === item.id) {
+      parentId = null
     }
+
+    savedItem.items = { parentId, childIds }
   }
 }
 
 /** Deletes `id` and drops it from its parent's `childIds`. Leaves any children orphaned. */
-function removeItemById(state: RunnerData["gear"], id: string) {
+function removeItemById(state: ItemCatalog, id: UUID) {
   const target = state[id]
   if (!target) return
 
   delete state[id]
 
-  const parent = target.parentId ? state[target.parentId] : undefined
+  const parent = target.items.parentId ? state[target.items.parentId] : undefined
   if (parent) {
-    parent.childIds = parent.childIds?.filter((childId) => childId !== id)
+    parent.items = { ...parent.items, childIds: parent.items.childIds.filter((childId) => childId !== id) }
   }
 }
 
 /** Deletes `id` and every descendant reachable through `childIds`. */
-function removeItemTree(state: RunnerData["gear"], id: string) {
+function removeItemTree(state: ItemCatalog, id: UUID) {
   const target = state[id]
   if (!target) return
 
-  for (const childId of target.childIds ?? []) {
+  for (const childId of target.items.childIds) {
     removeItemTree(state, childId)
   }
 

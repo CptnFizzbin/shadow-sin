@@ -8,12 +8,13 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ImplantDataCard } from "./implantDataCard.tsx"
 
 const alphaImplant: ImplantData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Wired Reflexes 2",
   itemType: ItemType.implant,
@@ -25,7 +26,7 @@ const alphaImplant: ImplantData = {
 }
 
 const standardImplant: ImplantData = {
-  kind: EntityKind.item,
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Datajack",
   itemType: ItemType.implant,
@@ -40,10 +41,10 @@ const accessory: ItemData = {
   id: crypto.randomUUID(),
   name: "Reflex Recorder",
   itemType: ItemType.other,
-  parentId: alphaImplant.id,
+  items: { parentId: alphaImplant.id, childIds: [] },
 }
 
-const implantWithAccessory: ImplantData = { ...alphaImplant, childIds: [accessory.id] }
+const implantWithAccessory: ImplantData = { ...alphaImplant, items: { ...alphaImplant.items, childIds: [accessory.id] } }
 
 const renderImplantCard = (implant: ImplantData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) =>
   renderWithRunner(<ImplantDataCard implant={implant} onOpen={onOpen} />, { [implant.id]: implant, ...extraGear })
@@ -129,6 +130,6 @@ describe("ImplantDataCard", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 
     // Assert
-    await waitFor(() => expect(runnerStore.getState().gear[alphaImplant.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[alphaImplant.id]).toBeUndefined())
   })
 })

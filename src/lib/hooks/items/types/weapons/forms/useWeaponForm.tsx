@@ -43,6 +43,7 @@ const defaultFormValues = {
     book: "",
     page: 0,
   },
+  items: { parentId: null, childIds: [] } as WeaponData["items"],
   quantity: 1,
   rating: undefined as number | undefined,
 
@@ -98,6 +99,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     description: values.description,
     availability: values.availability,
     source: values.source,
+    items: values.items,
     quantity: values.quantity,
     ...(values.rating !== undefined && { rating: values.rating }),
   }
@@ -158,6 +160,7 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
       book: weapon.source?.book ?? "",
       page: weapon.source?.page ?? 0,
     },
+    items: weapon.items,
     quantity: weapon.quantity ?? 1,
     rating: typeof weapon.rating === "number" ? weapon.rating : undefined,
     reach: meleeWeapon?.reach ?? 0,
