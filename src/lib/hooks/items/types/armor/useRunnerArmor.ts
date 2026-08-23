@@ -1,31 +1,23 @@
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData, ArmorRating } from "#/system/gear/armorData.ts"
-import { ItemType } from "#/system/itemType.ts"
 
+/** @deprecated Use `ItemSelectors.Armor.selectAll` via `useRunnerSelector` instead. */
 export function useRunnerArmor(): ArmorData[] {
-  const armor = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.armor))
-  return Object.values(armor)
+  return useRunnerSelector(ItemSelectors.Armor.selectAll)
 }
 
+/** @deprecated Use `ItemSelectors.Armor.selectEquipped` via `useRunnerSelector` instead. */
 export function useEquipedArmor(): ArmorData[] {
-  const armor = useRunnerArmor()
-  return armor.filter((item) => item.equipped)
+  return useRunnerSelector(ItemSelectors.Armor.selectEquipped)
 }
 
+/** @deprecated Use `ItemSelectors.Armor.selectTotal` via `useRunnerSelector` instead. */
 export function useTotalArmor(): ArmorRating {
-  const equipped = useEquipedArmor()
-
-  return {
-    ballistic: equipped.reduce((sum, armor) => sum + armor.ballistic, 0),
-    impact: equipped.reduce((sum, armor) => sum + armor.impact, 0),
-  }
+  return useRunnerSelector(ItemSelectors.Armor.selectTotal)
 }
 
+/** @deprecated Use `ItemSelectors.Armor.selectEffective` via `useRunnerSelector` instead. */
 export function useEffectiveArmor(): ArmorRating {
-  const equipped = useEquipedArmor()
-
-  return {
-    ballistic: Math.max(0, ...equipped.map((armor) => armor.ballistic)),
-    impact: Math.max(0, ...equipped.map((armor) => armor.impact)),
-  }
+  return useRunnerSelector(ItemSelectors.Armor.selectEffective)
 }
