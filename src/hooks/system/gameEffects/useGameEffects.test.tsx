@@ -1,4 +1,3 @@
-import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -17,9 +16,8 @@ import {
 } from "#/system/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
-import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
-import { selectAllGameEffects, selectGameEffectsByType, useGameEffects } from "./useGameEffects.ts"
+import { selectAllGameEffects, selectGameEffectsByType } from "./useGameEffects.ts"
 
 // ---------------------------------------------------------------------------
 // selectAllGameEffects
@@ -302,71 +300,5 @@ describe("selectGameEffectsByType", () => {
     // Assert
     expect(initiativeEffects).toHaveLength(2)
     expect(initiativeEffects.map((e) => e.value)).toEqual(expect.arrayContaining([1, 2]))
-  })
-})
-
-// ---------------------------------------------------------------------------
-// useGameEffects
-// ---------------------------------------------------------------------------
-
-describe("useGameEffects", () => {
-  it("returns an empty array when there are no matching effects on the sheet", () => {
-    // Arrange
-    const sheet = runnerDataFactory()
-
-    // Act
-    const { result } = renderHook(() => useGameEffects(GameEffectType.attrMod), {
-      wrapper: makeRunnerDataWrapper(sheet),
-    })
-
-    // Assert
-    expect(result.current).toEqual([])
-  })
-
-  it("returns effects of the requested type from the runner sheet", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "Aptitude",
-          type: "positive",
-          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
-        },
-      ]
-    } })
-
-    // Act
-    const { result } = renderHook(() => useGameEffects(GameEffectType.attrMod), {
-      wrapper: makeRunnerDataWrapper(sheet),
-    })
-
-    // Assert
-    expect(result.current).toHaveLength(1)
-    expect(result.current[0]).toMatchObject({ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 })
-  })
-
-  it("does not return effects of other types", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "Aptitude",
-          type: "positive",
-          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
-        },
-      ]
-    } })
-
-    // Act
-    const { result } = renderHook(() => useGameEffects(GameEffectType.initiativeBonus), {
-      wrapper: makeRunnerDataWrapper(sheet),
-    })
-
-    // Assert
-    expect(result.current).toEqual([])
   })
 })

@@ -6,7 +6,6 @@ import { ComplexFormsSelectors } from "#/stores/runner/complexForms/complexForms
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
 import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -54,11 +53,3 @@ export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSel
     return allEffects.filter(filterByEffectType(type))
   },
 )
-
-/**
- * Hook to retrieve all game effects of a specific type from the runner sheet.
- * This scans qualities, equipped gear, spells, complex forms, and powers.
- */
-export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
-  return useRunnerSelector(selectGameEffectsByType(type))
-}
