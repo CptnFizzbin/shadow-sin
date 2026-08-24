@@ -22,7 +22,6 @@ import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
-import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
 import {
   useActiveSkillDiceGroup,
   useEncumbranceDiceGroup,
@@ -30,9 +29,10 @@ import {
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -119,7 +119,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroup: counterspellingGroup },
   }
 
-  const woundMod = useWoundModifier()
+  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   const woundGroup = useWoundDiceGroup()
   const encumbranceGroup = useEncumbranceDiceGroup()
   const armorTotals = useEncumbrance()

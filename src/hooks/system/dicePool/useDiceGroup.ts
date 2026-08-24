@@ -3,10 +3,11 @@ import { useId } from "react"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
-import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -58,7 +59,7 @@ export function useActiveSkillDiceGroup(
 }
 
 export function useWoundDiceGroup(): DiceGroup | null {
-  const woundMod = useWoundModifier()
+  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   if (woundMod === 0) return null
   return { name: "Wound", size: woundMod * -1, type: "penalty" }
 }

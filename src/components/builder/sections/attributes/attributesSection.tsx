@@ -2,12 +2,13 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useAllRunnerAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   AttributeKey,
   AttributeOrder,
@@ -20,7 +21,7 @@ import { AttributesList } from "./attributesList.tsx"
 
 export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()
-  const attributes = useAllRunnerAttrInfos()
+  const attributes = useRunnerSelector(AttrSelectors.selectAllInfo)
 
   const attrRows: AttributeKey[] = AttributeOrder
     .filter((key) => key !== AttributeKey.essence)

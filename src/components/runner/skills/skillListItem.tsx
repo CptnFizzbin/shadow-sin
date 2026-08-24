@@ -5,8 +5,9 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
-import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
@@ -27,7 +28,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   isDefaulted,
   onClick,
 }) => {
-  const woundMod = useWoundModifier()
+  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   const attrValue = useEntitySelector(AttrSelectors.selectValue, { key: attr })
 
   const isNative = rating === "native"
