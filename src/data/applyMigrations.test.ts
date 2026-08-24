@@ -62,12 +62,13 @@ describe.concurrent("applyMigrations", () => {
     expect(result._meta_.appVersion).toBe(APP_VERSION)
   })
 
-  it("translates a legacy _meta_.version into the equivalent migration timestamp", () => {
-    // Arrange — the old sequential-integer scheme: version 3 means migrations 1–3 have run,
-    // i.e. up through addLoanIdAndInterestRate
+  it("treats a legacy _meta_.version as unmigrated and safely re-runs every migration", () => {
+    // Arrange — the old sequential-integer scheme's `_meta_.version` (here, fully migrated under
+    // that scheme at 32) no longer maps to a specific `appVersion`; every registered migration is
+    // idempotent, so re-running all of them is safe and simpler than translating the old counter
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
-      _meta_: { version: 3 },
+      _meta_: { version: 32 },
       nuyen: {
         current: 100,
         loans: [
@@ -79,7 +80,7 @@ describe.concurrent("applyMigrations", () => {
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — same outcome as the equivalent appVersion-stamped runner above
+    // Assert — addLoanIdAndInterestRate re-runs but is a no-op on a loan that already has an id
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
     expect(result._meta_.appVersion).toBe(APP_VERSION)
   })

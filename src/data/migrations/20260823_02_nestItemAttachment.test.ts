@@ -89,4 +89,25 @@ describe.concurrent("029_nestItemAttachment", () => {
     // Assert
     expect(result._data_).toBeUndefined()
   })
+
+  it("is idempotent — running it twice preserves an already-nested item's attachment data", () => {
+    // Arrange
+    const parentId = crypto.randomUUID()
+    const childId = crypto.randomUUID()
+    const character = {
+      _data_: {
+        items: {
+          a1: { parentId, childIds: [childId] },
+        },
+      },
+    }
+
+    // Act
+    const once = migration.up(character)
+    const twice = migration.up(once)
+
+    // Assert — a second run must not overwrite the real attachment data with
+    // { parentId: null, childIds: [] }
+    expect(twice._data_?.items?.a1.items).toEqual({ parentId, childIds: [childId] })
+  })
 })

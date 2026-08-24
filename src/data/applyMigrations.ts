@@ -6,7 +6,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { RUNNER_META_EPOCH, RunnerMetaSchema } from "#/system/runnerData.ts"
 
 import { APP_VERSION } from "./appVersion.ts"
-import { migrations } from "./migrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP, migrations } from "./migrations.ts"
 
 interface MigrationDraft {
   _meta_: {
@@ -31,22 +31,27 @@ const RawRunnerMetaSchema = RunnerMetaSchema.partial().extend({
   version: z.number().optional(),
 })
 
+/** The highest `_meta_.version` a runner could carry under the old sequential-integer scheme. */
+const LAST_LEGACY_VERSION = 32
+
 /**
  * Resolves the `appVersion` a raw runner's `_meta_` implies, before any migration has run.
  *
- * Runners stamped under the old sequential-integer scheme carry `_meta_.version` — the highest
- * migration index applied — instead of `_meta_.appVersion`. That index is translated into the
- * equivalent timestamp by indexing into `migrations`' declaration order, which is guaranteed
- * chronological by the ordering check in `migrations.ts` — every one of those old migrations is
- * idempotent, but not all migrations added since are (e.g. `moveItems` overwrites `_data_` on a
- * second run), so re-deriving the real timestamp here (rather than treating any legacy `version`
- * as unmigrated) is what keeps a re-run limited to migrations that are actually still pending.
+ * Runners stamped under the old sequential-integer scheme carry `_meta_.version` instead of
+ * `_meta_.appVersion` — any such runner is treated as unmigrated (the epoch), so every registered
+ * migration re-runs against it once. Every migration is written to be idempotent (a shape-based
+ * guard, e.g. `??=`, that's a no-op on a runner it's already applied to — see "Character
+ * migrations" in AGENTS.md), so this is safe and simpler than re-deriving the legacy version's
+ * real timestamp.
  */
 function resolveRunnerAppVersion(rawMeta: z.infer<typeof RawRunnerMetaSchema>): string {
   if (typeof rawMeta.appVersion === "string") return rawMeta.appVersion
-  if (typeof rawMeta.version === "number") return migrations[rawMeta.version - 1]?.timestamp ?? RUNNER_META_EPOCH
+  if (typeof rawMeta.version !== "number") return RUNNER_META_EPOCH
+  if (rawMeta.version <= LAST_LEGACY_VERSION) return RUNNER_META_EPOCH
 
-  return RUNNER_META_EPOCH
+  // Unreachable in practice — the old scheme never registered a migration past version 32 — but
+  // an unexpectedly high legacy version is closer to "already fully migrated" than "unmigrated".
+  return LATEST_MIGRATION_TIMESTAMP
 }
 
 /** {@link resolveRunnerAppVersion}, starting from a raw (not yet parsed) runner object's `_meta_`. */

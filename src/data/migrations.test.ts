@@ -59,9 +59,10 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(migrated._meta_.appVersion).toBe(APP_VERSION)
   })
 
-  it("does not re-run migrations already covered by _meta_.appVersion", async () => {
-    // Arrange — characterV1 has migrations 001–007 (legacy version 7) applied and a loan with a
-    // known stable ID; only 008+ should run
+  it("safely re-runs every migration for a runner still on the legacy _meta_.version scheme", async () => {
+    // Arrange — characterV1 is shaped as if migrations 001–007 (legacy version 7) had already
+    // run, with a loan carrying a known stable ID; a legacy `version` is treated as unmigrated,
+    // so all 32 migrations run again — every one is idempotent, so this doesn't change the data
     const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
     await freshStorage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
@@ -71,7 +72,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // Act
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
-    // Assert — loan ID unchanged (003 was NOT re-run)
+    // Assert — loan ID unchanged (addLoanIdAndInterestRate only assigns one when missing)
     expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
     expect(migrated._meta_.appVersion).toBe(APP_VERSION)
   })

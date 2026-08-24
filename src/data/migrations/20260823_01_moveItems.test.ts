@@ -94,4 +94,21 @@ describe.concurrent("028_moveItems", () => {
     // Assert
     expect(result._data_.featureFlags).toEqual({})
   })
+
+  it("is idempotent — running it twice preserves an already-migrated runner's _data_", () => {
+    // Arrange
+    const character = {
+      gear: { a1: armorItem },
+      featureFlags: { optionalRules: { encumbranceEnabled: true } },
+    }
+
+    // Act
+    const once = migration.up(character)
+    const twice = migration.up(once)
+
+    // Assert — a second run must not overwrite the real _data_ with empty objects
+    expect(twice._data_).toEqual(once._data_)
+    expect(twice._data_.items).toEqual({ a1: armorItem })
+    expect(twice._data_.featureFlags).toEqual({ optionalRules: { encumbranceEnabled: true } })
+  })
 })
