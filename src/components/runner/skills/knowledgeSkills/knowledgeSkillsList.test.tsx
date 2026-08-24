@@ -10,13 +10,12 @@ import { KnowledgeSkillsList } from "./knowledgeSkillsList.tsx"
 describe("KnowledgeSkillsList", () => {
   it("renders skills with name, rating, and optional specialization", () => {
     renderWithProviders(<KnowledgeSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runnerData) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.knowledgeSkills = [
           { name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
           { name: "Ancient History", rating: 4 },
         ]
-        return runnerData
-      })),
+      } })),
     })
 
     expect(screen.getByText("Knowledge Skills")).toBeTruthy()

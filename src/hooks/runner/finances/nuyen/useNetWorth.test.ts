@@ -12,10 +12,9 @@ import { selectNetWorth } from "./useNetWorth.tsx"
 describe("selectNetWorth", () => {
   it("is just the current nuyen when there's no gear or loans", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen = { current: 5_000, loans: [] }
-      return s
-    })
+    } })
 
     // Act
     const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })
@@ -33,10 +32,11 @@ describe("selectNetWorth", () => {
       balance: 2_000,
     })
 
-    const sheet = runnerDataFactory((s) => {
-      s.nuyen = { current: 1_000, loans: [] }
-      s.gear = createItemMap(credstick)
-      return s
+    const sheet = runnerDataFactory({
+      items: createItemMap(credstick),
+      afterBuild: (s) => {
+        s.nuyen = { current: 1_000, loans: [] }
+      },
     })
 
     // Act
@@ -55,10 +55,11 @@ describe("selectNetWorth", () => {
       quantity: 2,
     })
 
-    const sheet = runnerDataFactory((s) => {
-      s.nuyen = { current: 1_000, loans: [] }
-      s.gear = createItemMap(item)
-      return s
+    const sheet = runnerDataFactory({
+      items: createItemMap(item),
+      afterBuild: (s) => {
+        s.nuyen = { current: 1_000, loans: [] }
+      },
     })
 
     // Act
@@ -70,13 +71,12 @@ describe("selectNetWorth", () => {
 
   it("subtracts every loan's amount", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen = {
         current: 5_000,
         loans: [{ id: crypto.randomUUID(), lender: "Ares Macrotechnology", amount: 1_500, interestRate: 5 }],
       }
-      return s
-    })
+    } })
 
     // Act
     const netWorth = selectNetWorth({ runner: sheet, items: getItemCatalog(sheet) })

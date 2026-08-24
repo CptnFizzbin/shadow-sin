@@ -21,10 +21,9 @@ describe.concurrent("selectLastExportDate", () => {
 
   it("returns the recorded export timestamp", () => {
     // Arrange
-    const runnerData = runnerDataFactory((data) => {
+    const runnerData = runnerDataFactory({ afterBuild: (data) => {
       data._meta_.lastExportDate = "2026-08-12T00:00:00.000Z"
-      return data
-    })
+    } })
 
     // Act
     const result = selectLastExportDate(runnerData)
@@ -48,10 +47,9 @@ describe("MetaSelectors.selectLastExportDate", () => {
 
   it("returns the recorded export timestamp", () => {
     // Arrange
-    const runnerData = runnerDataFactory((data) => {
+    const runnerData = runnerDataFactory({ afterBuild: (data) => {
       data._meta_.lastExportDate = "2026-08-12T00:00:00.000Z"
-      return data
-    })
+    } })
 
     // Act
     const result = MetaSelectors.selectLastExportDate(stateFor(runnerData))

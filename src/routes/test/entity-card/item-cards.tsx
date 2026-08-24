@@ -465,25 +465,22 @@ function MigratedItemCardsTestPage() {
   const sinItem = useMemo(() => buildSin(sinToggles), [sinToggles])
 
   const runnerStore = useMemo(() => {
-    const runnerData = runnerDataFactory((runner) => ({
-      ...runner,
-      gear: {
-        [credstickItem.id]: credstickItem,
-        [licenseItem.id]: licenseItem,
-        [sinItem.id]: sinItem,
-        ...(sinToggles.coveredLicense ? { [COVERED_LICENSE_ID]: COVERED_LICENSE } : {}),
-        [ARMOR_ID]: DEMO_ARMOR,
-        [ARMOR_MOD_ID]: DEMO_ARMOR_MOD,
-        [DEVICE_ID]: DEMO_DEVICE,
-        [PROGRAM_ID]: DEMO_PROGRAM,
-        [IMPLANT_ID]: DEMO_IMPLANT,
-        [IMPLANT_ACCESSORY_ID]: DEMO_IMPLANT_ACCESSORY,
-        [VEHICLE_ID]: DEMO_VEHICLE,
-        [VEHICLE_MOD_ID]: DEMO_VEHICLE_MOD,
-        [WEAPON_ID]: DEMO_WEAPON,
-        [WEAPON_ACCESSORY_ID]: DEMO_WEAPON_ACCESSORY,
-      },
-    }))
+    const runnerData = runnerDataFactory({ items: {
+      [credstickItem.id]: credstickItem,
+      [licenseItem.id]: licenseItem,
+      [sinItem.id]: sinItem,
+      ...(sinToggles.coveredLicense ? { [COVERED_LICENSE_ID]: COVERED_LICENSE } : {}),
+      [ARMOR_ID]: DEMO_ARMOR,
+      [ARMOR_MOD_ID]: DEMO_ARMOR_MOD,
+      [DEVICE_ID]: DEMO_DEVICE,
+      [PROGRAM_ID]: DEMO_PROGRAM,
+      [IMPLANT_ID]: DEMO_IMPLANT,
+      [IMPLANT_ACCESSORY_ID]: DEMO_IMPLANT_ACCESSORY,
+      [VEHICLE_ID]: DEMO_VEHICLE,
+      [VEHICLE_MOD_ID]: DEMO_VEHICLE_MOD,
+      [WEAPON_ID]: DEMO_WEAPON,
+      [WEAPON_ACCESSORY_ID]: DEMO_WEAPON_ACCESSORY,
+    } })
     return new RunnerDataStore(runnerData)
   }, [credstickItem, licenseItem, sinItem, sinToggles.coveredLicense])
 

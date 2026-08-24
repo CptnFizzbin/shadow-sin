@@ -10,11 +10,10 @@ import { burnEdge, spendEdge } from "./edgeSlice.actions.ts"
 describe.concurrent("spendEdge", () => {
   it("clamps to the current edge, not a caller-supplied value", async () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 3
       data.edge.current = 3
-      return data
-    })
+    } })
 
     // Act: a thunk — resolved against `runner` to read edge.current for the clamp
     const next = await dispatchThunk(runner, spendEdge(10))
@@ -25,11 +24,10 @@ describe.concurrent("spendEdge", () => {
 
   it("never drops current below 0", async () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 3
       data.edge.current = 1
-      return data
-    })
+    } })
 
     // Act
     const next = await dispatchThunk(runner, spendEdge(-5))
@@ -40,11 +38,10 @@ describe.concurrent("spendEdge", () => {
 
   it("doesn't touch attributes", async () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 3
       data.edge.current = 3
-      return data
-    })
+    } })
 
     // Act
     const next = await dispatchThunk(runner, spendEdge(1))
@@ -57,11 +54,10 @@ describe.concurrent("spendEdge", () => {
 describe.concurrent("burnEdge", () => {
   it("resets current to 0 and permanently reduces max by 1, in one atomic write", () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 4
       data.edge.current = 3
-      return data
-    })
+    } })
 
     // Act: a single action, fanned out to both edgeReducer and attributesReducer by combineReducers
     const next = runnerRootReducer(runner, burnEdge())
@@ -73,11 +69,10 @@ describe.concurrent("burnEdge", () => {
 
   it("never reduces max below 1", () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 1
       data.edge.current = 1
-      return data
-    })
+    } })
 
     // Act
     const next = runnerRootReducer(runner, burnEdge())
@@ -88,11 +83,10 @@ describe.concurrent("burnEdge", () => {
 
   it("doesn't touch unrelated fields", () => {
     // Arrange
-    const runner = runnerDataFactory((data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.attributes[AttributeKey.edge] = 4
       data.karma.current = 10
-      return data
-    })
+    } })
 
     // Act
     const next = runnerRootReducer(runner, burnEdge())

@@ -23,7 +23,7 @@ const streetStick: CredstickData = {
 
 const renderCredstickCard = (credstick: CredstickData) => {
   const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [credstick.id]: credstick } })),
+    runnerDataFactory({ items: { [credstick.id]: credstick } }),
   )
   renderWithProviders(<CredstickDataCard credstick={credstick} />, { runnerStore })
   return runnerStore

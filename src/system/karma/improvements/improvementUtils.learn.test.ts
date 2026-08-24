@@ -105,12 +105,11 @@ describe.concurrent("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20
-      return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -130,10 +129,9 @@ describe.concurrent("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
-      return draft
-    })
+    } })
 
     // Act
     const act = () => produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -149,12 +147,11 @@ describe.concurrent("applyImprovement — learn entries", () => {
       type: ImprovementType.learnSkillGroup,
       group: { name: SkillGroupKey.Firearms, rating: 1 },
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20
-      return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))

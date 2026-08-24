@@ -20,13 +20,12 @@ const diagnostics: ComplexFormData = {
 }
 
 function renderWithComplexForms(complexForms: ComplexFormData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.biology.awakening = AwakeningType.Technomancer
     data.attributes[AttributeKey.resonance] = 6
     data.attributes[AttributeKey.logic] = 6
     data.complexForms = complexForms
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

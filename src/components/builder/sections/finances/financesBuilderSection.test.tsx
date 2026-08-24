@@ -9,10 +9,9 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { FinancesBuilderSection } from "./financesBuilderSection.tsx"
 
 function renderSection(nuyen: number) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.nuyen.current = nuyen
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

@@ -73,13 +73,13 @@ export function renderWithProviders(
 
 /**
  * Seeds a fresh `RunnerDataStore`'s gear from the given map and renders `element` under it via
- * `renderWithProviders` — the `new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner,
- * gear })))` boilerplate every typed-card unit test (`SinDataCard`, `DeviceDataCard`, ...)
- * otherwise repeats for itself. Returns the store so callers can assert against it or seed a
- * reactive wrapper component keyed off it.
+ * `renderWithProviders` — the `new RunnerDataStore(runnerDataFactory({ items: gear }))`
+ * boilerplate every typed-card unit test (`SinDataCard`, `DeviceDataCard`, ...) otherwise repeats
+ * for itself. Returns the store so callers can assert against it or seed a reactive wrapper
+ * component keyed off it.
  */
 export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData> = {}) {
-  const runnerStore = new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear })))
+  const runnerStore = new RunnerDataStore(runnerDataFactory({ items: gear }))
   renderWithProviders(element, { runnerStore })
   return runnerStore
 }

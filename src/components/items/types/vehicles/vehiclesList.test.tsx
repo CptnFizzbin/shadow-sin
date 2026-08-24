@@ -31,7 +31,7 @@ describe("VehiclesList", () => {
   it("shows vehicles matching the category from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
     })
 
     // Assert
@@ -44,7 +44,7 @@ describe("VehiclesList", () => {
   it("toggling a damage box dispatches setItem and updates the store", () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
     })
 
     // Act
@@ -69,7 +69,7 @@ describe("VehiclesList", () => {
   it("removing a vehicle dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
     })
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 

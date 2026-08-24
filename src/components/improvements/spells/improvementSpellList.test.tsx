@@ -24,10 +24,9 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementSpellList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
-        return sheet
-      })),
+      } })),
     },
   )
 }

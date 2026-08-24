@@ -29,10 +29,9 @@ describe("selectAttributes", () => {
 describe("selectAttrBase", () => {
   it("returns the stored value for the given key", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.body] = 5
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectAttrBase(AttributeKey.body)(runner)).toBe(5)
@@ -40,10 +39,9 @@ describe("selectAttrBase", () => {
 
   it("returns 0 when the key is unset", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       delete s.attributes[AttributeKey.magic]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectAttrBase(AttributeKey.magic)(runner)).toBe(0)
@@ -53,10 +51,9 @@ describe("selectAttrBase", () => {
 describe("selectAttrValue", () => {
   it("matches the base value (no derived modifiers applied yet)", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.willpower] = 4
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectAttrValue(AttributeKey.willpower)(runner)).toBe(4)
@@ -76,10 +73,9 @@ describe("AttrSelectors.selectAll", () => {
 describe("AttrSelectors.selectBase", () => {
   it("returns the stored value for the given key", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.agility] = 6
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectBase(stateFor(runner), { key: AttributeKey.agility })).toBe(6)
@@ -87,10 +83,9 @@ describe("AttrSelectors.selectBase", () => {
 
   it("returns 0 when the key is unset", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       delete s.attributes[AttributeKey.resonance]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectBase(stateFor(runner), { key: AttributeKey.resonance })).toBe(0)
@@ -100,10 +95,9 @@ describe("AttrSelectors.selectBase", () => {
 describe("AttrSelectors.selectValue", () => {
   it("matches selectBase (no derived modifiers applied yet)", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.logic] = 3
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.logic })).toBe(3)
@@ -113,10 +107,9 @@ describe("AttrSelectors.selectValue", () => {
 describe("AttrSelectors.forAttr", () => {
   it("pins selectBase to the given attribute, needing no options", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.strength] = 5
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.strength).selectBase(stateFor(runner))).toBe(5)
@@ -124,10 +117,9 @@ describe("AttrSelectors.forAttr", () => {
 
   it("pins selectValue to the given attribute, needing no options", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.charisma] = 7
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.charisma).selectValue(stateFor(runner))).toBe(7)
@@ -135,11 +127,10 @@ describe("AttrSelectors.forAttr", () => {
 
   it("doesn't leak values between attributes", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.body] = 2
       s.attributes[AttributeKey.reaction] = 9
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.body).selectBase(stateFor(runner))).toBe(2)
@@ -150,10 +141,9 @@ describe("AttrSelectors.forAttr", () => {
 describe("AttrSelectors.selectBounds", () => {
   it("uses the runner's metatype bounds for a physical attribute", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.metatype = MetatypeType.Human
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.body]).toEqual({ min: 1, max: 6, augMax: 9 })
@@ -161,10 +151,9 @@ describe("AttrSelectors.selectBounds", () => {
 
   it("uses the runner's awakening bounds for magic/resonance", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.awakening = AwakeningType.Mundane
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.magic]).toEqual({ min: 0, max: 0 })
@@ -174,10 +163,9 @@ describe("AttrSelectors.selectBounds", () => {
 describe("AttrSelectors.selectAllInfo", () => {
   it("pairs each attribute's bounds with its base and current value", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.body] = 4
-      return s
-    })
+    } })
 
     // Act
     const info = AttrSelectors.selectAllInfo(runnerStateFor(runner))
@@ -190,10 +178,9 @@ describe("AttrSelectors.selectAllInfo", () => {
 describe("AttrSelectors.selectInfo", () => {
   it("returns the same info as selectAllInfo for the given key", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.willpower] = 5
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(AttrSelectors.selectInfo(runnerStateFor(runner), { key: AttributeKey.willpower }))

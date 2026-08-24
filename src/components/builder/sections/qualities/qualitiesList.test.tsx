@@ -20,10 +20,9 @@ const toughness: QualityData = {
 }
 
 function renderWithQualities(qualities: QualityData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.qualities = qualities
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

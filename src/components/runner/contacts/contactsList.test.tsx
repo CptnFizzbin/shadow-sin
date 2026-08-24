@@ -27,10 +27,9 @@ const LiveContactsList: FC = () => {
 }
 
 function renderWithContacts(contacts: ContactData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.contacts = contacts
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

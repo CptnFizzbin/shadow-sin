@@ -37,10 +37,9 @@ const manaball: SpellData = {
 }
 
 function renderWithMagic(magic: number) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes[AttributeKey.magic] = magic
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

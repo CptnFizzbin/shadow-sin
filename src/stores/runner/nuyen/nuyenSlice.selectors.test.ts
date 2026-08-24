@@ -20,10 +20,9 @@ describe("selectNuyen", () => {
 describe("selectNuyenAmount", () => {
   it("returns the runner's current nuyen", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen.current = 1500
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectNuyenAmount(runner)).toBe(1500)
@@ -53,10 +52,9 @@ describe("NuyenSelectors.select", () => {
 describe("NuyenSelectors.selectAmount", () => {
   it("returns the runner's current nuyen", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen.current = 1500
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(NuyenSelectors.selectAmount(stateFor(runner))).toBe(1500)

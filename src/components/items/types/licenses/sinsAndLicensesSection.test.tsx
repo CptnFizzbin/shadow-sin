@@ -22,7 +22,7 @@ describe("SinsAndLicensesSection", () => {
   it("shows SINs from the store", () => {
     // Arrange / Act
     renderInBuilder(<SinsAndLicensesSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [fakeSin.id]: fakeSin } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [fakeSin.id]: fakeSin } })),
     })
 
     // Assert
@@ -44,7 +44,7 @@ describe("SinsAndLicensesSection", () => {
   it("removing a SIN with no licenses dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<SinsAndLicensesSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [fakeSin.id]: fakeSin } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [fakeSin.id]: fakeSin } })),
     })
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
 

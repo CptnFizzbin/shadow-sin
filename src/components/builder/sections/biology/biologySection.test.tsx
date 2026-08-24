@@ -19,11 +19,10 @@ const metatypeCombobox = () => screen.getAllByRole("combobox")[0]
 const awakeningCombobox = () => screen.getAllByRole("combobox")[1]
 
 function renderWithBiology(metatype: MetatypeType, awakening: AwakeningType) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.biology.metatype = metatype
     data.biology.awakening = awakening
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

@@ -29,13 +29,12 @@ const node: KnownNode = {
 describe.concurrent("matrixSlice selectors", () => {
   it("selects known nodes and active programs", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = {
         knownNodes: [node],
         activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
       }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(selectKnownNodes(sheet)).toEqual([node])
@@ -44,10 +43,9 @@ describe.concurrent("matrixSlice selectors", () => {
 
   it("selects the active node id and resolved node", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(selectActiveNodeId(sheet)).toBe("node-1")
@@ -56,10 +54,9 @@ describe.concurrent("matrixSlice selectors", () => {
 
   it("returns undefined for the active node when nothing is active", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(selectActiveNodeId(sheet)).toBeUndefined()
@@ -70,13 +67,12 @@ describe.concurrent("matrixSlice selectors", () => {
 describe("MatrixSelectors", () => {
   it("selects known nodes and active programs", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = {
         knownNodes: [node],
         activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
       }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(MatrixSelectors.selectKnownNodes(stateFor(sheet))).toEqual([node])
@@ -85,10 +81,9 @@ describe("MatrixSelectors", () => {
 
   it("selects the active node id and resolved node", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(MatrixSelectors.selectActiveNodeId(stateFor(sheet))).toBe("node-1")
@@ -97,10 +92,9 @@ describe("MatrixSelectors", () => {
 
   it("returns undefined for the active node when nothing is active", () => {
     // Arrange
-    const sheet = runnerDataFactory((data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
-      return data
-    })
+    } })
 
     // Act / Assert
     expect(MatrixSelectors.selectActiveNodeId(stateFor(sheet))).toBeUndefined()

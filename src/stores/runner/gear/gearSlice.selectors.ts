@@ -13,7 +13,7 @@ import type { ArmorRating } from "#/system/gear/armorData.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import type { ItemCatalog, ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
+import type { ItemCatalog, ItemDataFor } from "#/system/items/itemUtils.ts"
 import { filterRecordByType, itemIsType, toItemCatalogTree } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
@@ -77,13 +77,13 @@ export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<
 }
 
 /** @deprecated Use `ItemSelectors.selectChildrenOf` via `useRunnerSelector` instead. */
-export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRecord> = createCurriedSelector(
+export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemCatalog> = createCurriedSelector(
   [
     selectAllGear,
     (state, itemId: UUID) => selectById(itemId)(state),
   ],
   (allGear, parentItem) => {
-    const children: ItemDataRecord = {}
+    const children: ItemCatalog = {}
 
     for (const childId of parentItem?.items.childIds ?? []) {
       const child = allGear[childId]

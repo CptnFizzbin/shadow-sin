@@ -12,11 +12,10 @@ import { DiceTrayEdgeControls } from "./diceTrayEdgeControls.tsx"
 import { DiceTrayProvider } from "./diceTrayProvider.tsx"
 
 function renderWithEdge(max: number, current: number) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes[AttributeKey.edge] = max
     data.edge.current = current
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
   const diceTrayApi = new DiceTrayApi()
 

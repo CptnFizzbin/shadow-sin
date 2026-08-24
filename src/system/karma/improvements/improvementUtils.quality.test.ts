@@ -19,10 +19,9 @@ describe.concurrent("applyImprovement — learnQuality", () => {
       type: ImprovementType.learnQuality,
       quality: { kind: EntityKind.quality, id: "q1" as UUID, name: "Toughness", type: "positive", bpValue: 15 },
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.karma.current = 30
-      return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -43,11 +42,10 @@ describe.concurrent("applyImprovement — qualityBuyOff", () => {
       qualityName: "Uneducated",
       bpValue: 20,
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.qualities = [{ kind: EntityKind.quality, id: "q1" as UUID, name: "Uneducated", type: "negative", bpValue: 20 }]
       draft.karma.current = 40
-      return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))

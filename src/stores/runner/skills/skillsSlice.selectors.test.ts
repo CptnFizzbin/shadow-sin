@@ -21,10 +21,9 @@ const stateFor = (runner: RunnerData) => ({ runner })
 describe("selectActiveSkills", () => {
   it("returns the runner's active skills", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectActiveSkills(runner)).toBe(runner.skills.activeSkills)
@@ -34,10 +33,9 @@ describe("selectActiveSkills", () => {
 describe("selectSkillGroups", () => {
   it("returns the runner's skill groups", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 2 }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectSkillGroups(runner)).toBe(runner.skills.skillGroups)
@@ -67,11 +65,10 @@ describe("selectLanguageSkills", () => {
 describe("selectSkillValue", () => {
   it("returns the max of the skill's own rating and its group's rating", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 4 }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectSkillValue(SkillKey.pistols)(runner)).toBe(4)
@@ -89,10 +86,9 @@ describe("selectSkillValue", () => {
 describe("selectSkillSpecialization", () => {
   it("returns the runner's specialization for the skill", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2, specialization: "Semi-Automatics" }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(selectSkillSpecialization(SkillKey.pistols)(runner)).toBe("Semi-Automatics")
@@ -116,10 +112,9 @@ describe("selectAllowedActiveSkills", () => {
 describe("SkillsSelectors.selectActiveSkills", () => {
   it("returns the runner's active skills", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(SkillsSelectors.selectActiveSkills(stateFor(runner))).toBe(runner.skills.activeSkills)
@@ -129,11 +124,10 @@ describe("SkillsSelectors.selectActiveSkills", () => {
 describe("SkillsSelectors.selectValue", () => {
   it("returns the max of the skill's own rating and its group's rating", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 4 }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(SkillsSelectors.selectValue(stateFor(runner), { skillName: SkillKey.pistols })).toBe(4)
@@ -143,10 +137,9 @@ describe("SkillsSelectors.selectValue", () => {
 describe("SkillsSelectors.selectSpecialization", () => {
   it("returns the runner's specialization for the skill", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2, specialization: "Semi-Automatics" }]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(SkillsSelectors.selectSpecialization(stateFor(runner), { skillName: SkillKey.pistols })).toBe(

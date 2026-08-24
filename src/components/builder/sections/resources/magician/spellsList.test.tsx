@@ -36,13 +36,12 @@ const manabolt: SpellData = {
 }
 
 function renderWithSpells(spells: SpellData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.biology.awakening = AwakeningType.Magician
     data.attributes[AttributeKey.magic] = 6
     data.skills.activeSkills = [{ name: SkillKey.spellcasting, rating: 4 }]
     data.spells = spells
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

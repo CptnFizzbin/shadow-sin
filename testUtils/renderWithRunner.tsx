@@ -1,5 +1,5 @@
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { runnerDataFactory, type RunnerFactoryOverrideFn } from "#/system/runnerData.factory.ts"
+import { runnerDataFactory, type RunnerFactoryAfterBuildFn } from "#/system/runnerData.factory.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { FC, PropsWithChildren } from "react"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
@@ -7,21 +7,18 @@ import { render } from "@testing-library/react"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 
 export function renderWithRunner(): RunnerDataStore
-export function renderWithRunner(overrideFn: RunnerFactoryOverrideFn): RunnerDataStore
+export function renderWithRunner(afterBuild: RunnerFactoryAfterBuildFn): RunnerDataStore
 export function renderWithRunner(options: {
   items?: ItemCatalog
-  override?: RunnerFactoryOverrideFn
+  afterBuild?: RunnerFactoryAfterBuildFn
 }): RunnerDataStore
 export function renderWithRunner(factoryArg?: {
   items?: ItemCatalog
-  override?: RunnerFactoryOverrideFn
-} | RunnerFactoryOverrideFn) {
-  const runnerData =
-    typeof factoryArg === "object"
-      ? runnerDataFactory(factoryArg)
-      : typeof factoryArg === "function"
-        ? runnerDataFactory(factoryArg)
-        : runnerDataFactory()
+  afterBuild?: RunnerFactoryAfterBuildFn
+} | RunnerFactoryAfterBuildFn) {
+  const runnerData = runnerDataFactory(
+    typeof factoryArg === "function" ? { afterBuild: factoryArg } : factoryArg,
+  )
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

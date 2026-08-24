@@ -9,10 +9,9 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { InitiativePassTracker } from "./initiativePassTracker.tsx"
 
 function renderWithPasses(passesCompleted: number[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.initiative.passesCompleted = passesCompleted
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

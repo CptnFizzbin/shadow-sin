@@ -10,10 +10,9 @@ const stateFor = (runner: RunnerData) => ({ runner })
 describe("InitiativeSelectors.selectPassesCompleted", () => {
   it("returns the completed passes as a set", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.passesCompleted = [1, 2]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(InitiativeSelectors.selectPassesCompleted(stateFor(runner))).toEqual(new Set([1, 2]))
@@ -23,10 +22,9 @@ describe("InitiativeSelectors.selectPassesCompleted", () => {
 describe("InitiativeSelectors.selectRolledResults", () => {
   it("returns the rolled results", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.rolledResults = [4, 3]
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(InitiativeSelectors.selectRolledResults(stateFor(runner))).toEqual([4, 3])
@@ -44,10 +42,9 @@ describe("InitiativeSelectors.selectGoingFirst", () => {
 
   it("returns the stored value", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.goingFirst = true
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(InitiativeSelectors.selectGoingFirst(stateFor(runner))).toBe(true)
@@ -65,10 +62,9 @@ describe("InitiativeSelectors.selectExtraPasses", () => {
 
   it("returns the stored value", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.extraPasses = 2
-      return s
-    })
+    } })
 
     // Act / Assert
     expect(InitiativeSelectors.selectExtraPasses(stateFor(runner))).toBe(2)

@@ -23,7 +23,7 @@ describe("ArmorList", () => {
   it("shows armor from the store", () => {
     // Arrange / Act
     renderInBuilder(<ArmorList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [jacket.id]: jacket } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
     })
 
     // Assert
@@ -45,7 +45,7 @@ describe("ArmorList", () => {
   it("removing armor dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<ArmorList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [jacket.id]: jacket } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
     })
     expect(screen.getByText("Armor Jacket")).toBeDefined()
 

@@ -39,9 +39,6 @@ export function toItemCatalogTree(catalog: ItemCatalog): ItemCatalogTree {
   return Object.fromEntries(rootIds.map(buildNode))
 }
 
-/** @deprecated Use {@link ItemCatalog} instead. */
-export type ItemDataRecord = ItemCatalog
-
 export type AnyItemData =
   | ArmorData
   | AnyWeaponData

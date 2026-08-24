@@ -5,13 +5,13 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import type { RunnerFactoryOverrideFn } from "#/system/runnerData.factory.ts"
+import type { RunnerFactoryAfterBuildFn } from "#/system/runnerData.factory.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { RunnerHeaderSummary } from "./runnerHeaderSummary.tsx"
 
-function renderWithRunner(overrideFn: RunnerFactoryOverrideFn) {
-  const runnerData = runnerDataFactory(overrideFn)
+function renderWithRunner(afterBuild: RunnerFactoryAfterBuildFn) {
+  const runnerData = runnerDataFactory({ afterBuild })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
@@ -29,7 +29,6 @@ describe("RunnerHeaderSummary", () => {
     renderWithRunner((data) => {
       data.profile.name = "Legal Name"
       data.profile.alias = "Artemis"
-      return data
     })
 
     // Assert
@@ -42,7 +41,6 @@ describe("RunnerHeaderSummary", () => {
     renderWithRunner((data) => {
       data.profile.name = "Legal Name"
       data.profile.alias = ""
-      return data
     })
 
     // Assert
@@ -54,7 +52,6 @@ describe("RunnerHeaderSummary", () => {
     renderWithRunner((data) => {
       data.attributes[AttributeKey.body] = 4
       data.attributes[AttributeKey.magic] = 0
-      return data
     })
 
     // Assert
@@ -69,7 +66,6 @@ describe("RunnerHeaderSummary", () => {
       data.attributes[AttributeKey.willpower] = 2
       data.damage.physical = 3
       data.damage.stun = 1
-      return data
     })
 
     // Assert: max = 8 + ceil(attribute / 2), per selectPhysicalTrack/selectStunTrack.
@@ -82,7 +78,6 @@ describe("RunnerHeaderSummary", () => {
     renderWithRunner((data) => {
       data.profile.streetCred = 7
       data.karma.current = 12
-      return data
     })
 
     // Assert

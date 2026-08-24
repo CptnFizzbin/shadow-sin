@@ -9,12 +9,11 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { ReputationBuilderSection } from "./reputationBuilderSection.tsx"
 
 function renderSection() {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.profile.streetCred = 3
     data.profile.notoriety = 1
     data.profile.publicAwarenessModifier = 2
-    return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

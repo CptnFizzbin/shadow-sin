@@ -26,7 +26,6 @@ describe("ExportRunnerButton", () => {
     // Arrange
     renderWithRunner((data) => {
       data.profile.alias = "Artemis"
-      return data
     })
 
     // Act
