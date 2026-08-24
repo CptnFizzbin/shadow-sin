@@ -5,11 +5,11 @@ import type { FC } from "react"
 
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"
-import { useYamlFileImport } from "#/lib/hooks/runner/exportImport/useYamlFileImport.ts"
-import { selectProfileDisplayName } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectProfileDisplayName } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ImportCurrentRunnerButton: FC = () => {
   const store = useRunnerStoreContext()

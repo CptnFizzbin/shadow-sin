@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { StatChip } from "#/components/ui/statChip.tsx"
+import { useLicenseCheck } from "#/contexts/runner/licenseCheckContext.tsx"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
-import { useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { isRealCredential } from "./licenseCheckDice.ts"

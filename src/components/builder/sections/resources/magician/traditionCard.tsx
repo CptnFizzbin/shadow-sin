@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useTraditionFormDialog } from "#/components/runner/magician/spells/dialogs/traditionFormDialog.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { TraditionSelectors } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
 export const TraditionCard: FC = () => {

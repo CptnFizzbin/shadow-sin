@@ -6,8 +6,8 @@ import type { FC } from "react"
 import { AdeptPowerFormFields } from "#/components/runner/adeptPowers/form/adeptPowerFormFields.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useAdeptPowerForm } from "#/lib/hooks/runner/adeptPowers/form/useAdeptPowerForm.ts"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useAdeptPowerForm } from "#/hooks/runner/adeptPowers/form/useAdeptPowerForm.ts"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 interface AdeptPowerFormDialogProps extends ControlledDialogProps<AdeptPowerData> {

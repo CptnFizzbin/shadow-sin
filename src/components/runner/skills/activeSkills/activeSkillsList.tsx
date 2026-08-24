@@ -7,7 +7,7 @@ import type { FC } from "react"
 import { useMemo, useState } from "react"
 
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"

@@ -8,8 +8,8 @@ import {
 } from "#/components/runner/skills/knowledgeSkills/forms/languageSkillFormFields.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useLanguageSkillForm } from "#/lib/hooks/runner/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useLanguageSkillForm } from "#/hooks/runner/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillDialogProps extends ControlledDialogProps<LanguageSkillData> {

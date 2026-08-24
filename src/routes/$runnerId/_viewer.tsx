@@ -8,10 +8,10 @@ import { RunnerHeaderSummary } from "#/components/runner/header/runnerHeaderSumm
 import { RunnerNav } from "#/components/runner/nav/runnerNav.tsx"
 import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
-import { useRunnerNav } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
-import { useDocumentTitle } from "#/lib/hooks/ui/useDocumentTitle.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
+import { useRunnerNav } from "#/hooks/runner/nav/useRunnerNav.ts"
+import { useDocumentTitle } from "#/hooks/ui/useDocumentTitle.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 /**
  * The tabbed-sheet chrome: `RunnerNav` and the swipe-between-sections

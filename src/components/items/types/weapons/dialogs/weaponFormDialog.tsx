@@ -4,8 +4,8 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponFormFields.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { useWeaponForm, weaponFieldMap } from "#/lib/hooks/items/types/weapons/forms/useWeaponForm.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useWeaponForm, weaponFieldMap } from "#/hooks/items/types/weapons/forms/useWeaponForm.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {

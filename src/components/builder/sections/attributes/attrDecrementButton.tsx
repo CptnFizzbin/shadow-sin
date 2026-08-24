@@ -4,9 +4,10 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
+import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
@@ -19,7 +20,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   }
 
   const store = useRunnerStoreContext()
-  const attrApi = useRunnerAttrInfo(props.attr)
+  const attrApi = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
   const attrValue = attrApi.current
   const editorMode = useEditorMode()
 

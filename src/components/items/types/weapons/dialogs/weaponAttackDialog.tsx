@@ -12,8 +12,8 @@ import { WeaponAttackHubList } from "#/components/items/types/weapons/attackCalc
 import { WeaponAttackPanel } from "#/components/items/types/weapons/attackCalculator/weaponAttackPanel.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

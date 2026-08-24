@@ -9,13 +9,15 @@ import type { FC } from "react"
 import { useSpriteDialog } from "#/components/runner/technomancer/dialogs/spriteDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
-import { useSpritesBuildPoints } from "#/lib/hooks/builder/buildPoints/useSpritesBuildPoints.ts"
-import { useMaxSpritesRegistered, useSprites } from "#/lib/hooks/runner/technomancer/spritesHooks.ts"
+import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useSpritesBuildPoints } from "#/hooks/builder/buildPoints/useSpritesBuildPoints.ts"
+import { useMaxSpritesRegistered } from "#/hooks/runner/technomancer/spritesHooks.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SpriteSelectors } from "#/stores/runner/sprites/spritesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -25,7 +27,7 @@ export const SpritesList: FC = () => {
   const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })
   const maxSpritesRegistered = useMaxSpritesRegistered()
   const dispatch = useRunnerStoreDispatch()
-  const sprites = useSprites()
+  const sprites = useRunnerSelector(SpriteSelectors.selectVisible)
   const spritesBp = useSpritesBuildPoints()
   const spriteDialog = useSpriteDialog()
 

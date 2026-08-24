@@ -16,9 +16,9 @@ import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import {
   SpendKarmaDialogProvider,
   useSpendKarmaDialogContext,
-} from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
-import { useSpendKarmaSummary } from "#/lib/hooks/improvements/useSpendKarmaSummary.ts"
-import { useVisibleSections } from "#/lib/hooks/improvements/useVisibleSections.ts"
+} from "#/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
+import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
 
 // Inner component that consumes SpendKarmaDialogProvider context
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {

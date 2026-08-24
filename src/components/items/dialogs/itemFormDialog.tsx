@@ -2,8 +2,8 @@ import type { FC } from "react"
 
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { itemDefaults, useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { itemDefaults, useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

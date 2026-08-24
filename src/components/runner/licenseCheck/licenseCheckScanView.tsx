@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
 
-import { useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
-import { useVerificationQueuePool } from "#/lib/hooks/runner/licenseCheck/useVerificationQueuePool.ts"
+import { useLicenseCheck } from "#/contexts/runner/licenseCheckContext.tsx"
+import { useVerificationQueuePool } from "#/hooks/runner/licenseCheck/useVerificationQueuePool.ts"
 
 import { LicenseCheckWorkerSlot } from "./licenseCheckWorkerSlot.tsx"
 

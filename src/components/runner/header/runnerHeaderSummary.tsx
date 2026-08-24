@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
 /**

@@ -9,8 +9,8 @@ import type { FC } from "react"
 import { useContext, useState } from "react"
 
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
-import { DiceTrayContext } from "#/lib/contexts/dice/diceTrayContext.ts"
-import { useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
+import { DiceTrayContext } from "#/contexts/dice/diceTrayContext.ts"
+import { useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 
 import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
 import { flattenDiceGroups } from "./diceGroup.tsx"

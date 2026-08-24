@@ -6,7 +6,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

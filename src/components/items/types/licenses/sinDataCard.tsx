@@ -2,9 +2,9 @@ import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinDataCardProps {

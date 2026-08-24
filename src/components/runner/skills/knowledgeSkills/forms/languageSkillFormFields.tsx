@@ -3,8 +3,8 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { LanguageSkillForm } from "#/lib/hooks/runner/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import type { LanguageSkillForm } from "#/hooks/runner/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 interface LanguageSkillFormFieldsProps {

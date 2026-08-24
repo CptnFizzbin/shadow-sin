@@ -3,7 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
@@ -16,7 +17,7 @@ interface AttributeRowProps {
 
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const attrLabel = AttributeLabels[props.attr]
-  const attrInfo = useRunnerAttrInfo(props.attr)
+  const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
   const attrValue = attrInfo.current
 
   return (

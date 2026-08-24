@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import type { FC, ReactElement, ReactNode } from "react"
 import { Children, isValidElement } from "react"
 
-import { useCloseOnBrowserBack } from "#/lib/hooks/ui/dialog/useCloseOnBrowserBack.ts"
+import { useCloseOnBrowserBack } from "#/hooks/ui/dialog/useCloseOnBrowserBack.ts"
 
 import { DialogActions } from "./dialogActions.tsx"
 import { DialogContent } from "./dialogContent.tsx"

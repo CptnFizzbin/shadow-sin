@@ -5,7 +5,7 @@ import type { FC } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 import { bookOptions } from "#/system/sourceData.ts"
 

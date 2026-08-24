@@ -8,8 +8,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { runnerSections } from "#/components/runner/runnerSections.ts"
-import { useCurrentRunnerSection } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
-import { useRunnerTabs } from "#/lib/hooks/runner/nav/useRunnerTabs.ts"
+import { useCurrentRunnerSection } from "#/hooks/runner/nav/useRunnerNav.ts"
+import { useRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
 
 import { NavMenuDrawer } from "./navMenuDrawer.tsx"
 

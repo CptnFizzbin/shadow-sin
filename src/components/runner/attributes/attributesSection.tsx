@@ -2,10 +2,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAllRunnerAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { selectAttributes } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { AttrSelectors, selectAttributes } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
@@ -18,7 +17,7 @@ interface AttrListProps {
 
 const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
   const attrs = useRunnerStoreSelector(selectAttributes)
-  const attrInfos = useAllRunnerAttrInfos()
+  const attrInfos = useRunnerSelector(AttrSelectors.selectAllInfo)
 
   if (!showMaximums) {
     return <AttributeValueRow values={attrs} attrKeys={attrKeys} />

@@ -1,9 +1,9 @@
 import type { FC, PropsWithChildren } from "react"
 
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { BuilderStoreContext } from "#/lib/contexts/builder/builderStore.context.ts"
-import type { BuilderStore } from "#/lib/stores/builder/builderStore.ts"
-import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
+import { BuilderStoreContext } from "#/contexts/builder/builderStore.context.ts"
+import type { BuilderStore } from "#/stores/builder/builderStore.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 
 interface RunnerBuilderStoreProviderProps extends PropsWithChildren {
   runnerStore: RunnerStore

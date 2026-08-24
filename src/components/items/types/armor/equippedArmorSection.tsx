@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
-import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
+import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

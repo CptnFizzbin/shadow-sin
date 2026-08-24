@@ -4,8 +4,8 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { SinRatingField } from "#/components/items/types/licenses/sinRatingField.tsx"
 import { getRandomSinName, getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { useSinForm } from "#/lib/hooks/items/types/licenses/forms/useSinForm.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useSinForm } from "#/hooks/items/types/licenses/forms/useSinForm.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinFormDialogProps {

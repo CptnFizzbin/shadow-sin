@@ -15,9 +15,9 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
-import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   getActiveSkillCap,
   hasAptitudeFor,

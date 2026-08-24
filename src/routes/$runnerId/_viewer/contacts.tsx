@@ -6,7 +6,7 @@ import { useState } from "react"
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/contacts")({
   component: RouteComponent,

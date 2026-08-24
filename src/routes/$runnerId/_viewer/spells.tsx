@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsViewerSection.tsx"
-import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectAwakening } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/spells")({

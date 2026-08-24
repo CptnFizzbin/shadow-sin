@@ -2,9 +2,9 @@ import type { FC } from "react"
 
 import type { ProfileFieldsValue } from "#/components/runner/profile/profileFields.tsx"
 import { ProfileFields } from "#/components/runner/profile/profileFields.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()

@@ -1,9 +1,9 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData, isMeleeWeaponData } from "#/system/gear/weaponData.ts"
 

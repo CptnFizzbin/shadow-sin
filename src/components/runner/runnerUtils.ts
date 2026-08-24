@@ -1,10 +1,9 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
-import { useAllRunnerAttrInfos, useRunnerAttrInfo } from "#/lib/hooks/runner/attributes/useRunnerAttrInfo.ts"
-import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
-import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
+import { useGameEffects } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -12,9 +11,6 @@ import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
-
-// Re-exported for convenience — see useRunnerAttrInfo.ts for full documentation.
-export { useAllRunnerAttrInfos, useRunnerAttrInfo }
 
 /**
  * Find the next available alias by appending an incrementing number.
@@ -72,7 +68,7 @@ export const useActiveSkill = (skill: SkillKey) => {
  * Hook to retrieve essence usage and remaining values.
  */
 export const useEssenceInfo = () => {
-  const essenceInfo = useRunnerAttrInfo(AttributeKey.essence)
+  const essenceInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: AttributeKey.essence })
   const implants = useGearByType<ImplantData>(ItemType.implant)
 
   const implantEssence = implants
