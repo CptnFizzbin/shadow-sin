@@ -1,7 +1,8 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useActiveAttributes } from "#/hooks/runner/attributes/useActiveAttributes.ts"
+import { selectActiveAttributes } from "#/hooks/runner/attributes/useActiveAttributes.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
 interface AttributesBuildPoints extends BpLineItem {
@@ -16,7 +17,7 @@ interface AttributesBuildPoints extends BpLineItem {
 }
 
 export const useAttributesBuildPoints = (): AttributesBuildPoints => {
-  const activeAttributeCosts = useActiveAttributes()
+  const activeAttributeCosts = useRunnerSelector(selectActiveAttributes)
     .map((attrData) => {
       let spent = 0
       spent += (attrData.value - attrData.min) * BuilderConfig.attributes.bpCost.base

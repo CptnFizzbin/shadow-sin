@@ -10,7 +10,8 @@ import type { FC } from "react"
 
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useSectionQueuedSummaries } from "#/hooks/improvements/useSectionQueuedSummaries.ts"
-import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
+import { selectVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import type { SpendKarmaSectionKey } from "./spendKarmaSections.tsx"
 
@@ -23,7 +24,7 @@ interface SpendKarmaHubListProps {
  * Rows with queued improvements show a count and their total karma cost.
  */
 export const SpendKarmaHubList: FC<SpendKarmaHubListProps> = ({ onSelectSection }) => {
-  const visibleSections = useVisibleSections()
+  const visibleSections = useRunnerSelector(selectVisibleSections)
   const sectionSummaries = useSectionQueuedSummaries()
 
   return (

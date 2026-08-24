@@ -1,5 +1,7 @@
-import { useActiveAttributes } from "./useActiveAttributes.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+
+import { selectActiveAttributes } from "./useActiveAttributes.ts"
 
 export const useHasMaxxedAttribute = (): boolean => {
-  return useActiveAttributes().some((attr) => attr.value >= attr.max)
+  return useRunnerSelector(selectActiveAttributes).some((attr) => attr.value >= attr.max)
 }
