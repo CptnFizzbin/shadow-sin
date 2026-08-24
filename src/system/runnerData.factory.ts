@@ -1,5 +1,5 @@
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
-import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { awakenings, AwakeningType } from "./awakeningType.ts"
@@ -30,7 +30,7 @@ export function runnerDataFactory(
     kind: EntityKind.runner,
     id: NullUuid,
     name: "",
-    _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
+    _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
 
     profile: {
       alias: "",

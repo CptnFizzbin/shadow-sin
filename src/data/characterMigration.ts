@@ -1,6 +1,9 @@
 export interface CharacterMigration<TData extends object = object> {
-  /** Sequential migration number — also the value `_meta_.version` reaches once this migration has run. */
-  version: number
+  /**
+   * ISO 8601 timestamp of this migration's creation. A runner's `_meta_.appVersion` reaches (at
+   * least) this value once the migration has run — see `src/data/applyMigrations.ts`.
+   */
+  timestamp: string
   up: (character: Partial<TData>) => TData
 }
 

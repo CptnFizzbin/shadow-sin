@@ -31,7 +31,9 @@ export default defineConfig([
       "check-file": checkFile,
     },
     languageOptions: {
-      globals: globals.browser,
+      // __APP_VERSION__ is a build-time constant injected by vite.config.ts's `define` — see
+      // src/data/appVersion.ts and src/viteEnv.d.ts.
+      globals: { ...globals.browser, __APP_VERSION__: "readonly" },
       parserOptions: {
         projectService: true,
       },

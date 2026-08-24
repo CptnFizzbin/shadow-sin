@@ -7,9 +7,10 @@
  * hadn't been introduced yet, so they are typed as `Record<string, unknown>`
  * rather than `RunnerData`.
  *
- * `_meta_.version` tracks the highest migration `version` that has been
- * applied (see `src/data/migrations.ts`).  It doesn't exist at all until
- * migration 006 (`addMeta`) runs.
+ * `_meta_.version` is the legacy sequential-integer scheme these fixtures exercise: the highest
+ * migration index that had been applied before migrations moved to timestamps (see
+ * `src/data/applyMigrations.ts`'s `resolveRunnerAppVersion`, which translates it into the
+ * equivalent `_meta_.appVersion`). It doesn't exist at all until migration 006 (`addMeta`) runs.
  *
  * Migration timeline:
  *

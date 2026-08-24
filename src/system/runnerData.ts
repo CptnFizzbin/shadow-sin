@@ -31,18 +31,24 @@ import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
 import type { LanguageSkillData } from "./skills/languageSkillData"
 import type { SkillGroupData } from "./skills/skillGroupData"
 
+/** Sentinel `appVersion` for a runner that has never had any migration applied to it. */
+export const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
+
 /**
  * Metadata for tracking the migration state of a runner sheet.
  */
 export interface RunnerMeta {
-  /** The highest migration version that has been applied to this runner — see `src/data/migrations.ts`. */
-  version: number
+  /**
+   * ISO 8601 timestamp of the app version as of this runner's most recent successful migration
+   * run — see `src/data/applyMigrations.ts` and `src/data/appVersion.ts`.
+   */
+  appVersion: string
   /** ISO 8601 timestamp of the runner's most recent export, or `null` if it has never been exported. */
   lastExportDate: string | null
 }
 
 export const RunnerMetaSchema = z.object({
-  version: z.number().default(0),
+  appVersion: z.string().default(RUNNER_META_EPOCH),
   lastExportDate: z.string().nullable().default(null),
 })
 

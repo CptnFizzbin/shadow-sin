@@ -1,4 +1,4 @@
-import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { EntityKind } from "#/system/entityKind.ts"
@@ -19,7 +19,7 @@ export const Hexen: RunnerData = {
   kind: EntityKind.runner,
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
   name: "Hexen",
-  _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
+  _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
 
   biology: {
     metatype: MetatypeType.Human,
