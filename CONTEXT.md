@@ -677,6 +677,19 @@ themselves were deliberately left out of the `character`→`runner` identifier r
 the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
+**Selector**:
+A pure function reading a value out of Redux/store state — `(state) => value`, or the standardized
+`Selector<TState, TReturn, TOptions>` shape for a namespaced selector (`AttrSelectors.selectValue`,
+`ItemSelectors.selectById`, ...; see `src/integrations/reselect/selectorUtils.ts` and
+`docs/adr/0014-selector-input-decomposition.md`). Read via `useRunnerSelector`/`useEntitySelector`,
+whose parameterized selectors take a `TOptions` object (`{ key: AttributeKey }`, `{ itemId: UUID
+}`, ...) built from `selectorOption` accessors centralized in
+`src/lib/stores/runner/selectorOptions.ts`.
+_Avoid_: this term for a `<Select>` form field's dropdown choices — those are **options**
+(`SelectOption`, `src/integrations/tanstackForm/fields/selectField.tsx`), an unrelated UI-form
+concept unconnected to the store-selector one; a component's list of dropdown entries is never
+called a "selector."
+
 ## Relationships
 
 - A **Player** manages one or more **Runners**; a **Game** groups multiple Players' Runners

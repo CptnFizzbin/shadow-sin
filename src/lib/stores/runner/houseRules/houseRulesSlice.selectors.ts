@@ -1,8 +1,9 @@
-import { createMemoizedSelector, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 
 export namespace HouseRulesSelectors {
   export const Options = {
-    key: selectorOption<{ key: string }>("key"),
+    key: SelectorOptions.houseRuleKey,
   }
 
   export const select = createMemoizedSelector(

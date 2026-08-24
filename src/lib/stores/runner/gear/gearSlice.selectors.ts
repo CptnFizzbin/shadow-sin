@@ -5,8 +5,8 @@ import {
   createCurriedSelector,
   createMemoizedSelector,
   createSelector,
-  selectorOption,
 } from "#/integrations/reselect/selectorUtils.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ArmorRating } from "#/system/gear/armorData.ts"
@@ -177,9 +177,9 @@ export namespace ItemSelectors {
   >
 
   export const Options = {
-    itemId: selectorOption<{ itemId: UUID }>("itemId"),
-    itemType: selectorOption<{ itemType: ItemType }>("itemType"),
-    licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
+    itemId: SelectorOptions.itemId,
+    itemType: SelectorOptions.itemType,
+    licenseId: SelectorOptions.licenseId,
   }
 
   export const selectAll = createSelector(

@@ -1,7 +1,8 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector, injectOption, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
@@ -49,7 +50,7 @@ export namespace AttrSelectors {
   }, TReturn, TOptions>
 
   export const Options = {
-    key: selectorOption<{ key: AttributeKey }>("key"),
+    key: SelectorOptions.attributeKey,
   }
 
   export const selectAll = createMemoizedSelector(

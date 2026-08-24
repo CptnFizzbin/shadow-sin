@@ -1,7 +1,8 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector, injectOption, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -34,8 +35,8 @@ export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
 
 export namespace DamageSelectors {
   export const Options = {
-    system: selectorOption<{ system?: number }>("system"),
-    track: selectorOption<{ track: DamageTrackKey }>("track"),
+    system: SelectorOptions.damageSystem,
+    track: SelectorOptions.damageTrack,
   }
 
   export const selectWoundIntervalModifier = createMemoizedSelector(
