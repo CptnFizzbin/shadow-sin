@@ -1,6 +1,7 @@
-import { createMemoizedSelector, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
@@ -51,10 +52,6 @@ export function selectAllowedActiveSkills(runner: RunnerData): Partial<Record<Sk
 }
 
 export namespace SkillsSelectors {
-  export const Options = {
-    skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
-  }
-
   export const selectActiveSkills = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.activeSkills,
@@ -91,7 +88,7 @@ export namespace SkillsSelectors {
   export const selectValue = createMemoizedSelector(
     selectActiveSkills,
     selectSkillGroups,
-    Options.skillName,
+    SelectorOptions.skillName,
     (activeSkills, skillGroups, skillName) => {
       const skillInfo = skillList[skillName]
       const skillRating = activeSkills.find((s) => s.name === skillName)?.rating ?? 0
@@ -102,7 +99,7 @@ export namespace SkillsSelectors {
 
   export const selectSpecialization = createMemoizedSelector(
     selectActiveSkills,
-    Options.skillName,
+    SelectorOptions.skillName,
     (activeSkills, skillName) => activeSkills.find((s) => s.name === skillName)?.specialization,
   )
 }

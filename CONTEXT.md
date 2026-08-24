@@ -4,6 +4,10 @@ A Shadowrun 4th Edition character sheet web app. **Players** create and manage o
 **Runners** (player characters), tracking attributes, skills, gear, magic, and resources across
 sessions.
 
+> **Agents:** read the `domain-modeling` skill before editing this file. This is a glossary, not a
+> spec or an implementation reference — keep entries free of code identifiers, file paths, and
+> other implementation details.
+
 ## Language
 
 ### Core entities
@@ -676,6 +680,12 @@ Because migration files must never be edited, the shared migration type and the 
 themselves were deliberately left out of the `character`→`runner` identifier rename — renaming
 the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
+
+**Selector**:
+A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
+for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope.
+_Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
+unrelated UI-form concept.
 
 ## Relationships
 

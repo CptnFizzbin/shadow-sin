@@ -1,7 +1,8 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector, injectOption, selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { mapToLegacySelector } from "#/lib/stores/runner/mapToLegacySelector.ts"
+import { SelectorOptions } from "#/lib/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/lib/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
@@ -48,10 +49,6 @@ export namespace AttrSelectors {
     entity: EntityBase & EntityWithAttrs
   }, TReturn, TOptions>
 
-  export const Options = {
-    key: selectorOption<{ key: AttributeKey }>("key"),
-  }
-
   export const selectAll = createMemoizedSelector(
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
     (entity) => entity.attributes,
@@ -60,7 +57,7 @@ export namespace AttrSelectors {
   /** The raw stored value for `key`, or `0` if unset — before modifiers, drugs, or game effects apply. */
   export const selectBase = createMemoizedSelector(
     selectAll,
-    Options.key,
+    SelectorOptions.attributeKey,
     (attributes, key) => attributes[key] ?? 0,
   )
 
@@ -107,7 +104,7 @@ export namespace AttrSelectors {
   /** {@link RunnerAttrInfo} for `key`. */
   export const selectInfo = createMemoizedSelector(
     selectAllInfo,
-    Options.key,
+    SelectorOptions.attributeKey,
     (allInfo, key) => allInfo[key],
   )
 }
