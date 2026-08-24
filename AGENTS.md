@@ -160,9 +160,9 @@ subset, in ascending `timestamp` order. Individual migrations don't check `_meta
 duplicate the same comparison in every file — they're plain, self-contained transforms. After running any pending
 migrations, `_meta_.appVersion` is stamped to the live `APP_VERSION` and synced back to storage; a load that runs no
 migrations leaves `_meta_.appVersion` untouched. Runners still carrying the old `_meta_.version` integer (from
-before migrations moved to timestamps) are handled transparently: `resolveRunnerAppVersion` translates that index
-into the equivalent migration's `timestamp` by position in `migrations.ts`'s declaration order, which is
-chronological (enforced by an ordering check in that file).
+before migrations moved to timestamps, capped at 32 — the last version registered under that scheme) are treated as
+fully unmigrated: `resolveRunnerAppVersion` returns the epoch for any legacy `version`, so every registered
+migration re-runs once. This is safe only because every migration is idempotent — see the idempotency rule below.
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
 is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This
@@ -189,8 +189,11 @@ silently mis-migrate characters.
   order; the timestamp-prefixed file name keeps directory listings in the same order. `migrations.ts` throws at
   import time if a migration's `timestamp` doesn't sort strictly after the one declared before it.
 - **Don't re-check `_meta_.appVersion` inside `up`** — `applyMigrations` already guarantees `up` is only called when
-  the migration is actually pending; a migration only needs its own shape-based idempotency (e.g. `??=`) in case
-  `up` is called directly, such as in its unit tests.
+  the migration is actually pending.
+- **Every migration must be idempotent** — a runner still carrying the legacy `_meta_.version` scheme re-runs *every*
+  registered migration once (see above), so `up` must be a no-op the second time it's applied to data it's already
+  transformed. Guard with a shape check (e.g. `??=`, or `continue`/`return` once the "already migrated" shape is
+  detected) rather than assuming `up` only ever runs once per runner.
 - **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
 
 ## Conventions

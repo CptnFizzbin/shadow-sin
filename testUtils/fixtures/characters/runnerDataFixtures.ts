@@ -9,8 +9,9 @@
  *
  * `_meta_.version` is the legacy sequential-integer scheme these fixtures exercise: the highest
  * migration index that had been applied before migrations moved to timestamps (see
- * `src/data/applyMigrations.ts`'s `resolveRunnerAppVersion`, which translates it into the
- * equivalent `_meta_.appVersion`). It doesn't exist at all until migration 006 (`addMeta`) runs.
+ * `src/data/applyMigrations.ts`'s `resolveRunnerAppVersion`, which treats any such runner as
+ * unmigrated — every migration is idempotent, so it's safe to re-run all of them). It doesn't
+ * exist at all until migration 006 (`addMeta`) runs.
  *
  * Migration timeline:
  *

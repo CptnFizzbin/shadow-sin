@@ -38,9 +38,7 @@ import dropIncompleteQualitySource from "./migrations/20260823_05_dropIncomplete
 // renders). Static imports carry no such await, so the same manualChunks entry can still fold
 // every migration into one dedicated chunk safely — see vite.config.ts.
 //
-// Declaration order here must match ascending `timestamp` order — enforced below — since a
-// runner's legacy `_meta_.version` (see `applyMigrations.ts`) is translated to a timestamp by
-// indexing into this array.
+// Declaration order here must match ascending `timestamp` order — enforced below.
 export const migrations: AnyCharacterMigration[] = [
   normalizeOldFormatCharacter,
   addSpellThreshold,
