@@ -24,7 +24,7 @@ import { SpritesListItem } from "./spritesListItem.tsx"
 
 export const SpritesList: FC = () => {
   const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })
-  const maxSpritesRegistered = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.charisma })
+  const maxSpritesRegistered = useRunnerSelector(SpriteSelectors.selectMaxRegistered)
   const dispatch = useRunnerStoreDispatch()
   const sprites = useRunnerSelector(SpriteSelectors.selectVisible)
   const spritesBp = useSpritesBuildPoints()

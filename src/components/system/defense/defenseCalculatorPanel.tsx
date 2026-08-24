@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
@@ -33,6 +32,7 @@ import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -96,19 +96,19 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
   const willpower = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.willpower })
 
-  const dodgeRating = useActiveSkillRating(SkillKey.dodge)
+  const dodgeRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.dodge })
   const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
 
-  const unarmedRating = useActiveSkillRating(SkillKey.unarmedCombat)
+  const unarmedRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.unarmedCombat })
   const unarmedGroup = useActiveSkillDiceGroup(SkillKey.unarmedCombat)
 
-  const bladesRating = useActiveSkillRating(SkillKey.blades)
+  const bladesRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.blades })
   const bladesGroup = useActiveSkillDiceGroup(SkillKey.blades)
 
-  const clubsRating = useActiveSkillRating(SkillKey.clubs)
+  const clubsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.clubs })
   const clubsGroup = useActiveSkillDiceGroup(SkillKey.clubs)
 
-  const counterspellingRating = useActiveSkillRating(SkillKey.counterspelling)
+  const counterspellingRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.counterspelling })
   const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling, { defaulting: false })
 
   const skillDataByKey: Partial<Record<SkillKey, SkillDefenseEntry>> = {

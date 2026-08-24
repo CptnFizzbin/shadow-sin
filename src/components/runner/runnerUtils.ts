@@ -32,18 +32,11 @@ export function resolveAlias(
 }
 
 /**
- * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
- */
-export const useActiveSkillRating = (skill: SkillKey) => {
-  return useRunnerSelector(SkillsSelectors.selectValue, { skillName: skill })
-}
-
-/**
  * Hook to retrieve the total value for an active skill check (rating + attribute + mods).
  */
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
-  const rating = useActiveSkillRating(skill)
+  const rating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: skill })
   const attribute = useEntitySelector(AttrSelectors.selectValue, { key: skillInfo.attr })
 
   const skillMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillMod })

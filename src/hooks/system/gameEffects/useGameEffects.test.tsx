@@ -17,19 +17,19 @@ import {
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 
-import { GameEffectSelectors, selectAllGameEffects } from "./useGameEffects.ts"
+import { GameEffectSelectors } from "./useGameEffects.ts"
 
 // ---------------------------------------------------------------------------
-// selectAllGameEffects
+// GameEffectSelectors.selectAll
 // ---------------------------------------------------------------------------
 
-describe("selectAllGameEffects", () => {
+describe("GameEffectSelectors.selectAll", () => {
   it("returns an empty array when no source has effects", () => {
     // Arrange
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -50,7 +50,7 @@ describe("selectAllGameEffects", () => {
     } })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -68,7 +68,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -86,7 +86,7 @@ describe("selectAllGameEffects", () => {
     const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])
@@ -114,7 +114,7 @@ describe("selectAllGameEffects", () => {
     } })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -136,7 +136,7 @@ describe("selectAllGameEffects", () => {
     } })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -160,7 +160,7 @@ describe("selectAllGameEffects", () => {
     } })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(1)
@@ -202,7 +202,7 @@ describe("selectAllGameEffects", () => {
     })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toHaveLength(3)
@@ -216,7 +216,7 @@ describe("selectAllGameEffects", () => {
     } })
 
     // Act
-    const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
     expect(effects).toEqual([])

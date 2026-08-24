@@ -6,6 +6,7 @@ import { ComplexFormsSelectors } from "#/stores/runner/complexForms/complexForms
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
 import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
+import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -19,9 +20,9 @@ function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] 
 
 /** `items` is only pulled in for `ItemSelectors.selectEquipped` — see docs/adr/0014-selector-input-decomposition.md
  *  on why a multi-source selector intersects the wrapper shapes it needs instead of taking bare `RunnerData`. */
-type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
+export type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
 
-export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> = createSelector(
+const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   [
     QualitiesSelectors.selectAll,
     ItemSelectors.selectEquipped,
@@ -41,14 +42,14 @@ export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> 
 )
 
 const selectByTypeMemo = createMemoizedSelector(
-  [
-    selectAllGameEffects,
-    (_state: GameEffectsState, options: { gameEffectType: GameEffectType }) => options.gameEffectType,
-  ],
+  selectAll,
+  SelectorOptions.gameEffectType,
   (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
 )
 
 export const GameEffectSelectors = {
+  selectAll,
+
   /**
    * `EffectByType[TType][]` can't be derived from a bare `GameEffectType` through generic
    * inference — indexing a discriminated union by an unresolved type parameter collapses to

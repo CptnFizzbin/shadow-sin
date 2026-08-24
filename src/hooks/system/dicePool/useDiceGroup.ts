@@ -1,6 +1,5 @@
 import { useId } from "react"
 
-import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
@@ -8,6 +7,7 @@ import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.t
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -24,7 +24,7 @@ export function useActiveSkillDiceGroup(
   skillKey: SkillKey,
   { defaulting = true }: { defaulting?: boolean } = {},
 ): DiceGroup {
-  const skillRating = useActiveSkillRating(skillKey)
+  const skillRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: skillKey })
   const groupId = [skillKey, useId()].join("-")
 
   const skillMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillMod })
@@ -71,7 +71,7 @@ export function useEncumbranceDiceGroup(): DiceGroup | null {
 }
 
 export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
-  const skillRating = useActiveSkillRating(skillKey)
+  const skillRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: skillKey })
   const { defaultable } = skillList[skillKey]
   const isDefaulted = skillRating === 0 && (defaultable ?? true)
   if (!isDefaulted) return null
