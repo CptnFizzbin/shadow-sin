@@ -7,7 +7,7 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
-import { selectQualitiesBuildPoints } from "#/hooks/builder/buildPoints/useQualitiesBuildPoints.ts"
+import { useQualitiesBuildPoints } from "#/hooks/builder/buildPoints/useQualitiesBuildPoints.ts"
 import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
@@ -22,7 +22,7 @@ interface QualitiesListProps {
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
   const dispatch = useRunnerStoreDispatch()
   const qualities = useRunnerSelector(QualitiesSelectors.selectAll)
-  const qualitiesBuildPoints = useRunnerSelector(selectQualitiesBuildPoints)
+  const qualitiesBuildPoints = useQualitiesBuildPoints()
   const qualityFormDialog = useQualityFormDialog()
 
   let label: string

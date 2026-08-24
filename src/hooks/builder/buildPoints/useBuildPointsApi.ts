@@ -14,29 +14,29 @@ import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
-import { selectAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
+import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "./useAttributesBuildPoints.ts"
-import { selectComplexFormsBuildPoints } from "./useComplexFormsBuildPoints.ts"
-import { selectContactsBuildPoints } from "./useContactsBuildPoints.ts"
-import { selectGearBuildPoints } from "./useGearBuildPoints.ts"
-import { selectQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
+import { useComplexFormsBuildPoints } from "./useComplexFormsBuildPoints.ts"
+import { useContactsBuildPoints } from "./useContactsBuildPoints.ts"
+import { useGearBuildPoints } from "./useGearBuildPoints.ts"
+import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
 import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
-import { selectSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
+import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
     { sectionId: BuilderSectionId.profile, spent: 0 },
     useBuilderBiologyBuildPoints(),
     useAttributesBuildPoints(),
-    useRunnerSelector(selectQualitiesBuildPoints),
+    useQualitiesBuildPoints(),
     useActiveSkillsBuildPoints(),
     useKnowledgeSkillsBuildPoints(),
     useSpellsBuildPoints(),
-    useRunnerSelector(selectAdeptPowersBuildPoints),
-    useRunnerSelector(selectComplexFormsBuildPoints),
-    useRunnerSelector(selectSpritesBuildPoints),
-    useRunnerSelector(selectGearBuildPoints),
-    useRunnerSelector(selectContactsBuildPoints),
+    useAdeptPowersBuildPoints(),
+    useComplexFormsBuildPoints(),
+    useSpritesBuildPoints(),
+    useGearBuildPoints(),
+    useContactsBuildPoints(),
   ]
 
   const enabledLineItems = lineItems

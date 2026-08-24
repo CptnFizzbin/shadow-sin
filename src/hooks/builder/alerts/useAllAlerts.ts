@@ -1,23 +1,22 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useBuildPointsAlerts } from "#/hooks/builder/buildPoints/useBuildPointsAlerts.ts"
-import { selectBiologyAlerts } from "#/hooks/builder/sections/biology/useBiologyAlerts.ts"
+import { useBiologyAlerts } from "#/hooks/builder/sections/biology/useBiologyAlerts.ts"
 import { useGearAlerts } from "#/hooks/builder/sections/gear/useGearAlerts.ts"
-import { selectProfileAlerts } from "#/hooks/builder/sections/profile/useProfileAlerts.ts"
+import { useProfileAlerts } from "#/hooks/builder/sections/profile/useProfileAlerts.ts"
 import { useQualitiesAlerts } from "#/hooks/builder/sections/qualities/useQualitiesAlerts.ts"
 import { useAdeptPowersAlerts } from "#/hooks/builder/sections/resources/adept/useAdeptPowersAlerts.ts"
 import { useSpellsAlerts } from "#/hooks/builder/sections/resources/magician/useSpellsAlerts.ts"
 import {
-  selectComplexFormsAlerts,
+  useComplexFormsAlerts,
 } from "#/hooks/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
 import {
-  selectSpritesAlerts,
+  useSpritesAlerts,
 } from "#/hooks/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
 import { useSkillsAlerts } from "#/hooks/builder/sections/skills/useSkillsAlerts.ts"
-import { selectSkillsSummaryAlerts } from "#/hooks/builder/sections/skills/useSkillsSummaryAlerts.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useSkillsSummaryAlerts } from "#/hooks/builder/sections/skills/useSkillsSummaryAlerts.ts"
 
 import { useAttributeAlerts } from "./useAttributeAlerts.ts"
-import { selectContactsAlerts } from "./useContactsAlerts.ts"
+import { useContactsAlerts } from "./useContactsAlerts.ts"
 
 /**
  * Aggregates alert information from every runner-builder section in a fixed order.
@@ -26,18 +25,18 @@ import { selectContactsAlerts } from "./useContactsAlerts.ts"
  */
 export function useAllAlerts(): AlertInfo[] {
   return [
-    ...useRunnerSelector(selectProfileAlerts),
-    ...useRunnerSelector(selectBiologyAlerts),
+    ...useProfileAlerts(),
+    ...useBiologyAlerts(),
     ...useAttributeAlerts(),
     ...useQualitiesAlerts(),
-    ...useRunnerSelector(selectSkillsSummaryAlerts),
+    ...useSkillsSummaryAlerts(),
     ...useSkillsAlerts(),
     ...useSpellsAlerts(),
     ...useAdeptPowersAlerts(),
-    ...useRunnerSelector(selectSpritesAlerts),
-    ...useRunnerSelector(selectComplexFormsAlerts),
+    ...useSpritesAlerts(),
+    ...useComplexFormsAlerts(),
     ...useGearAlerts(),
-    ...useRunnerSelector(selectContactsAlerts),
+    ...useContactsAlerts(),
     ...useBuildPointsAlerts(),
   ]
 }

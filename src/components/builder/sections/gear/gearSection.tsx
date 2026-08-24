@@ -15,11 +15,11 @@ import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import {
-  selectGearBuildPoints,
-  selectGearTotalCost,
+  useGearBuildPoints,
+  useGearTotalCost,
 } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -37,8 +37,8 @@ import { VehiclesPanel } from "./vehicles/vehiclesPanel.tsx"
 import { WeaponsPanel } from "./weapons/weaponsPanel.tsx"
 
 export const GearSection: FC = () => {
-  const totalNuyen = useRunnerSelector(selectGearTotalCost)
-  const buildPoints = useRunnerSelector(selectGearBuildPoints)
+  const totalNuyen = useGearTotalCost()
+  const buildPoints = useGearBuildPoints()
   const { invalidSections } = useGearAvailabilityIssues()
 
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)

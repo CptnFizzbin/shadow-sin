@@ -10,7 +10,7 @@ import { useSpriteDialog } from "#/components/runner/technomancer/dialogs/sprite
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
-import { selectSpritesBuildPoints } from "#/hooks/builder/buildPoints/useSpritesBuildPoints.ts"
+import { useSpritesBuildPoints } from "#/hooks/builder/buildPoints/useSpritesBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -27,7 +27,7 @@ export const SpritesList: FC = () => {
   const maxSpritesRegistered = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.charisma })
   const dispatch = useRunnerStoreDispatch()
   const sprites = useRunnerSelector(SpriteSelectors.selectVisible)
-  const spritesBp = useRunnerSelector(selectSpritesBuildPoints)
+  const spritesBp = useSpritesBuildPoints()
   const spriteDialog = useSpriteDialog()
 
   const isAtMax = sprites.length >= maxSpritesRegistered

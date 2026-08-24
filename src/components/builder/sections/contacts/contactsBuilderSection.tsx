@@ -5,14 +5,14 @@ import { BuilderSection } from "#/components/builder/sections/builderSection.tsx
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { selectContactsAlerts } from "#/hooks/builder/alerts/useContactsAlerts.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useContactsAlerts } from "#/hooks/builder/alerts/useContactsAlerts.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { getContactBpCost } from "./contactsBuilderUtils.ts"
 
 export const ContactsBuilderSection: FC = () => {
   const allContacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
-  const contactsAlerts = useRunnerSelector(selectContactsAlerts)
+  const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts
     .map((contact) => getContactBpCost(contact))

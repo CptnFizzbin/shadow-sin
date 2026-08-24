@@ -1,35 +1,31 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
-export const selectBiologyAlerts: Selector<{ runner: RunnerData }, AlertInfo[]> = createMemoizedSelector(
-  BiologySelectors.selectMetatype,
-  BiologySelectors.selectAwakening,
-  (metatype, awakening): AlertInfo[] => {
-    const alerts: AlertInfo[] = []
+export const useBiologyAlerts = (): AlertInfo[] => {
+  const statuses: AlertInfo[] = []
 
-    if (!metatype) {
-      alerts.push({
-        section: "Biology",
-        severity: "error",
-        title: "Metatype not selected",
-        message: "Select a metatype to determine starting attributes and BP cost.",
-        summaryOnly: true,
-      })
-    }
+  const metatype = useRunnerSelector(BiologySelectors.selectMetatype)
+  if (!metatype) {
+    statuses.push({
+      section: "Biology",
+      severity: "error",
+      title: "Metatype not selected",
+      message: "Select a metatype to determine starting attributes and BP cost.",
+      summaryOnly: true,
+    })
+  }
 
-    if (!awakening) {
-      alerts.push({
-        section: "Biology",
-        severity: "error",
-        title: "Awakening not selected",
-        message: "Select an awakening type if applicable.",
-        summaryOnly: true,
-      })
-    }
+  const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
+  if (!awakening) {
+    statuses.push({
+      section: "Biology",
+      severity: "error",
+      title: "Awakening not selected",
+      message: "Select an awakening type if applicable.",
+      summaryOnly: true,
+    })
+  }
 
-    return alerts
-  },
-)
+  return statuses
+}

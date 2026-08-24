@@ -4,14 +4,14 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useGearAvailabilityIssues } from "#/components/builder/sections/gear/gearUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { selectGearBuildPoints } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useGearBuildPoints } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()
-  const { isOverBudget } = useRunnerSelector(selectGearBuildPoints)
+  const { isOverBudget } = useGearBuildPoints()
   const { isEncumbered, penalty, totalBallistic, totalImpact, threshold } = useEncumbrance()
   const editorMode = useEditorMode()
 

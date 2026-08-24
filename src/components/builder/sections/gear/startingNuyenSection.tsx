@@ -11,18 +11,14 @@ import { useEffect } from "react"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
-import { selectGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { Actions as BuilderActions } from "#/stores/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/stores/builder/builderStore.dispatch.ts"
 import { Selectors as BuilderSelectors, useBuilderStoreSelector } from "#/stores/builder/builderStore.selectors.ts"
 import { Actions as RunnerActions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import {
-  Selectors as RunnerSelectors,
-  useRunnerSelector,
-  useRunnerStoreSelector,
-} from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors as RunnerSelectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
@@ -30,7 +26,7 @@ export const StartingNuyenSection: FC = () => {
   const lifestyle = useRunnerStoreSelector((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)
   const { numDice, mult } = Lifestyles[lifestyle].starting
 
-  const totalNuyen = useRunnerSelector(selectGearTotalCost)
+  const totalNuyen = useGearTotalCost()
   // Unspent nuyen is the leftover from the last BP purchased.
   // e.g. spent 24,700¥ → buys 5 BP (25,000¥) → 300¥ unspent → +3 bonus
   const bpsPurchased = Math.ceil(totalNuyen / BuilderConfig.gear.nuyenPerBp)
