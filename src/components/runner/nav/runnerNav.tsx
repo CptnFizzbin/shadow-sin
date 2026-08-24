@@ -9,8 +9,7 @@ import { useState } from "react"
 
 import { runnerSections } from "#/components/runner/runnerSections.ts"
 import { useCurrentRunnerSection } from "#/hooks/runner/nav/useRunnerNav.ts"
-import { selectRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
 
 import { NavMenuDrawer } from "./navMenuDrawer.tsx"
 
@@ -18,7 +17,7 @@ export const RunnerNav: FC = () => {
   const navigate = useNavigate({ from: "/$runnerId" })
   const currentSection = useCurrentRunnerSection()
   const [menuOpen, setMenuOpen] = useState(false)
-  const visibleSections = useRunnerSelector(selectRunnerTabs)
+  const visibleSections = useRunnerTabs()
 
   const isCurrentSectionVisible = visibleSections.some((section) => section.id === currentSection.id)
 

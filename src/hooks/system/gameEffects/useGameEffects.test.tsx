@@ -17,7 +17,7 @@ import {
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 
-import { selectAllGameEffects, selectGameEffectsByType } from "./useGameEffects.ts"
+import { GameEffectSelectors, selectAllGameEffects } from "./useGameEffects.ts"
 
 // ---------------------------------------------------------------------------
 // selectAllGameEffects
@@ -224,16 +224,19 @@ describe("selectAllGameEffects", () => {
 })
 
 // ---------------------------------------------------------------------------
-// selectGameEffectsByType
+// GameEffectSelectors.selectByType
 // ---------------------------------------------------------------------------
 
-describe("selectGameEffectsByType", () => {
+describe("GameEffectSelectors.selectByType", () => {
   it("returns an empty array when there are no effects of that type", () => {
     // Arrange
     const sheet = runnerDataFactory()
 
     // Act
-    const effects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: getItemCatalog(sheet) })
+    const effects = GameEffectSelectors.selectByType(
+      { runner: sheet, items: getItemCatalog(sheet) },
+      { gameEffectType: GameEffectType.attrMod },
+    )
 
     // Assert
     expect(effects).toEqual([])
@@ -257,7 +260,10 @@ describe("selectGameEffectsByType", () => {
     } })
 
     // Act
-    const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: getItemCatalog(sheet) })
+    const attrModEffects = GameEffectSelectors.selectByType(
+      { runner: sheet, items: getItemCatalog(sheet) },
+      { gameEffectType: GameEffectType.attrMod },
+    )
 
     // Assert
     expect(attrModEffects).toHaveLength(1)
@@ -295,7 +301,10 @@ describe("selectGameEffectsByType", () => {
     })
 
     // Act
-    const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: getItemCatalog(sheet) })
+    const initiativeEffects = GameEffectSelectors.selectByType(
+      { runner: sheet, items: getItemCatalog(sheet) },
+      { gameEffectType: GameEffectType.initiativeBonus },
+    )
 
     // Assert
     expect(initiativeEffects).toHaveLength(2)

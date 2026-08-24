@@ -4,9 +4,8 @@ import { useCallback } from "react"
 import type { RunnerSection } from "#/components/runner/runnerSections.ts"
 import { runnerSections } from "#/components/runner/runnerSections.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
-import { selectRunnerTabs } from "./useRunnerTabs.ts"
+import { useRunnerTabs } from "./useRunnerTabs.ts"
 
 export const useCurrentRunnerSection = (): RunnerSection => {
   const matches = useMatches()
@@ -20,7 +19,7 @@ export const useCurrentRunnerSection = (): RunnerSection => {
 export function useRunnerNav() {
   const navigate = useNavigate({ from: "/$runnerId" })
   const currentSection = useCurrentRunnerSection()
-  const visibleSections = useRunnerSelector(selectRunnerTabs)
+  const visibleSections = useRunnerTabs()
 
   const currentIndex = visibleSections.indexOf(currentSection)
 

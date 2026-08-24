@@ -1,7 +1,7 @@
 import { createSelector } from "reselect"
 
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { ComplexFormsSelectors } from "#/stores/runner/complexForms/complexFormsSlice.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
@@ -40,16 +40,25 @@ export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> 
   },
 )
 
-interface TypedGameEffectSelector {
-  <TType extends GameEffectType>(type: TType): Selector<GameEffectsState, EffectByType[TType][]>
-}
-
-export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSelector(
+const selectByTypeMemo = createMemoizedSelector(
   [
     selectAllGameEffects,
-    (_, type: keyof EffectByType) => type,
+    (_state: GameEffectsState, options: { gameEffectType: GameEffectType }) => options.gameEffectType,
   ],
-  (allEffects, type) => {
-    return allEffects.filter(filterByEffectType(type))
-  },
+  (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
 )
+
+export const GameEffectSelectors = {
+  /**
+   * `EffectByType[TType][]` can't be derived from a bare `GameEffectType` through generic
+   * inference — indexing a discriminated union by an unresolved type parameter collapses to
+   * `never` (see AGENTS.md § Type assertions) — so this asserts what `filterByEffectType` already
+   * guarantees at runtime for any concrete `TType`, rather than fighting the inference gap.
+   */
+  selectByType: <TType extends GameEffectType>(
+    state: GameEffectsState,
+    options: { gameEffectType: TType },
+  ): EffectByType[TType][] => {
+    return selectByTypeMemo(state, options) as EffectByType[TType][]
+  },
+}

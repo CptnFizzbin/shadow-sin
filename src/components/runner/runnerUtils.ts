@@ -1,7 +1,7 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
-import { selectGameEffectsByType } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
@@ -46,7 +46,7 @@ export const useActiveSkill = (skill: SkillKey) => {
   const rating = useActiveSkillRating(skill)
   const attribute = useEntitySelector(AttrSelectors.selectValue, { key: skillInfo.attr })
 
-  const skillMods = useRunnerSelector(selectGameEffectsByType(GameEffectType.skillMod))
+  const skillMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillMod })
   const totalMod = skillMods
     .filter((e) => e.target === skill)
     .reduce((sum, e) => sum + e.value, 0)

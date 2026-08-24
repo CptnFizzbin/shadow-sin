@@ -1,7 +1,7 @@
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { selectGameEffectsByType } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -24,7 +24,7 @@ export const useActiveSkillDicePool = (props: {
     name += ` (${specialization})`
   }
 
-  const specMods = useRunnerSelector(selectGameEffectsByType(GameEffectType.skillSpecializationMod))
+  const specMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillSpecializationMod })
   const totalSpecMod = specialization
     ? specMods
         .filter((e) => e.target === skillKey && e.subTarget === specialization)

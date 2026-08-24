@@ -18,15 +18,14 @@ import {
   useSpendKarmaDialogContext,
 } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
-import { selectVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
 
 // Inner component that consumes SpendKarmaDialogProvider context
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
   const theme = useTheme()
   const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
   const { improvementStore } = useSpendKarmaDialogContext()
-  const visibleSections = useRunnerSelector(selectVisibleSections)
+  const visibleSections = useVisibleSections()
   const { saveImprovements } = useSpendKarmaSummary()
 
   const [activeSection, setActiveSection] = useState<SpendKarmaSectionKey | null>(null)

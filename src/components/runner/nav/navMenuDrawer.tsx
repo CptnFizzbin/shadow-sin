@@ -12,8 +12,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useCurrentRunnerSection } from "#/hooks/runner/nav/useRunnerNav.ts"
-import { selectRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
 
 interface NavMenuDrawerProps {
   open: boolean
@@ -23,7 +22,7 @@ interface NavMenuDrawerProps {
 export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
   const navigate = useNavigate({ from: "/$runnerId" })
   const currentSection = useCurrentRunnerSection()
-  const visibleSections = useRunnerSelector(selectRunnerTabs)
+  const visibleSections = useRunnerTabs()
 
   const handleSectionClick = (sectionRoute: string) => {
     navigate({ to: sectionRoute })

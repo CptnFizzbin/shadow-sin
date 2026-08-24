@@ -4,7 +4,7 @@ import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
-import { selectGameEffectsByType } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -27,7 +27,7 @@ export function useActiveSkillDiceGroup(
   const skillRating = useActiveSkillRating(skillKey)
   const groupId = [skillKey, useId()].join("-")
 
-  const skillMods = useRunnerSelector(selectGameEffectsByType(GameEffectType.skillMod))
+  const skillMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillMod })
   const totalMod = skillMods
     .filter((e) => e.target === skillKey)
     .reduce((sum, e) => sum + e.value, 0)

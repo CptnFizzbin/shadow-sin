@@ -2,7 +2,7 @@ import { useMemo } from "react"
 
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
-import { selectGameEffectsByType } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -16,9 +16,9 @@ interface InitiativeInfo {
 export const useInitiative = (): InitiativeInfo => {
   const reactionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
   const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
-  const initiativeBonuses = useRunnerSelector(selectGameEffectsByType(GameEffectType.initiativeBonus))
-  const extraPassEffects = useRunnerSelector(selectGameEffectsByType(GameEffectType.extraInitiativePasses))
-  const extraDiceEffects = useRunnerSelector(selectGameEffectsByType(GameEffectType.extraInitiativeDice))
+  const initiativeBonuses = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.initiativeBonus })
+  const extraPassEffects = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.extraInitiativePasses })
+  const extraDiceEffects = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.extraInitiativeDice })
   const { penalty: encumbrancePenalty } = useEncumbrance()
 
   return useMemo(() => {

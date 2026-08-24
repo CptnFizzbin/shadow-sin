@@ -1,3 +1,4 @@
+import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
@@ -5,7 +6,8 @@ import { mapToLegacySelector } from "#/stores/runner/mapToLegacySelector.ts"
 import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeKey, AttributeOrder } from "#/system/attributeKey.ts"
+import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -106,5 +108,29 @@ export namespace AttrSelectors {
     selectAllInfo,
     SelectorOptions.attributeKey,
     (allInfo, key) => allInfo[key],
+  )
+
+  // TODO: compare against `selectAllInfo`/`selectBounds` for overlapping logic/scope — this filters
+  // down to only the "active" attributes (drops essence; drops magic/resonance when the runner's
+  // awakening type doesn't grant them) and returns them ordered as an array, whereas `selectAllInfo`
+  // returns every bounded attribute keyed by `AttributeKey` with no such filtering.
+  /** {@link AttributeInfo} for each attribute the runner can actively raise, in {@link AttributeOrder}. */
+  export const selectActive = createMemoizedSelector(
+    selectAll,
+    BiologySelectors.selectMetatypeInfo,
+    BiologySelectors.selectAwakeningInfo,
+    (attributes, metatype, awakening) => {
+      // AttributeOrder — not Object.values(AttributeKey) — excludes the four Matrix stats, which
+      // aren't Runner attribute rows (see #438).
+      return AttributeOrder
+        .filter((attr) => {
+          if (attr === AttributeKey.essence) return false
+          if (attr === AttributeKey.magic) return MagicAwakeningTypes.includes(awakening.name)
+          if (attr === AttributeKey.resonance) return TechAwakeningTypes.includes(awakening.name)
+          return true
+        })
+        .map((attr) => ({ attr, value: attributes[attr] ?? 0 }))
+        .map(({ attr, value }) => createAttrInfo({ attr, value, metatype, awakening }))
+    },
   )
 }
