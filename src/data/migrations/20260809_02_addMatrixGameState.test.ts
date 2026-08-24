@@ -79,4 +79,25 @@ describe.concurrent("025_addMatrixGameState", () => {
     // Assert
     expect(character).toEqual({ matrix: { name: "Fairlight Excalibur" } })
   })
+
+  it("is a no-op when gameState.matrix already exists, even if a stray legacy matrix field is present", () => {
+    // Arrange — a runner that already went through this migration has nothing left to convert;
+    // re-deriving a node from a stray `matrix` field would replace the real one with a random id
+    const existingMatrixState = {
+      knownNodes: [{ id: "existing-node-id", name: "Fairlight Excalibur" }],
+      activeNodeId: "existing-node-id",
+      activePrograms: [],
+    }
+    const character = {
+      matrix: { name: "Renraku Tsurugi" },
+      gameState: { matrix: existingMatrixState },
+    }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result).not.toHaveProperty("matrix")
+    expect(result.gameState?.matrix).toEqual(existingMatrixState)
+  })
 })

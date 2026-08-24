@@ -31,10 +31,18 @@ const migration: CharacterMigration<{
   timestamp: "2026-08-09T19:06:38Z",
   up: (character) => {
     return produce(character, (draft) => {
+      draft.gameState ??= {}
+
+      // A runner that already has `gameState.matrix` has already been through this migration —
+      // leave it alone rather than re-deriving a fresh node (with a new random id) from whatever
+      // legacy `matrix` scaffold happens to be present.
+      if (draft.gameState.matrix) {
+        delete draft.matrix
+        return
+      }
+
       const oldMatrix = draft.matrix
       delete draft.matrix
-
-      draft.gameState ??= {}
 
       if (!oldMatrix) {
         draft.gameState.matrix ??= { knownNodes: [], activePrograms: [] }
