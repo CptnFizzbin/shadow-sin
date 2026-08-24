@@ -76,6 +76,23 @@ export function applyMigrations(runner: object): RunnerData {
 
   const migrationsToRun = migrationsInOrder.filter((migration) => isNewer(migration.timestamp, preMeta.appVersion))
 
+  // `addMatrixNode`/`addMatrixGameState` (2026-08-09) aren't idempotent across a full re-run:
+  // `addMatrixNode` unconditionally stubs a legacy `matrix` scaffold whenever it's absent, and
+  // `addMatrixGameState` then unconditionally treats that stub as real data to convert, replacing
+  // `gameState.matrix` with a freshly `crypto.randomUUID()`-tagged node — even for a runner that
+  // already has a real `gameState.matrix` and never carried the legacy field. This only bites a
+  // runner whose `_meta_.appVersion` is lost or reset (e.g. a hand-edited YAML re-import) after it
+  // was already migrated, forcing every migration to run again in one pass. Neither migration can
+  // be edited once shipped (see "Character migrations" in AGENTS.md), so the invariant is restored
+  // here instead: such a runner has nothing for those two migrations to legitimately do, however
+  // many migrations end up running for it.
+  const rawGameStateMatrix = "gameState" in runner
+    ? (runner as { gameState?: { matrix?: unknown } }).gameState?.matrix
+    : undefined
+  const preservedGameStateMatrix = rawGameStateMatrix !== null && rawGameStateMatrix !== undefined && !("matrix" in runner)
+    ? rawGameStateMatrix
+    : undefined
+
   let migrated: MigrationDraft = { ...runner, _meta_: preMeta }
 
   for (const migration of migrationsToRun) {
@@ -103,6 +120,10 @@ export function applyMigrations(runner: object): RunnerData {
     draft.items ??= { parentId: null, childIds: [] }
     draft.initiative ??= { passesCompleted: [] }
     draft.gameState ??= { matrix: { knownNodes: [], activePrograms: [] } }
+
+    if (preservedGameStateMatrix !== undefined) {
+      draft.gameState.matrix = preservedGameStateMatrix
+    }
   })
 
   return migrated as RunnerData

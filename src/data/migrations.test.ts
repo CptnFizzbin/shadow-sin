@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
@@ -16,6 +17,9 @@ import {
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { APP_VERSION } from "./appVersion.ts"
+import { applyMigrations } from "./applyMigrations.ts"
+import { Artemis } from "./fixtures/artemis.ts"
+import { Hexen } from "./fixtures/hexen.ts"
 
 // Each test seeds its own manager/storage (rather than sharing one from `beforeEach`) so the
 // suite can run concurrently.
@@ -226,4 +230,32 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // fully migrated
     expect(runner._meta_.appVersion).toBe(APP_VERSION)
   })
+})
+
+describe.concurrent("runner migrations + fixtures", () => {
+  const fixtures: Record<string, RunnerData> = { Artemis, Hexen }
+
+  // Both fixtures already carry `_meta_.appVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting it
+  // forces every registered migration to run — first against the raw fixture, then again against
+  // its own output, so the second pass exercises every migration's idempotency guard.
+  function migrateForcingRerun(runner: object): RunnerData {
+    const raw = structuredClone(runner) as Omit<RunnerData, "_meta_"> & {
+      _meta_: Partial<RunnerData["_meta_"]>
+    }
+    delete raw._meta_.appVersion
+    return applyMigrations(raw)
+  }
+
+  it.each(Object.entries(fixtures))(
+    "running every migration twice against %s produces the same result each time",
+    (_name, fixture) => {
+      // Arrange / Act — first pass from the raw fixture, second pass forced to re-run on top of
+      // the first pass's own output
+      const first = migrateForcingRerun(fixture)
+      const second = migrateForcingRerun(first)
+
+      // Assert
+      expect(second).toEqual(first)
+    },
+  )
 })
