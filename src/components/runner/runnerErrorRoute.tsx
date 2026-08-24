@@ -3,10 +3,40 @@ import AlertTitle from "@mui/material/AlertTitle"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { useNavigate, useRouter } from "@tanstack/react-router"
+import { dump } from "js-yaml"
 
 import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import type { JsonValue } from "#/lib/jsonUtils.ts"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"
+
+/**
+ * Best-effort display name for a raw (possibly corrupted or old-format) runner payload,
+ * sanitised for use in a downloaded file name. Falls back to `"runner"` when no usable
+ * name field is present.
+ */
+function extractRunnerName(rawData: JsonValue): string {
+  const record =
+    rawData !== null && typeof rawData === "object" && !Array.isArray(rawData)
+      ? (rawData as Record<string, JsonValue>)
+      : {}
+
+  const profile =
+    record.profile !== null && typeof record.profile === "object" && !Array.isArray(record.profile)
+      ? (record.profile as Record<string, JsonValue>)
+      : {}
+
+  const name = profile.alias ?? profile.name ?? record.alias ?? record.name
+  const sanitized =
+    typeof name === "string"
+      ? name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+      : ""
+
+  return sanitized || "runner"
+}
 
 export const RunnerErrorRoute = () => {
   const path = typeof window !== "undefined" ? window.location.pathname : ""
@@ -18,8 +48,10 @@ export const RunnerErrorRoute = () => {
   const handleExport = async () => {
     const raw = await runnerManager.getRawRunner(runnerId).catch(() => null)
     const rawData = raw ?? { runnerId }
-    const jsonContent = JSON.stringify(rawData, null, 2)
-    downloadTextFile(jsonContent, `invalid-runner-${runnerId}.json`, "application/json")
+    const yamlContent = dump(rawData, { lineWidth: 120 })
+    const isoDate = new Date().toISOString().slice(0, 10)
+
+    downloadTextFile(yamlContent, `${extractRunnerName(rawData)}.${isoDate}.error.sin`)
   }
 
   const handleDelete = async () => {
@@ -37,7 +69,7 @@ export const RunnerErrorRoute = () => {
 
       <Stack direction="row">
         <Button variant="outlined" onClick={handleExport}>
-          Export raw data as JSON
+          Export raw data as YAML
         </Button>
         <Button variant="outlined" color="error" onClick={handleDelete}>
           Delete runner
