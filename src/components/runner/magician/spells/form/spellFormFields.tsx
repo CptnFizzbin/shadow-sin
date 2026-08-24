@@ -8,14 +8,8 @@ import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffec
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellForm } from "#/lib/hooks/runner/magician/spells/form/useSpellForm.ts"
-import {
-  SpellCategory,
-  SpellDamage,
-  SpellDrainType,
-  SpellDuration,
-  SpellRange,
-  SpellType,
-} from "#/system/magic/spellData.ts"
+import { SpellDrainType } from "#/system/magic/spellData.ts"
+import { SelectorOptions } from "#/system/selectorOptions.tsx"
 
 interface SpellFormFieldsProps {
   form: SpellForm
@@ -33,7 +27,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
           {(field) => (
             <field.SelectField
               label="Category"
-              options={Object.values(SpellCategory).map((value) => ({ label: value, value }))}
+              options={SelectorOptions.spellCategory}
             />
           )}
         </form.AppField>
@@ -43,7 +37,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
             <field.SelectField
               label="Type"
               sx={{ flexGrow: 1 }}
-              options={Object.values(SpellType).map((value) => ({ label: value, value }))}
+              options={SelectorOptions.spellType}
             />
           )}
         </form.AppField>
@@ -52,11 +46,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
           {(field) => (
             <field.SelectField
               label="Range"
-              options={[
-                { label: "Touch", value: SpellRange.Touch },
-                { label: "Line of Sight", value: SpellRange.LoS },
-                { label: "Line of Sight (Area)", value: SpellRange.LoSArea },
-              ]}
+              options={SelectorOptions.spellRange}
             />
           )}
         </form.AppField>
@@ -70,7 +60,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
             <field.SelectField
               label="Duration"
               sx={{ flexGrow: 1 }}
-              options={Object.values(SpellDuration).map((value) => ({ label: value, value }))}
+              options={SelectorOptions.spellDuration}
             />
           )}
         </form.AppField>
@@ -81,10 +71,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
               <field.SelectField
                 label="Drain"
                 sx={{ flexGrow: 1 }}
-                options={[
-                  { label: "Force ÷ 2", value: SpellDrainType.Force },
-                  { label: "Fixed", value: SpellDrainType.Fixed },
-                ]}
+                options={SelectorOptions.spellDrainType}
               />
             )}
           </form.AppField>
@@ -138,7 +125,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                       disabled={!dealsDmgfield.state.value}
                       label="Damage Type"
                       sx={{ flexGrow: 1 }}
-                      options={Object.values(SpellDamage).map((value) => ({ label: value, value }))}
+                      options={SelectorOptions.spellDamage}
                     />
                   )}
                 </form.AppField>

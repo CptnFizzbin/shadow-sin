@@ -1,15 +1,10 @@
 import { z } from "zod"
 
-import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
-import { SpiritType, SpiritTypeLabels } from "./spiritData.ts"
+import { SpiritType } from "./spiritData.ts"
 
 export { SpiritType }
-
-export const spiritTypeSelectOptions = Object.values(SpiritType).map((spiritType) => ({
-  value: spiritType,
-  label: SpiritTypeLabels[spiritType],
-}))
 
 export interface TraditionSpiritTypes {
   combat: SpiritType
@@ -38,7 +33,3 @@ export const TraditionDataSchema = z.object({
   drainAttribute: z.enum(AttributeKey),
   concept: z.string().optional(),
 }) satisfies z.ZodType<TraditionData>
-
-export const drainAttributeSelectOptions = [...PhysicalAttributes, ...MentalAttributes].map(
-  (key) => ({ value: key, label: AttributeLabels[key] }),
-)

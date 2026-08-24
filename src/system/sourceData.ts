@@ -49,12 +49,6 @@ export const books = {
 
 export type BookKey = keyof typeof books
 
-/**
- * List of available books and their display labels.
- */
-export const bookOptions = Object.entries(books)
-  .map(([key, value]) => ({ value: key as BookKey, ...value }))
-
 export const formatBookRef = (source: SourceData) => {
   return `${source.book} p.${source.page}`
 }

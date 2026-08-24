@@ -7,7 +7,7 @@ import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
-import { bookOptions } from "#/system/sourceData.ts"
+import { SelectorOptions } from "#/system/selectorOptions.tsx"
 
 interface QualityInfoDialogProps extends ControlledDialogProps<void> {
   quality: QualityData
@@ -17,7 +17,7 @@ const QualityInfoDialog: FC<QualityInfoDialogProps> = ({ ctrl, quality }) => {
   const bpLabel = quality.type === "positive" ? "BP Cost" : "BP Bonus"
 
   const bookLabel = quality.source
-    ? (bookOptions.find((option) => option.value === quality.source?.book)?.label ?? quality.source.book)
+    ? (SelectorOptions.book.find((option) => option.value === quality.source?.book)?.label ?? quality.source.book)
     : undefined
 
   return (

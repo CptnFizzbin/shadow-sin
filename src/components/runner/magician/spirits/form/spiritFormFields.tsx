@@ -7,9 +7,11 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpiritForm } from "#/lib/hooks/runner/magician/spirits/form/useSpiritForm.ts"
-import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import type { SpiritType } from "#/system/magic/spiritData.ts"
+import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
+import { SelectorOptions } from "#/system/selectorOptions.tsx"
 
 interface SpiritFormFieldsProps {
   form: SpiritForm
@@ -28,10 +30,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
               label: SpiritTypeLabels[type],
               value: type,
             }))
-          : Object.values(SpiritType).map((value) => ({
-              label: SpiritTypeLabels[value],
-              value,
-            }))
+          : SelectorOptions.spiritType
 
         return (
           <Stack sx={{ gap: 2 }}>
