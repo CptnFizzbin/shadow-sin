@@ -11,9 +11,8 @@ const stateFor = (runner: RunnerData) => ({ runner, entity: runner })
 describe("EdgeSelectors.selectMax", () => {
   it("returns the runner's Edge attribute value", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.edge] = 4
-      return s
     } })
 
     // Act / Assert
@@ -24,9 +23,8 @@ describe("EdgeSelectors.selectMax", () => {
 describe("EdgeSelectors.selectCurrent", () => {
   it("returns the runner's current Edge", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.edge.current = 2
-      return s
     } })
 
     // Act / Assert

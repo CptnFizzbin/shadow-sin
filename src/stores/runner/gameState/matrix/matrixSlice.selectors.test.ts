@@ -29,12 +29,11 @@ const node: KnownNode = {
 describe.concurrent("matrixSlice selectors", () => {
   it("selects known nodes and active programs", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = {
         knownNodes: [node],
         activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
       }
-      return data
     } })
 
     // Act / Assert
@@ -44,9 +43,8 @@ describe.concurrent("matrixSlice selectors", () => {
 
   it("selects the active node id and resolved node", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
-      return data
     } })
 
     // Act / Assert
@@ -56,9 +54,8 @@ describe.concurrent("matrixSlice selectors", () => {
 
   it("returns undefined for the active node when nothing is active", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
-      return data
     } })
 
     // Act / Assert
@@ -70,12 +67,11 @@ describe.concurrent("matrixSlice selectors", () => {
 describe("MatrixSelectors", () => {
   it("selects known nodes and active programs", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = {
         knownNodes: [node],
         activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
       }
-      return data
     } })
 
     // Act / Assert
@@ -85,9 +81,8 @@ describe("MatrixSelectors", () => {
 
   it("selects the active node id and resolved node", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
-      return data
     } })
 
     // Act / Assert
@@ -97,9 +92,8 @@ describe("MatrixSelectors", () => {
 
   it("returns undefined for the active node when nothing is active", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (data) => {
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
       data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
-      return data
     } })
 
     // Act / Assert

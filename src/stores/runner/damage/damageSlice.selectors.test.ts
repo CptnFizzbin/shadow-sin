@@ -28,7 +28,7 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("returns wound interval of 2 for physical with Low Pain Tolerance (-1)", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -40,7 +40,6 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -50,7 +49,7 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("does not change the wound interval with High Pain Tolerance", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -62,7 +61,6 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -72,7 +70,7 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("does not change the wound interval for either track when High Pain Tolerance targets 'all'", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -84,7 +82,6 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -94,7 +91,7 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("clamps wound interval to a minimum of 1 for extreme negative pain tolerance", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -106,7 +103,6 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -115,9 +111,8 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("computes physical max from body attribute", () => {
     // Arrange — 8 + ceil(4/2) = 10
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.body] = 4
-      return s
     } })
 
     // Act / Assert
@@ -126,9 +121,8 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("computes stun max from willpower attribute", () => {
     // Arrange — 8 + ceil(6/2) = 11
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.willpower] = 6
-      return s
     } })
 
     // Act / Assert
@@ -137,10 +131,9 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 
   it("reflects current damage values", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 5
       s.damage.stun = 2
-      return s
     } })
 
     // Act / Assert
@@ -152,11 +145,10 @@ describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
 describe("DamageSelectors.selectDamage", () => {
   it("reads the current value off the given track", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 5
       s.damage.stun = 2
       s.damage.matrix = 1
-      return s
     } })
 
     // Act / Assert
@@ -177,7 +169,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
 
   it("shrinks for the targeted track with Low Pain Tolerance", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -189,7 +181,6 @@ describe("DamageSelectors.selectWoundInterval", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -199,7 +190,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
 
   it("clamps to a minimum of 1 for extreme negative pain tolerance", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -211,7 +202,6 @@ describe("DamageSelectors.selectWoundInterval", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -272,7 +262,7 @@ describe("DamageSelectors.selectWoundIntervalOffset", () => {
 
   it("grows for the targeted track with High Pain Tolerance", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -284,7 +274,6 @@ describe("DamageSelectors.selectWoundIntervalOffset", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -294,7 +283,7 @@ describe("DamageSelectors.selectWoundIntervalOffset", () => {
 
   it("applies to every track when the effect targets 'all'", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -306,7 +295,6 @@ describe("DamageSelectors.selectWoundIntervalOffset", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -318,9 +306,8 @@ describe("DamageSelectors.selectWoundIntervalOffset", () => {
 describe("DamageSelectors.selectWoundModForTrack", () => {
   it("is 0 when damage hasn't exceeded the wound interval", () => {
     // Arrange — interval 3, damage 2 → floor(2/3) = 0
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 2
-      return s
     } })
 
     // Act / Assert
@@ -331,9 +318,8 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
 
   it("counts one wound per full interval of damage taken", () => {
     // Arrange — interval 3, damage 7 → floor(7/3) = 2
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 7
-      return s
     } })
 
     // Act / Assert
@@ -344,7 +330,7 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
 
   it("subtracts the wound interval offset before dividing", () => {
     // Arrange — interval 3, offset 1 (High Pain Tolerance), damage 4 → floor((4-1)/3) = 1
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 4
       s.qualities = [
         {
@@ -357,7 +343,6 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -368,7 +353,7 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
 
   it("never goes negative when the offset exceeds current damage", () => {
     // Arrange — offset 1, damage 0 → floor(max(0, 0-1)/3) = 0
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -380,7 +365,6 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act / Assert
@@ -393,10 +377,9 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
 describe("DamageSelectors.selectWoundMod", () => {
   it("sums the physical and stun wound mods", () => {
     // Arrange — physical: floor(7/3) = 2, stun: floor(4/3) = 1
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.physical = 7
       s.damage.stun = 4
-      return s
     } })
 
     // Act / Assert
@@ -405,9 +388,8 @@ describe("DamageSelectors.selectWoundMod", () => {
 
   it("ignores matrix damage", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.matrix = 9
-      return s
     } })
 
     // Act / Assert
@@ -418,9 +400,8 @@ describe("DamageSelectors.selectWoundMod", () => {
 describe("DamageSelectors.track", () => {
   it("computes physical max from the body attribute", () => {
     // Arrange — 8 + ceil(4/2) = 10
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.body] = 4
-      return s
     } })
 
     // Act / Assert
@@ -434,9 +415,8 @@ describe("DamageSelectors.track", () => {
 
   it("computes stun max from the willpower attribute", () => {
     // Arrange — 8 + ceil(6/2) = 11
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.willpower] = 6
-      return s
     } })
 
     // Act / Assert
@@ -461,7 +441,7 @@ describe("DamageSelectors.track", () => {
 
   it("reflects current damage and wound interval together", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.damage.stun = 3
       s.qualities = [
         {
@@ -474,7 +454,6 @@ describe("DamageSelectors.track", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act

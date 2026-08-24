@@ -9,9 +9,8 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { NuyenSection } from "./nuyenSection.tsx"
 
 function renderWithNuyen(current: number) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.nuyen.current = current
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

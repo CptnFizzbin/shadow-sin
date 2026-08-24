@@ -9,10 +9,9 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { ProfileSection } from "./profileSection.tsx"
 
 function renderSection() {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.profile.alias = "Ghost"
     data.profile.name = "Jane Doe"
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

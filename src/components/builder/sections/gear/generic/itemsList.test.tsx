@@ -31,7 +31,7 @@ describe("ItemsList", () => {
   it("shows items from the store", () => {
     // Arrange / Act
     renderInBuilder(<LiveItemsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [trodes.id]: trodes } }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [trodes.id]: trodes } })),
     })
 
     // Assert
@@ -53,7 +53,7 @@ describe("ItemsList", () => {
   it("removing an item dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<LiveItemsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [trodes.id]: trodes } }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [trodes.id]: trodes } })),
     })
     expect(screen.getByText("Trodes")).toBeDefined()
 

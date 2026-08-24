@@ -9,10 +9,9 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { KarmaSection } from "./karmaSection.tsx"
 
 function renderWithKarma(current: number, total: number) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.karma.current = current
     data.karma.total = total
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

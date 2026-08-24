@@ -29,9 +29,8 @@ describe("selectBiology", () => {
 describe("selectMetatype", () => {
   it("returns the runner's metatype", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.metatype = MetatypeType.Troll
-      return s
     } })
 
     // Act / Assert
@@ -42,9 +41,8 @@ describe("selectMetatype", () => {
 describe("selectAwakening", () => {
   it("returns the runner's awakening type", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.awakening = AwakeningType.Adept
-      return s
     } })
 
     // Act / Assert
@@ -55,9 +53,8 @@ describe("selectAwakening", () => {
 describe("selectMetatypeData", () => {
   it("returns the denormalized MetatypeData for the runner's metatype", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.metatype = MetatypeType.Elf
-      return s
     } })
 
     // Act / Assert
@@ -68,9 +65,8 @@ describe("selectMetatypeData", () => {
 describe("selectAwakeningData", () => {
   it("returns the denormalized AwakeningData for the runner's awakening", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.awakening = AwakeningType.Magician
-      return s
     } })
 
     // Act / Assert
@@ -91,9 +87,8 @@ describe("BiologySelectors.select", () => {
 describe("BiologySelectors.selectMetatype", () => {
   it("returns the runner's metatype", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.metatype = MetatypeType.Dwarf
-      return s
     } })
 
     // Act / Assert
@@ -104,9 +99,8 @@ describe("BiologySelectors.selectMetatype", () => {
 describe("BiologySelectors.selectAwakening", () => {
   it("returns the runner's awakening type", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.awakening = AwakeningType.Technomancer
-      return s
     } })
 
     // Act / Assert
@@ -117,9 +111,8 @@ describe("BiologySelectors.selectAwakening", () => {
 describe("BiologySelectors.selectMetatypeInfo", () => {
   it("returns the denormalized MetatypeData for the runner's metatype", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.metatype = MetatypeType.Ork
-      return s
     } })
 
     // Act / Assert
@@ -130,9 +123,8 @@ describe("BiologySelectors.selectMetatypeInfo", () => {
 describe("BiologySelectors.selectAwakeningInfo", () => {
   it("returns the denormalized AwakeningData for the runner's awakening", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.biology.awakening = AwakeningType.MysticAdept
-      return s
     } })
 
     // Act / Assert

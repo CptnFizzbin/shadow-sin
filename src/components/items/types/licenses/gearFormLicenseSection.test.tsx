@@ -67,7 +67,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={unrestrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({ ...r, gear: { [unrestrictedArmor.id]: unrestrictedArmor } }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [unrestrictedArmor.id]: unrestrictedArmor } })),
     })
 
     // Assert
@@ -81,7 +81,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({ ...r, gear: { [restrictedArmor.id]: restrictedArmor } }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } })),
     })
 
     // Assert
@@ -95,7 +95,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderWithProviders(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({ ...r, gear: { [restrictedArmor.id]: restrictedArmor } }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } })),
     })
 
     // Assert
@@ -107,10 +107,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
-        ...r,
-        gear: { [restrictedArmor.id]: restrictedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense },
-      }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } })),
     })
 
     // Act
@@ -132,10 +129,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={licensedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
-        ...r,
-        gear: { [licensedArmor.id]: licensedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense },
-      }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [licensedArmor.id]: licensedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } })),
     })
     expect(within(getLastDialog()).getByText(existingLicense.name)).toBeDefined()
 
@@ -154,15 +148,12 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={licensedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
-        ...r,
-        gear: {
-          [licensedArmor.id]: licensedArmor,
-          [fakeSin.id]: fakeSin,
-          [existingLicense.id]: existingLicense,
-          [secondLicense.id]: secondLicense,
-        },
-      }) })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: {
+        [licensedArmor.id]: licensedArmor,
+        [fakeSin.id]: fakeSin,
+        [existingLicense.id]: existingLicense,
+        [secondLicense.id]: secondLicense,
+      } })),
     })
 
     // Act

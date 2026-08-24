@@ -9,9 +9,8 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { BackupReminderNotice } from "./backupReminderNotice.tsx"
 
 function renderWithLastExportDate(lastExportDate: string | null) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data._meta_.lastExportDate = lastExportDate
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

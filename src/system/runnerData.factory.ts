@@ -1,3 +1,5 @@
+import { produce } from "immer"
+
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -8,15 +10,14 @@ import type { ItemCatalog } from "./items/itemUtils.ts"
 import { LifestyleType } from "./lifestyleType.ts"
 import { metatypes, MetatypeType } from "./metatypeData.ts"
 import type { RunnerData } from "./runnerData.ts"
-import { getItemCatalog } from "./runnerTraits.ts"
 
-export type RunnerFactoryOverrideFn = (data: RunnerData & { gear: ItemCatalog }) => RunnerData
+export type RunnerFactoryAfterBuildFn = (runner: RunnerData) => void
 
 export function runnerDataFactory(options?: {
   items?: ItemCatalog
-  override?: RunnerFactoryOverrideFn
+  afterBuild?: RunnerFactoryAfterBuildFn
 }): RunnerData {
-  const overrideFn = options?.override
+  const afterBuild = options?.afterBuild
   const items = options?.items
 
   const data: RunnerData = {
@@ -111,35 +112,11 @@ export function runnerDataFactory(options?: {
     },
   }
 
-  // Back-compat for override functions still written against the pre-Slice-5 `data.gear` field
-  // name — a getter/setter keeps `data.gear` and `data._data_.items` in sync for direct mutation
-  // (`data.gear = {...}`). It's non-enumerable so it doesn't leak into `{ ...data }`-style
-  // overrides or show up as an unexpected key when this data becomes a Redux store's
-  // preloadedState.
-  Object.defineProperty(data, "gear", {
-    configurable: true,
-    get(this: RunnerData) {
-      return getItemCatalog(this)
-    },
-    set(this: RunnerData, value: ItemCatalog) {
-      this._data_.items = value
-    },
-  })
-
-  if (!overrideFn) {
+  if (!afterBuild) {
     return data
   }
 
-  const result = overrideFn(data as RunnerData & { gear: ItemCatalog })
-
-  // A spread-style override (`{ ...data, gear: {...} }`) produces a *new* object that doesn't
-  // carry the getter/setter above, leaving its explicit `gear` value disconnected from
-  // `_data_.items` — reconcile it back before handing the result off.
-  const resultWithGear = result as RunnerData & { gear?: ItemCatalog }
-  if (Object.hasOwn(resultWithGear, "gear")) {
-    resultWithGear._data_.items = resultWithGear.gear as ItemCatalog
-    delete resultWithGear.gear
-  }
-
-  return result
+  return produce(data, (draft) => {
+    afterBuild(draft as RunnerData)
+  })
 }

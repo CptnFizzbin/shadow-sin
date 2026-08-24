@@ -10,11 +10,10 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
 
 function renderPistols() {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes.agility = 3
     data.attributes.logic = 6
     data.skills.activeSkills = [{ name: SkillKey.pistols, rating: 4 }]
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

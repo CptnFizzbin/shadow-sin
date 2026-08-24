@@ -39,7 +39,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from qualities", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -49,7 +49,6 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
-      return s
     } })
 
     // Act
@@ -97,7 +96,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from spells", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.spells = [
         {
           kind: EntityKind.spell,
@@ -114,7 +113,6 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
         },
       ]
-      return s
     } })
 
     // Act
@@ -127,7 +125,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from complex forms", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.complexForms = [
         {
           kind: EntityKind.complexForm,
@@ -137,7 +135,6 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.resonance, value: 1 }],
         },
       ]
-      return s
     } })
 
     // Act
@@ -150,7 +147,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from adept powers", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.powers = [
         {
           kind: EntityKind.adeptPower,
@@ -162,7 +159,6 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.strength, value: 1 }],
         },
       ]
-      return s
     } })
 
     // Act
@@ -181,30 +177,31 @@ describe("selectAllGameEffects", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory({ override: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "Analytical Mind",
-          type: "positive",
-          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
-        },
-      ]
-      s.gear = createItemMap([implant])
-      s.powers = [
-        {
-          kind: EntityKind.adeptPower,
-          type: "adeptPower",
-          id: NullUuid,
-          name: "Killing Hands",
-          rating: 1,
-          costPerRating: 0.5,
-          effects: [{ type: GameEffectType.recoilReduction, value: 1 }],
-        },
-      ]
-      return s
-    } })
+    const sheet = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.qualities = [
+          {
+            kind: EntityKind.quality,
+            id: NullUuid,
+            name: "Analytical Mind",
+            type: "positive",
+            effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
+          },
+        ]
+        s.powers = [
+          {
+            kind: EntityKind.adeptPower,
+            type: "adeptPower",
+            id: NullUuid,
+            name: "Killing Hands",
+            rating: 1,
+            costPerRating: 0.5,
+            effects: [{ type: GameEffectType.recoilReduction, value: 1 }],
+          },
+        ]
+      },
+    })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -215,10 +212,9 @@ describe("selectAllGameEffects", () => {
 
   it("handles sources with no effects field gracefully", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Toughness", type: "positive" }]
       s.powers = [{ kind: EntityKind.adeptPower, type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
-      return s
     } })
 
     // Act
@@ -247,7 +243,7 @@ describe("selectGameEffectsByType", () => {
 
   it("returns only effects matching the requested type", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -260,7 +256,6 @@ describe("selectGameEffectsByType", () => {
           ],
         },
       ]
-      return s
     } })
 
     // Act
@@ -279,26 +274,27 @@ describe("selectGameEffectsByType", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory({ override: (s) => {
-      s.spells = [
-        {
-          kind: EntityKind.spell,
-          id: NullUuid,
-          name: "Increase Reflexes",
-          type: SpellType.Physical,
-          range: SpellRange.Touch,
-          damage: SpellDamage.Stun,
-          category: SpellCategory.Health,
-          drain: { type: SpellDrainType.Force, value: 0 },
-          dealsDamage: false,
-          duration: SpellDuration.Sustained,
-          voluntaryTargetsOnly: false,
-          effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
-        },
-      ]
-      s.gear = createItemMap([implant])
-      return s
-    } })
+    const sheet = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.spells = [
+          {
+            kind: EntityKind.spell,
+            id: NullUuid,
+            name: "Increase Reflexes",
+            type: SpellType.Physical,
+            range: SpellRange.Touch,
+            damage: SpellDamage.Stun,
+            category: SpellCategory.Health,
+            drain: { type: SpellDrainType.Force, value: 0 },
+            dealsDamage: false,
+            duration: SpellDuration.Sustained,
+            voluntaryTargetsOnly: false,
+            effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
+          },
+        ]
+      },
+    })
 
     // Act
     const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: getItemCatalog(sheet) })
@@ -329,7 +325,7 @@ describe("useGameEffects", () => {
 
   it("returns effects of the requested type from the runner sheet", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -339,7 +335,6 @@ describe("useGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
-      return s
     } })
 
     // Act
@@ -354,7 +349,7 @@ describe("useGameEffects", () => {
 
   it("does not return effects of other types", () => {
     // Arrange
-    const sheet = runnerDataFactory({ override: (s) => {
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -364,7 +359,6 @@ describe("useGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
-      return s
     } })
 
     // Act

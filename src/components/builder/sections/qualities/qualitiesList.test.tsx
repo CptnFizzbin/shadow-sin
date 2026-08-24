@@ -20,9 +20,8 @@ const toughness: QualityData = {
 }
 
 function renderWithQualities(qualities: QualityData[]) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.qualities = qualities
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

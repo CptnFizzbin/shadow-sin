@@ -10,12 +10,11 @@ import { LanguageSkillsList } from "./languageSkillsList.tsx"
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {
     renderWithProviders(<LanguageSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runnerData) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.languageSkills = [
           { name: "Sperethiel", rating: "native" },
           { name: "English", rating: 5, lingo: "Seattle Sprawl" },
         ]
-        return runnerData
       } })),
     })
 

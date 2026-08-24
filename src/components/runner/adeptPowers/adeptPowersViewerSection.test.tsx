@@ -21,10 +21,9 @@ const improvedReflexes: AdeptPowerData = {
 }
 
 function renderWithPowers(powers: AdeptPowerData[]) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes[AttributeKey.magic] = 6
     data.powers = powers
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

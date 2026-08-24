@@ -10,9 +10,8 @@ const stateFor = (runner: RunnerData) => ({ runner })
 describe("InitiativeSelectors.selectPassesCompleted", () => {
   it("returns the completed passes as a set", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.passesCompleted = [1, 2]
-      return s
     } })
 
     // Act / Assert
@@ -23,9 +22,8 @@ describe("InitiativeSelectors.selectPassesCompleted", () => {
 describe("InitiativeSelectors.selectRolledResults", () => {
   it("returns the rolled results", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.rolledResults = [4, 3]
-      return s
     } })
 
     // Act / Assert
@@ -44,9 +42,8 @@ describe("InitiativeSelectors.selectGoingFirst", () => {
 
   it("returns the stored value", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.goingFirst = true
-      return s
     } })
 
     // Act / Assert
@@ -65,9 +62,8 @@ describe("InitiativeSelectors.selectExtraPasses", () => {
 
   it("returns the stored value", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.initiative.extraPasses = 2
-      return s
     } })
 
     // Act / Assert

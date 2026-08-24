@@ -10,9 +10,8 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { LifestylePanel } from "./lifestylePanel.tsx"
 
 function renderWithLifestyle(lifestyle: { quality: LifestyleType, monthsPaid: number } | null) {
-  const runnerData = runnerDataFactory({ override: (data) => {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.profile.lifestyle = lifestyle
-    return data
   } })
   const store = new RunnerDataStore(runnerData)
 

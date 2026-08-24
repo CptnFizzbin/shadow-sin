@@ -21,9 +21,8 @@ const stateFor = (runner: RunnerData) => ({ runner })
 describe("selectActiveSkills", () => {
   it("returns the runner's active skills", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      return s
     } })
 
     // Act / Assert
@@ -34,9 +33,8 @@ describe("selectActiveSkills", () => {
 describe("selectSkillGroups", () => {
   it("returns the runner's skill groups", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 2 }]
-      return s
     } })
 
     // Act / Assert
@@ -67,10 +65,9 @@ describe("selectLanguageSkills", () => {
 describe("selectSkillValue", () => {
   it("returns the max of the skill's own rating and its group's rating", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 4 }]
-      return s
     } })
 
     // Act / Assert
@@ -89,9 +86,8 @@ describe("selectSkillValue", () => {
 describe("selectSkillSpecialization", () => {
   it("returns the runner's specialization for the skill", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2, specialization: "Semi-Automatics" }]
-      return s
     } })
 
     // Act / Assert
@@ -116,9 +112,8 @@ describe("selectAllowedActiveSkills", () => {
 describe("SkillsSelectors.selectActiveSkills", () => {
   it("returns the runner's active skills", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      return s
     } })
 
     // Act / Assert
@@ -129,10 +124,9 @@ describe("SkillsSelectors.selectActiveSkills", () => {
 describe("SkillsSelectors.selectValue", () => {
   it("returns the max of the skill's own rating and its group's rating", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
       s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 4 }]
-      return s
     } })
 
     // Act / Assert
@@ -143,9 +137,8 @@ describe("SkillsSelectors.selectValue", () => {
 describe("SkillsSelectors.selectSpecialization", () => {
   it("returns the runner's specialization for the skill", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2, specialization: "Semi-Automatics" }]
-      return s
     } })
 
     // Act / Assert

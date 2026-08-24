@@ -43,7 +43,7 @@ const sinWithLicense: SinData = { ...fakeSin, items: { ...fakeSin.items, childId
 /** `SinDataCard` reads its own covered licenses from the store via `sin.id`, so every render needs the SIN itself seeded into gear. */
 const renderSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}, onOpen?: () => void) => {
   const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [sin.id]: sin, ...extraGear } }) }),
+    runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } }),
   )
   renderWithProviders(<SinDataCard sin={sin} onOpen={onOpen} />, { runnerStore })
   return runnerStore
@@ -62,7 +62,7 @@ const RemovableSinCard = ({ sinId }: { sinId: SinData["id"] }) => {
 
 const renderRemovableSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}) => {
   const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [sin.id]: sin, ...extraGear } }) }),
+    runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } }),
   )
   renderWithProviders(<RemovableSinCard sinId={sin.id} />, { runnerStore })
   return runnerStore

@@ -21,10 +21,9 @@ describe.concurrent("applyImprovement — complexFormIncrease", () => {
       baseRating: 2,
       newRating: 3,
     }
-    const sheet = runnerDataFactory({ override: (draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 2 }]
       draft.karma.current = 20
-      return draft
     } })
 
     // Act
@@ -44,9 +43,8 @@ describe.concurrent("applyImprovement — complexFormIncrease", () => {
       baseRating: 1,
       newRating: 2,
     }
-    const sheet = runnerDataFactory({ override: (draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.complexForms = [{ kind: EntityKind.complexForm, id: "cf1", name: "Resonance Spike", rating: 1 }]
-      return draft
     } })
 
     // Act + Assert

@@ -58,7 +58,7 @@ const accessory: ItemData = {
 
 const renderWeaponCard = (data: WeaponData, extraGear: Record<string, ItemData> = {}) => {
   const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [data.id]: data, ...extraGear } }) }),
+    runnerDataFactory({ items: { [data.id]: data, ...extraGear } }),
   )
   renderWithProviders(<WeaponDataCard weapon={data} />, { runnerStore })
   return runnerStore

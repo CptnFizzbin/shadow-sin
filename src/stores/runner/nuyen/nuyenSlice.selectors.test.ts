@@ -20,9 +20,8 @@ describe("selectNuyen", () => {
 describe("selectNuyenAmount", () => {
   it("returns the runner's current nuyen", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen.current = 1500
-      return s
     } })
 
     // Act / Assert
@@ -53,9 +52,8 @@ describe("NuyenSelectors.select", () => {
 describe("NuyenSelectors.selectAmount", () => {
   it("returns the runner's current nuyen", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.nuyen.current = 1500
-      return s
     } })
 
     // Act / Assert

@@ -19,9 +19,8 @@ describe.concurrent("applyImprovement — initiationIncrease", () => {
       baseGrade: 0,
       newGrade: 1,
     }
-    const sheet = runnerDataFactory({ override: (draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.karma.current = 13
-      return draft
     } })
 
     // Act
@@ -42,9 +41,8 @@ describe.concurrent("applyImprovement — submersionIncrease", () => {
       baseGrade: 0,
       newGrade: 1,
     }
-    const sheet = runnerDataFactory({ override: (draft) => {
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.karma.current = 13
-      return draft
     } })
 
     // Act

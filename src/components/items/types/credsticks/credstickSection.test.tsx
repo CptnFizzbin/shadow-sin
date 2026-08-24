@@ -48,11 +48,12 @@ describe("CredstickSection", () => {
   it("withdrawing a credstick removes it, once confirmed, and deposits its balance to nuyen", async () => {
     // Arrange
     renderWithProviders(<CredstickSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (data) => {
-        data.gear = { [streetStick.id]: streetStick }
-        data.nuyen.current = 100
-        return data
-      } })),
+      runnerStore: new RunnerDataStore(runnerDataFactory({
+        items: { [streetStick.id]: streetStick },
+        afterBuild: (data) => {
+          data.nuyen.current = 100
+        },
+      })),
     })
 
     // Act

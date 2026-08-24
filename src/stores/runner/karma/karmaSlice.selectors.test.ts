@@ -20,9 +20,8 @@ describe("selectKarma", () => {
 describe("selectCurrentKarma", () => {
   it("returns the runner's current karma", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.karma.current = 5
-      return s
     } })
 
     // Act / Assert
@@ -33,9 +32,8 @@ describe("selectCurrentKarma", () => {
 describe("selectTotalKarma", () => {
   it("returns the runner's total karma", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.karma.total = 20
-      return s
     } })
 
     // Act / Assert
@@ -56,9 +54,8 @@ describe("KarmaSelectors.select", () => {
 describe("KarmaSelectors.selectCurrent", () => {
   it("returns the runner's current karma", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.karma.current = 5
-      return s
     } })
 
     // Act / Assert
@@ -69,9 +66,8 @@ describe("KarmaSelectors.selectCurrent", () => {
 describe("KarmaSelectors.selectTotal", () => {
   it("returns the runner's total karma", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (s) => {
+    const runner = runnerDataFactory({ afterBuild: (s) => {
       s.karma.total = 20
-      return s
     } })
 
     // Act / Assert

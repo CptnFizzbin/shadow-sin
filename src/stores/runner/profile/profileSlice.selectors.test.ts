@@ -11,11 +11,10 @@ const stateFor = (runner: RunnerData) => ({ runner })
 describe.concurrent("selectPublicAwareness", () => {
   it("computes floor((streetCred + notoriety) / 3) plus the modifier", () => {
     // Arrange
-    const state = runnerDataFactory({ override: (data) => {
+    const state = runnerDataFactory({ afterBuild: (data) => {
       data.profile.streetCred = 5
       data.profile.notoriety = 2
       data.profile.publicAwarenessModifier = 1
-      return data
     } })
 
     // Act
@@ -27,10 +26,9 @@ describe.concurrent("selectPublicAwareness", () => {
 
   it("defaults the modifier to 0 when unset", () => {
     // Arrange
-    const state = runnerDataFactory({ override: (data) => {
+    const state = runnerDataFactory({ afterBuild: (data) => {
       data.profile.streetCred = 4
       data.profile.notoriety = 0
-      return data
     } })
 
     // Act
@@ -42,11 +40,10 @@ describe.concurrent("selectPublicAwareness", () => {
 
   it("never returns a value below 0", () => {
     // Arrange
-    const state = runnerDataFactory({ override: (data) => {
+    const state = runnerDataFactory({ afterBuild: (data) => {
       data.profile.streetCred = 0
       data.profile.notoriety = 0
       data.profile.publicAwarenessModifier = -5
-      return data
     } })
 
     // Act
@@ -70,10 +67,9 @@ describe("ProfileSelectors.select", () => {
 describe("ProfileSelectors.selectDisplayName", () => {
   it("falls back to the legal name when no alias is set", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.alias = ""
       data.profile.name = "John Doe"
-      return data
     } })
 
     // Act / Assert
@@ -82,10 +78,9 @@ describe("ProfileSelectors.selectDisplayName", () => {
 
   it("prefers the alias when set", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.alias = "Ghost"
       data.profile.name = "John Doe"
-      return data
     } })
 
     // Act / Assert
@@ -96,11 +91,10 @@ describe("ProfileSelectors.selectDisplayName", () => {
 describe("ProfileSelectors.selectPublicAwareness", () => {
   it("computes floor((streetCred + notoriety) / 3) plus the modifier", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.streetCred = 5
       data.profile.notoriety = 2
       data.profile.publicAwarenessModifier = 1
-      return data
     } })
 
     // Act / Assert: floor((5 + 2) / 3) + 1 = 2 + 1 = 3
@@ -111,9 +105,8 @@ describe("ProfileSelectors.selectPublicAwareness", () => {
 describe("ProfileSelectors.selectLifestyleQuality/selectLifestyleMonthsPaid/selectLifestyleInfo", () => {
   it("returns undefined for all three when no lifestyle is set", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.lifestyle = null
-      return data
     } })
 
     // Act / Assert
@@ -124,9 +117,8 @@ describe("ProfileSelectors.selectLifestyleQuality/selectLifestyleMonthsPaid/sele
 
   it("returns the denormalized lifestyle once one is set", () => {
     // Arrange
-    const runner = runnerDataFactory({ override: (data) => {
+    const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.lifestyle = { quality: LifestyleType.Middle, monthsPaid: 2 }
-      return data
     } })
 
     // Act / Assert
