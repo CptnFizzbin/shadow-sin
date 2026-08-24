@@ -3,10 +3,14 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import type { KnownNodeForm } from "#/lib/hooks/runner/matrix/form/useKnownNodeForm.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
+import { AccessLevel, AccessLevelLabels } from "#/system/matrix/accessLevel.ts"
+import { NodeType, NodeTypeLabels } from "#/system/matrix/nodeType.ts"
 
 const NODE_STAT_MIN = 0
 const NODE_STAT_MAX = 99
+
+const nodeTypeOptions = Object.values(NodeType).map((value) => ({ value, label: NodeTypeLabels[value] }))
+const accessLevelOptions = Object.values(AccessLevel).map((value) => ({ value, label: AccessLevelLabels[value] }))
 
 interface MatrixNodeFieldsProps {
   form: KnownNodeForm
@@ -26,11 +30,11 @@ export const MatrixNodeFields: FC<MatrixNodeFieldsProps> = ({ form }) => {
 
       <Stack direction="row" sx={{ gap: 2 }}>
         <form.AppField name="nodeType">
-          {(field) => <field.SelectField label="Node Type" fullWidth options={SelectorOptions.nodeType} />}
+          {(field) => <field.SelectField label="Node Type" fullWidth options={nodeTypeOptions} />}
         </form.AppField>
 
         <form.AppField name="accessLevel">
-          {(field) => <field.SelectField label="Access Level" fullWidth options={SelectorOptions.accessLevel} />}
+          {(field) => <field.SelectField label="Access Level" fullWidth options={accessLevelOptions} />}
         </form.AppField>
       </Stack>
 

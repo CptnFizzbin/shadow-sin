@@ -3,7 +3,11 @@ import Stack from "@mui/material/Stack"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { deviceFormOpts } from "#/lib/hooks/items/types/devices/forms/useDeviceForm.tsx"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
+
+const deviceTypeOptions = [
+  { label: "Commlink", value: "commlink" },
+  { label: "Other", value: "other" },
+]
 
 export const DeviceFormFields = withFieldGroup({
   ...deviceFormOpts,
@@ -18,7 +22,7 @@ export const DeviceFormFields = withFieldGroup({
               label="Device Type"
               size="small"
               fullWidth
-              options={SelectorOptions.deviceType}
+              options={deviceTypeOptions}
             />
           )}
         </group.AppField>

@@ -11,7 +11,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useTraditionForm } from "#/lib/hooks/runner/magician/spells/form/useTraditionForm.ts"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
+import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
 
 interface TraditionFormDialogProps extends ControlledDialogProps<TraditionData> {
   tradition?: TraditionData | null
@@ -43,7 +43,7 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
                 <field.SelectField
                   label="Drain Resist"
                   required
-                  options={SelectorOptions.drainAttribute}
+                  options={drainAttributeSelectOptions}
                   slotProps={{
                     select: {
                       startAdornment: (
@@ -63,31 +63,31 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
 
                 <form.AppField name="spiritTypes.combat">
                   {(field) => (
-                    <field.SelectField label="Combat" required options={SelectorOptions.spiritType} />
+                    <field.SelectField label="Combat" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.detection">
                   {(field) => (
-                    <field.SelectField label="Detection" required options={SelectorOptions.spiritType} />
+                    <field.SelectField label="Detection" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.health">
                   {(field) => (
-                    <field.SelectField label="Health" required options={SelectorOptions.spiritType} />
+                    <field.SelectField label="Health" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.illusion">
                   {(field) => (
-                    <field.SelectField label="Illusion" required options={SelectorOptions.spiritType} />
+                    <field.SelectField label="Illusion" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.manipulation">
                   {(field) => (
-                    <field.SelectField label="Manipulation" required options={SelectorOptions.spiritType} />
+                    <field.SelectField label="Manipulation" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
               </Stack>

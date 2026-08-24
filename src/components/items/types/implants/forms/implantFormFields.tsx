@@ -1,7 +1,9 @@
+import Box from "@mui/material/Box"
 import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
@@ -10,8 +12,50 @@ import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { implantFormOpts } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { isImplant } from "#/system/gear/implantData.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
+import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
+
+const implantTypeOptions = [
+  { label: "Cyberware", value: ImplantType.cyberware },
+  { label: "Bioware", value: ImplantType.bioware },
+]
+
+const implantGradeOptions = [
+  {
+    label: (
+      <Stack
+        direction="row"
+        sx={{ justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}
+      >
+        <Box>Standard</Box>
+        {" "}
+        <Typography color="text.secondary">
+          ×1 ¥ | ×1.0 Ess
+        </Typography>
+      </Stack>
+    ),
+    value: ImplantGrade.standard,
+  },
+  {
+    label: (
+      <Stack
+        direction="row"
+        sx={{ justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}
+      >
+        <Box>Alpha</Box>
+        {" "}
+        <Typography color="text.secondary">
+          ×2 ¥ | ×0.8 Ess
+        </Typography>
+      </Stack>
+    ),
+    value: ImplantGrade.alpha,
+  },
+]
+
+const implantLocationOptions = Object.values(ImplantLocation).map((location) => ({
+  label: location,
+  value: location,
+}))
 
 interface CapacitySlotsChipProps extends ChipProps {
   implantId: UUID
@@ -45,7 +89,7 @@ export const ImplantFormFields = withFieldGroup({
                 label="Type"
                 size="small"
                 fullWidth
-                options={SelectorOptions.implantType}
+                options={implantTypeOptions}
               />
             )}
           </group.AppField>
@@ -56,7 +100,7 @@ export const ImplantFormFields = withFieldGroup({
                 label="Grade"
                 size="small"
                 fullWidth
-                options={SelectorOptions.implantGrade}
+                options={implantGradeOptions}
               />
             )}
           </group.AppField>
@@ -128,7 +172,7 @@ export const ImplantFormFields = withFieldGroup({
                       label="Location"
                       fullWidth
                       size="small"
-                      options={SelectorOptions.implantLocation}
+                      options={implantLocationOptions}
                     />
                   )}
                 </group.AppField>

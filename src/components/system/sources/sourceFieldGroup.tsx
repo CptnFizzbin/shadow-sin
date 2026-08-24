@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
 import type { SourceData } from "#/system/sourceData.ts"
+import { bookOptions } from "#/system/sourceData.ts"
 
 interface SourceFormFieldsProps {
   source?: SourceData
@@ -36,7 +36,7 @@ export const SourceFieldGroup = withFieldGroup({
               size="small"
               fullWidth
               sx={{ flexGrow: 1 }}
-              options={[{ label: "", value: "" }, ...SelectorOptions.book]}
+              options={[{ label: "", value: "" }, ...bookOptions]}
             />
           )}
         </group.AppField>

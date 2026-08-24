@@ -7,12 +7,25 @@ import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { weaponFieldMap, weaponFormOpts } from "#/lib/hooks/items/types/weapons/forms/useWeaponForm.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { MeleeWeaponType, WeaponType } from "#/system/gear/weaponData.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { FirearmFormFields } from "./firearmFormFields.tsx"
 import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
 import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
+
+const weaponTypeOptions = [
+  { label: "Melee", value: WeaponType.melee },
+  { label: "Firearm", value: WeaponType.firearm },
+  { label: "Thrown", value: WeaponType.thrown },
+  { label: "Projectile", value: WeaponType.projectile },
+  { label: "Exotic", value: WeaponType.exotic },
+  { label: "Other", value: WeaponType.other },
+]
+
+const meleeTypeOptions = [
+  { label: "Blade", value: MeleeWeaponType.blade },
+  { label: "Club", value: MeleeWeaponType.club },
+]
 
 const meleeSkillByType: Record<MeleeWeaponType, SkillKey> = {
   [MeleeWeaponType.blade]: SkillKey.blades,
@@ -40,7 +53,7 @@ export const WeaponFormFields = withFieldGroup({
               label="Weapon Type"
               size="small"
               fullWidth
-              options={SelectorOptions.weaponType}
+              options={weaponTypeOptions}
             />
           )}
         </group.AppField>
@@ -69,7 +82,7 @@ export const WeaponFormFields = withFieldGroup({
                             label="Melee Weapon Type"
                             size="small"
                             fullWidth
-                            options={SelectorOptions.meleeWeaponType}
+                            options={meleeTypeOptions}
                           />
                         )}
                       </group.AppField>

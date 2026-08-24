@@ -7,13 +7,41 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { weaponFieldMap, weaponFormOpts } from "#/lib/hooks/items/types/weapons/forms/useWeaponForm.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import type { FirearmAttachmentPoint } from "#/system/gear/weaponData.ts"
+import { FirearmAttachmentPoint } from "#/system/gear/weaponData.ts"
 import { firearmTypes } from "#/system/gear/weapons/firearms/firearmTypeInfo.ts"
 import type { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
-import { SelectorOptions } from "#/system/selectorOptions.tsx"
 
 import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
 import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
+
+const firearmTypeOptions = Object.entries(firearmTypes).map(([type, value]) => ({
+  label: type,
+  value: type,
+  group: value.weaponGroup,
+}))
+
+const ammoTypeOptions = [
+  { label: "Break-action", value: "break" },
+  { label: "Clip", value: "clip" },
+  { label: "Drum", value: "drum" },
+  { label: "Muzzle-loader", value: "muzzle" },
+  { label: "Magazine", value: "magazine" },
+  { label: "Cylinder", value: "cylinder" },
+  { label: "Belt", value: "belt" },
+]
+
+const firingModes = [
+  { label: "Single Shot", value: "SS" },
+  { label: "Semi Auto", value: "SA" },
+  { label: "Burst Fire", value: "B" },
+  { label: "Full Auto", value: "FA" },
+]
+
+const attachmentSlots = [
+  { label: "Top", value: FirearmAttachmentPoint.Top },
+  { label: "Barrel", value: FirearmAttachmentPoint.Barrel },
+  { label: "Under", value: FirearmAttachmentPoint.Under },
+]
 
 export const FirearmFormFields = withFieldGroup({
   ...weaponFormOpts,
@@ -38,7 +66,7 @@ export const FirearmFormFields = withFieldGroup({
             label="Firearm Type"
             size="small"
             fullWidth
-            options={SelectorOptions.firearmType}
+            options={firearmTypeOptions}
           />
         )}
       </group.AppField>
@@ -74,7 +102,7 @@ export const FirearmFormFields = withFieldGroup({
             }
             return (
               <Stack direction="row" sx={{ flexWrap: "wrap" }}>
-                {SelectorOptions.firingMode.map(({ label, value }) => (
+                {firingModes.map(({ label, value }) => (
                   <FormControlLabel
                     key={value}
                     label={label}
@@ -106,7 +134,7 @@ export const FirearmFormFields = withFieldGroup({
             }
             return (
               <Stack direction="row" sx={{ flexWrap: "wrap" }}>
-                {SelectorOptions.firearmAttachmentPoint.map(({ label, value }) => (
+                {attachmentSlots.map(({ label, value }) => (
                   <FormControlLabel
                     key={value}
                     label={label}
@@ -135,7 +163,7 @@ export const FirearmFormFields = withFieldGroup({
                 label="Feed Type"
                 size="small"
                 sx={{ flex: 1 }}
-                options={SelectorOptions.ammoType}
+                options={ammoTypeOptions}
               />
             )}
           </group.AppField>
