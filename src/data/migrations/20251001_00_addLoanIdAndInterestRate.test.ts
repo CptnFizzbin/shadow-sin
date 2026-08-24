@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20251001000000_addLoanIdAndInterestRate.ts"
+import migration from "./20251001_00_addLoanIdAndInterestRate.ts"
 
 describe.concurrent("003_addLoanIdAndInterestRate", () => {
   it("initialises an empty nuyen object when missing", () => {

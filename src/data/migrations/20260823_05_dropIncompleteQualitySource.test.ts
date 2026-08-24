@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260823173857_dropIncompleteQualitySource.ts"
+import migration from "./20260823_05_dropIncompleteQualitySource.ts"
 
 describe.concurrent("032_dropIncompleteQualitySource", () => {
   it("returns the character unchanged when there are no qualities", () => {

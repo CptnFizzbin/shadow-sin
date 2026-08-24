@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260809190638_addMatrixGameState.ts"
+import migration from "./20260809_02_addMatrixGameState.ts"
 
 describe.concurrent("025_addMatrixGameState", () => {
   it("defaults to an empty Matrix Game State when there is no prior matrix data", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260502000000_splitPainToleranceEffects.ts"
+import migration from "./20260502_00_splitPainToleranceEffects.ts"
 
 describe.concurrent("011_splitPainToleranceEffects", () => {
   it("converts positive painTolerance in qualities to highPainTolerance", () => {

@@ -4,7 +4,7 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import migration from "./20260823131421_moveItems.ts"
+import migration from "./20260823_01_moveItems.ts"
 
 // Minimal ItemData satisfying today's shape — this migration only moves `gear` wholesale, so the
 // item's own fields beyond `itemType` are irrelevant to what's under test.

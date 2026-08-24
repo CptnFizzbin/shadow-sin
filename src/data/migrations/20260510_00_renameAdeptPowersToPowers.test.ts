@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260510000000_renameAdeptPowersToPowers.ts"
+import migration from "./20260510_00_renameAdeptPowersToPowers.ts"
 
 describe.concurrent("014_renameAdeptPowersToPowers", () => {
   it("renames adeptPowers to powers", () => {

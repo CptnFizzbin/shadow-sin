@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260809150921_normalizeArmorRating.ts"
+import migration from "./20260809_01_normalizeArmorRating.ts"
 
 describe.concurrent("024_normalizeArmorRating", () => {
   it("returns the character unchanged when there is no gear", () => {

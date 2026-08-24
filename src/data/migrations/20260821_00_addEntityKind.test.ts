@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260821001653_addEntityKind.ts"
+import migration from "./20260821_00_addEntityKind.ts"
 
 describe.concurrent("026_addEntityKind", () => {
   it("stamps kind: \"runner\" on an otherwise-empty character", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260424000000_addSpiritsArray.ts"
+import migration from "./20260424_00_addSpiritsArray.ts"
 
 describe.concurrent("009_addSpiritsArray", () => {
   it("initialises spirits to an empty array when missing", () => {

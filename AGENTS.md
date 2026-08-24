@@ -165,7 +165,7 @@ into the equivalent migration's `timestamp` by position in `migrations.ts`'s dec
 chronological (enforced by an ordering check in that file).
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
-is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.mjs`. This
+is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This
 guarantees that once a PR merges, the resulting build's `APP_VERSION` (the new latest commit) is newer than every
 migration it introduced, so a runner's `_meta_.appVersion` never needs to exceed the live app version to be
 considered fully migrated.
@@ -175,10 +175,12 @@ character data in user storage. Changing its logic would cause different behavio
 silently mis-migrate characters.
 
 - **Schema changes always require a new migration** — when a `RunnerData` field is added, renamed, or removed,
-  create a new migration file named `<timestamp>_describeChange.ts`, where `<timestamp>` is the current UTC time
-  formatted `YYYYMMDDHHMMSS` (e.g. `date -u +%Y%m%d%H%M%S`) — for example
-  `20260824153000_addFoo.ts`. Register it at the bottom of `migrations.ts`, and set `timestamp` on the migration
-  object to the same instant as an ISO 8601 string (e.g. `"2026-08-24T15:30:00Z"`).
+  create a new migration file named `<date>_<seq>_describeChange.ts`, where `<date>` is the current UTC date
+  formatted `YYYYMMDD` (e.g. `date -u +%Y%m%d`) and `<seq>` is a zero-padded two-digit counter starting at `00` for
+  the first migration created that day, `01` for a second one the same day, and so on — for example
+  `20260824_00_addFoo.ts`. Register it at the bottom of `migrations.ts`, and set `timestamp` on the migration object
+  to the actual creation instant as an ISO 8601 string with a UTC offset (e.g. `"2026-08-24T15:30:00Z"`) — `<seq>`
+  only disambiguates same-day filenames; it isn't part of the timestamp itself.
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
   reference the old field name because they operate on pre-rename data. Update them to handle *both* the old and new
   field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for runners that were already partially

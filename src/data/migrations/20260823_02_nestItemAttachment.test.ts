@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260823131422_nestItemAttachment.ts"
+import migration from "./20260823_02_nestItemAttachment.ts"
 
 describe.concurrent("029_nestItemAttachment", () => {
   it("backfills RunnerData's own degenerate items field when absent", () => {

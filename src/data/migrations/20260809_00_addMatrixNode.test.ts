@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260809120852_addMatrixNode.ts"
+import migration from "./20260809_00_addMatrixNode.ts"
 
 describe.concurrent("023_addMatrixNode", () => {
   it("defaults all matrix node fields when matrix is absent", () => {

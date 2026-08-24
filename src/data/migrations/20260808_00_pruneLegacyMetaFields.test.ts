@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260808030307_pruneLegacyMetaFields.ts"
+import migration from "./20260808_00_pruneLegacyMetaFields.ts"
 
 describe.concurrent("022_pruneLegacyMetaFields", () => {
   it("returns the character unchanged", () => {

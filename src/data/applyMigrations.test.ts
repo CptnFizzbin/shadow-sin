@@ -31,16 +31,16 @@ describe.concurrent("applyMigrations", () => {
     expect(result.sprites).toEqual([])
     expect(result.qualities).toEqual([])
     expect(result.contacts).toEqual([])
-    // Not asserted empty here — migration 20260809120852 (addMatrixNode) always backfills a
-    // blank flat `matrix` node first, so by the time 20260809190638 (addMatrixGameState) runs it
+    // Not asserted empty here — migration 20260809_00 (addMatrixNode) always backfills a
+    // blank flat `matrix` node first, so by the time 20260809_02 (addMatrixGameState) runs it
     // always has prior matrix data to convert into knownNodes[0]. See
-    // 20260809190638_addMatrixGameState.test.ts for the "no prior matrix data" case, exercised by
+    // 20260809_02_addMatrixGameState.test.ts for the "no prior matrix data" case, exercised by
     // calling that migration's `up` in isolation.
     expect(result.gameState.matrix.knownNodes).toHaveLength(1)
   })
 
   it("skips migrations already covered by _meta_.appVersion", () => {
-    // Arrange — pre-mark migration 20251001000000 (addLoanIdAndInterestRate) as applied with a
+    // Arrange — pre-mark migration 20251001_00 (addLoanIdAndInterestRate) as applied with a
     // known stable loan id
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {

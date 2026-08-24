@@ -1,6 +1,6 @@
 import { AsyncDebouncer } from "@tanstack/pacer"
 
-import { applyMigrations, resolveRunnerAppVersion } from "#/data/applyMigrations.ts"
+import { applyMigrations, resolveRawRunnerAppVersion } from "#/data/applyMigrations.ts"
 import { isFullyMigrated } from "#/data/migrations.ts"
 import { RunnerNotFoundError } from "#/lib/errors/runnerNotFoundError.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
@@ -58,7 +58,7 @@ export class RunnerManager {
       throw new RunnerNotFoundError(String(id))
     }
 
-    const preAppVersion = resolveRunnerAppVersion(raw as object)
+    const preAppVersion = resolveRawRunnerAppVersion(raw as object)
     const migrated = applyMigrations(raw as object)
     const postMeta = migrated._meta_
 

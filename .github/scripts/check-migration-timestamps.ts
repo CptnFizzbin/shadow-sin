@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 /**
  * Verifies that every runner migration added in this PR has a `timestamp` newer than the base
  * branch's latest commit — see "Character migrations" in AGENTS.md.
  *
  * Usage:
- *   node check-migration-timestamps.mjs <base-ref>
+ *   npx tsx check-migration-timestamps.ts <base-ref>
  */
 
 import { execFileSync } from "node:child_process"
@@ -15,24 +15,24 @@ const MIGRATIONS_DIR = "src/data/migrations/"
 const [, , baseRef] = process.argv
 
 if (!baseRef) {
-  console.error("Usage: check-migration-timestamps.mjs <base-ref>")
+  console.error("Usage: check-migration-timestamps.ts <base-ref>")
   process.exit(1)
 }
 
-function git(args) {
+function git(args: string[]): string {
   return execFileSync("git", args, { encoding: "utf8" }).trim()
 }
 
-function addedMigrationFiles() {
+function addedMigrationFiles(): string[] {
   const diff = git(["diff", "--name-status", `${baseRef}...HEAD`, "--", MIGRATIONS_DIR])
   return diff
     .split("\n")
     .filter(Boolean)
     .filter((line) => line.startsWith("A") && !line.endsWith(".test.ts"))
-    .map((line) => line.split("\t").at(-1))
+    .map((line) => line.split("\t").at(-1) as string)
 }
 
-function extractTimestamp(filePath) {
+function extractTimestamp(filePath: string): string | undefined {
   const contents = readFileSync(filePath, "utf8")
   const match = /timestamp:\s*"([^"]+)"/.exec(contents)
   return match?.[1]

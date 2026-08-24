@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260823000236_addRunnerName.ts"
+import migration from "./20260823_00_addRunnerName.ts"
 
 describe.concurrent("027_addRunnerName", () => {
   it("backfills name from profile.alias when set", () => {

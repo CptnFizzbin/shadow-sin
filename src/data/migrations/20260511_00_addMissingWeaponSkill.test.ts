@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260511000000_addMissingWeaponSkill.ts"
+import migration from "./20260511_00_addMissingWeaponSkill.ts"
 
 describe.concurrent("015_addMissingWeaponSkill", () => {
   it("sets automatics skill for a firearm without a skill", () => {

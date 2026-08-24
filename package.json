@@ -91,6 +91,7 @@
     "react-dom": "^19.2.8",
     "reselect": "^5.2.0",
     "rolldown": "^1.2.4",
+    "tsx": "^4.23.12",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-7": "npm:typescript@^7.0.0",
     "typescript-eslint": "^8.67.0",

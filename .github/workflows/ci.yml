@@ -56,10 +56,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: ./.github/actions/setup-workspace
+
       - name: Verify new migration timestamps are newer than the base branch
         run: |
           git fetch origin "${{ github.base_ref }}"
-          node .github/scripts/check-migration-timestamps.mjs "origin/${{ github.base_ref }}"
+          yarn tsx .github/scripts/check-migration-timestamps.ts "origin/${{ github.base_ref }}"
 
   unit-tests:
     name: Unit Tests

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260418000000_addMeta.ts"
+import migration from "./20260418_00_addMeta.ts"
 
 describe.concurrent("006_addMeta", () => {
   it("creates an empty _meta_ object when missing", () => {

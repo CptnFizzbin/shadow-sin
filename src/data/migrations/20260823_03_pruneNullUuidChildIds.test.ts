@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260823135804_pruneNullUuidChildIds.ts"
+import migration from "./20260823_03_pruneNullUuidChildIds.ts"
 
 const NULL_UUID = "00000000-0000-0000-0000-000000000000"
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260503000000_nestSpellDrain.ts"
+import migration from "./20260503_00_nestSpellDrain.ts"
 
 describe.concurrent("012_nestSpellDrain", () => {
   it("does nothing when spells array is absent", () => {

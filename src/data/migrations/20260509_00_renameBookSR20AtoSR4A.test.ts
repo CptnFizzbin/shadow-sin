@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260509000000_renameBookSR20AtoSR4A.ts"
+import migration from "./20260509_00_renameBookSR20AtoSR4A.ts"
 
 describe.concurrent("013_renameBookSR20AtoSR4A", () => {
   it("does nothing when character has no source-bearing fields", () => {

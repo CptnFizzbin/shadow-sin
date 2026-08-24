@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20250801000000_addSpellThreshold.ts"
+import migration from "./20250801_00_addSpellThreshold.ts"
 
 describe.concurrent("002_addSpellThreshold", () => {
   it("initialises spells to an empty array when missing", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260716000000_addMagicAdvancementGrades.ts"
+import migration from "./20260716_00_addMagicAdvancementGrades.ts"
 
 describe.concurrent("019_addMagicAdvancementGrades", () => {
   it("defaults both grades to 0 when neither field is present", () => {

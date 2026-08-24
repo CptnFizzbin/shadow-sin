@@ -1,5 +1,6 @@
 import { sort } from "fast-sort"
 import { produce } from "immer"
+import { z } from "zod"
 
 import type { RunnerData } from "#/system/runnerData.ts"
 import { RUNNER_META_EPOCH, RunnerMetaSchema } from "#/system/runnerData.ts"
@@ -22,23 +23,35 @@ const migrationsInOrder = sort(migrations).asc((migration) => new Date(migration
 
 const isNewer = (a: string, b: string): boolean => new Date(a).getTime() > new Date(b).getTime()
 
+// A raw, not-yet-migrated `_meta_` may be the current shape (partial — a brand new runner has
+// neither field yet), or the old sequential-integer scheme's `{ version: number }`. `.partial()`
+// keeps every field optional here rather than applying `RunnerMetaSchema`'s defaults, since
+// `resolveRunnerAppVersion` below needs to distinguish "absent" from "present" for each field.
+const RawRunnerMetaSchema = RunnerMetaSchema.partial().extend({
+  version: z.number().optional(),
+})
+
 /**
  * Resolves the `appVersion` a raw runner's `_meta_` implies, before any migration has run.
  *
  * Runners stamped under the old sequential-integer scheme carry `_meta_.version` — the highest
  * migration index applied — instead of `_meta_.appVersion`. That index is translated into the
  * equivalent timestamp by indexing into `migrations`' declaration order, which is guaranteed
- * chronological by the ordering check in `migrations.ts`.
+ * chronological by the ordering check in `migrations.ts` — every one of those old migrations is
+ * idempotent, but not all migrations added since are (e.g. `moveItems` overwrites `_data_` on a
+ * second run), so re-deriving the real timestamp here (rather than treating any legacy `version`
+ * as unmigrated) is what keeps a re-run limited to migrations that are actually still pending.
  */
-export function resolveRunnerAppVersion(runner: object): string {
-  const rawMeta = "_meta_" in runner ? runner._meta_ : undefined
-  if (typeof rawMeta !== "object" || rawMeta === null) return RUNNER_META_EPOCH
-
-  const meta = rawMeta as Record<string, unknown>
-  if (typeof meta.appVersion === "string") return meta.appVersion
-  if (typeof meta.version === "number") return migrations[meta.version - 1]?.timestamp ?? RUNNER_META_EPOCH
+function resolveRunnerAppVersion(rawMeta: z.infer<typeof RawRunnerMetaSchema>): string {
+  if (typeof rawMeta.appVersion === "string") return rawMeta.appVersion
+  if (typeof rawMeta.version === "number") return migrations[rawMeta.version - 1]?.timestamp ?? RUNNER_META_EPOCH
 
   return RUNNER_META_EPOCH
+}
+
+/** {@link resolveRunnerAppVersion}, starting from a raw (not yet parsed) runner object's `_meta_`. */
+export function resolveRawRunnerAppVersion(runner: object): string {
+  return resolveRunnerAppVersion(RawRunnerMetaSchema.parse("_meta_" in runner ? runner._meta_ : {}))
 }
 
 /**
@@ -52,10 +65,8 @@ export function resolveRunnerAppVersion(runner: object): string {
  * to (and don't) check this themselves.
  */
 export function applyMigrations(runner: object): RunnerData {
-  const rawMeta = "_meta_" in runner && typeof runner._meta_ === "object" && runner._meta_ !== null
-    ? runner._meta_
-    : {}
-  const preMeta = RunnerMetaSchema.parse({ ...rawMeta, appVersion: resolveRunnerAppVersion(runner) })
+  const rawMeta = RawRunnerMetaSchema.parse("_meta_" in runner ? runner._meta_ : {})
+  const preMeta = RunnerMetaSchema.parse({ ...rawMeta, appVersion: resolveRunnerAppVersion(rawMeta) })
 
   const migrationsToRun = migrationsInOrder.filter((migration) => isNewer(migration.timestamp, preMeta.appVersion))
 

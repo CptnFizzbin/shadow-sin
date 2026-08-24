@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260823164233_addQualityIds.ts"
+import migration from "./20260823_04_addQualityIds.ts"
 
 describe.concurrent("031_addQualityIds", () => {
   it("returns the character unchanged when there are no qualities", () => {

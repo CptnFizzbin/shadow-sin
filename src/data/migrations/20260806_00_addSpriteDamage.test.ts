@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260806000000_addSpriteDamage.ts"
+import migration from "./20260806_00_addSpriteDamage.ts"
 
 describe.concurrent("020_addSpriteDamage", () => {
   it("does nothing when sprites array is absent", () => {

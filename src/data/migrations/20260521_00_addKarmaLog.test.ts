@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
 
-import migration from "./20260521000000_addKarmaLog.ts"
+import migration from "./20260521_00_addKarmaLog.ts"
 
 describe.concurrent("017_addKarmaLog", () => {
   it("adds an empty log array when the karma object has no log field", () => {
