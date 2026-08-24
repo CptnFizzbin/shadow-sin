@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
 interface QualityRowProps {

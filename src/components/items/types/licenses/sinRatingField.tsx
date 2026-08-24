@@ -4,7 +4,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
-import type { AnyItemForm, ItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
+import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 
 interface SinRatingFieldProps {
   form: AnyItemForm

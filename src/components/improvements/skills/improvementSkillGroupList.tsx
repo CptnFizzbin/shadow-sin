@@ -18,9 +18,9 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
-import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { getSkillGroupCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnSkillGroupEntry,

@@ -10,14 +10,14 @@ import {
 import { useLanguageSkillDialog } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
-import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useKnowledgeSkillsBuildPoints } from "#/lib/hooks/builder/buildPoints/useKnowledgeSkillsBuildPoints.ts"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
+import { useKnowledgeSkillsBuildPoints } from "#/hooks/builder/buildPoints/useKnowledgeSkillsBuildPoints.ts"
 import {
   useKnowledgeSkillPoints,
-} from "#/lib/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+} from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 

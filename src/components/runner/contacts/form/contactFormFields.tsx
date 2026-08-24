@@ -11,8 +11,8 @@ import { z } from "zod"
 
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { contactFormOpts } from "#/hooks/runner/contacts/form/useContactForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { contactFormOpts } from "#/lib/hooks/runner/contacts/form/useContactForm.tsx"
 import { FavourDirection } from "#/system/favourData.ts"
 
 const RATING_MIN = 1

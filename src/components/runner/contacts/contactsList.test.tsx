@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ContactData } from "#/system/contactData.ts"
 import { FavourDirection } from "#/system/favourData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"

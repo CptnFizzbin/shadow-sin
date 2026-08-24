@@ -5,8 +5,8 @@ import type { FC } from "react"
 import { useAllRunnerAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useAttributesBuildPoints } from "#/lib/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
+import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import {
   AttributeKey,

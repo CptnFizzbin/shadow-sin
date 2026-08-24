@@ -4,7 +4,7 @@ import type { FC } from "react"
 
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"

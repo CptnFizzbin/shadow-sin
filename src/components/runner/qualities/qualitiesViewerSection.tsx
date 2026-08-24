@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { QualitiesSelectors } from "#/lib/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
 import { useQualityInfoDialog } from "./dialogs/qualityInfoDialog.tsx"

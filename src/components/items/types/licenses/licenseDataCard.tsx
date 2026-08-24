@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 
 interface LicenseDataCardProps {

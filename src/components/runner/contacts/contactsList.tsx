@@ -5,8 +5,8 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"

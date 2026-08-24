@@ -16,7 +16,7 @@ import { useState } from "react"
 
 import { builderSections } from "#/components/builder/sections/builderSectionId.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { useBuilderBuildPointsApi } from "#/lib/hooks/builder/buildPoints/useBuildPointsApi.ts"
+import { useBuilderBuildPointsApi } from "#/hooks/builder/buildPoints/useBuildPointsApi.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 
 interface BpSummaryFooterProps {

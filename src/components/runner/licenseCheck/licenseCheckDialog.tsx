@@ -3,8 +3,8 @@ import type { FC } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { LicenseCheckProvider, useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { LicenseCheckProvider, useLicenseCheck } from "#/contexts/runner/licenseCheckContext.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 
 import { LicenseCheckResultView } from "./licenseCheckResultView.tsx"
 import { LicenseCheckScanView } from "./licenseCheckScanView.tsx"

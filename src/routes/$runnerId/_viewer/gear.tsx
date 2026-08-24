@@ -12,7 +12,7 @@ import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
 import { GearViewSection } from "#/components/runner/gearPage/gearViewSection.tsx"
 import { useLicenseCheckDialog } from "#/components/runner/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { useIsBuilder } from "#/lib/contexts/builder/builderStore.context.ts"
+import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,

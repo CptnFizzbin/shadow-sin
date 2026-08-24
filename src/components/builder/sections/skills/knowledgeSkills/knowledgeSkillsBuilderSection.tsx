@@ -4,7 +4,7 @@ import { BuilderSection } from "#/components/builder/sections/builderSection.tsx
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import {
   useKnowledgeSkillsAlerts,
-} from "#/lib/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillsAlerts.ts"
+} from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillsAlerts.ts"
 
 import {
   KnowledgeSkillsList,

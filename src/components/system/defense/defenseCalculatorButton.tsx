@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import { RiShieldLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useDialogCtrl } from "#/lib/hooks/ui/dialog/useDialogCtrl.ts"
+import { useDialogCtrl } from "#/hooks/ui/dialog/useDialogCtrl.ts"
 
 import { DefenseCalculatorDialogContent } from "./defenseCalculatorDialogContent.tsx"
 

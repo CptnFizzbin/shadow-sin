@@ -4,9 +4,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
-import { useWoundModifier } from "#/lib/hooks/system/damage/useWoundModifier.ts"
-import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 

@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getActiveSkillGroupBp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 import { getSkillsInGroup } from "./skillGroupUtils.ts"

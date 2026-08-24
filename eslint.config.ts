@@ -70,8 +70,8 @@ export default defineConfig([
           {
             selector: "TSAsExpression > TSAsExpression[typeAnnotation.type=\"TSUnknownKeyword\"]",
             message:
-              "Do not use \"as unknown as T\" (double type assertion) — it bypasses structural checks entirely. " +
-              "See AGENTS.md § Type assertions for alternatives.",
+              "Do not use \"as unknown as T\" (double type assertion) — it bypasses structural checks entirely. "
+              + "See AGENTS.md § Type assertions for alternatives.",
           },
         ],
         "no-shadow": "error",
@@ -178,7 +178,7 @@ export default defineConfig([
     // (e.g. `ProfileSelectors.selectLifestyle` alongside the module-level `selectLifestyle`) is
     // the intended shape, not an accidental shadow.
     files: [
-      "src/lib/stores/**/*.selectors.ts",
+      "**/*.selectors.ts",
     ],
     rules: {
       "@typescript-eslint/no-namespace": "off",

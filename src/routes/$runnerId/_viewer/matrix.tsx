@@ -6,9 +6,9 @@ import { MatrixProgramsSection } from "#/components/runner/matrix/matrixPrograms
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/matrix")({

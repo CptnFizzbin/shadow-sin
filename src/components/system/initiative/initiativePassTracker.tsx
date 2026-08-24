@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { InitiativeSelectors } from "#/lib/stores/runner/initiative/initiativeSlice.selectors.ts"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { InitiativeSelectors } from "#/stores/runner/initiative/initiativeSlice.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 interface InitiativePassTrackerProps {
   numPasses: number

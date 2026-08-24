@@ -21,18 +21,18 @@ import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/dice
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/lib/contexts/entity/entityProvider.tsx"
-import { useWoundModifier } from "#/lib/hooks/system/damage/useWoundModifier.ts"
+import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
 import {
   useActiveSkillDiceGroup,
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
-} from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
-import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
-import { AttrSelectors } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+} from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"

@@ -7,8 +7,8 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
+import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 
 import { TestType, TestTypeLabels } from "./testType.ts"
 

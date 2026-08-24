@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
-import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
-import { useAllAlerts } from "#/lib/hooks/builder/alerts/useAllAlerts.ts"
+import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useAllAlerts } from "#/hooks/builder/alerts/useAllAlerts.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 interface SaveRunnerButtonProps {

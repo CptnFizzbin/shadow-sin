@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { selectProfile } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectProfile } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
   const profile = useRunnerStoreSelector(selectProfile)

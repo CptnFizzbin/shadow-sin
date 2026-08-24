@@ -6,9 +6,9 @@ import type { FC } from "react"
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ReputationBuilderSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()

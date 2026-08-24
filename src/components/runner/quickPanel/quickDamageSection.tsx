@@ -5,9 +5,9 @@ import type { FC } from "react"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {

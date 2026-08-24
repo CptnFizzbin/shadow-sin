@@ -13,7 +13,7 @@ import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSki
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"

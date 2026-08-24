@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectAllowedActiveSkills } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { selectAllowedActiveSkills } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { SkillInfo } from "#/system/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 

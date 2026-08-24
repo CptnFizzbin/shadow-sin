@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { Icons } from "#/lib/icons.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"

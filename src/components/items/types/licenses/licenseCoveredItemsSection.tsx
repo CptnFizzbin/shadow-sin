@@ -6,9 +6,9 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
