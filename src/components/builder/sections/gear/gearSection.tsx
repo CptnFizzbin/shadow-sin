@@ -13,13 +13,13 @@ import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import {
   useGearBuildPoints,
   useGearTotalCost,
-} from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
+} from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"

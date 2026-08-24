@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line, RiSkipForwardLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useInitiativeTracker } from "#/lib/hooks/system/initiativeTracker/useInitiativeTracker.ts"
+import { useInitiativeTracker } from "#/hooks/system/initiativeTracker/useInitiativeTracker.ts"
 
 import { CombatantAvatar } from "./combatantAvatar.tsx"
 import { useCombatantDetailDialog } from "./combatantDetailDialog.tsx"

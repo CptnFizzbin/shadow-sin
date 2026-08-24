@@ -12,10 +12,10 @@ import { ImprovementQueuedLearnRow } from "#/components/improvements/improvement
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
-import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectSpells } from "#/lib/stores/runner/spells/spellsSlice.selectors.ts"
+import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { selectSpells } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnSpellEntry,

@@ -6,7 +6,7 @@ uses to make Stash and Equip interact correctly, not a general internal mirror o
 fields.
 
 The moment `stashed` becomes `true` (via `Actions.item.setStashed`, or a `setItem`/`patchItem`
-write from the item edit form), the gear reducer (`src/lib/stores/runner/gear/gearSlice.ts`)
+write from the item edit form), the gear reducer (`../../src/stores/runner/gear/gearSlice.ts`)
 forces `equipped` to `false` and records whatever it was into `_state.equipOnUnstash`. Un-stashing
 reads that value back to restore `equipped` automatically, then clears it. This makes
 `item.equipped` always trustworthy on its own — readers never need to also check `!item.stashed`,

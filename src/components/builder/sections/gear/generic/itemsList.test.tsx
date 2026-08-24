@@ -3,7 +3,7 @@ import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"

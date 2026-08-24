@@ -8,7 +8,7 @@ import type { FC } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { SpellCastSection } from "./spellCastSection.tsx"

@@ -9,8 +9,8 @@ import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
-import { useSectionQueuedSummaries } from "#/lib/hooks/improvements/useSectionQueuedSummaries.ts"
-import { useVisibleSections } from "#/lib/hooks/improvements/useVisibleSections.ts"
+import { useSectionQueuedSummaries } from "#/hooks/improvements/useSectionQueuedSummaries.ts"
+import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
 
 import type { SpendKarmaSectionKey } from "./spendKarmaSections.tsx"
 

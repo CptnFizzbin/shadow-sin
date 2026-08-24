@@ -5,10 +5,10 @@ import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useRunnerAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
-import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
-import { useAttributesBuildPoints } from "#/lib/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
-import { useHasMaxxedAttribute } from "#/lib/hooks/runner/attributes/useHasMaxxedAttribute.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
+import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
+import { useHasMaxxedAttribute } from "#/hooks/runner/attributes/useHasMaxxedAttribute.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {

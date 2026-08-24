@@ -6,7 +6,7 @@ import type { FC } from "react"
 
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
-import { useSpendKarmaSummary } from "#/lib/hooks/improvements/useSpendKarmaSummary.ts"
+import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
 
 interface SpendKarmaDialogFooterProps {
   onCancel: () => void

@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"

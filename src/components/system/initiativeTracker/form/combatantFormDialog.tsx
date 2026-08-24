@@ -3,9 +3,9 @@ import type { FC } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import type { CombatantInput } from "#/lib/hooks/system/initiativeTracker/form/useCombatantForm.ts"
-import { useCombatantForm } from "#/lib/hooks/system/initiativeTracker/form/useCombatantForm.ts"
-import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import type { CombatantInput } from "#/hooks/system/initiativeTracker/form/useCombatantForm.ts"
+import { useCombatantForm } from "#/hooks/system/initiativeTracker/form/useCombatantForm.ts"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 
 import { CombatantFormFields } from "./combatantFormFields.tsx"
 

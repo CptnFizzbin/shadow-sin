@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 
 import { DiceTrayActions } from "./diceTrayActions.tsx"
 import { DiceTrayDiceDisplay } from "./diceTrayDiceDisplay.tsx"

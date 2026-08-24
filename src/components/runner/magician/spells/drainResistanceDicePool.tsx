@@ -3,7 +3,7 @@ import type { FC } from "react"
 import {
   useAttrDiceGroup,
   useWoundDiceGroup,
-} from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
+} from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { SpellCard } from "./spellCard.tsx"

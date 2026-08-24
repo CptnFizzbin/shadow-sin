@@ -3,8 +3,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { selectBiology } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectBiology } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
 import { InnatePowersDisplay } from "./innatePowersDisplay.tsx"

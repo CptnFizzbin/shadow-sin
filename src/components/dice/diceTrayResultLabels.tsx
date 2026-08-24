@@ -3,8 +3,8 @@ import pluralize from "pluralize"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import {
   selectHits,
   selectRollState,

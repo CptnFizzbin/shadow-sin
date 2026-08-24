@@ -7,7 +7,7 @@ import type { FC } from "react"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { SpellForm } from "#/lib/hooks/runner/magician/spells/form/useSpellForm.ts"
+import type { SpellForm } from "#/hooks/runner/magician/spells/form/useSpellForm.ts"
 import {
   SpellCategory,
   SpellDamage,

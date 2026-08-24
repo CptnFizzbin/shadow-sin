@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { EntityProvider } from "#/lib/contexts/entity/entityProvider.tsx"
-import { selectAttributes } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { EntityProvider } from "#/contexts/entity/entityProvider.tsx"
+import { selectAttributes } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 /**
  * Reads the runner sheet's attribute values and provides them via `EntityProvider`, so

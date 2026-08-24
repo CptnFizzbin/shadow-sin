@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import type { SpiritForm } from "#/lib/hooks/runner/magician/spirits/form/useSpiritForm.ts"
+import type { SpiritForm } from "#/hooks/runner/magician/spirits/form/useSpiritForm.ts"
 import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"

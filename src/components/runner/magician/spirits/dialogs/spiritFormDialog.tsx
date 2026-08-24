@@ -6,9 +6,9 @@ import type { FC } from "react"
 import { SpiritFormFields } from "#/components/runner/magician/spirits/form/spiritFormFields.tsx"
 import { SummoningSection } from "#/components/runner/magician/spirits/summoningSection.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useSpiritForm } from "#/lib/hooks/runner/magician/spirits/form/useSpiritForm.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { TraditionSelectors } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
+import { useSpiritForm } from "#/hooks/runner/magician/spirits/form/useSpiritForm.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#/stores/runner/tradition/traditionSlice.selectors.ts"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {

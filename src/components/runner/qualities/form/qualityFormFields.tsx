@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import type { QualityForm } from "#/lib/hooks/runner/qualities/form/useQualityForm.ts"
+import type { QualityForm } from "#/hooks/runner/qualities/form/useQualityForm.ts"
 
 interface QualityFormFieldsProps {
   form: QualityForm

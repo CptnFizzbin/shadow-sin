@@ -8,8 +8,8 @@ import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
 import { ExtendedInterval, ExtendedIntervalLabels, TestType } from "./testType.ts"

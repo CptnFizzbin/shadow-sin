@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
+import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import type { LearnActiveSkillEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"

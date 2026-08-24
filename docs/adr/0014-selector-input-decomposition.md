@@ -94,7 +94,7 @@ shape, and a caller assembles the wrapper once (`{ runner: state }`, `{ entity: 
 selector spells out the exact fields it needs as an inline object type, right where it's used:
 `Selector<{ runner: RunnerData }, TReturn>`, `(state: { entity: EntityWithAttrs }) => ...`. Two
 named-type options were tried first and both dropped: a shared cross-file module
-(`src/lib/stores/runner/runnerState.ts` exporting `RunnerState`) added an import and a module for a
+(`../../src/stores/runner/runnerState.ts` exporting `RunnerState`) added an import and a module for a
 two-line shape, and hid what a selector actually reads behind a type name a reader had to go look
 up; a file-local named interface (`interface RunnerState { runner: RunnerData }` redeclared
 per-file) was less indirection but still named something that didn't need a name — every selector
@@ -132,7 +132,7 @@ Migrating a call site is left to whoever next touches that file, guided by the d
 
 ## Building `useRunnerSelector` now, without repeating ADR-0013
 
-`useRunnerSelector` (`src/lib/stores/runner/runnerStore.selectors.ts`) is a real piece of the
+`useRunnerSelector` (`../../src/stores/runner/runnerStore.selectors.ts`) is a real piece of the
 dispatch layer ADR-0013 tried and failed to build — worth being explicit about why building it now
 doesn't reintroduce either of ADR-0013's two problems (see its Postmortem):
 
@@ -159,7 +159,7 @@ data — which `useRunnerSelector` was never trying to do. It's deliberately not
 needs at least one more Entity kind actually implementing a capability trait before "resolve the
 nearest entity" is answering a real question instead of a hypothetical one.
 
-**Update:** `useEntitySelector` has since been built (`src/lib/contexts/entity/entityProvider.tsx`),
+**Update:** `useEntitySelector` has since been built (`../../src/contexts/entity/entityProvider.tsx`),
 replacing `AttributesProvider`/`useAttrValue`. It doesn't wait on a second Entity kind implementing
 a capability trait after all — `RunnerData` already implements `EntityWithAttrs` directly (not just
 structurally), so `AttrSelectors.selectValue` is already reusable across the Runner and any future
@@ -172,13 +172,13 @@ the same way `useRunnerSelector`'s `assembleRunnerState` narrows `RunnerData`. A
 (min/max/augMax, formerly `AttributesProvider`'s `infos`) did not move onto `EntityProvider`: they're
 derived from the Runner's own metatype/awakening data with no "nearest entity" equivalent for a
 device, spirit, or sprite, so they stayed a plain Runner-scoped hook
-(`useRunnerAttrInfo`/`useAllRunnerAttrInfos`, `src/lib/hooks/runner/attributes/useRunnerAttrInfo.ts`)
+(`useRunnerAttrInfo`/`useAllRunnerAttrInfos`, `../../src/hooks/runner/attributes/useRunnerAttrInfo.ts`)
 instead.
 
 ## Scope
 
-`src/lib/stores/runner/**` only — the ~20 domain selector files backing `RunnerData`, matching
-0015's own scope. `src/lib/stores/builder/**` (a parallel `BuilderState` store, not part of the
+`../../src/stores/runner/**` only — the ~20 domain selector files backing `RunnerData`, matching
+0015's own scope. `../../src/stores/builder/**` (a parallel `BuilderState` store, not part of the
 Entity decomposition) and the standalone `initiativeTracker`/dice/improvement selectors are
 explicitly out of scope; Builder is a planned, separate follow-up once this pattern has proven out
 on Runner.
@@ -231,7 +231,7 @@ nothing binds to it yet; it exists purely as a documented preview of the shape 0
   alongside the existing `createCurriedSelector` — no wrapper types live here, or anywhere else.
   `ItemCatalog` is a new export on `src/system/items/itemUtils.ts`, alongside the existing
   `ItemDataRecord`. Every selector spells its `TState` out inline at its own declaration.
-- `eslint.config.ts` gains one override block for `src/lib/stores/**/*.selectors.ts` disabling
+- `eslint.config.ts` gains one override block for `../../src/stores/**/*.selectors.ts` disabling
   `@typescript-eslint/no-namespace` and `no-shadow`.
 - Most namespaces wrap their file's legacy exports by delegation
   (`(state) => legacy.selectX(state.runner)`), since `{ runner: RunnerData }` carries the same
@@ -251,10 +251,10 @@ nothing binds to it yet; it exists purely as a documented preview of the shape 0
   comment pointing at this. Fixing `ItemType.firearm`'s modeling is out of scope for this pass.
 - 0015's own slices are unaffected in sequencing or scope by this ADR — this pass changes selector
   *input* shape only, never the underlying `RunnerData` fields those inputs read.
-- `useRunnerSelector` is built (`src/lib/stores/runner/runnerStore.selectors.ts`) — see "Building
+- `useRunnerSelector` is built (`../../src/stores/runner/runnerStore.selectors.ts`) — see "Building
   `useRunnerSelector` now, without repeating ADR-0013" above for why it's scoped narrowly enough not
   to need 0015's capability interfaces. `useEntitySelector` was not built in this pass; it has since
-  been added (`src/lib/contexts/entity/entityProvider.tsx`) — see the "Update" note above.
-- Every legacy selector export across `src/lib/stores/runner/**`, plus `useRunnerStoreSelector` and
+  been added (`../../src/contexts/entity/entityProvider.tsx`) — see the "Update" note above.
+- Every legacy selector export across `../../src/stores/runner/**`, plus `useRunnerStoreSelector` and
   the `Selectors` aggregator, now carries `@deprecated` — annotation only, per "Purely additive"
   above; no call site is migrated in this pass.

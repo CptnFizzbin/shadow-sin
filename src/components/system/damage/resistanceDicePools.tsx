@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useArmorDiceGroup } from "#/lib/hooks/items/types/armor/useArmorDiceGroup.tsx"
+import { useArmorDiceGroup } from "#/hooks/items/types/armor/useArmorDiceGroup.tsx"
 import {
   useActiveSkillDiceGroup,
   useAttrDiceGroup,
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
-} from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
+} from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ArmorRatingType } from "#/system/gear/armorData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"

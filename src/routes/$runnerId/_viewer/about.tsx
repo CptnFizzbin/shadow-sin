@@ -15,7 +15,7 @@ import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/about")({
   component: RouteComponent,

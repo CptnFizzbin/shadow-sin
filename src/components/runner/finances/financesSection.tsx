@@ -6,8 +6,8 @@ import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useNetWorth } from "#/lib/hooks/runner/finances/nuyen/useNetWorth.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useNetWorth } from "#/hooks/runner/finances/nuyen/useNetWorth.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 

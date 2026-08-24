@@ -5,10 +5,10 @@ import type { FC } from "react"
 
 import { AnyItemCard } from "#/components/itemCard/anyItemCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
-import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 

@@ -5,8 +5,8 @@ import { BuilderSectionId } from "#/components/builder/sections/builderSectionId
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import {
   useComplexFormsAlerts,
-} from "#/lib/hooks/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+} from "#/hooks/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import {
   ComplexFormsList,

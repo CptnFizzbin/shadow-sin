@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 
+import { programFormOpts } from "#/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { programFormOpts } from "#/lib/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { ProgramType } from "#/system/gear/programData.ts"
 
 const splitCamelCase = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
