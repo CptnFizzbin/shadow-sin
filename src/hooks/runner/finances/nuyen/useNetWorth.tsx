@@ -2,7 +2,6 @@ import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isCredstickData } from "#/system/gear/credstickData.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -35,8 +34,3 @@ export const selectNetWorth: Selector<NetWorthState, number> = createMemoizedSel
     return currentNuyen + gearTotal + credstickTotal - loansTotal
   },
 )
-
-/** @deprecated Use {@link selectNetWorth} via `useRunnerSelector` instead. */
-export function useNetWorth(): number {
-  return useRunnerSelector(selectNetWorth)
-}

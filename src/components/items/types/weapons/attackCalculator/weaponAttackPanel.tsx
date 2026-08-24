@@ -20,9 +20,10 @@ import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useActiveSkillDicePool } from "#/hooks/runner/skills/skillDicePools.ts"
-import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import {
   selectAllSettled,
@@ -109,7 +110,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
   const skillPool = useActiveSkillDicePool({ skillKey: resolvedSkill, attrOverride: weapon.attribute })
   const encumbranceGroup = useEncumbranceDiceGroup()
-  const woundMod = useWoundModifier()
+  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
 
   const modifierGroups: DiceGroupList = isMelee
     ? meleeAttackModifiers.map((modifier) => {

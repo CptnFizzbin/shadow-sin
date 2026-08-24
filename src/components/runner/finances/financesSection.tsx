@@ -6,8 +6,8 @@ import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useNetWorth } from "#/hooks/runner/finances/nuyen/useNetWorth.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { selectNetWorth } from "#/hooks/runner/finances/nuyen/useNetWorth.tsx"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 
@@ -19,7 +19,7 @@ import { NuyenSection } from "./nuyen/nuyenSection.tsx"
 export const FinancesSection: FC = () => {
   const endOfMonthDialog = useEndOfMonthDialog()
 
-  const netWorth = useNetWorth()
+  const netWorth = useRunnerSelector(selectNetWorth)
   const nuyenBalance = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
   const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)
   const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)

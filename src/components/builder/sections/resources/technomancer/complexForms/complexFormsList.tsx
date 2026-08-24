@@ -10,11 +10,12 @@ import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/c
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useComplexFormsBuildPoints } from "#/hooks/builder/buildPoints/useComplexFormsBuildPoints.ts"
-import { useComplexForms, useMaxComplexForms } from "#/hooks/runner/technomancer/complexFormsHooks.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { ComplexFormsSelectors } from "#/stores/runner/complexForms/complexFormsSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
@@ -25,9 +26,9 @@ import {
 export const ComplexFormsList: FC = () => {
   const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })
   const dispatch = useRunnerStoreDispatch()
-  const complexForms = useComplexForms()
+  const complexForms = useRunnerSelector(ComplexFormsSelectors.selectVisible)
   const complexFormsBp = useComplexFormsBuildPoints()
-  const maxComplexForms = useMaxComplexForms()
+  const maxComplexForms = useEntitySelector(ComplexFormsSelectors.selectMax)
   const complexFormDialog = useComplexFormDialog()
 
   const isAtMax = complexForms.length >= maxComplexForms

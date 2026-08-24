@@ -1,10 +1,11 @@
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useWoundModifier } from "#/hooks/system/damage/useWoundModifier.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const WoundModLabel: FC = () => {
-  const woundMod = useWoundModifier()
+  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
 
   return (
     <Label
