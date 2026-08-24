@@ -1,4 +1,6 @@
 /// <reference types="vitest/config" />
+import { execFileSync } from "node:child_process"
+
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react from "@vitejs/plugin-react-swc"
@@ -8,7 +10,28 @@ import { nodeEnv } from "./env.node.ts"
 
 console.log(`Building ${nodeEnv.VITE_APP_TITLE}...`)
 
-const config = defineConfig({
+/**
+ * The app's version: the timestamp of the latest commit on the current branch for a production
+ * build, or this process's start time for the dev server — see `src/data/appVersion.ts`. Falls
+ * back to the process start time if `git log` fails (e.g. a source archive with no `.git` dir).
+ */
+function resolveAppVersion(command: "build" | "serve"): string {
+  if (command === "serve") {
+    return new Date().toISOString()
+  }
+
+  try {
+    return execFileSync("git", ["log", "-1", "--format=%cI"]).toString().trim()
+  } catch {
+    return new Date().toISOString()
+  }
+}
+
+const config = defineConfig(({ command }) => ({
+  define: {
+    __APP_VERSION__: JSON.stringify(resolveAppVersion(command)),
+  },
+
   server: {
     host: nodeEnv.SERVER_HOST,
     port: nodeEnv.SERVER_PORT,
@@ -85,6 +108,6 @@ const config = defineConfig({
       ],
     },
   },
-})
+}))
 
 export default config

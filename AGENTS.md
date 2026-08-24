@@ -150,30 +150,54 @@ Migrations live in `src/data/migrations/` and are registered in `src/data/migrat
 deliberately kept here through the `character` → `runner` rename (see `docs/adr/0001-runner-data-not-character-sheet.md`)
 since renaming the type would have forced an edit into every migration file.
 
-A `RunnerData`'s migration state is a single `_meta_.version` integer — the highest migration `version` that has
-been applied. `applyMigrations` is the only place that decides whether a migration needs to run: it filters the
-registered list down to `migration.version > _meta_.version` and only calls `up` on that subset, in ascending
-`version` order. Individual migrations don't check `_meta_` themselves — that would just duplicate the same
-comparison in every file — they're plain, self-contained transforms.
+Migrations are timestamp-based. Each migration carries a `timestamp` — an ISO 8601 string set to its creation date
+— instead of a sequential number. A `RunnerData`'s migration state is `_meta_.appVersion`: the **app version**
+(`src/data/appVersion.ts`'s `APP_VERSION`, baked in at build time from the latest commit on the default branch, or
+from the dev server's start time under `yarn dev`) as of the runner's most recent successful migration run.
+`applyMigrations` (`src/data/applyMigrations.ts`) is the only place that decides whether a migration needs to run:
+it filters the registered list down to `migration.timestamp > _meta_.appVersion` and only calls `up` on that
+subset, in ascending `timestamp` order. Individual migrations don't check `_meta_` themselves — that would just
+duplicate the same comparison in every file — they're plain, self-contained transforms. After running any pending
+migrations, `_meta_.appVersion` is stamped to the live `APP_VERSION` and synced back to storage; a load that runs no
+migrations leaves `_meta_.appVersion` untouched. Runners still carrying the old `_meta_.version` integer (from
+before migrations moved to timestamps, capped at 32 — the last version registered under that scheme) are handled by
+`resolveRunnerAppVersion`: a runner at version 32 (the common case — every runner opened since that version shipped
+lands there) resolves directly to that migration's own timestamp, so it re-runs nothing; any other legacy version
+(rare) is treated as fully unmigrated, so every registered migration re-runs once. That fallback is safe only
+because every migration is idempotent — see the idempotency rule below.
+
+**A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
+is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This is what
+makes a new migration actually run once the app is deployed: a runner whose `_meta_.appVersion` is already at or
+past the migration's `timestamp` would otherwise skip it forever (`migration.timestamp > _meta_.appVersion` would
+never be true for that runner). It also guarantees that once a PR merges, the resulting build's `APP_VERSION` (the
+new latest commit) is newer than every migration it introduced, so a runner's `_meta_.appVersion` never needs to
+exceed the live app version to be considered fully migrated.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
 silently mis-migrate characters.
 
 - **Schema changes always require a new migration** — when a `RunnerData` field is added, renamed, or removed,
-  create a new migration file named `NNN_describeChange.ts`, where `NNN` is the next sequential number
-  zero-padded to three digits (e.g. `023_addFoo.ts` after `022_pruneLegacyMetaFields.ts`), and register it at the
-  bottom of `migrations.ts`. Set `version` on the migration object to the same number (as a plain `number`, not
-  zero-padded).
+  create a new migration file named `<date>_<seq>_describeChange.ts`, where `<date>` is the current UTC date
+  formatted `YYYYMMDD` (e.g. `date -u +%Y%m%d`) and `<seq>` is a zero-padded two-digit counter starting at `00` for
+  the first migration created that day, `01` for a second one the same day, and so on — for example
+  `20260824_00_addFoo.ts`. Register it at the bottom of `migrations.ts`, and set `timestamp` on the migration object
+  to the actual creation instant as an ISO 8601 string with a UTC offset (e.g. `"2026-08-24T15:30:00Z"`) — `<seq>`
+  only disambiguates same-day filenames; it isn't part of the timestamp itself.
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
   reference the old field name because they operate on pre-rename data. Update them to handle *both* the old and new
   field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for runners that were already partially
   migrated.
-- **New migration numbers must sort after all existing ones** — migrations are applied in ascending numeric order by
-  `version`; the zero-padded file name keeps directory listings in the same order.
-- **Don't re-check `_meta_.version` inside `up`** — `applyMigrations` already guarantees `up` is only called when
-  the migration is actually pending; a migration only needs its own shape-based idempotency (e.g. `??=`) in case
-  `up` is called directly, such as in its unit tests.
+- **New migration timestamps must sort after all existing ones** — migrations are applied in ascending `timestamp`
+  order; the timestamp-prefixed file name keeps directory listings in the same order. `migrations.ts` throws at
+  import time if a migration's `timestamp` doesn't sort strictly after the one declared before it.
+- **Don't re-check `_meta_.appVersion` inside `up`** — `applyMigrations` already guarantees `up` is only called when
+  the migration is actually pending.
+- **Every migration must be idempotent** — a runner still carrying the legacy `_meta_.version` scheme re-runs *every*
+  registered migration once (see above), so `up` must be a no-op the second time it's applied to data it's already
+  transformed. Guard with a shape check (e.g. `??=`, or `continue`/`return` once the "already migrated" shape is
+  detected) rather than assuming `up` only ever runs once per runner.
 - **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
 
 ## Conventions

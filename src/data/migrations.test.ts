@@ -15,7 +15,7 @@ import {
 } from "#testUtils/fixtures/characters/runnerDataFixtures.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
-import { CURRENT_RUNNER_VERSION } from "./migrations.ts"
+import { APP_VERSION } from "./appVersion.ts"
 
 // Each test seeds its own manager/storage (rather than sharing one from `beforeEach`) so the
 // suite can run concurrently.
@@ -30,14 +30,14 @@ async function makeMigratedRunnerManager() {
 
 describe.concurrent("runner migrations + yaml round-trip", () => {
   it("applies all pending migrations to a partially-migrated runner", async () => {
-    // Arrange — a runner at _meta_.version 7
+    // Arrange — a runner at legacy _meta_.version 7
     const { manager } = await makeMigratedRunnerManager()
 
     // Act
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Assert
-    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
     expect("version" in (migrated as object)).toBe(false)
   })
 
@@ -54,14 +54,15 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // Act
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
-    // Assert — treated as unmigrated (version defaults to 0) but every migration is idempotent,
-    // so it still lands at the current version with no error
-    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+    // Assert — treated as unmigrated (appVersion defaults to the epoch) but every migration is
+    // idempotent, so it still lands at the current app version with no error
+    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
   })
 
-  it("does not re-run migrations already covered by _meta_.version", async () => {
-    // Arrange — characterV1 has migrations 001–007 applied and a loan with a
-    // known stable ID; only 008+ should run
+  it("safely re-runs every migration for a runner still on the legacy _meta_.version scheme", async () => {
+    // Arrange — characterV1 is shaped as if migrations 001–007 (legacy version 7) had already
+    // run, with a loan carrying a known stable ID; a legacy `version` is treated as unmigrated,
+    // so all 32 migrations run again — every one is idempotent, so this doesn't change the data
     const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
     await freshStorage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
@@ -71,9 +72,9 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // Act
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
-    // Assert — loan ID unchanged (003 was NOT re-run)
+    // Assert — loan ID unchanged (addLoanIdAndInterestRate only assigns one when missing)
     expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
-    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
   })
 
   it("yaml export/import round-trips a fully migrated runner", async () => {
@@ -107,7 +108,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const reloaded = await freshManager.getRunner(restored.id)
 
     // Assert
-    expect(reloaded._meta_.version).toBe(migrated._meta_.version)
+    expect(reloaded._meta_.appVersion).toBe(migrated._meta_.appVersion)
   })
 
   it("normalises an old-format runner into the current RunnerData shape", async () => {
@@ -178,7 +179,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // fully migrated
-    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
   })
 
   it("imports blur.yaml (v0 export) via yamlToRunnerData into a valid RunnerData", () => {
@@ -223,6 +224,6 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin!.items.childIds).toContain(license!.id)
 
     // fully migrated
-    expect(runner._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+    expect(runner._meta_.appVersion).toBe(APP_VERSION)
   })
 })

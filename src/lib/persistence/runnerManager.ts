@@ -1,14 +1,13 @@
 import { AsyncDebouncer } from "@tanstack/pacer"
 
-import { applyMigrations } from "#/data/applyMigrations.ts"
-import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
+import { applyMigrations, resolveRawRunnerAppVersion } from "#/data/applyMigrations.ts"
+import { isFullyMigrated } from "#/data/migrations.ts"
 import { RunnerNotFoundError } from "#/lib/errors/runnerNotFoundError.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
-import { RunnerMetaSchema } from "#/system/runnerData.ts"
 
 import type { RunnerId, RunnerRefLegacyPlaceholder } from "./runnerId.ts"
 import { parseRunnerId } from "./runnerId.ts"
@@ -59,26 +58,23 @@ export class RunnerManager {
       throw new RunnerNotFoundError(String(id))
     }
 
-    const preMeta = RunnerMetaSchema.parse(
-      typeof raw === "object" && raw !== null && "_meta_" in (raw as object)
-        ? (raw as Record<string, unknown>)._meta_
-        : {},
-    )
+    const preAppVersion = resolveRawRunnerAppVersion(raw as object)
     const migrated = applyMigrations(raw as object)
     const postMeta = migrated._meta_
 
     // Guards the Viewer against ever rendering a runner that isn't fully migrated. This should
-    // be unreachable — applyMigrations always stamps _meta_.version to CURRENT_RUNNER_VERSION —
-    // but asserting it here, at the boundary getRunner hands data to the route loader, turns a
-    // future migration-pipeline bug into a clear error instead of a silently stale sheet.
-    if (postMeta.version !== CURRENT_RUNNER_VERSION) {
+    // be unreachable — applyMigrations always stamps _meta_.appVersion past every registered
+    // migration's timestamp — but asserting it here, at the boundary getRunner hands data to the
+    // route loader, turns a future migration-pipeline bug into a clear error instead of a
+    // silently stale sheet.
+    if (!isFullyMigrated(postMeta.appVersion)) {
       throw new Error(
-        `Runner ${String(id)} is at migration version ${postMeta.version}, expected `
-        + `${CURRENT_RUNNER_VERSION}.`,
+        `Runner ${String(id)} is at migration app version ${postMeta.appVersion}, which is `
+        + `behind one or more registered migrations.`,
       )
     }
 
-    if (postMeta.version > preMeta.version) {
+    if (new Date(postMeta.appVersion).getTime() > new Date(preAppVersion).getTime()) {
       await this.saveRunner(migrated)
     }
 

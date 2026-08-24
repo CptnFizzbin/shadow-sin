@@ -44,6 +44,25 @@ jobs:
       - name: Run lint and format check
         run: yarn lint
 
+  migration-timestamps:
+    name: Migration Timestamps
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-workspace
+
+      - name: Verify new migration timestamps are newer than the base branch
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          yarn tsx .github/scripts/check-migration-timestamps.ts "origin/${{ github.base_ref }}"
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest

@@ -1,4 +1,4 @@
-import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { EntityKind } from "#/system/entityKind.ts"
@@ -52,7 +52,7 @@ export const Artemis: RunnerData = {
   kind: EntityKind.runner,
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   name: "Artemis",
-  _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
+  _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
 
   biology: {
     metatype: MetatypeType.Elf,

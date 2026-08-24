@@ -644,8 +644,14 @@ _Avoid_: sheet view, player view, read mode
 ### Infrastructure
 
 **RunnerMeta**:
-Versioning metadata embedded in every `RunnerData` record. Holds a single integer `version` —
-the highest migration `version` that has been applied.
+Versioning metadata embedded in every `RunnerData` record. Holds `appVersion` — the **App
+Version** as of the Runner's most recent successful **Migration** run — plus the Runner's most
+recent export timestamp.
+
+**App Version**:
+The running app's own version: the timestamp of the latest commit on the default branch, baked in
+at build time, or the dev server's start time under `yarn dev`. Stamped onto a Runner's
+`RunnerMeta.appVersion` after `applyMigrations` runs any pending Migrations against it.
 
 **RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
@@ -674,12 +680,19 @@ _Avoid_: temporary state, volatile state (all state is durable by design)
 A single, immutable schema-upgrade step that transforms one version of `RunnerData` into the
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
 commit — if a migration has a bug, a new migration fixes the output. Each migration has a
-sequential integer `version`; only migrations newer than a Runner's current version are ever
-applied, in ascending order — individual migrations don't check the current version themselves.
-Because migration files must never be edited, the shared migration type and the migration files
-themselves were deliberately left out of the `character`→`runner` identifier rename — renaming
-the shared type would have forced an edit into every migration file.
+**Migration Timestamp** — its creation date; only migrations newer than a Runner's
+`RunnerMeta.appVersion` are ever applied, in ascending timestamp order — individual migrations
+don't check the current app version themselves. Because migration files must never be edited, the
+shared migration type and the migration files themselves were deliberately left out of the
+`character`→`runner` identifier rename — renaming the shared type would have forced an edit into
+every migration file.
 _Avoid_: upgrade, patch, update (use migration)
+
+**Migration Timestamp**:
+A Migration's creation date, as an ISO 8601 string — the value its filename is prefixed with and
+its `timestamp` field holds. A CI check enforces that every new Migration's timestamp is newer
+than the base branch's latest commit, so that once merged, the resulting **App Version** is always
+newer than the Migration it introduced.
 
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
