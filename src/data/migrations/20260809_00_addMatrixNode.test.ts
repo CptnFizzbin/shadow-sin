@@ -76,4 +76,17 @@ describe.concurrent("023_addMatrixNode", () => {
     // Assert
     expect(character).toEqual({})
   })
+
+  it("is a no-op when gameState.matrix already exists", () => {
+    // Arrange — a runner that already went through this migration (or addMatrixGameState) has
+    // nothing left for this migration to scaffold, however many migrations end up re-running for it
+    const character = { gameState: { matrix: { knownNodes: [], activePrograms: [] } } }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result).not.toHaveProperty("matrix")
+    expect(result.gameState?.matrix).toEqual({ knownNodes: [], activePrograms: [] })
+  })
 })
