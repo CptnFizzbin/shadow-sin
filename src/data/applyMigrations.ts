@@ -6,7 +6,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { RUNNER_META_EPOCH, RunnerMetaSchema } from "#/system/runnerData.ts"
 
 import { APP_VERSION } from "./appVersion.ts"
-import { LATEST_MIGRATION_TIMESTAMP, migrations } from "./migrations.ts"
+import { migrations } from "./migrations.ts"
 
 interface MigrationDraft {
   _meta_: {
@@ -24,10 +24,12 @@ const migrationsInOrder = sort(migrations).asc((migration) => new Date(migration
 const isNewer = (a: string, b: string): boolean => new Date(a).getTime() > new Date(b).getTime()
 
 // A raw, not-yet-migrated `_meta_` may be the current shape (partial — a brand new runner has
-// neither field yet), or the old sequential-integer scheme's `{ version: number }`. `.partial()`
-// keeps every field optional here rather than applying `RunnerMetaSchema`'s defaults, since
-// `resolveRunnerAppVersion` below needs to distinguish "absent" from "present" for each field.
+// neither field yet), or the old sequential-integer scheme's `{ version: number }`. `appVersion`
+// is re-declared without `RunnerMetaSchema`'s `.default(...)` — `.partial()` alone still applies
+// it for an absent field, which would make `resolveRunnerAppVersion` below unable to tell "no
+// appVersion given" from "epoch appVersion given".
 const RawRunnerMetaSchema = RunnerMetaSchema.partial().extend({
+  appVersion: z.string().optional(),
   version: z.number().optional(),
 })
 
@@ -38,20 +40,19 @@ const LAST_LEGACY_VERSION = 32
  * Resolves the `appVersion` a raw runner's `_meta_` implies, before any migration has run.
  *
  * Runners stamped under the old sequential-integer scheme carry `_meta_.version` instead of
- * `_meta_.appVersion` — any such runner is treated as unmigrated (the epoch), so every registered
- * migration re-runs against it once. Every migration is written to be idempotent (a shape-based
- * guard, e.g. `??=`, that's a no-op on a runner it's already applied to — see "Character
- * migrations" in AGENTS.md), so this is safe and simpler than re-deriving the legacy version's
- * real timestamp.
+ * `_meta_.appVersion`. A runner already at the last legacy version (32) is the overwhelmingly
+ * common case — every runner opened since that version shipped lands there — so it resolves
+ * directly to the real timestamp of the migration that stamped it, rather than paying for a full
+ * re-run of all 32 legacy migrations. Any other legacy version (rare — a runner that was only
+ * ever partially migrated under the old scheme) falls back to the epoch, so every registered
+ * migration re-runs against it once; this is safe because every migration is idempotent (see
+ * "Character migrations" in AGENTS.md).
  */
 function resolveRunnerAppVersion(rawMeta: z.infer<typeof RawRunnerMetaSchema>): string {
   if (typeof rawMeta.appVersion === "string") return rawMeta.appVersion
-  if (typeof rawMeta.version !== "number") return RUNNER_META_EPOCH
-  if (rawMeta.version <= LAST_LEGACY_VERSION) return RUNNER_META_EPOCH
+  if (rawMeta.version === LAST_LEGACY_VERSION) return migrations[LAST_LEGACY_VERSION - 1].timestamp
 
-  // Unreachable in practice — the old scheme never registered a migration past version 32 — but
-  // an unexpectedly high legacy version is closer to "already fully migrated" than "unmigrated".
-  return LATEST_MIGRATION_TIMESTAMP
+  return RUNNER_META_EPOCH
 }
 
 /** {@link resolveRunnerAppVersion}, starting from a raw (not yet parsed) runner object's `_meta_`. */

@@ -62,13 +62,36 @@ describe.concurrent("applyMigrations", () => {
     expect(result._meta_.appVersion).toBe(APP_VERSION)
   })
 
-  it("treats a legacy _meta_.version as unmigrated and safely re-runs every migration", () => {
-    // Arrange — the old sequential-integer scheme's `_meta_.version` (here, fully migrated under
-    // that scheme at 32) no longer maps to a specific `appVersion`; every registered migration is
-    // idempotent, so re-running all of them is safe and simpler than translating the old counter
+  it("resolves a legacy _meta_.version of 32 directly to the matching migration's timestamp", () => {
+    // Arrange — 32 is the last version under the old sequential-integer scheme: the common case
+    // of a runner that's already fully migrated under it. No migration has a timestamp newer than
+    // the 32nd one, so nothing should re-run.
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
       _meta_: { version: 32 },
+      nuyen: {
+        current: 100,
+        loans: [
+          { id: knownLoanId, lender: "Loan Shark", amount: 1000, interestRate: 5 },
+        ],
+      },
+    }
+
+    // Act
+    const result = applyMigrations(runner)
+
+    // Assert — nothing ran (loan id preserved, appVersion resolved but not bumped to "now")
+    expect(result.nuyen.loans[0].id).toBe(knownLoanId)
+    expect(result._meta_.appVersion).toBe(migrations[migrations.length - 1].timestamp)
+  })
+
+  it("treats any other legacy _meta_.version as unmigrated and safely re-runs every migration", () => {
+    // Arrange — a legacy version short of 32 (a runner only ever partially migrated under the old
+    // scheme) doesn't map to a specific `appVersion`; every registered migration is idempotent, so
+    // re-running all of them is safe and simpler than translating the old counter
+    const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
+    const runner = {
+      _meta_: { version: 7 },
       nuyen: {
         current: 100,
         loans: [

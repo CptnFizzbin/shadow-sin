@@ -160,15 +160,19 @@ subset, in ascending `timestamp` order. Individual migrations don't check `_meta
 duplicate the same comparison in every file — they're plain, self-contained transforms. After running any pending
 migrations, `_meta_.appVersion` is stamped to the live `APP_VERSION` and synced back to storage; a load that runs no
 migrations leaves `_meta_.appVersion` untouched. Runners still carrying the old `_meta_.version` integer (from
-before migrations moved to timestamps, capped at 32 — the last version registered under that scheme) are treated as
-fully unmigrated: `resolveRunnerAppVersion` returns the epoch for any legacy `version`, so every registered
-migration re-runs once. This is safe only because every migration is idempotent — see the idempotency rule below.
+before migrations moved to timestamps, capped at 32 — the last version registered under that scheme) are handled by
+`resolveRunnerAppVersion`: a runner at version 32 (the common case — every runner opened since that version shipped
+lands there) resolves directly to that migration's own timestamp, so it re-runs nothing; any other legacy version
+(rare) is treated as fully unmigrated, so every registered migration re-runs once. That fallback is safe only
+because every migration is idempotent — see the idempotency rule below.
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
-is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This
-guarantees that once a PR merges, the resulting build's `APP_VERSION` (the new latest commit) is newer than every
-migration it introduced, so a runner's `_meta_.appVersion` never needs to exceed the live app version to be
-considered fully migrated.
+is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This is what
+makes a new migration actually run once the app is deployed: a runner whose `_meta_.appVersion` is already at or
+past the migration's `timestamp` would otherwise skip it forever (`migration.timestamp > _meta_.appVersion` would
+never be true for that runner). It also guarantees that once a PR merges, the resulting build's `APP_VERSION` (the
+new latest commit) is newer than every migration it introduced, so a runner's `_meta_.appVersion` never needs to
+exceed the live app version to be considered fully migrated.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
