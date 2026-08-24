@@ -4,6 +4,10 @@ A Shadowrun 4th Edition character sheet web app. **Players** create and manage o
 **Runners** (player characters), tracking attributes, skills, gear, magic, and resources across
 sessions.
 
+> **Agents:** read the `domain-modeling` skill before editing this file. This is a glossary, not a
+> spec or an implementation reference — keep entries free of code identifiers, file paths, and
+> other implementation details.
+
 ## Language
 
 ### Core entities
@@ -678,17 +682,10 @@ the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
 **Selector**:
-A pure function reading a value out of Redux/store state — `(state) => value`, or the standardized
-`Selector<TState, TReturn, TOptions>` shape for a namespaced selector (`AttrSelectors.selectValue`,
-`ItemSelectors.selectById`, ...; see `src/integrations/reselect/selectorUtils.ts` and
-`docs/adr/0014-selector-input-decomposition.md`). Read via `useRunnerSelector`/`useEntitySelector`,
-whose parameterized selectors take a `TOptions` object (`{ key: AttributeKey }`, `{ itemId: UUID
-}`, ...) built from `selectorOption` accessors centralized in
-`src/lib/stores/runner/selectorOptions.ts`.
-_Avoid_: this term for a `<Select>` form field's dropdown choices — those are **options**
-(`SelectOption`, `src/integrations/tanstackForm/fields/selectField.tsx`), an unrelated UI-form
-concept unconnected to the store-selector one; a component's list of dropdown entries is never
-called a "selector."
+A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
+for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope.
+_Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
+unrelated UI-form concept.
 
 ## Relationships
 
