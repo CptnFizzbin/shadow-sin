@@ -54,21 +54,15 @@ const withGear = (...items: ItemData[]) =>
 
 describe.concurrent("selectEquipped", () => {
   it("returns only items with equipped === true", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = {
-        [item.id]: { ...item, equipped: true },
-      }
-      return s
+    const sheet = runnerDataFactory({
+      items: { [item.id]: { ...item, equipped: true } },
     })
 
     expect(selectEquipped(sheet)).toEqual([{ ...item, equipped: true }])
   })
 
   it("excludes items with equipped false or absent", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = { [item.id]: item }
-      return s
-    })
+    const sheet = runnerDataFactory({ items: { [item.id]: item } })
 
     expect(selectEquipped(sheet)).toEqual([])
   })
@@ -76,21 +70,15 @@ describe.concurrent("selectEquipped", () => {
 
 describe.concurrent("selectStashed", () => {
   it("returns only stashed items", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = {
-        [item.id]: { ...item, stashed: true },
-      }
-      return s
+    const sheet = runnerDataFactory({
+      items: { [item.id]: { ...item, stashed: true } },
     })
 
     expect(selectStashed(sheet)).toEqual([{ ...item, stashed: true }])
   })
 
   it("excludes items with stashed false or absent", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = { [item.id]: item }
-      return s
-    })
+    const sheet = runnerDataFactory({ items: { [item.id]: item } })
 
     expect(selectStashed(sheet)).toEqual([])
   })
@@ -98,20 +86,14 @@ describe.concurrent("selectStashed", () => {
 
 describe.concurrent("selectAvailable", () => {
   it("returns items that are not stashed", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = { [item.id]: item }
-      return s
-    })
+    const sheet = runnerDataFactory({ items: { [item.id]: item } })
 
     expect(selectAvailable(sheet)).toEqual([item])
   })
 
   it("excludes stashed items", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = {
-        [item.id]: { ...item, stashed: true },
-      }
-      return s
+    const sheet = runnerDataFactory({
+      items: { [item.id]: { ...item, stashed: true } },
     })
 
     expect(selectAvailable(sheet)).toEqual([])

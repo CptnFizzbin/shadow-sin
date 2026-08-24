@@ -39,7 +39,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from qualities", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -50,7 +50,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -68,10 +68,7 @@ describe("selectAllGameEffects", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory((s) => {
-      s.gear = createItemMap([synapticBooster])
-      return s
-    })
+    const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -89,10 +86,7 @@ describe("selectAllGameEffects", () => {
       equipped: false,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory((s) => {
-      s.gear = createItemMap([synapticBooster])
-      return s
-    })
+    const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -103,7 +97,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from spells", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.spells = [
         {
           kind: EntityKind.spell,
@@ -121,7 +115,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -133,7 +127,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from complex forms", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.complexForms = [
         {
           kind: EntityKind.complexForm,
@@ -144,7 +138,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -156,7 +150,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from adept powers", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.powers = [
         {
           kind: EntityKind.adeptPower,
@@ -169,7 +163,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -187,7 +181,7 @@ describe("selectAllGameEffects", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -210,7 +204,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -221,11 +215,11 @@ describe("selectAllGameEffects", () => {
 
   it("handles sources with no effects field gracefully", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Toughness", type: "positive" }]
       s.powers = [{ kind: EntityKind.adeptPower, type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
       return s
-    })
+    } })
 
     // Act
     const effects = selectAllGameEffects({ runner: sheet, items: getItemCatalog(sheet) })
@@ -253,7 +247,7 @@ describe("selectGameEffectsByType", () => {
 
   it("returns only effects matching the requested type", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -267,7 +261,7 @@ describe("selectGameEffectsByType", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const attrModEffects = selectGameEffectsByType(GameEffectType.attrMod)({ runner: sheet, items: getItemCatalog(sheet) })
@@ -285,7 +279,7 @@ describe("selectGameEffectsByType", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.spells = [
         {
           kind: EntityKind.spell,
@@ -304,7 +298,7 @@ describe("selectGameEffectsByType", () => {
       ]
       s.gear = createItemMap([implant])
       return s
-    })
+    } })
 
     // Act
     const initiativeEffects = selectGameEffectsByType(GameEffectType.initiativeBonus)({ runner: sheet, items: getItemCatalog(sheet) })
@@ -335,7 +329,7 @@ describe("useGameEffects", () => {
 
   it("returns effects of the requested type from the runner sheet", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -346,7 +340,7 @@ describe("useGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const { result } = renderHook(() => useGameEffects(GameEffectType.attrMod), {
@@ -360,7 +354,7 @@ describe("useGameEffects", () => {
 
   it("does not return effects of other types", () => {
     // Arrange
-    const sheet = runnerDataFactory((s) => {
+    const sheet = runnerDataFactory({ override: (s) => {
       s.qualities = [
         {
           kind: EntityKind.quality,
@@ -371,7 +365,7 @@ describe("useGameEffects", () => {
         },
       ]
       return s
-    })
+    } })
 
     // Act
     const { result } = renderHook(() => useGameEffects(GameEffectType.initiativeBonus), {

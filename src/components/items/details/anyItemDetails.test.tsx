@@ -24,7 +24,7 @@ const weapon: WeaponData = {
 }
 
 const runnerStoreWithWeapon = () =>
-  new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [weapon.id]: weapon } })))
+  new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [weapon.id]: weapon } }) }))
 
 describe("AnyItemDetails", () => {
   it("dispatches weapons to WeaponItemDetails", () => {
@@ -44,7 +44,7 @@ describe("AnyItemDetails", () => {
     }
 
     renderWithProviders(<AnyItemDetails item={item} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [item.id]: item } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [item.id]: item } }) })),
     })
 
     expect(screen.getByText("Fake SIN")).toBeDefined()

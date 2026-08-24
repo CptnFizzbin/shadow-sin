@@ -11,11 +11,11 @@ import { KarmaBuilderSection } from "./karmaBuilderSection.tsx"
 describe("KarmaBuilderSection", () => {
   it("renders the Karma section header and the runner's karma from the store", () => {
     // Arrange
-    const runnerData = runnerDataFactory((data) => {
+    const runnerData = runnerDataFactory({ override: (data) => {
       data.karma.current = 5
       data.karma.total = 20
       return data
-    })
+    } })
     const store = new RunnerDataStore(runnerData)
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
       <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>

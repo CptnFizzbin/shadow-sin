@@ -11,7 +11,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { RunnerHeaderSummary } from "./runnerHeaderSummary.tsx"
 
 function renderWithRunner(overrideFn: RunnerFactoryOverrideFn) {
-  const runnerData = runnerDataFactory(overrideFn)
+  const runnerData = runnerDataFactory({ override: overrideFn })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

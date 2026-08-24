@@ -10,7 +10,7 @@ describe("useKnowledgeSkillsAlerts", () => {
   it("does not flag knowledge/language skill ratings above the active-skill cap", () => {
     // Arrange — the "one Rating 6, two Rating 5" cap is an active-skill-only rule (SR4A p.72);
     // knowledge and language skills have no equivalent restriction.
-    const sheet = runnerDataFactory((runner) => ({
+    const sheet = runnerDataFactory({ override: (runner) => ({
       ...runner,
       skills: {
         ...runner.skills,
@@ -24,7 +24,7 @@ describe("useKnowledgeSkillsAlerts", () => {
           { name: "Sperethiel", rating: 5 },
         ],
       },
-    }))
+    }) })
 
     // Act
     const { result } = renderHook(() => useKnowledgeSkillsAlerts(), {
@@ -37,7 +37,7 @@ describe("useKnowledgeSkillsAlerts", () => {
 
   it("still flags more than one native language", () => {
     // Arrange
-    const sheet = runnerDataFactory((runner) => ({
+    const sheet = runnerDataFactory({ override: (runner) => ({
       ...runner,
       skills: {
         ...runner.skills,
@@ -46,7 +46,7 @@ describe("useKnowledgeSkillsAlerts", () => {
           { name: "English", rating: "native" },
         ],
       },
-    }))
+    }) })
 
     // Act
     const { result } = renderHook(() => useKnowledgeSkillsAlerts(), {

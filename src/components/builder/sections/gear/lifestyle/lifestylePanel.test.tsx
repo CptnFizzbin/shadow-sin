@@ -10,10 +10,10 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { LifestylePanel } from "./lifestylePanel.tsx"
 
 function renderWithLifestyle(lifestyle: { quality: LifestyleType, monthsPaid: number } | null) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.profile.lifestyle = lifestyle
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

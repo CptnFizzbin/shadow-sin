@@ -9,11 +9,11 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { ProfileSection } from "./profileSection.tsx"
 
 function renderSection() {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.profile.alias = "Ghost"
     data.profile.name = "Jane Doe"
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

@@ -10,11 +10,11 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { QuickEdgeSection } from "./quickEdgeSection.tsx"
 
 function renderWithEdge(max: number, current: number) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.attributes[AttributeKey.edge] = max
     data.edge.current = current
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

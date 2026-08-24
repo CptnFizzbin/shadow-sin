@@ -40,7 +40,7 @@ describe("WeaponsList", () => {
   it("shows weapons from the store", () => {
     // Arrange / Act
     renderInBuilder(<WeaponsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [pistol.id]: pistol } }) })),
     })
 
     // Assert
@@ -62,7 +62,7 @@ describe("WeaponsList", () => {
   it("tapping a weapon opens the edit dialog", () => {
     // Arrange
     renderInBuilder(<WeaponsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [pistol.id]: pistol } }) })),
     })
 
     // Act
@@ -75,7 +75,7 @@ describe("WeaponsList", () => {
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<WeaponsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [pistol.id]: pistol } }) })),
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 

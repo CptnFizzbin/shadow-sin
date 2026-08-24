@@ -16,10 +16,10 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementQualityList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (sheet) => {
         updateRunnerData?.(sheet)
         return sheet
-      })),
+      } })),
     },
   )
 }

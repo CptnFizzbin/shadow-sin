@@ -11,10 +11,10 @@ const stateFor = (runner: RunnerData) => ({ runner, entity: runner })
 describe("EdgeSelectors.selectMax", () => {
   it("returns the runner's Edge attribute value", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ override: (s) => {
       s.attributes[AttributeKey.edge] = 4
       return s
-    })
+    } })
 
     // Act / Assert
     expect(EdgeSelectors.selectMax(stateFor(runner))).toBe(4)
@@ -24,10 +24,10 @@ describe("EdgeSelectors.selectMax", () => {
 describe("EdgeSelectors.selectCurrent", () => {
   it("returns the runner's current Edge", () => {
     // Arrange
-    const runner = runnerDataFactory((s) => {
+    const runner = runnerDataFactory({ override: (s) => {
       s.edge.current = 2
       return s
-    })
+    } })
 
     // Act / Assert
     expect(EdgeSelectors.selectCurrent(stateFor(runner))).toBe(2)

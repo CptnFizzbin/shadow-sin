@@ -12,7 +12,7 @@ describe("ActiveSkillsList", () => {
   it("opening a second skill to edit after saving the first shows the second skill's data, not the first skill's", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
@@ -21,7 +21,7 @@ describe("ActiveSkillsList", () => {
             { name: SkillKey.automatics, rating: 4 },
           ],
         },
-      }))),
+      }) })),
     })
 
     // Act — open Automatics, save it, then immediately open Pistols before the close
@@ -54,13 +54,13 @@ describe("ActiveSkillsList", () => {
   it("removing an active skill dispatches removeActiveSkill and updates the store", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
           activeSkills: [{ name: SkillKey.pistols, rating: 3 }],
         },
-      }))),
+      }) })),
     })
     expect(screen.getByText(SkillKey.pistols)).toBeTruthy()
 
@@ -77,13 +77,13 @@ describe("ActiveSkillsList", () => {
   it("editing and saving an active skill's specialization dispatches setActiveSkill and updates the store", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
           activeSkills: [{ name: SkillKey.pistols, rating: 3 }],
         },
-      }))),
+      }) })),
     })
 
     // Act: the Skill and Specialization Selects don't wire an accessible name

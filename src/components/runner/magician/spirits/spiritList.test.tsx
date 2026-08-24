@@ -25,10 +25,10 @@ const fireSpirit: SpiritData = {
 }
 
 function renderWithSpirits(spirits: SpiritData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.spirits = spirits
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

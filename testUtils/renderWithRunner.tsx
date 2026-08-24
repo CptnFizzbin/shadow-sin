@@ -16,12 +16,9 @@ export function renderWithRunner(factoryArg?: {
   items?: ItemCatalog
   override?: RunnerFactoryOverrideFn
 } | RunnerFactoryOverrideFn) {
-  const runnerData =
-    typeof factoryArg === "object"
-      ? runnerDataFactory(factoryArg)
-      : typeof factoryArg === "function"
-        ? runnerDataFactory(factoryArg)
-        : runnerDataFactory()
+  const runnerData = runnerDataFactory(
+    typeof factoryArg === "function" ? { override: factoryArg } : factoryArg,
+  )
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

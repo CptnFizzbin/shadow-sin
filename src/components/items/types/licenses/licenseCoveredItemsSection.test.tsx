@@ -71,7 +71,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((r) => ({ ...r, gear: { [license.id]: license } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({ ...r, gear: { [license.id]: license } }) })),
     })
 
     // Assert
@@ -83,10 +83,10 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((r) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
         ...r,
         gear: { [license.id]: license, [coveredItem.id]: coveredItem },
-      }))),
+      }) })),
     })
 
     // Assert
@@ -98,10 +98,10 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((r) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
         ...r,
         gear: { [license.id]: license, [coveredItem.id]: coveredItem },
-      }))),
+      }) })),
     })
 
     // Act
@@ -118,7 +118,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((r) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
         ...r,
         gear: {
           [license.id]: license,
@@ -126,7 +126,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
           [unlicensedItem.id]: unlicensedItem,
           [itemLicensedElsewhere.id]: itemLicensedElsewhere,
         },
-      }))),
+      }) })),
     })
 
     // Act
@@ -152,14 +152,14 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((r) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (r) => ({
         ...r,
         gear: {
           [license.id]: license,
           [otherLicense.id]: otherLicense,
           [itemLicensedElsewhere.id]: itemLicensedElsewhere,
         },
-      }))),
+      }) })),
     })
 
     // Act

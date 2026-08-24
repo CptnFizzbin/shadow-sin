@@ -47,7 +47,7 @@ const knife: MeleeWeaponData = {
 }
 
 function buildRunnerStore() {
-  return new RunnerDataStore(runnerDataFactory((runner) => ({
+  return new RunnerDataStore(runnerDataFactory({ override: (runner) => ({
     ...runner,
     skills: {
       ...runner.skills,
@@ -60,7 +60,7 @@ function buildRunnerStore() {
       [pistol.id]: pistol,
       [knife.id]: knife,
     },
-  })))
+  }) }))
 }
 
 function openCalculator() {

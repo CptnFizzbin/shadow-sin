@@ -26,12 +26,12 @@ describe.concurrent("applyImprovement — grouped active skill without the group
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
       return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -50,12 +50,12 @@ describe.concurrent("applyImprovement — grouped active skill without the group
       skill: SkillKey.banishing,
       specialization: "Spirits of Fire",
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
       return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -76,12 +76,12 @@ describe.concurrent("applyImprovement — grouped active skill without the group
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = [{ name: SkillGroupKey.Conjuring, rating: 3 }]
       draft.karma.current = 50
       return draft
-    })
+    } })
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))

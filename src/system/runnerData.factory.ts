@@ -12,19 +12,12 @@ import { getItemCatalog } from "./runnerTraits.ts"
 
 export type RunnerFactoryOverrideFn = (data: RunnerData & { gear: ItemCatalog }) => RunnerData
 
-/** @deprecated use runnerDataFactory({ override: () => {}}) instead */
-export function runnerDataFactory(overrideFn: RunnerFactoryOverrideFn): RunnerData
 export function runnerDataFactory(options?: {
   items?: ItemCatalog
   override?: RunnerFactoryOverrideFn
-}): RunnerData
-export function runnerDataFactory(
-  optionsOrOverride?:
-    | RunnerFactoryOverrideFn
-    | { items?: ItemCatalog, override?: RunnerFactoryOverrideFn },
-): RunnerData {
-  const overrideFn = typeof optionsOrOverride === "function" ? optionsOrOverride : optionsOrOverride?.override
-  const items = typeof optionsOrOverride === "object" ? optionsOrOverride.items : undefined
+}): RunnerData {
+  const overrideFn = options?.override
+  const items = options?.items
 
   const data: RunnerData = {
     kind: EntityKind.runner,
@@ -119,10 +112,10 @@ export function runnerDataFactory(
   }
 
   // Back-compat for override functions still written against the pre-Slice-5 `data.gear` field
-  // name (see RunnerFactoryOverrideFn's @deprecated note) — a getter/setter keeps `data.gear` and
-  // `data._data_.items` in sync for direct mutation (`data.gear = {...}`). It's non-enumerable so
-  // it doesn't leak into `{ ...data }`-style overrides or show up as an unexpected key when this
-  // data becomes a Redux store's preloadedState.
+  // name — a getter/setter keeps `data.gear` and `data._data_.items` in sync for direct mutation
+  // (`data.gear = {...}`). It's non-enumerable so it doesn't leak into `{ ...data }`-style
+  // overrides or show up as an unexpected key when this data becomes a Redux store's
+  // preloadedState.
   Object.defineProperty(data, "gear", {
     configurable: true,
     get(this: RunnerData) {

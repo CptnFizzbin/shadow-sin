@@ -10,13 +10,13 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { QuickDamageSection } from "./quickDamageSection.tsx"
 
 function renderWithDamage(physical: number, stun: number) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.attributes[AttributeKey.body] = 4
     data.attributes[AttributeKey.willpower] = 4
     data.damage.physical = physical
     data.damage.stun = stun
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

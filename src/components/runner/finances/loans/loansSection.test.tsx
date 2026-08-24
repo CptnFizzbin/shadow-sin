@@ -17,10 +17,10 @@ const fixerLoan: LoanData = {
 }
 
 function renderWithLoans(loans: LoanData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.nuyen.loans = loans
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

@@ -22,10 +22,10 @@ const courierSprite: SpriteData = {
 }
 
 function renderWithSprites(sprites: SpriteData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.sprites = sprites
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

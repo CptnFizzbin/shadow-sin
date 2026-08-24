@@ -23,10 +23,10 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(
     <SpendKarmaDialogContent ctrl={ctrl} />,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (sheet) => {
         updateRunnerData?.(sheet)
         return sheet
-      })),
+      } })),
     },
   )
 }

@@ -24,7 +24,7 @@ const weapon: WeaponData = {
 }
 
 const runnerStoreWithWeapon = () =>
-  new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [weapon.id]: weapon } })))
+  new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [weapon.id]: weapon } }) }))
 
 describe("AnyItemCard", () => {
   it("dispatches weapons to WeaponDataCard", () => {
@@ -56,7 +56,7 @@ describe("AnyItemCard", () => {
     }
 
     renderWithProviders(<AnyItemCard item={item} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [item.id]: item } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [item.id]: item } }) })),
     })
 
     expect(screen.getByText("Survival Kit")).toBeDefined()

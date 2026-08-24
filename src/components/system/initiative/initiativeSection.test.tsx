@@ -9,10 +9,10 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { InitiativeSection } from "./initiativeSection.tsx"
 
 function renderWithPasses(passesCompleted: number[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.initiative.passesCompleted = passesCompleted
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

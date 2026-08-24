@@ -15,10 +15,10 @@ import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
 function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
   return renderInBuilder(<StartingNuyenSection />, {
-    runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
+    runnerStore: new RunnerDataStore(runnerDataFactory({ override: (runner) => ({
       ...runner,
       profile: { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } },
-    }))),
+    }) })),
     builderStore: createCompatStore({ ...builderStateFactory(), ...builderOverrides }, builderStoreReducer),
   })
 }

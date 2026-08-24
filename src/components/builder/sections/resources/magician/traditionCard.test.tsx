@@ -25,10 +25,10 @@ const hermeticTradition: TraditionData = {
 }
 
 function renderWithTradition(tradition: TraditionData | null) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.tradition = tradition
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

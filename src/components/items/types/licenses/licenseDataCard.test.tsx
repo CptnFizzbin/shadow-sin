@@ -29,7 +29,7 @@ const realLicense: LicenseData = {
 
 const renderLicenseCard = (license: LicenseData) => {
   const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [license.id]: license } })),
+    runnerDataFactory({ override: (runner) => ({ ...runner, gear: { [license.id]: license } }) }),
   )
   renderWithProviders(<LicenseDataCard license={license} />, { runnerStore })
   return runnerStore

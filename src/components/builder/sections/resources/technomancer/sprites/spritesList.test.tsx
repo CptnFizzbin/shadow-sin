@@ -22,12 +22,12 @@ const courier: SpriteData = {
 }
 
 function renderWithSprites(sprites: SpriteData[]) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.biology.awakening = AwakeningType.Technomancer
     data.attributes[AttributeKey.charisma] = 6
     data.sprites = sprites
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (

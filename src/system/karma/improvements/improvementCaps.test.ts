@@ -26,10 +26,10 @@ import {
 describe.concurrent("hasAptitudeFor", () => {
   it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(true)
@@ -37,10 +37,10 @@ describe.concurrent("hasAptitudeFor", () => {
 
   it("returns false when the quality targets a different skill", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Longarms)", type: "positive" }]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(false)
@@ -58,12 +58,12 @@ describe.concurrent("hasAptitudeFor", () => {
 describe.concurrent("hasExceptionalAttributeFor", () => {
   it("matches the attribute key", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [
         { kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Logic)", type: "positive" },
       ]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(true)
@@ -71,10 +71,10 @@ describe.concurrent("hasExceptionalAttributeFor", () => {
 
   it("matches the attribute abbreviation", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Exceptional (LOG)", type: "positive" }]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(true)
@@ -82,12 +82,12 @@ describe.concurrent("hasExceptionalAttributeFor", () => {
 
   it("returns false for a different attribute", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [
         { kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" },
       ]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(false)
@@ -105,10 +105,10 @@ describe.concurrent("getActiveSkillCap", () => {
 
   it("returns the Aptitude cap (7) when the runner has Aptitude for the skill", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(getActiveSkillCap(sheet, SkillKey.pistols)).toBe(APTITUDE_ACTIVE_SKILL_CAP)
@@ -126,10 +126,10 @@ describe.concurrent("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillC
 describe.concurrent("getAttributeCap", () => {
   it("returns the metatype max for a regular attribute (Human Body = 6)", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.biology.metatype = MetatypeType.Human
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.body)).toBe(6)
@@ -137,11 +137,11 @@ describe.concurrent("getAttributeCap", () => {
 
   it("adds +1 when Exceptional Attribute targets the attribute", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.biology.metatype = MetatypeType.Human
       draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" }]
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.body)).toBe(7)
@@ -149,10 +149,10 @@ describe.concurrent("getAttributeCap", () => {
 
   it("uses the awakening max for Magic on a magician", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.biology.awakening = AwakeningType.Magician
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.magic)).toBeGreaterThan(0)
@@ -160,10 +160,10 @@ describe.concurrent("getAttributeCap", () => {
 
   it("returns 0 for Magic on a mundane (it isn't a usable cap)", () => {
     // Arrange
-    const sheet = runnerDataFactory((draft) => {
+    const sheet = runnerDataFactory({ override: (draft) => {
       draft.biology.awakening = AwakeningType.Mundane
       return draft
-    })
+    } })
 
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.magic)).toBe(0)

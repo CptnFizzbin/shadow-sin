@@ -465,7 +465,7 @@ function MigratedItemCardsTestPage() {
   const sinItem = useMemo(() => buildSin(sinToggles), [sinToggles])
 
   const runnerStore = useMemo(() => {
-    const runnerData = runnerDataFactory((runner) => ({
+    const runnerData = runnerDataFactory({ override: (runner) => ({
       ...runner,
       gear: {
         [credstickItem.id]: credstickItem,
@@ -483,7 +483,7 @@ function MigratedItemCardsTestPage() {
         [WEAPON_ID]: DEMO_WEAPON,
         [WEAPON_ACCESSORY_ID]: DEMO_WEAPON_ACCESSORY,
       },
-    }))
+    }) })
     return new RunnerDataStore(runnerData)
   }, [credstickItem, licenseItem, sinItem, sinToggles.coveredLicense])
 

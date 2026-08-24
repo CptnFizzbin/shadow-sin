@@ -59,10 +59,10 @@ describe("ActiveSkillFormDialog", () => {
 
     // Act: a Mundane runner can't learn the Technomancer-only skill "compiling"
     renderWithProviders(<ActiveSkillFormDialog ctrl={ctrl} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ override: (sheet) => {
         sheet.biology.awakening = AwakeningType.Mundane
         return sheet
-      })),
+      } })),
     })
     openSkillDropdown()
 

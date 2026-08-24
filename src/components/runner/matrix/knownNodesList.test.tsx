@@ -23,10 +23,10 @@ const arcologyNode: KnownNode = {
 }
 
 function renderWithMatrixState(matrixState: MatrixGameState) {
-  const runnerData = runnerDataFactory((data) => {
+  const runnerData = runnerDataFactory({ override: (data) => {
     data.gameState.matrix = matrixState
     return data
-  })
+  } })
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
