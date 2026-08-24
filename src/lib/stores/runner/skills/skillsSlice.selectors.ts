@@ -52,10 +52,6 @@ export function selectAllowedActiveSkills(runner: RunnerData): Partial<Record<Sk
 }
 
 export namespace SkillsSelectors {
-  export const Options = {
-    skillName: SelectorOptions.skillName,
-  }
-
   export const selectActiveSkills = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.skills.activeSkills,
@@ -92,7 +88,7 @@ export namespace SkillsSelectors {
   export const selectValue = createMemoizedSelector(
     selectActiveSkills,
     selectSkillGroups,
-    Options.skillName,
+    SelectorOptions.skillName,
     (activeSkills, skillGroups, skillName) => {
       const skillInfo = skillList[skillName]
       const skillRating = activeSkills.find((s) => s.name === skillName)?.rating ?? 0
@@ -103,7 +99,7 @@ export namespace SkillsSelectors {
 
   export const selectSpecialization = createMemoizedSelector(
     selectActiveSkills,
-    Options.skillName,
+    SelectorOptions.skillName,
     (activeSkills, skillName) => activeSkills.find((s) => s.name === skillName)?.specialization,
   )
 }

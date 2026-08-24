@@ -176,12 +176,6 @@ export namespace ItemSelectors {
     { items: ItemCatalog }, TReturn, TOptions
   >
 
-  export const Options = {
-    itemId: SelectorOptions.itemId,
-    itemType: SelectorOptions.itemType,
-    licenseId: SelectorOptions.licenseId,
-  }
-
   export const selectAll = createSelector(
     ViewerStateSelectors.selectItems,
   )
@@ -212,19 +206,19 @@ export namespace ItemSelectors {
 
   export const selectById = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    Options.itemId,
+    SelectorOptions.itemId,
     (items, itemId) => items[itemId],
   )
 
   export const selectByType = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    Options.itemType,
+    SelectorOptions.itemType,
     (items, itemType) => filterRecordByType(items, itemType),
   )
 
   export const selectChildrenOf = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    Options.itemId,
+    SelectorOptions.itemId,
     (items, itemId) => {
       const parent = items[itemId]
       const children: ItemCatalog = {}
@@ -250,7 +244,7 @@ export namespace ItemSelectors {
   export namespace Armor {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.armor),
     )
 
@@ -284,7 +278,7 @@ export namespace ItemSelectors {
   export namespace Implants {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.implant),
     )
   }
@@ -292,7 +286,7 @@ export namespace ItemSelectors {
   export namespace Software {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.software),
     )
   }
@@ -300,7 +294,7 @@ export namespace ItemSelectors {
   export namespace Vehicles {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.vehicle),
     )
   }
@@ -308,7 +302,7 @@ export namespace ItemSelectors {
   export namespace Weapons {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.weapon),
     )
   }
@@ -316,7 +310,7 @@ export namespace ItemSelectors {
   export namespace Devices {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.device),
     )
   }
@@ -324,7 +318,7 @@ export namespace ItemSelectors {
   export namespace FirearmAccessories {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.firearmAccessory),
     )
   }
@@ -332,7 +326,7 @@ export namespace ItemSelectors {
   export namespace Sins {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.sin),
     )
   }
@@ -340,7 +334,7 @@ export namespace ItemSelectors {
   export namespace Credsticks {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.credstick),
     )
   }
@@ -348,7 +342,7 @@ export namespace ItemSelectors {
   export namespace Programs {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.program),
     )
   }
@@ -360,7 +354,7 @@ export namespace ItemSelectors {
     // doesn't use the `itemOfType` helper (which is typed for the `ItemDataFor<T>` case).
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => {
         const item = items[itemId]
         return item?.itemType === ItemType.other ? item : undefined
@@ -371,13 +365,13 @@ export namespace ItemSelectors {
   export namespace Licenses {
     export const selectById = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.license),
     )
 
     export const selectForItem = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.itemId,
+      SelectorOptions.itemId,
       (items, itemId) => {
         const item = items[itemId]
         if (!item?.licenseId) return null
@@ -387,7 +381,7 @@ export namespace ItemSelectors {
 
     export const selectItemsForId = createMemoizedSelector(
       ViewerStateSelectors.selectItems,
-      Options.licenseId,
+      SelectorOptions.licenseId,
       (items, licenseId) => Object.values(items).filter((item) => item.licenseId === licenseId),
     )
   }

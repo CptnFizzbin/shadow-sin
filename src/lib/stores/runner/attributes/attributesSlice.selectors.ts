@@ -49,10 +49,6 @@ export namespace AttrSelectors {
     entity: EntityBase & EntityWithAttrs
   }, TReturn, TOptions>
 
-  export const Options = {
-    key: SelectorOptions.attributeKey,
-  }
-
   export const selectAll = createMemoizedSelector(
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
     (entity) => entity.attributes,
@@ -61,7 +57,7 @@ export namespace AttrSelectors {
   /** The raw stored value for `key`, or `0` if unset — before modifiers, drugs, or game effects apply. */
   export const selectBase = createMemoizedSelector(
     selectAll,
-    Options.key,
+    SelectorOptions.attributeKey,
     (attributes, key) => attributes[key] ?? 0,
   )
 
@@ -108,7 +104,7 @@ export namespace AttrSelectors {
   /** {@link RunnerAttrInfo} for `key`. */
   export const selectInfo = createMemoizedSelector(
     selectAllInfo,
-    Options.key,
+    SelectorOptions.attributeKey,
     (allInfo, key) => allInfo[key],
   )
 }

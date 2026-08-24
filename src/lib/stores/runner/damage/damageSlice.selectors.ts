@@ -34,15 +34,10 @@ export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
 }
 
 export namespace DamageSelectors {
-  export const Options = {
-    system: SelectorOptions.damageSystem,
-    track: SelectorOptions.damageTrack,
-  }
-
   export const selectWoundIntervalModifier = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
-    Options.track,
+    SelectorOptions.damageTrack,
     (runner: RunnerData, entity, track) => {
       let modifier = 0
 
@@ -81,7 +76,7 @@ export namespace DamageSelectors {
   export const selectWoundIntervalOffset = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
-    Options.track,
+    SelectorOptions.damageTrack,
     (runner: RunnerData, entity, track) => {
       let offset = 0
 
@@ -120,7 +115,7 @@ export namespace DamageSelectors {
     selectWoundInterval,
     selectWoundIntervalOffset,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithDamage),
-    Options.track,
+    SelectorOptions.damageTrack,
     (woundInterval, intervalOffset, entity, track) => {
       const damage = entity.damage[track]
       return Math.floor(Math.max(0, damage - intervalOffset) / woundInterval)
@@ -135,7 +130,7 @@ export namespace DamageSelectors {
 
   export const selectDamage = createMemoizedSelector(
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithDamage),
-    Options.track,
+    SelectorOptions.damageTrack,
     (entity, track) => entity.damage[track],
   )
 
@@ -171,7 +166,7 @@ export namespace DamageSelectors {
     ),
     matrix: createDamageTrackSelector(
       DamageTrackKey.matrix,
-      Options.system,
+      SelectorOptions.damageSystem,
     ),
   }
 }
