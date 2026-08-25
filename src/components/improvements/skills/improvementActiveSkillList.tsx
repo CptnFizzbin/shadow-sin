@@ -176,7 +176,7 @@ export const ImprovementActiveSkillList: FC = () => {
         </Button>
       </Tooltip>
 
-      {activeSkillDialog.dialog}
+      {activeSkillDialog.outlet}
     </Stack>
   )
 }

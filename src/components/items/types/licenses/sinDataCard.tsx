@@ -50,7 +50,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
         )}
       </ItemCard>
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </>
   )
 }

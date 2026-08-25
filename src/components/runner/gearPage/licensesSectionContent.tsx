@@ -49,7 +49,7 @@ export const LicensesSectionContent: FC = () => {
         Add SIN
       </Button>
 
-      {sinFormDialog.dialog}
+      {sinFormDialog.outlet}
     </Stack>
   )
 }

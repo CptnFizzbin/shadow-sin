@@ -46,7 +46,7 @@ export const ArmorSectionContent: FC = () => {
         Add Armor
       </Button>
 
-      {armorFormDialog.dialog}
+      {armorFormDialog.outlet}
     </Stack>
   )
 }

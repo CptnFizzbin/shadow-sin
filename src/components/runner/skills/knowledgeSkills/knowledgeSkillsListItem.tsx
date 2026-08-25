@@ -39,7 +39,7 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillListItemProps> = ({ skill
           ],
         })}
       />
-      {viewSkillDialog.dialog}
+      {viewSkillDialog.outlet}
     </>
   )
 }

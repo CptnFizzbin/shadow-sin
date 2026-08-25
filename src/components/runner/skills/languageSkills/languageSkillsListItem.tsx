@@ -44,7 +44,7 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
         attr={AttributeKey.intuition}
         onClick={handleClick}
       />
-      {viewSkillDialog.dialog}
+      {viewSkillDialog.outlet}
     </>
   )
 }

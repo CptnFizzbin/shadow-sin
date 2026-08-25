@@ -35,7 +35,7 @@ export const MatrixProgramsSection: FC = () => {
         />
       ))}
 
-      {programFormDialog.dialog}
+      {programFormDialog.outlet}
     </ItemList>
   )
 }

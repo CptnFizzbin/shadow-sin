@@ -168,7 +168,7 @@ export const ImprovementComplexFormList: FC = () => {
         Learn New Complex Form
       </Button>
 
-      {complexFormDialog.dialog}
+      {complexFormDialog.outlet}
     </Stack>
   )
 }

@@ -122,7 +122,7 @@ export const QuickEdgeSection: FC = () => {
         </Tooltip>
       </Stack>
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </Stack>
   )
 }

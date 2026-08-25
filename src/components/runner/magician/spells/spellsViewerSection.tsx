@@ -53,7 +53,7 @@ export const SpellsViewerSection: FC = () => {
         </Stack>
       ))}
 
-      {spellCastDialog.dialog}
+      {spellCastDialog.outlet}
     </Stack>
   )
 }

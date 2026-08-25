@@ -52,7 +52,7 @@ export const EquippedWeaponsSection: FC = () => {
         </Stack>
       ))}
 
-      {weaponAttackDialog.dialog}
+      {weaponAttackDialog.outlet}
     </Stack>
   )
 }

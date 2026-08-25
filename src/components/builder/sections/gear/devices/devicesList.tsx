@@ -44,7 +44,7 @@ export const DevicesList: FC = () => {
         Add Device
       </Button>
 
-      {deviceFormDialog.dialog}
+      {deviceFormDialog.outlet}
     </Stack>
   )
 }

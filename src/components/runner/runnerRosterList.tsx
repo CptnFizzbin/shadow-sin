@@ -224,7 +224,7 @@ export default function RunnerRosterList({
         </MenuItem>
       </Menu>
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </Paper>
   )
 }

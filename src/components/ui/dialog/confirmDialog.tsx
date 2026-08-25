@@ -47,12 +47,12 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
 }
 
 export const useConfirmDialog = () => {
-  const { open, dialog } = useDialog<boolean, Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>>(
+  const { open, outlet } = useDialog<boolean, Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>>(
     (ctrl, props) => <ConfirmDialog ctrl={ctrl} {...props} />,
   )
 
   return {
     confirm: async (props: Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>) => (await open(props)) ?? false,
-    dialog,
+    outlet,
   }
 }

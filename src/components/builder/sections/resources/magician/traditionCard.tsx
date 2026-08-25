@@ -47,7 +47,7 @@ export const TraditionCard: FC = () => {
               </Typography>
             )}
       </Paper>
-      {traditionFormDialog.dialog}
+      {traditionFormDialog.outlet}
     </>
   )
 }

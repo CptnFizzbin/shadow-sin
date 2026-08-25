@@ -258,7 +258,7 @@ export const ImprovementSpecializationList: FC = () => {
             </Paper>
           )}
 
-      {specializationDialog.dialog}
+      {specializationDialog.outlet}
     </Stack>
   )
 }

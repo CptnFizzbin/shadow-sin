@@ -53,8 +53,8 @@ export const KnownNodesList: FC = () => {
 
       <ItemList.AddItemButton onClick={() => knownNodeFormDialog.open()}>Add Known Node</ItemList.AddItemButton>
 
-      {confirmDialog.dialog}
-      {knownNodeFormDialog.dialog}
+      {confirmDialog.outlet}
+      {knownNodeFormDialog.outlet}
     </Stack>
   )
 }

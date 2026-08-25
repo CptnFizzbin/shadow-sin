@@ -75,7 +75,7 @@ export const SpiritList: FC = () => {
         onClosed={() => setEditingSpirit(undefined)}
       />
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </>
   )
 }

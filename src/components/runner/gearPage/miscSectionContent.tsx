@@ -51,7 +51,7 @@ export const MiscSectionContent: FC = () => {
         Add Item
       </Button>
 
-      {itemFormDialog.dialog}
+      {itemFormDialog.outlet}
     </Stack>
   )
 }

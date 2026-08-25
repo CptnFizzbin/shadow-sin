@@ -69,7 +69,7 @@ export const SpellsList: FC = () => {
         Add Spell
       </Button>
 
-      {spellFormDialog.dialog}
+      {spellFormDialog.outlet}
     </Stack>
   )
 }

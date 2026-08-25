@@ -63,7 +63,7 @@ const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
             </Button>
           )}
 
-      {assignLicenseDialog.dialog}
+      {assignLicenseDialog.outlet}
     </Stack>
   )
 }

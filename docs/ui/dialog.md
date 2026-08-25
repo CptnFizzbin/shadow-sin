@@ -87,8 +87,8 @@ export const DeleteItemButton = ({ onConfirm }: { onConfirm: () => void }) => {
 ### Reusable dialog hook — `useDialog`
 
 For a dialog reused across many call sites (form dialogs, confirm/alert prompts), wrap it in a `use*Dialog()` hook
-built on `useDialog<TReturn, TProps>(render)`. It returns `{ open, dialog }`: `open(props)` opens the dialog and
-returns a promise of the result; `dialog` is a small node the caller must render once, anywhere in its own JSX.
+built on `useDialog<TReturn, TProps>(render)`. It returns `{ open, outlet }`: `open(props)` opens the dialog and
+returns a promise of the result; `outlet` is a small node the caller must render once, anywhere in its own JSX.
 
 ```tsx
 import Button from "@mui/material/Button"
@@ -127,12 +127,12 @@ export const useAddKarmaDialog = () => useDialog<void, void>((ctrl) => <AddKarma
 
 ```tsx
 // At the call site:
-const { open, dialog } = useAddKarmaDialog()
+const { open, outlet } = useAddKarmaDialog()
 
 return (
   <>
     <Button onClick={() => open()}>Add Karma</Button>
-    {dialog}
+    {outlet}
   </>
 )
 ```
@@ -147,7 +147,7 @@ export const useWeaponFormDialog = () => useDialog<WeaponData, { weapon?: Weapon
 )
 
 // At the call site:
-const { open, dialog } = useWeaponFormDialog()
+const { open, outlet } = useWeaponFormDialog()
 
 const handleEdit = async (weapon: WeaponData) => {
   const updated = await open({ weapon })
@@ -158,13 +158,13 @@ const handleEdit = async (weapon: WeaponData) => {
 ### Confirm / alert prompts
 
 `useConfirmDialog()` and `useAlertDialog()` are `useDialog`-based hooks that ship with the app for the common
-confirm-before-destructive-action and error-alert cases. Both return a `dialog` node alongside their trigger function
+confirm-before-destructive-action and error-alert cases. Both return an `outlet` node alongside their trigger function
 — render it once next to whatever calls the trigger:
 
 ```tsx
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 
-const { confirm, dialog } = useConfirmDialog()
+const { confirm, outlet } = useConfirmDialog()
 
 const handleRemove = async () => {
   if (await confirm({ title: "Remove implant?", body: "This cannot be undone." })) {
@@ -175,7 +175,7 @@ const handleRemove = async () => {
 return (
   <>
     <MenuItem onClick={handleRemove}>Remove</MenuItem>
-    {dialog}
+    {outlet}
   </>
 )
 ```
@@ -243,7 +243,7 @@ export const ExamplePage = () => {
 If this pattern reuses a single mounted instance to edit different targets (like `SpiritList` does), add
 `key={item?.id ?? "new"}` to the `Dialog` element so it remounts (and re-initializes any form) when the target
 changes — see `AGENTS.md` → *TanStack Form*. `useDialog`-based dialogs don't need this since they remount
-automatically on every `open()` call.
+automatically on every `open()` call (the outlet always renders fresh).
 
 ## Guidelines
 

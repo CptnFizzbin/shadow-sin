@@ -122,8 +122,8 @@ export const ActiveSkillsList: FC = () => {
         </Button>
       </Stack>
 
-      {activeSkillDialog.dialog}
-      {activeSkillGroupDialog.dialog}
+      {activeSkillDialog.outlet}
+      {activeSkillGroupDialog.outlet}
     </Stack>
   )
 }
