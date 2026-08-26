@@ -41,25 +41,26 @@ const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   },
 )
 
-const selectByTypeMemo = createMemoizedSelector(
-  selectAll,
-  SelectorOptions.gameEffectType,
-  (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
-)
+interface GameEffectsByTypeSelector {
+  <TType extends GameEffectType>(
+    state: GameEffectsState,
+    options: { gameEffectType: TType },
+  ): EffectByType[TType][]
+}
 
 export const GameEffectSelectors = {
   selectAll,
 
   /**
-   * `EffectByType[TType][]` can't be derived from a bare `GameEffectType` through generic
-   * inference — indexing a discriminated union by an unresolved type parameter collapses to
-   * `never` (see AGENTS.md § Type assertions) — so this asserts what `filterByEffectType` already
-   * guarantees at runtime for any concrete `TType`, rather than fighting the inference gap.
+   * `createMemoizedSelector` infers `options.gameEffectType` as the full `GameEffectType` union,
+   * so its return type is the full `GameEffectData` union rather than the narrower
+   * `EffectByType[TType][]` each call site actually gets back — the single `as` below asserts what
+   * `filterByEffectType` already guarantees at runtime for any concrete `TType` (see AGENTS.md §
+   * Type assertions).
    */
-  selectByType: <TType extends GameEffectType>(
-    state: GameEffectsState,
-    options: { gameEffectType: TType },
-  ): EffectByType[TType][] => {
-    return selectByTypeMemo(state, options) as EffectByType[TType][]
-  },
+  selectByType: createMemoizedSelector(
+    selectAll,
+    SelectorOptions.gameEffectType,
+    (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
+  ) as GameEffectsByTypeSelector,
 }
