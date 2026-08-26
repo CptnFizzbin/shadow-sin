@@ -8,9 +8,10 @@ import { useState } from "react"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useMaxSpriteTasks } from "#/hooks/runner/technomancer/spritesHooks.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SpriteSelectors } from "#/stores/runner/sprites/spritesSlice.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -22,7 +23,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
   ctrl,
   sprite,
 }) => {
-  const maxSpriteTasks = useMaxSpriteTasks()
+  const maxSpriteTasks = useRunnerSelector(SpriteSelectors.selectMaxTasks)
   const isEditMode = !!sprite
 
   const [name, setName] = useState<string>(sprite?.name ?? "")

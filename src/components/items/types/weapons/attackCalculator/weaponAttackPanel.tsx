@@ -11,7 +11,6 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { WeaponCard } from "#/components/items/types/weapons/weaponCard.tsx"
-import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
@@ -24,6 +23,7 @@ import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import {
   selectAllSettled,
@@ -70,18 +70,18 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
   // Every weapon skill gets a fixed hook call, regardless of what the user has selected, so
   // the hook order never changes when the selection does.
-  const archeryRating = useActiveSkillRating(SkillKey.archery)
-  const automaticsRating = useActiveSkillRating(SkillKey.automatics)
-  const bladesRating = useActiveSkillRating(SkillKey.blades)
-  const clubsRating = useActiveSkillRating(SkillKey.clubs)
-  const exoticMeleeRating = useActiveSkillRating(SkillKey.exoticMeleeWeapons)
-  const exoticRangedRating = useActiveSkillRating(SkillKey.exoticRangedWeapons)
-  const gunneryRating = useActiveSkillRating(SkillKey.gunnery)
-  const heavyWeaponsRating = useActiveSkillRating(SkillKey.heavyWeapons)
-  const longarmsRating = useActiveSkillRating(SkillKey.longarms)
-  const pistolsRating = useActiveSkillRating(SkillKey.pistols)
-  const thrownWeaponsRating = useActiveSkillRating(SkillKey.thrownWeapons)
-  const unarmedCombatRating = useActiveSkillRating(SkillKey.unarmedCombat)
+  const archeryRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.archery })
+  const automaticsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.automatics })
+  const bladesRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.blades })
+  const clubsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.clubs })
+  const exoticMeleeRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.exoticMeleeWeapons })
+  const exoticRangedRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.exoticRangedWeapons })
+  const gunneryRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.gunnery })
+  const heavyWeaponsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.heavyWeapons })
+  const longarmsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.longarms })
+  const pistolsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.pistols })
+  const thrownWeaponsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.thrownWeapons })
+  const unarmedCombatRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.unarmedCombat })
 
   const skillRatingByKey: Partial<Record<SkillKey, number>> = {
     [SkillKey.archery]: archeryRating,

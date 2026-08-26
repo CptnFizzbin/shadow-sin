@@ -2,8 +2,8 @@ import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useGameEffects } from "#/hooks/system/gameEffects/useGameEffects.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SpiritType } from "#/system/magic/spiritData.ts"
@@ -37,7 +37,7 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
 
   const specialization = useRunnerStoreSelector(Selectors.skills.selectSkillSpecialization(skillKey))
 
-  const specMods = useGameEffects(GameEffectType.skillSpecializationMod)
+  const specMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillSpecializationMod })
 
   const specializationApplies = !!specialization && spiritTypeMatchesSpec(spiritType, specialization)
 

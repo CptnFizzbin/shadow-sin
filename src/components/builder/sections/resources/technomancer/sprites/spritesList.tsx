@@ -11,7 +11,6 @@ import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useSpritesBuildPoints } from "#/hooks/builder/buildPoints/useSpritesBuildPoints.ts"
-import { useMaxSpritesRegistered } from "#/hooks/runner/technomancer/spritesHooks.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -25,7 +24,7 @@ import { SpritesListItem } from "./spritesListItem.tsx"
 
 export const SpritesList: FC = () => {
   const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })
-  const maxSpritesRegistered = useMaxSpritesRegistered()
+  const maxSpritesRegistered = useRunnerSelector(SpriteSelectors.selectMaxRegistered)
   const dispatch = useRunnerStoreDispatch()
   const sprites = useRunnerSelector(SpriteSelectors.selectVisible)
   const spritesBp = useSpritesBuildPoints()

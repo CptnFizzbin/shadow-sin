@@ -2,6 +2,7 @@ import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -23,6 +24,7 @@ export const SelectorOptions = {
   attributeKey: selectorOption<{ key: AttributeKey }>("key"),
   damageSystem: selectorOption<{ system?: number }>("system"),
   damageTrack: selectorOption<{ track: DamageTrackKey }>("track"),
+  gameEffectType: selectorOption<{ gameEffectType: GameEffectType }>("gameEffectType"),
   houseRuleKey: selectorOption<{ key: string }>("key"),
   itemId: selectorOption<{ itemId: UUID }>("itemId"),
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
