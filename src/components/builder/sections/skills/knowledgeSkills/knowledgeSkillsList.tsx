@@ -143,8 +143,8 @@ export const KnowledgeSkillsList: FC = () => {
         </Button>
       </Stack>
 
-      {knowledgeSkillDialog.dialog}
-      {languageSkillDialog.dialog}
+      {knowledgeSkillDialog.outlet}
+      {languageSkillDialog.outlet}
     </Stack>
   )
 }

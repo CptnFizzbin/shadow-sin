@@ -73,8 +73,8 @@ export const SinsAndLicensesSection: FC = () => {
         />
       ))}
 
-      {confirmDialog.dialog}
-      {sinFormDialog.dialog}
+      {confirmDialog.outlet}
+      {sinFormDialog.outlet}
     </>
   )
 }

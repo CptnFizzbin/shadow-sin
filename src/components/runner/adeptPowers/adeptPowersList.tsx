@@ -65,7 +65,7 @@ export const AdeptPowersList: FC = () => {
         Add Power
       </Button>
 
-      {adeptPowerFormDialog.dialog}
+      {adeptPowerFormDialog.outlet}
     </Stack>
   )
 }

@@ -451,16 +451,17 @@ stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever wri
 ## Dialog patterns
 
 - Prefer the `useDialog<TReturn, TProps>(render)` + `use*Dialog` hook pattern for new dialogs: the hook calls
-  `useDialog<TReturn, TProps>((ctrl, props) => <FooDialog ctrl={ctrl} {...props} />)` and returns `{ open, dialog }`.
-  There is no provider and no global registry — the caller must render the returned `dialog` node once, typically right
-  next to whatever trigger calls `open(props)`:
+  `useDialog<TReturn, TProps>((ctrl, props) => <FooDialog ctrl={ctrl} {...props} />)` and returns `{ open, outlet }`.
+  There is no provider and no global registry — the caller must render the returned `outlet` node once, typically right
+  next to whatever trigger calls `open(props)`. Don't destructure the returned object; keep it named and access
+  `.open()`/`.outlet` off it:
   ```tsx
-  const { open, dialog } = useAddKarmaDialog()
+  const addKarmaDialog = useAddKarmaDialog()
 
   return (
     <>
-      <Button onClick={() => open()}>Add Karma</Button>
-      {dialog}
+      <Button onClick={() => addKarmaDialog.open()}>Add Karma</Button>
+      {addKarmaDialog.outlet}
     </>
   )
   ```

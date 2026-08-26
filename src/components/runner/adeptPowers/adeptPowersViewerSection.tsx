@@ -55,7 +55,7 @@ export const AdeptPowersViewerSection: FC = () => {
         ))}
       </Stack>
 
-      {adeptPowerFormDialog.dialog}
+      {adeptPowerFormDialog.outlet}
     </Stack>
   )
 }

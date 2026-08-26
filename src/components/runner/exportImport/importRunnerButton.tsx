@@ -47,7 +47,7 @@ export const ImportRunnerButton: FC<ImportRunnerButtonProps> = ({ onImported }) 
       >
         Import
       </Button>
-      {importConflictDialog.dialog}
+      {importConflictDialog.outlet}
     </>
   )
 }

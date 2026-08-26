@@ -168,7 +168,7 @@ export const ImprovementKnowledgeSkillList: FC = () => {
         </Button>
       </Tooltip>
 
-      {knowledgeSkillDialog.dialog}
+      {knowledgeSkillDialog.outlet}
     </Stack>
   )
 }

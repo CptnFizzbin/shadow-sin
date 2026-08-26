@@ -89,8 +89,8 @@ export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRem
         ))}
       </ItemDetailsRoot>
 
-      {confirmDialog.dialog}
-      {implantFormDialog.dialog}
+      {confirmDialog.outlet}
+      {implantFormDialog.outlet}
     </>
   )
 }

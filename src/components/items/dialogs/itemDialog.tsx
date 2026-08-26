@@ -293,8 +293,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
         </Dialog.Actions>
       </ControlledDialog>
 
-      {itemOptionsDialog.dialog}
-      {buyQuantityDialog.dialog}
+      {itemOptionsDialog.outlet}
+      {buyQuantityDialog.outlet}
     </>
   )
 }

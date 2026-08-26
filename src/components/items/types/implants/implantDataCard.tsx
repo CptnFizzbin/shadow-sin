@@ -81,7 +81,7 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
         )}
       </ItemCard>
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </>
   )
 }

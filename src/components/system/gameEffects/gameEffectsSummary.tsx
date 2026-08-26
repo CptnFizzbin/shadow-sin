@@ -70,7 +70,7 @@ export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onCha
         </Stack>
       )}
 
-      {gameEffectsDialog.dialog}
+      {gameEffectsDialog.outlet}
     </Stack>
   )
 }

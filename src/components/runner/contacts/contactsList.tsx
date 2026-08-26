@@ -65,9 +65,9 @@ export const ContactsList: FC<ContactsListProps> = ({
         Add Contact
       </Button>
 
-      {confirmDialog.dialog}
-      {contactFormDialog.dialog}
-      {legworkInfoDialog.dialog}
+      {confirmDialog.outlet}
+      {contactFormDialog.outlet}
+      {legworkInfoDialog.outlet}
     </Stack>
   )
 }

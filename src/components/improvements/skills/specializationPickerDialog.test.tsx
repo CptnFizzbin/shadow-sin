@@ -33,7 +33,7 @@ function OpenButton({
       >
         Open
       </button>
-      {dialog.dialog}
+      {dialog.outlet}
     </>
   )
 }

@@ -176,7 +176,7 @@ export const ImprovementLanguageSkillList: FC = () => {
         </Button>
       </Tooltip>
 
-      {languageSkillDialog.dialog}
+      {languageSkillDialog.outlet}
     </Stack>
   )
 }

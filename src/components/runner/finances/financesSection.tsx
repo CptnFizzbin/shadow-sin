@@ -82,7 +82,7 @@ export const FinancesSection: FC = () => {
 
       <LifestyleSection />
 
-      {endOfMonthDialog.dialog}
+      {endOfMonthDialog.outlet}
     </Stack>
   )
 }

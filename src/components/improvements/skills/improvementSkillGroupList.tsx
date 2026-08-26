@@ -170,7 +170,7 @@ export const ImprovementSkillGroupList: FC = () => {
         </Button>
       </Tooltip>
 
-      {activeSkillGroupDialog.dialog}
+      {activeSkillGroupDialog.outlet}
     </Stack>
   )
 }

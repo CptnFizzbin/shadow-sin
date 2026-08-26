@@ -32,7 +32,7 @@ export const CredstickItemDetails: FC<CredstickItemDetailsProps> = ({ credstick 
         <ItemDetailsSlot.Stat label="Filled" value={`${fillPercent.toFixed(0)}%`} />
       </ItemDetailsRoot>
 
-      {credstickDialog.dialog}
+      {credstickDialog.outlet}
     </>
   )
 }

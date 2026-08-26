@@ -53,7 +53,7 @@ export const ImplantItemList: FC = () => {
         ))}
       </Stack>
 
-      {implantFormDialog.dialog}
+      {implantFormDialog.outlet}
     </>
   )
 }

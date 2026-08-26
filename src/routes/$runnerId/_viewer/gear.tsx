@@ -59,7 +59,7 @@ function RouteComponent() {
           <Button size="small" variant="outlined" onClick={() => licenseCheckDialog.open()}>
             License Check
           </Button>
-          {licenseCheckDialog.dialog}
+          {licenseCheckDialog.outlet}
         </>
       )}
     </Stack>

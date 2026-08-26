@@ -107,8 +107,8 @@ export const InitiativeTrackerPanel: FC = () => {
         Add Unit
       </Button>
 
-      {combatantDetailDialog.dialog}
-      {combatantFormDialog.dialog}
+      {combatantDetailDialog.outlet}
+      {combatantFormDialog.outlet}
     </Stack>
   )
 }

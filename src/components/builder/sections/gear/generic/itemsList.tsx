@@ -61,7 +61,7 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
         Add {itemLabel}
       </Button>
 
-      {itemFormDialog.dialog}
+      {itemFormDialog.outlet}
     </Stack>
   )
 }
