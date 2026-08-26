@@ -89,6 +89,7 @@ export const DeleteItemButton = ({ onConfirm }: { onConfirm: () => void }) => {
 For a dialog reused across many call sites (form dialogs, confirm/alert prompts), wrap it in a `use*Dialog()` hook
 built on `useDialog<TReturn, TProps>(render)`. It returns `{ open, outlet }`: `open(props)` opens the dialog and
 returns a promise of the result; `outlet` is a small node the caller must render once, anywhere in its own JSX.
+Don't destructure the returned object at the call site — keep it named and access `.open()`/`.outlet` off it.
 
 ```tsx
 import Button from "@mui/material/Button"
@@ -127,12 +128,12 @@ export const useAddKarmaDialog = () => useDialog<void, void>((ctrl) => <AddKarma
 
 ```tsx
 // At the call site:
-const { open, outlet } = useAddKarmaDialog()
+const addKarmaDialog = useAddKarmaDialog()
 
 return (
   <>
-    <Button onClick={() => open()}>Add Karma</Button>
-    {outlet}
+    <Button onClick={() => addKarmaDialog.open()}>Add Karma</Button>
+    {addKarmaDialog.outlet}
   </>
 )
 ```
@@ -147,10 +148,10 @@ export const useWeaponFormDialog = () => useDialog<WeaponData, { weapon?: Weapon
 )
 
 // At the call site:
-const { open, outlet } = useWeaponFormDialog()
+const weaponFormDialog = useWeaponFormDialog()
 
 const handleEdit = async (weapon: WeaponData) => {
-  const updated = await open({ weapon })
+  const updated = await weaponFormDialog.open({ weapon })
   if (updated) gearStore.save(updated)
 }
 ```
@@ -164,10 +165,10 @@ confirm-before-destructive-action and error-alert cases. Both return an `outlet`
 ```tsx
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 
-const { confirm, outlet } = useConfirmDialog()
+const confirmDialog = useConfirmDialog()
 
 const handleRemove = async () => {
-  if (await confirm({ title: "Remove implant?", body: "This cannot be undone." })) {
+  if (await confirmDialog.confirm({ title: "Remove implant?", body: "This cannot be undone." })) {
     gearStore.remove(implant)
   }
 }
@@ -175,7 +176,7 @@ const handleRemove = async () => {
 return (
   <>
     <MenuItem onClick={handleRemove}>Remove</MenuItem>
-    {outlet}
+    {confirmDialog.outlet}
   </>
 )
 ```
