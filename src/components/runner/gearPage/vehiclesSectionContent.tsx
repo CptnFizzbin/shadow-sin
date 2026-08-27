@@ -9,7 +9,8 @@ import { VehicleDataCard } from "#/components/items/types/vehicles/vehicleDataCa
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { isVehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -17,7 +18,7 @@ import type { ItemData } from "#/system/itemData.ts"
 export const VehiclesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const navigate = useNavigate({ from: "/$runnerId" })
-  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const allGear = useRunnerSelector(ItemSelectors.selectAll)
   const vehicleFormDialog = useVehicleFormDialog()
 
   const saveItem = (item: ItemData) =>

@@ -23,7 +23,7 @@ import { itemFieldMap } from "#/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
@@ -90,7 +90,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const form = formArg as ItemForm
   const isBuilder = useIsBuilder()
   const dispatch = useRunnerStoreDispatch()
-  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const allGear = useRunnerSelector(ItemSelectors.selectAll)
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 

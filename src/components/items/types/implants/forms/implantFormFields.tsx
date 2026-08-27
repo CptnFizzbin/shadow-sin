@@ -11,7 +11,8 @@ import { z } from "zod"
 import { implantFormOpts } from "#/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [
@@ -63,7 +64,7 @@ interface CapacitySlotsChipProps extends ChipProps {
 }
 
 const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ...props }) => {
-  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const gear = useRunnerSelector(ItemSelectors.selectAll)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
     .filter((item) => item.items.parentId === implantId)
