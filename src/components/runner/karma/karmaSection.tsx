@@ -4,7 +4,8 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
 import { KarmaValue } from "./karmaValue.tsx"
@@ -13,8 +14,8 @@ import { useSpendKarmaDialog } from "./spendKarmaDialog.tsx"
 export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()
   const spendKarmaDialog = useSpendKarmaDialog()
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
-  const totalKarma = useRunnerStoreSelector(Selectors.karma.selectTotalKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
+  const totalKarma = useRunnerSelector(KarmaSelectors.selectTotal)
 
   const handleOpenAddKarma = () => {
     addKarmaDialog.open()

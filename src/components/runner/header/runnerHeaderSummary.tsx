@@ -5,7 +5,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { ReputationSelectors } from "#/stores/runner/reputation/reputationSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
 /**
@@ -13,12 +18,12 @@ import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
  * row in the app header: name, attributes, damage track values, reputation, and karma.
  */
 export const RunnerHeaderSummary: FC = () => {
-  const displayName = useRunnerStoreSelector(Selectors.profile.selectProfileDisplayName)
-  const attributes = useRunnerStoreSelector(Selectors.attributes.selectAttributes)
-  const physicalTrack = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
-  const stunTrack = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
-  const streetCred = useRunnerStoreSelector(Selectors.profile.selectStreetCred)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const displayName = useRunnerSelector(ProfileSelectors.selectDisplayName)
+  const attributes = useRunnerSelector(AttrSelectors.selectAll)
+  const physicalTrack = useRunnerSelector(DamageSelectors.track.physical)
+  const stunTrack = useRunnerSelector(DamageSelectors.track.stun)
+  const reputation = useRunnerSelector(ReputationSelectors.selectAll)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
 
   const visibleAttributeKeys = AttributeOrder.filter((key) => attributes[key] !== 0)
 
@@ -31,12 +36,17 @@ export const RunnerHeaderSummary: FC = () => {
           </Typography>
 
           <Stack direction="row" sx={{ alignItems: "baseline" }}>
-            <Chip size="small" variant="outlined" label={`Rep ${streetCred}`} sx={{ flexShrink: 0 }} />
+            <Chip
+              size="small"
+              variant="outlined"
+              label={`Rep | ${reputation.streetCred} - ${reputation.notoriety} - ${reputation.awareness.rating}`}
+              sx={{ flexShrink: 0 }}
+            />
             <KarmaValue amount={currentKarma} sx={{ flexShrink: 0 }} />
           </Stack>
         </Stack>
 
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Stack direction="row" sx={{ justifyContent: "space-around" }}>
           {visibleAttributeKeys.map((key) => (
             <Stack key={key} sx={{ alignItems: "center", gap: 0 }}>
               <Typography variant="body2" sx={{ whiteSpace: "nowrap" }}>
