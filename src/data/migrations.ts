@@ -89,7 +89,7 @@ migrations.forEach((migration, index) => {
 /** The most recent `timestamp` among all registered migrations. */
 export const LATEST_MIGRATION_TIMESTAMP: string = migrations[migrations.length - 1].timestamp
 
-/** Whether every registered migration's `timestamp` is at or before `appVersion` — i.e. nothing is left pending. */
-export function isFullyMigrated(appVersion: string): boolean {
-  return new Date(appVersion).getTime() >= new Date(LATEST_MIGRATION_TIMESTAMP).getTime()
+/** Whether every registered migration's `timestamp` is at or before `sinVersion` — i.e. nothing is left pending. */
+export function isFullyMigrated(sinVersion: string): boolean {
+  return new Date(sinVersion).getTime() >= new Date(LATEST_MIGRATION_TIMESTAMP).getTime()
 }

@@ -19,7 +19,7 @@ export const Hexen: RunnerData = {
   kind: EntityKind.runner,
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
   name: "Hexen",
-  _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
+  _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null },
 
   biology: {
     metatype: MetatypeType.Human,

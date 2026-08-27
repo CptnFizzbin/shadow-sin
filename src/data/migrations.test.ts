@@ -41,7 +41,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Assert
-    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
     expect("version" in (migrated as object)).toBe(false)
   })
 
@@ -58,9 +58,9 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // Act
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
-    // Assert — treated as unmigrated (appVersion defaults to the epoch) but every migration is
-    // idempotent, so it still lands at the current app version with no error
-    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
+    // Assert — treated as unmigrated (sinVersion defaults to the epoch) but every migration is
+    // idempotent, so it still lands at the current sin version with no error
+    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
   })
 
   it("safely re-runs every migration for a runner still on the legacy _meta_.version scheme", async () => {
@@ -78,7 +78,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
 
     // Assert — loan ID unchanged (addLoanIdAndInterestRate only assigns one when missing)
     expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
-    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
   })
 
   it("yaml export/import round-trips a fully migrated runner", async () => {
@@ -112,7 +112,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const reloaded = await freshManager.getRunner(restored.id)
 
     // Assert
-    expect(reloaded._meta_.appVersion).toBe(migrated._meta_.appVersion)
+    expect(reloaded._meta_.sinVersion).toBe(migrated._meta_.sinVersion)
   })
 
   it("normalises an old-format runner into the current RunnerData shape", async () => {
@@ -183,7 +183,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // fully migrated
-    expect(migrated._meta_.appVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
   })
 
   it("imports blur.yaml (v0 export) via yamlToRunnerData into a valid RunnerData", () => {
@@ -228,21 +228,21 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin!.items.childIds).toContain(license!.id)
 
     // fully migrated
-    expect(runner._meta_.appVersion).toBe(APP_VERSION)
+    expect(runner._meta_.sinVersion).toBe(APP_VERSION)
   })
 })
 
 describe.concurrent("runner migrations + fixtures", () => {
   const fixtures: Record<string, RunnerData> = { Artemis, Hexen }
 
-  // Both fixtures already carry `_meta_.appVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting it
+  // Both fixtures already carry `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting it
   // forces every registered migration to run — first against the raw fixture, then again against
   // its own output, so the second pass exercises every migration's idempotency guard.
   function migrateForcingRerun(runner: object): RunnerData {
     const raw = structuredClone(runner) as Omit<RunnerData, "_meta_"> & {
       _meta_: Partial<RunnerData["_meta_"]>
     }
-    delete raw._meta_.appVersion
+    delete raw._meta_.sinVersion
     return applyMigrations(raw)
   }
 

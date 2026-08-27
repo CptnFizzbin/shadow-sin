@@ -6,7 +6,8 @@ import { RUNNER_META_EPOCH } from "#/system/runnerData.ts"
 import { recordLastExport } from "./metaSlice.actions.ts"
 
 const initialState: RunnerData["_meta_"] = {
-  appVersion: RUNNER_META_EPOCH,
+  sinVersion: RUNNER_META_EPOCH,
+  appVersion: null,
   lastExportDate: null,
 }
 

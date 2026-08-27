@@ -32,7 +32,7 @@ import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
 import type { LanguageSkillData } from "./skills/languageSkillData"
 import type { SkillGroupData } from "./skills/skillGroupData"
 
-/** Sentinel `appVersion` for a runner that has never had any migration applied to it. */
+/** Sentinel `sinVersion` for a runner that has never had any migration applied to it. */
 export const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
 
 /**
@@ -40,16 +40,24 @@ export const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
  */
 export interface RunnerMeta {
   /**
-   * ISO 8601 timestamp of the app version as of this runner's most recent successful migration
-   * run — see `src/data/applyMigrations.ts` and `src/data/appVersion.ts`.
+   * ISO 8601 timestamp identifying this runner's most recent successful migration run — see
+   * `src/data/applyMigrations.ts`. Compared against each registered migration's `timestamp` to
+   * decide which migrations still need to run; individual migrations never read or write it.
    */
-  appVersion: string
+  sinVersion: string
+  /**
+   * ISO 8601 timestamp of the app version (`src/data/appVersion.ts`'s `APP_VERSION`) that most
+   * recently ran a migration against this runner, or `null` if none has. Informational only — it
+   * plays no part in deciding which migrations run; see `sinVersion` for that.
+   */
+  appVersion: string | null
   /** ISO 8601 timestamp of the runner's most recent export, or `null` if it has never been exported. */
   lastExportDate: string | null
 }
 
 export const RunnerMetaSchema = z.object({
-  appVersion: z.string().default(RUNNER_META_EPOCH),
+  sinVersion: z.string().default(RUNNER_META_EPOCH),
+  appVersion: z.string().nullable().default(null),
   lastExportDate: z.string().nullable().default(null),
 })
 
