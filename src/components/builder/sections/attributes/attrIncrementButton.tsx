@@ -26,7 +26,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const store = useRunnerStoreContext()
   const attrKey = props.attr
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: attrKey })
-  const attrValue = attrInfo.current
+  const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
   const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false

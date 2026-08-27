@@ -7,6 +7,7 @@ import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey, AttributeOrder } from "#/system/attributeKey.ts"
+import type { AttributeInfoCatalog } from "#/system/attributes/attributeCatalog.ts"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
@@ -79,7 +80,7 @@ export namespace AttrSelectors {
   export const selectBounds = createMemoizedSelector(
     BiologySelectors.selectMetatypeInfo,
     BiologySelectors.selectAwakeningInfo,
-    (metatype, awakening): Record<AttributeKey, AttributeInfo> => ({
+    (metatype, awakening): AttributeInfoCatalog => ({
       ...metatype.attributes,
       ...awakening.attributes,
     }),
@@ -89,7 +90,7 @@ export namespace AttrSelectors {
   export const selectAllInfo = createMemoizedSelector(
     selectBounds,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
-    (bounds: Record<AttributeKey, AttributeInfo>, entity): Record<AttributeKey, RunnerAttrInfo> => {
+    (bounds: AttributeInfoCatalog, entity: EntityWithAttrs): AttributeInfoCatalog => {
       return Object.fromEntries(
         Object.entries(bounds).map(([key, info]) => [
           key,
@@ -99,7 +100,7 @@ export namespace AttrSelectors {
             current: selectValue({ entity }, { key: key as AttributeKey }),
           },
         ]),
-      ) as Record<AttributeKey, RunnerAttrInfo>
+      ) as AttributeInfoCatalog
     },
   )
 
@@ -107,7 +108,11 @@ export namespace AttrSelectors {
   export const selectInfo = createMemoizedSelector(
     selectAllInfo,
     SelectorOptions.attributeKey,
-    (allInfo, key) => allInfo[key],
+    (allInfo, key) => allInfo[key] ?? {
+      min: 0,
+      max: 0,
+      augMax: 0,
+    },
   )
 
   // TODO: compare against `selectAllInfo`/`selectBounds` for overlapping logic/scope — this filters

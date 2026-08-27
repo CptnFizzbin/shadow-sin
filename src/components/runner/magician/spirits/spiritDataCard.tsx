@@ -3,8 +3,14 @@ import type { FC } from "react"
 
 import { SpiritCard } from "#/components/spiritCard/spiritCard.tsx"
 import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
+import { attrValue } from "#/system/attributes/attributeCatalog.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
-import { calculateSpiritAttributes, calculateSpiritConditionMonitor, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import {
+  calculateSpiritAttributes,
+  calculateSpiritConditionMonitor,
+  calculateSpiritInitiative,
+  SpiritTypeLabels,
+} from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
 import { CritterPowerChip } from "./critterPowerChip.tsx"
@@ -48,7 +54,7 @@ export const SpiritDataCard: FC<SpiritDataCardProps> = ({ spirit, onEdit, onRemo
           <SpiritCard.SkillList
             skills={registry.skills.map((skill) => ({
               name: skill.name,
-              pool: spirit.force + attrs[skill.attribute],
+              pool: spirit.force + attrValue(attrs, skill.attribute),
             }))}
           />
         </SpiritCard.Layout.BodyRow>

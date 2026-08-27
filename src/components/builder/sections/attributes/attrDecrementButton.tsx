@@ -20,15 +20,15 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   }
 
   const store = useRunnerStoreContext()
-  const attrApi = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
-  const attrValue = attrApi.current
+  const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
+  const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
   const editorMode = useEditorMode()
 
   let disabled = false
   let refund = BuilderConfig.attributes.bpCost.base
   let label = `${refund} BP`
 
-  if (attrValue >= attrApi.max) {
+  if (attrValue >= attrInfo.max) {
     refund = BuilderConfig.attributes.bpCost.maxOut
     label = `${refund} BP`
   }
@@ -37,7 +37,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     label = ""
   }
 
-  if (attrValue <= attrApi.min) {
+  if (attrValue <= attrInfo.min) {
     disabled = true
     label = "MIN"
   }

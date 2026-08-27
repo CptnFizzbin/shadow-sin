@@ -1,7 +1,8 @@
 import { z } from "zod"
 
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
+import { AttrKey } from "#/system/attributeKey.ts"
+import type { AttributeCatalog } from "#/system/attributes/attributeCatalog.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
 import { EntityKind } from "#/system/entityKind.ts"
@@ -32,7 +33,7 @@ const spiritTierNames: Record<SpiritType, [string, string, string, string]> = {
   [SpiritType.plant]: ["Young Sprig", "Thicket Walker", "Root Elder", "Ancient Grove"],
   [SpiritType.task]: ["Minor Toiler", "Dutiful Servant", "Tireless Worker", "Bound Ancient"],
   [SpiritType.water]: ["Fledgling Eddy", "River Current", "Tidal Elder", "Primordial Deep"],
-  [SpiritType.watcher]: ["Tiny Watcher", "Keen Watcher", "Elder Watcher", "Ancient Watcher"],
+  [SpiritType.watcher]: ["Watcher", "Watcher", "Watcher", "Watcher"],
 }
 
 export function generateSpiritName(type: SpiritType, force: number): string {
@@ -141,92 +142,117 @@ export function calculateSpiritInitiative(force: number, type: SpiritType) {
 export function calculateSpiritConditionMonitor(force: number, type: SpiritType): { physical: number, stun: number } {
   const attrs = calculateSpiritAttributes(force, type)
   return {
-    physical: 8 + Math.ceil(attrs[AttributeKey.body] / 2),
-    stun: 8 + Math.ceil(attrs[AttributeKey.willpower] / 2),
+    physical: 8 + Math.ceil(attrs[AttrKey.body] / 2),
+    stun: 8 + Math.ceil(attrs[AttrKey.willpower] / 2),
   }
 }
 
-// Attribute offsets from force for each spirit type. Resonance and the four Matrix stats are
-// always 0 — spirits have no Matrix presence.
-const baseAttrOffsets: Record<AttributeKey, number> = {
-  body: 0, agility: 0, reaction: 0, strength: 0,
-  charisma: 0, intuition: 0, logic: 0, willpower: 0,
-  edge: 0, magic: 0, essence: 0, resonance: 0,
-  firewall: 0, response: 0, signal: 0, system: 0,
+export type SpiritAttrKey =
+  | AttrKey.body
+  | AttrKey.agility
+  | AttrKey.reaction
+  | AttrKey.strength
+  | AttrKey.charisma
+  | AttrKey.intuition
+  | AttrKey.logic
+  | AttrKey.willpower
+  | AttrKey.edge
+  | AttrKey.magic
+  | AttrKey.essence
+
+export type SpiritAttributeCatalog =
+  AttributeCatalog
+  & Pick<
+    Required<AttributeCatalog>,
+    SpiritAttrKey
+  >
+
+const spiritAttributeOffsets: Record<SpiritType, AttributeCatalog> = {
+  [SpiritType.wind]: {
+    body: -2,
+    agility: +3,
+    reaction: +4,
+    strength: -3,
+  },
+  [SpiritType.beast]: {
+    body: +2,
+    agility: +1,
+    reaction: +2,
+    strength: +2,
+  },
+  [SpiritType.earth]: {
+    body: +4,
+    agility: -2,
+    reaction: -2,
+    strength: +4,
+    intuition: -1,
+  },
+  [SpiritType.fire]: {
+    body: +1,
+    agility: +2,
+    reaction: +3,
+    strength: -2,
+  },
+  [SpiritType.guidance]: {
+    body: +3,
+    agility: -1,
+    reaction: +2,
+    strength: +1,
+  },
+  [SpiritType.guardian]: {
+    body: +1,
+    agility: +2,
+    reaction: +3,
+    strength: +2,
+  },
+  [SpiritType.man]: {
+    agility: 2,
+    intuition: 1,
+  },
+  [SpiritType.plant]: {
+    body: 3,
+    agility: -1,
+    reaction: 2,
+    strength: 4,
+  },
+  [SpiritType.task]: {
+    reaction: 2,
+    strength: 2,
+  },
+  [SpiritType.water]: {
+    agility: 1,
+    reaction: 2,
+    strength: -1,
+  },
+  [SpiritType.watcher]: {},
 }
 
-// Attribute keys that stay pinned at 0 regardless of Force — Resonance (spirits are never
-// Technomancer-aligned) and the four Matrix stats (spirits have no Matrix presence).
-const zeroPinnedAttrKeys: AttributeKey[] = [
-  AttributeKey.resonance,
-  AttributeKey.firewall,
-  AttributeKey.response,
-  AttributeKey.signal,
-  AttributeKey.system,
-]
+export function calculateSpiritAttributes(force: number, type: SpiritType): SpiritAttributeCatalog {
+  const baseAttrs: SpiritAttributeCatalog = {
+    [AttrKey.body]: 1,
+    [AttrKey.agility]: 1,
+    [AttrKey.reaction]: 1,
+    [AttrKey.strength]: 1,
+    [AttrKey.charisma]: 1,
+    [AttrKey.intuition]: 1,
+    [AttrKey.logic]: 1,
+    [AttrKey.willpower]: 1,
+    [AttrKey.edge]: 0,
+    [AttrKey.magic]: 1,
+    [AttrKey.essence]: 1,
+  }
 
-const spiritAttributeOffsets: Record<SpiritType, Record<AttributeKey, number>> = {
-  [SpiritType.wind]: { ...baseAttrOffsets, body: -2, agility: 3, reaction: 4, strength: -3 },
-  [SpiritType.beast]: { ...baseAttrOffsets, body: 2, agility: 1, reaction: 2, strength: 2 },
-  [SpiritType.earth]: { ...baseAttrOffsets, body: 4, agility: -2, reaction: -2, strength: 4, intuition: -1 },
-  [SpiritType.fire]: { ...baseAttrOffsets, body: 1, agility: 2, reaction: 3, strength: -2 },
-  [SpiritType.guidance]: { ...baseAttrOffsets, body: 3, agility: -1, reaction: 2, strength: 1 },
-  [SpiritType.guardian]: { ...baseAttrOffsets, body: 1, agility: 2, reaction: 3, strength: 2 },
-  // SR4A: Spirit of Man only raises agility and intuition; all other attrs stay at base force
-  [SpiritType.man]: { ...baseAttrOffsets, agility: 2, intuition: 1 },
-  [SpiritType.plant]: { ...baseAttrOffsets, body: 3, agility: -1, reaction: 2, strength: 4 },
-  [SpiritType.task]: { ...baseAttrOffsets, reaction: 2, strength: 2 },
-  [SpiritType.water]: { ...baseAttrOffsets, agility: 1, reaction: 2, strength: -1 },
-  [SpiritType.watcher]: baseAttrOffsets,
-}
-
-export function calculateSpiritAttributes(force: number, type: SpiritType): Record<AttributeKey, number> {
   if (type === SpiritType.watcher) {
-    const half = Math.floor(force / 2)
-    return {
-      [AttributeKey.body]: Math.max(1, half),
-      [AttributeKey.agility]: Math.max(1, half),
-      [AttributeKey.reaction]: Math.max(1, half),
-      [AttributeKey.strength]: Math.max(1, half),
-      [AttributeKey.charisma]: Math.max(1, half),
-      [AttributeKey.intuition]: Math.max(1, half),
-      [AttributeKey.logic]: Math.max(1, half),
-      [AttributeKey.willpower]: Math.max(1, half),
-      [AttributeKey.edge]: 0,
-      [AttributeKey.magic]: force,
-      [AttributeKey.essence]: force,
-      [AttributeKey.resonance]: 0,
-      [AttributeKey.firewall]: 0,
-      [AttributeKey.response]: 0,
-      [AttributeKey.signal]: 0,
-      [AttributeKey.system]: 0,
-    }
+    // Watcher always has the base minimum attributes
+    return baseAttrs
   }
+
+  const attrs = { ...baseAttrs }
 
   const offsets = spiritAttributeOffsets[type]
-  const attrs: Record<AttributeKey, number> = {
-    [AttributeKey.body]: force + offsets.body,
-    [AttributeKey.agility]: force + offsets.agility,
-    [AttributeKey.reaction]: force + offsets.reaction,
-    [AttributeKey.strength]: force + offsets.strength,
-    [AttributeKey.charisma]: force + offsets.charisma,
-    [AttributeKey.intuition]: force + offsets.intuition,
-    [AttributeKey.logic]: force + offsets.logic,
-    [AttributeKey.willpower]: force + offsets.willpower,
-    [AttributeKey.edge]: force + offsets.edge,
-    [AttributeKey.magic]: force + offsets.magic,
-    [AttributeKey.essence]: force + offsets.essence,
-    [AttributeKey.resonance]: 0,
-    [AttributeKey.firewall]: 0,
-    [AttributeKey.response]: 0,
-    [AttributeKey.signal]: 0,
-    [AttributeKey.system]: 0,
-  }
-
-  for (const key of Object.keys(attrs) as AttributeKey[]) {
-    if (!zeroPinnedAttrKeys.includes(key) && attrs[key] < 1) {
-      attrs[key] = 1
-    }
+  for (const attrKey of Object.keys(baseAttrs) as SpiritAttrKey[]) {
+    const offset = offsets[attrKey] ?? 0
+    attrs[attrKey] = Math.max(baseAttrs[attrKey] ?? 0, force + offset)
   }
 
   return attrs

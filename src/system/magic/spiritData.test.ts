@@ -94,14 +94,6 @@ describe.concurrent("calculateSpiritAttributes", () => {
       expect(attrs[AttributeKey.magic]).toBe(force)
     })
   })
-
-  describe("resonance", () => {
-    it("is always 0 regardless of force", () => {
-      const attrs = calculateSpiritAttributes(10, SpiritType.guardian)
-
-      expect(attrs[AttributeKey.resonance]).toBe(0)
-    })
-  })
 })
 
 // ─── calculateSpiritInitiative ───────────────────────────────────────────────

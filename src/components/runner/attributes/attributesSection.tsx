@@ -7,6 +7,7 @@ import { AttrSelectors, selectAttributes } from "#/stores/runner/attributes/attr
 import { useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
+import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/attributes/attributeCatalog.ts"
 
 import { AttributeValueRow } from "./attributeValueRow.tsx"
 
@@ -31,18 +32,20 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
 
   return (
     <Stack direction="row" sx={{ gap: 0.5 }}>
-      {attributes.map(({ key, value }) => (
-        <Stack key={key} sx={{ flexGrow: 1, alignItems: "center", gap: 0 }}>
-          <Label label={AttributeLabels[key]} variant="text" />
-          <Typography>
-            {value ?? attrInfos[key].min}
-            /
-            {attrInfos[key].max}
-            {" "}
-            {(attrInfos[key].augMax || 0) >= 1 && <>({attrInfos[key].augMax})</>}
-          </Typography>
-        </Stack>
-      ))}
+      {attributes.map(({ key, value }) => {
+        const min = attrMin(attrInfos, key)
+        const natMax = attrNaturalMax(attrInfos, key)
+        const augMax = attrAugmentedMax(attrInfos, key)
+
+        return (
+          <Stack key={key} sx={{ flexGrow: 1, alignItems: "center", gap: 0 }}>
+            <Label label={AttributeLabels[key]} variant="text" />
+            <Typography>
+              {value ?? min} / {natMax} {(augMax) >= 1 && <>({augMax})</>}
+            </Typography>
+          </Stack>
+        )
+      })}
     </Stack>
   )
 }

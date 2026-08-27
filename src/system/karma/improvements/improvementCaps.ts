@@ -90,6 +90,6 @@ export function getAttributeCap(sheet: RunnerData, attr: AttributeKey): number {
   }
 
   const metatype = metatypes[sheet.biology.metatype]
-  const baseCap = metatype.attributes[attr].max
+  const baseCap = metatype.attributes[attr]?.max ?? 0
   return hasExceptionalAttributeFor(sheet, attr) ? baseCap + 1 : baseCap
 }
