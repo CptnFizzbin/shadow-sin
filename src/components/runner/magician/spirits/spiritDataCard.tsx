@@ -3,17 +3,17 @@ import type { FC } from "react"
 
 import { SpiritCard } from "#/components/spiritCard/spiritCard.tsx"
 import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
+import { attrValue } from "#/system/attributes/attributeCatalog.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import {
   calculateSpiritAttributes,
   calculateSpiritConditionMonitor,
   calculateSpiritInitiative,
-  SpiritTypeLabels
+  SpiritTypeLabels,
 } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
 import { CritterPowerChip } from "./critterPowerChip.tsx"
-import { attrValue } from "#/system/attributes/attributeCatalog.ts"
 
 const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
 
