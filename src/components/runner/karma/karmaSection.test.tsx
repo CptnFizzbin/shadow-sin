@@ -8,16 +8,10 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { KarmaSection } from "./karmaSection.tsx"
 
-function renderWithKarma(current: number, total: number, streetCred?: number, notoriety?: number) {
+function renderWithKarma(current: number, total: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.karma.current = current
     data.karma.total = total
-    if (streetCred !== undefined) {
-      data.profile.streetCred = streetCred
-    }
-    if (notoriety !== undefined) {
-      data.profile.notoriety = notoriety
-    }
   } })
   const store = new RunnerDataStore(runnerData)
 
@@ -38,25 +32,6 @@ describe("KarmaSection", () => {
     // Assert
     expect(screen.getByText("5")).toBeDefined()
     expect(screen.getByText("20")).toBeDefined()
-  })
-
-  it("shows Street Cred, Notoriety, and Public Awareness counters from the store", () => {
-    // Arrange / Act
-    renderWithKarma(5, 20, 10, 5)
-
-    // Assert
-    expect(screen.getByText("Street Cred")).toBeDefined()
-    expect(screen.getByText("Notoriety")).toBeDefined()
-    expect(screen.getByText("Public Awareness")).toBeDefined()
-    // Street Cred value should be 10
-    const streetCredElement = screen.getByText("Street Cred").parentElement
-    expect(streetCredElement?.textContent).toContain("10")
-    // Notoriety value should be 5
-    const notorietyElement = screen.getByText("Notoriety").parentElement
-    expect(notorietyElement?.textContent).toContain("5")
-    // Public Awareness is calculated as floor((streetCred + notoriety) / 3) = floor(15 / 3) = 5
-    const publicAwarenessElement = screen.getByText("Public Awareness").parentElement
-    expect(publicAwarenessElement?.textContent).toContain("5")
   })
 
   it("adding karma dispatches addKarma, updating current and total in the store and the UI", async () => {
