@@ -7,16 +7,18 @@ import type { FC } from "react"
 import { DeviceDataCard } from "#/components/items/types/devices/deviceDataCard.tsx"
 import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 
 export const DevicesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const navigate = useNavigate({ from: "/$runnerId" })
-  const devices = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.device))
+  const devices = useRunnerSelector(ItemSelectors.selectByType, { itemType: ItemType.device }) as ItemCatalog<DeviceData>
   const deviceFormDialog = useDeviceFormDialog()
 
   const saveItem = (item: DeviceData) =>

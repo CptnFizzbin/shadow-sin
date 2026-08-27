@@ -6,9 +6,10 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -24,7 +25,7 @@ interface LicenseCoveredItemsSectionProps {
  */
 export const LicenseCoveredItemsSection: FC<LicenseCoveredItemsSectionProps> = ({ license }) => {
   const dispatch = useRunnerStoreDispatch()
-  const coveredItems = useRunnerStoreSelector(Selectors.gear.licenses.selectItemsForId(license.id))
+  const coveredItems = useRunnerSelector(ItemSelectors.Licenses.selectItemsForId, { licenseId: license.id })
   const addCoveredItemDialog = useAddCoveredItemDialog()
 
   const handleRemove = (itemId: ItemData["id"]) => {

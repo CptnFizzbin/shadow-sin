@@ -2,9 +2,10 @@ import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorDataCardProps {
@@ -15,7 +16,7 @@ interface ArmorDataCardProps {
 
 export const ArmorDataCard: FC<ArmorDataCardProps> = ({ armor, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
-  const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
+  const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: armor.id })
   const hasMods = Object.keys(mods).length > 0
 
   const toggleEquipped = () => dispatch(Actions.item.setItem({ ...armor, equipped: !armor.equipped }))

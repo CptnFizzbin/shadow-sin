@@ -5,15 +5,15 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { selectLoans } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 import { LoanCard } from "./loanCard.tsx"
 import { useLoanDialog } from "./loanDialog.tsx"
 
 export const LoansSection: FC = () => {
-  const loans = useRunnerStoreSelector(selectLoans)
+  const loans = useRunnerSelector(NuyenSelectors.selectLoans)
   const loanDialog = useLoanDialog()
 
   const handleCardClick = (loan: LoanData) => {

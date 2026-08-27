@@ -11,7 +11,8 @@ import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useRunnerNav } from "#/hooks/runner/nav/useRunnerNav.ts"
 import { useDocumentTitle } from "#/hooks/ui/useDocumentTitle.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 /**
  * The tabbed-sheet chrome: `RunnerNav` and the swipe-between-sections
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/$runnerId/_viewer")({
 function ViewerLayout() {
   const { nextPage, prevPage } = useRunnerNav()
   const diceTray = useDiceTray()
-  const displayName = useRunnerStoreSelector(Selectors.profile.selectProfileDisplayName)
+  const displayName = useRunnerSelector(ProfileSelectors.selectDisplayName)
   useDocumentTitle(`${displayName} - ShadowSIN`)
 
   return (

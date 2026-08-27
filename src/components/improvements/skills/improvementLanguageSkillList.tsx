@@ -20,7 +20,9 @@ import {
 } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { getLanguageSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnLanguageSkillEntry,
@@ -40,10 +42,10 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const languageSkillDialog = useLanguageSkillDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

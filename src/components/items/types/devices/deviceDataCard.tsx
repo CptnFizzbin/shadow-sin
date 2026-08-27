@@ -1,9 +1,10 @@
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceDataCardProps {
@@ -14,7 +15,7 @@ interface DeviceDataCardProps {
 
 export const DeviceDataCard: FC<DeviceDataCardProps> = ({ device, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
-  const programs = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(device.id))
+  const programs = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: device.id })
   const hasPrograms = Object.keys(programs).length > 0
 
   const deviceTypeLabel =

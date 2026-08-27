@@ -12,7 +12,8 @@ import { InnatePowersDisplay } from "#/components/runner/biology/innatePowersDis
 import { MovementDisplay } from "#/components/runner/biology/movementDisplay.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
@@ -20,8 +21,8 @@ import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
   const sheet = useRunnerStoreContext()
-  const metatypeKey = useRunnerStoreSelector(Selectors.biology.selectMetatype)
-  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
+  const metatypeKey = useRunnerSelector(BiologySelectors.selectMetatype)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
 
   const currentMetatype = metatypes[metatypeKey]
 

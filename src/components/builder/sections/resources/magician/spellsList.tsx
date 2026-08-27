@@ -10,7 +10,8 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useSpellsBuildPoints } from "#/hooks/builder/buildPoints/useSpellsBuildPoints.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { SpellListItem } from "./spellListItem.tsx"
@@ -18,7 +19,7 @@ import { TraditionCard } from "./traditionCard.tsx"
 
 export const SpellsList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
+  const spells = useRunnerSelector(SpellsSelectors.selectAll)
   const buildPoints = useSpellsBuildPoints()
   const spellFormDialog = useSpellFormDialog()
 

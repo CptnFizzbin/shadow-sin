@@ -2,7 +2,8 @@ import { useNavigate } from "@tanstack/react-router"
 
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 
 /**
  * Returns a callback that navigates to an item's details page, or
@@ -20,7 +21,7 @@ import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts
 // prove the store is reachable in both contexts.
 export function useOpenItemDetails(): ((itemId: UUID) => void) | undefined {
   const isBuilder = useIsBuilder()
-  const runnerId = useRunnerStoreSelector((state) => state.id)
+  const runnerId = useRunnerSelector(ViewerStateSelectors.selectRunner).id
   const navigate = useNavigate()
 
   if (isBuilder) return undefined

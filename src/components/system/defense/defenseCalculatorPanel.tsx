@@ -31,7 +31,7 @@ import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.select
 import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -87,8 +87,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const [armorType, setArmorType] = useState<ArmorType>("ballistic")
 
   const dispatch = useRunnerStoreDispatch()
-  const physicalTrack = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
-  const stunTrack = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
+  const physicalTrack = useRunnerSelector(DamageSelectors.track.physical)
+  const stunTrack = useRunnerSelector(DamageSelectors.track.stun)
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.

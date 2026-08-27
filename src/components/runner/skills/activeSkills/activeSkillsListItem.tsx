@@ -9,7 +9,8 @@ import { useState } from "react"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { DicePoolsStack, useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
 import { useActiveSkillDicePool } from "#/hooks/runner/skills/skillDicePools.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
@@ -64,12 +65,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
   const skillInfo = skillList[skillKey]
   const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
 
-  const specialization = useRunnerStoreSelector((sheet) => {
-    return sheet.skills
-      .activeSkills
-      .find((s) => s.name === skillKey)
-      ?.specialization
-  })
+  const specialization = useRunnerSelector(SkillsSelectors.selectSpecialization, { skillName: skillKey })
 
   const viewSkillDialog = useViewSkillDialog()
 

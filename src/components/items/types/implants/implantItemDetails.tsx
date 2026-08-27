@@ -4,9 +4,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -37,7 +38,7 @@ export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRem
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
   const implantFormDialog = useImplantFormDialog()
-  const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(implant.id))
+  const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: implant.id })
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
 

@@ -12,7 +12,8 @@ import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useBuilderSkillsBuildPoints } from "#/hooks/builder/buildPoints/useBuildPointsApi.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
@@ -28,8 +29,8 @@ import {
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
   const dispatch = useRunnerStoreDispatch()
-  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
-  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
+  const activeSkills = useRunnerSelector(SkillsSelectors.selectActiveSkills)
+  const skillGroups = useRunnerSelector(SkillsSelectors.selectSkillGroups)
 
   const activeSkillDialog = useActiveSkillDialog()
   const activeSkillGroupDialog = useActiveSkillGroupDialog()

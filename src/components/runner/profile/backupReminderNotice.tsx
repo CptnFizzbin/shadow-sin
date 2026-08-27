@@ -2,8 +2,8 @@ import Alert from "@mui/material/Alert"
 import { differenceInCalendarDays } from "date-fns"
 import type { FC } from "react"
 
-import { selectLastExportDate } from "#/stores/runner/meta/metaSlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { MetaSelectors } from "#/stores/runner/meta/metaSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 const BACKUP_REMINDER_THRESHOLD_DAYS = 7
 
@@ -12,7 +12,7 @@ const BACKUP_REMINDER_THRESHOLD_DAYS = 7
  * {@link BACKUP_REMINDER_THRESHOLD_DAYS} days since the last export (or when it has never been exported).
  */
 export const BackupReminderNotice: FC = () => {
-  const lastExportDate = useRunnerStoreSelector(selectLastExportDate)
+  const lastExportDate = useRunnerSelector(MetaSelectors.selectLastExportDate)
 
   const daysSinceExport = lastExportDate
     ? differenceInCalendarDays(new Date(), new Date(lastExportDate))

@@ -14,8 +14,8 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { selectSpells } from "#/stores/runner/spells/spellsSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnSpellEntry,
@@ -26,7 +26,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 
 export const ImprovementSpellList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const knownSpells = useRunnerStoreSelector(selectSpells)
+  const knownSpells = useRunnerSelector(SpellsSelectors.selectAll)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const spellFormDialog = useSpellFormDialog()
 

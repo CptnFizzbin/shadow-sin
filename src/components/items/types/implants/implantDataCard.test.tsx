@@ -2,7 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
@@ -60,7 +61,7 @@ interface RemovableImplantCardProps {
  * `selectChildrenOf` selector against a missing parent and throw.
  */
 const RemovableImplantCard: FC<RemovableImplantCardProps> = ({ implantId }) => {
-  const implant = useRunnerStoreSelector(Selectors.gear.selectById(implantId)) as ImplantData | undefined
+  const implant = useRunnerSelector(ItemSelectors.selectById, { itemId: implantId }) as ImplantData | undefined
   return implant ? <ImplantDataCard implant={implant} /> : null
 }
 

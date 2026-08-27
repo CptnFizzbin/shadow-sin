@@ -2,7 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -44,7 +45,7 @@ interface RemovableArmorCardProps {
  * selector against a missing parent and throw.
  */
 const RemovableArmorCard: FC<RemovableArmorCardProps> = ({ armorId }) => {
-  const armor = useRunnerStoreSelector(Selectors.gear.selectById(armorId)) as ArmorData | undefined
+  const armor = useRunnerSelector(ItemSelectors.selectById, { itemId: armorId }) as ArmorData | undefined
   return armor ? <ArmorDataCard armor={armor} /> : null
 }
 

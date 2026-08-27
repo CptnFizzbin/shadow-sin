@@ -7,7 +7,8 @@ import type { FC } from "react"
 import { useMemo, useState } from "react"
 
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -27,8 +28,8 @@ const groupingModeLabels: Record<GroupingMode, string> = {
 const skillCategoryOrder = Object.values(SkillCategory)
 
 export const ActiveSkillsList: FC = () => {
-  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
-  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
+  const activeSkills = useRunnerSelector(SkillsSelectors.selectActiveSkills)
+  const skillGroups = useRunnerSelector(SkillsSelectors.selectSkillGroups)
 
   const [searchQuery, setSearchQuery] = useState("")
   const [groupingMode, setGroupingMode] = useState<GroupingMode>("type")

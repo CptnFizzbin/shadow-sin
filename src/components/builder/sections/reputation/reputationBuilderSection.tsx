@@ -6,16 +6,17 @@ import type { FC } from "react"
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ReputationBuilderSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const streetCred = useRunnerStoreSelector(Selectors.profile.selectStreetCred)
-  const notoriety = useRunnerStoreSelector(Selectors.profile.selectNotoriety)
-  const publicAwarenessModifier = useRunnerStoreSelector(Selectors.profile.selectPublicAwarenessModifier)
-  const publicAwareness = useRunnerStoreSelector(Selectors.profile.selectPublicAwareness)
+  const streetCred = useRunnerSelector(ProfileSelectors.selectStreetCred)
+  const notoriety = useRunnerSelector(ProfileSelectors.selectNotoriety)
+  const publicAwarenessModifier = useRunnerSelector(ProfileSelectors.selectPublicAwarenessModifier)
+  const publicAwareness = useRunnerSelector(ProfileSelectors.selectPublicAwareness)
 
   return (
     <BuilderSection id={BuilderSectionId.reputation}>

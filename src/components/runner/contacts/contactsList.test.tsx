@@ -4,7 +4,8 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/stores/runner/contacts/contactsSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ContactData } from "#/system/contactData.ts"
 import { FavourDirection } from "#/system/favourData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -22,7 +23,7 @@ const fixer: ContactData = {
 // ContactsList: they own the store subscription and pass the live list down,
 // so this small wrapper keeps the list's `contacts` prop bound to the store.
 const LiveContactsList: FC = () => {
-  const contacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
+  const contacts = useRunnerSelector(ContactsSelectors.selectAll)
   return <ContactsList contacts={contacts} />
 }
 

@@ -13,9 +13,10 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { withTheme } from "#/integrations/mui/muiUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { TraditionSelectors } from "#/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -45,8 +46,8 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainAmount = Math.max(0, drainDv - drainResistanceHits)
 
   const dispatch = useRunnerStoreDispatch()
-  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
-  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
+  const physical = useRunnerSelector(DamageSelectors.track.physical)
+  const stun = useRunnerSelector(DamageSelectors.track.stun)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return
