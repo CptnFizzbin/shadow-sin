@@ -11,7 +11,7 @@ import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSki
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors, useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isSkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -57,7 +57,7 @@ export const ImprovementSpecializationList: FC = () => {
   const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const specializationDialog = useSpecializationPickerDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

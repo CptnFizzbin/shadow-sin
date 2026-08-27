@@ -12,7 +12,7 @@ import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors, useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { InitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isInitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -26,7 +26,7 @@ export const ImprovementInitiationList: FC = () => {
   const currentGrade = useRunnerStoreSelector((sheet) => sheet.initiateGrade)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedEntry = allImprovements.filter(isInitiationIncreaseEntry)[0] ?? null
