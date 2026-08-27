@@ -175,14 +175,14 @@ value under the old `appVersion` name; `resolveRunnerSinVersion` reads it as a f
 treated as unmigrated either.
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
-is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This is what
-makes a new migration actually run once the app is deployed: since `_meta_.sinVersion` only ever holds either the
-epoch sentinel or a previously-registered migration's own `timestamp`, and every already-shipped migration's
-timestamp necessarily predates "now" at merge time, requiring the new migration's timestamp to be newer than the
-base branch's latest commit guarantees it's also newer than every already-migrated runner's `_meta_.sinVersion` —
-so `migration.timestamp > _meta_.sinVersion` holds and the migration actually runs instead of being silently skipped
-forever. `migrations.ts` separately enforces that each migration's `timestamp` sorts strictly after the previously
-registered one, keeping `LATEST_MIGRATION_TIMESTAMP` monotonically increasing as migrations are added.
+is newer than the base branch's SIN version** — the highest `timestamp` among every migration already registered on
+the base branch (i.e. what the base branch's `LATEST_MIGRATION_TIMESTAMP` resolves to) — see
+`.github/scripts/check-migration-timestamps.ts`. This is what makes a new migration actually run once the app is
+deployed: a runner already fully migrated on the base branch has `_meta_.sinVersion` exactly equal to the base
+branch's SIN version, so requiring the new migration's timestamp to be newer than that guarantees
+`migration.timestamp > _meta_.sinVersion` holds for it and the migration actually runs instead of being silently
+skipped forever. `migrations.ts` separately enforces that each migration's `timestamp` sorts strictly after the
+previously registered one, keeping `LATEST_MIGRATION_TIMESTAMP` monotonically increasing as migrations are added.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or

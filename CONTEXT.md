@@ -703,8 +703,9 @@ _Avoid_: upgrade, patch, update (use migration)
 **Migration Timestamp**:
 A Migration's creation date, as an ISO 8601 string — the value its filename is prefixed with and
 its `timestamp` field holds. A CI check enforces that every new Migration's timestamp is newer
-than the base branch's latest commit, so that once merged, the resulting **App Version** is always
-newer than the Migration it introduced.
+than the base branch's **SIN Version** (the highest Migration Timestamp already registered there),
+so that a Runner already fully migrated on the base branch is guaranteed to pick up the new
+Migration once merged, instead of silently skipping it forever.
 
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
