@@ -16,10 +16,10 @@ import {
 } from "#testUtils/fixtures/characters/runnerDataFixtures.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
-import { APP_VERSION } from "./appVersion.ts"
 import { applyMigrations } from "./applyMigrations.ts"
 import { Artemis } from "./fixtures/artemis.ts"
 import { Hexen } from "./fixtures/hexen.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "./migrations.ts"
 
 // Each test seeds its own manager/storage (rather than sharing one from `beforeEach`) so the
 // suite can run concurrently.
@@ -41,7 +41,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Assert
-    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
     expect("version" in (migrated as object)).toBe(false)
   })
 
@@ -59,8 +59,8 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
     // Assert — treated as unmigrated (sinVersion defaults to the epoch) but every migration is
-    // idempotent, so it still lands at the current sin version with no error
-    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
+    // idempotent, so it still lands at the latest migration timestamp with no error
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("safely re-runs every migration for a runner still on the legacy _meta_.version scheme", async () => {
@@ -78,7 +78,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
 
     // Assert — loan ID unchanged (addLoanIdAndInterestRate only assigns one when missing)
     expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
-    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("yaml export/import round-trips a fully migrated runner", async () => {
@@ -183,7 +183,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // fully migrated
-    expect(migrated._meta_.sinVersion).toBe(APP_VERSION)
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("imports blur.yaml (v0 export) via yamlToRunnerData into a valid RunnerData", () => {
@@ -228,21 +228,26 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(sin!.items.childIds).toContain(license!.id)
 
     // fully migrated
-    expect(runner._meta_.sinVersion).toBe(APP_VERSION)
+    expect(runner._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 })
 
 describe.concurrent("runner migrations + fixtures", () => {
   const fixtures: Record<string, RunnerData> = { Artemis, Hexen }
 
-  // Both fixtures already carry `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting it
-  // forces every registered migration to run — first against the raw fixture, then again against
-  // its own output, so the second pass exercises every migration's idempotency guard.
+  // Both fixtures already carry `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting both
+  // version fields forces every registered migration to run — first against the raw fixture, then
+  // again against its own output, so the second pass exercises every migration's idempotency
+  // guard. Deleting `appVersion` too matters on the second pass: by then it holds the live
+  // `APP_VERSION` (stamped after the first pass actually ran migrations), and
+  // `resolveRunnerSinVersion`'s pre-split fallback would otherwise mistake that live build
+  // timestamp for an already-applied `sinVersion`.
   function migrateForcingRerun(runner: object): RunnerData {
     const raw = structuredClone(runner) as Omit<RunnerData, "_meta_"> & {
       _meta_: Partial<RunnerData["_meta_"]>
     }
     delete raw._meta_.sinVersion
+    delete raw._meta_.appVersion
     return applyMigrations(raw)
   }
 

@@ -157,12 +157,15 @@ the only place that decides whether a migration needs to run: it filters the reg
 `migration.timestamp > _meta_.sinVersion` and only calls `up` on that subset, in ascending `timestamp` order.
 Individual migrations don't check `_meta_` themselves — that would just duplicate the same comparison in every file
 — they're plain, self-contained transforms. After running any pending migrations, `_meta_.sinVersion` is stamped to
-the live **app version** (`src/data/appVersion.ts`'s `APP_VERSION`, baked in at build time from the latest commit on
-the default branch, or from the dev server's start time under `yarn dev`) and synced back to storage; a load that
-runs no migrations leaves `_meta_.sinVersion` untouched. `_meta_.appVersion` is stamped alongside it at the same
-time, to the same value, but is purely informational — it records which app build last touched the runner and plays
-no part in deciding which migrations run; only `_meta_.sinVersion` is compared against migration timestamps. Runners
-still carrying the old `_meta_.version` integer (from before migrations moved to timestamps, capped at 32 — the last
+the `timestamp` of the most recently registered migration that ran — always the newest registered migration at that
+point, since the pending list is a suffix of the full ascending-order list — so a fully migrated runner's
+`_meta_.sinVersion` always exactly equals `LATEST_MIGRATION_TIMESTAMP` (`src/data/migrations.ts`). `_meta_.appVersion`
+is stamped alongside it at the same time, to the live **app version** (`src/data/appVersion.ts`'s `APP_VERSION`,
+baked in at build time from the latest commit on the default branch, or from the dev server's start time under
+`yarn dev`), but is purely informational — it records which app build last touched the runner and plays no part in
+deciding which migrations run; only `_meta_.sinVersion` is compared against migration timestamps. A load that runs
+no migrations leaves both fields untouched. Runners still carrying the old `_meta_.version` integer (from before
+migrations moved to timestamps, capped at 32 — the last
 version registered under that scheme) are handled by `resolveRunnerSinVersion`: a runner at version 32 (the common
 case — every runner opened since that version shipped lands there) resolves directly to that migration's own
 timestamp, so it re-runs nothing; any other legacy version (rare) is treated as fully unmigrated, so every
@@ -173,11 +176,13 @@ treated as unmigrated either.
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
 is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This is what
-makes a new migration actually run once the app is deployed: a runner whose `_meta_.sinVersion` is already at or
-past the migration's `timestamp` would otherwise skip it forever (`migration.timestamp > _meta_.sinVersion` would
-never be true for that runner). It also guarantees that once a PR merges, the resulting build's `APP_VERSION` (the
-new latest commit) is newer than every migration it introduced, so a runner's `_meta_.sinVersion` never needs to
-exceed the live app version to be considered fully migrated.
+makes a new migration actually run once the app is deployed: since `_meta_.sinVersion` only ever holds either the
+epoch sentinel or a previously-registered migration's own `timestamp`, and every already-shipped migration's
+timestamp necessarily predates "now" at merge time, requiring the new migration's timestamp to be newer than the
+base branch's latest commit guarantees it's also newer than every already-migrated runner's `_meta_.sinVersion` —
+so `migration.timestamp > _meta_.sinVersion` holds and the migration actually runs instead of being silently skipped
+forever. `migrations.ts` separately enforces that each migration's `timestamp` sorts strictly after the previously
+registered one, keeping `LATEST_MIGRATION_TIMESTAMP` monotonically increasing as migrations are added.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or

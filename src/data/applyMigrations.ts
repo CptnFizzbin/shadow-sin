@@ -89,11 +89,14 @@ export function applyMigrations(runner: object): RunnerData {
   }
 
   migrated = produce(migrated, (draft) => {
-    // Only stamp the live app version when a migration actually ran — otherwise a runner that's
-    // already fully migrated would get bumped to "now" on every load (e.g. after a redeploy or a
-    // dev server restart) even though nothing about its data changed.
+    // Only stamp when a migration actually ran — otherwise a runner that's already fully migrated
+    // would get bumped on every load (e.g. after a redeploy or a dev server restart) even though
+    // nothing about its data changed.
     if (migrationsToRun.length > 0) {
-      draft._meta_.sinVersion = APP_VERSION
+      // migrationsToRun is a suffix of migrationsInOrder (everything newer than preMeta.sinVersion),
+      // so its last entry is always the most recently registered migration — i.e. the last one that
+      // actually ran.
+      draft._meta_.sinVersion = migrationsToRun[migrationsToRun.length - 1].timestamp
       draft._meta_.appVersion = APP_VERSION
     }
 

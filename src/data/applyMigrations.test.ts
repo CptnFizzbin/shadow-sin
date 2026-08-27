@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import { APP_VERSION } from "./appVersion.ts"
 import { applyMigrations } from "./applyMigrations.ts"
-import { migrations } from "./migrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP, migrations } from "./migrations.ts"
 
 describe.concurrent("applyMigrations", () => {
-  it("stamps the sin version and app version when starting from {}", () => {
+  it("stamps sinVersion to the latest migration timestamp and appVersion to the live app version when starting from {}", () => {
     // Arrange
     const runner = {}
 
@@ -13,7 +13,7 @@ describe.concurrent("applyMigrations", () => {
     const result = applyMigrations(runner)
 
     // Assert
-    expect(result._meta_.sinVersion).toBe(APP_VERSION)
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
     expect(result._meta_.appVersion).toBe(APP_VERSION)
   })
 
@@ -60,7 +60,7 @@ describe.concurrent("applyMigrations", () => {
     // Assert — the loan id is preserved (the migration was not re-run, otherwise a UUID
     // would have been re-assigned only if missing)
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    expect(result._meta_.sinVersion).toBe(APP_VERSION)
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("skips migrations already covered by the pre-split _meta_.appVersion", () => {
@@ -82,13 +82,14 @@ describe.concurrent("applyMigrations", () => {
 
     // Assert — the loan id is preserved (the migration was not re-run)
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    expect(result._meta_.sinVersion).toBe(APP_VERSION)
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("resolves a legacy _meta_.version of 32 directly to the matching migration's timestamp", () => {
     // Arrange — 32 is the last version under the old sequential-integer scheme: the common case
     // of a runner that's already fully migrated under it. When new migrations are added with
-    // timestamps newer than the 32nd migration, they will run and update sinVersion to APP_VERSION.
+    // timestamps newer than the 32nd migration, they will run and bump sinVersion to the newest
+    // registered migration's timestamp.
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
       _meta_: { version: 32 },
@@ -103,9 +104,10 @@ describe.concurrent("applyMigrations", () => {
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — loan id preserved, sinVersion bumped to APP_VERSION when newer migrations run
+    // Assert — loan id preserved, sinVersion bumped to the latest migration timestamp when newer
+    // migrations run
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    expect(result._meta_.sinVersion).toBe(APP_VERSION)
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("treats any other legacy _meta_.version as unmigrated and safely re-runs every migration", () => {
@@ -128,7 +130,7 @@ describe.concurrent("applyMigrations", () => {
 
     // Assert — addLoanIdAndInterestRate re-runs but is a no-op on a loan that already has an id
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    expect(result._meta_.sinVersion).toBe(APP_VERSION)
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("is idempotent — running it twice yields the same sin version", () => {
@@ -141,19 +143,18 @@ describe.concurrent("applyMigrations", () => {
 
     // Assert
     expect(second._meta_.sinVersion).toBe(first._meta_.sinVersion)
-    expect(second._meta_.sinVersion).toBe(APP_VERSION)
+    expect(second._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("does not bump sinVersion or appVersion on a load that runs no migrations", () => {
     // Arrange — already at the newest registered migration's timestamp
-    const runner = { _meta_: { sinVersion: migrations[migrations.length - 1].timestamp, appVersion: null } }
+    const runner = { _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null } }
 
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — nothing ran, so the stamped versions are left untouched rather than bumped to
-    // the live APP_VERSION
-    expect(result._meta_.sinVersion).toBe(migrations[migrations.length - 1].timestamp)
+    // Assert — nothing ran, so the stamped versions are left untouched rather than bumped
+    expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
     expect(result._meta_.appVersion).toBeNull()
   })
 

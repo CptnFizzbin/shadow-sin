@@ -652,17 +652,18 @@ recent export timestamp.
 **SIN Version**:
 `RunnerMeta.sinVersion` — an ISO 8601 timestamp identifying the Runner's most recent successful
 **Migration** run. The only field `applyMigrations` gates pending Migrations on; individual
-Migrations never read or write it. Stamped to the current **App Version** whenever a Migration
-actually runs against the Runner.
+Migrations never read or write it. Stamped to the **Migration Timestamp** of the most recently
+registered Migration that ran whenever a Migration actually runs against the Runner — a fully
+migrated Runner's `sinVersion` always exactly equals `LATEST_MIGRATION_TIMESTAMP`.
 _Avoid_: app version, appVersion (that field is informational only and plays no part in deciding
 which migrations run — see below)
 
 **App Version**:
 The running app's own version: the timestamp of the latest commit on the default branch, baked in
-at build time, or the dev server's start time under `yarn dev`. Stamped onto both a Runner's
-`RunnerMeta.sinVersion` and `RunnerMeta.appVersion` after `applyMigrations` runs any pending
-Migrations against it — `RunnerMeta.appVersion` is purely informational, recording which build
-last touched the Runner; it is never compared against a Migration's timestamp.
+at build time, or the dev server's start time under `yarn dev`. Stamped onto a Runner's
+`RunnerMeta.appVersion` (alongside `RunnerMeta.sinVersion`) after `applyMigrations` runs any
+pending Migrations against it. `RunnerMeta.appVersion` is purely informational, recording which
+build last touched the Runner; it is never compared against a Migration's timestamp.
 
 **RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
