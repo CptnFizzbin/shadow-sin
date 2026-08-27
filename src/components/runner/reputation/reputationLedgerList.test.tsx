@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react"
+import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
@@ -13,6 +13,15 @@ function renderList(afterBuild?: (sheet: RunnerData) => void) {
     <ReputationLedgerList />,
     { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
   )
+}
+
+/**
+ * The filter's toggle buttons and the ledger's chips share the same three labels ("Street
+ * Cred", "Notoriety", "Public Awareness"), so assertions about table content scope their
+ * queries to the table — the toggle buttons live outside it.
+ */
+function tableScope() {
+  return within(screen.getByRole("table"))
 }
 
 describe("ReputationLedgerList", () => {
@@ -40,9 +49,9 @@ describe("ReputationLedgerList", () => {
     })
 
     // Assert
-    expect(screen.getByText("Street Cred")).toBeTruthy()
-    expect(screen.getByText("+3")).toBeTruthy()
-    expect(screen.getByText("Successful run for CorpSec")).toBeTruthy()
+    expect(tableScope().getByText("Street Cred")).toBeTruthy()
+    expect(tableScope().getByText("+3")).toBeTruthy()
+    expect(tableScope().getByText("Successful run for CorpSec")).toBeTruthy()
   })
 
   it("shows a full stat label for notoriety and public awareness modifier entries", () => {
@@ -55,8 +64,8 @@ describe("ReputationLedgerList", () => {
     })
 
     // Assert
-    expect(screen.getByText("Notoriety")).toBeTruthy()
-    expect(screen.getByText("Public Awareness")).toBeTruthy()
+    expect(tableScope().getByText("Notoriety")).toBeTruthy()
+    expect(tableScope().getByText("Public Awareness")).toBeTruthy()
   })
 
   it("does not prefix a negative amount with a plus sign", () => {
@@ -132,9 +141,9 @@ describe("ReputationLedgerList", () => {
         { id: "00000000-0000-0000-0000-000000000003", stat: "publicAwarenessModifier", amount: 1, description: "PA", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
       ]
     })
-    const streetCredChip = screen.getByText("Street Cred").closest(".MuiChip-root") as HTMLElement
-    const notorietyChip = screen.getByText("Notoriety").closest(".MuiChip-root") as HTMLElement
-    const paChip = screen.getByText("Public Awareness").closest(".MuiChip-root") as HTMLElement
+    const streetCredChip = tableScope().getByText("Street Cred").closest(".MuiChip-root") as HTMLElement
+    const notorietyChip = tableScope().getByText("Notoriety").closest(".MuiChip-root") as HTMLElement
+    const paChip = tableScope().getByText("Public Awareness").closest(".MuiChip-root") as HTMLElement
 
     // Assert
     expect(getComputedStyle(streetCredChip).color).toBe("#2e7d32") // success.main
@@ -154,5 +163,81 @@ describe("ReputationLedgerList", () => {
     // Assert — "Second entry" (added later) appears before "First entry" in document order
     const descriptions = screen.getAllByText(/entry$/).map((el) => el.textContent)
     expect(descriptions).toEqual(["Second entry", "First entry"])
+  })
+
+  it("orders entries by timestamp, not by insertion order", () => {
+    // Arrange / Act — appended out of chronological order; the newest by timestamp should
+    // still lead regardless of where it sits in the underlying array
+    renderList((sheet) => {
+      sheet.reputation.ledger = [
+        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "Newest", timestamp: "2026-03-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: "streetCred", amount: 1, description: "Oldest", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000003", stat: "streetCred", amount: 1, description: "Middle", timestamp: "2026-02-01T00:00:00Z", source: "manual" },
+      ]
+    })
+
+    // Assert
+    const descriptions = screen.getAllByText(/^(Newest|Oldest|Middle)$/).map((el) => el.textContent)
+    expect(descriptions).toEqual(["Newest", "Middle", "Oldest"])
+  })
+
+  describe("filtering by stat", () => {
+    function ledgerFor(sheet: RunnerData) {
+      sheet.reputation.ledger = [
+        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "SC entry", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: "notoriety", amount: 1, description: "No entry", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000003", stat: "publicAwarenessModifier", amount: 1, description: "PA entry", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
+      ]
+    }
+
+    it("shows every stat's entries by default", () => {
+      // Arrange / Act
+      renderList(ledgerFor)
+
+      // Assert
+      expect(screen.getByText("SC entry")).toBeTruthy()
+      expect(screen.getByText("No entry")).toBeTruthy()
+      expect(screen.getByText("PA entry")).toBeTruthy()
+    })
+
+    it("hides a stat's entries when its filter is toggled off", () => {
+      // Arrange
+      renderList(ledgerFor)
+
+      // Act — deselect Notoriety
+      fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
+
+      // Assert
+      expect(screen.getByText("SC entry")).toBeTruthy()
+      expect(screen.queryByText("No entry")).toBeNull()
+      expect(screen.getByText("PA entry")).toBeTruthy()
+    })
+
+    it("shows a distinct empty state when filters exclude every entry", () => {
+      // Arrange
+      renderList(ledgerFor)
+
+      // Act — deselect all three stats
+      fireEvent.click(screen.getByRole("button", { name: "Street Cred" }))
+      fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
+      fireEvent.click(screen.getByRole("button", { name: "Public Awareness" }))
+
+      // Assert
+      expect(screen.getByText("No entries match the selected filters")).toBeTruthy()
+      expect(screen.queryByText("No reputation events recorded yet")).toBeNull()
+    })
+
+    it("restores hidden entries when the filter is toggled back on", () => {
+      // Arrange
+      renderList(ledgerFor)
+      fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
+      expect(screen.queryByText("No entry")).toBeNull()
+
+      // Act
+      fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
+
+      // Assert
+      expect(screen.getByText("No entry")).toBeTruthy()
+    })
   })
 })

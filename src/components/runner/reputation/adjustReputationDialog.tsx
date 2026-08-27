@@ -7,18 +7,14 @@ import type { FC } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { ReputationSelectors } from "#/stores/runner/reputation/reputationSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
+import { ReputationDisplay } from "./reputationDisplay.tsx"
 import { ReputationLedgerList } from "./reputationLedgerList.tsx"
 import { useAddReputationEntryForm } from "./useAddReputationEntryForm.tsx"
 
 type AdjustReputationDialogProps = ControlledDialogProps<void>
 
 const AdjustReputationDialog: FC<AdjustReputationDialogProps> = ({ ctrl }) => {
-  const streetCred = useRunnerSelector(ReputationSelectors.selectStreetCred)
-  const notoriety = useRunnerSelector(ReputationSelectors.selectNotoriety)
-  const publicAwareness = useRunnerSelector(ReputationSelectors.selectPublicAwareness)
   const addEntryForm = useAddReputationEntryForm()
 
   return (
@@ -28,21 +24,8 @@ const AdjustReputationDialog: FC<AdjustReputationDialogProps> = ({ ctrl }) => {
 
         <Dialog.Content>
           <Stack sx={{ gap: 2 }}>
-            {/* Current Reputation Display */}
-            <Stack direction="row" sx={{ gap: 2, justifyContent: "space-around", textAlign: "center" }}>
-              <Stack>
-                <Typography variant="caption" color="textSecondary">Street Cred</Typography>
-                <Typography variant="h6">{streetCred}</Typography>
-              </Stack>
-              <Stack>
-                <Typography variant="caption" color="textSecondary">Notoriety</Typography>
-                <Typography variant="h6">{notoriety}</Typography>
-              </Stack>
-              <Stack>
-                <Typography variant="caption" color="textSecondary">Public Awareness</Typography>
-                <Typography variant="h6">{publicAwareness.rating}</Typography>
-              </Stack>
-            </Stack>
+            {/* Same full-size display as the About page's Reputation card */}
+            <ReputationDisplay />
 
             <Divider />
 
