@@ -3,9 +3,10 @@ import type { FC } from "react"
 
 import { AttributeValueRow } from "#/components/runner/attributes/attributeValueRow.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
+import type { AttributeCatalog } from "#/system/attributes/attributeCatalog.ts"
 
 export interface CardElementAttributeBlockProps {
-  values: Record<AttributeKey, number>
+  values: AttributeCatalog
   /** Rows of attribute keys, rendered in order — e.g. Physical, Mental, then a Special subset. */
   groups: readonly (readonly AttributeKey[])[]
 }

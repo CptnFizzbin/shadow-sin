@@ -18,7 +18,7 @@ interface AttributeRowProps {
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const attrLabel = AttributeLabels[props.attr]
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
-  const attrValue = attrInfo.current
+  const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
 
   return (
     <Stack direction="row" sx={{ alignItems: "center" }}>

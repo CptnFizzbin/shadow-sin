@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import type { UUID } from "#/lib/uuidUtils.ts"
 
-import type { AttributeKey } from "./attributeKey.ts"
+import type { AttributeCatalog } from "./attributes/attributeCatalog.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type {
@@ -104,8 +104,7 @@ export interface RunnerData extends EntityBase, EntityWithItems, EntityWithDamag
     loans: LoanData[]
   }
 
-  /** Not every key is populated — a Runner never sets the four Matrix stats. See `selectAttrBase`/`selectAttrValue`. */
-  attributes: Partial<Record<AttributeKey, number>>
+  attributes: AttributeCatalog
 
   edge: {
     current: number

@@ -1,4 +1,5 @@
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/attributes/attributeCatalog.ts"
 import type { AwakeningData } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
 
@@ -38,16 +39,14 @@ export const createAttrInfo = ({
   switch (attr) {
     case AttributeKey.magic:
     case AttributeKey.resonance:
-      attrState.min = awakening.attributes[attr].min
-      attrState.max = awakening.attributes[attr].max
-      attrState.augMax = awakening.attributes[attr].max
+      attrState.min = attrMin(awakening.attributes, attr)
+      attrState.max = attrNaturalMax(awakening.attributes, attr)
+      attrState.augMax = attrAugmentedMax(awakening.attributes, attr)
       break
     default:
-      attrState.min = metatype.attributes[attr].min
-      attrState.max = metatype.attributes[attr].max
-      attrState.augMax =
-        metatype.attributes[attr].augMax
-        || metatype.attributes[attr].max
+      attrState.min = attrMin(metatype.attributes, attr)
+      attrState.max = attrNaturalMax(metatype.attributes, attr)
+      attrState.augMax = attrAugmentedMax(metatype.attributes, attr)
       break
   }
 

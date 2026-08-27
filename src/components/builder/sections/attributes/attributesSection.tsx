@@ -26,7 +26,7 @@ export const AttributesSection: FC = () => {
   const attrRows: AttributeKey[] = AttributeOrder
     .filter((key) => key !== AttributeKey.essence)
     .map((attr) => ({ attr, ...attributes[attr] }))
-    .filter(({ min }) => min >= 1)
+    .filter(({ min }) => min && min >= 1)
     .map(({ attr }) => attr)
 
   const physicalAttrs = PhysicalAttributes.filter((attr) => attrRows.includes(attr))

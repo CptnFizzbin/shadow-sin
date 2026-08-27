@@ -5,14 +5,9 @@ import type { FC } from "react"
 
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { useDialogCtrl } from "#/hooks/ui/dialog/useDialogCtrl.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
+import type { AttributeCatalog } from "#/system/attributes/attributeCatalog.ts"
 import type { RollType } from "#/system/magic/critterPowerData.ts"
-import {
-  computeSpiritPowerPool,
-  formatSpiritPoolLabel,
-  lookupCritterPower,
-
-} from "#/system/magic/critterPowerData.ts"
+import { computeSpiritPowerPool, formatSpiritPoolLabel, lookupCritterPower } from "#/system/magic/critterPowerData.ts"
 import { bookOptions } from "#/system/sourceData.ts"
 
 const ROLL_TYPE_COLORS: Record<RollType, "warning" | "info" | "default"> = {
@@ -24,7 +19,7 @@ const ROLL_TYPE_COLORS: Record<RollType, "warning" | "info" | "default"> = {
 interface CritterPowerChipProps {
   name: string
   force?: number
-  attrs?: Record<AttributeKey, number>
+  attrs?: AttributeCatalog
   color?: "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning"
   variant?: "filled" | "outlined"
 }

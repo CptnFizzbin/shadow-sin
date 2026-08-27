@@ -1,5 +1,4 @@
-import type { AttributeInfo } from "./attributeInfo.ts"
-import type { AttributeKey } from "./attributeKey.ts"
+import type { AttributeInfoCatalog } from "./attributes/attributeCatalog.ts"
 import { EntityKind } from "./entityKind.ts"
 import type { MovementData } from "./movementData.ts"
 import type { CritterPowerData } from "./powers/critterPowerData.ts"
@@ -31,7 +30,7 @@ export interface MetatypeData {
   name: MetatypeType
   group?: MetatypeGroup
   cost: number
-  attributes: Record<AttributeKey, AttributeInfo>
+  attributes: AttributeInfoCatalog
   innateQualities?: QualityData[]
   innatePowers?: CritterPowerData[]
   movement: MovementData | MovementData[]
@@ -50,12 +49,6 @@ const baseAttributes = {
   willpower: { min: 1, max: 6, augMax: 9 },
   edge: { min: 1, max: 6 },
   essence: { min: 0, max: 6 },
-  magic: { min: 0, max: 0 },
-  resonance: { min: 0, max: 0 },
-  firewall: { min: 0, max: 0 },
-  response: { min: 0, max: 0 },
-  signal: { min: 0, max: 0 },
-  system: { min: 0, max: 0 },
 } as const
 
 export const metatypes: Record<MetatypeType, MetatypeData> = {
