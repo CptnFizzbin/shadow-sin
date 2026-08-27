@@ -64,8 +64,8 @@ describe.concurrent("applyMigrations", () => {
 
   it("resolves a legacy _meta_.version of 32 directly to the matching migration's timestamp", () => {
     // Arrange — 32 is the last version under the old sequential-integer scheme: the common case
-    // of a runner that's already fully migrated under it. No migration has a timestamp newer than
-    // the 32nd one, so nothing should re-run.
+    // of a runner that's already fully migrated under it. When new migrations are added with
+    // timestamps newer than the 32nd migration, they will run and update appVersion to APP_VERSION.
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
       _meta_: { version: 32 },
@@ -80,9 +80,9 @@ describe.concurrent("applyMigrations", () => {
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — nothing ran (loan id preserved, appVersion resolved but not bumped to "now")
+    // Assert — loan id preserved, appVersion bumped to APP_VERSION when newer migrations run
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    expect(result._meta_.appVersion).toBe(migrations[migrations.length - 1].timestamp)
+    expect(result._meta_.appVersion).toBe(APP_VERSION)
   })
 
   it("treats any other legacy _meta_.version as unmigrated and safely re-runs every migration", () => {

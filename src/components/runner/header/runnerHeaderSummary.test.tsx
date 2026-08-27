@@ -76,11 +76,14 @@ describe("RunnerHeaderSummary", () => {
   it("shows street cred as reputation and current karma", () => {
     // Arrange / Act
     renderWithRunner((data) => {
-      data.karma.total = 70 // Computes to streetCred = 7 (70 / 10)
+      data.profile.streetCred = 7
+      data.profile.notoriety = 0
+      data.profile.publicAwarenessModifier = 0
       data.karma.current = 12
     })
 
     // Assert: Rep | streetCred - notoriety - awareness.rating = 7 - 0 - 2
+    // (floor((7 + 0 + 0) / 3) = 2)
     expect(screen.getByText("Rep | 7 - 0 - 2")).toBeDefined()
     expect(screen.getByText("12")).toBeDefined()
   })
