@@ -21,6 +21,7 @@ import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
 import { powersReducer } from "./powers/powersSlice.ts"
 import { profileReducer } from "./profile/profileSlice.ts"
 import { qualitiesReducer } from "./qualities/qualitiesSlice.ts"
+import { reputationReducer } from "./reputation/reputationSlice.ts"
 import { skillsReducer } from "./skills/skillsSlice.ts"
 import { spellsReducer } from "./spells/spellsSlice.ts"
 import { spiritsReducer } from "./spirits/spiritsSlice.ts"
@@ -84,6 +85,7 @@ const domainReducer = combineReducers({
   karma: karmaReducer,
   nuyen: nuyenReducer,
   profile: profileReducer,
+  reputation: reputationReducer,
   biology: biologyReducer,
   contacts: contactsReducer,
   skills: skillsReducer,

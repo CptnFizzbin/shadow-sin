@@ -99,6 +99,10 @@ export function runnerDataFactory(options?: {
       log: [],
     },
 
+    reputation: {
+      ledger: [],
+    },
+
     nuyen: {
       current: 0,
       loans: [],

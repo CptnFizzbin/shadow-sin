@@ -25,6 +25,7 @@ import type { MatrixGameState } from "./matrix/matrixGameState.ts"
 import type { MetatypeType } from "./metatypeData.ts"
 import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
+import type { ReputationLedgerEntry } from "./reputation/reputationLedgerEntry.ts"
 import type { RunnerWithData } from "./runnerTraits.ts"
 import type { ActiveSkillData } from "./skills/activeSkillData"
 import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
@@ -97,6 +98,14 @@ export interface RunnerData extends EntityBase, EntityWithItems, EntityWithDamag
      * corrections happen via counter-entries.
      */
     log: KarmaLedgerEntry[]
+  }
+
+  reputation: {
+    /**
+     * Append-only audit trail of reputation changes. One entry per reputation
+     * adjustment. Never edited or removed — corrections happen via counter-entries.
+     */
+    ledger: ReputationLedgerEntry[]
   }
 
   nuyen: {

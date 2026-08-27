@@ -31,6 +31,7 @@ import nestItemAttachment from "./migrations/20260823_02_nestItemAttachment.ts"
 import pruneNullUuidChildIds from "./migrations/20260823_03_pruneNullUuidChildIds.ts"
 import addQualityIds from "./migrations/20260823_04_addQualityIds.ts"
 import dropIncompleteQualitySource from "./migrations/20260823_05_dropIncompleteQualitySource.ts"
+import addReputationLedger from "./migrations/20260827_00_addReputationLedger.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -72,6 +73,7 @@ export const migrations: AnyCharacterMigration[] = [
   pruneNullUuidChildIds,
   addQualityIds,
   dropIncompleteQualitySource,
+  addReputationLedger,
 ]
 
 migrations.forEach((migration, index) => {
