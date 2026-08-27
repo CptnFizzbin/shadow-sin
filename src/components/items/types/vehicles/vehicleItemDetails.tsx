@@ -4,9 +4,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -23,7 +24,7 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
   const dispatch = useRunnerStoreDispatch()
   const vehicleFormDialog = useVehicleFormDialog()
   const modFormDialog = useItemFormDialog()
-  const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
+  const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: vehicle.id })
   const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
   const removeVehicle = () => {

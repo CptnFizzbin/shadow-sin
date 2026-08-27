@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useLicenseCheck } from "#/contexts/runner/licenseCheckContext.tsx"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const LicenseCheckResultView: FC = () => {
   const { result } = useLicenseCheck()

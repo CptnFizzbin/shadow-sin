@@ -3,9 +3,10 @@ import type { FC } from "react"
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -24,7 +25,7 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
   onOpenAttachment,
 }) => {
   const dispatch = useRunnerStoreDispatch()
-  const programs = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(device.id))
+  const programs = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: device.id })
   const deviceFormDialog = useDeviceFormDialog()
   const programFormDialog = useProgramFormDialog()
 

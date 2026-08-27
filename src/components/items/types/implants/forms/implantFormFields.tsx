@@ -11,8 +11,8 @@ import { z } from "zod"
 import { implantFormOpts } from "#/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [

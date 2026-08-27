@@ -25,9 +25,10 @@ import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -180,7 +181,7 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   const dispatch = useRunnerStoreDispatch()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
-  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
   const sinFormDialog = useSinFormDialog()
 
   const assignableLicenses = licenses.filter((license) => license.id !== item.licenseId)

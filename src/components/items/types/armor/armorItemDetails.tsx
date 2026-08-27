@@ -5,9 +5,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -21,7 +22,7 @@ export interface ArmorItemDetailsProps {
 
 export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, onOpenAttachment }) => {
   const dispatch = useRunnerStoreDispatch()
-  const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
+  const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: armor.id })
   const armorFormDialog = useArmorFormDialog()
   const modFormDialog = useItemFormDialog()
 

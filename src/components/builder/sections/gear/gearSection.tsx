@@ -19,8 +19,9 @@ import {
   useGearTotalCost,
 } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -150,8 +151,8 @@ const GearSectionNuyen: FC<{
 }> = ({ section }) => {
   const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
 
-  const lifestyleInfo = useRunnerStoreSelector(Selectors.profile.selectLifestyleInfo)
-  const lifestyleMonths = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
+  const lifestyleInfo = useRunnerSelector(ProfileSelectors.selectLifestyleInfo)
+  const lifestyleMonths = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
 
   if (section === SectionHeader.Lifestyle) {
     return (

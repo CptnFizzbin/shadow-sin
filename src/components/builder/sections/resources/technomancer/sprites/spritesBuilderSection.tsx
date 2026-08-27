@@ -6,12 +6,13 @@ import { isTechnomancer } from "#/components/runner/technomancer/technomancerUti
 import {
   useSpritesAlerts,
 } from "#/hooks/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { SpritesList } from "./spritesList.tsx"
 
 export const SpritesBuilderSection: FC = () => {
-  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const alerts = useSpritesAlerts()
 
   if (!isTechnomancer(awakeningType)) return null

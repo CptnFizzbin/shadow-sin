@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
-import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 
 import { LanguageSkillListItem } from "./languageSkillsListItem.tsx"
 

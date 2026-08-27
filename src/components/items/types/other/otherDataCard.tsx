@@ -1,9 +1,10 @@
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 interface OtherDataCardProps {
@@ -14,7 +15,7 @@ interface OtherDataCardProps {
 
 export const OtherDataCard: FC<OtherDataCardProps> = ({ item, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
-  const subItems = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(item.id))
+  const subItems = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: item.id })
   const hasSubItems = Object.keys(subItems).length > 0
 
   const removeItem = () => dispatch(Actions.item.removeItem({ id: item.id, removeChildren: true }))

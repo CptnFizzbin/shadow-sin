@@ -14,9 +14,10 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
@@ -41,7 +42,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   credstick,
 }) => {
   const dispatch = useRunnerStoreDispatch()
-  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   const isEditMode = mode === "edit"
   const isCertified = mode === "add-certified"

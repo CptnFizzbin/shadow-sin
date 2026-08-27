@@ -2,7 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -38,7 +39,7 @@ interface RemovableOtherCardProps {
  * selector against a missing parent and throw.
  */
 const RemovableOtherCard: FC<RemovableOtherCardProps> = ({ itemId }) => {
-  const item = useRunnerStoreSelector(Selectors.gear.selectById(itemId)) as ItemData | undefined
+  const item = useRunnerSelector(ItemSelectors.selectById, { itemId: itemId }) as ItemData | undefined
   return item ? <OtherDataCard item={item} /> : null
 }
 

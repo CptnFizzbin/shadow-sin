@@ -12,7 +12,9 @@ import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { KarmaSelectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -25,7 +27,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerStoreSelector((s) => s)
+  const sheet = useRunnerSelector(ViewerStateSelectors.selectRunner)
   const activeAttributes = useRunnerSelector(AttrSelectors.selectActive)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)

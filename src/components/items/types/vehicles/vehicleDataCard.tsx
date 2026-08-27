@@ -1,9 +1,10 @@
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 
 interface VehicleDataCardProps {
@@ -14,7 +15,7 @@ interface VehicleDataCardProps {
 
 export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
-  const attachments = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
+  const attachments = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: vehicle.id })
   const hasAttachments = Object.keys(attachments).length > 0
   const removeVehicle = () => dispatch(Actions.item.removeItem({ id: vehicle.id, removeChildren: true }))
   // Same 8 + Ceil(Body / 2) formula as a character's own physical track (damageSlice.selectors.ts)

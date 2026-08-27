@@ -17,7 +17,8 @@ import {
 } from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
@@ -33,8 +34,8 @@ export const KnowledgeSkillsList: FC = () => {
   const skillPoints = useKnowledgeSkillPoints()
   const buildPoints = useKnowledgeSkillsBuildPoints()
 
-  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
-  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
+  const knowledgeSkills = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
+  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
 
   const knowledgeSkillDialog = useKnowledgeSkillDialog()
   const languageSkillDialog = useLanguageSkillDialog()

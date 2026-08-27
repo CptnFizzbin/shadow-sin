@@ -11,7 +11,7 @@ import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.select
 import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
@@ -19,7 +19,7 @@ import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
 
 export const AdeptPowersList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
+  const adeptPowers = useRunnerSelector(PowersSelectors.selectAll)
   const powerPointsUsed = useRunnerSelector(PowersSelectors.selectUsed)
   const powerPointsMax = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const adeptPowerFormDialog = useAdeptPowerFormDialog()

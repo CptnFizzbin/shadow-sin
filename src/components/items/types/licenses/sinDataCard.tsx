@@ -2,9 +2,10 @@ import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinDataCardProps {
@@ -16,7 +17,7 @@ interface SinDataCardProps {
 export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
-  const licenses = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(sin.id))
+  const licenses = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: sin.id })
   const hasLicenses = Object.keys(licenses).length > 0
 
   const removeSin = async () => {

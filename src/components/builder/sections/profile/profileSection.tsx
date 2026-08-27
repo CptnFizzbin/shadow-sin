@@ -2,13 +2,14 @@ import type { FC } from "react"
 
 import type { ProfileFieldsValue } from "#/components/runner/profile/profileFields.tsx"
 import { ProfileFields } from "#/components/runner/profile/profileFields.tsx"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const profile = useRunnerStoreSelector(Selectors.profile.selectProfile)
+  const profile = useRunnerSelector(ProfileSelectors.select)
 
   const handleChange = (field: keyof ProfileFieldsValue, value: string) => {
     switch (field) {

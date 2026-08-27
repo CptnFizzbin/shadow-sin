@@ -4,9 +4,10 @@ import type { FC } from "react"
 
 import { ItemList } from "#/components/items/card/itemList.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { MatrixSelectors } from "#/stores/runner/gameState/matrix/matrixSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 
 import { useKnownNodeFormDialog } from "./dialogs/knownNodeFormDialog.tsx"
@@ -14,8 +15,8 @@ import { MatrixNodeCard } from "./matrixNodeCard.tsx"
 
 export const KnownNodesList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const knownNodes = useRunnerStoreSelector(Selectors.gameState.matrix.selectKnownNodes)
-  const activeNodeId = useRunnerStoreSelector(Selectors.gameState.matrix.selectActiveNodeId)
+  const knownNodes = useRunnerSelector(MatrixSelectors.selectKnownNodes)
+  const activeNodeId = useRunnerSelector(MatrixSelectors.selectActiveNodeId)
   const confirmDialog = useConfirmDialog()
   const knownNodeFormDialog = useKnownNodeFormDialog()
 

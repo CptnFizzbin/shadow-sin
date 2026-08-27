@@ -6,14 +6,15 @@ import { isTechnomancer } from "#/components/runner/technomancer/technomancerUti
 import {
   useComplexFormsAlerts,
 } from "#/hooks/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import {
   ComplexFormsList,
 } from "./complexFormsList.tsx"
 
 export const ComplexFormsBuilderSection: FC = () => {
-  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const alerts = useComplexFormsAlerts()
 
   if (!isTechnomancer(awakeningType)) return null

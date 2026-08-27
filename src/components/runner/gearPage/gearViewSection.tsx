@@ -8,8 +8,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { searchGear } from "#/hooks/items/gearHooks.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"

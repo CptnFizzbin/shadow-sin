@@ -8,8 +8,8 @@ import { useMemo } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useLicenseCheck } from "#/contexts/runner/licenseCheckContext.tsx"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
 import { buildVerificationLanes } from "./licenseCheckLanes.ts"

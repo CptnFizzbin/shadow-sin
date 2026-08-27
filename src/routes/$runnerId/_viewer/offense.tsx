@@ -7,8 +7,8 @@ import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsV
 import { CombatActionsCheatSheetButton } from "#/components/system/combat/combatActionsCheatSheetButton.tsx"
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { selectAwakening } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/offense")({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/offense")({
 })
 
 function RouteComponent() {
-  const awakening = useRunnerStoreSelector(selectAwakening)
+  const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
   const canCastSpells =
     awakening === AwakeningType.Magician || awakening === AwakeningType.MysticAdept
 

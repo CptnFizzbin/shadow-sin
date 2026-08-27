@@ -5,9 +5,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -27,7 +28,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   onOpenAttachment,
 }) => {
   const dispatch = useRunnerStoreDispatch()
-  const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
+  const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
   const weaponFormDialog = useWeaponFormDialog()
   const accessoryFormDialog = useItemFormDialog()
 

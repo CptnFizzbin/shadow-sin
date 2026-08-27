@@ -16,14 +16,16 @@ import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { Actions as BuilderActions } from "#/stores/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/stores/builder/builderStore.dispatch.ts"
 import { Selectors as BuilderSelectors, useBuilderStoreSelector } from "#/stores/builder/builderStore.selectors.ts"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions as RunnerActions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors as RunnerSelectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
-  const lifestyle = useRunnerStoreSelector((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)
+  const lifestyle = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
   const { numDice, mult } = Lifestyles[lifestyle].starting
 
   const totalNuyen = useGearTotalCost()
@@ -49,7 +51,7 @@ export const StartingNuyenSection: FC = () => {
   const startingNuyen = useBuilderStoreSelector(BuilderSelectors.nuyen.selectStartingNuyen)
 
   const runnerDispatch = useRunnerStoreDispatch()
-  const currentNuyen = useRunnerStoreSelector(RunnerSelectors.nuyen.selectNuyenAmount)
+  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   // Persist a completed roll so it survives navigating away from this section (and the dice
   // roller resetting) and back.

@@ -6,12 +6,13 @@ import { BuilderSectionId } from "#/components/builder/sections/builderSectionId
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { useContactsAlerts } from "#/hooks/builder/alerts/useContactsAlerts.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/stores/runner/contacts/contactsSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { getContactBpCost } from "./contactsBuilderUtils.ts"
 
 export const ContactsBuilderSection: FC = () => {
-  const allContacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
+  const allContacts = useRunnerSelector(ContactsSelectors.selectAll)
   const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts
