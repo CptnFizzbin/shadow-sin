@@ -56,7 +56,7 @@ describe("ReputationLedgerList", () => {
 
     // Assert
     expect(screen.getByText("Notoriety")).toBeTruthy()
-    expect(screen.getByText("Public Awareness Modifier")).toBeTruthy()
+    expect(screen.getByText("Public Awareness")).toBeTruthy()
   })
 
   it("does not prefix a negative amount with a plus sign", () => {
@@ -134,7 +134,7 @@ describe("ReputationLedgerList", () => {
     })
     const streetCredChip = screen.getByText("Street Cred").closest(".MuiChip-root") as HTMLElement
     const notorietyChip = screen.getByText("Notoriety").closest(".MuiChip-root") as HTMLElement
-    const paChip = screen.getByText("Public Awareness Modifier").closest(".MuiChip-root") as HTMLElement
+    const paChip = screen.getByText("Public Awareness").closest(".MuiChip-root") as HTMLElement
 
     // Assert
     expect(getComputedStyle(streetCredChip).color).toBe("#2e7d32") // success.main

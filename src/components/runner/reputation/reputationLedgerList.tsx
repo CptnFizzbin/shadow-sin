@@ -39,7 +39,7 @@ const STAT_CONFIG: Record<ReputationStatType, {
     negativeColor: "success.main",
   },
   publicAwarenessModifier: {
-    label: "Public Awareness Modifier",
+    label: "Public Awareness",
     chipColor: purple[400],
     positiveColor: "info.main",
     negativeColor: purple[400],
