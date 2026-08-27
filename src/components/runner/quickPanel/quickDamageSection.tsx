@@ -7,13 +7,14 @@ import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
-  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
+  const physical = useRunnerSelector(DamageSelectors.track.physical)
+  const stun = useRunnerSelector(DamageSelectors.track.stun)
 
   return (
     <Stack sx={{ gap: 0.5 }}>

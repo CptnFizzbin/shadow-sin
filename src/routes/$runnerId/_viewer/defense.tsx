@@ -24,7 +24,8 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { ArmorRatingType } from "#/system/gear/armorData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -35,8 +36,8 @@ export const Route = createFileRoute("/$runnerId/_viewer/defense")({
 
 function RouteComponent() {
   const dispatch = useRunnerStoreDispatch()
-  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
-  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
+  const physical = useRunnerSelector(DamageSelectors.track.physical)
+  const stun = useRunnerSelector(DamageSelectors.track.stun)
 
   return (
     <Stack>
