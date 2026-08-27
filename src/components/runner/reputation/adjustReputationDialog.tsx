@@ -28,7 +28,7 @@ const AdjustReputationDialog: FC<AdjustReputationDialogProps> = ({ ctrl }) => {
       <Dialog.Content>
         <Stack sx={{ gap: 2 }}>
           {/* Current Reputation Display */}
-          <Stack direction="row" spacing={2} sx={{ justifyContent: "space-around", textAlign: "center" }}>
+          <Stack direction="row" sx={{ gap: 2, justifyContent: "space-around", textAlign: "center" }}>
             <Stack>
               <Typography variant="caption" color="textSecondary">Street Cred</Typography>
               <Typography variant="h6">{streetCred}</Typography>

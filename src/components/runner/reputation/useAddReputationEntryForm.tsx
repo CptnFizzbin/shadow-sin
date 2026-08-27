@@ -82,7 +82,7 @@ const AddReputationEntryForm: FC<AddReputationEntryFormProps> = ({ ctrl }) => {
               {(field) => (
                 <field.CounterField
                   label="Value"
-                  helperText="Positive to increase, negative to decrease"
+                  helperText="Relative bonus/penalty"
                   fullWidth
                 />
               )}
