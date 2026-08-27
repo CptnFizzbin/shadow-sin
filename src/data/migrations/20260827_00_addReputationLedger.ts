@@ -7,7 +7,7 @@ import type { CharacterMigration } from "#/data/characterMigration.ts"
  * Initialize with empty array for all runners.
  */
 const migration: CharacterMigration<{ reputation?: { ledger?: unknown[] } }> = {
-  timestamp: "2026-08-27T00:00:00Z",
+  timestamp: "2026-08-27T03:00:00Z",
   up: (character) => {
     return produce(character, (draft) => {
       // Idempotent: only add if not already present
