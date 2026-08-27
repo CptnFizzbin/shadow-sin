@@ -14,6 +14,7 @@ import { BackupReminderNotice } from "#/components/runner/profile/backupReminder
 import { useProfileEditDialog } from "#/components/runner/profile/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
+import { useAdjustReputationDialog } from "#/components/runner/reputation/adjustReputationDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/about")({
 
 function RouteComponent() {
   const profileEditDialog = useProfileEditDialog()
+  const adjustReputationDialog = useAdjustReputationDialog()
   const profile = useRunnerSelector(ProfileSelectors.select)
   const streetCred = useRunnerSelector(ReputationSelectors.selectStreetCred)
   const notoriety = useRunnerSelector(ReputationSelectors.selectNotoriety)
@@ -93,13 +95,16 @@ function RouteComponent() {
             </Grid>
 
             <Grid size={3}>
-              <Button disabled variant="outlined" fullWidth>Adjust Reputation</Button>
+              <Button variant="outlined" fullWidth onClick={() => adjustReputationDialog.open()}>
+                Adjust Reputation
+              </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
 
       {profileEditDialog.outlet}
+      {adjustReputationDialog.outlet}
     </Stack>
   )
 }

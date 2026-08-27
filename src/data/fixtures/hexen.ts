@@ -51,6 +51,10 @@ export const Hexen: RunnerData = {
     log: [],
   },
 
+  reputation: {
+    ledger: [],
+  },
+
   nuyen: {
     current: 5000,
     loans: [],

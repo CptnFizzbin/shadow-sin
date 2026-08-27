@@ -12,6 +12,7 @@ import * as nuyenActions from "./nuyen/nuyenSlice.actions.ts"
 import * as powersActions from "./powers/powersSlice.actions.ts"
 import * as profileActions from "./profile/profileSlice.actions.ts"
 import * as qualitiesActions from "./qualities/qualitiesSlice.actions.ts"
+import * as reputationActions from "./reputation/reputationSlice.actions.ts"
 import * as skillsActions from "./skills/skillsSlice.actions.ts"
 import * as spellsActions from "./spells/spellsSlice.actions.ts"
 import * as spiritsActions from "./spirits/spiritsSlice.actions.ts"
@@ -40,6 +41,7 @@ export const Actions = {
   powers: powersActions,
   profile: profileActions,
   qualities: qualitiesActions,
+  reputation: reputationActions,
   skills: skillsActions,
   spells: spellsActions,
   spirits: spiritsActions,

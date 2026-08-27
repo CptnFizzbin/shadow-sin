@@ -93,6 +93,10 @@ export const Artemis: RunnerData = {
     log: [],
   },
 
+  reputation: {
+    ledger: [],
+  },
+
   nuyen: {
     current: -14535,
     loans: [
