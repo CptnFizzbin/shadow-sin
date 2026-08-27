@@ -8,9 +8,10 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
 import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useAssignLicenseDialog } from "./dialogs/assignLicenseDialog.tsx"
@@ -22,7 +23,7 @@ const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
   // Read live from the store rather than the form's own (possibly stale) draft values,
   // since assigning/changing/removing a license dispatches directly to the gear store
   // without going through this form's own submit.
-  const license = useRunnerStoreSelector(Selectors.gear.licenses.selectForItem(item.id))
+  const license = useRunnerSelector(ItemSelectors.Licenses.selectForItem, { itemId: item.id })
   const assignLicenseDialog = useAssignLicenseDialog()
 
   const eligible = item.id !== NullUuid && isLicenseQuickBuyEligible(item)

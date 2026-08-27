@@ -13,9 +13,11 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { UUID } from "#/lib/uuidUtils.ts"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 
@@ -34,9 +36,9 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const runnerDataStore = useRunnerStoreContext()
   const dispatch = useRunnerStoreDispatch()
 
-  const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)
-  const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
-  const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
+  const loans = useRunnerSelector(NuyenSelectors.selectLoans)
+  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
+  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
   const upkeep = Lifestyles[quality].upkeep
 
   const loanItems: EndOfMonthLineItem[] = loans

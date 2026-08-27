@@ -4,9 +4,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
@@ -20,7 +21,7 @@ export interface LicenseItemDetailsProps {
 export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRemoved }) => {
   const dispatch = useRunnerStoreDispatch()
   const licenseFormDialog = useLicenseFormDialog()
-  const sin = useRunnerStoreSelector(Selectors.gear.selectById(license.items.parentId as UUID)) as SinData | undefined
+  const sin = useRunnerSelector(ItemSelectors.selectById, { itemId: license.items.parentId as UUID }) as SinData | undefined
 
   const removeLicense = () => {
     dispatch(Actions.item.licenses.destroy(license.id))

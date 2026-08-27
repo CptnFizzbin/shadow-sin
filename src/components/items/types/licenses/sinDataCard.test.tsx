@@ -2,7 +2,8 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -56,7 +57,7 @@ const renderSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}
  * `selectChildrenOf` selector against a missing parent and throw.
  */
 const RemovableSinCard = ({ sinId }: { sinId: SinData["id"] }) => {
-  const sin = useRunnerStoreSelector(Selectors.gear.selectById(sinId)) as SinData | undefined
+  const sin = useRunnerSelector(ItemSelectors.selectById, { itemId: sinId }) as SinData | undefined
   return sin ? <SinDataCard sin={sin} /> : null
 }
 

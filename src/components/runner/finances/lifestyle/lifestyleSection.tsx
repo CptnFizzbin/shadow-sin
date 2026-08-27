@@ -9,18 +9,20 @@ import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const LifestyleSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
 
-  const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
-  const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
+  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
+  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
   const upkeep = Lifestyles[quality].upkeep
-  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   const canPrepay = upkeep > 0 && currentNuyen >= upkeep
 

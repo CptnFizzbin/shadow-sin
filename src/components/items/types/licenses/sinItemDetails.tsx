@@ -4,9 +4,10 @@ import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -25,7 +26,7 @@ export const SinItemDetails: FC<SinItemDetailsProps> = ({ sin, onRemoved, onOpen
   const confirmDialog = useConfirmDialog()
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
-  const licenses = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(sin.id))
+  const licenses = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: sin.id })
   const hasLicenses = Object.keys(licenses).length > 0
 
   const removeSin = async () => {

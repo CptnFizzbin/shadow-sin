@@ -2,9 +2,10 @@ import type { FC } from "react"
 
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
@@ -31,7 +32,7 @@ const typeLabel: Partial<Record<string, string>> = {
 export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
-  const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(implant.id))
+  const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: implant.id })
   const hasAccessories = Object.keys(accessories).length > 0
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)

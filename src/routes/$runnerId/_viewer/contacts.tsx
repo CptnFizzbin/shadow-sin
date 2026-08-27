@@ -6,7 +6,8 @@ import { useState } from "react"
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/stores/runner/contacts/contactsSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/contacts")({
   component: RouteComponent,
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/contacts")({
  * @returns The route component's React elements containing the search control and the filtered contacts list.
  */
 function RouteComponent() {
-  const allContacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
+  const allContacts = useRunnerSelector(ContactsSelectors.selectAll)
   const [searchQuery, setSearchQuery] = useState("")
 
   let filteredContacts = allContacts

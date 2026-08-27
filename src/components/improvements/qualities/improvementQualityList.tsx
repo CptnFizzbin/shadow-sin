@@ -16,8 +16,9 @@ import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
 import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LearnQualityEntry, QualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isLearnQualityEntry, isQualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -32,7 +33,7 @@ export const ImprovementQualityList: FC = () => {
   const qualities = useRunnerSelector(QualitiesSelectors.selectAll)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const qualityFormDialog = useQualityFormDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

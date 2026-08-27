@@ -20,7 +20,9 @@ import {
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { getKnowledgeSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnKnowledgeSkillEntry,
@@ -40,10 +42,10 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const ImprovementKnowledgeSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
+  const knowledgeSkills = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const knowledgeSkillDialog = useKnowledgeSkillDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

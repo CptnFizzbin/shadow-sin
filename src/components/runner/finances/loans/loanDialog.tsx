@@ -12,9 +12,10 @@ import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { isNewLoan } from "#/stores/runner/nuyen/nuyenSlice.actions.ts"
+import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 type LoanDialogMode = "add" | "edit"
@@ -38,7 +39,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
 }) => {
   const dispatch = useRunnerStoreDispatch()
   const isEditMode = mode === "edit"
-  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
   const [amount, setAmount] = useState<number>(loan?.amount ?? 0)

@@ -4,7 +4,9 @@ import type { FC } from "react"
 
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -29,12 +31,12 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const attrValues = useRunnerStoreSelector((sheet) => sheet.attributes)
+  const attrValues = useRunnerSelector(AttrSelectors.selectAll)
 
-  const metatypeName = useRunnerStoreSelector((sheet) => sheet.biology.metatype)
+  const metatypeName = useRunnerSelector(BiologySelectors.selectMetatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys

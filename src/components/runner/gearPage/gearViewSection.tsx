@@ -8,7 +8,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { searchGear } from "#/hooks/items/gearHooks.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
@@ -22,7 +23,7 @@ interface GearViewSectionProps {
 
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
-  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectAllGear)
+  const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
 
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0

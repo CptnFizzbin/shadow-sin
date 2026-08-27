@@ -6,14 +6,15 @@ import type { FC } from "react"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { SpellCard } from "./spellCard.tsx"
 import { useSpellCastDialog } from "./spellCastDialog.tsx"
 
 export const SpellsViewerSection: FC = () => {
-  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
+  const spells = useRunnerSelector(SpellsSelectors.selectAll)
   const spellCastDialog = useSpellCastDialog()
   const dispatch = useRunnerStoreDispatch()
 

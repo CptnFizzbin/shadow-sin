@@ -2,7 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
@@ -53,7 +54,7 @@ interface RemovableVehicleCardProps {
  * `selectChildrenOf` selector against a missing parent and throw.
  */
 const RemovableVehicleCard: FC<RemovableVehicleCardProps> = ({ vehicleId }) => {
-  const vehicle = useRunnerStoreSelector(Selectors.gear.selectById(vehicleId)) as VehicleData | undefined
+  const vehicle = useRunnerSelector(ItemSelectors.selectById, { itemId: vehicleId }) as VehicleData | undefined
   return vehicle ? <VehicleDataCard vehicle={vehicle} /> : null
 }
 

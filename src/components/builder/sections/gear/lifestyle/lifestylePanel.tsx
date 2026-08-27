@@ -8,17 +8,18 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
   const dispatch = useRunnerStoreDispatch()
 
-  const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
+  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
   const upkeep = Lifestyles[quality].upkeep
-  const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
+  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
 
   const totalCost = upkeep * monthsPaid
 
