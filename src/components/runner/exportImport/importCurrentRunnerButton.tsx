@@ -57,8 +57,8 @@ export const ImportCurrentRunnerButton: FC = () => {
       >
         Import
       </Button>
-      {confirmDialog.dialog}
-      {alertDialog.dialog}
+      {confirmDialog.outlet}
+      {alertDialog.outlet}
     </>
   )
 }

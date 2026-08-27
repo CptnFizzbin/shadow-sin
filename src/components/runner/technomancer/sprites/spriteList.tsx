@@ -55,8 +55,8 @@ export const SpriteList: FC = () => {
         ))}
       </Stack>
 
-      {spriteDialog.dialog}
-      {confirmDialog.dialog}
+      {spriteDialog.outlet}
+      {confirmDialog.outlet}
     </>
   )
 }

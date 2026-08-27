@@ -1,9 +1,10 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
-import { useGameEffects } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -31,32 +32,14 @@ export function resolveAlias(
 }
 
 /**
- * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
- */
-export const useActiveSkillRating = (skill: SkillKey) => {
-  const skillInfo = skillList[skill]
-
-  const skillRating = useRunnerStoreSelector((sheet) => {
-    return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
-  })
-
-  const groupRating = useRunnerStoreSelector((sheet) => {
-    if (!skillInfo) return 0
-    return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
-  })
-
-  return Math.max(skillRating, groupRating, 0)
-}
-
-/**
  * Hook to retrieve the total value for an active skill check (rating + attribute + mods).
  */
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
-  const rating = useActiveSkillRating(skill)
+  const rating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: skill })
   const attribute = useEntitySelector(AttrSelectors.selectValue, { key: skillInfo.attr })
 
-  const skillMods = useGameEffects(GameEffectType.skillMod)
+  const skillMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillMod })
   const totalMod = skillMods
     .filter((e) => e.target === skill)
     .reduce((sum, e) => sum + e.value, 0)

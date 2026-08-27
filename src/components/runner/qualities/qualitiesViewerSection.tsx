@@ -82,7 +82,7 @@ export const QualitiesViewerSection: FC = () => {
         </Stack>
       )}
 
-      {qualityInfoDialog.dialog}
+      {qualityInfoDialog.outlet}
     </Stack>
   )
 }

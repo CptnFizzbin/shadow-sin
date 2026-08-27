@@ -329,7 +329,7 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
               )}
       </Dialog.Actions>
 
-      {sinFormDialog.dialog}
+      {sinFormDialog.outlet}
     </ControlledDialog>
   )
 }

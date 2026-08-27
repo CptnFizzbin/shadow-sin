@@ -55,8 +55,8 @@ export const KarmaSection: FC = () => {
         </Grid>
       </Grid>
 
-      {addKarmaDialog.dialog}
-      {spendKarmaDialog.dialog}
+      {addKarmaDialog.outlet}
+      {spendKarmaDialog.outlet}
     </>
   )
 }

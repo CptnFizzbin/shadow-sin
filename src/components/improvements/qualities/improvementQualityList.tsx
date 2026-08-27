@@ -155,7 +155,7 @@ export const ImprovementQualityList: FC = () => {
         Add Quality
       </Button>
 
-      {qualityFormDialog.dialog}
+      {qualityFormDialog.outlet}
     </Stack>
   )
 }

@@ -6,10 +6,13 @@ import type { FC } from "react"
 
 import { PowerCard } from "#/components/powerCard/powerCard.tsx"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import { usePowerPoints } from "#/hooks/runner/adeptPowers/adeptPowersHooks.ts"
+import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerSelector, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
@@ -17,7 +20,8 @@ import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
 export const AdeptPowersList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
-  const powerPoints = usePowerPoints()
+  const powerPointsUsed = useRunnerSelector(PowersSelectors.selectUsed)
+  const powerPointsMax = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const adeptPowerFormDialog = useAdeptPowerFormDialog()
 
   const savePower = (power: AdeptPowerData) => dispatch(Actions.powers.savePower(power))
@@ -36,7 +40,7 @@ export const AdeptPowersList: FC = () => {
 
   return (
     <Stack>
-      <PowerPoints value={powerPoints.used} total={powerPoints.max} />
+      <PowerPoints value={powerPointsUsed} total={powerPointsMax} />
 
       {adeptPowers.length === 0 && (
         <Typography color="text.secondary">
@@ -61,7 +65,7 @@ export const AdeptPowersList: FC = () => {
         Add Power
       </Button>
 
-      {adeptPowerFormDialog.dialog}
+      {adeptPowerFormDialog.outlet}
     </Stack>
   )
 }

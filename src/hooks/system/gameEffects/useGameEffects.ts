@@ -1,12 +1,12 @@
 import { createSelector } from "reselect"
 
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { ComplexFormsSelectors } from "#/stores/runner/complexForms/complexFormsSlice.selectors.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { PowersSelectors } from "#/stores/runner/powers/powersSlice.selectors.ts"
 import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { SpellsSelectors } from "#/stores/runner/spells/spellsSlice.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -20,9 +20,9 @@ function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] 
 
 /** `items` is only pulled in for `ItemSelectors.selectEquipped` — see docs/adr/0014-selector-input-decomposition.md
  *  on why a multi-source selector intersects the wrapper shapes it needs instead of taking bare `RunnerData`. */
-type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
+export type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
 
-export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> = createSelector(
+const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   [
     QualitiesSelectors.selectAll,
     ItemSelectors.selectEquipped,
@@ -41,24 +41,26 @@ export const selectAllGameEffects: Selector<GameEffectsState, GameEffectData[]> 
   },
 )
 
-interface TypedGameEffectSelector {
-  <TType extends GameEffectType>(type: TType): Selector<GameEffectsState, EffectByType[TType][]>
+interface GameEffectsByTypeSelector {
+  <TType extends GameEffectType>(
+    state: GameEffectsState,
+    options: { gameEffectType: TType },
+  ): EffectByType[TType][]
 }
 
-export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSelector(
-  [
-    selectAllGameEffects,
-    (_, type: keyof EffectByType) => type,
-  ],
-  (allEffects, type) => {
-    return allEffects.filter(filterByEffectType(type))
-  },
-)
+export const GameEffectSelectors = {
+  selectAll,
 
-/**
- * Hook to retrieve all game effects of a specific type from the runner sheet.
- * This scans qualities, equipped gear, spells, complex forms, and powers.
- */
-export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
-  return useRunnerSelector(selectGameEffectsByType(type))
+  /**
+   * `createMemoizedSelector` infers `options.gameEffectType` as the full `GameEffectType` union,
+   * so its return type is the full `GameEffectData` union rather than the narrower
+   * `EffectByType[TType][]` each call site actually gets back — the single `as` below asserts what
+   * `filterByEffectType` already guarantees at runtime for any concrete `TType` (see AGENTS.md §
+   * Type assertions).
+   */
+  selectByType: createMemoizedSelector(
+    selectAll,
+    SelectorOptions.gameEffectType,
+    (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
+  ) as GameEffectsByTypeSelector,
 }

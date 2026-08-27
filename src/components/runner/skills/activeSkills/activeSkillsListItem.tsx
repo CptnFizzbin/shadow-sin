@@ -86,7 +86,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
           body: <ActiveSkillDialogBody skillKey={skillKey} specialization={specialization} />,
         })}
       />
-      {viewSkillDialog.dialog}
+      {viewSkillDialog.outlet}
     </>
   )
 }

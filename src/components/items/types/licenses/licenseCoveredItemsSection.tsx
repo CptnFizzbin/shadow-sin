@@ -61,7 +61,7 @@ export const LicenseCoveredItemsSection: FC<LicenseCoveredItemsSectionProps> = (
         Add Item
       </Button>
 
-      {addCoveredItemDialog.dialog}
+      {addCoveredItemDialog.outlet}
     </Stack>
   )
 }

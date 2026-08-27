@@ -52,7 +52,7 @@ export const VehiclesSectionContent: FC = () => {
         Add Vehicle
       </Button>
 
-      {vehicleFormDialog.dialog}
+      {vehicleFormDialog.outlet}
     </Stack>
   )
 }

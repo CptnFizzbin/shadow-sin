@@ -90,8 +90,8 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
             )}
       </ItemDetailsRoot>
 
-      {weaponFormDialog.dialog}
-      {accessoryFormDialog.dialog}
+      {weaponFormDialog.outlet}
+      {accessoryFormDialog.outlet}
     </>
   )
 }

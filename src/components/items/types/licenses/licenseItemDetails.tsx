@@ -42,7 +42,7 @@ export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRem
         />
       </ItemDetailsRoot>
 
-      {licenseFormDialog.dialog}
+      {licenseFormDialog.outlet}
     </>
   )
 }

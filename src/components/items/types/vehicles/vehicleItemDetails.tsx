@@ -78,8 +78,8 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
         ))}
       </ItemDetailsRoot>
 
-      {vehicleFormDialog.dialog}
-      {modFormDialog.dialog}
+      {vehicleFormDialog.outlet}
+      {modFormDialog.outlet}
     </>
   )
 }

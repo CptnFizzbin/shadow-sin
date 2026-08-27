@@ -12,11 +12,11 @@ interface DialogInstance<TProps> {
 
 /**
  * Foundation for reusable `use*Dialog()` hooks. Creates one `ctrl` (reused across
- * every `open()` call) and returns `{ open, dialog }` — `dialog` is a node the
+ * every `open()` call) and returns `{ open, outlet }` — `outlet` is a node the
  * caller renders once, anywhere in its own JSX, alongside whatever triggers
  * `open(props)`.
  *
- * `dialog`'s rendered content remounts fresh on every `open()` call, so components with state
+ * `outlet`'s rendered content remounts fresh on every `open()` call, so components with state
  * frozen at first mount (e.g. TanStack Form's `defaultValues`) never go stale across repeated
  * opens with different props.
  *
@@ -31,7 +31,7 @@ interface DialogInstance<TProps> {
  */
 export function useDialog<TReturn, TProps = void>(
   render: (ctrl: DialogCtrl<TReturn>, props: TProps) => ReactNode,
-): { open: (props?: TProps) => Promise<TReturn | undefined>, dialog: ReactNode } {
+): { open: (props?: TProps) => Promise<TReturn | undefined>, outlet: ReactNode } {
   const ctrl = useDialogCtrl<TReturn>()
   const [instance, setInstance] = useState<DialogInstance<TProps> | null>(null)
   const instanceId = useId()
@@ -44,6 +44,6 @@ export function useDialog<TReturn, TProps = void>(
 
   return {
     open,
-    dialog: instance ? <Fragment key={`${instanceId}-${instance.key}`}>{render(ctrl, instance.props)}</Fragment> : null,
+    outlet: instance ? <Fragment key={`${instanceId}-${instance.key}`}>{render(ctrl, instance.props)}</Fragment> : null,
   }
 }

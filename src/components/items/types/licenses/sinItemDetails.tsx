@@ -75,9 +75,9 @@ export const SinItemDetails: FC<SinItemDetailsProps> = ({ sin, onRemoved, onOpen
         ))}
       </ItemDetailsRoot>
 
-      {confirmDialog.dialog}
-      {sinFormDialog.dialog}
-      {licenseFormDialog.dialog}
+      {confirmDialog.outlet}
+      {sinFormDialog.outlet}
+      {licenseFormDialog.outlet}
     </>
   )
 }

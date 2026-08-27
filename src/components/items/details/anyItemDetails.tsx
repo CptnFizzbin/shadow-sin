@@ -141,7 +141,7 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
       return (
         <>
           <ItemDetailsRoot item={item} onEdit={handleEditGeneric} onRemove={onRemove} />
-          {itemFormDialog.dialog}
+          {itemFormDialog.outlet}
         </>
       )
   }

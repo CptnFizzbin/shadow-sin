@@ -35,7 +35,7 @@ export const ProgramItemDetails: FC<ProgramItemDetailsProps> = ({ program, onRem
         <ItemDetailsSlot.Stat label="Type" value={program.programType} />
       </ItemDetailsRoot>
 
-      {programFormDialog.dialog}
+      {programFormDialog.outlet}
     </>
   )
 }

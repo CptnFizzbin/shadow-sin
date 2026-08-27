@@ -74,8 +74,8 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
         ))}
       </ItemDetailsRoot>
 
-      {deviceFormDialog.dialog}
-      {programFormDialog.dialog}
+      {deviceFormDialog.outlet}
+      {programFormDialog.outlet}
     </>
   )
 }

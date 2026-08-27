@@ -151,7 +151,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
         <Button onClick={() => ctrl.close()}>Done</Button>
       </Dialog.Actions>
 
-      {confirmDialog.dialog}
+      {confirmDialog.outlet}
     </ControlledDialog>
   )
 }

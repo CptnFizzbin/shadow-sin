@@ -99,7 +99,7 @@ function RouteComponent() {
         </Grid>
       </Grid>
 
-      {profileEditDialog.dialog}
+      {profileEditDialog.outlet}
     </Stack>
   )
 }

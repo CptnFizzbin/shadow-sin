@@ -63,7 +63,7 @@ export const CredstickSection: FC = () => {
         </Button>
       </Stack>
 
-      {credstickDialog.dialog}
+      {credstickDialog.outlet}
     </Stack>
   )
 }

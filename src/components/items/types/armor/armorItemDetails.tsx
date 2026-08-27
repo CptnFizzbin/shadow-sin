@@ -73,8 +73,8 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
             )}
       </ItemDetailsRoot>
 
-      {armorFormDialog.dialog}
-      {modFormDialog.dialog}
+      {armorFormDialog.outlet}
+      {modFormDialog.outlet}
     </>
   )
 }

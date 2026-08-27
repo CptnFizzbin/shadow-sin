@@ -47,8 +47,8 @@ export const WeaponsList: FC = () => {
         Add Weapon
       </Button>
 
-      {weaponFormDialog.dialog}
-      {accessoryFormDialog.dialog}
+      {weaponFormDialog.outlet}
+      {accessoryFormDialog.outlet}
     </Stack>
   )
 }

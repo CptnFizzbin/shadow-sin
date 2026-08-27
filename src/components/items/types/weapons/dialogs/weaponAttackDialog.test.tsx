@@ -70,7 +70,7 @@ function openCalculator() {
     return (
       <>
         <Button onClick={() => weaponAttackDialog.open({ weapon: pistol })}>Attack</Button>
-        {weaponAttackDialog.dialog}
+        {weaponAttackDialog.outlet}
       </>
     )
   }
