@@ -1,4 +1,5 @@
-import Chip from "@mui/material/Chip"
+import Button from "@mui/material/Button"
+import Grid from "@mui/material/Grid"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -15,7 +16,9 @@ import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
+import { ReputationSelectors } from "#/stores/runner/reputation/reputationSlice.selectors.ts"
+import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/about")({
   component: RouteComponent,
@@ -23,8 +26,10 @@ export const Route = createFileRoute("/$runnerId/_viewer/about")({
 
 function RouteComponent() {
   const profileEditDialog = useProfileEditDialog()
-  const profile = useRunnerStoreSelector(Selectors.profile.selectProfile)
-  const publicAwareness = useRunnerStoreSelector(Selectors.profile.selectPublicAwareness)
+  const profile = useRunnerSelector(ProfileSelectors.select)
+  const streetCred = useRunnerSelector(ReputationSelectors.selectStreetCred)
+  const notoriety = useRunnerSelector(ReputationSelectors.selectNotoriety)
+  const publicAwareness = useRunnerSelector(ReputationSelectors.selectPublicAwareness)
 
   return (
     <Stack sx={{ position: "relative" }}>
@@ -50,20 +55,49 @@ function RouteComponent() {
       <ProfileSection />
       <BiologySection />
 
-      <Stack>
-        <Label label="Reputation" />
-        <Stack direction="row" sx={{ alignItems: "center" }}>
-          <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
-          <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
-          <Chip label={`Awareness: ${publicAwareness}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
-        </Stack>
-      </Stack>
-
       <SectionHeader>Qualities</SectionHeader>
       <QualitiesViewerSection />
 
-      <SectionHeader>Karma</SectionHeader>
-      <KarmaSection />
+      <Grid container columns={{ xs: 1, md: 2 }} spacing={2}>
+        <Grid size={1}>
+          <SectionHeader>Karma</SectionHeader>
+
+          <KarmaSection />
+        </Grid>
+
+        <Grid size={1}>
+          <SectionHeader>Reputation</SectionHeader>
+
+          <Grid container columns={3} spacing={1} sx={{ margin: "auto" }}>
+            <Grid size={1}>
+              <Stack sx={{ alignItems: "center" }}>
+                <Label label="Street Cred" />
+                <Typography>{streetCred}</Typography>
+              </Stack>
+            </Grid>
+
+            <Grid size={1}>
+              <Stack sx={{ alignItems: "center" }}>
+                <Label label="Notoriety" />
+                <Typography>{notoriety}</Typography>
+              </Stack>
+            </Grid>
+
+            <Grid size={1}>
+              <Stack sx={{ alignItems: "center" }}>
+                <Label label="Public Awareness" />
+                <Typography>
+                  {publicAwareness.rating} - {publicAwareness.title}
+                </Typography>
+              </Stack>
+            </Grid>
+
+            <Grid size={3}>
+              <Button disabled variant="outlined" fullWidth>Adjust Reputation</Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
 
       {profileEditDialog.dialog}
     </Stack>
