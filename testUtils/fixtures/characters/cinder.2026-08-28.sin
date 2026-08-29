@@ -1,0 +1,897 @@
+kind: runner
+id: 6c8aad5e-2940-449c-80e6-41671706ed1a
+name: Cinder
+_meta_:
+  appVersion: '2026-08-27T18:29:19Z'
+  lastExportDate: '2026-08-28T00:03:11.343Z'
+items:
+  parentId: null
+  childIds: []
+attributes:
+  body: 2
+  agility: 2
+  reaction: 3
+  strength: 1
+  charisma: 8
+  intuition: 3
+  logic: 3
+  willpower: 5
+  edge: 5
+  essence: 6
+  magic: 5
+  resonance: 0
+qualities:
+  - id: 24f8d6cc-9f2d-44e1-9c78-5cbb438bbadc
+    name: '''Mentor Spirit: Fire Bringer'''
+    type: positive
+    description: |-
+      he Fire-Bringer stole the secret of fire from the heavens and gave it to metahumanity as a
+            gift and a tool. He is a figure of kindness and concern, but his good intentions sometimes
+            get him into trouble and his plans sometimes fail to work out the way he envisions them. He
+            is a shaper and a creator, forming new things from the primal clay and breathing the fiery
+            spark of life into them. Fire-Bringers devote themselves to the betterment of others, even at
+            their own expense. Most Fire-Bringer magicians devote themselves to a particular cause they
+            follow with great zeal.
+            Advantages: +2 dice for Manipulation spells, +2 dice for fire spirits.
+            Disadvantages: –1 die for Illusion spells.
+    effects:
+      - type: skillSpecializationMod
+        target: Spellcasting
+        value: 2
+        subTarget: Manipulation Spells
+      - type: skillSpecializationMod
+        target: Spellcasting
+        value: -1
+        subTarget: Illusion Spells
+      - type: skillSpecializationMod
+        target: Banishing
+        value: 2
+        subTarget: Spirits of Spirit of Fire
+      - type: skillSpecializationMod
+        target: Binding
+        value: 2
+        subTarget: Spirits of Spirit of Fire
+      - type: skillSpecializationMod
+        target: Summoning
+        value: 2
+        subTarget: Spirits of Spirit of Fire
+    bpValue: 5
+    source:
+      book: SR4A
+      page: 94
+    kind: quality
+  - id: b271b9bd-1c8a-4deb-b1db-714bf035f5b2
+    name: Astral Beacon
+    type: negative
+    description: |2-
+            The astral signature of a character with the Astral Beacon quality
+            sticks out like a sore thumb on the astral plane. All signatures left by the
+            character last twice as long, and others assensing the signature receive
+            a +2 dice pool modifier. Only characters with the Adept, Magician, or
+            Mystic Adept qualities may take this quality.
+    effects: []
+    bpValue: 5
+    source:
+      book: SR4A
+      page: 94
+    kind: quality
+  - id: 6194666d-4f96-451d-98f8-e8631a69e080
+    name: Sensitive System
+    type: negative
+    description: |2-
+            A character with the Sensitive System quality has immuno-sup-
+            pressive problems with implants. Double all Essence losses caused by
+            cyberware implants. This quality does not affect Essence losses for
+            bioware.
+    effects: []
+    bpValue: 15
+    source:
+      book: SR4A
+      page: 95
+    kind: quality
+  - id: 64203a4d-f6ef-4c3e-947d-a42e085239b7
+    name: Wanted (Renraku)
+    type: negative
+    description: >-
+      "For some reason (defined when the quality is taken), the character is wanted by the authorities, has a bounty on
+      her head, or a mob contract hanging over her. Such bounties/contracts should be worth at least 20,000 nuyen.
+      Unlike characters with Enemies, a Wanted character is not constantly harassed by a single opponent\n(though the
+      two can be combined). Instead, she will be hunted by anyone who becomes aware of the bounty and is interested in
+      collecting\nit. It is up to the gamemaster how much this quality impacts the game, but, as a rule of thumb, it
+      should come up at least once every other adventure. The is quality may not be bought out , until the reason the
+      character is wanted is resolved through role-playing."
+    effects: []
+    source:
+      book: RC
+      page: 110
+    bpValue: 10
+    kind: quality
+karma:
+  current: 11
+  total: 31
+  log:
+    - id: 1e188df2-f8a2-452e-b4fe-f0757792101e
+      timestamp: '2026-08-27T23:25:25.127Z'
+      amount: -5
+      description: Learned spell Increase Charisma
+      source: spendKarma
+      improvement:
+        type: learnSpell
+        spell: &ref_1
+          kind: spell
+          id: 00000000-0000-0000-0000-000000000000
+          name: Increase Charisma
+          type: Physical
+          range: Touch
+          damage: Physical
+          category: Health
+          drain:
+            type: Force
+            value: -2
+          dealsDamage: false
+          duration: Sustained
+          threshold: ''
+          voluntaryTargetsOnly: true
+          description: >-
+            This spell increases an attribute (natural or augmented) on a voluntary subject. A version of this spell
+            exists for each Physical and Mental attribute, but not for Special attributes (Initiative, Edge, Essence,
+            Magic, or Resonance). The Force of the spell must equal or exceed the (augmented) value of the attribute
+            being affected. The attribute is increased by an amount equal to the hits scored. Each attribute can only be
+            affected by a single Increase Attribute spell at a time. Note that increasing an attribute may affect other
+            derived statistics (Increase Reaction also affects Initiative, for example, while Increase Body will add
+            extra boxes to the character’s Physical Condition Monitor for as long as the spell lasts).
+          effects: &ref_0 []
+          source:
+            book: SR4A
+            page: 208
+        id: d0cdf630-4d61-4a42-b6c0-0bc63aabfc94
+    - id: 93e237bc-5ce7-4559-a45a-cdd989ecd0c2
+      timestamp: '2026-08-27T23:25:41.755Z'
+      amount: 5
+      description: Added 5 karma
+      source: addKarma
+    - id: c1504e98-620a-4ac6-948e-9543aca461f4
+      timestamp: '2026-08-28T00:02:15.843Z'
+      amount: -5
+      description: Learned spell Makeover
+      source: spendKarma
+      improvement:
+        type: learnSpell
+        spell: &ref_2
+          kind: spell
+          id: 00000000-0000-0000-0000-000000000000
+          name: Makeover
+          type: Physical
+          range: Touch
+          damage: Physical
+          category: Manipulation
+          drain:
+            type: Force
+            value: 0
+          dealsDamage: false
+          duration: Permanent
+          threshold: ''
+          voluntaryTargetsOnly: false
+          description: |-
+            This spell creates a complete makeover for a voluntary
+            subject, including cosmetics, hair, and nails. It even polishes
+            teeth and eliminates plaque. Changes are as permanent as
+            those made in a beauty salon. The number of hits measures
+            the degree of style in the makeover.
+          effects: *ref_0
+          source:
+            book: SM
+            page: 173
+        id: 20711278-2338-478f-9266-9f8611a85d2c
+nuyen:
+  current: 7000
+  loans: []
+profile:
+  alias: Cinder
+  name: Elias Glas
+  archetype: Radiant Icon
+  streetCred: 0
+  notoriety: 0
+  description: |2-
+        Elias Glas was groomed to be a junior diplomat from a young age, born into the low-tier nobility of Tir Tarngire. He
+        "burned-bright" under the mentorship of a fire-bringer mentor. 
+
+        Elias stands just over six feet, possessing the kind of effortless Elven grace that makes everyone else in the room
+        feel slightly clumsy. He’s dressed in what runners call "Tactical Sartorialism"—a charcoal-grey armored greatcoat
+        that looks suspiciously like high-end Tír fashion, layered over a deep crimson silk tunic. He doesn’t carry a
+        visible firearm, and he doesn’t have the twitchy, overclocked energy of a street sam. Instead, he carries a calm,
+        centered gravity.
+  personality: |-
+    Elias has the "radiant" personality required in his past diplomatic life. Aloof, and at times impersonal not many
+        crises bother him. Underneath this he deeply cares for those in his close circles and the citizens exploited by the
+        big 10. He.. just doesn't always show it in appropriate manners. 
+  lifestyle:
+    quality: Middle
+    monthsPaid: 1
+reputation:
+  ledger: []
+biology:
+  metatype: Elf
+  awakening: Magician
+  gender: null
+  age: null
+  weight: null
+  height: null
+contacts:
+  - id: 68c0f8a8-4f9e-4e74-9a2a-7199fac16a85
+    name: Sable (Fixer)
+    connection: '4'
+    loyalty: '2'
+    notes: 'A high-end broker who likes dealing with elves... perhaps a bit too much. '
+  - id: 082f8357-645c-4ab7-ab2c-8ac4399db931
+    name: Father O'malley
+    connection: '2'
+    loyalty: '4'
+    notes: 'A street-preacher talismonger '
+  - id: 7f5205eb-3472-4697-bd5f-b58dc145d017
+    name: Kenji Sato
+    connection: '3'
+    loyalty: 1
+    notes: |2-
+       A middle-manager at Renraku Spire who hated the executives Elias exposed. He provides intel purely for nuyen and a
+            secret sense of petty revenge.
+      karma:
+skills:
+  activeSkills:
+    - name: Summoning
+      rating: 5
+      specialization: Spirits of Spirit of Fire
+    - name: Spellcasting
+      rating: 5
+    - name: Counterspelling
+      rating: 3
+    - name: Assensing
+      rating: 2
+      specialization: Aura Reading
+    - name: Arcana
+      rating: 2
+    - name: Perception
+      rating: 2
+    - name: Binding
+      rating: 3
+      specialization: Spirits of Spirit of Fire
+  skillGroups: []
+  knowledgeSkills:
+    - name: Magical Theory
+      rating: 4
+      specialization: Elven Traditions
+    - name: Tir Tairngire History
+      rating: 3
+    - name: Corporate Security Procedures
+      rating: 3
+      specialization: Magical
+    - name: Underworld Politics
+      rating: 1
+    - name: Daitoshi Geography
+      rating: 1
+  languageSkills:
+    - name: Sperethiel
+      rating: native
+      lingo: ''
+    - name: English
+      rating: 4
+      lingo: ''
+spells:
+  - id: 070f6ce7-a572-4c52-a6ff-6a47f8069127
+    name: Heal
+    type: Mana
+    range: Touch
+    damage: Physical
+    category: Health
+    drain:
+      type: Force
+      value: -2
+    dealsDamage: false
+    duration: Permanent
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: |2-
+            Heal repairs physical injuries. It heals a number of boxes of Physical
+            damage equal to the spell’s hits from the Spellcasting Test. Hits can
+            also be used to reduce the base time for the spell to become permanent;
+            each hit spent this way shaves off 1 Combat Turn (hits can be split
+            between healing and reducing time as the caster desires).
+            A character can only be magically healed once for any single set
+            of injuries.
+    effects: []
+    source:
+      book: SR4A
+      page: 208
+    kind: spell
+  - id: e169d257-41db-43e9-9972-9c9dc9581e72
+    name: Influence
+    type: Mana
+    range: LoS
+    damage: Physical
+    category: Manipulation
+    dealsDamage: false
+    duration: Permanent
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: |2-
+            This spell implants a single suggestion in the victim’s mind, like a pow-
+            erful post-hypnotic command. The subject will carry out this sugges-
+            tion as if it were her own idea and it will then fade. If confronted with
+            the wrongness of the suggestion, the subject can make a Willpower
+            Test to overcome it as described under Mental Manipulations, p. 210.
+            The caster can also withdraw the suggestion at any time.
+    effects: []
+    source:
+      book: SR4A
+      page: 210
+    drain:
+      type: Force
+      value: 1
+    kind: spell
+  - id: 070cf549-3955-40f5-8f85-1a20e3e457ec
+    name: Stunball
+    type: Mana
+    range: LoS
+    damage: Stun
+    category: Combat
+    dealsDamage: true
+    duration: Instantaneous
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: |-
+      These spells channel magical energy directly into the target, causing
+      Stun damage. they are often referred to as “sleep” spells because they
+      can render targets unconscious.
+      Stunbolt affects a single target. Stunball is an area spell. Knockout
+      requires the caster to touch the target.
+    effects: []
+    source:
+      book: SR4A
+      page: 205
+    drain:
+      type: Force
+      value: 1
+    kind: spell
+  - id: 85d8d15f-f472-40b4-a3e8-99f263229602
+    name: Increase Reflexes
+    type: Physical
+    range: Touch
+    damage: Physical
+    category: Health
+    dealsDamage: false
+    duration: Sustained
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: "This spell increases the reflexes (Initiative and Initiative Passes) of\na voluntary subject. Each level of increase adds +1 Initiative and +1\nInitiative Pass.  The caster must achieve a certain threshold for each level:\nThreshold 2: +1 Initiative, + 1 Initiative Pass\nThreshold 3: +2 Initiative, + 2 Initiative Passes\nThreshold 4 (max.): +3 Initiative, + 3 Initiative Passes\nA character can only be affected by a single Increase Re\x1E exes spell\nat a time; the maximum IPs any character can have is 4."
+    effects: []
+    source:
+      book: SR4A
+      page: 208
+    drain:
+      type: Force
+      value: 2
+    kind: spell
+  - id: 317eaa34-5553-439e-805b-185e2c24fe61
+    name: Ignite
+    type: Physical
+    range: LoS
+    damage: Physical
+    category: Manipulation
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: true
+    duration: Permanent
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: |-
+      The Ignite spell accelerates molecular motion in the target, causing it
+      to catch  Fire once the spell becomes permanent. the spellcaster must
+      achieve enough net hits to beat a threshold equal to the target’s Object
+      Resistance (p. 183). Once the target ignites, it burns normally until it
+      is consumed or extinguished.
+      Against living targets, treat Ignite as an Opposed Test pitting
+      Spellcasting + Magic vs. Body (+ Counterspelling). If successful,
+      Ignite wraps a living target in heat and flames once it has been made
+      permanent, causing (Force) boxes of Fire damage (p. 164) on the first
+      Combat Turn, and increasing by one box of damage each additional
+      turn. Resolve the damage at the end of each Combat Turn by making
+      a Damage Resistance Test using the victim’s Body + half Impact armor.
+      Ammo or explosives carried by a victim may go off . The gamemaster
+      should reduce the Force of the fire accordingly for extinguishing efforts.
+    effects: []
+    source:
+      book: SR4A
+      page: 210
+    kind: spell
+  - id: 643fe8c4-0073-48ba-9181-61f866adfa5d
+    name: Increase Intuition
+    type: Physical
+    range: Touch
+    damage: Physical
+    category: Health
+    drain:
+      type: Force
+      value: -2
+    dealsDamage: false
+    duration: Instantaneous
+    threshold: ''
+    voluntaryTargetsOnly: true
+    description: |-
+      This spell increases an attribute (natural or augmented) on a voluntary
+      subject. A version of this spell exists for each Physical and Mental attribute,
+      but not for Special attributes (Initiative, Edge, Essence, Magic,
+      or Resonance). The Force of the spell must equal or exceed the (augmented)
+      value of the attribute being affected. The attribute is increased
+      by an amount equal to the hits scored. Each attribute can only be affected
+      by a single Increase Attribute spell at a time.
+      Note that increasing an attribute may affect other derived
+      statistics (Increase Reaction also affects Initiative, for example,
+      while Increase Body will add extra boxes to the character’s Physical
+      Condition Monitor for as long as the spell lasts).
+    effects: []
+    source:
+      book: SR4A
+      page: 208
+    kind: spell
+  - *ref_1
+  - *ref_2
+spirits:
+  - id: 3d790239-2365-40b2-bd0a-48fedef6699d
+    name: Wandering Guide
+    spiritType: guidance
+    force: 5
+    services:
+      max: 1
+      used: 0
+    bound: false
+    optionalPowers:
+      - Concealment
+    notes: ''
+    damage:
+      physical: 0
+      stun: 0
+    kind: spirit
+complexForms: []
+sprites: []
+powers: []
+tradition:
+  name: The Path of the Wheel
+  spiritTypes:
+    combat: earth
+    detection: guidance
+    health: wind
+    illusion: water
+    manipulation: fire
+  drainAttribute: charisma
+  concept: |2-
+        Draesis ti Heron, the “Wheel of Life” or “Wheel
+        of Existence,” is the metaphysical representation of the great cycles
+        of existence that lie at the heart of an ancient spiritual tradition. 
+edge:
+  current: 5
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes:
+      - id: 48593676-2e84-488b-9b31-f0402fb6c55e
+        name: ''
+        matrix:
+          system: 0
+          firewall: 0
+          response: 0
+          signal: 0
+        nodeType: general
+        accessLevel: public
+        kind: matrixNode
+    activeNodeId: 48593676-2e84-488b-9b31-f0402fb6c55e
+    activePrograms: []
+initiative:
+  passesCompleted: []
+initiateGrade: 0
+submersionGrade: 0
+_data_:
+  featureFlags: {}
+gear:
+  - id: b46b521d-cb85-42ee-b6fd-92a0c22fd8ac
+    itemType: armor
+    name: Longcoat
+    ballistic: 4
+    impact: 2
+    cost: 1300
+    quantity: 1
+    description: |-
+      Synergist Business Line: The Synergist Business line has
+      become de rigeur for anyone who considers himself one of the
+      sharks of the modern corporate world. Featuring high collars and
+      necklines, no lapels, and hidden fasteners instead of buttons, the
+      styling of these business outfits is as smooth as it is elegant.
+      The suit jacket and longcoat feature incorporated concealed
+      holsters (adding a –2 Concealability modifier), while the longcoat
+      provides an additional –2 Concealability modifier to items hidden
+      underneath it (see Lined Coat, p. 326, SR4A).
+    equipped: true
+    availability:
+      rating: 2
+      restricted: false
+      forbidden: false
+    source:
+      book: AR
+      page: 46
+    effects: []
+    kind: item
+  - id: 9734b9c3-f061-4162-8f50-3064afcfdbc7
+    itemType: other
+    name: Magical Lodge
+    cost: 2500
+    quantity: 1
+    rating: 5
+    description: |2-
+            In order to progress in her studies, a magician must have a collection of symbols, writings,
+            tools, and other material that allows her to record her progress, gives her room to expand her
+            knowledge, and assists her in her magical endeavors. Such a collection of items and informa-
+            tion is known as a magical lodge. Magicians of the same tradition can share a magical lodge.
+            A magical lodge is required to improve Magic-linked skills, learn new spells, and per-
+            form Ritual Spellcasting. A lodge has a Force rating that is used to measure its power. The
+            Force of a lodge must be at least equal to the skill rating being learned or the force of a spell
+            being cast (in the case of Ritual Spellcasting).
+            A lodge costs 500¥ per Force point, and the lodge’s rating can be improved later. The
+            money is spent to buy the supplies used to build the lodge. Once the supplies are gathered,
+            the magician must complete an activation ritual that will “awaken” the lodge and construct
+            its astral presence. The actual process requires 1 day per point of Force desired. An activated
+            lodge acts as an astral barrier (p. 194). Any magicians involved in the activation of the lodge
+            are unaffected by this barrier, and can allow other astral forms to pass through it at will. A
+            lodge contains the astral signatures of the magicians who activated it (see Astral Signatures,
+            p. 192), and is magically linked to them. This link can be tracked using astral projection (see
+            Astral Tracking, p. 193).
+            To increase the rating of an existing lodge, additional materials must be acquired. An
+            activation ritual must also be performed, taking a number of days equal to the difference
+            between the current Force and the desired Force. The cost of searching and gathering can
+            be simplified to a cost of 500¥ per Force point. Improving a Force 4 lodge to Force 6, for
+            example, would cost 1,000¥ and take two days of ritual.
+            Th e contents of a lodge vary according to a magician’s tradition. Hermetic lodges con-
+            tain ritual tools such as daggers, scrollwork, runes, and—above all—books (though virtual
+            libraries are increasingly common). Shamans are known to have crystals, stones, hides, col-
+            ored sand or paint, herbs, and so forth.
+            Lodges can be established almost anywhere. While the contents of a lodge can be moved,
+            lodges are not portable. It is an Awakened place, more than the sum of the objects it contains.
+            After being moved a lodge must be set up again and a new activation ritual performed.
+            . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+    availability:
+      rating: 5
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 178
+    effects: []
+    kind: item
+  - id: 9e473a5c-f251-40d5-a0df-106709a5b128
+    itemType: sin
+    name: Cinder, Street Artist
+    cost: 3000
+    quantity: 1
+    rating: 3
+    description: >-
+      ID Description & Data Trail:
+
+
+      Legal Name: Jaxen "Cinder" Vane
+
+
+      Status: Legal Resident (U.C.A.S.)
+
+
+      Occupation: Freelance Graphic Illustrator / Multimedia Street Artist
+
+
+      Financials: Linked to a low-balance certified Credstick; includes a modest history of micro-transactions from
+      local art supply vendors and soy-caf stalls.
+
+
+      Biometrics: Contains standard fingerprints and a retina scan. While these match the user, the DNA profile on file
+      is a "scrambled" placeholder that is only passably realistic.
+    availability:
+      rating: 9
+      restricted: false
+      forbidden: true
+    source:
+      book: SR4A
+      page: 331
+    effects: []
+    kind: item
+    children:
+      - id: 0b54ad50-29ef-47ae-86c3-eba3739e3517
+        itemType: license
+        name: Licensed Awakened Practitioner
+        cost: 300
+        quantity: 1
+        rating: 3
+        description: ''
+        availability:
+          rating: 2
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 0
+        effects: []
+        kind: item
+      - id: 7882f306-cdc3-4431-b686-80af1a6d13d3
+        itemType: license
+        name: 'Driver''s License '
+        cost: 300
+        quantity: 1
+        rating: 3
+        description: Let's Scoot Scoot offroad
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+  - id: f88bf302-e332-4775-b610-dc3d0b3010db
+    itemType: sin
+    name: Mithrellas Vane
+    cost: 4000
+    quantity: 1
+    rating: 4
+    description: >-
+      Identity Details & Data Trail:
+
+
+      Legal Name: Mithrellas Vane
+
+
+      Status: Legal Resident / Naturalized Citizen (U.C.A.S.)
+
+
+      Occupation: Independent Forensic Consultant / Occult Investigator
+
+
+      Financial History: Includes a robust history of professional insurance payments, active memberships in academic or
+      professional alumni associations, and regular lifestyle expenditures that suggest a middle-class income.
+
+
+      Biometrics: The SIN includes high-resolution retinal scans, fingerprints, and a basic DNA profile that are
+      cross-referenced across multiple municipal databases.
+    availability:
+      rating: 12
+      restricted: false
+      forbidden: true
+    source:
+      book: SR4A
+      page: 331
+    effects: []
+    kind: item
+    children:
+      - id: 12a8fe5b-d985-4a5a-98e2-6dd768cda6ea
+        itemType: license
+        name: 'Licensed Awakend Practisioner '
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: ''
+        availability:
+          rating: 12
+          restricted: false
+          forbidden: true
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+      - id: b7ff18c8-99c4-412b-8544-fb91e157d71a
+        itemType: license
+        name: Combat Spell Permit
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: ''
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+      - id: b4c1ed7d-ff7e-42ba-88b0-ac118086eff6
+        itemType: license
+        name: Spirit Summoning Permit
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: ''
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+      - id: fedfbba7-5ec6-4007-b0b1-4331128c5243
+        itemType: license
+        name: 'Licensed Forensic/Occult Consultant '
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: ''
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+      - id: ab8ed945-e6fb-4668-935b-083813f1e403
+        itemType: license
+        name: Scooter License
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: Owner is a responsible citizen on their scooter
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 331
+        effects: []
+        kind: item
+  - id: f03dddb7-b9ea-410a-af92-774df73f3c4f
+    itemType: other
+    name: Subvocal Microphone
+    cost: 50
+    quantity: 1
+    rating: 1
+    description: |2-
+            Attached with adhesive to the center of
+            the throat, this hard-to-spot microphone allows the user to commu-
+            nicate via subvocalized speech. A –4 dice pool modifier is applied to
+            audio Perception Tests to overhear what she is saying.
+    availability:
+      rating: 6
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 328
+    effects: []
+    kind: item
+  - id: d1b9175c-86d4-4ce8-8567-6b1586379bb6
+    itemType: other
+    name: Trodes
+    cost: 50
+    quantity: 1
+    rating: 1
+    description: |2-
+            his net/headband of electrodes and ultrasound emit-
+            ters enables the wearer to experience simsense and is used with a sim
+            module. Trodes are often concealed under headbands, hats, or wigs.
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 328
+    effects: []
+    kind: item
+  - id: 15f3721e-77b3-4bcc-aefe-594749f5fa38
+    itemType: device
+    name: Glasses
+    cost: 50
+    quantity: 1
+    description: |2-
+            Usually lightweight frames worn on the bridge of the
+            nose; numerous styles are available
+    availability:
+      rating: 2
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 332
+    effects: []
+    deviceType: other
+    customDeviceType: ''
+    deviceModel: ''
+    deviceOS: ''
+    deviceRating: 2
+    response: 0
+    signal: 0
+    system: 0
+    firewall: 0
+    dataProcessing: 0
+    programSlots: 0
+    kind: item
+    children:
+      - id: df265b50-9dcd-4e78-a4d7-0bb8ca0b30d7
+        itemType: program
+        name: Image Link
+        cost: 25
+        quantity: 1
+        description: ''
+        rating: 2
+        programType: other
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        source:
+          book: SR4A
+          page: 333
+        effects: []
+        kind: item
+  - id: e3b443b1-e91d-4591-9744-7e3ddb33e78f
+    itemType: vehicle
+    vehicleCategory: vehicle
+    vehicleType: Bikes
+    model: Dodge Scoot
+    name: Scoot Scoot
+    cost: 3000
+    description: ''
+    quantity: 1
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 351
+    effects: []
+    handling: 1
+    accel: 10/15
+    pilot: 1
+    speed: 60
+    body: 4
+    armor: 2
+    sensor: 1
+    damage:
+      physical: 0
+    kind: item
+  - name: Paid by Mother
+    itemType: credstick
+    credstickType: standard
+    balance: 1000
+    id: c6e1eb45-ced6-49a2-b909-4b8dedaa85bd
+    kind: item
+  - id: 2a99aa21-cb05-4358-88ff-4fa406ef5b0e
+    itemType: device
+    name: Erika Elite
+    cost: 3300
+    quantity: 1
+    description: ''
+    availability:
+      rating: 2
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 328
+    effects: []
+    deviceType: commlink
+    customDeviceType: ''
+    deviceModel: ''
+    deviceOS: Mangadyne Deva
+    deviceRating: 0
+    response: 3
+    signal: 4
+    system: 3
+    firewall: 2
+    dataProcessing: 0
+    programSlots: 0
+    kind: item

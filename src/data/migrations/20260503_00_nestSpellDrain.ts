@@ -1,8 +1,9 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { JsonObject } from "#/lib/jsonUtils.ts"
 
-type OldSpell = Record<string, unknown> & {
+type OldSpell = JsonObject & {
   drainBaseType?: string
   drainBaseValue?: number
   drainValueMod?: number

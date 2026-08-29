@@ -1,0 +1,77 @@
+id: ccccdddd-0000-0000-0000-000000000001
+version: 0.1.0
+profile:
+  alias: TestRunner
+  name: Test Character
+  streetCred: 0
+  notoriety: 0
+biology:
+  metatype: Human
+  awakening: Mundane
+karma:
+  total: 0
+  current: 0
+nuyen:
+  current: 1000
+  loans:
+    - id: ccccdddd-0000-0000-0000-000000000004
+      lender: TestLender
+      amount: 500
+      interestRate: 0
+      notes: test loan
+attributes:
+  body: 3
+  agility: 3
+  reaction: 3
+  strength: 3
+  charisma: 3
+  intuition: 3
+  logic: 3
+  willpower: 3
+  edge: 3
+  essence: 6
+  magic: 0
+  resonance: 0
+edge:
+  current: 3
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gear:
+  ccccdddd-0000-0000-0000-000000000002:
+    id: ccccdddd-0000-0000-0000-000000000002
+    itemType: weapon
+    weaponType: melee
+    name: Combat Knife
+    equipped: true
+  ccccdddd-0000-0000-0000-000000000003:
+    id: ccccdddd-0000-0000-0000-000000000003
+    itemType: vehicle
+    vehicleCategory: vehicle
+    vehicleType: Car
+    name: Runabout
+    handling: 4
+    accel: 10/20
+    pilot: 1
+    speed: 90
+    body: 8
+    armor: 4
+skills:
+  activeSkills: []
+  skillGroups: []
+  knowledgeSkills: []
+  languageSkills: []
+qualities: []
+contacts: []
+spells:
+  - name: Fireball
+    category: Combat
+    type: Physical
+    range: LoS
+    damage: Physical
+    duration: Instantaneous
+    threshold: ''
+complexForms: []
+sprites: []
+powers: []

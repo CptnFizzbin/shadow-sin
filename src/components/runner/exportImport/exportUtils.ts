@@ -1,6 +1,7 @@
 import { dump, load } from "js-yaml"
 
 import { applyMigrations } from "#/data/applyMigrations.ts"
+import type { JsonObject } from "#/lib/jsonUtils.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -108,18 +109,17 @@ export function gearFromTree(
 export function yamlToRunnerData(
   yamlContent: string,
 ): RunnerData {
-  const parsed = load(yamlContent) as Record<string, unknown>
+  const parsed = load(yamlContent) as JsonObject
   const isOldFormat = "characterId" in parsed
+  const rawGear: unknown = parsed.gear
 
-  const payload: Record<string, unknown> = isOldFormat
+  const payload = isOldFormat
     ? parsed
     : {
         ...parsed,
         _data_: {
           ...(parsed._data_ as object | undefined),
-          items: gearFromTree(
-            Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : [],
-          ),
+          items: gearFromTree(Array.isArray(rawGear) ? (rawGear as GearTreeNode[]) : []),
         },
       }
 
