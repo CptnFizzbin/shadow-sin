@@ -26,8 +26,11 @@ proposes a reorganization.
 - [ ] **Do the fused hooks get split now or left alone?** `useGearBuildPoints`,
       `skillDicePools.ts`, and `useGearAvailabilityIssues`/`getTotalCost` correctly live in
       `hooks/` (they call `useRunnerSelector`), but each wraps a pure formula that could be
-      extracted into `system/`. This is a real cleanup but touches hook internals rather than just
-      import paths — decide whether it's in scope for this pass or deferred to a follow-up.
+      extracted into `system/`. Extracting the formula does **not** imply adding a matching
+      `stores/*.selectors.ts` wrapper around it — see the selector-boundary rule under Constraints;
+      the hook keeps reading state via its existing selector(s) and calls the `system/` function
+      directly in the same body. What's still open is only whether pulling the formula out into its
+      own `system/` file is worth doing now or left alone as-is.
 - [ ] **Where does `BuilderConfig` land inside `system/`?** It's a single flat table covering
       attributes, skills, qualities, magic, contacts, technomancer, and gear BP/nuyen costs — all
       chargen ruleset numbers. Move it whole to e.g. `system/builderConfig.ts`, or split it per
@@ -49,6 +52,15 @@ proposes a reorganization.
 - Existing `*.test.ts`/`*.test.tsx` files move with the source file they test, unchanged.
 - Follow the existing `system/<feature>/` subfolder convention (`system/gear/`, `system/powers/`,
   `system/dice/`, `system/gameEffects/`) rather than inventing new top-level groupings.
+- **No mandatory selector wrapper.** A `system/` function's signature takes plain domain data
+  (e.g. `ImplantData`, a `rating: number`) — never `RunnerState`/store state — so it is not a
+  selector's counterpart and moving it doesn't create an obligation to also add one. Call sites
+  (a hook, a component, or a `stores/*.selectors.ts` body) invoke the `system/` function directly
+  with whatever data they already have in scope. Only write a `stores/` selector when it does real
+  selection work — composing multiple state slices, applying a store-specific fallback, or needing
+  `reselect`/RTK memoization over a derived collection. A selector whose entire body would be
+  `return calc(selectX(state))` is a sign to skip the selector and call `calc` directly at the
+  point of use instead — the calculator-then-wrapper ceremony this doc must avoid.
 
 ## Domain Notes
 
