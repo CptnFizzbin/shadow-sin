@@ -12,7 +12,6 @@ import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
-import { skillList } from "#/system/skills/skillList.ts"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]
@@ -68,12 +67,4 @@ export function useEncumbranceDiceGroup(): DiceGroup | null {
   const { penalty } = useEncumbrance()
   if (penalty === 0) return null
   return { name: "Encumbrance", size: penalty * -1, type: "penalty" }
-}
-
-export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
-  const skillRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: skillKey })
-  const { defaultable } = skillList[skillKey]
-  const isDefaulted = skillRating === 0 && (defaultable ?? true)
-  if (!isDefaulted) return null
-  return { id: `${skillKey}-defaulting`, name: "Defaulting", size: -1, type: "defaulting" }
 }

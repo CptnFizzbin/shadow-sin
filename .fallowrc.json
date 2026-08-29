@@ -5,43 +5,20 @@
     "src/main.{ts,tsx,js,jsx}",
     "testUtils/setup.ts"
   ],
-  "rules": {
-    "unused-dependencies": "warn"
-  },
-  "ignorePatterns": [
-    "**/*.gen.ts"
-  ],
   "ignoreDependencies": [
     "@emotion/react",
     "@emotion/styled",
     "@tanstack/router-core",
+    "@vitest/coverage-v8",
+    "@vitest/ui",
     "babel-plugin-react-compiler",
-    "jiti"
+    "jiti",
+    "typescript-7"
   ],
-  "ignoreExports": [
-    {
-      "file": "src/stores/builder/builderStore.actions.ts",
-      "exports": ["*"]
-    },
-    {
-      "file": "src/stores/runner/runnerStore.actions.ts",
-      "exports": ["*"]
-    },
-    {
-      "file": "src/components/ui/form/fields/nuyenField.tsx",
-      "exports": ["*"]
-    },
-    {
-      "file": "src/integrations/tanstackForm/fields/nuyenField.tsx",
-      "exports": ["*"]
-    },
-    {
-      "file": "src/stores/builder/builderStore.selectors.ts",
-      "exports": ["*"]
-    },
-    {
-      "file": "src/stores/runner/runnerStore.selectors.ts",
-      "exports": ["*"]
-    }
-  ]
+  "ignorePatterns": [
+    "**/*.gen.ts"
+  ],
+  "rules": {
+    "unused-dependencies": "warn"
+  }
 }

@@ -6,7 +6,6 @@ export class JsonStorageAdapter implements AsyncJsonStorage {
   public constructor(private readonly storage: AsyncStorage) {}
 
   // required by the AsyncJsonStorage interface
-  // fallow-ignore-next-line unused-class-member
   public hasKey(key: string): Promise<boolean> {
     return this.storage.hasKey(key)
   }
@@ -22,13 +21,11 @@ export class JsonStorageAdapter implements AsyncJsonStorage {
   }
 
   // required by the AsyncJsonStorage interface
-  // fallow-ignore-next-line unused-class-member
   public removeItem(key: string): Promise<void> {
     return this.storage.removeItem(key)
   }
 
   // required by the AsyncJsonStorage interface
-  // fallow-ignore-next-line unused-class-member
   public namespace(ns: string): AsyncJsonStorage {
     return new JsonStorageAdapter(this.storage.namespace(ns))
   }
