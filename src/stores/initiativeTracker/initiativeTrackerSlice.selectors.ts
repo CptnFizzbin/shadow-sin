@@ -5,7 +5,7 @@ import type { UUID } from "#/lib/uuidUtils.ts"
 import type { Combatant, InitiativeTrackerState } from "./initiativeTrackerData.ts"
 import { sortCombatants } from "./initiativeTrackerData.ts"
 
-export function selectCombatants(state: InitiativeTrackerState): Combatant[] {
+function selectCombatants(state: InitiativeTrackerState): Combatant[] {
   return state.combatants
 }
 

@@ -8,7 +8,7 @@ import { useFieldErrors } from "./useFieldError.ts"
 
 type NuyenFormFieldProps = Omit<NuyenFieldProps, "value" | "onChange">
 
-export const NuyenField: FC<NuyenFormFieldProps> = ({ ...props }) => {
+export const NuyenFormField: FC<NuyenFormFieldProps> = ({ ...props }) => {
   const field = useFieldContext<number | undefined>()
   const errors = useFieldErrors()
 
