@@ -3,43 +3,9 @@ import { describe, expect, it } from "vitest"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { KarmaSelectors, selectCurrentKarma, selectKarma, selectTotalKarma } from "./karmaSlice.selectors.ts"
+import { KarmaSelectors } from "./karmaSlice.selectors.ts"
 
 const stateFor = (runner: RunnerData) => ({ runner })
-
-describe("selectKarma", () => {
-  it("returns the runner's karma record", () => {
-    // Arrange
-    const runner = runnerDataFactory()
-
-    // Act / Assert
-    expect(selectKarma(runner)).toBe(runner.karma)
-  })
-})
-
-describe("selectCurrentKarma", () => {
-  it("returns the runner's current karma", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.karma.current = 5
-    } })
-
-    // Act / Assert
-    expect(selectCurrentKarma(runner)).toBe(5)
-  })
-})
-
-describe("selectTotalKarma", () => {
-  it("returns the runner's total karma", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.karma.total = 20
-    } })
-
-    // Act / Assert
-    expect(selectTotalKarma(runner)).toBe(20)
-  })
-})
 
 describe("KarmaSelectors.select", () => {
   it("returns the runner's karma record", () => {

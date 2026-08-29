@@ -6,59 +6,16 @@ import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { AttrSelectors, selectAttrBase, selectAttributes, selectAttrValue } from "./attributesSlice.selectors.ts"
+import { AttrSelectors } from "./attributesSlice.selectors.ts"
 
 /** `AttrSelectors`' `TState` — `{ entity: EntityBase & EntityWithAttrs }` — is what
- *  `useRunnerSelector` assembles from a `RunnerData` alone (see `mapToLegacySelector.ts`); a
- *  `RunnerData` structurally satisfies both traits, so tests assemble it the same way. */
+ *  `useRunnerSelector` assembles from a `RunnerData` alone (see `RunnerSelectorState` in
+ *  `runnerStore.selectors.ts`); a `RunnerData` structurally satisfies both traits, so tests
+ *  assemble it the same way. */
 const stateFor = (runner: RunnerData) => ({ entity: runner })
 
 /** `selectBounds`/`selectAllInfo`/`selectInfo` additionally read `{ runner }` (via `BiologySelectors`). */
 const runnerStateFor = (runner: RunnerData) => ({ runner, entity: runner })
-
-describe("selectAttributes", () => {
-  it("returns the runner's attributes record", () => {
-    // Arrange
-    const runner = runnerDataFactory()
-
-    // Act / Assert
-    expect(selectAttributes(runner)).toBe(runner.attributes)
-  })
-})
-
-describe("selectAttrBase", () => {
-  it("returns the stored value for the given key", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.body] = 5
-    } })
-
-    // Act / Assert
-    expect(selectAttrBase(AttributeKey.body)(runner)).toBe(5)
-  })
-
-  it("returns 0 when the key is unset", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      delete s.attributes[AttributeKey.magic]
-    } })
-
-    // Act / Assert
-    expect(selectAttrBase(AttributeKey.magic)(runner)).toBe(0)
-  })
-})
-
-describe("selectAttrValue", () => {
-  it("matches the base value (no derived modifiers applied yet)", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.willpower] = 4
-    } })
-
-    // Act / Assert
-    expect(selectAttrValue(AttributeKey.willpower)(runner)).toBe(4)
-  })
-})
 
 describe("AttrSelectors.selectAll", () => {
   it("returns the entity's attributes record", () => {

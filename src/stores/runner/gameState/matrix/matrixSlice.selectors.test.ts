@@ -7,13 +7,7 @@ import { NodeType } from "#/system/matrix/nodeType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import {
-  MatrixSelectors,
-  selectActiveNode,
-  selectActiveNodeId,
-  selectActivePrograms,
-  selectKnownNodes,
-} from "./matrixSlice.selectors.ts"
+import { MatrixSelectors } from "./matrixSlice.selectors.ts"
 
 const stateFor = (runner: RunnerData) => ({ runner })
 
@@ -25,44 +19,6 @@ const node: KnownNode = {
   nodeType: NodeType.general,
   accessLevel: AccessLevel.public,
 }
-
-describe.concurrent("matrixSlice selectors", () => {
-  it("selects known nodes and active programs", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (data) => {
-      data.gameState.matrix = {
-        knownNodes: [node],
-        activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
-      }
-    } })
-
-    // Act / Assert
-    expect(selectKnownNodes(sheet)).toEqual([node])
-    expect(selectActivePrograms(sheet)).toEqual([{ sourceId: "program-1", nodeId: "node-1" }])
-  })
-
-  it("selects the active node id and resolved node", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (data) => {
-      data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
-    } })
-
-    // Act / Assert
-    expect(selectActiveNodeId(sheet)).toBe("node-1")
-    expect(selectActiveNode(sheet)).toEqual(node)
-  })
-
-  it("returns undefined for the active node when nothing is active", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (data) => {
-      data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
-    } })
-
-    // Act / Assert
-    expect(selectActiveNodeId(sheet)).toBeUndefined()
-    expect(selectActiveNode(sheet)).toBeUndefined()
-  })
-})
 
 describe("MatrixSelectors", () => {
   it("selects known nodes and active programs", () => {

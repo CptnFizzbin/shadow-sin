@@ -1,42 +1,7 @@
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
-import { mapToLegacySelector } from "#/stores/runner/mapToLegacySelector.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
-import type { AwakeningData } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"
-import type { MetatypeData } from "#/system/metatypeData.ts"
 import { metatypes } from "#/system/metatypeData.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
-
-/** @deprecated Use `BiologySelectors.select` via `useRunnerSelector` instead. */
-export function selectBiology(runner: RunnerData): RunnerData["biology"] {
-  return mapToLegacySelector(runner, BiologySelectors.select)
-}
-
-/** @deprecated Use `BiologySelectors.selectMetatype` via `useRunnerSelector` instead. */
-export function selectMetatype(runner: RunnerData): RunnerData["biology"]["metatype"] {
-  return mapToLegacySelector(runner, BiologySelectors.selectMetatype)
-}
-
-/** @deprecated Use `BiologySelectors.selectAwakening` via `useRunnerSelector` instead. */
-export function selectAwakening(runner: RunnerData): RunnerData["biology"]["awakening"] {
-  return mapToLegacySelector(runner, BiologySelectors.selectAwakening)
-}
-
-/**
- * Denormalized {@link MetatypeData} looked up via {@link selectMetatype}.
- * @deprecated Use `BiologySelectors.selectMetatypeInfo` via `useRunnerSelector` instead.
- */
-export function selectMetatypeData(runner: RunnerData): MetatypeData {
-  return mapToLegacySelector(runner, BiologySelectors.selectMetatypeInfo)
-}
-
-/**
- * Denormalized {@link AwakeningData} looked up via {@link selectAwakening}.
- * @deprecated Use `BiologySelectors.selectAwakeningInfo` via `useRunnerSelector` instead.
- */
-export function selectAwakeningData(runner: RunnerData): AwakeningData {
-  return mapToLegacySelector(runner, BiologySelectors.selectAwakeningInfo)
-}
 
 export namespace BiologySelectors {
   export const select = createMemoizedSelector(

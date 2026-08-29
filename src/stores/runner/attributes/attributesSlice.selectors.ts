@@ -2,7 +2,6 @@ import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { mapToLegacySelector } from "#/stores/runner/mapToLegacySelector.ts"
 import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
@@ -11,7 +10,6 @@ import type { AttributeInfoCatalog } from "#/system/attributes/attributeCatalog.
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/entities/entityTraits.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
 
 /**
  * {@link AttributeInfo} bounds plus the runner's own base (raw stored) and current (effective)
@@ -20,31 +18,6 @@ import type { RunnerData } from "#/system/runnerData.ts"
 export interface RunnerAttrInfo extends AttributeInfo {
   base: number
   current: number
-}
-
-/** @deprecated Use `AttrSelectors.selectAll` via `useRunnerSelector` instead. */
-export function selectAttributes(runner: RunnerData): RunnerData["attributes"] {
-  return mapToLegacySelector(runner, AttrSelectors.selectAll)
-}
-
-/**
- * The raw stored value for `key`, or `0` if unset — before modifiers, drugs, or game effects apply.
- * @deprecated Use `AttrSelectors.selectBase` via `useRunnerSelector` instead.
- */
-export function selectAttrBase(key: AttributeKey) {
-  return (runner: RunnerData): number => {
-    return mapToLegacySelector(runner, AttrSelectors.forAttr(key).selectBase)
-  }
-}
-
-/**
- * The effective value for `key` used in tests and dice pools, or `0` if unset or inapplicable.
- * @deprecated Use `AttrSelectors.selectValue` via `useRunnerSelector` instead.
- */
-export function selectAttrValue(key: AttributeKey) {
-  return (runner: RunnerData): number => {
-    return mapToLegacySelector(runner, AttrSelectors.forAttr(key).selectValue)
-  }
 }
 
 export namespace AttrSelectors {

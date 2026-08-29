@@ -5,74 +5,9 @@ import { MetatypeType, metatypes } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import {
-  BiologySelectors,
-  selectAwakening,
-  selectAwakeningData,
-  selectBiology,
-  selectMetatype,
-  selectMetatypeData,
-} from "./biologySlice.selectors.ts"
+import { BiologySelectors } from "./biologySlice.selectors.ts"
 
 const stateFor = (runner: RunnerData) => ({ runner })
-
-describe("selectBiology", () => {
-  it("returns the runner's biology record", () => {
-    // Arrange
-    const runner = runnerDataFactory()
-
-    // Act / Assert
-    expect(selectBiology(runner)).toBe(runner.biology)
-  })
-})
-
-describe("selectMetatype", () => {
-  it("returns the runner's metatype", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.metatype = MetatypeType.Troll
-    } })
-
-    // Act / Assert
-    expect(selectMetatype(runner)).toBe(MetatypeType.Troll)
-  })
-})
-
-describe("selectAwakening", () => {
-  it("returns the runner's awakening type", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.awakening = AwakeningType.Adept
-    } })
-
-    // Act / Assert
-    expect(selectAwakening(runner)).toBe(AwakeningType.Adept)
-  })
-})
-
-describe("selectMetatypeData", () => {
-  it("returns the denormalized MetatypeData for the runner's metatype", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.metatype = MetatypeType.Elf
-    } })
-
-    // Act / Assert
-    expect(selectMetatypeData(runner)).toBe(metatypes[MetatypeType.Elf])
-  })
-})
-
-describe("selectAwakeningData", () => {
-  it("returns the denormalized AwakeningData for the runner's awakening", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.awakening = AwakeningType.Magician
-    } })
-
-    // Act / Assert
-    expect(selectAwakeningData(runner)).toBe(awakenings[AwakeningType.Magician])
-  })
-})
 
 describe("BiologySelectors.select", () => {
   it("returns the runner's biology record", () => {
