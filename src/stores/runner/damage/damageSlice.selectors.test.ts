@@ -9,138 +9,13 @@ import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { DamageSelectors, selectPhysicalTrack, selectStunTrack } from "./damageSlice.selectors.ts"
+import { DamageSelectors } from "./damageSlice.selectors.ts"
 
 /** `DamageSelectors`' `TState` — `{ runner, entity: EntityWithDamage & EntityWithQualities }` — is
- *  what `useRunnerSelector` assembles from a `RunnerData` alone (see `mapToLegacySelector.ts`); a
- *  `RunnerData` structurally satisfies both traits, so tests assemble it the same way. */
+ *  what `useRunnerSelector` assembles from a `RunnerData` alone (see `RunnerSelectorState` in
+ *  `runnerStore.selectors.ts`); a `RunnerData` structurally satisfies both traits, so tests
+ *  assemble it the same way. */
 const stateFor = (runner: RunnerData) => ({ runner, entity: runner })
-
-describe.concurrent("selectPhysicalTrack / selectStunTrack", () => {
-  it("returns default wound interval of 3 with no pain tolerance effects", () => {
-    // Arrange
-    const sheet = runnerDataFactory()
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).woundInterval).toBe(3)
-    expect(selectStunTrack(sheet).woundInterval).toBe(3)
-  })
-
-  it("returns wound interval of 2 for physical with Low Pain Tolerance (-1)", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "Low Pain Tolerance",
-          type: "negative",
-          effects: [
-            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
-          ],
-        },
-      ]
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).woundInterval).toBe(2)
-    expect(selectStunTrack(sheet).woundInterval).toBe(3)
-  })
-
-  it("does not change the wound interval with High Pain Tolerance", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "High Pain Tolerance",
-          type: "positive",
-          effects: [
-            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.stun, value: 1 },
-          ],
-        },
-      ]
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).woundInterval).toBe(3)
-    expect(selectStunTrack(sheet).woundInterval).toBe(3)
-  })
-
-  it("does not change the wound interval for either track when High Pain Tolerance targets 'all'", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "High Pain Tolerance",
-          type: "positive",
-          effects: [
-            { type: GameEffectType.highPainTolerance, target: "all", value: 1 },
-          ],
-        },
-      ]
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).woundInterval).toBe(3)
-    expect(selectStunTrack(sheet).woundInterval).toBe(3)
-  })
-
-  it("clamps wound interval to a minimum of 1 for extreme negative pain tolerance", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.qualities = [
-        {
-          kind: EntityKind.quality,
-          id: NullUuid,
-          name: "Extreme Pain Intolerance",
-          type: "negative",
-          effects: [
-            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -10 },
-          ],
-        },
-      ]
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).woundInterval).toBe(1)
-  })
-
-  it("computes physical max from body attribute", () => {
-    // Arrange — 8 + ceil(4/2) = 10
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.body] = 4
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).max).toBe(10)
-  })
-
-  it("computes stun max from willpower attribute", () => {
-    // Arrange — 8 + ceil(6/2) = 11
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.willpower] = 6
-    } })
-
-    // Act / Assert
-    expect(selectStunTrack(sheet).max).toBe(11)
-  })
-
-  it("reflects current damage values", () => {
-    // Arrange
-    const sheet = runnerDataFactory({ afterBuild: (s) => {
-      s.damage.physical = 5
-      s.damage.stun = 2
-    } })
-
-    // Act / Assert
-    expect(selectPhysicalTrack(sheet).current).toBe(5)
-    expect(selectStunTrack(sheet).current).toBe(2)
-  })
-})
 
 describe("DamageSelectors.selectDamage", () => {
   it("reads the current value off the given track", () => {
@@ -248,6 +123,48 @@ describe("DamageSelectors.selectWoundInterval", () => {
 
     // Act / Assert
     expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(3)
+  })
+
+  it("is unaffected by High Pain Tolerance, which offsets rather than widens the interval", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.qualities = [
+        {
+          kind: EntityKind.quality,
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.stun, value: 1 },
+          ],
+        },
+      ]
+    } })
+
+    // Act / Assert
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(3)
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.stun })).toBe(3)
+  })
+
+  it("is unaffected by High Pain Tolerance targeting 'all'", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.qualities = [
+        {
+          kind: EntityKind.quality,
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: "all", value: 1 },
+          ],
+        },
+      ]
+    } })
+
+    // Act / Assert
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(3)
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.stun })).toBe(3)
   })
 })
 

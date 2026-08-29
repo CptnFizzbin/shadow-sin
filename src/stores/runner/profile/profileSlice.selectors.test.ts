@@ -4,55 +4,9 @@ import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { ProfileSelectors, selectPublicAwareness } from "./profileSlice.selectors.ts"
+import { ProfileSelectors } from "./profileSlice.selectors.ts"
 
 const stateFor = (runner: RunnerData) => ({ runner })
-
-describe.concurrent("selectPublicAwareness", () => {
-  it("computes floor((streetCred + notoriety) / 3) plus the modifier", () => {
-    // Arrange
-    const state = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 5
-      data.profile.notoriety = 2
-      data.profile.publicAwarenessModifier = 1
-    } })
-
-    // Act
-    const publicAwareness = selectPublicAwareness(state)
-
-    // Assert: floor((5 + 2) / 3) + 1 = 2 + 1 = 3
-    expect(publicAwareness).toBe(3)
-  })
-
-  it("defaults the modifier to 0 when unset", () => {
-    // Arrange
-    const state = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 4
-      data.profile.notoriety = 0
-    } })
-
-    // Act
-    const publicAwareness = selectPublicAwareness(state)
-
-    // Assert: floor(4 / 3) + 0 = 1
-    expect(publicAwareness).toBe(1)
-  })
-
-  it("never returns a value below 0", () => {
-    // Arrange
-    const state = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 0
-      data.profile.notoriety = 0
-      data.profile.publicAwarenessModifier = -5
-    } })
-
-    // Act
-    const publicAwareness = selectPublicAwareness(state)
-
-    // Assert
-    expect(publicAwareness).toBe(0)
-  })
-})
 
 describe("ProfileSelectors.select", () => {
   it("returns the runner's profile record", () => {
@@ -88,7 +42,7 @@ describe("ProfileSelectors.selectDisplayName", () => {
   })
 })
 
-describe("ProfileSelectors.selectPublicAwareness", () => {
+describe.concurrent("ProfileSelectors.selectPublicAwareness", () => {
   it("computes floor((streetCred + notoriety) / 3) plus the modifier", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
@@ -99,6 +53,29 @@ describe("ProfileSelectors.selectPublicAwareness", () => {
 
     // Act / Assert: floor((5 + 2) / 3) + 1 = 2 + 1 = 3
     expect(ProfileSelectors.selectPublicAwareness(stateFor(runner))).toBe(3)
+  })
+
+  it("defaults the modifier to 0 when unset", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (data) => {
+      data.profile.streetCred = 4
+      data.profile.notoriety = 0
+    } })
+
+    // Act / Assert: floor(4 / 3) + 0 = 1
+    expect(ProfileSelectors.selectPublicAwareness(stateFor(runner))).toBe(1)
+  })
+
+  it("never returns a value below 0", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (data) => {
+      data.profile.streetCred = 0
+      data.profile.notoriety = 0
+      data.profile.publicAwarenessModifier = -5
+    } })
+
+    // Act / Assert
+    expect(ProfileSelectors.selectPublicAwareness(stateFor(runner))).toBe(0)
   })
 })
 

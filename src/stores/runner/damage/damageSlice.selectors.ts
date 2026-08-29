@@ -1,7 +1,6 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { mapToLegacySelector } from "#/stores/runner/mapToLegacySelector.ts"
 import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -11,26 +10,11 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 
-export interface DamageTrackInfo {
+interface DamageTrackInfo {
   max: number
   current: number
   woundInterval: number
   woundIntervalOffset: number
-}
-
-/** @deprecated Use `DamageSelectors.track.physical` via `useRunnerSelector` instead. */
-export function selectPhysicalTrack(runner: RunnerData): DamageTrackInfo {
-  return mapToLegacySelector(runner, DamageSelectors.track.physical)
-}
-
-/** @deprecated Use `DamageSelectors.track.stun` via `useRunnerSelector` instead. */
-export function selectStunTrack(runner: RunnerData): DamageTrackInfo {
-  return mapToLegacySelector(runner, DamageSelectors.track.stun)
-}
-
-/** @deprecated Use `DamageSelectors.track.matrix` via `useRunnerSelector` instead. */
-export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
-  return mapToLegacySelector(runner, DamageSelectors.track.matrix, { system })
 }
 
 export namespace DamageSelectors {
