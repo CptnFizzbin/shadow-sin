@@ -24,7 +24,7 @@ export function runnerDataFactory(options?: {
     kind: EntityKind.runner,
     id: NullUuid,
     name: "",
-    _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
+    _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null },
 
     profile: {
       alias: "",

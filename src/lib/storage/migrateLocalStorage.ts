@@ -1,4 +1,4 @@
-import type { JsonValue } from "#/lib/jsonUtils.ts"
+import type { JsonObject, JsonValue } from "#/lib/jsonUtils.ts"
 
 export function migrateOldLocalStorageFormat(ls: Storage): void {
   const oldCharacterPrefix = "shadow-sin:json:characters/"
@@ -64,10 +64,10 @@ export function migrateOldLocalStorageFormat(ls: Storage): void {
       try {
         const raw = ls.getItem(newKey)
         if (!raw) continue
-        const data = JSON.parse(raw) as Record<string, unknown>
+        const data = JSON.parse(raw) as JsonObject
         const alias =
           typeof data["profile"] === "object" && data["profile"] !== null
-            ? String((data["profile"] as Record<string, unknown>)["alias"] ?? characterId)
+            ? String((data["profile"] as JsonObject)["alias"] ?? characterId)
             : characterId
         index.push({ id: characterId, name: alias, lastModified: new Date().toISOString() })
         indexedIds.add(characterId)

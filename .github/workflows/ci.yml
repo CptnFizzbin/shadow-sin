@@ -58,7 +58,7 @@ jobs:
 
       - uses: ./.github/actions/setup-workspace
 
-      - name: Verify new migration timestamps are newer than the base branch
+      - name: Verify new migration timestamps are newer than the base branch's SIN version
         run: |
           git fetch origin "${{ github.base_ref }}"
           yarn tsx .github/scripts/check-migration-timestamps.ts "origin/${{ github.base_ref }}"

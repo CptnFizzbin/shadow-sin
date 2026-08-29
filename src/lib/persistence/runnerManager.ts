@@ -1,6 +1,6 @@
 import { AsyncDebouncer } from "@tanstack/pacer"
 
-import { applyMigrations, resolveRawRunnerAppVersion } from "#/data/applyMigrations.ts"
+import { applyMigrations, resolveRawRunnerSinVersion } from "#/data/applyMigrations.ts"
 import { isFullyMigrated } from "#/data/migrations.ts"
 import { RunnerNotFoundError } from "#/lib/errors/runnerNotFoundError.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
@@ -58,23 +58,23 @@ export class RunnerManager {
       throw new RunnerNotFoundError(String(id))
     }
 
-    const preAppVersion = resolveRawRunnerAppVersion(raw as object)
+    const preSinVersion = resolveRawRunnerSinVersion(raw as object)
     const migrated = applyMigrations(raw as object)
     const postMeta = migrated._meta_
 
     // Guards the Viewer against ever rendering a runner that isn't fully migrated. This should
-    // be unreachable — applyMigrations always stamps _meta_.appVersion past every registered
+    // be unreachable — applyMigrations always stamps _meta_.sinVersion past every registered
     // migration's timestamp — but asserting it here, at the boundary getRunner hands data to the
     // route loader, turns a future migration-pipeline bug into a clear error instead of a
     // silently stale sheet.
-    if (!isFullyMigrated(postMeta.appVersion)) {
+    if (!isFullyMigrated(postMeta.sinVersion)) {
       throw new Error(
-        `Runner ${String(id)} is at migration app version ${postMeta.appVersion}, which is `
+        `Runner ${String(id)} is at SIN version ${postMeta.sinVersion}, which is `
         + `behind one or more registered migrations.`,
       )
     }
 
-    if (new Date(postMeta.appVersion).getTime() > new Date(preAppVersion).getTime()) {
+    if (new Date(postMeta.sinVersion).getTime() > new Date(preSinVersion).getTime()) {
       await this.saveRunner(migrated)
     }
 

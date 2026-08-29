@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 
+import type { JsonObject } from "#/lib/jsonUtils.ts"
+
 import migration from "./20260806_00_addSpriteDamage.ts"
 
 describe.concurrent("020_addSpriteDamage", () => {
@@ -38,7 +40,7 @@ describe.concurrent("020_addSpriteDamage", () => {
   })
 
   it("handles a mixed array — backfills missing, preserves existing", () => {
-    const character = {
+    const character: JsonObject = {
       sprites: [
         { id: "a", name: "Courier", force: 3 },
         { id: "b", name: "Fault", force: 4, damage: { matrix: 1 } },

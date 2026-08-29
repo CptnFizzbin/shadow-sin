@@ -52,7 +52,7 @@ export const Artemis: RunnerData = {
   kind: EntityKind.runner,
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   name: "Artemis",
-  _meta_: { appVersion: LATEST_MIGRATION_TIMESTAMP, lastExportDate: null },
+  _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null },
 
   biology: {
     metatype: MetatypeType.Elf,

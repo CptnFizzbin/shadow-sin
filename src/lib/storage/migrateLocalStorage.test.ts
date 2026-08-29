@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 
+import type { JsonObject } from "#/lib/jsonUtils.ts"
+
 import { migrateOldLocalStorageFormat } from "./migrateLocalStorage.ts"
 
 // Simple in-memory Storage implementation for testing
@@ -82,8 +84,8 @@ describe.concurrent("migrateOldLocalStorageFormat", () => {
       migrateOldLocalStorageFormat(ls)
 
       // Assert — existing new-format key is preserved
-      const stored = JSON.parse(ls.getItem(`shadowsin:characters/${characterId}`)!) as Record<string, unknown>
-      expect((stored["profile"] as Record<string, unknown>)["alias"]).toBe("AlreadyMigrated")
+      const stored = JSON.parse(ls.getItem(`shadowsin:characters/${characterId}`)!) as JsonObject
+      expect((stored["profile"] as JsonObject)["alias"]).toBe("AlreadyMigrated")
     })
 
     it("handles a character whose value is at the envelope root (no .value wrapper)", () => {

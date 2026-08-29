@@ -1,3 +1,5 @@
+import type { JsonObject } from "./jsonUtils.ts"
+
 function isObject(item: unknown): item is object {
   return typeof item === "object" && item !== null
 }
@@ -18,8 +20,8 @@ export function mergeArrays<TData>(...arrays: unknown[][]): TData[] {
         const existingIndex = seenIndexes.get(itemId)
         if (existingIndex !== undefined) {
           outItems[existingIndex] = mergeObjects(
-            outItems[existingIndex] as Record<string, unknown>,
-            item as Record<string, unknown>,
+            outItems[existingIndex] as JsonObject,
+            item as JsonObject,
           )
         } else {
           seenIndexes.set(itemId, outItems.length)
@@ -63,7 +65,7 @@ export function mergeArrays<TData>(...arrays: unknown[][]): TData[] {
 export function mergeObjects<TData extends object>(
   ...objects: object[]
 ): TData {
-  const result: Record<string, unknown> = {}
+  const result: JsonObject = {}
 
   for (const obj of objects) {
     for (const [key, value] of Object.entries(obj)) {
