@@ -16,13 +16,13 @@ export const SourceDataSchema = z.object({
   page: z.number().int().min(1),
 }) satisfies z.ZodType<SourceData>
 
-export const bookGroups = {
+const bookGroups = {
   core: "Core Books",
   suplimental: "Suplimental Books",
   legacy: "Legacy Books",
 }
 
-export const books = {
+const books = {
   SR4A: { label: "Shadowrun 20th Anniversary", group: bookGroups.core },
   AU: { label: "Augmentation", group: bookGroups.core },
   RC: { label: "Runner's Companion", group: bookGroups.core },

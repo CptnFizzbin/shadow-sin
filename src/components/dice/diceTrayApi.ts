@@ -99,7 +99,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayInputs.tsx
-  // fallow-ignore-next-line unused-class-member
   setThreshold(count: number): void {
     this.store.setState(produce((state) => {
       state.threshold = count
@@ -107,7 +106,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayInputs.tsx
-  // fallow-ignore-next-line unused-class-member
   setOpposedHits(count: number): void {
     this.store.setState(produce((state) => {
       state.opposedHits = count
@@ -131,7 +129,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayInputs.tsx
-  // fallow-ignore-next-line unused-class-member
   setExtendedInterval(interval: ExtendedInterval): void {
     this.store.setState(produce((state) => {
       state.extendedInterval = interval
@@ -139,7 +136,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayInputs.tsx
-  // fallow-ignore-next-line unused-class-member
   setShrinkingPool(value: boolean): void {
     this.store.setState(produce((state) => {
       state.shrinkingPool = value
@@ -147,7 +143,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayHeader.tsx
-  // fallow-ignore-next-line unused-class-member
   setPhysicalMode(value: boolean): void {
     this.store.setState(produce((state) => {
       state.physicalMode = value
@@ -165,7 +160,6 @@ export class DiceTrayApi {
   }
 
   // called on the useDiceTray() instance in diceTrayDiceDisplay.tsx / diceTrayActions.tsx
-  // fallow-ignore-next-line unused-class-member
   setPhysicalHits(count: number): void {
     this.store.setState(produce((state) => {
       state.physicalHits = Math.max(0, count)
@@ -178,7 +172,6 @@ export class DiceTrayApi {
    * be applied separately to each roll.
    */
   // called on the useDiceTray() instance in diceTrayActions.tsx
-  // fallow-ignore-next-line unused-class-member
   recordExtendedRoll(currentHits: number): void {
     const { edgeSpent, shrinkingPool, poolSize } = this.store.getState()
 
@@ -241,7 +234,6 @@ export class DiceTrayApi {
    * Starts the rolling animation and stores results when it completes.
    */
   // called on the useDiceTray() instance in diceTrayActions.tsx
-  // fallow-ignore-next-line unused-class-member
   rollStandard(): void {
     // Drop any leftover edge dice from a previous roll so the user starts
     // from the configured pool size.
