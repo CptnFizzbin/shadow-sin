@@ -4,11 +4,6 @@ import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** @deprecated Use `ProfileSelectors.selectLifestyle` via `useRunnerSelector` instead. */
-export function selectLifestyle(runner: RunnerData): RunnerData["profile"]["lifestyle"] {
-  return mapToLegacySelector(runner, ProfileSelectors.selectLifestyle)
-}
-
 /** @deprecated Use `ProfileSelectors.selectPublicAwareness` via `useRunnerSelector` instead. */
 export function selectPublicAwareness(runner: RunnerData): number {
   return mapToLegacySelector(runner, ProfileSelectors.selectPublicAwareness)

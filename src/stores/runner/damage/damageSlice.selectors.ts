@@ -28,11 +28,6 @@ export function selectStunTrack(runner: RunnerData): DamageTrackInfo {
   return mapToLegacySelector(runner, DamageSelectors.track.stun)
 }
 
-/** @deprecated Use `DamageSelectors.track.matrix` via `useRunnerSelector` instead. */
-export const selectMatrixTrack = (runner: RunnerData, system?: number) => {
-  return mapToLegacySelector(runner, DamageSelectors.track.matrix, { system })
-}
-
 export namespace DamageSelectors {
   export const selectWoundIntervalModifier = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,

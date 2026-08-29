@@ -76,24 +76,6 @@ export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<
   return gearSelectorsByType[type] as ItemDataSelector<ItemDataFor<T>>
 }
 
-/** @deprecated Use `ItemSelectors.selectChildrenOf` via `useRunnerSelector` instead. */
-export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemCatalog> = createCurriedSelector(
-  [
-    selectAllGear,
-    (state, itemId: UUID) => selectById(itemId)(state),
-  ],
-  (allGear, parentItem) => {
-    const children: ItemCatalog = {}
-
-    for (const childId of parentItem?.items.childIds ?? []) {
-      const child = allGear[childId]
-      if (child) children[childId] = child
-    }
-
-    return children
-  },
-)
-
 /** @deprecated Use `ItemSelectors.Licenses` via `useRunnerSelector` instead. */
 export const licenses = {
   selectById: createCurriedSelector(
