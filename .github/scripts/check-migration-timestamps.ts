@@ -1,6 +1,4 @@
 #!/usr/bin/env -S npx tsx
-// Invoked directly by CI (see .github/workflows/ci.yml), not imported.
-// fallow-ignore-file unused-file
 /**
  * Verifies that every runner migration added in this PR has a `timestamp` newer than the base
  * branch's SIN version — i.e. newer than every migration already registered on the base branch —

@@ -3,7 +3,8 @@
   "entry": [
     "src/index.{ts,tsx,js,jsx}",
     "src/main.{ts,tsx,js,jsx}",
-    "testUtils/setup.ts"
+    "testUtils/setup.ts",
+    ".github/scripts/**"
   ],
   "ignoreDependencies": [
     "@emotion/react",
