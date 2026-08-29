@@ -4,7 +4,7 @@ import { fieldContext, formContext } from "./fieldContext.ts"
 import { CheckboxField } from "./fields/checkboxField.tsx"
 import { CounterField } from "./fields/counterField.tsx"
 import { NumberField } from "./fields/numberField.tsx"
-import { NuyenField } from "./fields/nuyenField.tsx"
+import { NuyenFormField } from "./fields/nuyenField.tsx"
 import { SelectField } from "./fields/selectField.tsx"
 import { SwitchField } from "./fields/switchField.tsx"
 import { TextField } from "./fields/textField.tsx"
@@ -14,7 +14,7 @@ export const { useAppForm, withFieldGroup } = createFormHook({
     CheckboxField,
     CounterField,
     NumberField,
-    NuyenField,
+    NuyenField: NuyenFormField,
     SelectField,
     SwitchField,
     TextField,
