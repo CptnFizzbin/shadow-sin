@@ -644,14 +644,26 @@ _Avoid_: sheet view, player view, read mode
 ### Infrastructure
 
 **RunnerMeta**:
-Versioning metadata embedded in every `RunnerData` record. Holds `appVersion` — the **App
-Version** as of the Runner's most recent successful **Migration** run — plus the Runner's most
+Versioning metadata embedded in every `RunnerData` record. Holds `sinVersion` — the value
+`applyMigrations` compares against each registered Migration's timestamp to decide which
+Migrations still need to run — plus `appVersion` (informational only) and the Runner's most
 recent export timestamp.
+
+**SIN Version**:
+`RunnerMeta.sinVersion` — an ISO 8601 timestamp identifying the Runner's most recent successful
+**Migration** run. The only field `applyMigrations` gates pending Migrations on; individual
+Migrations never read or write it. Stamped to the **Migration Timestamp** of the most recently
+registered Migration that ran whenever a Migration actually runs against the Runner — a fully
+migrated Runner's `sinVersion` always exactly equals `LATEST_MIGRATION_TIMESTAMP`.
+_Avoid_: app version, appVersion (that field is informational only and plays no part in deciding
+which migrations run — see below)
 
 **App Version**:
 The running app's own version: the timestamp of the latest commit on the default branch, baked in
 at build time, or the dev server's start time under `yarn dev`. Stamped onto a Runner's
-`RunnerMeta.appVersion` after `applyMigrations` runs any pending Migrations against it.
+`RunnerMeta.appVersion` (alongside `RunnerMeta.sinVersion`) after `applyMigrations` runs any
+pending Migrations against it. `RunnerMeta.appVersion` is purely informational, recording which
+build last touched the Runner; it is never compared against a Migration's timestamp.
 
 **RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
@@ -681,8 +693,8 @@ A single, immutable schema-upgrade step that transforms one version of `RunnerDa
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
 commit — if a migration has a bug, a new migration fixes the output. Each migration has a
 **Migration Timestamp** — its creation date; only migrations newer than a Runner's
-`RunnerMeta.appVersion` are ever applied, in ascending timestamp order — individual migrations
-don't check the current app version themselves. Because migration files must never be edited, the
+`RunnerMeta.sinVersion` are ever applied, in ascending timestamp order — individual migrations
+don't check the current SIN version themselves. Because migration files must never be edited, the
 shared migration type and the migration files themselves were deliberately left out of the
 `character`→`runner` identifier rename — renaming the shared type would have forced an edit into
 every migration file.
@@ -691,8 +703,9 @@ _Avoid_: upgrade, patch, update (use migration)
 **Migration Timestamp**:
 A Migration's creation date, as an ISO 8601 string — the value its filename is prefixed with and
 its `timestamp` field holds. A CI check enforces that every new Migration's timestamp is newer
-than the base branch's latest commit, so that once merged, the resulting **App Version** is always
-newer than the Migration it introduced.
+than the base branch's **SIN Version** (the highest Migration Timestamp already registered there),
+so that a Runner already fully migrated on the base branch is guaranteed to pick up the new
+Migration once merged, instead of silently skipping it forever.
 
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`

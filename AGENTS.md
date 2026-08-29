@@ -151,28 +151,38 @@ deliberately kept here through the `character` → `runner` rename (see `docs/ad
 since renaming the type would have forced an edit into every migration file.
 
 Migrations are timestamp-based. Each migration carries a `timestamp` — an ISO 8601 string set to its creation date
-— instead of a sequential number. A `RunnerData`'s migration state is `_meta_.appVersion`: the **app version**
-(`src/data/appVersion.ts`'s `APP_VERSION`, baked in at build time from the latest commit on the default branch, or
-from the dev server's start time under `yarn dev`) as of the runner's most recent successful migration run.
-`applyMigrations` (`src/data/applyMigrations.ts`) is the only place that decides whether a migration needs to run:
-it filters the registered list down to `migration.timestamp > _meta_.appVersion` and only calls `up` on that
-subset, in ascending `timestamp` order. Individual migrations don't check `_meta_` themselves — that would just
-duplicate the same comparison in every file — they're plain, self-contained transforms. After running any pending
-migrations, `_meta_.appVersion` is stamped to the live `APP_VERSION` and synced back to storage; a load that runs no
-migrations leaves `_meta_.appVersion` untouched. Runners still carrying the old `_meta_.version` integer (from
-before migrations moved to timestamps, capped at 32 — the last version registered under that scheme) are handled by
-`resolveRunnerAppVersion`: a runner at version 32 (the common case — every runner opened since that version shipped
-lands there) resolves directly to that migration's own timestamp, so it re-runs nothing; any other legacy version
-(rare) is treated as fully unmigrated, so every registered migration re-runs once. That fallback is safe only
-because every migration is idempotent — see the idempotency rule below.
+— instead of a sequential number. A `RunnerData`'s migration state is `_meta_.sinVersion`, an ISO 8601 timestamp
+identifying the runner's most recent successful migration run. `applyMigrations` (`src/data/applyMigrations.ts`) is
+the only place that decides whether a migration needs to run: it filters the registered list down to
+`migration.timestamp > _meta_.sinVersion` and only calls `up` on that subset, in ascending `timestamp` order.
+Individual migrations don't check `_meta_` themselves — that would just duplicate the same comparison in every file
+— they're plain, self-contained transforms. After running any pending migrations, `_meta_.sinVersion` is stamped to
+the `timestamp` of the most recently registered migration that ran — always the newest registered migration at that
+point, since the pending list is a suffix of the full ascending-order list — so a fully migrated runner's
+`_meta_.sinVersion` always exactly equals `LATEST_MIGRATION_TIMESTAMP` (`src/data/migrations.ts`). `_meta_.appVersion`
+is stamped alongside it at the same time, to the live **app version** (`src/data/appVersion.ts`'s `APP_VERSION`,
+baked in at build time from the latest commit on the default branch, or from the dev server's start time under
+`yarn dev`), but is purely informational — it records which app build last touched the runner and plays no part in
+deciding which migrations run; only `_meta_.sinVersion` is compared against migration timestamps. A load that runs
+no migrations leaves both fields untouched. Runners still carrying the old `_meta_.version` integer (from before
+migrations moved to timestamps, capped at 32 — the last
+version registered under that scheme) are handled by `resolveRunnerSinVersion`: a runner at version 32 (the common
+case — every runner opened since that version shipped lands there) resolves directly to that migration's own
+timestamp, so it re-runs nothing; any other legacy version (rare) is treated as fully unmigrated, so every
+registered migration re-runs once. That fallback is safe only because every migration is idempotent — see the
+idempotency rule below. Runners saved before the `sinVersion`/`appVersion` split carry their migration-tracking
+value under the old `appVersion` name; `resolveRunnerSinVersion` reads it as a fallback so those runners aren't
+treated as unmigrated either.
 
 **A CI check (`migration-timestamps` in `.github/workflows/ci.yml`) enforces that every new migration's `timestamp`
-is newer than the base branch's latest commit** — see `.github/scripts/check-migration-timestamps.ts`. This is what
-makes a new migration actually run once the app is deployed: a runner whose `_meta_.appVersion` is already at or
-past the migration's `timestamp` would otherwise skip it forever (`migration.timestamp > _meta_.appVersion` would
-never be true for that runner). It also guarantees that once a PR merges, the resulting build's `APP_VERSION` (the
-new latest commit) is newer than every migration it introduced, so a runner's `_meta_.appVersion` never needs to
-exceed the live app version to be considered fully migrated.
+is newer than the base branch's SIN version** — the highest `timestamp` among every migration already registered on
+the base branch (i.e. what the base branch's `LATEST_MIGRATION_TIMESTAMP` resolves to) — see
+`.github/scripts/check-migration-timestamps.ts`. This is what makes a new migration actually run once the app is
+deployed: a runner already fully migrated on the base branch has `_meta_.sinVersion` exactly equal to the base
+branch's SIN version, so requiring the new migration's timestamp to be newer than that guarantees
+`migration.timestamp > _meta_.sinVersion` holds for it and the migration actually runs instead of being silently
+skipped forever. `migrations.ts` separately enforces that each migration's `timestamp` sorts strictly after the
+previously registered one, keeping `LATEST_MIGRATION_TIMESTAMP` monotonically increasing as migrations are added.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
@@ -192,7 +202,7 @@ silently mis-migrate characters.
 - **New migration timestamps must sort after all existing ones** — migrations are applied in ascending `timestamp`
   order; the timestamp-prefixed file name keeps directory listings in the same order. `migrations.ts` throws at
   import time if a migration's `timestamp` doesn't sort strictly after the one declared before it.
-- **Don't re-check `_meta_.appVersion` inside `up`** — `applyMigrations` already guarantees `up` is only called when
+- **Don't re-check `_meta_.sinVersion` inside `up`** — `applyMigrations` already guarantees `up` is only called when
   the migration is actually pending.
 - **Every migration must be idempotent** — a runner still carrying the legacy `_meta_.version` scheme re-runs *every*
   registered migration once (see above), so `up` must be a no-op the second time it's applied to data it's already

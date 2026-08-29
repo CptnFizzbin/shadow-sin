@@ -1,4 +1,5 @@
 import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { JsonObject } from "#/lib/jsonUtils.ts"
 
 interface OldAttributeValue {
   value: number
@@ -48,7 +49,7 @@ interface OldFormatCharacter {
     skillGroups?: unknown[]
   }
   awakened?: OldAwakened
-  gear?: OldGearItem[] | Record<string, unknown>
+  gear?: OldGearItem[] | JsonObject
   buildPoints?: unknown
   spells?: unknown[]
   adeptPowers?: unknown[]
@@ -92,12 +93,12 @@ const ITEM_TYPE_MAP: Record<string, string> = {
  * - Licenses reference their parent SIN via `sinId` instead of `parentId`
  * - Language skills have an `isNative` boolean flag instead of `"native"` rating
  */
-const migration: CharacterMigration<Record<string, unknown>> = {
+const migration: CharacterMigration<JsonObject> = {
   timestamp: "2025-01-01T00:00:00Z",
   up: (character) => {
     // Only transform characters in the old flat format.
     if (!("characterId" in character)) {
-      return character as Record<string, unknown>
+      return character as JsonObject
     }
 
     const old = character as OldFormatCharacter
@@ -143,7 +144,7 @@ const migration: CharacterMigration<Record<string, unknown>> = {
     // Old: flat array, may contain empty {}, uses plural itemType strings,
     //      licenses carry sinId pointing to their parent SIN.
     // New: Record<id, ItemData>
-    const gearRecord: Record<string, Record<string, unknown>> = {}
+    const gearRecord: Record<string, JsonObject> = {}
 
     if (Array.isArray(old.gear)) {
       // First pass: build the flat record, normalising itemType
@@ -152,18 +153,18 @@ const migration: CharacterMigration<Record<string, unknown>> = {
           !rawItem
           || typeof rawItem !== "object"
           || !("id" in rawItem)
-          || !(rawItem as Record<string, unknown>).id
+          || !(rawItem as JsonObject).id
         ) {
           continue
         }
-        const item = rawItem as Record<string, unknown>
+        const item = rawItem as JsonObject
         const oldItemType = item.itemType as string | undefined
         gearRecord[item.id as string] = {
           ...item,
           itemType: oldItemType
             ? (ITEM_TYPE_MAP[oldItemType] ?? oldItemType)
             : oldItemType,
-        }
+        } as JsonObject
       }
 
       // Second pass: resolve sinId → parentId on licenses, childIds on SINs
@@ -185,7 +186,7 @@ const migration: CharacterMigration<Record<string, unknown>> = {
     }
 
     // ── Profile ───────────────────────────────────────────────────────────────
-    const profile: Record<string, unknown> = {
+    const profile: JsonObject = {
       alias: old.alias ?? "",
       name: old.name ?? "",
       streetCred: 0,
@@ -199,7 +200,7 @@ const migration: CharacterMigration<Record<string, unknown>> = {
     }
 
     // ── Biology ───────────────────────────────────────────────────────────────
-    const biology: Record<string, unknown> = {
+    const biology: JsonObject = {
       metatype: old.metatype ?? "Human",
       awakening: old.awakening ?? "Mundane",
     }
@@ -250,7 +251,7 @@ const migration: CharacterMigration<Record<string, unknown>> = {
       adeptPowers,
       complexForms,
       sprites,
-    }
+    } as JsonObject
   },
 }
 

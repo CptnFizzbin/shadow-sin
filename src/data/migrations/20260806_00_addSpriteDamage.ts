@@ -1,8 +1,9 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { JsonObject } from "#/lib/jsonUtils.ts"
 
-const migration: CharacterMigration<{ sprites?: Array<Record<string, unknown>> }> = {
+const migration: CharacterMigration<{ sprites?: Array<JsonObject> }> = {
   timestamp: "2026-08-06T00:00:00Z",
   up: (character) => {
     return produce(character, (draft) => {

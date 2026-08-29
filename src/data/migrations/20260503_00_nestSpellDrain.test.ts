@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 
+import type { JsonObject } from "#/lib/jsonUtils.ts"
+
 import migration from "./20260503_00_nestSpellDrain.ts"
 
 describe.concurrent("012_nestSpellDrain", () => {
@@ -85,7 +87,7 @@ describe.concurrent("012_nestSpellDrain", () => {
 
   it("handles a mixed array — migrates old, preserves already-migrated", () => {
     // Arrange
-    const character = {
+    const character: JsonObject = {
       spells: [
         { id: "a", drainBaseType: "Force", drainValueMod: 0 },
         { id: "b", drain: { type: "Fixed", value: 4 } },
