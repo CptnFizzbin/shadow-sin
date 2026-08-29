@@ -710,8 +710,19 @@ Migration once merged, instead of silently skipping it forever.
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
 for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope.
+When the derived value is a rule calculation, the Selector's job is composing state into a
+**Formula**'s inputs and passing that Formula by reference as its `createMemoizedSelector`
+combiner — the Selector owns state access, the Formula owns the calculation.
 _Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
 unrelated UI-form concept.
+
+**Formula**:
+A pure function in `system/` encoding one SR4A calculation — e.g. the Wound Interval or Public
+Awareness Rating formulas. Takes a single inputs object, returns a derived value; no Redux or
+store dependency, so it's unit-testable without a Runner in scope. A Selector passes a Formula by
+reference as its combiner, after composing state into that inputs object.
+_Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
+sourcebook/table-variant concepts unrelated to code structure)
 
 ## Relationships
 
