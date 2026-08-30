@@ -717,14 +717,30 @@ _Avoid_: this term for a `<Select>` form field's dropdown choices — those are 
 unrelated UI-form concept.
 
 **Formula**:
-A pure function in `system/` encoding one SR4A calculation — e.g. the Wound Interval or Public
-Awareness Rating formulas. Takes a single **pre-narrowed** inputs object — exactly the fields the
-calculation touches (`woundModFormula({ damage, offset, interval })`, `attrFormula({ base, mods })`)
-— never a whole `RunnerData`/`EntityData` aggregate to walk internally. Returns a derived value; no
-Redux or store dependency, so it's unit-testable without a Runner in scope. A Selector passes a
-Formula by reference as its combiner, after composing state into that inputs object. Figuring out
-*which* GameEffects apply (walking equipped items/Qualities, matching type/target) stays Selector
-work, not a Formula's — a Formula receives the already-accumulated modifier as a plain number.
+A pure function in `system/` encoding one SR4A calculation — e.g. `DamageFormulas.getWoundMod`,
+`AttrFormulas.getValue`, `ReputationFormulas.getPublicAwareness({ streetCred, notoriety, modifier })`.
+Grouped into a `Xxx`**`Formulas`** namespace with `get*` method names, mirroring how a `Selector` is
+grouped into `XxxSelectors` with `select*` names. Takes a single **pre-narrowed** inputs object
+whose fields are restricted to three kinds — a closed set:
+1. **Primitives** (numbers, strings, enums)
+2. **Entity/trait capability interfaces** (e.g. `EntityWithDamage`), read via direct property/index
+   access only — never iterated with a predicate
+3. **Another Formula's output** — letting Formulas compose without ever widening back out to a
+   whole `RunnerData`/`EntityData` aggregate
+
+Never a raw collection that needs filtering or reducing by a predicate to produce a value (a
+`ledger` array, an items/Qualities list to walk for matching GameEffects) — resolving those stays
+Selector work, the same as GameEffect applicability below. This is why `getPublicAwareness` takes
+`streetCred`/`notoriety`/`modifier` as plain numbers rather than the `ledger` each is summed from.
+
+Returns a derived value — usually a primitive, but a structured object when the SR4A rule itself is
+structured (e.g. `getPublicAwareness` returning `{ rating, title, description }` from a fixed rank
+table — the table is rule content, not selection logic, so it belongs in the Formula alongside the
+arithmetic that feeds it). No Redux or store dependency, so it's unit-testable without a Runner in
+scope. A Selector passes a Formula by reference as its combiner, after composing state into that
+inputs object. Figuring out *which* GameEffects apply (walking equipped items/Qualities, matching
+type/target) stays Selector work, not a Formula's — a Formula receives the already-accumulated
+modifier as a plain number.
 _Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
 sourcebook/table-variant concepts unrelated to code structure)
 
