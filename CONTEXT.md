@@ -718,9 +718,13 @@ unrelated UI-form concept.
 
 **Formula**:
 A pure function in `system/` encoding one SR4A calculation — e.g. the Wound Interval or Public
-Awareness Rating formulas. Takes a single inputs object, returns a derived value; no Redux or
-store dependency, so it's unit-testable without a Runner in scope. A Selector passes a Formula by
-reference as its combiner, after composing state into that inputs object.
+Awareness Rating formulas. Takes a single **pre-narrowed** inputs object — exactly the fields the
+calculation touches (`woundModFormula({ damage, offset, interval })`, `attrFormula({ base, mods })`)
+— never a whole `RunnerData`/`EntityData` aggregate to walk internally. Returns a derived value; no
+Redux or store dependency, so it's unit-testable without a Runner in scope. A Selector passes a
+Formula by reference as its combiner, after composing state into that inputs object. Figuring out
+*which* GameEffects apply (walking equipped items/Qualities, matching type/target) stays Selector
+work, not a Formula's — a Formula receives the already-accumulated modifier as a plain number.
 _Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
 sourcebook/table-variant concepts unrelated to code structure)
 
