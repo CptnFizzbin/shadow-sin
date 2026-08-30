@@ -7,7 +7,12 @@ import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import type { VerificationLane } from "./licenseCheckTypes.ts"
+import type { CredentialRating, VerificationLane } from "./licenseCheckTypes.ts"
+
+/** Reduces a SIN/Licence to the `CredentialRating` shape a License Check rolls against. */
+function toCredentialRating(entity: SinData | LicenseData): CredentialRating {
+  return entity.isReal ? { isReal: true } : { isReal: false, rating: entity.rating }
+}
 
 const isRestricted = (item: ItemData) => item.availability?.restricted === true && !item.availability?.forbidden
 const isForbidden = (item: ItemData) => item.availability?.forbidden === true
@@ -31,12 +36,15 @@ function buildSinLane(
     // checks[0] must stay the SIN's own check — callers (e.g. the Setup view's lane grouping)
     // key off it being first to identify SIN lanes; the rest run in random order.
     checks: [
-      { itemId: sin.id, kind: "sin", credentialRating: sin.rating },
-      ...ArrayUtils.shuffle(licensedGear).map((item) => ({
-        itemId: item.id,
-        kind: "licensed-gear" as const,
-        credentialRating: sinLicenses.find((license) => license.id === item.licenseId)?.rating,
-      })),
+      { itemId: sin.id, kind: "sin", credentialRating: toCredentialRating(sin) },
+      ...ArrayUtils.shuffle(licensedGear).map((item) => {
+        const license = sinLicenses.find((candidate) => candidate.id === item.licenseId)
+        return {
+          itemId: item.id,
+          kind: "licensed-gear" as const,
+          credentialRating: license ? toCredentialRating(license) : undefined,
+        }
+      }),
     ],
   }
 }

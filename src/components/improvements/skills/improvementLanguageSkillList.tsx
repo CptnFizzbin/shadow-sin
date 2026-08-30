@@ -73,10 +73,10 @@ export const ImprovementLanguageSkillList: FC = () => {
   const openLearnDialog = async () => {
     const saved = await languageSkillDialog.open()
     if (!saved) return
-    if (saved.rating === "native") return // Native languages can't be learned via karma
+    if (saved.isNative) return // Native languages can't be learned via karma
     const newEntry: Omit<LearnLanguageSkillEntry, "id"> = {
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: saved.name, rating: saved.rating, lingo: saved.lingo },
+      skill: { name: saved.name, isNative: false, rating: saved.rating, lingo: saved.lingo },
     }
     improvementStore.add(newEntry)
   }
@@ -88,8 +88,8 @@ export const ImprovementLanguageSkillList: FC = () => {
           <List disablePadding>
             {languageSkills.map((skill, index) => {
               const cap = getLanguageSkillCap()
-              const isNative = skill.rating === "native"
-              const numericRating: number = skill.rating === "native" ? cap : skill.rating
+              const isNative = skill.isNative
+              const numericRating: number = skill.isNative ? cap : skill.rating
               const karmaCost = (numericRating + 1) * 1
               const isAtMax = isNative || numericRating >= cap
               const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
@@ -134,8 +134,8 @@ export const ImprovementLanguageSkillList: FC = () => {
                       secondary={isNative
                         ? "Native"
                         : isAtMax
-                          ? `Rating ${skill.rating}`
-                          : `${skill.rating} → ${numericRating + 1}`}
+                          ? `Rating ${numericRating}`
+                          : `${numericRating} → ${numericRating + 1}`}
                     />
                   </ListItemButton>
                 </ListItem>

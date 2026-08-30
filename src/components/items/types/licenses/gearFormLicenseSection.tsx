@@ -43,7 +43,7 @@ const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
         ? (
             <Stack direction="row" sx={{ alignItems: "center" }}>
               <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>{license.name}</Typography>
-              <RatingChip rating={license.rating} />
+              <RatingChip isReal={license.isReal} rating={license.isReal ? 0 : license.rating} />
               <Button size="small" onClick={openAssignDialog}>
                 Change
               </Button>

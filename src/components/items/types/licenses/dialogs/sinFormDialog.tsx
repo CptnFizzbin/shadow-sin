@@ -4,6 +4,7 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { SinRatingField } from "#/components/items/types/licenses/sinRatingField.tsx"
 import { getRandomSinName, getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import type { SinFormValues } from "#/hooks/items/types/licenses/forms/useSinForm.tsx"
 import { useSinForm } from "#/hooks/items/types/licenses/forms/useSinForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -28,7 +29,10 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) =
       title={title}
       ctrl={ctrl}
       onDelete={onDelete}
-      getCost={(s) => getSinCost(s.rating === "real" ? "real" : Number(s.rating))}
+      getCost={(s) => {
+        const sinValues = s as SinFormValues
+        return getSinCost(sinValues.isReal, sinValues.rating)
+      }}
       ratingMax={6}
       onRandomizeName={getRandomSinName}
       slots={{

@@ -24,23 +24,23 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("keeps a checked SIN's own credential alongside its checked licensed gear", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
     const checks = buildVerificationChecks(gear, [weapon])
 
     expect(checks).toEqual(expect.arrayContaining([
-      { itemId: sinId, kind: "sin", credentialRating: 3 },
-      { itemId, kind: "licensed-gear", credentialRating: 3 },
+      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
+      { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
     ]))
     expect(checks).toHaveLength(2)
   })
 
   it("drops a SIN entirely when neither it nor any of its licensed gear is checked", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
@@ -50,19 +50,19 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("keeps a SIN's own credential when it is checked directly, even with no licensed gear checked", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, weapon)
 
     const checks = buildVerificationChecks(gear, [sin])
 
-    expect(checks).toEqual([{ itemId: sinId, kind: "sin", credentialRating: 3 }])
+    expect(checks).toEqual([{ itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } }])
   })
 
   it("keeps only the checked licensed-gear item when a SIN carries more than one", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const checkedWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const uncheckedWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
     const gear = gearMap(sin, license, checkedWeapon, uncheckedWeapon)
@@ -70,15 +70,15 @@ describe.concurrent("buildVerificationChecks", () => {
     const checks = buildVerificationChecks(gear, [checkedWeapon])
 
     expect(checks).toEqual(expect.arrayContaining([
-      { itemId: sinId, kind: "sin", credentialRating: 3 },
-      { itemId, kind: "licensed-gear", credentialRating: 3 },
+      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
+      { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
     ]))
     expect(checks).toHaveLength(2)
   })
 
   it("drops a SIN with multiple licensed gear items when every one of them is unchecked", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const firstWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const secondWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
 
@@ -104,8 +104,8 @@ describe.concurrent("buildVerificationChecks", () => {
   })
 
   it("shuffles the combined checks rather than preserving lane order", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
     const unlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
     const gear = gearMap(sin, license, weapon, unlicensed)
@@ -114,8 +114,8 @@ describe.concurrent("buildVerificationChecks", () => {
 
     expect(checks).toHaveLength(3)
     expect(checks).toEqual(expect.arrayContaining([
-      { itemId: sinId, kind: "sin", credentialRating: 3 },
-      { itemId, kind: "licensed-gear", credentialRating: 3 },
+      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
+      { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
       { itemId: itemId2, kind: "unlicensed-gear" },
     ]))
   })

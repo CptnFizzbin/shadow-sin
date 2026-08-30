@@ -8,9 +8,20 @@ interface LanguageSkillFormOptions {
   onSubmit: (values: LanguageSkillData) => void
 }
 
-const defaultFormValues: LanguageSkillData = {
+/**
+ * Flat editing shape backing the form's single "Rating" select (`ratingSelect`, matching its
+ * MUI `Select`'s string-only options: `"native"` or a stringified numeric rating). Converted to
+ * `LanguageSkillData`'s `isNative`-discriminated union only at submit time.
+ */
+interface LanguageSkillFormValues {
+  name: string
+  ratingSelect: string
+  lingo?: string
+}
+
+const defaultFormValues: LanguageSkillFormValues = {
   name: "",
-  rating: 1,
+  ratingSelect: "1",
   lingo: "",
 }
 
@@ -19,19 +30,26 @@ export const useLanguageSkillForm = ({
   onSubmit,
 }: LanguageSkillFormOptions) => {
   const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
-  const nativeLanguage = languageSkills.find((s) => s.rating === "native")
+  const nativeLanguageExists = languageSkills.some((s) => s.isNative)
+
+  const skillDefaults: Partial<LanguageSkillFormValues> = skill
+    ? {
+        name: skill.name,
+        lingo: skill.lingo,
+        ratingSelect: skill.isNative ? "native" : String(skill.rating),
+      }
+    : {}
 
   return useAppForm({
     defaultValues: {
       ...defaultFormValues,
-      rating: nativeLanguage ? 1 : "native",
-      ...skill,
+      ratingSelect: nativeLanguageExists ? "1" : "native",
+      ...skillDefaults,
     },
     onSubmit: ({ value }) =>
-      onSubmit({
-        ...value,
-        rating: value.rating === "native" ? "native" : Number(value.rating),
-      }),
+      onSubmit(value.ratingSelect === "native"
+        ? { name: value.name, isNative: true, lingo: value.lingo }
+        : { name: value.name, isNative: false, rating: Number(value.ratingSelect), lingo: value.lingo }),
   })
 }
 

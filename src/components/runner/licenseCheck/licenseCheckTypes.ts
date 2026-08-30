@@ -1,4 +1,7 @@
-export type CredentialRating = "real" | number // matches existing SinData/LicenseData.rating
+// Matches SinData/LicenseData's isReal-flag shape (see #535).
+export type CredentialRating =
+  | { isReal: true }
+  | { isReal: false, rating: number }
 
 export interface VerificationCheck {
   itemId: string // SinData.id or ItemData.id

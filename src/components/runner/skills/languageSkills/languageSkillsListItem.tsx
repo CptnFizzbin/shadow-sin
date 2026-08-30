@@ -13,19 +13,21 @@ interface LanguageSkillListItemProps {
 export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill }) => {
   const skillDicePool = useLanguageSkillDicePool({
     language: skill.name,
-    rating: skill.rating,
+    isNative: skill.isNative,
+    rating: skill.isNative ? 0 : skill.rating,
   })
 
   const lingoDicePool = useLanguageSkillDicePool({
     language: skill.name,
-    rating: skill.rating,
+    isNative: skill.isNative,
+    rating: skill.isNative ? 0 : skill.rating,
     lingo: skill.lingo,
   })
 
   const viewSkillDialog = useViewSkillDialog()
 
   const handleClick = () => {
-    if (skill.rating === "native") return
+    if (skill.isNative) return
     viewSkillDialog.open({
       name: skill.name,
       dicePools: [
@@ -39,7 +41,8 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
     <>
       <SkillListItem
         name={skill.name}
-        rating={skill.rating}
+        rating={skill.isNative ? 0 : skill.rating}
+        isNative={skill.isNative}
         specialization={skill.lingo}
         attr={AttributeKey.intuition}
         onClick={handleClick}

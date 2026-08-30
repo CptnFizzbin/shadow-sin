@@ -30,12 +30,12 @@ describe("getRollTimeout", () => {
 })
 
 describe("isRealCredential", () => {
-  it("is true for 'real'", () => {
-    expect(isRealCredential("real")).toBe(true)
+  it("is true for a real credential", () => {
+    expect(isRealCredential({ isReal: true })).toBe(true)
   })
 
-  it("is false for a numeric rating", () => {
-    expect(isRealCredential(3)).toBe(false)
+  it("is false for a fake numeric-rating credential", () => {
+    expect(isRealCredential({ isReal: false, rating: 3 })).toBe(false)
   })
 })
 
@@ -122,7 +122,7 @@ describe("resolveVerificationCheck", () => {
   })
 
   it("clears a real credential without rolling", async () => {
-    const check: VerificationCheck = { itemId: "sin-1", kind: "sin", credentialRating: "real" }
+    const check: VerificationCheck = { itemId: "sin-1", kind: "sin", credentialRating: { isReal: true } }
     const outcome = await resolveVerificationCheck(check, new DiceRoller(), new DiceRoller(), 3, false)
 
     expect(outcome).toEqual({ itemId: "sin-1", status: "clear" })
@@ -140,7 +140,7 @@ describe("resolveVerificationCheck", () => {
     const scannerRoller = new DiceRoller()
     vi.spyOn(credentialRoller, "rollD6").mockReturnValue(6)
     vi.spyOn(scannerRoller, "rollD6").mockReturnValue(1)
-    const check: VerificationCheck = { itemId: "sin-2", kind: "sin", credentialRating: 3 }
+    const check: VerificationCheck = { itemId: "sin-2", kind: "sin", credentialRating: { isReal: false, rating: 3 } }
 
     const outcomePromise = resolveVerificationCheck(check, credentialRoller, scannerRoller, 3, false)
     await vi.runAllTimersAsync()

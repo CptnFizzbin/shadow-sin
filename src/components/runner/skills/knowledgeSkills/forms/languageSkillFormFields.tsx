@@ -17,7 +17,7 @@ export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
 }) => {
   const skillName = useSelector(form.store, (state) => state.values.name)
   const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
-  const nativeLanguage = languageSkills.find((skill) => skill.rating === "native")
+  const nativeLanguage = languageSkills.find((skill) => skill.isNative)
 
   const ratingOptions = [
     { label: "Native", value: "native", disabled: nativeLanguage && nativeLanguage.name !== skillName },
@@ -37,7 +37,7 @@ export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
           {(field) => <field.TextField label="Language" autoFocus />}
         </form.AppField>
 
-        <form.AppField name="rating">
+        <form.AppField name="ratingSelect">
           {(field) => (
             <field.SelectField
               label="Rating"

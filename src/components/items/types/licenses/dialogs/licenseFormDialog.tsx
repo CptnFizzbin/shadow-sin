@@ -4,6 +4,7 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { LicenseCoveredItemsSection } from "#/components/items/types/licenses/licenseCoveredItemsSection.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import type { LicenseFormValues } from "#/hooks/items/types/licenses/forms/useLicenseForm.tsx"
 import { useLicenseForm } from "#/hooks/items/types/licenses/forms/useLicenseForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
@@ -38,7 +39,10 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       title={title}
       ctrl={ctrl}
       onDelete={onDelete}
-      getCost={(l) => getLicenseCost(Number(l.rating))}
+      getCost={(l) => {
+        const licenseValues = l as LicenseFormValues
+        return getLicenseCost(licenseValues.isReal, licenseValues.rating)
+      }}
       ratingMax={6}
       parentItemFilter={(item: ItemData) => isSinData(item)}
       parentItemLabel="SIN"

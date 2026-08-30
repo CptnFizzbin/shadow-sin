@@ -43,6 +43,11 @@ export interface EntityCardProps extends PropsWithChildren {
   onRemove?: () => void
   /** Outline-style button pinned to the left edge of the card, spanning its full height. */
   leftAction?: EntityCardLeftAction
+  /**
+   * Overrides `entity.rating` for display when a category's rating isn't a plain number (e.g. a
+   * Real SIN/Licence shows "Real" instead of a number it no longer carries).
+   */
+  ratingOverride?: string | number
 }
 
 /**
@@ -62,6 +67,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onEdit,
   onRemove,
   leftAction,
+  ratingOverride,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
@@ -148,7 +154,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center" }}>
                 {slots.layout.topRight}
 
-                <EntityCardElements.Rating value={entity.rating} />
+                <EntityCardElements.Rating value={ratingOverride ?? entity.rating} />
               </Stack>
             </EntityCardLayout.HeaderRow>
 

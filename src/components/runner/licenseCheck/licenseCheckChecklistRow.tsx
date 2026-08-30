@@ -19,8 +19,9 @@ interface LicenseCheckChecklistRowProps {
 function getRatingBadge(check: VerificationCheck): string | null {
   if (check.kind === "unlicensed-gear") return "Unlicensed"
   if (check.kind === "forbidden-gear") return "Forbidden"
-  if (check.credentialRating === undefined) return null
-  return isRealCredential(check.credentialRating) ? "Real" : `Fake License | R${check.credentialRating}`
+  const credential = check.credentialRating
+  if (credential === undefined) return null
+  return isRealCredential(credential) ? "Real" : `Fake License | R${credential.rating}`
 }
 
 export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ item, check }) => {

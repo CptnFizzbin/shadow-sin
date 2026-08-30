@@ -18,7 +18,7 @@ function gearMap(...items: ItemData[]): Record<string, ItemData> {
 
 describe.concurrent("buildLicenseCheckResult", () => {
   it("produces no alerts when a single SIN check clears entirely", () => {
-    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }]
+    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: { isReal: false, rating: 3 } }]
     const outcomes: VerificationOutcome[] = [
       { itemId: "sin-1", status: "clear", credentialHits: 2, scannerHits: 1 },
     ]
@@ -29,7 +29,7 @@ describe.concurrent("buildLicenseCheckResult", () => {
   })
 
   it("uses the exact 'you N vs scanner M' reason for a flagged rolled item", () => {
-    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }]
+    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: { isReal: false, rating: 3 } }]
     const outcomes: VerificationOutcome[] = [
       { itemId: "sin-1", status: "flagged", credentialHits: 1, scannerHits: 4 },
     ]
@@ -58,13 +58,13 @@ describe.concurrent("buildLicenseCheckResult", () => {
   })
 
   it("adds a multiple-sins alert naming every scanned SIN, even if every outcome clears", () => {
-    const johnSmith: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
-    const janeDoe: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
+    const johnSmith: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId1, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const janeDoe: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId2, name: "Jane Doe", itemType: ItemType.sin, isReal: false, rating: 3 }
     const gear = gearMap(johnSmith, janeDoe)
 
     const checks: VerificationCheck[] = [
-      { itemId: sinId1, kind: "sin", credentialRating: "real" },
-      { itemId: sinId2, kind: "sin", credentialRating: "real" },
+      { itemId: sinId1, kind: "sin", credentialRating: { isReal: true } },
+      { itemId: sinId2, kind: "sin", credentialRating: { isReal: true } },
     ]
     const outcomes: VerificationOutcome[] = [
       { itemId: sinId1, status: "clear" },

@@ -33,6 +33,7 @@ const fakeSin: SinData = {
   id: "00000000-0000-0000-0000-000000000s01",
   name: "Fake SIN",
   itemType: ItemType.sin,
+  isReal: false,
   rating: 4,
 }
 
@@ -41,6 +42,7 @@ const existingLicense: LicenseData = {
   id: "00000000-0000-0000-0000-00000000c001",
   name: "License: Armor Jacket",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
   items: { parentId: fakeSin.id, childIds: [] },
 }
@@ -50,6 +52,7 @@ const secondLicense: LicenseData = {
   id: "00000000-0000-0000-0000-00000000c002",
   name: "License: Other Gear",
   itemType: ItemType.license,
+  isReal: false,
   rating: 2,
   items: { parentId: fakeSin.id, childIds: [] },
 }

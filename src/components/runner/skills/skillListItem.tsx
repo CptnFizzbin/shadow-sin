@@ -14,7 +14,9 @@ import { AttributeLabels } from "#/system/attributeKey.ts"
 interface SkillListItemProps {
   name: string
   specialization?: string
-  rating: number | "native"
+  rating: number
+  /** A native Language skill has no dice pool to roll — it always succeeds automatically. */
+  isNative?: boolean
   attr: AttributeKey
   isDefaulted?: boolean
   onClick: () => void
@@ -24,6 +26,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   name,
   specialization,
   rating,
+  isNative = false,
   attr,
   isDefaulted,
   onClick,
@@ -31,7 +34,6 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   const attrValue = useEntitySelector(AttrSelectors.selectValue, { key: attr })
 
-  const isNative = rating === "native"
   const ratingDice = isNative ? 0 : rating
   const defaultingPenalty = isDefaulted ? 1 : 0
   const totalDice = Math.max(0, ratingDice + attrValue - defaultingPenalty - woundMod)
@@ -60,7 +62,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
       </Typography>
 
       <Chip
-        label={rating === "native" ? "Auto" : totalDice}
+        label={isNative ? "Auto" : totalDice}
         size="small"
         color={isDefaulted ? "warning" : "secondary"}
         sx={{ height: 52, width: 52, fontWeight: "bold" }}

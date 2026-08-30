@@ -1,6 +1,5 @@
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import { SinNameList } from "#/system/gear/sinNameList.ts"
-import type { ItemData } from "#/system/itemData.ts"
 
 /** Picks a random cover name from `SinNameList`, e.g. for the SIN form's "Randomize" button. */
 export const getRandomSinName = (): string => {
@@ -8,10 +7,12 @@ export const getRandomSinName = (): string => {
   return SinNameList[index]
 }
 
+/** `rating` is ignored (and may be a placeholder) when `isReal` is `true` — a Real SIN is always unrestricted. */
 export const getSinAvailability = (
-  rating: ItemData["rating"],
+  isReal: boolean,
+  rating: number,
 ): AvailabilityInfo => {
-  if (typeof rating !== "number") return { rating: 0 }
+  if (isReal) return { rating: 0 }
 
   return {
     rating: rating * 3,
@@ -19,7 +20,7 @@ export const getSinAvailability = (
   }
 }
 
-export const getSinCost = (rating: "real" | number): number => {
-  if (rating === "real") return 0
+export const getSinCost = (isReal: boolean, rating: number): number => {
+  if (isReal) return 0
   return rating * 1_000
 }

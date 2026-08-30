@@ -15,6 +15,7 @@ const fakeSin: SinData = {
   id: "00000000-0000-0000-0000-000000000001",
   name: "National ID (Fake)",
   itemType: ItemType.sin,
+  isReal: false,
   rating: 4,
 }
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { DistributiveOmit, ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import {
@@ -34,9 +34,10 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
 describe.concurrent("licenses.create", () => {
   it("adds the licence under a freshly generated id", () => {
     // Arrange
-    const licenseDraft: Omit<LicenseData, "id"> = {
+    const licenseDraft: DistributiveOmit<LicenseData, "id"> = {
       kind: EntityKind.item, items: { parentId: null, childIds: [] },
       itemType: ItemType.license,
+      isReal: false,
       name: "License: Ares Predator V",
       rating: 3,
     }

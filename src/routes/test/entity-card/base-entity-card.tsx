@@ -74,8 +74,11 @@ function EntityCardTestPage() {
 
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
-          <Section title="Sentinel rating (e.g. a Real SIN)">
-            <EntityCard entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Real SIN", rating: "real" }} />
+          <Section title="Rating override (e.g. a Real SIN, which carries no plain rating)">
+            <EntityCard
+              entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Real SIN" }}
+              ratingOverride="Real"
+            />
           </Section>
         </Stack>
       </Paper>

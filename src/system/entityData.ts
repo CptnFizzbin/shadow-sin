@@ -1,7 +1,6 @@
 import type { DamageTrackKey } from "./damageTrackKey.ts"
 import type { EntityKind } from "./entityKind.ts"
 import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
-import type { Rating } from "./rating.ts"
 import type { SourceData } from "./sourceData.ts"
 
 /**
@@ -15,9 +14,9 @@ export type EntityDamage<TTrack extends DamageTrackKey = DamageTrackKey> = { [tr
  * Base interface for anything with a stat block, ratings, or effects it can contribute — Item,
  * Quality, Spell, Adept Power, MatrixNode, etc. See CONTEXT.md's Entity glossary entry.
  *
- * `rating` is typed `Rating<string>` (not the plain-number default) so that categories needing
- * their own sentinel (a Real SIN/Licence's `Rating<"real">`) can narrow it without conflicting
- * with this base declaration.
+ * `rating` is always a plain number. A category whose rating admits its own unrated/default case
+ * (a Real SIN/Licence, a native Language skill) expresses that with its own explicit flag
+ * (`isReal`, `isNative`) instead of a sentinel value here — see CONTEXT.md's **Rating** entry.
  */
 export interface EntityData {
   kind: EntityKind
@@ -26,5 +25,5 @@ export interface EntityData {
   description?: string
   source?: SourceData
   effects?: GameEffectData[]
-  rating?: Rating<string>
+  rating?: number
 }

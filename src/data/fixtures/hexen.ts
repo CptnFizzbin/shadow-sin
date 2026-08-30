@@ -228,10 +228,11 @@ export const Hexen: RunnerData = {
     languageSkills: [
       {
         name: "English",
-        rating: "native",
+        isNative: true,
       },
       {
         name: "German",
+        isNative: false,
         rating: 4,
       },
     ],

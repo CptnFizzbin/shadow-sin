@@ -12,7 +12,7 @@ import type { SinData } from "#/system/gear/sinData.ts"
 import type { SoftwareData } from "#/system/gear/softwareData.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { FirearmAccessoryData, WeaponData } from "#/system/gear/weaponData.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { DistributiveOmit, ItemData } from "#/system/itemData.ts"
 
 export const addItem = createAction("gear/add", (item: Omit<ItemData, "id">) => {
   return { payload: { ...item, id: crypto.randomUUID() as UUID } }
@@ -34,7 +34,7 @@ export function isNewItem(item: ItemData): boolean {
 }
 
 export const licenses = {
-  create: (license: Omit<LicenseData, "id">) => {
+  create: (license: DistributiveOmit<LicenseData, "id">) => {
     return addItem(license)
   },
 

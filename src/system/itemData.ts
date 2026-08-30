@@ -42,17 +42,25 @@ export interface ItemData extends EntityData, EntityWithItems {
 }
 
 /**
+ * Distributes `Omit` across a union so each member keeps only its own fields — plain `Omit<T, K>`
+ * collapses a union to the keys its members share, which would silently drop `SinData`/
+ * `LicenseData`-style discriminated-union fields (e.g. `rating`) that aren't common to every
+ * branch.
+ */
+export type DistributiveOmit<T, K extends keyof never> = T extends unknown ? Omit<T, K> : never
+
+/**
  * Utility to create a gear item with unique IDs and optional attached items (e.g. accessories).
  */
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "items" | "kind">,
+  data: DistributiveOmit<TItem, "id" | "items" | "kind">,
 ): ItemData[]
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "items" | "kind">,
+  data: DistributiveOmit<TItem, "id" | "items" | "kind">,
   attached: (ItemData | ItemData[])[],
 ): ItemData[]
 export function createItem<TItem extends ItemData>(
-  data: Omit<TItem, "id" | "items" | "kind">,
+  data: DistributiveOmit<TItem, "id" | "items" | "kind">,
   attached: (ItemData | ItemData[])[] = [],
 ): ItemData[] {
   const id = crypto.randomUUID()

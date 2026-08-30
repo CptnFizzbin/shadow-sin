@@ -60,8 +60,10 @@ export async function rollOpposedTest(
   return { credentialHits, scannerHits, status }
 }
 
-export function isRealCredential(rating: CredentialRating): rating is "real" {
-  return rating === "real"
+export function isRealCredential(
+  credential: CredentialRating,
+): credential is Extract<CredentialRating, { isReal: true }> {
+  return credential.isReal
 }
 
 /**
@@ -80,8 +82,8 @@ export async function resolveVerificationCheck(
     return { itemId: check.itemId, status: "flagged" }
   }
 
-  const rating = check.credentialRating
-  if (rating === undefined || isRealCredential(rating)) {
+  const credential = check.credentialRating
+  if (credential === undefined || isRealCredential(credential)) {
     return { itemId: check.itemId, status: "clear" }
   }
 
@@ -90,7 +92,7 @@ export async function resolveVerificationCheck(
   const { credentialHits, scannerHits, status } = await rollOpposedTest(
     credentialRoller,
     scannerRoller,
-    rating,
+    credential.rating,
     scannerRating,
     ratingPlusRating,
   )

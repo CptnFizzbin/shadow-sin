@@ -6,6 +6,7 @@ import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinDataCardProps {
@@ -34,19 +35,28 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
 
   return (
     <>
-      <ItemCard item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
+      <ItemCard
+        item={sin}
+        ratingOverride={sin.isReal ? "Real" : sin.rating}
+        onOpen={onOpen}
+        onEdit={onEdit}
+        onRemove={removeSin}
+      >
         {hasLicenses && (
           <ItemCard.Layout.BodyRow
             direction="column"
             sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
           >
-            {Object.values(licenses).map((license) => (
-              <ItemCard.Subitem
-                key={license.id}
-                name={license.name}
-                stats={[{ label: "Rating", value: license.rating ?? "unknown" }]}
-              />
-            ))}
+            {Object.values(licenses).map((item) => {
+              const license = item as LicenseData
+              return (
+                <ItemCard.Subitem
+                  key={license.id}
+                  name={license.name}
+                  stats={[{ label: "Rating", value: license.isReal ? "Real" : license.rating }]}
+                />
+              )
+            })}
           </ItemCard.Layout.BodyRow>
         )}
       </ItemCard>

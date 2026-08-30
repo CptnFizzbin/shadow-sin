@@ -32,7 +32,7 @@ import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { DistributiveOmit, ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import { useSinFormDialog } from "./sinFormDialog.tsx"
@@ -65,7 +65,7 @@ const ExistingLicenseSection: FC<ExistingLicenseSectionProps> = ({
             {sin && ` — ${sin.name}`}
             {" "}
             (
-            {license.rating === "real" ? "Real" : `Rating ${license.rating}`}
+            {license.isReal ? "Real" : `Rating ${license.rating}`}
             )
           </MenuItem>
         )
@@ -196,9 +196,8 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   // A Licence's reality always matches its SIN's — a Fake SIN can only carry Fake licences,
   // and only the Real SIN can carry a Real (free, unrestricted) licence.
   const selectedSin = sins.find((sin) => sin.id === selectedSinId)
-  const isReal = selectedSin?.rating === "real"
-  const rating: LicenseData["rating"] = isReal ? "real" : fakeRating
-  const cost = getLicenseCost(rating)
+  const isReal = selectedSin?.isReal === true
+  const cost = getLicenseCost(isReal, fakeRating)
   const canAfford = currentNuyen >= cost
 
   const handleCreateSin = async () => {
@@ -227,14 +226,24 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   const handleAcquireNew = () => {
     if (!selectedSinId) return
 
-    const licenseDraft: Omit<LicenseData, "id"> = {
-      kind: EntityKind.item,
-      itemType: ItemType.license,
-      name: `License: ${item.name}`,
-      rating,
-      cost,
-      items: { parentId: selectedSinId as UUID, childIds: [] },
-    }
+    const licenseDraft: DistributiveOmit<LicenseData, "id"> = isReal
+      ? {
+          kind: EntityKind.item,
+          itemType: ItemType.license,
+          name: `License: ${item.name}`,
+          isReal: true,
+          cost,
+          items: { parentId: selectedSinId as UUID, childIds: [] },
+        }
+      : {
+          kind: EntityKind.item,
+          itemType: ItemType.license,
+          name: `License: ${item.name}`,
+          isReal: false,
+          rating: fakeRating,
+          cost,
+          items: { parentId: selectedSinId as UUID, childIds: [] },
+        }
     const addLicenseAction = Actions.item.licenses.create(licenseDraft)
     dispatch(addLicenseAction)
     dispatch(Actions.item.licenses.setLicenseForItem({

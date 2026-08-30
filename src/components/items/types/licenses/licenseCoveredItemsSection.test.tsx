@@ -17,6 +17,7 @@ const license: LicenseData = {
   id: "00000000-0000-0000-0000-00000000d001",
   name: "License: Ares Predator",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
 }
 
@@ -25,6 +26,7 @@ const otherLicense: LicenseData = {
   id: "00000000-0000-0000-0000-00000000d002",
   name: "License: Other Gear",
   itemType: ItemType.license,
+  isReal: false,
   rating: 2,
 }
 
