@@ -53,6 +53,27 @@ full domain object it came from. A Formula returns a primitive by default, or a 
 when the SR4A rule itself is structured (a fixed rank table is rule content, same as the arithmetic
 feeding it).
 
+### A Formula is always reached through a Selector
+
+There is exactly one way to read a state-derived value: through a Selector. A hook or component
+never calls a Formula directly on values it gathered itself (e.g. from its own `useState`) — that
+would be a second, parallel access path for the same kind of data, which is what ADR-0013/ADR-0014
+already moved away from (`useRunnerSelector`/`useEntitySelector` as the one intended read path).
+Local, ephemeral UI state that feeds a calculation (a wizard's in-progress choices, a form's
+transient toggles) is no exception: it needs a real store of its own — an ad hoc `createCompatStore`
+instance, the same shape `DiceRoller`/`DialogCtrl` already use, written through `setState`, no
+reducer — with its own `XxxSelectors` namespace, so a Formula reading it is reached the exact same
+way as one reading `RunnerStore`. A component holding derived-value logic in `useState` is a
+refactoring target, not a legitimate second pattern.
+
+This leaves one open seam: a calculation needing inputs from more than one store at once (e.g. a
+wizard's local choices *and* Runner state) can't be served by a single Selector — `useSelector` is
+bound to one `CompatStore` per call, and nothing in the codebase composes across two. The default is
+to compose inline in the component: call each store's Selector via its own `useSelector`/
+`useRunnerSelector`, then call the Formula once in render with the combined result — no dedicated
+hook, on the bet that this stays rare, one-off per component rather than a recurring shape. Revisit
+if it doesn't.
+
 ## Considered Options
 
 - **Extract each combiner into a `system/` function, keep the Selector wrapping it in a new arrow
@@ -67,6 +88,10 @@ feeding it).
   instead of a shared namespace. Considered first; superseded in favor of matching ADR-0014's
   `XxxSelectors` namespace convention exactly, so Formulas and the Selectors that call them read as
   one consistent system rather than two different naming schemes for parallel concepts.
+- **A dedicated hook for every cross-store composition**, always. Deferred rather than rejected —
+  composing inline in the component is the default until repeated need at multiple call sites
+  actually justifies naming one; a hook introduced this way must still only compose `useSelector`/
+  `useRunnerSelector` reads into one Formula call, never hold derived state itself.
 
 ## Consequences
 
@@ -89,3 +114,9 @@ feeding it).
   picking which array (`entity.qualities`, `getItemCatalog(runner)`, `runner.reputation.ledger`)
   and handing it to the Formula; interpreting that array's contents is rule logic, so it belongs in
   `system/` like every other formula in this ADR.
+- Any hook that holds local derived-value state via `useState` and calls a Formula directly (a
+  wizard-style calculator, e.g. the app's Defense Calculator) is a refactoring target: its local
+  state moves into a proper ad hoc store with its own `XxxSelectors`, and the hook either
+  disappears (the component reads both stores' Selectors and calls the Formula inline) or narrows
+  to pure cross-store composition — never its own `useState`, never a Formula call on anything it
+  invented itself.
