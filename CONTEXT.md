@@ -709,9 +709,18 @@ Migration once merged, instead of silently skipping it forever.
 
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
-for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope.
+for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope. A
+Selector *collects*: it gathers whatever a calculation needs out of state without interpreting it.
 _Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
 unrelated UI-form concept.
+
+**Formula**:
+A pure function in `system/` encoding one SR4A calculation. A Formula *decides*: given whatever a
+Selector collected, it computes what the rule actually says. A Formula is always reached through a
+Selector — never called directly by a hook or component. See
+`docs/adr/0015-formulas-for-rule-calculations.md` for the input rules and naming convention.
+_Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
+sourcebook/table-variant concepts unrelated to code structure)
 
 ## Relationships
 
