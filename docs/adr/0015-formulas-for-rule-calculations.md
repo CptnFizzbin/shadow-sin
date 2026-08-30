@@ -25,9 +25,9 @@ value for no reason beyond satisfying a directory convention.
 
 **Formula** (see `CONTEXT.md`) names the extracted concept: a pure function in `system/`, grouped
 into a `Xxx`**`Formulas`** namespace with `get*` methods — `DamageFormulas.getWoundMod`,
-`AttrFormulas.getValue`, `ReputationFormulas.getPublicAwareness({ streetCred, notoriety, modifier })`
-— mirroring ADR-0014's `XxxSelectors`/`select*` namespaces one for one. A Selector passes a Formula
-**by reference** as its `createMemoizedSelector` combiner:
+`AttrFormulas.getValue`, `ReputationFormulas.getLedgerAdjustedValue` — mirroring ADR-0014's
+`XxxSelectors`/`select*` namespaces one for one. A Selector passes a Formula **by reference** as
+its `createMemoizedSelector` combiner:
 
 ```ts
 export const selectWoundInterval = createMemoizedSelector(
@@ -40,14 +40,18 @@ No new indirection layer is introduced — the "wrapper" a Selector needed anywa
 combiner slot) *is* the Formula reference. This is what avoids the calculator-then-wrapper ceremony
 a naive extraction would have produced.
 
-A Formula's inputs are restricted to a closed set: primitives, an existing entity/trait capability
-interface accessed by direct property/index (`EntityWithDamage`, never iterated), or another
-Formula's output. Never the whole `RunnerData`/`EntityData` union, and never a raw collection that
-needs filtering or reducing by a predicate to produce a value (a `ledger` array, an items/Qualities
-list walked for matching GameEffects) — resolving *which* GameEffects apply, and summing a ledger
-by `stat`, both stay Selector work. A Formula returns a primitive by default, or a structured
-object when the SR4A rule itself is structured (a fixed rank table is rule content, same as the
-arithmetic feeding it).
+The Selector/Formula split follows one rule of thumb: **a Selector collects, a Formula decides.** A
+Selector reads state and gathers whatever primitives, entity traits, or arrays a calculation needs
+— and stops there, never interpreting what it gathers. A Formula takes those collected inputs and
+computes what the SR4A rule actually says, *including resolving an array itself* — filtering,
+matching a predicate, summing — rather than requiring the Selector to pre-reduce it first. A raw
+`ledger` array or an items/Qualities list to walk for matching GameEffects is therefore a legitimate
+Formula input, as long as the Selector's own job stopped at picking which array, never at
+interpreting its contents. The one thing a Formula never takes is the whole `RunnerData`/`EntityData`
+union to walk internally — every array it receives is one the Selector already picked out, never the
+full domain object it came from. A Formula returns a primitive by default, or a structured object
+when the SR4A rule itself is structured (a fixed rank table is rule content, same as the arithmetic
+feeding it).
 
 ## Considered Options
 
@@ -73,9 +77,15 @@ arithmetic feeding it).
   turned into PRD Issues.
 - Existing combiners like `selectWoundInterval`, `selectWoundIntervalModifier`,
   `selectPublicAwarenessRating`, and `selectPublicAwareness` get their formula bodies extracted
-  verbatim into a named, independently unit-tested Formula and passed by reference; the Selector's
-  own signature and every call site are unaffected.
+  into a named, independently unit-tested Formula and passed by reference; the Selector's own
+  signature and every call site are unaffected. For `selectWoundIntervalModifier` specifically,
+  this means the *whole* combiner body moves, GameEffect walking included — see below.
 - `CONTEXT.md` gains the **Formula** term, cross-referenced from **Selector** — see `CONTEXT.md`
   for the full definition and worked examples.
-- `GameEffect` accumulation (walking equipped items/Qualities for applicable effects) and ledger
-  summation stay Selector work — no `system/` change is implied for that logic by this ADR.
+- `GameEffect` accumulation (walking equipped items/Qualities for matching effects) and ledger
+  summation move into `system/` as Formulas — `DamageFormulas.getWoundIntervalModifier({ qualities,
+  items, track })`, `ReputationFormulas.getLedgerAdjustedValue({ base, ledger, stat })` — rather
+  than staying Selector work as this ADR originally concluded. The Selector's job shrinks to
+  picking which array (`entity.qualities`, `getItemCatalog(runner)`, `runner.reputation.ledger`)
+  and handing it to the Formula; interpreting that array's contents is rule logic, so it belongs in
+  `system/` like every other formula in this ADR.
