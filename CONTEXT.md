@@ -710,42 +710,14 @@ Migration once merged, instead of silently skipping it forever.
 **Selector**:
 A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
 for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope. A
-Selector *collects*: it gathers whatever plain values, entity traits, or arrays a calculation needs
-out of state, and stops there — it never interprets what it gathers. When the derived value is a
-rule calculation, the Selector passes a **Formula** by reference as its `createMemoizedSelector`
-combiner, handing it the collected inputs.
+Selector *collects*: it gathers whatever a calculation needs out of state without interpreting it.
 _Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
 unrelated UI-form concept.
 
 **Formula**:
-A pure function in `system/` encoding one SR4A calculation — e.g. `DamageFormulas.getWoundMod`,
-`AttrFormulas.getValue`, `ReputationFormulas.getLedgerAdjustedValue`. Grouped into a
-`Xxx`**`Formulas`** namespace with `get*` method names, mirroring how a `Selector` is grouped into
-`XxxSelectors` with `select*` names. A Formula *decides*: given whatever a Selector collected, it
-computes what the SR4A rule actually says — including resolving an array itself (filtering,
-matching a predicate, summing) rather than requiring the Selector to pre-reduce it first.
-
-**Selector collects, Formula decides** is the whole rule of thumb. Concretely, a Formula's inputs
-are:
-1. **Primitives** (numbers, strings, enums)
-2. **Entity/trait capability interfaces** (e.g. `EntityWithDamage`), read via direct property/index
-   access
-3. **Arrays/collections** the Formula itself resolves — a `ledger` to sum by `stat`, an
-   items/Qualities list to walk for matching GameEffects. Filtering, matching, and summing are rule
-   logic, not state access, so they belong here, not in the Selector that gathered the array.
-4. **Another Formula's output** — letting Formulas compose without ever widening back out to a
-   whole `RunnerData`/`EntityData` aggregate
-
-Never the whole `RunnerData`/`EntityData` union to walk internally — an array a Formula receives is
-always one the Selector already picked out (`entity.qualities`, `runner.reputation.ledger`), never
-the full domain object it came from. That's the actual line: *which* state is relevant is a
-Selector's call; *what the rule computes* from it, arrays included, is the Formula's.
-
-Returns a derived value — usually a primitive, but a structured object when the SR4A rule itself is
-structured (e.g. `getPublicAwareness` returning `{ rating, title, description }` from a fixed rank
-table — the table is rule content, not selection logic, so it belongs in the Formula alongside the
-arithmetic that feeds it). No Redux or store dependency, so it's unit-testable without a Runner in
-scope.
+A pure function in `system/` encoding one SR4A calculation. A Formula *decides*: given whatever a
+Selector collected, it computes what the rule actually says. See
+`docs/adr/0015-formulas-for-rule-calculations.md` for the input rules and naming convention.
 _Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
 sourcebook/table-variant concepts unrelated to code structure)
 
