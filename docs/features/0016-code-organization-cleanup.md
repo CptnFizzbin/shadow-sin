@@ -15,89 +15,90 @@ multiplier tables, dice-pool math, BP cost tables) has been added next to the co
 happens to consume it, rather than centralized in `system/`. This doc catalogues that drift and
 proposes a reorganization.
 
+How each slice reshapes what it moves is governed by
+[`docs/adr/0015-formulas-for-rule-calculations.md`](../adr/0015-formulas-for-rule-calculations.md),
+adopted after this doc's original audit surfaced the problem it resolves: extracted rule logic
+becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a matching **Selector**
+(`XxxSelectors.select*`) — never called directly by a hook or component.
+
 ## Open Questions
 
-- [ ] **Does `components/system/` get renamed?** It collides in name (not purpose) with
-      `src/system/` — it's a viewer-UI feature folder (combat/dice/damage/initiative components),
-      analogous to `components/runner/` or `components/builder/`, not a duplicate rules home. Worth
-      renaming to remove the ambiguity (`components/gameplay/`? `components/mechanics/`?), but it's
-      a larger mechanical rename (many import sites) for a purely cosmetic win — decide whether it's
-      worth a slice of its own or gets skipped.
-- [ ] **Do the fused hooks get split now or left alone?** `useGearBuildPoints`,
-      `skillDicePools.ts`, and `useGearAvailabilityIssues`/`getTotalCost` correctly live in
-      `hooks/` (they call `useRunnerSelector`), but each wraps a pure formula that could be
-      extracted into `system/`. Extracting the formula does **not** imply adding a matching
-      `stores/*.selectors.ts` wrapper around it — see the selector-boundary rule under Constraints;
-      the hook keeps reading state via its existing selector(s) and calls the `system/` function
-      directly in the same body. What's still open is only whether pulling the formula out into its
-      own `system/` file is worth doing now or left alone as-is.
-- [ ] **Where does `BuilderConfig` land inside `system/`?** It's a single flat table covering
-      attributes, skills, qualities, magic, contacts, technomancer, and gear BP/nuyen costs — all
-      chargen ruleset numbers. Move it whole to e.g. `system/builderConfig.ts`, or split it per
-      domain subfolder (`system/skills/skillBuildCost.ts`, `system/gear/gearBuildCost.ts`, ...) to
-      match how the rest of `system/` is already split by feature?
-- [ ] **One PR or several?** The slices below are independently shippable (each is a pure
-      file-move + import-path update, no behavior change), but touch a lot of files in aggregate.
-      Confirm whether to land them as one PR or one-per-slice.
+- [x] **Does `components/system/` get renamed?** Resolved: out of scope for this doc — see Out of
+      Scope below. The naming collision with `src/system/` stands for now.
+- [ ] **Do the fused hooks get split now or left alone?** Partially resolved — the Build Points
+      portion (`useGearBuildPoints`, `useGearTotalCost`, `getTotalCost`) is folded into Slice 4
+      below. `hooks/runner/skills/skillDicePools.ts` and
+      `components/builder/sections/gear/gearUtils.ts`'s `useGearAvailabilityIssues` remain open —
+      see Slice 5.
+- [x] **Where does `BuilderConfig` land inside `system/`?** Resolved: not a flat file, not split
+      per existing domain subfolder. `BuilderConfig` and every BP-cost formula that reads it —
+      regardless of what it's pricing (gear, an Adept Power, a Contact) — form their own domain,
+      `pointBuy`, mirrored across all three layers: `system/builder/pointBuy/`,
+      `stores/builder/pointBuy/`, `components/builder/pointBuy/`. See Slice 4.
+- [x] **One PR or several?** Resolved: several — one PR per slice below, per the repo's normal
+      feature-doc → PRD-Issue → PR lifecycle.
 
 ## Constraints
 
-- Pure file moves only in Slices 1–5 below — no behavior change, no new abstractions. Each move is
-  mechanical: relocate the file, update every import site, run `yarn fix` and `yarn tsc`.
+- Slices 1–3 are pure file moves — no behavior change, no new abstractions. Each is mechanical:
+  relocate the file, update every import site, run `yarn fix` and `yarn tsc`. Slice 4 (point-buy)
+  is not purely mechanical — see its own note in the Reorganization Plan.
 - Files moved into `system/` must stay framework-agnostic, matching every existing `system/` file
   today — no React imports. `components/system/dicePool/dicePoolData.tsx` is `.tsx` in name only
   (no JSX in the file); it becomes `.ts` on the move.
 - `yarn fallow dead-code --format json` must report no new unused exports/files introduced by a
   move — a rename that leaves an orphaned re-export behind would show up there.
-- Existing `*.test.ts`/`*.test.tsx` files move with the source file they test, unchanged.
+- Existing `*.test.ts`/`*.test.tsx` files move with the source file they test, unchanged; every new
+  Formula introduced by Slice 4 needs its own new test.
 - Follow the existing `system/<feature>/` subfolder convention (`system/gear/`, `system/powers/`,
-  `system/dice/`, `system/gameEffects/`) rather than inventing new top-level groupings.
-- **No mandatory selector wrapper.** A `system/` function's signature takes plain domain data
-  (e.g. `ImplantData`, a `rating: number`) — never `RunnerState`/store state — so it is not a
-  selector's counterpart and moving it doesn't create an obligation to also add one. Call sites
-  (a hook, a component, or a `stores/*.selectors.ts` body) invoke the `system/` function directly
-  with whatever data they already have in scope. Only write a `stores/` selector when it does real
-  selection work — composing multiple state slices, applying a store-specific fallback, or needing
-  `reselect`/RTK memoization over a derived collection. A selector whose entire body would be
-  `return calc(selectX(state))` is a sign to skip the selector and call `calc` directly at the
-  point of use instead — the calculator-then-wrapper ceremony this doc must avoid.
+  `system/dice/`, `system/gameEffects/`, and now `system/builder/pointBuy/`) rather than inventing
+  new top-level groupings.
+- **A Formula is always reached through a Selector** — see ADR-0015. A slice that extracts a
+  calculation but leaves a hook calling it directly (the way `useGearBuildPoints` does today) isn't
+  finished by the file move alone; Slice 4 covers giving that calculation a real `stores/builder/
+  pointBuy/` Selector to be reached through instead.
 
 ## Domain Notes
 
-No new domain terms. This doc doesn't change any `RunnerData` field, rule, or calculation — only
-where the existing rule-calculation code lives on disk.
+No new domain terms. `pointBuy` names a source-tree domain after the existing **Build Points (BP)**
+glossary term (`CONTEXT.md`) — it doesn't introduce a new concept, just a home for BP-cost
+calculations that were previously scattered per-subject.
 
 ## Reorganization Plan
 
-Each slice is an independent PR-sized unit: relocate the listed file(s), update imports, done. Ordered
-roughly by how self-contained each is (no slice depends on an earlier one).
+Each slice below is its own PR. Slices 1–3 have no dependency on one another; Slice 4 is the one
+non-mechanical unit of work; Slice 5 stays optional/open per the Open Questions above.
 
 | # | Slice | Files | Destination |
 |---|-------|-------|-------------|
 | 1 | Gear/license/SIN rule formulas | `components/items/gearUtils.ts`, `components/items/types/implants/implantUtils.ts`, `components/items/types/licenses/licenseUtils.ts`, `components/items/types/licenses/sinUtils.ts` | `system/gear/` |
-| 2 | Adept power & contact BP costs | `components/runner/adeptPowers/adeptPowersUtils.ts`, `components/builder/sections/contacts/contactsBuilderUtils.ts` | `system/powers/`, `system/` (contacts has no subfolder today — see Open Questions) |
-| 3 | Dice pool math | `components/system/dicePool/dicePoolData.tsx` (→ `.ts`), `components/system/dice/diceUtils.ts` | `system/dice/` |
-| 4 | Combat/defense/game-effect data | `components/system/defense/defenseCalculatorData.ts`, `components/system/combat/combatActionData.ts`, `components/system/gameEffects/gameEffectUtils.ts` | `system/` (game-effect one merges into existing `system/gameEffects/`) |
-| 5 | Chargen BP cost table | `components/builder/builderConfig.ts` | `system/` — exact shape pending the Open Question above |
-| 6 *(optional)* | `components/system/` rename | Everything under `components/system/` (combat, damage, defense, dice, dicePool, gameEffects, initiative, initiativeTracker, sources) | `components/<new-name>/`, name TBD |
-| 7 *(optional, larger)* | Split fused hooks | `hooks/builder/buildPoints/useGearBuildPoints.ts`, `hooks/runner/skills/skillDicePools.ts`, `components/builder/sections/gear/gearUtils.ts` (`getTotalCost`, `useGearAvailabilityIssues`) | Pure math half → `system/`; thin store-reading hook stays in `hooks/` |
-
-Slices 1–5 are the "just relocate it" core of this doc. Slices 6 and 7 are listed for completeness
-but are open questions above, not committed scope.
+| 2 | Dice pool math | `components/system/dicePool/dicePoolData.tsx` (→ `.ts`), `components/system/dice/diceUtils.ts` | `system/dice/` |
+| 3 | Combat/defense/game-effect data | `components/system/defense/defenseCalculatorData.ts`, `components/system/combat/combatActionData.ts`, `components/system/gameEffects/gameEffectUtils.ts` | `system/` (game-effect one merges into existing `system/gameEffects/`) |
+| 4 | **Point-buy (BP) cost economy** | `components/builder/builderConfig.ts`; `components/runner/adeptPowers/adeptPowersUtils.ts`'s `getAdeptPowerBpCost` (`isAdept` stays — it's an Awakening predicate, not a BP formula, and moves to `system/powers/` instead); `components/builder/sections/contacts/contactsBuilderUtils.ts`'s `getContactBpCost`; `hooks/builder/buildPoints/useGearBuildPoints.ts` (`useGearBuildPoints`, `useGearTotalCost`) and `components/builder/sections/gear/gearUtils.ts`'s `getTotalCost` | `system/builder/pointBuy/` (Formulas) + new `stores/builder/pointBuy/` (Selectors reaching them) + `components/builder/pointBuy/` (UI, existing BP display components folded in — exact membership TBD when this slice is scoped) |
+| 5 *(optional, open)* | Split remaining fused hooks | `hooks/runner/skills/skillDicePools.ts`; `components/builder/sections/gear/gearUtils.ts`'s `useGearAvailabilityIssues` | Pure math half → `system/`, reached through a new/existing Selector per ADR-0015; thin hook stays in `hooks/` |
 
 ## Out of Scope
 
-- Any `stores/`, `hooks/`, or `lib/` reorganization — audited as part of this doc's research and
-  found already consistent with AGENTS.md's documented convention. No changes proposed there.
+- **`components/system/` rename.** Leaning toward a larger restructuring later — breaking up
+  `components/runner/` and promoting its per-domain subfolders (and `components/system/`'s) up a
+  level, rather than a same-shape rename — but that's a bigger, separate pass. Recorded here so the
+  direction isn't lost; not designed or scoped by this doc.
+- Any other `stores/`, `hooks/`, or `lib/` reorganization beyond Slice 4's new `stores/builder/
+  pointBuy/` — audited as part of this doc's research and found already consistent with AGENTS.md's
+  documented convention.
 - Fallow-flagged dead code, duplication, or complexity findings — a separate, unrelated cleanup
   concern from file placement; run independently via the `fallow` skill.
 - Any change to `RunnerData`, migrations, or rule behavior. This is strictly a "move code to where
-  it already claims to live" pass.
+  it already claims to live" pass — Slice 4's new Selectors read existing `BuilderState` fields,
+  they don't add any.
 - Renaming any domain type or constant — only file location changes; exported names stay the same
   unless a slice's PRD says otherwise.
 
 ## Related Features
 
-- None directly — this is a cross-cutting structural cleanup rather than a feature slice. See
-  AGENTS.md's "Key directories" section for the convention this doc brings the codebase back into
+- [`docs/adr/0015-formulas-for-rule-calculations.md`](../adr/0015-formulas-for-rule-calculations.md) —
+  governs how every slice above reshapes what it moves (Formula/Selector split, naming, the
+  always-reached-through-a-Selector rule). This doc's original audit is what surfaced the problem
+  that ADR resolves.
+- AGENTS.md's "Key directories" section — the convention this doc brings the codebase back into
   line with.
