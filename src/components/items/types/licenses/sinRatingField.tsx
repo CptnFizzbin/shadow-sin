@@ -41,7 +41,7 @@ export const SinRatingField: FC<SinRatingFieldProps> = ({ form }) => {
                   size="small"
                   min={1}
                   max={6}
-                  value={ratingField.state.value}
+                  value={ratingField.state.value ?? null}
                   onChange={(newValue) => ratingField.handleChange(newValue ?? 1)}
                 />
               )}

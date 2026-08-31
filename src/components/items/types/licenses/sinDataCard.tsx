@@ -53,7 +53,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
                 <ItemCard.Subitem
                   key={license.id}
                   name={license.name}
-                  stats={[{ label: "Rating", value: license.isReal ? "Real" : license.rating }]}
+                  stats={[{ label: "Rating", value: license.isReal ? "Real" : (license.rating ?? 0) }]}
                 />
               )
             })}

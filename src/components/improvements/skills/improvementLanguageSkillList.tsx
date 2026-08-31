@@ -76,7 +76,7 @@ export const ImprovementLanguageSkillList: FC = () => {
     if (saved.isNative) return // Native languages can't be learned via karma
     const newEntry: Omit<LearnLanguageSkillEntry, "id"> = {
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: saved.name, isNative: false, rating: saved.rating, lingo: saved.lingo },
+      skill: { name: saved.name, isNative: false, rating: saved.rating ?? 0, lingo: saved.lingo },
     }
     improvementStore.add(newEntry)
   }
@@ -89,7 +89,7 @@ export const ImprovementLanguageSkillList: FC = () => {
             {languageSkills.map((skill, index) => {
               const cap = getLanguageSkillCap()
               const isNative = skill.isNative
-              const numericRating: number = skill.isNative ? cap : skill.rating
+              const numericRating: number = skill.isNative ? cap : (skill.rating ?? 0)
               const karmaCost = (numericRating + 1) * 1
               const isAtMax = isNative || numericRating >= cap
               const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null

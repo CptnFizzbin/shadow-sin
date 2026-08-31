@@ -63,7 +63,7 @@ export const SinItemDetails: FC<SinItemDetailsProps> = ({ sin, onRemoved, onOpen
       >
         <ItemDetailsSlot.Stat
           label="Rating"
-          value={sin.isReal ? "Real" : sin.rating}
+          value={sin.isReal ? "Real" : (sin.rating ?? 0)}
           type="rating"
         />
 

@@ -21,7 +21,7 @@ function getRatingBadge(check: VerificationCheck): string | null {
   if (check.kind === "forbidden-gear") return "Forbidden"
   const credential = check.credentialRating
   if (credential === undefined) return null
-  return isRealCredential(credential) ? "Real" : `Fake License | R${credential.rating}`
+  return isRealCredential(credential) ? "Real" : `Fake License | R${credential.rating ?? 0}`
 }
 
 export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ item, check }) => {

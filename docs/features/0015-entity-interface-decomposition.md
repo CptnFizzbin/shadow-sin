@@ -20,8 +20,8 @@ attribute/damage access. Closes the open "Shared abstraction?" question in
 
 Also retires `EntityData.rating`'s string-sentinel pattern (`Rating<TSentinel>`): `rating` becomes
 a plain `number`, and the three current sentinel users (`SinData`/`LicenseData`'s `"real"`,
-`LanguageSkillData`'s `"native"`) each become a discriminated union with an explicit `isReal`/
-`isNative` flag instead. This is a migration on **shipped** behavior, not a green-field type
+`LanguageSkillData`'s `"native"`) each gain an explicit `isReal`/`isNative` flag instead, alongside
+an optional `rating`. This is a migration on **shipped** behavior, not a green-field type
 change — see Constraints below.
 
 ## Open Questions
@@ -108,11 +108,11 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   implementation.
 - Every structural change here needs new, additive migrations — no editing existing migration
   files.
-- `SinData`/`LicenseData`/`LanguageSkillData` become 2-member discriminated unions
-  (`{ isReal: true } | { isReal: false, rating: number }`, `isNative` equivalent for Language) —
-  not just `{ isReal: boolean; rating?: number }`, which would still permit illegal states
-  (`isReal: true` with a `rating` set, or `isReal: false` with `rating` absent) that a real
-  discriminated union rules out at compile time.
+- `SinData`/`LicenseData`/`LanguageSkillData` gain an explicit `isReal`/`isNative` flag plus an
+  optional `rating?: number` (`isNative` equivalent for Language) — a plain flat shape, not a
+  discriminated union. `rating` is only meaningful — and only ever set — when `isReal`/`isNative`
+  is `false`, but that relationship isn't enforced by the type system; consumers branch on the
+  flag explicitly. (Revised from this doc's original discriminated-union proposal — see #535.)
 - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) hard-codes the
   current `"real" | number` shape as a Constraint and in its Rough Interface Sketch — updated
   alongside this doc so the two don't contradict each other. Its own Issues (`#391`, `#393`,
@@ -226,26 +226,28 @@ interface RunnerData extends EntityWithItems {
 declare function selectEntityAttr(key: AttributeKey): (entity: EntityData & EntityWithAttrs) => number
 
 // Rating's string-sentinel pattern (Rating<TSentinel>) is retired; EntityData.rating is a plain
-// number. The three current sentinel users become discriminated unions instead of overloading
-// `rating` with a string case:
+// number. The three current sentinel users gain an explicit isReal/isNative flag plus an
+// optional rating instead of overloading `rating` with a string case — a plain flat shape, not a
+// discriminated union; `rating` is only meaningful (and only ever set) when the flag is false:
 
-interface SinDataBase extends ItemData {
+interface SinData extends ItemData {
   itemType: ItemType.sin
+  isReal: boolean
+  rating?: number
 }
-type SinData =
-  | (SinDataBase & { isReal: true })
-  | (SinDataBase & { isReal: false, rating: number })
 
-interface LicenseDataBase extends ItemData {
+interface LicenseData extends ItemData {
   itemType: ItemType.license
+  isReal: boolean
+  rating?: number
 }
-type LicenseData =
-  | (LicenseDataBase & { isReal: true })
-  | (LicenseDataBase & { isReal: false, rating: number })
 
-type LanguageSkillData =
-  | { name: string, isNative: true, lingo?: string }
-  | { name: string, isNative: false, rating: number, lingo?: string }
+interface LanguageSkillData {
+  name: string
+  isNative: boolean
+  rating?: number
+  lingo?: string
+}
 ```
 
 ## Out of Scope

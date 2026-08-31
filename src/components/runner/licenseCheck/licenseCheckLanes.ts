@@ -11,7 +11,7 @@ import type { CredentialRating, VerificationLane } from "./licenseCheckTypes.ts"
 
 /** Reduces a SIN/Licence to the `CredentialRating` shape a License Check rolls against. */
 function toCredentialRating(entity: SinData | LicenseData): CredentialRating {
-  return entity.isReal ? { isReal: true } : { isReal: false, rating: entity.rating }
+  return { isReal: entity.isReal, rating: entity.rating }
 }
 
 const isRestricted = (item: ItemData) => item.availability?.restricted === true && !item.availability?.forbidden

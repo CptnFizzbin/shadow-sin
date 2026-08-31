@@ -1,7 +1,9 @@
-// Matches SinData/LicenseData's isReal-flag shape (see #535).
-export type CredentialRating =
-  | { isReal: true }
-  | { isReal: false, rating: number }
+// Matches SinData/LicenseData's isReal-flag shape (see #535). `rating` is only meaningful (and
+// only ever set) when `isReal` is `false`.
+export interface CredentialRating {
+  isReal: boolean
+  rating?: number
+}
 
 export interface VerificationCheck {
   itemId: string // SinData.id or ItemData.id

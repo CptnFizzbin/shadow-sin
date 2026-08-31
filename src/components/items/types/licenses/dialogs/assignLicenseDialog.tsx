@@ -32,7 +32,7 @@ import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
-import type { DistributiveOmit, ItemData } from "#/system/itemData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import { useSinFormDialog } from "./sinFormDialog.tsx"
@@ -226,24 +226,15 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   const handleAcquireNew = () => {
     if (!selectedSinId) return
 
-    const licenseDraft: DistributiveOmit<LicenseData, "id"> = isReal
-      ? {
-          kind: EntityKind.item,
-          itemType: ItemType.license,
-          name: `License: ${item.name}`,
-          isReal: true,
-          cost,
-          items: { parentId: selectedSinId as UUID, childIds: [] },
-        }
-      : {
-          kind: EntityKind.item,
-          itemType: ItemType.license,
-          name: `License: ${item.name}`,
-          isReal: false,
-          rating: fakeRating,
-          cost,
-          items: { parentId: selectedSinId as UUID, childIds: [] },
-        }
+    const licenseDraft: Omit<LicenseData, "id"> = {
+      kind: EntityKind.item,
+      itemType: ItemType.license,
+      name: `License: ${item.name}`,
+      isReal,
+      rating: isReal ? undefined : fakeRating,
+      cost,
+      items: { parentId: selectedSinId as UUID, childIds: [] },
+    }
     const addLicenseAction = Actions.item.licenses.create(licenseDraft)
     dispatch(addLicenseAction)
     dispatch(Actions.item.licenses.setLicenseForItem({

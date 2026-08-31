@@ -99,9 +99,10 @@ included):
   (Forbidden) has no legal Licence path (`AvailabilityChip`, `availabilityInfo.ts`). Forbidden
   gear must never be offered a roll — matches the existing Licence Quick-Buy rule that Forbidden
   items get no quick-buy trigger either.
-- `LicenseData` / `SinData` carry an `isReal` flag (`rating` present only when `isReal` is
-  `false`) — a real credential (`isReal: true`) must always auto-clear and must never be rolled.
-  Superseded from the original `"real" | number` sentinel shape by
+- `LicenseData` / `SinData` carry an `isReal` flag (`rating?: number`, meaningful — and only ever
+  set — when `isReal` is `false`, though not type-enforced) — a real credential (`isReal: true`)
+  must always auto-clear and must never be rolled. Superseded from the original `"real" | number`
+  sentinel shape by
   [`docs/features/0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md);
   this feature's own Issues (`#391`, `#393`, `#394`) are already closed, so this is a follow-up
   migration on shipped code, not a change to this doc's own implementation plan.
@@ -153,8 +154,12 @@ ephemeral checked/unchecked selection instead (see Resolved Design Decisions abo
 _High-level shapes only — no implementation code._
 
 ```ts
-// Matches SinData/LicenseData's shape post-0015: rating present only when isReal is false.
-type Credential = { isReal: true } | { isReal: false, rating: number }
+// Matches SinData/LicenseData's shape post-0015: rating is meaningful — and only ever set —
+// when isReal is false, though the flag/rating relationship isn't type-enforced.
+interface Credential {
+  isReal: boolean
+  rating?: number
+}
 
 interface VerificationLane {
   key: string // a SIN's id, or "unlicensed" / "forbidden"

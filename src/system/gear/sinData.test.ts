@@ -36,9 +36,9 @@ describe.concurrent("SinDataSchema", () => {
     expect(result.success).toBe(true)
   })
 
-  it("rejects isReal: true combined with a rating", () => {
+  it("rejects a missing isReal flag", () => {
     // Arrange
-    const sin = { ...baseFields, isReal: true, rating: 4 }
+    const sin = { ...baseFields, rating: 4 }
 
     // Act
     const result = SinDataSchema.safeParse(sin)
@@ -47,9 +47,9 @@ describe.concurrent("SinDataSchema", () => {
     expect(result.success).toBe(false)
   })
 
-  it("rejects isReal: false with no rating", () => {
+  it("rejects a non-numeric rating", () => {
     // Arrange
-    const sin = { ...baseFields, isReal: false }
+    const sin = { ...baseFields, isReal: false, rating: "4" }
 
     // Act
     const result = SinDataSchema.safeParse(sin)

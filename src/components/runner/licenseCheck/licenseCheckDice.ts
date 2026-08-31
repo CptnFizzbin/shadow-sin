@@ -60,9 +60,7 @@ export async function rollOpposedTest(
   return { credentialHits, scannerHits, status }
 }
 
-export function isRealCredential(
-  credential: CredentialRating,
-): credential is Extract<CredentialRating, { isReal: true }> {
+export function isRealCredential(credential: CredentialRating): boolean {
   return credential.isReal
 }
 
@@ -92,7 +90,7 @@ export async function resolveVerificationCheck(
   const { credentialHits, scannerHits, status } = await rollOpposedTest(
     credentialRoller,
     scannerRoller,
-    credential.rating,
+    credential.rating ?? 0,
     scannerRating,
     ratingPlusRating,
   )

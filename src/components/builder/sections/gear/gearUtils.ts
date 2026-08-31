@@ -46,12 +46,12 @@ export const useGearAvailabilityIssues = () => {
       const sins = allGear.filter(isSinData)
       const licenses = allGear.filter(isLicenseData)
 
-      const sinInvalid = sins.some((s) => getSinAvailability(s.isReal, s.isReal ? 0 : s.rating).rating > GearMaxAvailability)
-      const licInvalid = licenses.some((l) => getLicenseAvailability(l.isReal, l.isReal ? 0 : l.rating).rating > GearMaxAvailability)
+      const sinInvalid = sins.some((s) => getSinAvailability(s.isReal, s.rating ?? 0).rating > GearMaxAvailability)
+      const licInvalid = licenses.some((l) => getLicenseAvailability(l.isReal, l.rating ?? 0).rating > GearMaxAvailability)
 
       if (sinInvalid || licInvalid) {
         invalidSections.add(sectionName)
-        totalInvalidCount += sins.filter((s) => getSinAvailability(s.isReal, s.isReal ? 0 : s.rating).rating > GearMaxAvailability).length + licenses.filter((l) => getLicenseAvailability(l.isReal, l.isReal ? 0 : l.rating).rating > GearMaxAvailability).length
+        totalInvalidCount += sins.filter((s) => getSinAvailability(s.isReal, s.rating ?? 0).rating > GearMaxAvailability).length + licenses.filter((l) => getLicenseAvailability(l.isReal, l.rating ?? 0).rating > GearMaxAvailability).length
       }
     } else if (sectionName === SectionHeader.Cyberware) {
       const invalidImplants = allGear.filter(isImplant)

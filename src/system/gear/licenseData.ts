@@ -6,33 +6,33 @@ import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
-interface LicenseDataBase extends ItemData {
-  itemType: ItemType.license
-}
-
 /**
  * Authorizes a Restricted item, attached to a SIN (`items.parentId`). `isReal: true` is a Real
  * Licence — free, unrestricted, never rolled — matching its SIN's reality; `isReal: false` is a
- * fake Licence carrying a forgery-quality `rating`. See CONTEXT.md's **Licence** glossary entry.
+ * fake Licence carrying a forgery-quality `rating`. Consumers branch on `isReal`; `rating` is
+ * only meaningful (and only ever set) when `isReal` is `false`. See CONTEXT.md's **Licence**
+ * glossary entry.
  */
-export type LicenseData =
-  | (LicenseDataBase & { isReal: true })
-  | (LicenseDataBase & { isReal: false, rating: number })
+export interface LicenseData extends ItemData {
+  itemType: ItemType.license
+  isReal: boolean
+  rating?: number
+}
 
 export function isLicenseData(item: ItemData): item is LicenseData {
   return item.itemType === ItemType.license
 }
 
 /**
- * Private, file-local base carrying the ~15 shared `ItemData`/`EntityData` fields — extended by
- * each `LicenseDataSchema` union branch below so they aren't duplicated twice in this file.
- * Scoped to this file only; not a codebase-wide schema-composition pattern (see AGENTS.md).
+ * Zod schema for validating LicenseData.
  */
-const licenseDataBaseSchema = z.object({
+export const LicenseDataSchema = z.object({
   kind: z.literal(EntityKind.item),
   id: z.uuid(),
   itemType: z.literal(ItemType.license),
   name: z.string().min(1, "Name is required"),
+  isReal: z.boolean(),
+  rating: z.number().int().min(1).optional(),
   description: z.string().optional(),
   source: SourceDataSchema.optional(),
   effects: z.array(GameEffectDataSchema).optional(),
@@ -59,9 +59,4 @@ const licenseDataBaseSchema = z.object({
     parentId: z.uuid().nullable(),
     childIds: z.uuid().array(),
   }),
-})
-
-export const LicenseDataSchema = z.discriminatedUnion("isReal", [
-  licenseDataBaseSchema.extend({ isReal: z.literal(true) }).strict(),
-  licenseDataBaseSchema.extend({ isReal: z.literal(false), rating: z.number().int().min(1) }).strict(),
-]) satisfies z.ZodType<LicenseData>
+}) satisfies z.ZodType<LicenseData>

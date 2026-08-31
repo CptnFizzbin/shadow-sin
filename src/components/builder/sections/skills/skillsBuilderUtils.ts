@@ -45,7 +45,7 @@ export const getLanguageSkillSp = (skill: LanguageSkillData): number => {
   const baseSp =
     skill.isNative
       ? 0
-      : skill.rating * BuilderConfig.skills.language.spCost.perRating
+      : (skill.rating ?? 0) * BuilderConfig.skills.language.spCost.perRating
 
   const specializationSp =
     skill.lingo

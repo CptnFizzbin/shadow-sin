@@ -36,9 +36,9 @@ describe.concurrent("LanguageSkillDataSchema", () => {
     expect(result.success).toBe(true)
   })
 
-  it("rejects isNative: true combined with a rating", () => {
+  it("rejects a missing isNative flag", () => {
     // Arrange
-    const skill = { name: "English", isNative: true, rating: 3 }
+    const skill = { name: "English", rating: 3 }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
@@ -47,9 +47,9 @@ describe.concurrent("LanguageSkillDataSchema", () => {
     expect(result.success).toBe(false)
   })
 
-  it("rejects isNative: false with no rating", () => {
+  it("rejects a non-numeric rating", () => {
     // Arrange
-    const skill = { name: "Elven", isNative: false }
+    const skill = { name: "Elven", isNative: false, rating: "3" }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)

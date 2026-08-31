@@ -14,13 +14,13 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
   const skillDicePool = useLanguageSkillDicePool({
     language: skill.name,
     isNative: skill.isNative,
-    rating: skill.isNative ? 0 : skill.rating,
+    rating: skill.rating ?? 0,
   })
 
   const lingoDicePool = useLanguageSkillDicePool({
     language: skill.name,
     isNative: skill.isNative,
-    rating: skill.isNative ? 0 : skill.rating,
+    rating: skill.rating ?? 0,
     lingo: skill.lingo,
   })
 
@@ -41,7 +41,7 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
     <>
       <SkillListItem
         name={skill.name}
-        rating={skill.isNative ? 0 : skill.rating}
+        rating={skill.rating ?? 0}
         isNative={skill.isNative}
         specialization={skill.lingo}
         attr={AttributeKey.intuition}

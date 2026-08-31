@@ -125,9 +125,9 @@ export function isLearnKnowledgeSkillEntry(
   return entry.type === ImprovementType.learnKnowledgeSkill
 }
 
-// Native languages cannot be learned with karma (SR4A) — narrows `LanguageSkillData` to its
-// `isNative: false` branch, whose `rating` is always numeric.
-export type LearnableLanguageSkillData = Extract<LanguageSkillData, { isNative: false }>
+// Native languages cannot be learned with karma (SR4A); the entry's rating is
+// always numeric. This narrows `LanguageSkillData["rating"]` from optional to required.
+export type LearnableLanguageSkillData = Omit<LanguageSkillData, "rating"> & { rating: number }
 
 export interface LearnLanguageSkillEntry extends BaseImprovementEntry {
   type: ImprovementType.learnLanguageSkill

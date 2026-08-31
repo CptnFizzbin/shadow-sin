@@ -222,22 +222,21 @@ const applyQualityBuyOff = (sheet: Draft<RunnerData>, entry: QualityBuyOffEntry)
 }
 
 const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {
+  let skillData: undefined | { rating?: number }
+
   if (entry.skillType === "ActiveSkill") {
     const skillGroup = skillList[entry.skill]
     if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
-    const skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
+    skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
     if (!skillData) throw new Error(`Skill ${entry.skill} not found on runner sheet`)
     skillData.rating = entry.newRating
   } else if (entry.skillType === "KnowledgeSkill") {
-    const skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
+    skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
     if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on runner sheet`)
     skillData.rating = entry.newRating
   } else if (entry.skillType === "LanguageSkill") {
-    const skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
+    skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
     if (!skillData) throw new Error(`Language ${entry.skill} not found on runner sheet`)
-    // Native languages are never queued for karma improvement (see `ImprovementLanguageSkillList`'s
-    // `isAtMax` cap check) — this branch only ever runs against an already-learned, non-native skill.
-    if (skillData.isNative) throw new Error(`Language ${entry.skill} is native and cannot be improved with karma`)
     skillData.rating = entry.newRating
   }
 }

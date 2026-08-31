@@ -36,9 +36,9 @@ describe.concurrent("LicenseDataSchema", () => {
     expect(result.success).toBe(true)
   })
 
-  it("rejects isReal: true combined with a rating", () => {
+  it("rejects a missing isReal flag", () => {
     // Arrange
-    const license = { ...baseFields, isReal: true, rating: 4 }
+    const license = { ...baseFields, rating: 4 }
 
     // Act
     const result = LicenseDataSchema.safeParse(license)
@@ -47,9 +47,9 @@ describe.concurrent("LicenseDataSchema", () => {
     expect(result.success).toBe(false)
   })
 
-  it("rejects isReal: false with no rating", () => {
+  it("rejects a non-numeric rating", () => {
     // Arrange
-    const license = { ...baseFields, isReal: false }
+    const license = { ...baseFields, isReal: false, rating: "4" }
 
     // Act
     const result = LicenseDataSchema.safeParse(license)

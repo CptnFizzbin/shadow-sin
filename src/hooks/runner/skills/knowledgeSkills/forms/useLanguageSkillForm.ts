@@ -9,9 +9,10 @@ interface LanguageSkillFormOptions {
 }
 
 /**
- * Flat editing shape backing the form's single "Rating" select (`ratingSelect`, matching its
- * MUI `Select`'s string-only options: `"native"` or a stringified numeric rating). Converted to
- * `LanguageSkillData`'s `isNative`-discriminated union only at submit time.
+ * Editing shape backing the form's single "Rating" select (`ratingSelect`, matching its MUI
+ * `Select`'s string-only options: `"native"` or a stringified numeric rating) — one combined
+ * control is friendlier than separately editing `LanguageSkillData`'s `isNative`/`rating` fields.
+ * Converted to `LanguageSkillData`'s actual shape only at submit time.
  */
 interface LanguageSkillFormValues {
   name: string
@@ -36,7 +37,7 @@ export const useLanguageSkillForm = ({
     ? {
         name: skill.name,
         lingo: skill.lingo,
-        ratingSelect: skill.isNative ? "native" : String(skill.rating),
+        ratingSelect: skill.isNative ? "native" : String(skill.rating ?? 1),
       }
     : {}
 
