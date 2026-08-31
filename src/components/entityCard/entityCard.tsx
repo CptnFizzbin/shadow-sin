@@ -47,7 +47,7 @@ export interface EntityCardProps extends PropsWithChildren {
    * Overrides `entity.rating` for display when a category's rating isn't a plain number (e.g. a
    * Real SIN/Licence shows "Real" instead of a number it no longer carries).
    */
-  ratingOverride?: string | number
+  rating?: string | number
 }
 
 /**
@@ -67,7 +67,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onEdit,
   onRemove,
   leftAction,
-  ratingOverride,
+  rating,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
@@ -154,7 +154,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center" }}>
                 {slots.layout.topRight}
 
-                <EntityCardElements.Rating value={ratingOverride ?? entity.rating} />
+                <EntityCardElements.Rating value={rating ?? entity.rating} />
               </Stack>
             </EntityCardLayout.HeaderRow>
 

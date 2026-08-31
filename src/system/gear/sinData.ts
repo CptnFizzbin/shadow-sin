@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import type { Credential } from "#/system/entities/entityTraits.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -9,13 +10,10 @@ import { SourceDataSchema } from "#/system/sourceData.ts"
 /**
  * A held identity. `isReal: true` is a Real SIN — issued by a government, never rolled, always
  * clears a License Check — while `isReal: false` is a fake SIN carrying a forgery-quality
- * `rating`. Consumers branch on `isReal`; `rating` is only meaningful (and only ever set) when
- * `isReal` is `false`. See CONTEXT.md's **SIN** glossary entry.
+ * `rating`. See CONTEXT.md's **SIN** glossary entry.
  */
-export interface SinData extends ItemData {
+export interface SinData extends ItemData, Credential {
   itemType: ItemType.sin
-  isReal: boolean
-  rating?: number
 }
 
 export function isSinData(item: ItemData): item is SinData {

@@ -1,5 +1,6 @@
 import type { EntityData } from "#/system/entityData.ts"
 
+export * from "./traits/credential.ts"
 export * from "./traits/entityWithAttrs.ts"
 export * from "./traits/entityWithDamage.ts"
 export * from "./traits/entityWithItems.ts"

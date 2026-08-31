@@ -19,7 +19,7 @@ export const LicenseDataCard: FC<LicenseDataCardProps> = ({ license, onOpen, onE
   return (
     <ItemCard
       item={license}
-      ratingOverride={license.isReal ? "Real" : license.rating}
+      rating={license.isReal ? "Real" : license.rating}
       onOpen={onOpen}
       onEdit={onEdit}
       onRemove={removeLicense}

@@ -112,7 +112,12 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   optional `rating?: number` (`isNative` equivalent for Language) — a plain flat shape, not a
   discriminated union. `rating` is only meaningful — and only ever set — when `isReal`/`isNative`
   is `false`, but that relationship isn't enforced by the type system; consumers branch on the
-  flag explicitly. (Revised from this doc's original discriminated-union proposal — see #535.)
+  flag explicitly. `SinData`/`LicenseData` share this shape as a new `EntityTrait`, `Credential`
+  (`src/system/entities/traits/credential.ts`), alongside the existing `EntityWithAttrs`/
+  `EntityWithDamage`/`EntityWithItems`/`EntityWithQualities`; `LanguageSkillData` isn't an Entity
+  and uses `isNative` rather than `isReal`, so it declares the same shape standalone rather than
+  implementing `Credential`. (Revised from this doc's original discriminated-union proposal — see
+  #535.)
 - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) hard-codes the
   current `"real" | number` shape as a Constraint and in its Rough Interface Sketch — updated
   alongside this doc so the two don't contradict each other. Its own Issues (`#391`, `#393`,
@@ -228,18 +233,22 @@ declare function selectEntityAttr(key: AttributeKey): (entity: EntityData & Enti
 // Rating's string-sentinel pattern (Rating<TSentinel>) is retired; EntityData.rating is a plain
 // number. The three current sentinel users gain an explicit isReal/isNative flag plus an
 // optional rating instead of overloading `rating` with a string case — a plain flat shape, not a
-// discriminated union; `rating` is only meaningful (and only ever set) when the flag is false:
+// discriminated union; `rating` is only meaningful (and only ever set) when the flag is false.
+// SinData/LicenseData share this shape as a new EntityTrait, `Credential` (alongside
+// EntityWithAttrs/EntityWithDamage/EntityWithItems/EntityWithQualities); LanguageSkillData isn't
+// an Entity and uses `isNative` rather than `isReal`, so it declares the same shape standalone:
 
-interface SinData extends ItemData {
-  itemType: ItemType.sin
+interface Credential {
   isReal: boolean
   rating?: number
 }
 
-interface LicenseData extends ItemData {
+interface SinData extends ItemData, Credential {
+  itemType: ItemType.sin
+}
+
+interface LicenseData extends ItemData, Credential {
   itemType: ItemType.license
-  isReal: boolean
-  rating?: number
 }
 
 interface LanguageSkillData {

@@ -1,9 +1,8 @@
-// Matches SinData/LicenseData's isReal-flag shape (see #535). `rating` is only meaningful (and
+import type { Credential } from "#/system/entities/entityTraits.ts"
+
+// Matches SinData/LicenseData's `Credential` trait (see #535): `rating` is only meaningful (and
 // only ever set) when `isReal` is `false`.
-export interface CredentialRating {
-  isReal: boolean
-  rating?: number
-}
+export type CredentialRating = Credential
 
 export interface VerificationCheck {
   itemId: string // SinData.id or ItemData.id

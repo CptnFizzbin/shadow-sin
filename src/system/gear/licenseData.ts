@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import type { Credential } from "#/system/entities/entityTraits.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -9,14 +10,10 @@ import { SourceDataSchema } from "#/system/sourceData.ts"
 /**
  * Authorizes a Restricted item, attached to a SIN (`items.parentId`). `isReal: true` is a Real
  * Licence — free, unrestricted, never rolled — matching its SIN's reality; `isReal: false` is a
- * fake Licence carrying a forgery-quality `rating`. Consumers branch on `isReal`; `rating` is
- * only meaningful (and only ever set) when `isReal` is `false`. See CONTEXT.md's **Licence**
- * glossary entry.
+ * fake Licence carrying a forgery-quality `rating`. See CONTEXT.md's **Licence** glossary entry.
  */
-export interface LicenseData extends ItemData {
+export interface LicenseData extends ItemData, Credential {
   itemType: ItemType.license
-  isReal: boolean
-  rating?: number
 }
 
 export function isLicenseData(item: ItemData): item is LicenseData {

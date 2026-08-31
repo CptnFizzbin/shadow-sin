@@ -77,7 +77,7 @@ function EntityCardTestPage() {
           <Section title="Rating override (e.g. a Real SIN, which carries no plain rating)">
             <EntityCard
               entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Real SIN" }}
-              ratingOverride="Real"
+              rating="Real"
             />
           </Section>
         </Stack>

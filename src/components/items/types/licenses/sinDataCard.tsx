@@ -37,7 +37,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
     <>
       <ItemCard
         item={sin}
-        ratingOverride={sin.isReal ? "Real" : sin.rating}
+        rating={sin.isReal ? "Real" : sin.rating}
         onOpen={onOpen}
         onEdit={onEdit}
         onRemove={removeSin}
