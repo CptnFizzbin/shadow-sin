@@ -65,7 +65,7 @@ const ExistingLicenseSection: FC<ExistingLicenseSectionProps> = ({
             {sin && ` — ${sin.name}`}
             {" "}
             (
-            {license.rating === "real" ? "Real" : `Rating ${license.rating}`}
+            {license.isReal ? "Real" : `Rating ${license.rating}`}
             )
           </MenuItem>
         )
@@ -196,9 +196,8 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   // A Licence's reality always matches its SIN's — a Fake SIN can only carry Fake licences,
   // and only the Real SIN can carry a Real (free, unrestricted) licence.
   const selectedSin = sins.find((sin) => sin.id === selectedSinId)
-  const isReal = selectedSin?.rating === "real"
-  const rating: LicenseData["rating"] = isReal ? "real" : fakeRating
-  const cost = getLicenseCost(rating)
+  const isReal = selectedSin?.isReal === true
+  const cost = getLicenseCost(isReal, fakeRating)
   const canAfford = currentNuyen >= cost
 
   const handleCreateSin = async () => {
@@ -231,7 +230,8 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
       kind: EntityKind.item,
       itemType: ItemType.license,
       name: `License: ${item.name}`,
-      rating,
+      isReal,
+      rating: isReal ? undefined : fakeRating,
       cost,
       items: { parentId: selectedSinId as UUID, childIds: [] },
     }

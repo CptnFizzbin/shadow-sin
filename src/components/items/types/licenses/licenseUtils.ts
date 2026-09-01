@@ -3,20 +3,22 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
+/** `rating` is ignored (and may be a placeholder) when `isReal` is `true` — a Real Licence is always free and unrestricted. */
 export const getLicenseAvailability = (
-  rating: LicenseData["rating"],
+  isReal: boolean,
+  rating: number,
 ): AvailabilityInfo => {
-  if (rating === "real") return { rating: 0 }
+  if (isReal) return { rating: 0 }
 
   return {
-    rating: Number(rating) * 3,
+    rating: rating * 3,
     forbidden: true,
   }
 }
 
-export const getLicenseCost = (rating: LicenseData["rating"]): number => {
-  if (rating === "real") return 0
-  return Number(rating) * 100
+export const getLicenseCost = (isReal: boolean, rating: number): number => {
+  if (isReal) return 0
+  return rating * 100
 }
 
 /** Default rating for a newly-created Fake Licence. */

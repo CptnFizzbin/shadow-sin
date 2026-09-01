@@ -1,4 +1,8 @@
-export type CredentialRating = "real" | number // matches existing SinData/LicenseData.rating
+import type { Credential } from "#/system/entities/entityTraits.ts"
+
+// Matches SinData/LicenseData's `Credential` trait (see #535): `rating` is only meaningful (and
+// only ever set) when `isReal` is `false`.
+export type CredentialRating = Credential
 
 export interface VerificationCheck {
   itemId: string // SinData.id or ItemData.id

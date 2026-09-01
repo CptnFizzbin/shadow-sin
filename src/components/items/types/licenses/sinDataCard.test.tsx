@@ -19,6 +19,7 @@ const fakeSin: SinData = {
   id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
+  isReal: false,
   rating: 4,
 }
 
@@ -27,7 +28,7 @@ const realSin: SinData = {
   id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,
-  rating: "real",
+  isReal: true,
 }
 
 const coveredLicense: LicenseData = {
@@ -35,6 +36,7 @@ const coveredLicense: LicenseData = {
   id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
   items: { parentId: fakeSin.id, childIds: [] },
 }
@@ -84,7 +86,7 @@ describe("SinDataCard", () => {
     renderSinCard(realSin)
 
     // Assert
-    expect(screen.getByText("Rating: real")).toBeDefined()
+    expect(screen.getByText("Rating: Real")).toBeDefined()
   })
 
   it("renders covered licenses as nested subitems with their own rating", () => {

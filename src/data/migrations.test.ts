@@ -166,11 +166,12 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(migrated.skills.skillGroups[0].name).toBe("Athletics")
     expect(migrated.skills.skillGroups[0].rating).toBe(2)
 
-    // native language skill uses `"native"` rating
+    // native language skill carries the isNative flag, not a rating
     const english = migrated.skills.languageSkills.find((s) => s.name === "English")
-    expect(english?.rating).toBe("native")
+    expect(english?.isNative).toBe(true)
     const sylvan = migrated.skills.languageSkills.find((s) => s.name === "Sylvan")
-    expect(sylvan?.rating).toBe(4)
+    expect(sylvan?.isNative).toBe(false)
+    expect(sylvan && !sylvan.isNative ? sylvan.rating : undefined).toBe(4)
 
     // spells promoted from awakened to top-level
     expect(migrated.spells).toHaveLength(2)
@@ -223,7 +224,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(runner.skills.skillGroups).toHaveLength(1)
     expect(runner.skills.skillGroups[0].name).toBe("Athletics")
     const english = runner.skills.languageSkills.find((s) => s.name === "English")
-    expect(english?.rating).toBe("native")
+    expect(english?.isNative).toBe(true)
 
     // spells promoted from awakened wrapper
     expect(runner.spells).toHaveLength(2)

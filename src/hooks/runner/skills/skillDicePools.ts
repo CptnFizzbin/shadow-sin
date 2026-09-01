@@ -63,10 +63,12 @@ export const useKnowledgeSkillDicePool = (props: {
 
 export const useLanguageSkillDicePool = (props: {
   language: string
-  rating: number | "native"
+  /** A native Language skill has no dice pool to roll — it always succeeds automatically. */
+  isNative: boolean
+  rating: number
   lingo?: string
 }): DicePoolData => {
-  const { language, rating, lingo } = props
+  const { language, isNative, rating, lingo } = props
 
   let name = language
   let id = `skill.language.${language}`
@@ -76,7 +78,7 @@ export const useLanguageSkillDicePool = (props: {
   }
 
   return createDicePool(id, name, [
-    { name: language, size: rating === "native" ? 0 : rating },
+    { name: language, size: isNative ? 0 : rating },
     useAttrDiceGroup(AttributeKey.intuition),
     lingo ? { name: lingo, size: 2 } : null,
     useWoundDiceGroup(),

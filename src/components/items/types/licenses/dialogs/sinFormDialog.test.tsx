@@ -26,7 +26,7 @@ describe("SinFormDialog", () => {
     expect(SinNameList).toContain(nameInput.value)
   })
 
-  it("saves rating \"real\" when the Real toggle is selected", async () => {
+  it("saves isReal: true when the Real toggle is selected", async () => {
     // Arrange
     const ctrl = new DialogCtrl<SinData>()
     const savedPromise = ctrl.open()
@@ -42,6 +42,6 @@ describe("SinFormDialog", () => {
 
     // Assert
     const saved = await savedPromise
-    expect(saved?.rating).toBe("real")
+    expect(saved?.isReal).toBe(true)
   })
 })

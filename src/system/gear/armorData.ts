@@ -1,6 +1,5 @@
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import type { Rating } from "#/system/rating.ts"
 
 export enum ArmorRatingType {
   ballistic = "ballistic",
@@ -8,8 +7,8 @@ export enum ArmorRatingType {
 }
 
 export interface ArmorRating {
-  [ArmorRatingType.ballistic]: Rating
-  [ArmorRatingType.impact]: Rating
+  [ArmorRatingType.ballistic]: number
+  [ArmorRatingType.impact]: number
 }
 
 export interface ArmorData extends ItemData, ArmorRating {

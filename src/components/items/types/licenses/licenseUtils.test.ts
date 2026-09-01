@@ -78,6 +78,7 @@ describe.concurrent("isItemLicensed", () => {
     id: licenseId,
     itemType: ItemType.license,
     name: "License",
+    isReal: false,
     rating: 4,
   }
 
@@ -138,7 +139,7 @@ describe.concurrent("findLicenseableSiblings", () => {
     const item = makePistol("00000000-0000-0000-0000-000000000001")
     const licenseId = "00000000-0000-0000-0000-000000000099"
     const licensedSibling = makePistol("00000000-0000-0000-0000-000000000002", { licenseId })
-    const license: LicenseData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: licenseId, itemType: ItemType.license, name: "License", rating: 4 }
+    const license: LicenseData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: licenseId, itemType: ItemType.license, name: "License", isReal: false, rating: 4 }
 
     // Act
     const siblings = findLicenseableSiblings(item, [item, licensedSibling], [license])
@@ -164,12 +165,12 @@ describe.concurrent("findLicenseableSiblings", () => {
 describe.concurrent("getLicenseCost", () => {
   it("is free for a real SIN's licence", () => {
     // Arrange / Act / Assert
-    expect(getLicenseCost("real")).toBe(0)
+    expect(getLicenseCost(true, 0)).toBe(0)
   })
 
   it("scales with rating for a fake licence", () => {
     // Arrange / Act / Assert
-    expect(getLicenseCost(4)).toBe(400)
+    expect(getLicenseCost(false, 4)).toBe(400)
   })
 })
 

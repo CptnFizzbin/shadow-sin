@@ -37,6 +37,7 @@ describe.concurrent("licenses.create", () => {
     const licenseDraft: Omit<LicenseData, "id"> = {
       kind: EntityKind.item, items: { parentId: null, childIds: [] },
       itemType: ItemType.license,
+      isReal: false,
       name: "License: Ares Predator V",
       rating: 3,
     }

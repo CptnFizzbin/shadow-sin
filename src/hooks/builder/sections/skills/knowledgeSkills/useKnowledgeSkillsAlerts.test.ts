@@ -19,9 +19,9 @@ describe("useKnowledgeSkillsAlerts", () => {
             { name: "Sprawl Gangs", rating: 6 },
           ],
           languageSkills: [
-            { name: "Japanese", rating: 5 },
-            { name: "Or'zet", rating: 5 },
-            { name: "Sperethiel", rating: 5 },
+            { name: "Japanese", isNative: false, rating: 5 },
+            { name: "Or'zet", isNative: false, rating: 5 },
+            { name: "Sperethiel", isNative: false, rating: 5 },
           ],
         }
       },
@@ -43,8 +43,8 @@ describe("useKnowledgeSkillsAlerts", () => {
         runner.skills = {
           ...runner.skills,
           languageSkills: [
-            { name: "Japanese", rating: "native" },
-            { name: "English", rating: "native" },
+            { name: "Japanese", isNative: true },
+            { name: "English", isNative: true },
           ],
         }
       },

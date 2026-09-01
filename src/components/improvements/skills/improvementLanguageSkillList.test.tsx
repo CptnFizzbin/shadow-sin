@@ -38,7 +38,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("renders language skills with an Improve button", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
+      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -52,7 +52,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("shows Native chip and disables Improve button for native-rated language skills", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: "native" }]
+      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: true }]
       sheet.karma.current = 50
     })
 
@@ -67,7 +67,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("shows Max chip and disables Improve button for language skills at rating 6", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 6 }]
+      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 6 }]
       sheet.karma.current = 50
     })
 
@@ -82,7 +82,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("clicking Improve queues a language skill increase (button becomes aria-pressed)", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
+      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
     const improveButton = screen.getByRole("button", { name: /improve rating/i })

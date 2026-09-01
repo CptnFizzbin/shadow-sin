@@ -244,6 +244,7 @@ const BASE_LICENSE: LicenseData = {
   id: LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
   source: { book: "SR4A", page: 297 },
   effects: [{ type: GameEffectType.dicePoolMod, target: "Negotiation", value: -1 }],
@@ -259,6 +260,7 @@ const BASE_SIN: SinData = {
   id: SIN_ID,
   name: "Fake SIN (Chicago)",
   itemType: ItemType.sin,
+  isReal: false,
   rating: 4,
   source: { book: "SR4A", page: 297 },
   effects: [{ type: GameEffectType.dicePoolMod, target: "Con", value: 1 }],
@@ -274,6 +276,7 @@ const COVERED_LICENSE: LicenseData = {
   id: COVERED_LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
 }
 

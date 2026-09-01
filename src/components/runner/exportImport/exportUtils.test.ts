@@ -4,7 +4,6 @@ import { Artemis } from "#/data/fixtures/artemis.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
-import type { ItemData } from "#/system/itemData.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
@@ -24,7 +23,7 @@ describe.concurrent("gearToTree", () => {
   it("includes a root-level SIN with no children", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
 
     // Act
@@ -40,9 +39,9 @@ describe.concurrent("gearToTree", () => {
   it("includes multiple root-level SINs with no children", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
-      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, rating: 4 }),
-      createItem<SinData>({ name: "Jane Smith", itemType: ItemType.sin, rating: 2 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
+      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, isReal: false, rating: 4 }),
+      createItem<SinData>({ name: "Jane Smith", itemType: ItemType.sin, isReal: false, rating: 2 }),
     )
 
     // Act
@@ -59,10 +58,11 @@ describe.concurrent("gearToTree", () => {
   it("nests licenses under their parent SIN", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, rating: 4 }, [
+      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, isReal: false, rating: 4 }, [
         createItem<LicenseData>({
           name: "Driver License",
           itemType: ItemType.license,
+          isReal: false,
           rating: 4,
         }),
       ]),
@@ -84,10 +84,10 @@ describe.concurrent("gearToTree", () => {
   it("nests multiple licenses under a single SIN", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Cyberware License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
+        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, isReal: false, rating: 4 }),
+        createItem<LicenseData>({ name: "Cyberware License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
 
@@ -107,11 +107,11 @@ describe.concurrent("gearToTree", () => {
   it("includes SINs without licenses alongside SINs with licenses", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, rating: 6 }),
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, isReal: false, rating: 6 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
-      createItem<SinData>({ name: "Burner SIN", itemType: ItemType.sin, rating: 2 }),
+      createItem<SinData>({ name: "Burner SIN", itemType: ItemType.sin, isReal: false, rating: 2 }),
     )
 
     // Act
@@ -137,8 +137,8 @@ describe.concurrent("gearToTree", () => {
   it("omits the items (parentId/childIds) attachment field from every exported node", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
 
@@ -163,8 +163,8 @@ describe.concurrent("gearToTree", () => {
   it("does not include child items at the root level", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
 
@@ -182,12 +182,13 @@ describe.concurrent("gearToTree", () => {
     const sinId = crypto.randomUUID()
     const licenseId = crypto.randomUUID()
 
-    const gear: Record<string, ItemData> = {
+    const gear: Record<string, SinData | LicenseData> = {
       [sinId]: {
         kind: EntityKind.item,
         id: sinId,
         name: "Handcrafted SIN",
         itemType: ItemType.sin,
+        isReal: false,
         rating: 4,
         items: { parentId: null, childIds: [licenseId] },
       },
@@ -196,6 +197,7 @@ describe.concurrent("gearToTree", () => {
         id: licenseId,
         name: "Handcrafted License",
         itemType: ItemType.license,
+        isReal: false,
         rating: 4,
         items: { parentId: sinId, childIds: [] },
       },
@@ -219,7 +221,7 @@ describe.concurrent("gearFromTree", () => {
 
   it("round-trips a flat list of root items", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
@@ -235,8 +237,8 @@ describe.concurrent("gearFromTree", () => {
 
   it("round-trips parent/child relationships", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
 
@@ -256,7 +258,7 @@ describe.concurrent("gearFromTree", () => {
 
   it("restores items without parentId for root nodes", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
@@ -269,7 +271,7 @@ describe.concurrent("gearFromTree", () => {
 describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   it("round-trips a simple runner sheet", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
     const original = {
       ...Artemis,
@@ -289,9 +291,9 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
 
   it("round-trips a runner with nested gear (SIN + licenses)", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 }),
+        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
     const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
@@ -336,8 +338,8 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
 
   it("preserves parent/child IDs exactly through a round-trip", () => {
     const [sinItem, ...licenses] = createItem<SinData>(
-      { name: "Runner SIN", itemType: ItemType.sin, rating: 4 },
-      [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 })],
+      { name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 },
+      [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 })],
     )
     const gear = createItemMap([sinItem, ...licenses])
     const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }

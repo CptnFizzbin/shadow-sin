@@ -222,7 +222,7 @@ const applyQualityBuyOff = (sheet: Draft<RunnerData>, entry: QualityBuyOffEntry)
 }
 
 const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {
-  let skillData: undefined | { rating: number | "native" }
+  let skillData: undefined | { rating?: number }
 
   if (entry.skillType === "ActiveSkill") {
     const skillGroup = skillList[entry.skill]

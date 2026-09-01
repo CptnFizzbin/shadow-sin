@@ -22,7 +22,7 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
   onDelete,
 }) => {
   const spCost = getLanguageSkillSp(skill)
-  const isNative = skill.rating === "native"
+  const isNative = skill.isNative
 
   return (
     <Box
@@ -48,7 +48,7 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
         )}
 
         <Chip
-          label={isNative ? "N" : skill.rating}
+          label={skill.isNative ? "N" : skill.rating}
           size="small"
           variant={isNative ? "filled" : "outlined"}
           color={isNative ? "success" : "default"}

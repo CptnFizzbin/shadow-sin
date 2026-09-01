@@ -29,22 +29,26 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 const sarahFirearmsLicense = createItem<LicenseData>({
   name: "Firearms License",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
 })
 const sarahArmorLicense = createItem<LicenseData>({
   name: "Armor License",
   itemType: ItemType.license,
+  isReal: false,
   rating: 5,
 })
 const driverLicenseSemiTruck = createItem<LicenseData>({
   name: "Driver License (Semi-Truck)",
   itemType: ItemType.license,
   fixed: true,
+  isReal: false,
   rating: 5,
 })
 const janeMeleeLicense = createItem<LicenseData>({
   name: "Melee Weapon License",
   itemType: ItemType.license,
+  isReal: false,
   rating: 3,
 })
 
@@ -204,10 +208,11 @@ export const Artemis: RunnerData = {
     languageSkills: [
       {
         name: "English",
-        rating: "native",
+        isNative: true,
       },
       {
         name: "Elven",
+        isNative: false,
         rating: 3,
       },
     ],
@@ -227,6 +232,7 @@ export const Artemis: RunnerData = {
         name: "Sara McCabe",
         itemType: ItemType.sin,
         notes: "General use SIN.",
+        isReal: false,
         rating: 6,
       }, [
         sarahFirearmsLicense,
@@ -236,6 +242,7 @@ export const Artemis: RunnerData = {
         name: "Jadzia Dax",
         itemType: ItemType.sin,
         notes: "Runner SIN.",
+        isReal: false,
         rating: 4,
       }, [
         driverLicenseSemiTruck,
@@ -244,6 +251,7 @@ export const Artemis: RunnerData = {
         name: "Jane Smith",
         itemType: ItemType.sin,
         notes: "Burner SIN.",
+        isReal: false,
         rating: 2,
       }, [
         janeMeleeLicense,

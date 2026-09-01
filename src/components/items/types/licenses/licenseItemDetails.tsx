@@ -38,7 +38,7 @@ export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRem
       <ItemDetailsRoot item={license} onEdit={handleEdit} onRemove={removeLicense}>
         <ItemDetailsSlot.Stat
           label="Rating"
-          value={license.rating === "real" ? "Real" : license.rating}
+          value={license.isReal ? "Real" : (license.rating ?? 0)}
           type="rating"
         />
       </ItemDetailsRoot>

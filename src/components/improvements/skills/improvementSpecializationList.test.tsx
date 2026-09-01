@@ -115,7 +115,7 @@ describe("ImprovementSpecializationList", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
+      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
 

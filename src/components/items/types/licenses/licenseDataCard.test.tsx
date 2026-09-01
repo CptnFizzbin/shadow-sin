@@ -16,6 +16,7 @@ const fakeLicense: LicenseData = {
   id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
+  isReal: false,
   rating: 4,
 }
 
@@ -24,7 +25,7 @@ const realLicense: LicenseData = {
   id: crypto.randomUUID(),
   name: "License: Legal Firearm",
   itemType: ItemType.license,
-  rating: "real",
+  isReal: true,
 }
 
 const renderLicenseCard = (license: LicenseData) => {
@@ -50,7 +51,7 @@ describe("LicenseDataCard", () => {
     renderLicenseCard(realLicense)
 
     // Assert
-    expect(screen.getByText("Rating: real")).toBeDefined()
+    expect(screen.getByText("Rating: Real")).toBeDefined()
   })
 
   it("navigates via onOpen when tapped", () => {

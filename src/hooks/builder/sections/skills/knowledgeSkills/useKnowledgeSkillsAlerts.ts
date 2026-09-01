@@ -18,7 +18,7 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
 
   const statuses: AlertInfo[] = []
 
-  const nativeCount = languageSkills.filter((s) => s.rating === "native").length
+  const nativeCount = languageSkills.filter((s) => s.isNative).length
   if (nativeCount > 1) {
     statuses.push({
       section: "Skills",

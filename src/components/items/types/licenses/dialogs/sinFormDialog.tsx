@@ -28,7 +28,10 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) =
       title={title}
       ctrl={ctrl}
       onDelete={onDelete}
-      getCost={(s) => getSinCost(s.rating === "real" ? "real" : Number(s.rating))}
+      getCost={(s) => {
+        const sinValues = s as SinData
+        return getSinCost(sinValues.isReal, sinValues.rating ?? 0)
+      }}
       ratingMax={6}
       onRandomizeName={getRandomSinName}
       slots={{

@@ -8,6 +8,7 @@ import { RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
 import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, PropsWithChildren, ReactNode } from "react"
 import { useState } from "react"
 
+import { isCredential } from "#/system/entities/entityTraits.ts"
 import type { EntityData } from "#/system/entityData.ts"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
@@ -43,6 +44,13 @@ export interface EntityCardProps extends PropsWithChildren {
   onRemove?: () => void
   /** Outline-style button pinned to the left edge of the card, spanning its full height. */
   leftAction?: EntityCardLeftAction
+}
+
+/** An Entity implementing `Credential` (a SIN/Licence) shows "Real" instead of its (absent)
+ *  numeric rating when `isReal` is `true`; every other Entity just shows its plain `rating`. */
+function getRatingDisplay(entity: EntityData): string | number | undefined {
+  if (isCredential(entity) && entity.isReal) return "Real"
+  return entity.rating
 }
 
 /**
@@ -148,7 +156,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center" }}>
                 {slots.layout.topRight}
 
-                <EntityCardElements.Rating value={entity.rating} />
+                <EntityCardElements.Rating value={getRatingDisplay(entity)} />
               </Stack>
             </EntityCardLayout.HeaderRow>
 

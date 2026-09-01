@@ -32,6 +32,9 @@ import pruneNullUuidChildIds from "./migrations/20260823_03_pruneNullUuidChildId
 import addQualityIds from "./migrations/20260823_04_addQualityIds.ts"
 import dropIncompleteQualitySource from "./migrations/20260823_05_dropIncompleteQualitySource.ts"
 import addReputationLedger from "./migrations/20260827_00_addReputationLedger.ts"
+import normalizeSinRating from "./migrations/20260830_00_normalizeSinRating.ts"
+import normalizeLicenseRating from "./migrations/20260830_01_normalizeLicenseRating.ts"
+import normalizeLanguageSkillRating from "./migrations/20260830_02_normalizeLanguageSkillRating.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -74,6 +77,9 @@ export const migrations: AnyCharacterMigration[] = [
   addQualityIds,
   dropIncompleteQualitySource,
   addReputationLedger,
+  normalizeSinRating,
+  normalizeLicenseRating,
+  normalizeLanguageSkillRating,
 ]
 
 migrations.forEach((migration, index) => {

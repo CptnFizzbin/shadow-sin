@@ -16,5 +16,12 @@ export const LicenseDataCard: FC<LicenseDataCardProps> = ({ license, onOpen, onE
 
   const removeLicense = () => dispatch(Actions.item.licenses.destroy(license.id))
 
-  return <ItemCard item={license} onOpen={onOpen} onEdit={onEdit} onRemove={removeLicense} />
+  return (
+    <ItemCard
+      item={license}
+      onOpen={onOpen}
+      onEdit={onEdit}
+      onRemove={removeLicense}
+    />
+  )
 }

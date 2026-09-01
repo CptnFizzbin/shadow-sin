@@ -38,7 +38,10 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       title={title}
       ctrl={ctrl}
       onDelete={onDelete}
-      getCost={(l) => getLicenseCost(Number(l.rating))}
+      getCost={(l) => {
+        const licenseValues = l as LicenseData
+        return getLicenseCost(licenseValues.isReal, licenseValues.rating ?? 0)
+      }}
       ratingMax={6}
       parentItemFilter={(item: ItemData) => isSinData(item)}
       parentItemLabel="SIN"

@@ -14,7 +14,7 @@ export const LanguageSkillsList: FC = () => {
 
   const visibleSkills = sort(languageSkills)
     .by([
-      { desc: (s) => s.rating === "native" },
+      { desc: (s) => s.isNative },
       { asc: (s) => s.name },
     ])
     .filter((skill) => skill.name.toLowerCase().includes(searchQuery.toLowerCase()))

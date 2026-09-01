@@ -15,6 +15,7 @@ const defaultValues: SinData = {
   itemType: ItemType.sin,
   id: NullUuid,
   name: "",
+  isReal: false,
   rating: 1,
 }
 
@@ -23,8 +24,10 @@ export const useSinForm = ({ sin, onSubmit }: SinFormOptions) => {
     item: sin,
     defaultValues,
     onSubmit: (value, meta) => {
-      const rating: "real" | number = value.rating === "real" ? "real" : Number(value.rating)
-      onSubmit({ ...value, rating, cost: getSinCost(rating) }, meta)
+      const cost = getSinCost(value.isReal, value.rating ?? 0)
+      onSubmit({ ...value, rating: value.isReal ? undefined : value.rating, cost }, meta)
     },
   })
 }
+
+export type SinForm = ReturnType<typeof useSinForm>

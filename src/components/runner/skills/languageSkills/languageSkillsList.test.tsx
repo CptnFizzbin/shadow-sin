@@ -12,8 +12,8 @@ describe("LanguageSkillsList", () => {
     renderWithProviders(<LanguageSkillsList />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.languageSkills = [
-          { name: "Sperethiel", rating: "native" },
-          { name: "English", rating: 5, lingo: "Seattle Sprawl" },
+          { name: "Sperethiel", isNative: true },
+          { name: "English", isNative: false, rating: 5, lingo: "Seattle Sprawl" },
         ]
       } })),
     })
