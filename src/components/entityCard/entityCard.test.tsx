@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import type { Credential } from "#/system/entities/entityTraits.ts"
 import type { EntityData } from "#/system/entityData.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
@@ -33,6 +34,28 @@ describe("EntityCard", () => {
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.queryByText(/rating/i)).toBeNull()
+  })
+
+  it("shows \"Real\" for a Credential entity with isReal: true, instead of a numeric rating", () => {
+    // Arrange
+    const realCredential: EntityData & Credential = { ...entity, isReal: true }
+
+    // Act
+    render(<EntityCard entity={realCredential} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(screen.getByText("Rating: Real")).toBeDefined()
+  })
+
+  it("shows the plain numeric rating for a Credential entity with isReal: false", () => {
+    // Arrange
+    const fakeCredential: EntityData & Credential = { ...entity, isReal: false, rating: 4 }
+
+    // Act
+    render(<EntityCard entity={fakeCredential} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("ignores children that are not a Layout region", () => {

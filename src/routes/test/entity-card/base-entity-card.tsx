@@ -8,6 +8,7 @@ import type { FC, ReactNode } from "react"
 
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { Credential } from "#/system/entities/entityTraits.ts"
 import type { EntityData } from "#/system/entityData.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -30,6 +31,14 @@ const Section: FC<SectionProps> = ({ title, children }) => (
     <Stack sx={{ alignItems: "flex-start" }}>{children}</Stack>
   </Stack>
 )
+
+/** A minimal `Credential`-implementing Entity (e.g. a Real SIN), to demo `EntityCard`'s auto "Real" rating. */
+const REAL_CREDENTIAL_ENTITY: EntityData & Credential = {
+  kind: EntityKind.item,
+  id: crypto.randomUUID(),
+  name: "Real SIN",
+  isReal: true,
+}
 
 /** Every common `EntityData` field populated, so `EntityCard` renders every one of its own elements. */
 const TEST_ENTITY: EntityData = {
@@ -74,11 +83,8 @@ function EntityCardTestPage() {
 
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
-          <Section title="Rating override (e.g. a Real SIN, which carries no plain rating)">
-            <EntityCard
-              entity={{ kind: EntityKind.item, id: crypto.randomUUID(), name: "Real SIN" }}
-              rating="Real"
-            />
+          <Section title="A Credential (e.g. a Real SIN) auto-shows &quot;Real&quot; instead of a plain rating">
+            <EntityCard entity={REAL_CREDENTIAL_ENTITY} />
           </Section>
         </Stack>
       </Paper>
