@@ -22,14 +22,33 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
  * called `key`, just on different `TOptions` shapes.
  */
 export const SelectorOptions = {
-  attributeKey: selectorOption<{ key: AttributeKey }>("key"),
+  attr: selectorOption<{ attr: AttributeKey }>("attr"),
   damageSystem: selectorOption<{ system?: number }>("system"),
   damageTrack: selectorOption<{ track: DamageTrackKey }>("track"),
+  excludeDefaulting: selectorOption<{ excludeDefaulting?: boolean }>("excludeDefaulting"),
   gameEffectType: selectorOption<{ gameEffectType: GameEffectType }>("gameEffectType"),
-  houseRuleKey: selectorOption<{ key: string }>("key"),
+  isSpecialized: selectorOption<{ isSpecialized?: boolean }>("isSpecialized"),
   itemId: selectorOption<{ itemId: UUID }>("itemId"),
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
   licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
-  skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
   repType: selectorOption<{ repType: ReputationStatType }>("repType"),
+  skill: selectorOption<{ skill: SkillKey }>("skill"),
+
+  /** @deprecated - use {@link SelectorOptions.skill} instead */
+  skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
+
+  key: {
+    attr: selectorOption<{ key: AttributeKey }>("key"),
+    skill: selectorOption<{ key: SkillKey }>("key"),
+    houseRule: selectorOption<{ key: string }>("key"),
+  },
+
+  /** @deprecated - use {@link SelectorOptions.key.attr} instead */
+  attributeKey: selectorOption<{ key: AttributeKey }>("key"),
+
+  /** @deprecated - use {@link SelectorOptions.key.skill} instead */
+  skillKey: selectorOption<{ key: SkillKey }>("key"),
+
+  /** @deprecated - use {@link SelectorOptions.key.houseRule} instead */
+  houseRuleKey: selectorOption<{ key: string }>("key"),
 }
