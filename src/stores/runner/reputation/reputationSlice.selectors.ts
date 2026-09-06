@@ -1,4 +1,5 @@
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
 import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 
@@ -12,13 +13,14 @@ export namespace ReputationSelectors {
   )
 
   /**
-   * Calculates Street Cred from base profile value + ledger entries.
-   * Formula: profile.streetCred + sum of ledger entries where stat === "streetCred"
+   * Calculates Street Cred from total Karma earned + ledger entries.
+   * Formula: floor(karma.total / 10) + sum of ledger entries where stat === "streetCred"
    */
   export const selectStreetCred = createMemoizedSelector(
-    ProfileSelectors.selectStreetCred,
+    KarmaSelectors.selectTotal,
     selectLedger,
-    (baseStreetCred, ledger) => {
+    (totalKarma, ledger) => {
+      const baseStreetCred = Math.floor(totalKarma / 10)
       const ledgerTotal = ledger
         .filter((entry) => entry.stat === "streetCred")
         .reduce((sum, entry) => sum + entry.amount, 0)

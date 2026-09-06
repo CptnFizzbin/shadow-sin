@@ -10,7 +10,8 @@ import { ReputationSection } from "./reputationSection.tsx"
 
 function renderWithReputation(streetCred: number, notoriety: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
-    data.profile.streetCred = streetCred
+    // Street Cred is derived from total Karma: floor(karma.total / 10)
+    data.karma.total = streetCred * 10
     data.profile.notoriety = notoriety
   } })
   const store = new RunnerDataStore(runnerData)

@@ -74,11 +74,11 @@ describe("RunnerHeaderSummary", () => {
   })
 
   it("shows street cred as reputation and current karma", () => {
-    // Arrange / Act
+    // Arrange / Act — streetCred = floor(karma.total / 10) = floor(70 / 10) = 7
     renderWithRunner((data) => {
-      data.profile.streetCred = 7
       data.profile.notoriety = 0
       data.profile.publicAwarenessModifier = 0
+      data.karma.total = 70
       data.karma.current = 12
     })
 

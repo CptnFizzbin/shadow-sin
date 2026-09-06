@@ -22,34 +22,34 @@ describe.concurrent("ReputationSelectors.selectLedger", () => {
 })
 
 describe.concurrent("ReputationSelectors.selectStreetCred", () => {
-  it("returns the base profile value when the ledger is empty", () => {
+  it("returns floor(total karma / 10) when the ledger is empty", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 4
+      data.karma.total = 45
     } })
 
-    // Act / Assert
+    // Act / Assert: floor(45 / 10) = 4
     expect(ReputationSelectors.selectStreetCred(stateFor(runner))).toBe(4)
   })
 
-  it("adds the sum of ledger entries affecting streetCred to the base value", () => {
+  it("adds the sum of ledger entries affecting streetCred to the karma-derived base value", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 4
+      data.karma.total = 45
       data.reputation.ledger = [
         { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 3, description: "Run", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
         { id: "00000000-0000-0000-0000-000000000002", stat: "streetCred", amount: -1, description: "Correction", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     } })
 
-    // Act / Assert: 4 + 3 - 1 = 6
+    // Act / Assert: floor(45 / 10) + 3 - 1 = 4 + 3 - 1 = 6
     expect(ReputationSelectors.selectStreetCred(stateFor(runner))).toBe(6)
   })
 
   it("ignores ledger entries affecting a different stat", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 4
+      data.karma.total = 45
       data.reputation.ledger = [
         { id: "00000000-0000-0000-0000-000000000001", stat: "notoriety", amount: 10, description: "Not street cred", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
       ]
@@ -57,6 +57,16 @@ describe.concurrent("ReputationSelectors.selectStreetCred", () => {
 
     // Act / Assert
     expect(ReputationSelectors.selectStreetCred(stateFor(runner))).toBe(4)
+  })
+
+  it("rounds down rather than to the nearest ten", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (data) => {
+      data.karma.total = 19
+    } })
+
+    // Act / Assert: floor(19 / 10) = 1
+    expect(ReputationSelectors.selectStreetCred(stateFor(runner))).toBe(1)
   })
 })
 
@@ -102,7 +112,7 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessRating", () => {
   it("computes floor((streetCred + notoriety + modifier) / 3), including ledger adjustments", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 5
+      data.karma.total = 50
       data.profile.notoriety = 2
       data.profile.publicAwarenessModifier = 1
       data.reputation.ledger = [
@@ -110,7 +120,7 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessRating", () => {
       ]
     } })
 
-    // Act / Assert: floor((6 + 2 + 1) / 3) = 3
+    // Act / Assert: streetCred = floor(50 / 10) + 1 = 6; floor((6 + 2 + 1) / 3) = 3
     expect(ReputationSelectors.selectPublicAwarenessRating(stateFor(runner))).toBe(3)
   })
 })
@@ -119,7 +129,6 @@ describe.concurrent("ReputationSelectors.selectPublicAwareness", () => {
   it("returns the rating alongside its rank title", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 0
       data.profile.notoriety = 0
       data.profile.publicAwarenessModifier = 0
     } })
@@ -135,7 +144,7 @@ describe.concurrent("ReputationSelectors.selectPublicAwareness", () => {
   it("clamps the rank lookup to the last rank for very high ratings", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 100
+      data.karma.total = 1000
       data.profile.notoriety = 100
       data.profile.publicAwarenessModifier = 0
     } })
@@ -152,7 +161,7 @@ describe.concurrent("ReputationSelectors.selectAll", () => {
   it("bundles streetCred, notoriety, and awareness together", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.streetCred = 3
+      data.karma.total = 30
       data.profile.notoriety = 1
     } })
 

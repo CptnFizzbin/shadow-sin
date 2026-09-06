@@ -79,8 +79,10 @@ _Avoid_: wound penalty, damage penalty (use Wound Modifier)
 ### Reputation
 
 **Street Cred**:
-A tracked count of a Runner's professional reputation. Awarded by the GM for notable runs.
-Contributes to the derived **Public Awareness** value.
+A tracked count of a Runner's professional reputation. Formula: `floor(total Karma earned / 10)
++ sum of reputation ledger entries affecting streetCred` — the GM adjusts it for notable runs via
+ledger entries on top of the Karma-derived base. Contributes to the derived **Public Awareness**
+value.
 
 **Notoriety**:
 A tracked count of a Runner's negative or infamous reputation. Awarded by the GM for reckless or

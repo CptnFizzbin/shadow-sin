@@ -17,9 +17,9 @@ function renderDisplay(afterBuild: (sheet: RunnerData) => void) {
 
 describe("ReputationDisplay", () => {
   it("shows Street Cred and Notoriety as plain numbers", () => {
-    // Arrange / Act
+    // Arrange / Act — streetCred = floor(40 / 10) = 4
     renderDisplay((sheet) => {
-      sheet.profile.streetCred = 4
+      sheet.karma.total = 40
       sheet.profile.notoriety = 2
     })
 
@@ -31,9 +31,9 @@ describe("ReputationDisplay", () => {
   })
 
   it("shows Public Awareness as its rating alongside the rank title", () => {
-    // Arrange / Act — streetCred=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("Shadow")
+    // Arrange / Act — streetCred=floor(40/10)=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("Shadow")
     renderDisplay((sheet) => {
-      sheet.profile.streetCred = 4
+      sheet.karma.total = 40
       sheet.profile.notoriety = 0
     })
 

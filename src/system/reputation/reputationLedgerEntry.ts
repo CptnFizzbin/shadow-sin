@@ -20,7 +20,9 @@ export type ReputationLedgerSource = "manual"
  * a prior positive entry).
  *
  * The displayed reputation value for a stat is calculated as:
- * `profile[stat] + sum of all ledger entries affecting that stat`
+ * `profile[stat] + sum of all ledger entries affecting that stat` — except `streetCred`, whose
+ * base is `floor(karma.total / 10)` instead of `profile.streetCred` (see
+ * `ReputationSelectors.selectStreetCred`).
  */
 export interface ReputationLedgerEntry {
   id: UUID
