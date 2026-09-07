@@ -1,0 +1,66 @@
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { MetatypeType } from "#/system/metatypeData.ts"
+
+import type { AttributeCatalog } from "./attributeCatalog.ts"
+
+function getRating(attrs: {
+  charisma: number
+  intuition: number
+  logic: number
+  willpower: number
+}): number {
+  return Math.ceil((attrs.charisma + attrs.intuition + attrs.logic + attrs.willpower) / 4)
+}
+
+export const AiAttrFormulas = {
+  /** Rating = ceil(avg(Charisma, Intuition, Logic, Willpower)). Also caps Edge's natural max. */
+  getRating,
+
+  getResponse(param: { willpower: number }) {
+    return Math.ceil(param.willpower / 2)
+  },
+
+  getSignal(param: { charisma: number }) {
+    return Math.ceil(param.charisma / 2)
+  },
+
+  /** System = ceil(avg(Intuition, Logic)). */
+  getSystem: (intuition: number, logic: number): number =>
+    Math.ceil((intuition + logic) / 2),
+
+  /** Firewall = ceil(avg(Willpower, Charisma)). */
+  getFirewall: (willpower: number, charisma: number): number =>
+    Math.ceil((willpower + charisma) / 2),
+
+  /**
+   * Convenience wrapper around {@link getRating} for a caller that already holds the whole
+   * attribute catalog (e.g. overriding Edge's natural max for AI) rather than four separate
+   * numbers — reads Charisma/Intuition/Logic/Willpower out of it, defaulting any unset key to 0.
+   */
+  getRatingFromAttributes: (attributes: AttributeCatalog): number =>
+    getRating({
+      charisma: attributes[AttributeKey.charisma] ?? 0,
+      intuition: attributes[AttributeKey.intuition] ?? 0,
+      logic: attributes[AttributeKey.logic] ?? 0,
+      willpower: attributes[AttributeKey.willpower] ?? 0,
+    }),
+
+  /**
+   * The one place that decides "does this attribute's natural max come from the computed Rating
+   * instead of the metatype table" — currently just Edge, for AI (SR4A/Unwired). Returns
+   * `undefined` for every other attribute/metatype combination, so a caller falls back to its own
+   * already-computed bounds unchanged. Every consumer of Edge's bounds (selectAllInfo,
+   * selectActive, biologyAttributes.tsx, getAttributeCap) goes through this rather than
+   * re-implementing the `attr === edge && metatype === AI` check itself, so a future rule change
+   * (a different formula, or extending the dynamic-cap treatment to another attribute) is a single
+   * edit here instead of four synchronized ones.
+   */
+  getEdgeMaxOverride: (
+    attr: AttributeKey,
+    metatypeName: MetatypeType,
+    attributes: AttributeCatalog,
+  ): number | undefined =>
+    attr === AttributeKey.edge && metatypeName === MetatypeType.AI
+      ? AiAttrFormulas.getRatingFromAttributes(attributes)
+      : undefined,
+}

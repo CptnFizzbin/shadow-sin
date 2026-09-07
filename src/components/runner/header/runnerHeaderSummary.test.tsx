@@ -73,6 +73,20 @@ describe("RunnerHeaderSummary", () => {
     expect(screen.getByText("Stun 1/9")).toBeDefined()
   })
 
+  it("never shows AI-only computed rows (Rating/System/Firewall/Response/Signal)", () => {
+    // Arrange / Act: AttributeOrder deliberately excludes these — see its own doc comment — so
+    // this guards against them leaking back in via a future edit (they were never stored on
+    // `attributes`, so a naive `!== 0` filter treats their `undefined` value as "shown").
+    renderWithRunner(() => {})
+
+    // Assert
+    expect(screen.queryByText(/RTG/)).toBeNull()
+    expect(screen.queryByText(/SYS/)).toBeNull()
+    expect(screen.queryByText(/FWL/)).toBeNull()
+    expect(screen.queryByText(/RSP/)).toBeNull()
+    expect(screen.queryByText(/SIG/)).toBeNull()
+  })
+
   it("shows street cred as reputation and current karma", () => {
     // Arrange / Act — streetCred = floor(karma.total / 10) = floor(70 / 10) = 7
     renderWithRunner((data) => {

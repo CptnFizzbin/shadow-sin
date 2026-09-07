@@ -17,7 +17,7 @@ import { NodeType } from "./nodeType.ts"
  */
 export interface MatrixNodeData extends EntityData {
   kind: EntityKind.matrixNode
-  matrix: Partial<Record<AttributeKey, number>>
+  matrix: Partial<Record<AttributeKey, number>> // TODO: move this to attributes
   nodeType: NodeType
 }
 
@@ -31,3 +31,7 @@ export const MatrixNodeDataSchema = z.object({
   source: SourceDataSchema.optional(),
   effects: z.array(GameEffectDataSchema).optional(),
 }) satisfies z.ZodType<MatrixNodeData>
+
+export function isMatrixNode(obj: object): obj is MatrixNodeData {
+  return MatrixNodeDataSchema.safeParse(obj).success
+}

@@ -8,6 +8,13 @@ export enum AwakeningType {
   Magician = "Magician",
   MysticAdept = "Mystic Adept",
   Technomancer = "Technomancer",
+  /**
+   * Reserved exclusively for the AI metatype — AIs may never have a Magic or Resonance
+   * attribute at all, which reads differently from a metahuman choosing Mundane. Auto-assigned
+   * when a Runner's metatype switches to AI; never offered as a manual choice for any other
+   * metatype (see `biologySection.tsx`).
+   */
+  None = "None",
 }
 
 export const MagicAwakeningTypes: AwakeningType[] = [
@@ -67,6 +74,15 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     attributes: {
       magic: { min: 0, max: 0 },
       resonance: { min: 1, max: 6 },
+    },
+  },
+  "None": {
+    name: AwakeningType.None,
+    cost: 0,
+    qualities: [],
+    attributes: {
+      magic: { min: 0, max: 0 },
+      resonance: { min: 0, max: 0 },
     },
   },
 }

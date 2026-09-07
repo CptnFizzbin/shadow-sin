@@ -1,9 +1,11 @@
-import type { AttributeInfo } from "#/system/attributeInfo.ts"
+import type { AttributeInfo, EntityAttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttrKey } from "#/system/attributeKey.ts"
 
 export type AttributeCatalog = Partial<Record<AttrKey, number>>
 
 export type AttributeInfoCatalog = Partial<Record<AttrKey, AttributeInfo>>
+
+export type EntityAttributeCatalog = Partial<Record<AttrKey, EntityAttributeInfo>>
 
 export const attrValue = (catalog: AttributeCatalog, attr: AttrKey) => {
   return catalog[attr] ?? 0

@@ -1,7 +1,7 @@
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { ViewerStateSelectors } from "#/stores/runner/viewerSelector.ts"
 import { awakenings } from "#/system/awakeningType.ts"
-import { metatypes } from "#/system/metatypeData.ts"
+import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
 export namespace BiologySelectors {
   export const select = createMemoizedSelector(
@@ -27,5 +27,10 @@ export namespace BiologySelectors {
   export const selectAwakeningInfo = createMemoizedSelector(
     selectAwakening,
     (awakening) => awakenings[awakening],
+  )
+
+  export const selectIsAiMetaType = createMemoizedSelector(
+    selectMetatypeInfo,
+    (metatype) => metatype.name === MetatypeType.AI,
   )
 }

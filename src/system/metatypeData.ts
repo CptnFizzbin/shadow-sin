@@ -37,7 +37,9 @@ export interface MetatypeData {
 }
 
 // Metatypes don't have Matrix stats of their own (those belong to MatrixNodes/Commlinks, not
-// Runners) — firewall/response/signal/system stay at a fixed 0/0 range for every metatype.
+// Runners) — firewall/response/signal/system stay at a fixed 0/0 range for every metatype. AI is
+// the one deliberate exception: its Matrix attributes and Rating are computed live elsewhere,
+// never bounded here — that's why they're absent from AI's own `attributes` table below.
 const baseAttributes = {
   body: { min: 1, max: 6, augMax: 9 },
   agility: { min: 1, max: 6, augMax: 9 },
@@ -208,19 +210,15 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     cost: 110,
     movement: { walk: 0, run: 0 },
     attributes: {
-      ...baseAttributes,
-      body: { min: 0, max: 0 },
-      agility: { min: 0, max: 0 },
-      reaction: { min: 0, max: 0 },
-      strength: { min: 0, max: 0 },
       charisma: { min: 1, max: 6 },
       intuition: { min: 1, max: 6 },
       logic: { min: 1, max: 6 },
       willpower: { min: 1, max: 6 },
       edge: { min: 1, max: 6 },
-      essence: { min: 0, max: 0 },
-      magic: { min: 0, max: 0 },
-      resonance: { min: 0, max: 0 },
+      response: { min: 1, max: 6 },
+      signal: { min: 1, max: 6 },
+      firewall: { min: 1, max: 6 },
+      system: { min: 1, max: 6 },
     },
   },
 }

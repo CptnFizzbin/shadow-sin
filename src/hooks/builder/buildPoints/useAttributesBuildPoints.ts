@@ -18,6 +18,8 @@ interface AttributesBuildPoints extends BpLineItem {
 
 export const useAttributesBuildPoints = (): AttributesBuildPoints => {
   const activeAttributeCosts = useRunnerSelector(AttrSelectors.selectActive)
+    // AI's Rating/System/Firewall/Response/Signal rows are computed, never BP-purchasable.
+    .filter((attrData) => !attrData.computed)
     .map((attrData) => {
       let spent = 0
       spent += (attrData.value - attrData.min) * BuilderConfig.attributes.bpCost.base

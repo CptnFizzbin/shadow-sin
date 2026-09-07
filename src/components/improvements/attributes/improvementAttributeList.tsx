@@ -28,7 +28,9 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const sheet = useRunnerSelector(ViewerStateSelectors.selectRunner)
+  // AI's computed rows (Rating/System/Firewall/Response/Signal) aren't Karma-purchasable.
   const activeAttributes = useRunnerSelector(AttrSelectors.selectActive)
+    .filter((attr) => !attr.computed)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)

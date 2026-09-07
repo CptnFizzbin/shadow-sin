@@ -59,12 +59,50 @@ describe("BiologySection", () => {
   })
 
   it("hides the Awakening selector for an AI runner", () => {
-    // Arrange / Act: AI isn't a selectable option in the dropdown (it's excluded
-    // from the metatype list), so this state can only be reached pre-seeded.
-    renderWithBiology(MetatypeType.AI, AwakeningType.Mundane)
+    // Arrange / Act
+    renderWithBiology(MetatypeType.AI, AwakeningType.None)
 
     // Assert
     expect(screen.getAllByRole("combobox")).toHaveLength(1)
+  })
+
+  it("switching metatype to AI assigns AwakeningType.None and hides the Awakening selector", () => {
+    // Arrange
+    const store = renderWithBiology(MetatypeType.Human, AwakeningType.Adept)
+
+    // Act
+    fireEvent.mouseDown(metatypeCombobox())
+    fireEvent.click(screen.getByRole("option", { name: /^AI/ }))
+
+    // Assert
+    expect(store.getState().biology.metatype).toBe(MetatypeType.AI)
+    expect(store.getState().biology.awakening).toBe(AwakeningType.None)
+    expect(screen.getAllByRole("combobox")).toHaveLength(1)
+  })
+
+  it("switching metatype away from AI resets awakening to Mundane", () => {
+    // Arrange
+    const store = renderWithBiology(MetatypeType.AI, AwakeningType.None)
+
+    // Act
+    fireEvent.mouseDown(metatypeCombobox())
+    fireEvent.click(screen.getByRole("option", { name: /Human/ }))
+
+    // Assert
+    expect(store.getState().biology.metatype).toBe(MetatypeType.Human)
+    expect(store.getState().biology.awakening).toBe(AwakeningType.Mundane)
+    expect(awakeningCombobox().textContent).toContain("Mundane")
+  })
+
+  it("never offers AwakeningType.None as a manual Awakening choice", () => {
+    // Arrange
+    renderWithBiology(MetatypeType.Human, AwakeningType.Mundane)
+
+    // Act
+    fireEvent.mouseDown(awakeningCombobox())
+
+    // Assert
+    expect(screen.queryByRole("option", { name: /None/ })).toBeNull()
   })
 
   it("changing awakening updates the store and the UI", () => {

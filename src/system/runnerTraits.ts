@@ -1,7 +1,17 @@
+import { z } from "zod"
+
+import { AwakeningType } from "./awakeningType.ts"
+import type { EntityBase } from "./entities/entityTraits.ts"
+import { EntityKind } from "./entityKind.ts"
 import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
 import type { ItemCatalog } from "./items/itemUtils.ts"
+import { MetatypeType } from "./metatypeData.ts"
 
-export interface RunnerWithData {
+export interface RunnerBase extends EntityBase {
+  kind: EntityKind.runner
+}
+
+export interface RunnerWithData extends RunnerBase {
   _data_: {
     /**
      * Per-runner feature flags. Optional so pre-migration runners remain
@@ -11,6 +21,27 @@ export interface RunnerWithData {
 
     items: ItemCatalog
   }
+}
+
+export interface RunnerWithBiology extends RunnerBase {
+  biology: {
+    metatype: MetatypeType
+    awakening: AwakeningType
+    gender: null | string
+    age: null | number
+    weight: null | string
+    height: null | string
+  }
+}
+
+export function isRunnerWithBiology(obj: object): obj is RunnerWithBiology {
+  return z.object({
+    kind: z.literal(EntityKind.runner),
+    biology: z.object({
+      metatype: z.enum(MetatypeType),
+      awakening: z.enum(AwakeningType),
+    }),
+  }).safeParse(obj).success
 }
 
 /**

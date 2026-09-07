@@ -14,7 +14,7 @@ import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
 import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { awakenings } from "#/system/awakeningType.ts"
+import { awakenings, AwakeningType } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
 import { BiologyAttributes } from "./biologyAttributes.tsx"
@@ -37,9 +37,19 @@ export const BiologySection: FC = () => {
             sheet.setState(produce((prev) => {
               const newMetatype = metatypes[event.target.value]
               const oldMetatype = metatypes[prev.biology.metatype]
-              const awakening = awakenings[prev.biology.awakening]
+
+              // AI may never have an Awakening at all — assign the reserved None sentinel when
+              // switching to AI, and reset away from it (to Mundane) when switching off AI. Any
+              // other metatype-to-metatype switch leaves the current Awakening choice untouched.
+              const newAwakeningName = newMetatype.name === MetatypeType.AI
+                ? AwakeningType.None
+                : oldMetatype.name === MetatypeType.AI
+                  ? AwakeningType.Mundane
+                  : prev.biology.awakening
+              const awakening = awakenings[newAwakeningName]
 
               prev.biology.metatype = newMetatype.name
+              prev.biology.awakening = newAwakeningName
               prev.attributes = getAttributesValues(newMetatype, awakening)
 
               // Innate qualities come from the metatype itself, so switching metatypes must drop
@@ -51,11 +61,7 @@ export const BiologySection: FC = () => {
           }}
         >
           {Object.values(metatypes).map(({ name, cost }) => (
-            // AI isn't buildable through this form (no build-point costed path onto an AI runner
-            // exists yet), so its item stays present but disabled — a pre-seeded AI runner still
-            // needs its current value to match a rendered MenuItem, or MUI logs an out-of-range
-            // Select warning.
-            <MenuItem value={name} key={name} disabled={name === MetatypeType.AI} sx={{ display: "flex" }}>
+            <MenuItem value={name} key={name} sx={{ display: "flex" }}>
               <Stack
                 direction="row"
                 sx={{ justifyContent: "space-between", width: "100%" }}
@@ -84,17 +90,21 @@ export const BiologySection: FC = () => {
               }))
             }}
           >
-            {Object.values(awakenings).map(({ name, cost }) => (
-              <MenuItem value={name} key={name} sx={{ display: "flex" }}>
-                <Stack
-                  direction="row"
-                  sx={{ justifyContent: "space-between", width: "100%" }}
-                >
-                  <Typography>{name}</Typography>
-                  <BuildPoints value={cost} />
-                </Stack>
-              </MenuItem>
-            ))}
+            {/* AwakeningType.None is reserved for AI (see the metatype Select's onChange above)
+                and must never appear as a manual choice for any other metatype. */}
+            {Object.values(awakenings)
+              .filter(({ name }) => name !== AwakeningType.None)
+              .map(({ name, cost }) => (
+                <MenuItem value={name} key={name} sx={{ display: "flex" }}>
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: "space-between", width: "100%" }}
+                  >
+                    <Typography>{name}</Typography>
+                    <BuildPoints value={cost} />
+                  </Stack>
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       )}

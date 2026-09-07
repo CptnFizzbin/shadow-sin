@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
+import { AccessLevel } from "#/system/matrix/accessLevel.ts"
+import type { KnownNode } from "#/system/matrix/knownNode.ts"
+import { NodeType } from "#/system/matrix/nodeType.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -142,5 +146,137 @@ describe("AttrSelectors.selectInfo", () => {
     // Act / Assert
     expect(AttrSelectors.selectInfo(runnerStateFor(runner), { key: AttributeKey.willpower }))
       .toEqual(AttrSelectors.selectAllInfo(runnerStateFor(runner))[AttributeKey.willpower])
+  })
+})
+
+/** RAW's own worked example (Unwired p.167): Corvus has CHA 2, INT 5, LOG 4, WIL 3 — Rating 4,
+ *  System 5, Firewall 3. */
+const corvusMentalAttrs = { charisma: 2, intuition: 5, logic: 4, willpower: 3 }
+
+const aiRunnerFor = (
+  mentalAttrs: { charisma: number, intuition: number, logic: number, willpower: number },
+  activeNode?: KnownNode,
+): RunnerData =>
+  runnerDataFactory({ afterBuild: (s) => {
+    s.biology.metatype = MetatypeType.AI
+    s.biology.awakening = AwakeningType.None
+    s.attributes[AttributeKey.charisma] = mentalAttrs.charisma
+    s.attributes[AttributeKey.intuition] = mentalAttrs.intuition
+    s.attributes[AttributeKey.logic] = mentalAttrs.logic
+    s.attributes[AttributeKey.willpower] = mentalAttrs.willpower
+
+    if (activeNode) {
+      s.gameState.matrix.knownNodes = [activeNode]
+      s.gameState.matrix.activeNodeId = activeNode.id
+    }
+  } })
+
+const knownNodeFixture = (matrix: Partial<Record<AttributeKey, number>>): KnownNode => ({
+  kind: EntityKind.matrixNode,
+  id: "node-1",
+  name: "Test Node",
+  nodeType: NodeType.general,
+  accessLevel: AccessLevel.user,
+  matrix,
+})
+
+describe("AttrSelectors.selectActive — AI metatype", () => {
+  it("excludes Physical attributes and includes the computed Rating/System/Firewall/Response/Signal rows", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act
+    const active = AttrSelectors.selectActive(runnerStateFor(runner))
+    const byAttr = Object.fromEntries(active.map((a) => [a.attr, a]))
+
+    // Assert
+    expect(byAttr[AttributeKey.body]).toBeUndefined()
+    expect(byAttr[AttributeKey.agility]).toBeUndefined()
+    expect(byAttr[AttributeKey.reaction]).toBeUndefined()
+    expect(byAttr[AttributeKey.strength]).toBeUndefined()
+
+    expect(byAttr[AttributeKey.rating]).toMatchObject({ value: 4, computed: true })
+    expect(byAttr[AttributeKey.system]).toMatchObject({ value: 5, computed: true })
+    expect(byAttr[AttributeKey.firewall]).toMatchObject({ value: 3, computed: true })
+    expect(byAttr[AttributeKey.response]).toMatchObject({ value: 0, computed: true })
+    expect(byAttr[AttributeKey.signal]).toMatchObject({ value: 0, computed: true })
+  })
+
+  it("resolves Response/Signal from the Runner's Active Node", () => {
+    // Arrange
+    const node = knownNodeFixture({ [AttributeKey.response]: 4, [AttributeKey.signal]: 6 })
+    const runner = aiRunnerFor(corvusMentalAttrs, node)
+
+    // Act
+    const active = AttrSelectors.selectActive(runnerStateFor(runner))
+    const byAttr = Object.fromEntries(active.map((a) => [a.attr, a]))
+
+    // Assert
+    expect(byAttr[AttributeKey.response]?.value).toBe(4)
+    expect(byAttr[AttributeKey.signal]?.value).toBe(6)
+  })
+
+  it("caps Edge's max to the computed Rating, matching selectAllInfo's override", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act
+    const active = AttrSelectors.selectActive(runnerStateFor(runner))
+    const edge = active.find((a) => a.attr === AttributeKey.edge)
+
+    // Assert
+    expect(edge?.max).toBe(4)
+    expect(edge?.augMax).toBe(4)
+    expect(edge?.computed).toBeUndefined() // Edge itself is still purchasable, just capped differently
+  })
+
+  it("does not include the computed rows for a non-AI metatype", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.biology.metatype = MetatypeType.Human
+    } })
+
+    // Act
+    const active = AttrSelectors.selectActive(runnerStateFor(runner))
+
+    // Assert
+    expect(active.some((a) => a.attr === AttributeKey.rating)).toBe(false)
+    expect(active.some((a) => a.attr === AttributeKey.system)).toBe(false)
+    expect(active.some((a) => a.attr === AttributeKey.firewall)).toBe(false)
+    expect(active.some((a) => a.attr === AttributeKey.response)).toBe(false)
+    expect(active.some((a) => a.attr === AttributeKey.signal)).toBe(false)
+    expect(active.some((a) => a.attr === AttributeKey.body)).toBe(true)
+  })
+})
+
+describe("AttrSelectors.selectAllInfo — AI metatype", () => {
+  it("overrides Edge's max/augMax to the computed Rating", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act
+    const info = AttrSelectors.selectAllInfo(runnerStateFor(runner))
+
+    // Assert
+    expect(info[AttributeKey.edge]?.max).toBe(4)
+    expect(info[AttributeKey.edge]?.augMax).toBe(4)
+  })
+})
+
+describe("AttrSelectors.selectComputedValue", () => {
+  it("returns 0 for a key selectActive doesn't return at all (e.g. a Physical attribute for AI)", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act / Assert
+    expect(AttrSelectors.selectComputedValue(runnerStateFor(runner), { key: AttributeKey.body })).toBe(0)
+  })
+
+  it("returns the computed value for an AI's Rating", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act / Assert
+    expect(AttrSelectors.selectComputedValue(runnerStateFor(runner), { key: AttributeKey.rating })).toBe(4)
   })
 })

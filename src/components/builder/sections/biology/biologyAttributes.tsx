@@ -9,6 +9,7 @@ import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
+import { AiAttrFormulas } from "#/system/attributes/aiAttrFormulas.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
@@ -43,6 +44,12 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
     .map((attr) => {
       const value = attrValues[attr] || 0
       const state = createAttrInfo({ attr, value, metatype, awakening })
+
+      const edgeMaxOverride = AiAttrFormulas.getEdgeMaxOverride(attr, metatypeName, attrValues)
+      if (edgeMaxOverride !== undefined) {
+        return { label: AttributeLabels[attr], ...state, max: edgeMaxOverride, augMax: edgeMaxOverride }
+      }
+
       return { label: AttributeLabels[attr], ...state }
     })
     .filter((attr) => attr.min !== 0)
