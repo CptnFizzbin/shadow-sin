@@ -34,8 +34,6 @@ export const Hexen: RunnerData = {
     alias: "Hexen",
     name: "Eliza Hoffmann",
     archetype: "Mage",
-    streetCred: 0,
-    notoriety: 0,
     description: "Hermetic mage specializing in combat and detection spells.",
     personality: null,
     lifestyle: null,

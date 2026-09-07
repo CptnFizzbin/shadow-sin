@@ -74,11 +74,6 @@ export interface RunnerData extends EntityBase, EntityWithItems, EntityWithDamag
     alias: string
     name: string
     archetype: null | string
-
-    streetCred: number
-    notoriety: number
-    publicAwarenessModifier?: number
-
     description: null | string
     personality: null | string
 

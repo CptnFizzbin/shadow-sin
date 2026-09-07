@@ -91,7 +91,7 @@ automatically remove Street Cred — they are independent tallies.
 
 **Public Awareness**:
 A derived value representing how recognisable the Runner is to the general public.
-Formula: `Street Cred + Notoriety + publicAwarenessModifier`. The modifier is a GM-controlled
+Formula: `Street Cred + Notoriety + publicAwareness`. The modifier is a GM-controlled
 delta that can be positive (extra exposure) or negative (exceptional anonymity).
 _Avoid_: fame, infamy (use Public Awareness)
 

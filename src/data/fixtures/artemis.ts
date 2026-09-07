@@ -71,8 +71,6 @@ export const Artemis: RunnerData = {
     alias: "Artemis",
     name: "Jessica Nelson",
     archetype: "Rigger",
-    streetCred: 0,
-    notoriety: 0,
     description: [
       "Legacy qualities: Exceptional (logic), Aptitude (engineering), Photographic Memory, Analytical Mind, Ambidextrous, Social Stress: Large Groups.",
       "Legacy contacts: James Serif (Drone Parts Dealer, C2/L2), Frank (Matrix Developer, C2/L2), George Crabtree (Lone Star officer, C2/L2).",

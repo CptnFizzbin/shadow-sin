@@ -9,6 +9,7 @@ import { useState } from "react"
 
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
+import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { EditorModeProvider } from "#/contexts/builder/editorMode.tsx"
 import { useBuilderStores } from "#/hooks/builder/useBuilderStores.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
@@ -31,7 +32,6 @@ import { GearBuilderSection } from "./sections/gear/gearBuilderSection.tsx"
 import { KarmaBuilderSection } from "./sections/karma/karmaBuilderSection.tsx"
 import { ProfileBuilderSection } from "./sections/profile/profileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "./sections/qualities/qualitiesBuilderSection.tsx"
-import { ReputationBuilderSection } from "./sections/reputation/reputationBuilderSection.tsx"
 import { AdeptPowersBuilderSection } from "./sections/resources/adept/adeptPowersBuilderSection.tsx"
 import { SpellsBuilderSection } from "./sections/resources/magician/spellsBuilderSection.tsx"
 import {
@@ -48,7 +48,7 @@ interface RunnerEditorProps {
 const tabComponents: Record<EditorTabId, FC> = {
   [BuilderSectionId.profile]: ProfileBuilderSection,
   [BuilderSectionId.biology]: BiologyBuilderSection,
-  [BuilderSectionId.reputation]: ReputationBuilderSection,
+  [BuilderSectionId.reputation]: UnderConstruction,
   [BuilderSectionId.attributes]: AttributesBuilderSection,
   [BuilderSectionId.qualities]: QualitiesBuilderSection,
   [BuilderSectionId.activeSkills]: ActiveSkillsBuilderSection,

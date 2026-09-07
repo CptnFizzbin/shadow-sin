@@ -2,11 +2,13 @@ import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { ReputationUtils } from "#/system/reputation/createLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ReputationDisplay } from "./reputationDisplay.tsx"
+import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 
 function renderDisplay(afterBuild: (sheet: RunnerData) => void) {
   return renderWithProviders(
@@ -20,7 +22,9 @@ describe("ReputationDisplay", () => {
     // Arrange / Act — streetCred = floor(40 / 10) = 4
     renderDisplay((sheet) => {
       sheet.karma.total = 40
-      sheet.profile.notoriety = 2
+      sheet.reputation.ledger = [
+        ReputationUtils.createLedgerEntry({ stat: ReputationStatType.notoriety, amount: 2, description: "Bump" }),
+      ]
     })
 
     // Assert
@@ -34,7 +38,6 @@ describe("ReputationDisplay", () => {
     // Arrange / Act — streetCred=floor(40/10)=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("Shadow")
     renderDisplay((sheet) => {
       sheet.karma.total = 40
-      sheet.profile.notoriety = 0
     })
 
     // Assert

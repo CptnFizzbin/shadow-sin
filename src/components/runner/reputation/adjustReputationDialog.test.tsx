@@ -33,7 +33,6 @@ describe("AdjustReputationDialog", () => {
     // this is the same full-size ReputationDisplay the About page uses, rank title included
     renderHarness((sheet) => {
       sheet.karma.total = 40
-      sheet.profile.notoriety = 0
     })
 
     // Assert
@@ -62,7 +61,6 @@ describe("AdjustReputationDialog", () => {
     // Arrange
     renderHarness((sheet) => {
       sheet.karma.total = 40
-      sheet.profile.notoriety = 0
     })
 
     // Act — open the form, pick Street Cred (the default), bump the value, add a note, submit

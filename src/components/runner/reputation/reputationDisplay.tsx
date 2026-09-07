@@ -15,10 +15,10 @@ import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 export const ReputationDisplay: FC = () => {
   const streetCred = useRunnerSelector(ReputationSelectors.selectStreetCred)
   const notoriety = useRunnerSelector(ReputationSelectors.selectNotoriety)
-  const publicAwareness = useRunnerSelector(ReputationSelectors.selectPublicAwareness)
+  const publicAwareness = useRunnerSelector(ReputationSelectors.selectPublicAwarenessInfo)
 
   return (
-    <Grid container columns={3} spacing={1} sx={{ margin: "auto" }}>
+    <Grid container columns={3} spacing={1}>
       <Grid size={1}>
         <Stack sx={{ alignItems: "center" }}>
           <Label label="Street Cred" />
