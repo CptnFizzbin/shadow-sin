@@ -15,7 +15,7 @@ export const reputationReducer = createReducer(initialState, (builder) => {
     })
     .addCase(editReputationEntry, (state, action) => {
       const { id, stat, amount, description } = action.payload
-      const entry = state.ledger.find((entry) => entry.id === id)
+      const entry = state.ledger.find((e) => e.id === id)
       if (!entry) return
 
       entry.stat = stat

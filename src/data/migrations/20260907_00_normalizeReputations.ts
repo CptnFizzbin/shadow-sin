@@ -31,7 +31,7 @@ interface Character {
  * has at least one entry is left untouched, so this only ever runs once per character.
  */
 const migration: CharacterMigration<Character> = {
-  timestamp: "2026-08-30T09:10:00Z",
+  timestamp: "2026-09-07T00:00:00Z",
   up: (character) => {
     return produce(character, (draft) => {
       draft.reputation ||= { ledger: [] }

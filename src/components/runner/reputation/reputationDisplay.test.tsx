@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { ReputationUtils } from "#/system/reputation/createLedgerEntry.ts"
+import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ReputationDisplay } from "./reputationDisplay.tsx"
-import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 
 function renderDisplay(afterBuild: (sheet: RunnerData) => void) {
   return renderWithProviders(

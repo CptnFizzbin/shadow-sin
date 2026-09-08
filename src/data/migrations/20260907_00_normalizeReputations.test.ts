@@ -18,7 +18,7 @@ describe.concurrent("normalizeReputations", () => {
 
   it("initializes the ledger and backfills it when reputation exists but has no ledger field", () => {
     // Arrange — a legacy shape that predates the ledger's introduction
-    const character = { profile: { streetCred: 5 }, reputation: {} } as unknown as Parameters<typeof migration.up>[0]
+    const character = { profile: { streetCred: 5 }, reputation: {} } as Parameters<typeof migration.up>[0]
 
     // Act
     const result = migration.up(character)
