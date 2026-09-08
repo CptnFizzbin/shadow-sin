@@ -1,16 +1,43 @@
 import { fireEvent, screen, within } from "@testing-library/react"
+import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
+import type { ReputationFilter } from "./reputationLedgerFilters.tsx"
+import { ReputationLedgerFilters } from "./reputationLedgerFilters.tsx"
 import { ReputationLedgerList } from "./reputationLedgerList.tsx"
 
 function renderList(afterBuild?: (sheet: RunnerData) => void) {
   return renderWithProviders(
     <ReputationLedgerList />,
+    { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
+  )
+}
+
+/**
+ * Filtering is split across two components in real usage (`ReputationLedgerFilters` owns the
+ * toggle buttons, `ReputationLedgerList` applies the resulting `filters` prop) — this renders
+ * them together, wiring the filter state between them the same way `AdjustReputationDialog`
+ * does, so filtering behavior can be exercised end to end.
+ */
+function renderFilterableList(afterBuild?: (sheet: RunnerData) => void) {
+  const Harness = () => {
+    const [filters, setFilters] = useState<ReputationFilter>({ statTypes: Object.values(ReputationStatType) })
+    return (
+      <>
+        <ReputationLedgerFilters filters={filters} onChange={setFilters} />
+        <ReputationLedgerList filters={filters} />
+      </>
+    )
+  }
+
+  return renderWithProviders(
+    <Harness />,
     { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
   )
 }
@@ -39,7 +66,7 @@ describe("ReputationLedgerList", () => {
       sheet.reputation.ledger = [
         {
           id: "00000000-0000-0000-0000-000000000001",
-          stat: "streetCred",
+          stat: ReputationStatType.streetCred,
           amount: 3,
           description: "Successful run for CorpSec",
           timestamp: "2026-01-01T00:00:00Z",
@@ -58,8 +85,8 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "notoriety", amount: -1, description: "Botched job", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "publicAwarenessModifier", amount: 1, description: "Went viral", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.notoriety, amount: -1, description: "Botched job", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.publicAwareness, amount: 1, description: "Went viral", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     })
 
@@ -72,7 +99,7 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "notoriety", amount: -2, description: "Betrayal", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.notoriety, amount: -2, description: "Betrayal", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
       ]
     })
 
@@ -88,8 +115,8 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "streetCred", amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.streetCred, amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.streetCred, amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     })
     const upValue = screen.getByText("Up").closest("tr")!.querySelector("td:nth-child(2) p")!
@@ -104,8 +131,8 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "notoriety", amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "notoriety", amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.notoriety, amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.notoriety, amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     })
     const upValue = screen.getByText("Up").closest("tr")!.querySelector("td:nth-child(2) p")!
@@ -120,8 +147,8 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "publicAwarenessModifier", amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "publicAwarenessModifier", amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.publicAwareness, amount: 2, description: "Up", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.publicAwareness, amount: -2, description: "Down", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     })
     const upValue = screen.getByText("Up").closest("tr")!.querySelector("td:nth-child(2) p")!
@@ -136,9 +163,9 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "SC", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "notoriety", amount: 1, description: "No", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000003", stat: "publicAwarenessModifier", amount: 1, description: "PA", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.streetCred, amount: 1, description: "SC", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.notoriety, amount: 1, description: "No", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000003", stat: ReputationStatType.publicAwareness, amount: 1, description: "PA", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
       ]
     })
     const streetCredChip = tableScope().getByText("Street Cred").closest(".MuiChip-root") as HTMLElement
@@ -155,8 +182,8 @@ describe("ReputationLedgerList", () => {
     // Arrange / Act
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "First entry", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "streetCred", amount: 2, description: "Second entry", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.streetCred, amount: 1, description: "First entry", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.streetCred, amount: 2, description: "Second entry", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
       ]
     })
 
@@ -170,9 +197,9 @@ describe("ReputationLedgerList", () => {
     // still lead regardless of where it sits in the underlying array
     renderList((sheet) => {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "Newest", timestamp: "2026-03-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "streetCred", amount: 1, description: "Oldest", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000003", stat: "streetCred", amount: 1, description: "Middle", timestamp: "2026-02-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.streetCred, amount: 1, description: "Newest", timestamp: "2026-03-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.streetCred, amount: 1, description: "Oldest", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000003", stat: ReputationStatType.streetCred, amount: 1, description: "Middle", timestamp: "2026-02-01T00:00:00Z", source: "manual" },
       ]
     })
 
@@ -184,15 +211,15 @@ describe("ReputationLedgerList", () => {
   describe("filtering by stat", () => {
     function ledgerFor(sheet: RunnerData) {
       sheet.reputation.ledger = [
-        { id: "00000000-0000-0000-0000-000000000001", stat: "streetCred", amount: 1, description: "SC entry", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000002", stat: "notoriety", amount: 1, description: "No entry", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
-        { id: "00000000-0000-0000-0000-000000000003", stat: "publicAwarenessModifier", amount: 1, description: "PA entry", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000001", stat: ReputationStatType.streetCred, amount: 1, description: "SC entry", timestamp: "2026-01-01T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000002", stat: ReputationStatType.notoriety, amount: 1, description: "No entry", timestamp: "2026-01-02T00:00:00Z", source: "manual" },
+        { id: "00000000-0000-0000-0000-000000000003", stat: ReputationStatType.publicAwareness, amount: 1, description: "PA entry", timestamp: "2026-01-03T00:00:00Z", source: "manual" },
       ]
     }
 
     it("shows every stat's entries by default", () => {
       // Arrange / Act
-      renderList(ledgerFor)
+      renderFilterableList(ledgerFor)
 
       // Assert
       expect(screen.getByText("SC entry")).toBeTruthy()
@@ -202,7 +229,7 @@ describe("ReputationLedgerList", () => {
 
     it("hides a stat's entries when its filter is toggled off", () => {
       // Arrange
-      renderList(ledgerFor)
+      renderFilterableList(ledgerFor)
 
       // Act — deselect Notoriety
       fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
@@ -215,7 +242,7 @@ describe("ReputationLedgerList", () => {
 
     it("shows a distinct empty state when filters exclude every entry", () => {
       // Arrange
-      renderList(ledgerFor)
+      renderFilterableList(ledgerFor)
 
       // Act — deselect all three stats
       fireEvent.click(screen.getByRole("button", { name: "Street Cred" }))
@@ -229,7 +256,7 @@ describe("ReputationLedgerList", () => {
 
     it("restores hidden entries when the filter is toggled back on", () => {
       // Arrange
-      renderList(ledgerFor)
+      renderFilterableList(ledgerFor)
       fireEvent.click(screen.getByRole("button", { name: "Notoriety" }))
       expect(screen.queryByText("No entry")).toBeNull()
 

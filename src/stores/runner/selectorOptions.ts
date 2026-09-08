@@ -4,6 +4,7 @@ import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ItemType } from "#/system/itemType.ts"
+import type { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 /**
@@ -30,4 +31,5 @@ export const SelectorOptions = {
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
   licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
   skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
+  repType: selectorOption<{ repType: ReputationStatType }>("repType"),
 }

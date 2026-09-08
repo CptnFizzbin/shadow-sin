@@ -39,7 +39,7 @@ export const RunnerHeaderSummary: FC = () => {
             <Chip
               size="small"
               variant="outlined"
-              label={`Rep | ${reputation.streetCred} - ${reputation.notoriety} - ${reputation.awareness.rating}`}
+              label={`Rep | ${reputation.streetCred} - ${reputation.notoriety} - ${reputation.awareness}`}
               sx={{ flexShrink: 0 }}
             />
             <KarmaValue amount={currentKarma} sx={{ flexShrink: 0 }} />

@@ -30,29 +30,6 @@ export namespace ProfileSelectors {
     (profile) => profile.lifestyle,
   )
 
-  export const selectStreetCred = createMemoizedSelector(
-    select,
-    (profile) => profile.streetCred,
-  )
-
-  export const selectNotoriety = createMemoizedSelector(
-    select,
-    (profile) => profile.notoriety,
-  )
-
-  export const selectPublicAwarenessModifier = createMemoizedSelector(
-    select,
-    (profile) => profile.publicAwarenessModifier ?? 0,
-  )
-
-  export const selectPublicAwareness = createMemoizedSelector(
-    selectStreetCred,
-    selectNotoriety,
-    selectPublicAwarenessModifier,
-    (streetCred, notoriety, publicAwarenessModifier) =>
-      Math.max(0, Math.floor((streetCred + notoriety) / 3) + publicAwarenessModifier),
-  )
-
   export const selectLifestyleQuality = createMemoizedSelector(
     selectLifestyle,
     (lifestyle) => lifestyle?.quality,

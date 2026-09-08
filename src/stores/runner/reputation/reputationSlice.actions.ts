@@ -20,3 +20,16 @@ export const addReputationEntry = createAction(
     return { payload: { entry } }
   },
 )
+
+/**
+ * Edit an existing reputation ledger entry's stat, amount, and description in place. Its `id`,
+ * `timestamp`, and `source` are left untouched.
+ */
+export const editReputationEntry = createAction(
+  "reputation/editEntry",
+  (id: UUID, stat: ReputationStatType, amount: number, description: string) => {
+    return { payload: { id, stat, amount, description } }
+  },
+)
+
+export const removeReputationEntry = createAction<{ id: UUID }>("reputation/removeEntry")

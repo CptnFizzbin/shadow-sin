@@ -4,14 +4,21 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { ReputationUtils } from "#/system/reputation/createLedgerEntry.ts"
+import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { ReputationSection } from "./reputationSection.tsx"
 
 function renderWithReputation(streetCred: number, notoriety: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
-    data.profile.streetCred = streetCred
-    data.profile.notoriety = notoriety
+    // Street Cred is derived from total Karma: floor(karma.total / 10)
+    data.karma.total = streetCred * 10
+    if (notoriety !== 0) {
+      data.reputation.ledger = [
+        ReputationUtils.createLedgerEntry({ stat: ReputationStatType.notoriety, amount: notoriety, description: "Bump" }),
+      ]
+    }
   } })
   const store = new RunnerDataStore(runnerData)
 

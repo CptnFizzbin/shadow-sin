@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { addReputationEntry } from "./reputationSlice.actions.ts"
+import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
+
+import { addReputationEntry, editReputationEntry } from "./reputationSlice.actions.ts"
 import { reputationReducer } from "./reputationSlice.ts"
 
 const makeReputation = (overrides: Partial<ReturnType<typeof reputationReducer>> = {}) => ({
@@ -14,7 +16,7 @@ describe.concurrent("addReputationEntry", () => {
     const state = makeReputation()
 
     // Act
-    const next = reputationReducer(state, addReputationEntry("streetCred", 3, "Successful run"))
+    const next = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 3, "Successful run"))
 
     // Assert
     expect(next.ledger).toHaveLength(1)
@@ -30,7 +32,7 @@ describe.concurrent("addReputationEntry", () => {
     const state = makeReputation()
 
     // Act
-    const next = reputationReducer(state, addReputationEntry("notoriety", -2, "Botched job"))
+    const next = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, -2, "Botched job"))
 
     // Assert
     const [entry] = next.ledger
@@ -45,7 +47,7 @@ describe.concurrent("addReputationEntry", () => {
     const state = makeReputation()
 
     // Act
-    const next = reputationReducer(state, addReputationEntry("publicAwarenessModifier", -1, "Laid low"))
+    const next = reputationReducer(state, addReputationEntry(ReputationStatType.publicAwareness, -1, "Laid low"))
 
     // Assert
     expect(next.ledger[0].amount).toBe(-1)
@@ -56,12 +58,74 @@ describe.concurrent("addReputationEntry", () => {
     let state = makeReputation()
 
     // Act
-    state = reputationReducer(state, addReputationEntry("streetCred", 1, "First"))
-    state = reputationReducer(state, addReputationEntry("notoriety", 2, "Second"))
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 1, "First"))
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, 2, "Second"))
 
     // Assert
     expect(state.ledger).toHaveLength(2)
     expect(state.ledger[0].description).toBe("First")
     expect(state.ledger[1].description).toBe("Second")
+  })
+})
+
+describe.concurrent("editReputationEntry", () => {
+  it("updates an existing entry's stat, amount, and description", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 3, "Successful run"))
+    const [{ id }] = state.ledger
+
+    // Act
+    const next = reputationReducer(state, editReputationEntry(id, ReputationStatType.notoriety, -1, "Actually a botched job"))
+
+    // Assert
+    expect(next.ledger).toHaveLength(1)
+    const [entry] = next.ledger
+    expect(entry.stat).toBe("notoriety")
+    expect(entry.amount).toBe(-1)
+    expect(entry.description).toBe("Actually a botched job")
+  })
+
+  it("leaves the entry's id, timestamp, and source untouched", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 3, "Successful run"))
+    const [original] = state.ledger
+
+    // Act
+    const next = reputationReducer(state, editReputationEntry(original.id, ReputationStatType.streetCred, 5, "Edited"))
+
+    // Assert
+    const [entry] = next.ledger
+    expect(entry.id).toBe(original.id)
+    expect(entry.timestamp).toBe(original.timestamp)
+    expect(entry.source).toBe(original.source)
+  })
+
+  it("only edits the matching entry, leaving other entries untouched", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 1, "First"))
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, 2, "Second"))
+    const [first, second] = state.ledger
+
+    // Act
+    const next = reputationReducer(state, editReputationEntry(first.id, ReputationStatType.streetCred, 9, "Edited first"))
+
+    // Assert
+    expect(next.ledger.find((entry) => entry.id === first.id)?.description).toBe("Edited first")
+    expect(next.ledger.find((entry) => entry.id === second.id)).toEqual(second)
+  })
+
+  it("does nothing when no entry matches the given id", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 1, "First"))
+
+    // Act
+    const next = reputationReducer(state, editReputationEntry("00000000-0000-0000-0000-000000000099", ReputationStatType.notoriety, 5, "Nonexistent"))
+
+    // Assert
+    expect(next.ledger).toEqual(state.ledger)
   })
 })

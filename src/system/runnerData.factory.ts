@@ -1,8 +1,8 @@
 import { produce } from "immer"
+import * as uuid from "uuid"
 
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { awakenings, AwakeningType } from "./awakeningType.ts"
 import { EntityKind } from "./entityKind.ts"
@@ -22,7 +22,7 @@ export function runnerDataFactory(options?: {
 
   const data: RunnerData = {
     kind: EntityKind.runner,
-    id: NullUuid,
+    id: uuid.v7(),
     name: "",
     _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null },
 
@@ -30,8 +30,6 @@ export function runnerDataFactory(options?: {
       alias: "",
       name: "",
       archetype: "",
-      streetCred: 0,
-      notoriety: 0,
       description: "",
       personality: "",
       lifestyle: {

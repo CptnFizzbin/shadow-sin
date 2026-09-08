@@ -1,26 +1,51 @@
+import { purple } from "@mui/material/colors"
+
 import type { UUID } from "#/lib/uuidUtils.ts"
 
-/**
- * Which reputation stat a ledger entry affects.
- */
-export type ReputationStatType = "streetCred" | "notoriety" | "publicAwarenessModifier"
+export enum ReputationStatType {
+  streetCred = "streetCred",
+  notoriety = "notoriety",
+  publicAwareness = "publicAwareness",
+}
+
+export const ReputationStatTypeData: Record<ReputationStatType, {
+  label: string
+  chipColor: string
+  positiveColor: string
+  negativeColor: string
+}> = {
+  [ReputationStatType.streetCred]: {
+    label: "Street Cred",
+    chipColor: "success.main",
+    positiveColor: "success.main",
+    negativeColor: "error.main",
+  },
+  [ReputationStatType.notoriety]: {
+    label: "Notoriety",
+    chipColor: "error.main",
+    positiveColor: "error.main",
+    negativeColor: "success.main",
+  },
+  [ReputationStatType.publicAwareness]: {
+    label: "Public Awareness",
+    chipColor: purple[400],
+    positiveColor: "info.main",
+    negativeColor: purple[400],
+  },
+}
 
 /**
- * The source that produced a reputation ledger entry.
+ * One audit-trail entry for a reputation change.
  *
- * - `manual` — entered by player via the Adjust Reputation dialog
- */
-export type ReputationLedgerSource = "manual"
-
-/**
- * One immutable, append-only audit-trail entry for a reputation change.
+ * Stored on `RunnerData.reputation.ledger`. Entries are append-only by default — a mistaken
+ * change is usually corrected with a counter-entry (e.g. adding a negative value to reverse a
+ * prior positive one) so the trail stays honest — but `stat`/`amount`/`description` can be
+ * edited in place (see `editReputationEntry`) to fix a typo or a data-entry mistake without
+ * leaving a confusing counter-entry behind. `id`, `timestamp`, and `source` never change.
  *
- * Stored on `RunnerData.reputation.ledger`. Entries are never edited or removed —
- * corrections happen via counter-entries (e.g. adding a negative value to reverse
- * a prior positive entry).
- *
- * The displayed reputation value for a stat is calculated as:
- * `profile[stat] + sum of all ledger entries affecting that stat`
+ * The displayed reputation value for a stat is the sum of all ledger entries affecting that
+ * stat, plus a derived base for `streetCred`: `floor(karma.total / 10)` (see
+ * `ReputationSelectors.selectStreetCred`).
  */
 export interface ReputationLedgerEntry {
   id: UUID
@@ -32,6 +57,6 @@ export interface ReputationLedgerEntry {
   amount: number
   /** Human-friendly summary, e.g. `"Successful run"`. */
   description: string
-  /** Source that wrote this entry. */
-  source: ReputationLedgerSource
+  /** @deprecated To be removed */
+  source?: string
 }

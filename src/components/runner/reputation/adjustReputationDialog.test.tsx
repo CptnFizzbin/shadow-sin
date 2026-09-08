@@ -32,8 +32,7 @@ describe("AdjustReputationDialog", () => {
     // Arrange / Act — streetCred=4, notoriety=0 ⇒ awareness rating floor((4+0)/3)=1 ("Shadow"):
     // this is the same full-size ReputationDisplay the About page uses, rank title included
     renderHarness((sheet) => {
-      sheet.profile.streetCred = 4
-      sheet.profile.notoriety = 0
+      sheet.karma.total = 40
     })
 
     // Assert
@@ -61,8 +60,7 @@ describe("AdjustReputationDialog", () => {
   it("adds a ledger entry and reflects it in both the ledger and the totals above", async () => {
     // Arrange
     renderHarness((sheet) => {
-      sheet.profile.streetCred = 4
-      sheet.profile.notoriety = 0
+      sheet.karma.total = 40
     })
 
     // Act — open the form, pick Street Cred (the default), bump the value, add a note, submit
