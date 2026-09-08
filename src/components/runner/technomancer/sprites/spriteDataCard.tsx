@@ -2,6 +2,7 @@ import type { FC } from "react"
 
 import { SpriteCard } from "#/components/spiritCard/spiritCard.tsx"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 interface SpriteDataCardProps {
   sprite: SpriteData
@@ -14,7 +15,8 @@ export const SpriteDataCard: FC<SpriteDataCardProps> = ({ sprite, onEdit, onRemo
   // No SpriteRegistry equivalent to SpiritRegistry exists yet — Force is the only stat SpriteData
   // tracks today, so it stands in for the Body/Willpower that size Spirit's own condition
   // monitors (calculateSpiritConditionMonitor), following the same 8 + Ceil(X/2) formula.
-  const matrixMax = 8 + Math.ceil(sprite.force / 2)
+  const matrixMax = SystemValues.damage.conditionMonitor.base
+    + Math.ceil(sprite.force / SystemValues.damage.conditionMonitor.attributeDivisor)
 
   return (
     <SpriteCard id={sprite.id} name={sprite.name} kind={sprite.kind} onEdit={onEdit} onRemove={onRemove}>

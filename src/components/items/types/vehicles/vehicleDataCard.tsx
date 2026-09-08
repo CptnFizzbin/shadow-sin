@@ -6,6 +6,7 @@ import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 interface VehicleDataCardProps {
   vehicle: VehicleData
@@ -20,7 +21,8 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
   const removeVehicle = () => dispatch(Actions.item.removeItem({ id: vehicle.id, removeChildren: true }))
   // Same 8 + Ceil(Body / 2) formula as a character's own physical track (damageSlice.selectors.ts)
   // and Spirit's condition monitor (calculateSpiritConditionMonitor).
-  const damageMax = 8 + Math.ceil(vehicle.body / 2)
+  const damageMax = SystemValues.damage.conditionMonitor.base
+    + Math.ceil(vehicle.body / SystemValues.damage.conditionMonitor.attributeDivisor)
 
   const handleDamageChange = (physical: number) => {
     const updated: VehicleData = { ...vehicle, damage: { physical } }

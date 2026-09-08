@@ -10,6 +10,7 @@ import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
 
@@ -25,7 +26,8 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
   const vehicleFormDialog = useVehicleFormDialog()
   const modFormDialog = useItemFormDialog()
   const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: vehicle.id })
-  const damageMax = 8 + Math.ceil(vehicle.body / 2)
+  const damageMax = SystemValues.damage.conditionMonitor.base
+    + Math.ceil(vehicle.body / SystemValues.damage.conditionMonitor.attributeDivisor)
 
   const removeVehicle = () => {
     dispatch(Actions.item.removeItem({ id: vehicle.id, removeChildren: true }))

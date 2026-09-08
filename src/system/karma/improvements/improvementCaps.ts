@@ -3,14 +3,21 @@ import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/aw
 import { metatypes } from "#/system/metatypeData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
-// SR4A defaults (p. 87). The "optional rules" registry overrides can relax
-// these in a future slice; for now the defaults are hard-coded.
-export const BASE_ACTIVE_SKILL_CAP = 6
-export const APTITUDE_ACTIVE_SKILL_CAP = 7
-export const BASE_SKILL_GROUP_CAP = 6
-export const BASE_KNOWLEDGE_SKILL_CAP = 6
-export const BASE_LANGUAGE_SKILL_CAP = 6
+/**
+ * @deprecated Use `SystemValues.improvements.caps` (`#/system/systemValues.ts`) directly.
+ * Kept as an alias so existing call sites keep working until they're migrated.
+ */
+export const BASE_ACTIVE_SKILL_CAP = SystemValues.improvements.caps.activeSkill
+/** @deprecated Use `SystemValues.improvements.caps.aptitudeActiveSkill` directly. */
+export const APTITUDE_ACTIVE_SKILL_CAP = SystemValues.improvements.caps.aptitudeActiveSkill
+/** @deprecated Use `SystemValues.improvements.caps.skillGroup` directly. */
+export const BASE_SKILL_GROUP_CAP = SystemValues.improvements.caps.skillGroup
+/** @deprecated Use `SystemValues.improvements.caps.knowledgeSkill` directly. */
+export const BASE_KNOWLEDGE_SKILL_CAP = SystemValues.improvements.caps.knowledgeSkill
+/** @deprecated Use `SystemValues.improvements.caps.languageSkill` directly. */
+export const BASE_LANGUAGE_SKILL_CAP = SystemValues.improvements.caps.languageSkill
 
 /**
  * Match qualities whose name carries a parenthetical target, e.g.
@@ -79,7 +86,7 @@ export function getLanguageSkillCap(): number {
  * uncapped here because it isn't a karma-spend target.
  */
 export function getAttributeCap(sheet: RunnerData, attr: AttributeKey): number {
-  if (attr === AttributeKey.essence) return 6
+  if (attr === AttributeKey.essence) return SystemValues.improvements.caps.essenceAttribute
 
   const awakening = awakenings[sheet.biology.awakening]
   if (attr === AttributeKey.magic) {

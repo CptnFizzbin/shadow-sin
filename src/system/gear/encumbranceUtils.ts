@@ -1,3 +1,5 @@
+import { SystemValues } from "#/system/systemValues.ts"
+
 import type { ArmorData } from "./armorData.ts"
 
 function effectiveRatings(armor: ArmorData): { ballistic: number, impact: number } {
@@ -48,8 +50,11 @@ export function calculateArmorBulk(equipped: ArmorData[]): { ballistic: number, 
 // SR4A p.160: penalty is –1 to Agility and Reaction per 2 points (or fraction) either
 // armor rating exceeds Body × 2. Check ballistic and impact independently; apply the worse.
 export function calculateEncumbrancePenalty(totalBallistic: number, totalImpact: number, body: number): number {
-  const threshold = body * 2
+  const threshold = body * SystemValues.encumbrance.bodyMultiplier
   const ballisticExcess = Math.max(0, totalBallistic - threshold)
   const impactExcess = Math.max(0, totalImpact - threshold)
-  return Math.max(Math.ceil(ballisticExcess / 2), Math.ceil(impactExcess / 2))
+  return Math.max(
+    Math.ceil(ballisticExcess / SystemValues.encumbrance.penaltyDivisor),
+    Math.ceil(impactExcess / SystemValues.encumbrance.penaltyDivisor),
+  )
 }

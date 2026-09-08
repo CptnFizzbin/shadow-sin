@@ -9,6 +9,7 @@ import { isEntityWithDamage, isEntityWithQualities } from "#/system/entities/ent
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 interface DamageTrackInfo {
   max: number
@@ -54,7 +55,7 @@ export namespace DamageSelectors {
 
   export const selectWoundInterval = createMemoizedSelector(
     selectWoundIntervalModifier,
-    (intervalMod) => Math.max(1, 3 + intervalMod),
+    (intervalMod) => Math.max(1, SystemValues.damage.baseWoundInterval + intervalMod),
   )
 
   export const selectWoundIntervalOffset = createMemoizedSelector(
@@ -126,7 +127,8 @@ export namespace DamageSelectors {
       injectOption(selectDamage, { track }),
       (state: TState, options) => {
         const attr = attrSelector(state, options) ?? 0
-        return 8 + Math.ceil(attr / 2)
+        return SystemValues.damage.conditionMonitor.base
+          + Math.ceil(attr / SystemValues.damage.conditionMonitor.attributeDivisor)
       },
       injectOption(selectWoundInterval, { track }),
       injectOption(selectWoundIntervalOffset, { track }),

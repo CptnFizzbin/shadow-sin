@@ -1,6 +1,7 @@
 import { createSelector } from "reselect"
 
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 import type { DiceRollerState } from "./diceRoller.state.ts"
 import type { DiceRoller } from "./diceRoller.ts"
@@ -37,18 +38,18 @@ export const selectSettledDice: DiceRollerSelector<SettledDieState[]> = createSe
 
 export const selectHits: DiceRollerSelector<number> = createSelector(
   selectSettledDice,
-  (dice) => dice.filter((die) => die.value >= 5).length,
+  (dice) => dice.filter((die) => die.value >= SystemValues.dice.hitThreshold).length,
 )
 
 export const selectIsGlitch: DiceRollerSelector<boolean> = (state) => {
   if (state.dice.length === 0) return false
   const ones = state.dice.filter((d) => d.value === 1).length
-  return ones >= state.dice.length / 2
+  return ones >= state.dice.length / SystemValues.dice.glitchOnesFraction
 }
 
 export const selectIsCriticalGlitch: DiceRollerSelector<boolean> = (state) => {
   if (state.dice.length === 0) return false
-  const hits = state.dice.filter((d) => d.value !== null && d.value >= 5).length
+  const hits = state.dice.filter((d) => d.value !== null && d.value >= SystemValues.dice.hitThreshold).length
   return selectIsGlitch(state) && hits === 0
 }
 

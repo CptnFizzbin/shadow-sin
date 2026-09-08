@@ -7,6 +7,7 @@ import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.select
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 interface InitiativeInfo {
   dicePool: number
@@ -28,7 +29,7 @@ export const useInitiative = (): InitiativeInfo => {
 
     return {
       dicePool: reactionAttr + intuitionAttr + initiativeBonus + extraDice - encumbrancePenalty,
-      initiativePasses: 1 + extraInitiativePasses,
+      initiativePasses: SystemValues.initiative.basePasses + extraInitiativePasses,
     }
   }, [reactionAttr, intuitionAttr, initiativeBonuses, extraPassEffects, extraDiceEffects, encumbrancePenalty])
 }

@@ -2,6 +2,7 @@ import { produce } from "immer"
 
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 import { selectAllSettled, selectIsRolling } from "./diceRoller.selectors.ts"
 import type { DiceRollerState } from "./diceRoller.state.ts"
@@ -93,7 +94,7 @@ export class DiceRoller {
   }
 
   public rollD6() {
-    return NumberUtils.randomIntInRange(1, 6)
+    return NumberUtils.randomIntInRange(1, SystemValues.dice.sides)
   }
 
   public rollDie(index: number, options: RollOptions = {}) {
@@ -112,12 +113,12 @@ export class DiceRoller {
         dice[index].isRolling = false
         dice[index].value = value
 
-        if (options.explodes && value === 6) {
+        if (options.explodes && value === SystemValues.dice.explodesOn) {
           dice.push(this.createDie({ isRolling: true }))
         }
       }))
 
-      if (options.explodes && value === 6) {
+      if (options.explodes && value === SystemValues.dice.explodesOn) {
         const { dice } = this.store.getState()
         this.rollDie(dice.length - 1, { timeout: 500, explodes: true })
       }
@@ -174,7 +175,7 @@ export class DiceRoller {
     this.store.getState()
       .dice
       .map((die, index) => ({ die, index }))
-      .filter(({ die }) => die.value === null || die.value <= 4)
+      .filter(({ die }) => die.value === null || die.value < SystemValues.dice.hitThreshold)
       .forEach(({ index }) => this.rollDie(index))
 
     return this.settled()

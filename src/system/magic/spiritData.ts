@@ -6,6 +6,7 @@ import type { AttributeCatalog } from "#/system/attributes/attributeCatalog.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
 import { EntityKind } from "#/system/entityKind.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 export enum SpiritType {
   wind = "wind",
@@ -142,8 +143,10 @@ export function calculateSpiritInitiative(force: number, type: SpiritType) {
 export function calculateSpiritConditionMonitor(force: number, type: SpiritType): { physical: number, stun: number } {
   const attrs = calculateSpiritAttributes(force, type)
   return {
-    physical: 8 + Math.ceil(attrs[AttrKey.body] / 2),
-    stun: 8 + Math.ceil(attrs[AttrKey.willpower] / 2),
+    physical: SystemValues.damage.conditionMonitor.base
+      + Math.ceil(attrs[AttrKey.body] / SystemValues.damage.conditionMonitor.attributeDivisor),
+    stun: SystemValues.damage.conditionMonitor.base
+      + Math.ceil(attrs[AttrKey.willpower] / SystemValues.damage.conditionMonitor.attributeDivisor),
   }
 }
 

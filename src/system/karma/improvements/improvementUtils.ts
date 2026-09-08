@@ -9,6 +9,7 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 import { describeImprovement } from "./improvementDescription.ts"
 import type {
@@ -139,7 +140,9 @@ const getAptitudeBoostedActiveSkillCost = (
 
   while (rating < newRating) {
     rating++
-    totalKarma += rating > 6 ? costFn(rating) * 2 : costFn(rating)
+    totalKarma += rating > SystemValues.improvements.caps.activeSkill
+      ? costFn(rating) * SystemValues.improvements.caps.aptitudeCostMultiplier
+      : costFn(rating)
   }
 
   return totalKarma

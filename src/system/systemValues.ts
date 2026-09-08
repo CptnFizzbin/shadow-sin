@@ -10,6 +10,44 @@ export const SystemValues = {
     defaulting: {
       modifier: -1,
     },
+
+    /** Highest rating an Active Skill can reach without the Aptitude quality. */
+    activeMaxRating: 6,
+    /** Highest rating a Skill Group can reach. */
+    groupMaxRating: 4,
+  },
+
+  dice: {
+    /** Number of sides on a Shadowrun test die. */
+    sides: 6,
+    /** A die counts as a hit at this value or higher. */
+    hitThreshold: 5,
+    /** A die this value or higher explodes into an extra die (Rule of Six). */
+    explodesOn: 6,
+    /** A roll glitches when at least this fraction of the dice pool shows a 1. */
+    glitchOnesFraction: 2,
+  },
+
+  damage: {
+    // SR4A: Condition Monitor boxes = 8 + ceil(linked attribute ÷ 2).
+    conditionMonitor: {
+      base: 8,
+      attributeDivisor: 2,
+    },
+    /** Boxes of damage between each wound modifier step, before Pain Tolerance effects. */
+    baseWoundInterval: 3,
+  },
+
+  encumbrance: {
+    // SR4A p.160: penalty is –1 to Agility and Reaction per 2 points (or fraction) either
+    // armor rating exceeds Body × 2.
+    bodyMultiplier: 2,
+    penaltyDivisor: 2,
+  },
+
+  initiative: {
+    /** Initiative Passes every character has before bonuses. */
+    basePasses: 1,
   },
 
   builder: {
@@ -94,6 +132,21 @@ export const SystemValues = {
   },
 
   improvements: {
+    // SR4A defaults (p. 87). The "optional rules" registry overrides can relax
+    // these in a future slice; for now the defaults are hard-coded.
+    caps: {
+      activeSkill: 6,
+      /** Active Skill cap for a runner with the Aptitude quality targeting that skill. */
+      aptitudeActiveSkill: 7,
+      skillGroup: 6,
+      knowledgeSkill: 6,
+      languageSkill: 6,
+      /** Essence isn't a karma-spend target, but shares the standard attribute cap. */
+      essenceAttribute: 6,
+      /** Karma cost multiplier for raises past `activeSkill` for an Aptitude-boosted skill. */
+      aptitudeCostMultiplier: 2,
+    },
+
     skills: {
       active: {
         maxRating: 6,
