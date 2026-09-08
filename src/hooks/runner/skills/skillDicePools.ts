@@ -7,6 +7,7 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey
@@ -34,7 +35,7 @@ export const useActiveSkillDicePool = (props: {
   return createDicePool(id, name, [
     useActiveSkillDiceGroup(skillKey),
     useAttrDiceGroup(attr),
-    specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
+    specialization ? { name: specialization, size: SystemValues.skills.specialization.modifier + totalSpecMod } : null,
     useWoundDiceGroup(),
   ])
 }
@@ -56,7 +57,7 @@ export const useKnowledgeSkillDicePool = (props: {
   return createDicePool(id, name, [
     { name: knowledge, size: rating },
     useAttrDiceGroup(AttributeKey.logic),
-    specialization ? { name: specialization, size: 2 } : null,
+    specialization ? { name: specialization, size: SystemValues.skills.specialization.modifier } : null,
     useWoundDiceGroup(),
   ])
 }
@@ -80,7 +81,7 @@ export const useLanguageSkillDicePool = (props: {
   return createDicePool(id, name, [
     { name: language, size: isNative ? 0 : rating },
     useAttrDiceGroup(AttributeKey.intuition),
-    lingo ? { name: lingo, size: 2 } : null,
+    lingo ? { name: lingo, size: SystemValues.skills.specialization.modifier } : null,
     useWoundDiceGroup(),
   ])
 }
