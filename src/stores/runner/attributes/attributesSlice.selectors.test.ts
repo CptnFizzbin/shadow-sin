@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import { AttributeKey, AttrKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { EntityKind } from "#/system/entityKind.ts"
+import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
+import { NodeType } from "#/system/matrix/nodeType.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -220,5 +223,45 @@ describe("AttrSelectors.selectAllInfo — AI metatype", () => {
     // Assert
     expect(info[AttributeKey.edge]?.max).toBe(4)
     expect(info[AttributeKey.edge]?.augMax).toBe(4)
+  })
+})
+
+const knownNodeFixture = (matrix: Partial<Record<AttributeKey, number>>): KnownNode => ({
+  kind: EntityKind.matrixNode,
+  id: "node-1",
+  name: "Test Node",
+  nodeType: NodeType.general,
+  accessLevel: AccessLevel.user,
+  matrix,
+})
+
+describe("AttrSelectors.selectValue — AI metatype", () => {
+  it("computes System and Firewall from the AI's own Mental attributes", () => {
+    // Arrange: RAW's own worked example (Unwired p.167) — CHA 2, INT 5, LOG 4, WIL 3 gives
+    // System = ceil(avg(INT, LOG)) = 5, Firewall = ceil(avg(WIL, CHA)) = 3.
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act / Assert
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.system })).toBe(5)
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.firewall })).toBe(3)
+  })
+
+  it("resolves Response/Signal from the Runner's Active Node", () => {
+    // Arrange
+    const node = knownNodeFixture({ [AttributeKey.response]: 4, [AttributeKey.signal]: 6 })
+    const runner = aiRunnerFor(corvusMentalAttrs, node)
+
+    // Act / Assert
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.response })).toBe(4)
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.signal })).toBe(6)
+  })
+
+  it("falls back to 0 for Response/Signal with no Active Node", () => {
+    // Arrange
+    const runner = aiRunnerFor(corvusMentalAttrs)
+
+    // Act / Assert
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.response })).toBe(0)
+    expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.signal })).toBe(0)
   })
 })

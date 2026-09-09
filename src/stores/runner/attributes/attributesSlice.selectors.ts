@@ -62,7 +62,7 @@ export namespace AttrSelectors {
             return AiAttrFormulas.getSignal({ activeNode })
           case AttributeKey.system:
             return AiAttrFormulas.getSystem({
-              intuition: attrs[AttributeKey.willpower] ?? 0,
+              intuition: attrs[AttributeKey.intuition] ?? 0,
               logic: attrs[AttributeKey.logic] ?? 0,
             })
           case AttributeKey.firewall:
