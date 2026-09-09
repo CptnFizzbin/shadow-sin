@@ -1,4 +1,5 @@
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { MatrixNodeData } from "#/system/matrix/matrixNodeData.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 
 import type { AttributeCatalog } from "./attributeCatalog.ts"
@@ -16,21 +17,25 @@ export const AiAttrFormulas = {
   /** Rating = ceil(avg(Charisma, Intuition, Logic, Willpower)). Also caps Edge's natural max. */
   getRating,
 
-  getResponse(param: { willpower: number }) {
-    return Math.ceil(param.willpower / 2)
+  getResponse: (inputs: { activeNode: MatrixNodeData }): number => {
+    const node = inputs.activeNode
+    return node.matrix.response ?? node.rating ?? 0
   },
 
-  getSignal(param: { charisma: number }) {
-    return Math.ceil(param.charisma / 2)
+  getSignal: (inputs: { activeNode: MatrixNodeData }): number => {
+    const node = inputs.activeNode
+    return node.matrix.signal ?? node.rating ?? 0
   },
 
   /** System = ceil(avg(Intuition, Logic)). */
-  getSystem: (intuition: number, logic: number): number =>
-    Math.ceil((intuition + logic) / 2),
+  getSystem: (inputs: { intuition: number, logic: number }): number => {
+    return Math.ceil((inputs.intuition + inputs.logic) / 2)
+  },
 
   /** Firewall = ceil(avg(Willpower, Charisma)). */
-  getFirewall: (willpower: number, charisma: number): number =>
-    Math.ceil((willpower + charisma) / 2),
+  getFirewall: (inputs: { willpower: number, charisma: number }): number => {
+    return Math.ceil((inputs.willpower + inputs.charisma) / 2)
+  },
 
   /**
    * Convenience wrapper around {@link getRating} for a caller that already holds the whole

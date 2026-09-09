@@ -55,15 +55,21 @@ export namespace AttrSelectors {
 
         switch (attr) {
           case AttributeKey.response:
-            return AiAttrFormulas.getResponse({ willpower: attrs[AttributeKey.willpower] ?? 0 })
+            if (!activeNode) return 0
+            return AiAttrFormulas.getResponse({ activeNode })
           case AttributeKey.signal:
-            return AiAttrFormulas.getSignal({ charisma: attrs[AttributeKey.charisma] ?? 0 })
+            if (!activeNode) return 0
+            return AiAttrFormulas.getSignal({ activeNode })
           case AttributeKey.system:
-            if (!activeNode) return 0
-            return AttrSelectors.selectValue({ entity: activeNode }, { key: AttributeKey.system })
+            return AiAttrFormulas.getSystem({
+              intuition: attrs[AttributeKey.willpower] ?? 0,
+              logic: attrs[AttributeKey.logic] ?? 0,
+            })
           case AttributeKey.firewall:
-            if (!activeNode) return 0
-            return AttrSelectors.selectValue({ entity: activeNode }, { key: AttributeKey.firewall })
+            return AiAttrFormulas.getFirewall({
+              willpower: attrs[AttributeKey.willpower] ?? 0,
+              charisma: attrs[AttributeKey.charisma] ?? 0,
+            })
           default:
             return attrs[attr] ?? 0
         }

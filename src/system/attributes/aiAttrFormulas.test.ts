@@ -19,13 +19,13 @@ describe("AiAttrFormulas.getRating", () => {
 
 describe("AiAttrFormulas.getSystem", () => {
   it("is ceil(avg(Intuition, Logic))", () => {
-    expect(AiAttrFormulas.getSystem(5, 4)).toBe(5)
+    expect(AiAttrFormulas.getSystem({ intuition: 5, logic: 4 })).toBe(5)
   })
 })
 
 describe("AiAttrFormulas.getFirewall", () => {
   it("is ceil(avg(Willpower, Charisma))", () => {
-    expect(AiAttrFormulas.getFirewall(3, 2)).toBe(3)
+    expect(AiAttrFormulas.getFirewall({ willpower: 3, charisma: 2 })).toBe(3)
   })
 })
 

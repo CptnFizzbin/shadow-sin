@@ -38,19 +38,16 @@ export const BiologySection: FC = () => {
               const newMetatype = metatypes[event.target.value]
               const oldMetatype = metatypes[prev.biology.metatype]
 
-              // AI may never have an Awakening at all — assign the reserved None sentinel when
-              // switching to AI, and reset away from it (to Mundane) when switching off AI. Any
-              // other metatype-to-metatype switch leaves the current Awakening choice untouched.
-              const newAwakeningName = newMetatype.name === MetatypeType.AI
-                ? AwakeningType.None
-                : oldMetatype.name === MetatypeType.AI
-                  ? AwakeningType.Mundane
-                  : prev.biology.awakening
-              const awakening = awakenings[newAwakeningName]
+              let newAwekening = awakenings[prev.biology.awakening]
+              if (newMetatype.name === MetatypeType.AI) {
+                newAwekening = awakenings[AwakeningType.None]
+              } else if (prev.biology.awakening === AwakeningType.None) {
+                newAwekening = awakenings[AwakeningType.Mundane]
+              }
 
               prev.biology.metatype = newMetatype.name
-              prev.biology.awakening = newAwakeningName
-              prev.attributes = getAttributesValues(newMetatype, awakening)
+              prev.biology.awakening = newAwekening.name
+              prev.attributes = getAttributesValues(newMetatype, newAwekening)
 
               // Innate qualities come from the metatype itself, so switching metatypes must drop
               // the old metatype's innate qualities rather than leave them alongside the new one's.
