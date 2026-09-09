@@ -1,5 +1,5 @@
-import type { SelectorArray, UnknownMemoizer, weakMapMemoize } from "reselect"
-import { createSelector as createMemoizedSelector } from "reselect"
+import type { Combiner, GetParamsFromSelectors, GetStateFromSelectors, SelectorArray } from "reselect"
+import { createSelector as createReselectSelector } from "reselect"
 
 /**
  * The standardized selector shape (see `docs/adr/0014-selector-input-decomposition.md`): every
@@ -12,48 +12,23 @@ import { createSelector as createMemoizedSelector } from "reselect"
  * `Selector` — namespaced selectors (`AttrSelectors.selectValue`, `ItemSelectors.selectById`, ...)
  * are still built with `createSelector([...inputs], combiner)`, this just names the resulting
  * shape consistently for annotation.
+ *
+ * The trailing `& { readonly __selectorBrand?: never }` never exists at runtime and never narrows
+ * what's assignable to this type (the property is optional) — it exists purely to stop this alias
+ * from collapsing to a "bare" function type. A generic helper (`createSelector`, `withTrait`, ...)
+ * that returns a bare `(state) => TReturn` and is then passed inline into another generic call
+ * (e.g. `createMemoizedSelector(someHelper(...), combiner)`) can leave TypeScript's instantiation
+ * of that inner generic unresolved at the point the outer call needs to read its shape, silently
+ * widening the combiner's inferred parameter types to `any`. Intersecting with an object type forces
+ * eager resolution instead.
  */
 export type Selector<
   TState,
   TReturn,
   TOptions extends object | never = never,
-> = [TOptions] extends [never]
+> = ([TOptions] extends [never]
   ? (state: TState) => TReturn
-  : (state: TState, options: TOptions) => TReturn
-
-const currySelector = <
-  State,
-  Result,
-  Params extends readonly unknown[],
-  AdditionalFields,
->(
-  selector: ((state: State, ...args: Params) => Result) & AdditionalFields,
-) => {
-  const curriedSelector = (...args: Params) => {
-    return (state: State) => {
-      return selector(state, ...args)
-    }
-  }
-  return Object.assign(curriedSelector, selector)
-}
-
-export const createCurriedSelector = <
-  InputSelectors extends SelectorArray,
-  Result,
-  OverrideMemoizeFunction extends UnknownMemoizer = typeof weakMapMemoize,
-  OverrideArgsMemoizeFunction extends UnknownMemoizer = typeof weakMapMemoize,
->(
-  ...args: Parameters<
-    typeof createMemoizedSelector<
-      InputSelectors,
-      Result,
-      OverrideMemoizeFunction,
-      OverrideArgsMemoizeFunction
-    >
-  >
-) => {
-  return currySelector(createMemoizedSelector(...args))
-}
+  : (state: TState, options: TOptions) => TReturn) & { readonly __selectorBrand?: never }
 
 /**
  * Builds a `(state, options) => value` accessor for `key` of `TOptions`, for use as a reselect
@@ -68,7 +43,42 @@ export function selectorOption<TOptions extends object>(key: keyof TOptions & st
   return (_state: unknown, options: TOptions): TOptions[keyof TOptions] => options[key]
 }
 
-export { createMemoizedSelector }
+/**
+ * The merged `TOptions` for a `reselect` input-selector array, built from `reselect`'s own
+ * `GetParamsFromSelectors` (the merged tail parameters every input selector agrees on) rather than
+ * by pattern-matching each input against our `Selector` type directly — `reselect`'s own inference
+ * already resolves each input selector's state/param types correctly; re-deriving that from the
+ * (collapsing) `Selector` alias is unreliable, since e.g. a single-argument `(state) => TReturn` is
+ * assignable to the wider `(state, options) => TReturn` shape (TS allows a function to ignore
+ * trailing parameters it's given), which would make every input look like it takes `TOptions`.
+ */
+type ComboSelectorOptions<TInputs extends SelectorArray> =
+  GetParamsFromSelectors<TInputs> extends [infer TOptions]
+    ? TOptions extends object
+      ? TOptions
+      : never
+    : never
+
+/**
+ * `createMemoizedSelector` typed against this file's own `Selector<TState, TReturn, TOptions>`
+ * shape instead of `reselect`'s own (which exposes the merged input params as a positional rest
+ * tuple rather than a single `options` object) — use this wherever the result is annotated with,
+ * or composed into, `Selector<...>` (e.g. `AttrSelectors.selectAll`'s combiner needing its input's
+ * real type rather than `unknown`/`any`).
+ */
+export function createMemoizedSelector<
+  TInputs extends SelectorArray,
+  TReturn,
+>(
+  ...args: [...TInputs, Combiner<TInputs, TReturn>]
+): Selector<GetStateFromSelectors<TInputs>, TReturn, ComboSelectorOptions<TInputs>> {
+  // `reselect`'s inferred rest-tuple param shape (`...params: ArrayTail<MergeParameters<TInputs>>`)
+  // is structurally equivalent to our single-`options`-object `Selector` shape by construction —
+  // every input selector built with this file's helpers takes at most one options object — but
+  // TypeScript can't verify that algebraically for generic `TInputs`.
+  return createReselectSelector(...args) as any // eslint-disable-line @typescript-eslint/no-explicit-any -- see comment
+  // above
+}
 
 export function createSelector<TState, TReturn, TOption extends object | never = never>(selector: Selector<TState, TReturn, TOption>): Selector<TState, TReturn, TOption> {
   return selector

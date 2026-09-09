@@ -1,4 +1,5 @@
-import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels, AttrKey } from "#/system/attributeKey.ts"
+import { AiAttrFormulas } from "#/system/attributes/aiAttrFormulas.ts"
 import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -83,13 +84,23 @@ export function getAttributeCap(sheet: RunnerData, attr: AttributeKey): number {
 
   const awakening = awakenings[sheet.biology.awakening]
   if (attr === AttributeKey.magic) {
-    return MagicAwakeningTypes.includes(awakening.name) ? awakening.attributes.magic.max : 0
+    if (!MagicAwakeningTypes.includes(awakening.name)) return 0
+    const magic = awakening.attributes[AttrKey.magic]
+    return magic ? magic.max : 0
   }
   if (attr === AttributeKey.resonance) {
-    return TechAwakeningTypes.includes(awakening.name) ? awakening.attributes.resonance.max : 0
+    if (!TechAwakeningTypes.includes(awakening.name)) return 0
+    const resonance = awakening.attributes[AttrKey.resonance]
+    return resonance ? resonance.max : 0
   }
 
   const metatype = metatypes[sheet.biology.metatype]
-  const baseCap = metatype.attributes[attr]?.max ?? 0
+
+  // AI's Edge natural max is dynamic (= its computed Rating), not the metatype table's flat
+  // value — see AiAttrFormulas.getEdgeMaxOverride, the one place that decides this. Still
+  // eligible for the same Exceptional Attribute +1 every other capped attribute gets.
+  const edgeMaxOverride = AiAttrFormulas.getEdgeMaxOverride(attr, metatype.name, sheet.attributes)
+  const baseCap = edgeMaxOverride ?? metatype.attributes[attr]?.max ?? 0
+
   return hasExceptionalAttributeFor(sheet, attr) ? baseCap + 1 : baseCap
 }

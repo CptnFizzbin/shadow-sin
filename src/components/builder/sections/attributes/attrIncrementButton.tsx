@@ -7,7 +7,6 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
 import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
-import { useHasMaxxedAttribute } from "#/hooks/builder/sections/attributes/useHasMaxxedAttribute.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -27,7 +26,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const attrKey = props.attr
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: attrKey })
   const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
-  const hasMaxxedAttr = useHasMaxxedAttribute()
+  const hasMaxxedAttr = useRunnerSelector(AttrSelectors.selectHasMaxxed)
 
   let disabled = false
   let cost = BuilderConfig.attributes.bpCost.base

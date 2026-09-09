@@ -17,7 +17,10 @@ interface AttributesBuildPoints extends BpLineItem {
 }
 
 export const useAttributesBuildPoints = (): AttributesBuildPoints => {
-  const activeAttributeCosts = useRunnerSelector(AttrSelectors.selectActive)
+  const attrs = useRunnerSelector(AttrSelectors.selectAllInfo)
+
+  const activeAttributeCosts = Object.values(attrs)
+    .filter((attrData) => !attrData.computed)
     .map((attrData) => {
       let spent = 0
       spent += (attrData.value - attrData.min) * BuilderConfig.attributes.bpCost.base

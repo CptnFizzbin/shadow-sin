@@ -158,4 +158,20 @@ describe.concurrent("getAttributeCap", () => {
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.magic)).toBe(0)
   })
+
+  it("caps an AI's Edge to its computed Rating, not the metatype table's flat max", () => {
+    // Arrange: RAW's own worked example (Unwired p.167) — CHA 2, INT 5, LOG 4, WIL 3 → Rating 4,
+    // well below the metatype table's flat Edge max of 6.
+    const sheet = runnerDataFactory({ afterBuild: (draft) => {
+      draft.biology.metatype = MetatypeType.AI
+      draft.biology.awakening = AwakeningType.None
+      draft.attributes[AttributeKey.charisma] = 2
+      draft.attributes[AttributeKey.intuition] = 5
+      draft.attributes[AttributeKey.logic] = 4
+      draft.attributes[AttributeKey.willpower] = 3
+    } })
+
+    // Act + Assert
+    expect(getAttributeCap(sheet, AttributeKey.edge)).toBe(4)
+  })
 })

@@ -18,17 +18,11 @@ export const ViewerStateSelectors = {
   selectEntity: Object.assign(
     selectEntity,
     {
-      /** `selectEntity` narrowed to a specific capability trait (e.g. `EntityWithAttrs`), for a
-       *  selector whose `TState` only needs that trait rather than the full entity. Throws if the
-       *  entity in scope doesn't actually carry the trait — every caller composes this into a
-       *  selector graph that assumes the narrowed shape unconditionally (see `DamageSelectors`),
-       *  so a mismatch is a data-integrity bug to surface loudly, not a `null` to thread through
-       *  every combiner downstream. */
-      withTrait<TEntityTrait extends object>(traitTestFn: (entity: object) => entity is TEntityTrait) {
+      withTrait: <TEntityTrait extends object>(traitTestFn: (entity: object) => entity is TEntityTrait) => {
         return createSelector<{ entity: object }, TEntityTrait>((state) => {
           const entity = selectEntity(state)
           if (!traitTestFn(entity)) {
-            throw new Error("Entity in scope doesn't have the expected trait")
+            throw new Error(`Entity in scope doesn't have the expected trait: ${traitTestFn.name}`)
           }
           return entity
         })

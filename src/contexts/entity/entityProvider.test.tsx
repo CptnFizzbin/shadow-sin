@@ -33,7 +33,7 @@ describe("useEntitySelector", () => {
     })
 
     // Assert
-    expect(result.current).toBe(entity.attributes)
+    expect(result.current).toEqual(expect.objectContaining(entity.attributes))
   })
 
   it("applies a selector's options against the nearest EntityProvider's entity", () => {

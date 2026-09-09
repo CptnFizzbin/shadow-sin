@@ -1,4 +1,4 @@
-import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import { AiAttributes, AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -17,10 +17,14 @@ export const GameEffectTypeOptions: GameEffectOption[] = [
   {
     label: "Attribute Modifier",
     value: GameEffectType.attrMod,
-    targets: Object.values(AttributeKey).map((attr) => ({
-      value: attr,
-      label: AttributeLabels[attr],
-    })),
+    // AI's Rating/System/Firewall/Response/Signal are always computed, never read through
+    // GameEffects — an effect targeting one would silently never apply.
+    targets: Object.values(AttributeKey)
+      .filter((attr) => !AiAttributes.includes(attr))
+      .map((attr) => ({
+        value: attr,
+        label: AttributeLabels[attr],
+      })),
   },
   {
     label: "Skill Modifier",
