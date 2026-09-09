@@ -1,4 +1,5 @@
 import type { AttributeInfoCatalog } from "./attributes/attributeCatalog.ts"
+import { createAttrInfoCatalog } from "./attributes/attributeCatalog.ts"
 import { EntityKind } from "./entityKind.ts"
 import type { MovementData } from "./movementData.ts"
 import type { CritterPowerData } from "./powers/critterPowerData.ts"
@@ -9,6 +10,7 @@ enum MetatypeGroup {
   critter = "critter",
   exotic = "exotic",
   custom = "custom",
+  other = "other",
 }
 
 export enum MetatypeType {
@@ -24,6 +26,9 @@ export enum MetatypeType {
 
   // Exotic
   AI = "AI",
+
+  // Fallback for npcs and critters
+  Other = "Other",
 }
 
 export interface MetatypeData {
@@ -37,8 +42,10 @@ export interface MetatypeData {
 }
 
 // Metatypes don't have Matrix stats of their own (those belong to MatrixNodes/Commlinks, not
-// Runners) — firewall/response/signal/system stay at a fixed 0/0 range for every metatype.
-const baseAttributes = {
+// Runners) — firewall/response/signal/system stay at a fixed 0/0 range for every metatype. AI is
+// the one deliberate exception: its Matrix attributes and Rating are computed live elsewhere,
+// never bounded here — that's why they're absent from AI's own `attributes` table below.
+const baseAttributes = createAttrInfoCatalog({
   body: { min: 1, max: 6, augMax: 9 },
   agility: { min: 1, max: 6, augMax: 9 },
   reaction: { min: 1, max: 6, augMax: 9 },
@@ -49,7 +56,7 @@ const baseAttributes = {
   willpower: { min: 1, max: 6, augMax: 9 },
   edge: { min: 1, max: 6 },
   essence: { min: 0, max: 6 },
-} as const
+})
 
 export const metatypes: Record<MetatypeType, MetatypeData> = {
   Human: {
@@ -57,7 +64,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     group: MetatypeGroup.metahuman,
     cost: 0,
     movement: { walk: 10, run: 25 },
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
       agility: { min: 1, max: 6, augMax: 9 },
@@ -68,14 +75,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 2, max: 7 },
-    },
+    }),
   },
   Ork: {
     name: MetatypeType.Ork,
     group: MetatypeGroup.metahuman,
     cost: 20,
     movement: { walk: 10, run: 25 },
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 4, max: 9, augMax: 13 },
       agility: { min: 1, max: 6, augMax: 9 },
@@ -86,14 +93,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-    },
+    }),
   },
   Dwarf: {
     name: MetatypeType.Dwarf,
     group: MetatypeGroup.metahuman,
     cost: 25,
     movement: { walk: 8, run: 20 },
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 2, max: 7, augMax: 10 },
       agility: { min: 1, max: 6, augMax: 9 },
@@ -104,14 +111,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 7, augMax: 10 },
       edge: { min: 1, max: 6 },
-    },
+    }),
   },
   Elf: {
     name: MetatypeType.Elf,
     group: MetatypeGroup.metahuman,
     cost: 30,
     movement: { walk: 10, run: 25 },
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
       agility: { min: 2, max: 7, augMax: 10 },
@@ -122,14 +129,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-    },
+    }),
   },
   Troll: {
     name: MetatypeType.Troll,
     group: MetatypeGroup.metahuman,
     cost: 40,
     movement: { walk: 15, run: 35 },
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 5, max: 10, augMax: 15 },
       agility: { min: 1, max: 5, augMax: 7 },
@@ -140,7 +147,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-    },
+    }),
   },
   // stable system UUIDs — do not change
   Pixie: {
@@ -151,7 +158,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       { type: "ground", walk: 1, run: 4 },
       { type: "fly", walk: 20, run: 50 },
     ],
-    attributes: {
+    attributes: createAttrInfoCatalog({
       ...baseAttributes,
       body: { min: 1, max: 3, augMax: 5 },
       agility: { min: 3, max: 8, augMax: 12 },
@@ -163,7 +170,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       willpower: { min: 3, max: 8, augMax: 12 },
       edge: { min: 1, max: 7 },
       magic: { min: 1, max: 6 },
-    },
+    }),
     innatePowers: [
       {
         type: "critterPower",
@@ -207,20 +214,24 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     group: MetatypeGroup.exotic,
     cost: 110,
     movement: { walk: 0, run: 0 },
-    attributes: {
-      ...baseAttributes,
-      body: { min: 0, max: 0 },
-      agility: { min: 0, max: 0 },
-      reaction: { min: 0, max: 0 },
-      strength: { min: 0, max: 0 },
+    attributes: createAttrInfoCatalog({
       charisma: { min: 1, max: 6 },
       intuition: { min: 1, max: 6 },
       logic: { min: 1, max: 6 },
       willpower: { min: 1, max: 6 },
       edge: { min: 1, max: 6 },
-      essence: { min: 0, max: 0 },
-      magic: { min: 0, max: 0 },
-      resonance: { min: 0, max: 0 },
-    },
+      response: { min: 1, max: 6 },
+      signal: { min: 1, max: 6 },
+      firewall: { min: 1, max: 6 },
+      system: { min: 1, max: 6 },
+    }),
+  },
+
+  Other: {
+    name: MetatypeType.Other,
+    group: MetatypeGroup.other,
+    cost: 0,
+    movement: { walk: 0, run: 0 },
+    attributes: {},
   },
 }

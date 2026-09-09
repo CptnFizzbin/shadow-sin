@@ -11,7 +11,7 @@ import { DicePoolsStack, useViewSkillDialog } from "#/components/runner/skills/v
 import { useActiveSkillDicePool } from "#/hooks/runner/skills/skillDicePools.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
-import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import { AiAttributes, AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
@@ -20,8 +20,10 @@ interface ActiveSkillsListItemProps {
   rating: number
 }
 
+// AI's Rating/System/Firewall/Response/Signal are always computed, never stored on
+// RunnerData.attributes — picking one here would silently lock the dice pool to 0.
 const selectableAttributes = Object.values(AttributeKey).filter(
-  (key) => key !== AttributeKey.essence,
+  (key) => key !== AttributeKey.essence && !AiAttributes.includes(key),
 )
 
 const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }> = ({

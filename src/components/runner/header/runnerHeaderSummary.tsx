@@ -11,7 +11,7 @@ import { KarmaSelectors } from "#/stores/runner/karma/karmaSlice.selectors.ts"
 import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { ReputationSelectors } from "#/stores/runner/reputation/reputationSlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 
 /**
  * Compact, always-visible summary of the Runner currently being viewed, rendered as a second
@@ -25,7 +25,8 @@ export const RunnerHeaderSummary: FC = () => {
   const reputation = useRunnerSelector(ReputationSelectors.selectAll)
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
 
-  const visibleAttributeKeys = AttributeOrder.filter((key) => attributes[key] !== 0)
+  const visibleAttributeKeys = Object.values(AttributeKey)
+    .filter((key) => attributes[key] && attributes[key] >= 1)
 
   return (
     <Paper sx={{ borderBottom: "1px solid", borderColor: "divider" }}>

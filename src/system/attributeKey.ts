@@ -27,6 +27,14 @@ export enum AttrKey {
   signal = "signal",
   system = "system",
 
+  /**
+   * AI-only, computed. Unrelated to the generic `EntityData.rating?: number` used by
+   * Licenses/SINs/etc — same name, different concept (see CONTEXT.md's **Rating** entry). Never
+   * stored on `RunnerData.attributes`; always derived by `AiAttrFormulas.getRating` from the AI's
+   * own Mental attributes.
+   */
+  rating = "rating",
+
   // Vehicle
   armor = "armor",
   handling = "handling",
@@ -64,8 +72,15 @@ export const AttributeLabels: Record<AttrKey, string> = {
   armor: "ARM",
   handling: "HDL",
   sensors: "SEN",
+
+  rating: "RTG",
 }
 
+// Deliberately does NOT include AiAttributes (Rating/System/Firewall/Response/Signal) — this
+// list is consumed by several components that assume it's exactly the 12 core Runner attributes
+// (e.g. the always-visible header summary, the Initiative Tracker's Combatant form), not just
+// AttrSelectors.selectActive. AI-only rows are added on top of this list only where a consumer is
+// actually AI-aware — see AiAttributes below.
 export const AttributeOrder: AttrKey[] = [
   AttrKey.body,
   AttrKey.agility,
@@ -119,6 +134,21 @@ export const MatrixAttributes: AttrKey[] = [
   AttrKey.response,
   AttrKey.signal,
   AttrKey.system,
+] as const
+
+/**
+ * AI-only attribute rows: Rating plus the four Matrix attributes, in RAW's own presentation
+ * order. Always computed (see `AiAttrFormulas` and `AttrSelectors.selectActive`), never stored
+ * or BP/Karma-purchasable, and NOT part of `AttributeOrder` — see that constant's own comment.
+ * `AttrSelectors.selectActive` is the only place that adds these on top of `AttributeOrder`
+ * (only for an AI Runner); every other consumer stays untouched.
+ */
+export const AiAttributes: AttrKey[] = [
+  AttrKey.rating,
+  AttrKey.system,
+  AttrKey.firewall,
+  AttrKey.response,
+  AttrKey.signal,
 ] as const
 
 /**

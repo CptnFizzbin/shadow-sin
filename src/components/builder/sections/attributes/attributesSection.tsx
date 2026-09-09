@@ -8,10 +8,11 @@ import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
+import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   AttributeKey,
-  AttributeOrder,
+  MatrixAttributes,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
@@ -22,16 +23,15 @@ import { AttributesList } from "./attributesList.tsx"
 export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()
   const attributes = useRunnerSelector(AttrSelectors.selectAllInfo)
+  const metatypeIsAi = useRunnerSelector(BiologySelectors.selectIsAiMetaType)
 
-  const attrRows: AttributeKey[] = AttributeOrder
-    .filter((key) => key !== AttributeKey.essence)
-    .map((attr) => ({ attr, ...attributes[attr] }))
-    .filter(({ min }) => min && min >= 1)
-    .map(({ attr }) => attr)
+  const attrRows: AttributeKey[] = Object.values(AttributeKey)
+    .filter((attr) => attributes[attr].min >= 1)
 
   const physicalAttrs = PhysicalAttributes.filter((attr) => attrRows.includes(attr))
   const mentalAttrs = MentalAttributes.filter((attr) => attrRows.includes(attr))
   const specialAttrs = SpecialAttributes.filter((attr) => attrRows.includes(attr))
+  const matrixAttrs = MatrixAttributes.filter((attr) => attrRows.includes(attr))
 
   return (
     <Stack>
@@ -57,7 +57,16 @@ export const AttributesSection: FC = () => {
       <EditorMode.IsBuilder>
         <Label label="Does not count towards BP limit" variant="text" />
       </EditorMode.IsBuilder>
+
       <AttributesList attributeKeys={specialAttrs} />
+
+      {metatypeIsAi && (
+        <>
+          <Label label="Matrix" variant="outlined" />
+          <Label label="Computed — not purchasable" variant="text" />
+          <AttributesList attributeKeys={matrixAttrs} />
+        </>
+      )}
 
     </Stack>
   )

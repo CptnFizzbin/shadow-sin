@@ -151,8 +151,17 @@ _Avoid_: race, species
 
 **Awakening**:
 A Runner's relationship to magic or the matrix (Mundane, Adept, Magician, Mystic Adept,
-Technomancer). Determines which special attributes (Magic or Resonance) are available.
+Technomancer, or None). Determines which special attributes (Magic or Resonance) are available.
+`None` is reserved exclusively for the AI metatype — an AI may never have an Awakening at all,
+which is a different statement from a metahuman choosing Mundane, even though both currently lock
+Magic and Resonance to 0. `None` is auto-assigned when a Runner's metatype switches to AI and is
+never offered as a manual choice for any other metatype.
 _Avoid_: class, archetype (archetype is a separate freeform profile field)
+
+**AI Rating**:
+A measure of an AI Runner's overall capability — the average of its four Mental attributes,
+rounded up (SR4A/Unwired) — which also sets the natural maximum for its Edge attribute. Unrelated
+to the generic **Rating** entry below despite the shared name; the two must not be conflated.
 
 ### Capabilities
 
@@ -226,6 +235,7 @@ ratings. Not every Entity populates it (Spells have none). Always a plain number
 default case (a Real SIN or Licence, a native Language skill) is expressed with its own explicit
 flag (**isReal**, **isNative**) rather than a sentinel value on `rating` itself; see
 `docs/features/0015-entity-interface-decomposition.md`.
+_Avoid_: confusing with **AI Rating** — a same-named but unrelated AI-metatype attribute
 
 ### Magic & Matrix
 
@@ -294,6 +304,12 @@ in Matrix Tests (see **Commlink**, **Matrix Test**). Shares the same `AttributeK
 Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests already mirror
 Attribute + Skill tests structurally. A key that's absent or not computable for a given subject
 (e.g. asking a Runner for Firewall) resolves to `0`.
+
+The AI metatype is the one deliberate exception to "a Runner asking for its own Firewall resolves
+to 0": an AI Runner has live MatrixAttrs of its own — System/Firewall computed from its own Mental
+attributes, Response/Signal borrowed from its current Active Node — displayed as read-only rows
+alongside its purchasable attributes. Every other metatype's MatrixAttrs stay fixed at 0; this
+does not make MatrixAttrs a general Runner capability.
 
 **Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
 Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a

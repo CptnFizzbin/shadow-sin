@@ -3,7 +3,6 @@ import { z } from "zod"
 import type { UUID } from "#/lib/uuidUtils.ts"
 
 import type { AttributeCatalog } from "./attributes/attributeCatalog.ts"
-import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type {
   EntityBase,
@@ -22,11 +21,10 @@ import type { SpiritData } from "./magic/spiritData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
 import type { MatrixGameState } from "./matrix/matrixGameState.ts"
-import type { MetatypeType } from "./metatypeData.ts"
 import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ReputationLedgerEntry } from "./reputation/reputationLedgerEntry.ts"
-import type { RunnerWithData } from "./runnerTraits.ts"
+import type { RunnerWithBiology, RunnerWithData } from "./runnerTraits.ts"
 import type { ActiveSkillData } from "./skills/activeSkillData"
 import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
 import type { LanguageSkillData } from "./skills/languageSkillData"
@@ -64,7 +62,14 @@ export const RunnerMetaSchema = z.object({
 /**
  * The root structure of a Shadowrun 4e runner sheet.
  */
-export interface RunnerData extends EntityBase, EntityWithItems, EntityWithDamage, EntityWithAttrs, EntityWithQualities, RunnerWithData {
+export interface RunnerData
+  extends EntityBase,
+  EntityWithItems,
+  EntityWithDamage,
+  EntityWithAttrs,
+  EntityWithQualities,
+  RunnerWithData,
+  RunnerWithBiology {
   kind: EntityKind.runner
   id: UUID
   name: string
@@ -81,15 +86,6 @@ export interface RunnerData extends EntityBase, EntityWithItems, EntityWithDamag
       quality: LifestyleType
       monthsPaid: number
     }
-  }
-
-  biology: {
-    metatype: MetatypeType
-    awakening: AwakeningType
-    gender: null | string
-    age: null | number
-    weight: null | string
-    height: null | string
   }
 
   karma: {
