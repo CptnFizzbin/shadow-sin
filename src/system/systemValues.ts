@@ -1,12 +1,21 @@
+import { FocusType } from "./magic/focusData.ts"
 import type { QualityData } from "./qualityData.ts"
-import { FocusType } from "#/system/magic/focusData.ts"
 
+/**
+ * Numeric constants defined by the Shadowrun 4th Edition rules — build point
+ * costs, karma costs, dice pool modifiers, and similar values — grouped by
+ * the domain each rule applies to. Values derived from runner data belong in
+ * selectors/hooks, not here; this is only for the fixed numbers the rules
+ * themselves specify.
+ */
 export const SystemValues = {
   skills: {
     specialization: {
+      /** Dice pool bonus granted when a roll uses a skill's specialization. */
       modifier: 2,
     },
 
+    /** Dice pool penalty applied when a test defaults to an untrained, defaultable skill. */
     defaulting: {
       modifier: -1,
     },

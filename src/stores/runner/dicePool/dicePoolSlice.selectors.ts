@@ -10,7 +10,7 @@ import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
 import { skillList } from "#/system/skills/skillList.ts"
-import { SRC } from "#/system/systemValues.ts"
+import { SystemValues } from "#/system/systemValues.ts"
 
 const selectAttrModTotal = createMemoizedSelector(
   GameEffectSelectors.selectAll,
@@ -74,12 +74,12 @@ export namespace DicePoolSelectors {
 
       const groups: DiceGroup[] = []
       if (base === 0 && !excludeDefaulting && (skillInfo.defaultable ?? true)) {
-        groups.push({ name: `${skill} - Defaulting`, size: SRC.Skills.Defaulting.Modifier, type: "defaulting" })
+        groups.push({ name: `${skill} - Defaulting`, size: SystemValues.skills.defaulting.modifier, type: "defaulting" })
       } else {
         groups.push({ name: skill, size: base, type: "skill" })
       }
 
-      const totalMod = modTotal + (isSpecialized ? SRC.Skills.Specialization.Modifier : 0)
+      const totalMod = modTotal + (isSpecialized ? SystemValues.skills.specialization.modifier : 0)
       if (totalMod !== 0) {
         groups.push({ name: `${skill} Mod`, size: totalMod, type: "bonus" })
       }
