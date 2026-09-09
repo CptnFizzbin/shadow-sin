@@ -8,7 +8,12 @@ import { AiAttrFormulas } from "./aiAttrFormulas.ts"
 // RAW's own worked example (Unwired p.167): Corvus has CHA 2, INT 5, LOG 4, WIL 3.
 describe("AiAttrFormulas.getRating", () => {
   it("is ceil(avg(Charisma, Intuition, Logic, Willpower))", () => {
-    expect(AiAttrFormulas.getRating(2, 5, 4, 3)).toBe(4)
+    expect(AiAttrFormulas.getRating({
+      charisma: 2,
+      intuition: 5,
+      logic: 4,
+      willpower: 3,
+    })).toBe(4)
   })
 })
 

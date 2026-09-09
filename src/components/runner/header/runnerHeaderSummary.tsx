@@ -26,7 +26,7 @@ export const RunnerHeaderSummary: FC = () => {
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
 
   const visibleAttributeKeys = Object.values(AttributeKey)
-    .filter((key) => attributes[key] >= 1)
+    .filter((key) => attributes[key] && attributes[key] >= 1)
 
   return (
     <Paper sx={{ borderBottom: "1px solid", borderColor: "divider" }}>

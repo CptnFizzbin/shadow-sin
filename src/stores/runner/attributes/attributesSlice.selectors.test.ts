@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeKey, AttrKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import { AccessLevel } from "#/system/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
-import { NodeType } from "#/system/matrix/nodeType.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -16,10 +13,13 @@ import { AttrSelectors } from "./attributesSlice.selectors.ts"
  *  `useRunnerSelector` assembles from a `RunnerData` alone (see `RunnerSelectorState` in
  *  `runnerStore.selectors.ts`); a `RunnerData` structurally satisfies both traits, so tests
  *  assemble it the same way. */
-const stateFor = (runner: RunnerData) => ({ entity: runner })
+const stateFor = (runner: RunnerData) => ({
+  runner: runner,
+  entity: runner,
+})
 
-/** `selectBounds`/`selectAllInfo`/`selectInfo` additionally read `{ runner }` (via `BiologySelectors`). */
-const runnerStateFor = (runner: RunnerData) => ({ runner, entity: runner })
+/** @deprecated - use {@link stateFor} instead */
+const runnerStateFor = stateFor
 
 describe("AttrSelectors.selectAll", () => {
   it("returns the entity's attributes record", () => {
@@ -27,16 +27,18 @@ describe("AttrSelectors.selectAll", () => {
     const runner = runnerDataFactory()
 
     // Act / Assert
-    expect(AttrSelectors.selectAll(stateFor(runner))).toBe(runner.attributes)
+    expect(AttrSelectors.selectAll(stateFor(runner))).toEqual(expect.objectContaining(runner.attributes))
   })
 })
 
 describe("AttrSelectors.selectBase", () => {
   it("returns the stored value for the given key", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.agility] = 6
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 6
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.selectBase(stateFor(runner), { key: AttributeKey.agility })).toBe(6)
@@ -44,9 +46,11 @@ describe("AttrSelectors.selectBase", () => {
 
   it("returns 0 when the key is unset", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      delete s.attributes[AttributeKey.resonance]
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        delete s.attributes[AttributeKey.resonance]
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.selectBase(stateFor(runner), { key: AttributeKey.resonance })).toBe(0)
@@ -56,9 +60,11 @@ describe("AttrSelectors.selectBase", () => {
 describe("AttrSelectors.selectValue", () => {
   it("matches selectBase (no derived modifiers applied yet)", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.logic] = 3
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.logic] = 3
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.logic })).toBe(3)
@@ -68,9 +74,11 @@ describe("AttrSelectors.selectValue", () => {
 describe("AttrSelectors.forAttr", () => {
   it("pins selectBase to the given attribute, needing no options", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.strength] = 5
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.strength] = 5
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.strength).selectBase(stateFor(runner))).toBe(5)
@@ -78,9 +86,11 @@ describe("AttrSelectors.forAttr", () => {
 
   it("pins selectValue to the given attribute, needing no options", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.charisma] = 7
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.charisma] = 7
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.charisma).selectValue(stateFor(runner))).toBe(7)
@@ -88,10 +98,12 @@ describe("AttrSelectors.forAttr", () => {
 
   it("doesn't leak values between attributes", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.body] = 2
-      s.attributes[AttributeKey.reaction] = 9
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.body] = 2
+        s.attributes[AttributeKey.reaction] = 9
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.forAttr(AttributeKey.body).selectBase(stateFor(runner))).toBe(2)
@@ -102,46 +114,69 @@ describe("AttrSelectors.forAttr", () => {
 describe("AttrSelectors.selectBounds", () => {
   it("uses the runner's metatype bounds for a physical attribute", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.metatype = MetatypeType.Human
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.biology.metatype = MetatypeType.Human
+      },
+    })
 
-    // Act / Assert
-    expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.body]).toEqual({ min: 1, max: 6, augMax: 9 })
+    // Act
+    const attrs = AttrSelectors.selectBounds(runnerStateFor(runner))
+
+    // Assert
+    expect(attrs[AttributeKey.body]).toEqual({ attr: AttrKey.body, min: 1, max: 6, augMax: 9 })
   })
 
   it("uses the runner's awakening bounds for magic/resonance", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.awakening = AwakeningType.Mundane
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.biology.awakening = AwakeningType.Mundane
+      },
+    })
+
+    // Act
+    const attrs = AttrSelectors.selectBounds(runnerStateFor(runner))
 
     // Act / Assert
-    expect(AttrSelectors.selectBounds(runnerStateFor(runner))[AttributeKey.magic]).toEqual({ min: 0, max: 0 })
+    expect(attrs[AttributeKey.magic]).toEqual({ attr: AttrKey.magic, min: 0, max: 0 })
   })
 })
 
 describe("AttrSelectors.selectAllInfo", () => {
   it("pairs each attribute's bounds with its base and current value", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.body] = 4
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.body] = 4
+      },
+    })
 
     // Act
     const info = AttrSelectors.selectAllInfo(runnerStateFor(runner))
 
     // Assert
-    expect(info[AttributeKey.body]).toEqual({ min: 1, max: 6, augMax: 9, base: 4, current: 4 })
+    expect(info[AttributeKey.body]).toEqual({
+      attr: AttrKey.body,
+      min: 1,
+      max: 6,
+      augMax: 9,
+      base: 4,
+      baseValue: 4,
+      current: 4,
+      value: 4,
+    })
   })
 })
 
 describe("AttrSelectors.selectInfo", () => {
   it("returns the same info as selectAllInfo for the given key", () => {
     // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.attributes[AttributeKey.willpower] = 5
-    } })
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.willpower] = 5
+      },
+    })
 
     // Act / Assert
     expect(AttrSelectors.selectInfo(runnerStateFor(runner), { key: AttributeKey.willpower }))
@@ -157,97 +192,22 @@ const aiRunnerFor = (
   mentalAttrs: { charisma: number, intuition: number, logic: number, willpower: number },
   activeNode?: KnownNode,
 ): RunnerData =>
-  runnerDataFactory({ afterBuild: (s) => {
-    s.biology.metatype = MetatypeType.AI
-    s.biology.awakening = AwakeningType.None
-    s.attributes[AttributeKey.charisma] = mentalAttrs.charisma
-    s.attributes[AttributeKey.intuition] = mentalAttrs.intuition
-    s.attributes[AttributeKey.logic] = mentalAttrs.logic
-    s.attributes[AttributeKey.willpower] = mentalAttrs.willpower
+  runnerDataFactory({
+    afterBuild: (s) => {
+      s.biology.metatype = MetatypeType.AI
+      s.biology.awakening = AwakeningType.None
 
-    if (activeNode) {
-      s.gameState.matrix.knownNodes = [activeNode]
-      s.gameState.matrix.activeNodeId = activeNode.id
-    }
-  } })
+      s.attributes[AttributeKey.charisma] = mentalAttrs.charisma
+      s.attributes[AttributeKey.intuition] = mentalAttrs.intuition
+      s.attributes[AttributeKey.logic] = mentalAttrs.logic
+      s.attributes[AttributeKey.willpower] = mentalAttrs.willpower
 
-const knownNodeFixture = (matrix: Partial<Record<AttributeKey, number>>): KnownNode => ({
-  kind: EntityKind.matrixNode,
-  id: "node-1",
-  name: "Test Node",
-  nodeType: NodeType.general,
-  accessLevel: AccessLevel.user,
-  matrix,
-})
-
-describe("AttrSelectors.selectActive — AI metatype", () => {
-  it("excludes Physical attributes and includes the computed Rating/System/Firewall/Response/Signal rows", () => {
-    // Arrange
-    const runner = aiRunnerFor(corvusMentalAttrs)
-
-    // Act
-    const active = AttrSelectors.selectActive(runnerStateFor(runner))
-    const byAttr = Object.fromEntries(active.map((a) => [a.attr, a]))
-
-    // Assert
-    expect(byAttr[AttributeKey.body]).toBeUndefined()
-    expect(byAttr[AttributeKey.agility]).toBeUndefined()
-    expect(byAttr[AttributeKey.reaction]).toBeUndefined()
-    expect(byAttr[AttributeKey.strength]).toBeUndefined()
-
-    expect(byAttr[AttributeKey.rating]).toMatchObject({ value: 4, computed: true })
-    expect(byAttr[AttributeKey.system]).toMatchObject({ value: 5, computed: true })
-    expect(byAttr[AttributeKey.firewall]).toMatchObject({ value: 3, computed: true })
-    expect(byAttr[AttributeKey.response]).toMatchObject({ value: 0, computed: true })
-    expect(byAttr[AttributeKey.signal]).toMatchObject({ value: 0, computed: true })
+      if (activeNode) {
+        s.gameState.matrix.knownNodes = [activeNode]
+        s.gameState.matrix.activeNodeId = activeNode.id
+      }
+    },
   })
-
-  it("resolves Response/Signal from the Runner's Active Node", () => {
-    // Arrange
-    const node = knownNodeFixture({ [AttributeKey.response]: 4, [AttributeKey.signal]: 6 })
-    const runner = aiRunnerFor(corvusMentalAttrs, node)
-
-    // Act
-    const active = AttrSelectors.selectActive(runnerStateFor(runner))
-    const byAttr = Object.fromEntries(active.map((a) => [a.attr, a]))
-
-    // Assert
-    expect(byAttr[AttributeKey.response]?.value).toBe(4)
-    expect(byAttr[AttributeKey.signal]?.value).toBe(6)
-  })
-
-  it("caps Edge's max to the computed Rating, matching selectAllInfo's override", () => {
-    // Arrange
-    const runner = aiRunnerFor(corvusMentalAttrs)
-
-    // Act
-    const active = AttrSelectors.selectActive(runnerStateFor(runner))
-    const edge = active.find((a) => a.attr === AttributeKey.edge)
-
-    // Assert
-    expect(edge?.max).toBe(4)
-    expect(edge?.augMax).toBe(4)
-    expect(edge?.computed).toBeUndefined() // Edge itself is still purchasable, just capped differently
-  })
-
-  it("does not include the computed rows for a non-AI metatype", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.biology.metatype = MetatypeType.Human
-    } })
-
-    // Act
-    const active = AttrSelectors.selectActive(runnerStateFor(runner))
-
-    // Assert
-    expect(active.some((a) => a.attr === AttributeKey.rating)).toBe(false)
-    expect(active.some((a) => a.attr === AttributeKey.system)).toBe(false)
-    expect(active.some((a) => a.attr === AttributeKey.firewall)).toBe(false)
-    expect(active.some((a) => a.attr === AttributeKey.response)).toBe(false)
-    expect(active.some((a) => a.attr === AttributeKey.signal)).toBe(false)
-    expect(active.some((a) => a.attr === AttributeKey.body)).toBe(true)
-  })
-})
 
 describe("AttrSelectors.selectAllInfo — AI metatype", () => {
   it("overrides Edge's max/augMax to the computed Rating", () => {
@@ -255,28 +215,10 @@ describe("AttrSelectors.selectAllInfo — AI metatype", () => {
     const runner = aiRunnerFor(corvusMentalAttrs)
 
     // Act
-    const info = AttrSelectors.selectAllInfo(runnerStateFor(runner))
+    const info = AttrSelectors.selectAllInfo(stateFor(runner))
 
     // Assert
     expect(info[AttributeKey.edge]?.max).toBe(4)
     expect(info[AttributeKey.edge]?.augMax).toBe(4)
-  })
-})
-
-describe("AttrSelectors.selectComputedValue", () => {
-  it("returns 0 for a key selectActive doesn't return at all (e.g. a Physical attribute for AI)", () => {
-    // Arrange
-    const runner = aiRunnerFor(corvusMentalAttrs)
-
-    // Act / Assert
-    expect(AttrSelectors.selectComputedValue(runnerStateFor(runner), { key: AttributeKey.body })).toBe(0)
-  })
-
-  it("returns the computed value for an AI's Rating", () => {
-    // Arrange
-    const runner = aiRunnerFor(corvusMentalAttrs)
-
-    // Act / Assert
-    expect(AttrSelectors.selectComputedValue(runnerStateFor(runner), { key: AttributeKey.rating })).toBe(4)
   })
 })

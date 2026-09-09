@@ -26,3 +26,10 @@ export const attrNaturalMax = (catalog: AttributeInfoCatalog, attr: AttrKey) => 
 export const attrAugmentedMax = (catalog: AttributeInfoCatalog, attr: AttrKey) => {
   return catalog[attr]?.augMax ?? attrNaturalMax(catalog, attr)
 }
+
+export const createAttrInfoCatalog = (data: Partial<Record<AttrKey, Omit<AttributeInfo, "attr">>>): AttributeInfoCatalog => {
+  return Object.fromEntries(
+    Object.entries(data)
+      .map(([attr, info]) => [attr, { ...info, attr }]),
+  )
+}

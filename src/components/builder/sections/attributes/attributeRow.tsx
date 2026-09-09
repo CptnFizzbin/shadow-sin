@@ -24,7 +24,7 @@ export const AttributeRow: FC<AttributeRowProps> = ({ attr }) => {
 }
 
 const ComputedAttributeRow: FC<{ attr: AttributeKey }> = ({ attr }) => {
-  const value = useRunnerSelector(AttrSelectors.selectComputedValue, { key: attr })
+  const value = useRunnerSelector(AttrSelectors.selectValue, { key: attr })
 
   return (
     <Stack direction="row" sx={{ alignItems: "center" }}>
