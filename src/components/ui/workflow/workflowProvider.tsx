@@ -5,14 +5,14 @@ import type { Workflow } from "./createWorkflow.tsx"
 import type { WorkflowCtrl } from "./workflowContext.ts"
 import { workflowReducer } from "./workflowReducer.tsx"
 
-interface WorkflowProviderProps<TData extends object> extends PropsWithChildren {
-  workflow: Workflow<TData>
+interface WorkflowProviderProps<TData extends object, TSteps extends string> extends PropsWithChildren {
+  workflow: Workflow<TData, TSteps>
   initialData: TData
-  initialStep: string
-  previousSteps?: string[]
+  initialStep: TSteps
+  previousSteps?: TSteps[]
 }
 
-export const WorkflowProvider = <TData extends object, TSteps extends string>(props: WorkflowProviderProps<TData>) => {
+export const WorkflowProvider = <TData extends object, TSteps extends string>(props: WorkflowProviderProps<TData, TSteps>) => {
   const { workflow, initialData, initialStep, previousSteps = [], children } = props
   const Provider = workflow.context.Provider
 

@@ -2,15 +2,15 @@ import { produce } from "immer"
 
 import type { WorkflowState } from "./workflowContext.ts"
 
-export type WorkflowAction<TData extends object> =
+export type WorkflowAction<TData extends object, TSteps extends string> =
   | { type: "updateData", updater: (data: TData) => TData }
   | { type: "setData", data: TData }
-  | { type: "nextStep", step: string }
+  | { type: "nextStep", step: TSteps }
   | { type: "previousStep" }
-  | { type: "reset", state: WorkflowState<TData> }
+  | { type: "reset", state: WorkflowState<TData, TSteps> }
 
-export const workflowReducer = <TData extends object>(state: WorkflowState<TData>, action: WorkflowAction<TData>) => {
-  return produce(state, (draft): WorkflowState<TData> => {
+export const workflowReducer = <TData extends object, TSteps extends string>(state: WorkflowState<TData, TSteps>, action: WorkflowAction<TData, TSteps>) => {
+  return produce(state, (draft): WorkflowState<TData, TSteps> => {
     switch (action.type) {
       case "previousStep":
         if (draft.previousSteps.length >= 1) {
