@@ -1,8 +1,18 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import { useRunner } from "#/contexts/runner/runnerStore.context.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
+import type { ItemCatalog } from "#/system/items/itemUtils.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
+import { getItemCatalog } from "#/system/runnerTraits.ts"
+
+export interface EntitySelectorState {
+  runner: RunnerData
+  entity: object
+  items: ItemCatalog
+}
 
 /**
  * The Entity currently in scope for `useEntitySelector`. Kept as `object` rather than
@@ -54,21 +64,23 @@ const useEntityContext = (): object => {
  * @example
  * const droneAgility = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.agility })
  */
-export function useEntitySelector<TState extends { entity: object }, TReturn>(
+export function useEntitySelector<TState extends EntitySelectorState, TReturn>(
   selector: Selector<TState, TReturn>,
 ): TReturn
-export function useEntitySelector<TState extends { entity: object }, TReturn, TOptions extends object>(
+export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
   selector: Selector<TState, TReturn, TOptions>,
   options: TOptions,
 ): TReturn
-export function useEntitySelector<TState extends { entity: object }, TReturn, TOptions extends object>(
+export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
   selector: (state: TState, options?: TOptions) => TReturn,
   options?: TOptions,
 ): TReturn {
   const entity = useEntityContext()
+  const runner = useRunner()
+  const items = getItemCatalog(runner)
 
   // The Context only ever holds `object` — narrowing to whatever `TState`'s `entity` trait(s)
   // require is the caller's responsibility, same as `useRunnerSelector`'s `assembleRunnerState`
   // cast (see docs/adr/0014-selector-input-decomposition.md).
-  return selector({ entity } as TState, options)
+  return selector({ runner, entity, items } as TState, options)
 }

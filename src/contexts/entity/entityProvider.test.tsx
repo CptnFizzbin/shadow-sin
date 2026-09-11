@@ -2,14 +2,24 @@ import { renderHook } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { EntityProvider, useEntitySelector } from "./entityProvider.tsx"
 
+// `useEntitySelector` also resolves the Runner's own item catalog (for selectors like
+// `ItemSelectors.selectByFilter`), so every test here needs a `RunnerStoreProvider` in scope even
+// when the selector under test only reads `entity` — matching how `EntityProvider` is always used
+// in the app (nested under `RunnerStoreProvider`, per its own doc comment).
 const wrapperFor = (entity: object): FC<PropsWithChildren> => {
+  const runnerStore = new RunnerDataStore(runnerDataFactory())
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <EntityProvider entity={entity}>{children}</EntityProvider>
+    <RunnerStoreProvider store={runnerStore}>
+      <EntityProvider entity={entity}>{children}</EntityProvider>
+    </RunnerStoreProvider>
   )
   return Wrapper
 }
@@ -54,10 +64,13 @@ describe("useEntitySelector", () => {
     // Arrange
     const outerEntity = { attributes: { [AttributeKey.strength]: 2 } }
     const innerEntity = { attributes: { [AttributeKey.strength]: 6 } }
+    const runnerStore = new RunnerDataStore(runnerDataFactory())
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-      <EntityProvider entity={outerEntity}>
-        <EntityProvider entity={innerEntity}>{children}</EntityProvider>
-      </EntityProvider>
+      <RunnerStoreProvider store={runnerStore}>
+        <EntityProvider entity={outerEntity}>
+          <EntityProvider entity={innerEntity}>{children}</EntityProvider>
+        </EntityProvider>
+      </RunnerStoreProvider>
     )
 
     // Act

@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button"
-import { act, fireEvent, screen, within } from "@testing-library/react"
+import { act, fireEvent, screen } from "@testing-library/react"
 import type { FC } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
@@ -14,6 +14,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
+import { WeaponAttackDialogPom } from "./weaponAttackDialog.testLib.ts"
 import { useWeaponAttackDialog } from "./weaponAttackDialog.tsx"
 
 const pistol: FirearmData = {
@@ -64,7 +65,7 @@ function buildRunnerStore() {
   }))
 }
 
-function openCalculator() {
+async function openCalculator() {
   const Wrapper: FC = () => {
     const weaponAttackDialog = useWeaponAttackDialog()
     return (
@@ -77,18 +78,18 @@ function openCalculator() {
 
   renderWithProviders(<Wrapper />, { runnerStore: buildRunnerStore() })
   fireEvent.click(screen.getByRole("button", { name: /attack/i }))
-  return screen.findByRole("dialog", { name: "Test Pistol" })
+
+  const dialog = await screen.findByRole("dialog", { name: "Test Pistol" })
+  return new WeaponAttackDialogPom(dialog)
 }
 
-const goNext = (dialog: HTMLElement) => fireEvent.click(within(dialog).getByRole("button", { name: /^next$/i }))
-
 describe("WeaponAttackDialog", () => {
-  it("opens directly on the clicked weapon's wizard, at the Attack Skill step", async () => {
+  it("opens directly on the clicked weapon's wizard, at the Skill step", async () => {
     // Arrange / Act
     const dialog = await openCalculator()
 
     // Assert
-    expect(within(dialog).getByText(/step 1 of 3.*attack skill/i)).toBeTruthy()
+    expect(dialog.within().getByText(/default skill/i)).toBeTruthy()
   })
 
   it("the back button reaches a hub listing every equipped weapon", async () => {
@@ -96,58 +97,110 @@ describe("WeaponAttackDialog", () => {
     const dialog = await openCalculator()
 
     // Act
-    fireEvent.click(within(dialog).getByRole("button", { name: /back to weapons/i }))
+    dialog.clickBackToWeapons()
 
     // Assert
-    expect(within(dialog).getByRole("button", { name: /test pistol/i })).toBeTruthy()
-    expect(within(dialog).getByRole("button", { name: /combat knife/i })).toBeTruthy()
-    expect(within(dialog).queryByRole("button", { name: /back to weapons/i })).toBeNull()
+    expect(dialog.within().getByRole("button", { name: /test pistol/i })).toBeTruthy()
+    expect(dialog.within().getByRole("button", { name: /combat knife/i })).toBeTruthy()
+    expect(dialog.within().queryByRole("button", { name: /back to weapons/i })).toBeNull()
   })
-
   it("switching weapons from the hub drills into that weapon's own wizard", async () => {
     // Arrange
     const dialog = await openCalculator()
-    fireEvent.click(within(dialog).getByRole("button", { name: /back to weapons/i }))
+
+    dialog.clickBackToWeapons()
 
     // Act
-    fireEvent.click(within(dialog).getByRole("button", { name: /combat knife/i }))
+    dialog.selectWeapon("combat knife")
 
     // Assert
-    expect(within(dialog).getByText(/step 1 of 3.*attack skill/i)).toBeTruthy()
-    expect(within(dialog).getByRole("button", { name: /blades/i })).toBeTruthy()
+    expect(dialog.within().getByText(/default skill/i)).toBeTruthy()
+    expect(dialog.within().getByRole("button", { name: /blades/i })).toBeTruthy()
   })
 
   it("pages forward through the wizard and back again", async () => {
     // Arrange
     const dialog = await openCalculator()
-    expect(within(dialog).getByText(/step 1 of 3/i)).toBeTruthy()
+
+    expect(dialog.getStepHeader()).toContain("Select Skill")
 
     // Act / Assert
-    goNext(dialog)
-    expect(within(dialog).getByText(/step 2 of 3.*modifiers/i)).toBeTruthy()
+    dialog.goNext()
+    expect(dialog.getStepHeader()).toContain("Select Modifiers")
 
-    goNext(dialog)
-    expect(within(dialog).getByText(/step 3 of 3.*total/i)).toBeTruthy()
-    expect(within(dialog).queryByRole("button", { name: /^next$/i })).toBeNull()
+    dialog.goNext()
+    expect(dialog.getStepHeader()).toContain("Attack Totals")
+    expect(dialog.within().queryByRole("button", { name: /^next$/i })).toBeNull()
 
-    fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
-    expect(within(dialog).getByText(/step 2 of 3/i)).toBeTruthy()
+    dialog.goBack()
+    expect(dialog.getStepHeader()).toContain("Select Modifiers")
   })
 
   it("only offers Melee Modifiers when the weapon is melee", async () => {
-    // Arrange: the pistol is ranged, so no melee modifiers should be offered
+    // Arrange
     const dialog = await openCalculator()
-    goNext(dialog)
-    expect(within(dialog).queryByText(/superior position/i)).toBeNull()
 
-    // Act: switch to the melee weapon
-    fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
-    fireEvent.click(within(dialog).getByRole("button", { name: /back to weapons/i }))
-    fireEvent.click(within(dialog).getByRole("button", { name: /combat knife/i }))
-    goNext(dialog)
+    // Act
+    dialog.clickBackToWeapons()
+    dialog.selectWeapon("combat knife")
+    dialog.goNext()
 
     // Assert
-    expect(within(dialog).getByText(/superior position/i)).toBeTruthy()
+    expect(dialog.within().getByText(/superior position/i)).toBeTruthy()
+  })
+
+  it("shows the weapon's default skill separately at the top of the skill picker", async () => {
+    // Arrange: enable defaulting skills so Automatics (the pistol's only other candidate) renders
+    // an "Other Skills" section to compare positions against
+    const dialog = await openCalculator()
+
+    dialog.toggleShowDefaultingSkills()
+
+    // Assert
+    const defaultSkillHeading = dialog.within().getByText("Default Skill")
+    const otherSkillsHeading = dialog.within().getByText("Other Skills")
+    expect(defaultSkillHeading.compareDocumentPosition(otherSkillsHeading))
+      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+
+    const pistolsButton = dialog.within().getByRole("button", { name: /pistols/i })
+    expect(defaultSkillHeading.compareDocumentPosition(pistolsButton))
+      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(otherSkillsHeading.compareDocumentPosition(pistolsButton))
+      .toBe(Node.DOCUMENT_POSITION_PRECEDING)
+  })
+
+  it("offers Ranged Modifiers when the weapon is ranged, and Melee Modifiers when it's melee", async () => {
+    // Arrange: the pistol is ranged, so ranged (not melee) modifiers should be offered
+    const dialog = await openCalculator()
+
+    dialog.goNext()
+    expect(dialog.within().getByText(/firing while running/i)).toBeTruthy()
+    expect(dialog.within().queryByText(/superior position/i)).toBeNull()
+
+    // Act: switch to the melee weapon
+    dialog.goBack()
+    dialog.clickBackToWeapons()
+    dialog.selectWeapon("combat knife")
+    dialog.goNext()
+
+    // Assert
+    expect(dialog.within().getByText(/superior position/i)).toBeTruthy()
+    expect(dialog.within().queryByText(/firing while running/i)).toBeNull()
+  })
+
+  it("applies a checked ranged modifier's value to the Attack pool", async () => {
+    // Arrange
+    const dialog = await openCalculator()
+
+    dialog.goNext()
+
+    // Act
+    dialog.checkModifier("firing while running")
+    dialog.goNext()
+
+    // Assert
+    const poolContainerText = dialog.getPoolContainerText()
+    expect(poolContainerText).toContain("Firing while running")
   })
 
   it("hides an untrained skill from the picker until Show Defaulting Skills is enabled", async () => {
@@ -155,31 +208,32 @@ describe("WeaponAttackDialog", () => {
     const dialog = await openCalculator()
 
     // Assert
-    expect(within(dialog).queryByRole("button", { name: /automatics/i })).toBeNull()
+    expect(dialog.within().queryByRole("button", { name: /automatics/i })).toBeNull()
 
     // Act
-    fireEvent.click(within(dialog).getByRole("checkbox", { name: /show defaulting skills/i }))
+    dialog.toggleShowDefaultingSkills()
 
     // Assert
-    expect(within(dialog).getByRole("button", { name: /automatics/i })).toBeTruthy()
+    expect(dialog.within().getByRole("button", { name: /automatics/i })).toBeTruthy()
   })
 
   it("selecting a different skill changes the pool used on the Total step", async () => {
     // Arrange
     const dialog = await openCalculator()
-    goNext(dialog)
-    goNext(dialog)
-    const poolWithPistols = within(dialog).getByText(/^Attack$/).parentElement!.textContent
 
-    fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
-    fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
-    fireEvent.click(within(dialog).getByRole("checkbox", { name: /show defaulting skills/i }))
-    fireEvent.click(within(dialog).getByRole("button", { name: /automatics/i }))
+    dialog.goNext()
+    dialog.goNext()
+    const poolWithPistols = dialog.within().getByText(/^Attack$/).parentElement!.textContent
+
+    dialog.goBack()
+    dialog.goBack()
+    dialog.toggleShowDefaultingSkills()
+    dialog.clickSkill("automatics")
 
     // Act
-    goNext(dialog)
-    goNext(dialog)
-    const poolWithAutomatics = within(dialog).getByText(/^Attack$/).parentElement!.textContent
+    dialog.goNext()
+    dialog.goNext()
+    const poolWithAutomatics = dialog.within().getByText(/^Attack$/).parentElement!.textContent
 
     // Assert
     expect(poolWithAutomatics).not.toEqual(poolWithPistols)
@@ -188,17 +242,18 @@ describe("WeaponAttackDialog", () => {
   it("applies a checked melee modifier's value to the Attack pool", async () => {
     // Arrange
     const dialog = await openCalculator()
-    fireEvent.click(within(dialog).getByRole("button", { name: /back to weapons/i }))
-    fireEvent.click(within(dialog).getByRole("button", { name: /combat knife/i }))
-    goNext(dialog)
+
+    dialog.clickBackToWeapons()
+    dialog.selectWeapon("combat knife")
+    dialog.goNext()
 
     // Act
-    fireEvent.click(within(dialog).getByRole("checkbox", { name: /superior position/i }))
-    goNext(dialog)
+    dialog.checkModifier("superior position")
+    dialog.goNext()
 
     // Assert
-    const poolContainer = within(dialog).getByText(/^Attack$/).parentElement!.parentElement!
-    expect(poolContainer.textContent).toContain("Superior position")
+    const poolContainerText = dialog.getPoolContainerText()
+    expect(poolContainerText).toContain("Superior position")
   })
 
   describe("rolling the Attack Test", () => {
@@ -207,30 +262,31 @@ describe("WeaponAttackDialog", () => {
       vi.restoreAllMocks()
     })
 
-    it("shows Net Hits and Total DV once the roll settles and defense hits are entered", async () => {
+    it("shows Net Hits and Total DV once the roll settles and defenseCalculator hits are entered", async () => {
       // Arrange
       vi.spyOn(DiceRoller.prototype, "rollD6").mockReturnValue(5)
       const dialog = await openCalculator()
-      goNext(dialog)
-      goNext(dialog)
 
-      const poolText = within(dialog).getByText(/^Attack$/).parentElement?.textContent ?? ""
+      dialog.goNext()
+      dialog.goNext()
+
+      const poolText = dialog.getPoolText()
       const poolTotal = Number(/Attack(\d+)/.exec(poolText.replace(/\s/g, ""))?.[1])
 
       // Act
       vi.useFakeTimers()
-      fireEvent.click(within(dialog).getByRole("button", { name: /roll attack test/i }))
+      dialog.rollAttack()
       act(() => {
         vi.runAllTimers()
       })
-      fireEvent.change(within(dialog).getByLabelText(/defense hits/i), { target: { value: "1" } })
+      dialog.setDefenseHits("1")
 
       // Assert
       const expectedNetHits = poolTotal - 1
-      const netHitsCell = within(dialog).getByText("Net Hits").parentElement
-      const totalDvCell = within(dialog).getByText("Total DV").parentElement
-      expect(netHitsCell?.textContent).toContain(String(expectedNetHits))
-      expect(totalDvCell?.textContent).toContain(`${4 + expectedNetHits}P`)
+      const netHitsCellText = dialog.getNetHits()
+      const totalDvCellText = dialog.getTotalDv()
+      expect(netHitsCellText).toContain(String(expectedNetHits))
+      expect(totalDvCellText).toContain(`${4 + expectedNetHits}P`)
     })
   })
 })

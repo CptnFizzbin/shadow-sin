@@ -200,6 +200,6 @@ export const combatActions: CombatActionData[] = [
     name: "Full Defense",
     category: "interrupt",
     description:
-      "Dedicate your full attention to avoiding incoming attacks, adding your Willpower to your defense pool against the triggering attack. Can be used as an interrupt — even before your Action Phase, as long as you're not surprised — but it uses up your next available action, even your very first action of the next Combat Turn if none remain this one.",
+      "Dedicate your full attention to avoiding incoming attacks, adding your Willpower to your defenseCalculator pool against the triggering attack. Can be used as an interrupt — even before your Action Phase, as long as you're not surprised — but it uses up your next available action, even your very first action of the next Combat Turn if none remain this one.",
   },
 ]

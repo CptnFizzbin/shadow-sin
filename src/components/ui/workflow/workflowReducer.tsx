@@ -3,7 +3,7 @@ import { produce } from "immer"
 import type { WorkflowState } from "./workflowContext.ts"
 
 export type WorkflowAction<TData extends object, TSteps extends string> =
-  | { type: "updateData", updater: (data: TData) => TData }
+  | { type: "updateData", updater: (data: TData) => TData | void }
   | { type: "setData", data: TData }
   | { type: "nextStep", step: TSteps }
   | { type: "previousStep" }

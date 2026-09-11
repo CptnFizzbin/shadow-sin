@@ -38,7 +38,7 @@ export const defenseAttackTypes: DefenseAttackTypeInfo[] = [
   },
 ]
 
-/** Section a defense skill option is grouped under in the skill picker. */
+/** Section a defenseCalculator skill option is grouped under in the skill picker. */
 export type DefenseSkillGroup = "Basic" | "Dodge" | "Parry" | "Block"
 
 export const defenseSkillGroupOrder: DefenseSkillGroup[] = ["Basic", "Dodge", "Parry", "Block"]
@@ -56,7 +56,7 @@ export interface DefenseSkillOption {
   note?: string
 }
 
-/** Selectable defense skills per attack type, grouped by maneuver. */
+/** Selectable defenseCalculator skills per attack type, grouped by maneuver. */
 export const defenseSkillOptionsByAttackType: Record<DefenseAttackType, DefenseSkillOption[]> = {
   melee: [
     { key: "none", label: "Basic", group: "Basic" },
@@ -78,7 +78,7 @@ export const defenseSkillOptionsByAttackType: Record<DefenseAttackType, DefenseS
     { key: "none", label: "Basic", group: "Basic" },
     { key: "dodge", label: "Dodge", group: "Dodge", skill: SkillKey.dodge },
   ],
-  // Spell defense uses a bespoke Counterspelling picker instead of this grouped list.
+  // Spell defenseCalculator uses a bespoke Counterspelling picker instead of this grouped list.
   spell: [
     { key: "none", label: "Basic", group: "Basic" },
   ],
@@ -139,7 +139,7 @@ export const defenseModifiers: DefenseModifierDatum[] = [
     kind: "stepper",
     label: "You've defended against previous attacks since your last action",
     perUnit: -1,
-    unitLabel: "additional defense",
+    unitLabel: "additional defenseCalculator",
     min: 1,
     max: 10,
   },

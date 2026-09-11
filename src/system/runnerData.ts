@@ -11,6 +11,7 @@ import type {
   EntityWithItems,
   EntityWithQualities,
 } from "./entities/entityTraits.ts"
+import type { EntityWithSkills } from "./entities/traits/entityWithSkills.ts"
 import type { EntityKind } from "./entityKind.ts"
 import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
 import type { LifestyleType } from "./lifestyleType.ts"
@@ -25,10 +26,6 @@ import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ReputationLedgerEntry } from "./reputation/reputationLedgerEntry.ts"
 import type { RunnerWithBiology, RunnerWithData } from "./runnerTraits.ts"
-import type { ActiveSkillData } from "./skills/activeSkillData"
-import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
-import type { LanguageSkillData } from "./skills/languageSkillData"
-import type { SkillGroupData } from "./skills/skillGroupData"
 
 /** Sentinel `sinVersion` for a runner that has never had any migration applied to it. */
 export const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
@@ -59,17 +56,20 @@ export const RunnerMetaSchema = z.object({
   lastExportDate: z.string().nullable().default(null),
 })
 
+type RunnerTraits =
+  & EntityBase
+  & EntityWithAttrs
+  & EntityWithDamage
+  & EntityWithItems
+  & EntityWithQualities
+  & EntityWithSkills
+  & RunnerWithBiology
+  & RunnerWithData
+
 /**
  * The root structure of a Shadowrun 4e runner sheet.
  */
-export interface RunnerData
-  extends EntityBase,
-  EntityWithItems,
-  EntityWithDamage,
-  EntityWithAttrs,
-  EntityWithQualities,
-  RunnerWithData,
-  RunnerWithBiology {
+export interface RunnerData extends RunnerTraits {
   kind: EntityKind.runner
   id: UUID
   name: string
@@ -127,13 +127,6 @@ export interface RunnerData
   /** Player-facing Matrix session state — Known Nodes, the Active Node, and running Programs/Agents. */
   gameState: {
     matrix: MatrixGameState
-  }
-
-  skills: {
-    activeSkills: ActiveSkillData[]
-    skillGroups: SkillGroupData[]
-    knowledgeSkills: KnowledgeSkillData[]
-    languageSkills: LanguageSkillData[]
   }
 
   initiative: {

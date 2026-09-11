@@ -3,6 +3,7 @@ import type { UUID } from "#/lib/uuidUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 import type { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
@@ -41,6 +42,10 @@ export const SelectorOptions = {
     attr: selectorOption<{ key: AttributeKey }>("key"),
     skill: selectorOption<{ key: SkillKey }>("key"),
     houseRule: selectorOption<{ key: string }>("key"),
+  },
+
+  filter: {
+    item: selectorOption<{ filter: (item: ItemData) => boolean }>("filter"),
   },
 
   /** @deprecated - use {@link SelectorOptions.key.attr} instead */

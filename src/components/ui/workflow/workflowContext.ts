@@ -1,3 +1,4 @@
+import type { Draft } from "immer"
 import type { Context } from "react"
 import { createContext } from "react"
 
@@ -8,9 +9,11 @@ export interface WorkflowState<TData extends object, TSteps extends string> {
 }
 
 export interface WorkflowCtrl<TData extends object, TSteps extends string> {
+  readonly isFirstStep: boolean
+
   setData(data: TData): void
 
-  setData(updater: (data: TData) => TData): void
+  setData(updater: (data: Draft<TData> | TData) => TData | void): void
 
   back(): void
 

@@ -319,7 +319,7 @@ describe("DefenseCalculatorDialogContent", () => {
       expect(poolContainer.textContent).not.toContain("Armor")
     })
 
-    it("Indirect: defense uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
+    it("Indirect: defenseCalculator uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
           kind: EntityKind.item, items: { parentId: null, childIds: [] },
