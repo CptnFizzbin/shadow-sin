@@ -1,8 +1,7 @@
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { useBuilderDataContext } from "#/contexts/builder/builderStore.context.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-
-import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
+import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
 
 export type BuilderStateSelector<T> = (state: BuilderState) => T
 
@@ -18,6 +17,10 @@ export function useBuilderStoreSelector<T>(
  * Namespaced access to `BuilderState`'s selectors (`Selectors.nuyen.selectStartingNuyen`).
  * Mirrors `Selectors` in `runnerStore.selectors.ts`.
  */
-export const Selectors = {
-  nuyen: nuyenSelectors,
+export namespace BuilderStateSelectors {
+  export const nuyen = {
+    selectStartingNuyen: createSelector<BuilderState, number | null>((state) => {
+      return state.nuyen.starting
+    }),
+  }
 }

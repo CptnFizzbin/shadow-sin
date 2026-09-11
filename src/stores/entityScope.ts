@@ -9,17 +9,14 @@ export interface EntityScope {
   items: ItemCatalog
 }
 
-export const getRunnerScope = (runner: RunnerData): EntityScope => {
+export const getEntityScope = (runner: RunnerData, entity: EntityData): EntityScope => {
   return {
     runner: runner,
-    entity: runner,
+    entity: entity,
     items: getItemCatalog(runner),
   }
 }
 
-export const getEntityScope = (runner: RunnerData, entity: EntityData): EntityScope => {
-  return {
-    ...getRunnerScope(runner),
-    entity: entity,
-  }
+export const getRunnerScope = (runner: RunnerData): EntityScope => {
+  return getEntityScope(runner, runner)
 }
