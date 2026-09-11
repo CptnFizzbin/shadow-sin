@@ -28,7 +28,7 @@ export function createWorkflowProvider<TData extends object, TSteps extends stri
     })
 
     const ctrl = useMemo((): WorkflowCtrl<TData, TSteps> => ({
-      setData: (dataOrUpdater: TData | ((data: TData) => TData)) => {
+      setData: (dataOrUpdater: TData | ((data: TData) => TData | void)) => {
         if (typeof dataOrUpdater === "function") {
           const updater = dataOrUpdater
           dispatch({ type: "updateData", updater })
@@ -39,7 +39,11 @@ export function createWorkflowProvider<TData extends object, TSteps extends stri
       },
       back: () => void dispatch({ type: "previousStep" }),
       next: (step: TSteps) => void dispatch({ type: "nextStep", step }),
-    }), [dispatch])
+
+      get isFirstStep() {
+        return state.previousSteps.length === 0
+      },
+    }), [state.previousSteps, dispatch])
 
     const contextValue = useMemo(() => ({
       ...state,

@@ -274,7 +274,7 @@ const powers: Record<string, CritterPowerData> = {
   "magical guard": {
     name: "Magical Guard",
     description:
-      "The spirit can use the Counterspelling skill to provide spell defense and dispel spells exactly as a magician can (Free Action, LOS, SR4A p. 185).",
+      "The spirit can use the Counterspelling skill to provide spell defenseCalculator and dispel spells exactly as a magician can (Free Action, LOS, SR4A p. 185).",
     source: { book: "SM", page: 101 },
   },
   "materialization": {

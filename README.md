@@ -63,7 +63,6 @@ immediately without a full reload.
 | Build tool         | Vite 8 + Rolldown             |
 | Language           | TypeScript 6                  |
 | Unit tests         | Vitest + Testing Library      |
-| E2E tests          | Playwright                    |
 | Linting            | ESLint (TypeScript-ESLint)    |
 | Runtime validation | Zod                           |
 
@@ -89,7 +88,6 @@ src/
   main.tsx          App entry point
 
 testUtils/          Shared test helpers and fixtures
-e2e/                Playwright end-to-end specs
 ```
 
 Key conventions:
@@ -111,9 +109,6 @@ yarn preview        # Preview the production build locally
 yarn test           # Run unit tests once (alias for test:unit)
 yarn test:unit      # Vitest unit tests (run once)
 yarn test:unit:ui   # Vitest with browser UI
-yarn test:e2e       # Playwright end-to-end tests
-yarn test:e2e:ui    # Playwright with browser UI
-yarn test:all       # Unit + E2E in parallel
 
 yarn fix            # Auto-fix all lint and formatting issues ✅ run this before committing
 yarn lint           # Check lint without fixing

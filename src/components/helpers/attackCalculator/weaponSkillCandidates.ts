@@ -8,9 +8,21 @@ export const allWeaponSkills = Object.entries(skillList)
   .map(([key]) => key as SkillKey)
 
 const skillsByWeaponType: Record<WeaponType, SkillKey[]> = {
-  [WeaponType.melee]: [SkillKey.blades, SkillKey.clubs, SkillKey.unarmedCombat, SkillKey.exoticMeleeWeapons],
-  [WeaponType.thrown]: [SkillKey.thrownWeapons, SkillKey.exoticRangedWeapons],
-  [WeaponType.projectile]: [SkillKey.archery, SkillKey.thrownWeapons, SkillKey.exoticRangedWeapons],
+  [WeaponType.melee]: [
+    SkillKey.blades,
+    SkillKey.clubs,
+    SkillKey.unarmedCombat,
+    SkillKey.exoticMeleeWeapons,
+  ],
+  [WeaponType.thrown]: [
+    SkillKey.thrownWeapons,
+    SkillKey.exoticRangedWeapons,
+  ],
+  [WeaponType.projectile]: [
+    SkillKey.archery,
+    SkillKey.thrownWeapons,
+    SkillKey.exoticRangedWeapons,
+  ],
   [WeaponType.firearm]: [
     SkillKey.pistols,
     SkillKey.automatics,
@@ -19,7 +31,10 @@ const skillsByWeaponType: Record<WeaponType, SkillKey[]> = {
     SkillKey.gunnery,
     SkillKey.exoticRangedWeapons,
   ],
-  [WeaponType.exotic]: [SkillKey.exoticMeleeWeapons, SkillKey.exoticRangedWeapons],
+  [WeaponType.exotic]: [
+    SkillKey.exoticMeleeWeapons,
+    SkillKey.exoticRangedWeapons,
+  ],
   [WeaponType.other]: allWeaponSkills,
 }
 

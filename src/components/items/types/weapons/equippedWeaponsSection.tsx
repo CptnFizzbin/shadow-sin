@@ -1,4 +1,3 @@
-import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
@@ -40,16 +39,14 @@ export const EquippedWeaponsSection: FC = () => {
     <Stack>
       <Label label="Weapons" />
       {equippedWeapons.map((weapon) => (
-        <Stack direction="row" key={weapon.id} sx={{ gap: 0.5, alignItems: "center" }}>
-          <IconButton
-            aria-label="Attack"
-            sx={{ backgroundColor: "primary.light" }}
-            onClick={() => weaponAttackDialog.open({ weapon })}
-          >
-            <Icons.item.attack />
-          </IconButton>
-          <WeaponDataCard weapon={weapon} />
-        </Stack>
+        <WeaponDataCard
+          key={weapon.id}
+          weapon={weapon}
+          leftAction={{
+            onClick: () => weaponAttackDialog.open({ weapon }),
+            icon: <Icons.item.attack />,
+          }}
+        />
       ))}
 
       {weaponAttackDialog.outlet}

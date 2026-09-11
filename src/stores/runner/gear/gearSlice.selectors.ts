@@ -26,6 +26,14 @@ export namespace ItemSelectors {
     (items) => toItemCatalogTree(items),
   )
 
+  export const selectByFilter = createMemoizedSelector(
+    ViewerStateSelectors.selectItems,
+    SelectorOptions.filter.item,
+    (items, filter) => {
+      return Object.values(items).filter(filter)
+    },
+  )
+
   export const selectAvailable = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
     (items) => Object.values(items).filter((item) => !item.stashed),

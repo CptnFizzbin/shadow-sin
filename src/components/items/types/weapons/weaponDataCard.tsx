@@ -1,6 +1,7 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import type { EntityCardLeftAction } from "#/components/entityCard/entityCard.tsx"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
@@ -14,12 +15,14 @@ interface WeaponDataCardProps {
   weapon: WeaponData
   onOpen?: () => void
   onEdit?: () => void
+  leftAction?: EntityCardLeftAction
 }
 
 export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   weapon,
   onOpen,
   onEdit,
+  leftAction,
 }) => {
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
@@ -29,7 +32,7 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   const removeWeapon = () => dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
-    <WeaponCard item={weapon} onOpen={onOpen} onEdit={onEdit} onRemove={removeWeapon}>
+    <WeaponCard item={weapon} onOpen={onOpen} onEdit={onEdit} onRemove={removeWeapon} leftAction={leftAction}>
       <WeaponCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
         <WeaponCard.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap ? <WeaponCard.Stat label="AP" value={weapon.ap} type="damage" /> : null}

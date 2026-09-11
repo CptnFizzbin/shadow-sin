@@ -208,7 +208,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ...modifierGroups,
   ]
 
-  // Direct spells bypass armor entirely and reuse the defense roll as the resist roll. Indirect
+  // Direct spells bypass armor entirely and reuse the defenseCalculator roll as the resist roll. Indirect
   // spells resist like a physical attack — Body + half impact armor (rounded down) — regardless
   // of the armor type toggle, which only applies to melee/ranged attacks.
   const resistAttr = attackType === "spell"
