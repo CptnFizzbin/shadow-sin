@@ -208,7 +208,7 @@ describe("ItemDialog", () => {
     expect(within(dialog).queryByRole("button", { name: /save/i })).toBeNull()
   })
 
-  describe.sequential("nuyen deduction on purchase", () => {
+  describe("nuyen deduction on purchase", () => {
     afterEach(() => vi.restoreAllMocks())
 
     it("calls onSave and deducts nuyen on successful purchase in viewer mode", async () => {
