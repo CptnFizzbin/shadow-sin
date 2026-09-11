@@ -20,9 +20,6 @@ yarn preview      # preview production build locally
 yarn test         # alias for yarn test:unit (Vitest, run once)
 yarn test:unit    # Vitest unit tests (run once)
 yarn test:unit:ui # Vitest with browser UI
-yarn test:all     # unit + e2e in parallel
-yarn test:e2e     # Playwright end-to-end tests
-yarn test:e2e:ui  # Playwright with browser UI
 yarn fix          # Runs all "*:fix" scripts (npm-run-all2) — auto-fix lint/format steps
 yarn lint         # Runs all lint tasks (eslint checks via npm-run-all2)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
@@ -96,8 +93,6 @@ localStorage key literals.
   resolved via context at render time (not by walking the JSX tree), so `Prototype.Item version="key"` works from
   any depth, including inside components that only render later (e.g. one item per row in a `.map()`)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
-- `e2e/` — Playwright end-to-end specs (`playwright.config.ts` at repo root); visiting `/` seeds `localStorage`
-  with the Artemis fixture (`#/data/fixtures/artemis.ts`) for tests to build on
 - `docs/adr/` — Architecture Decision Records, including `0001-runner-data-not-character-sheet.md`
 - `docs/features/` — Feature design docs (see `CONTRIBUTING.md` for the lifecycle)
 - `env.node.ts` — Node-side env validation, alongside `src/env.ts` for client-side env vars

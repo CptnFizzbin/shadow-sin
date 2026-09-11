@@ -193,7 +193,6 @@ export default defineConfig([
       "./vite.config.ts",
       "./vitest.config.ts",
       "./eslint.config.ts",
-      "./playwright.config.ts",
     ],
     languageOptions: {
       globals: globals.node,
