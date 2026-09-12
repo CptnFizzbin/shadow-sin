@@ -13,9 +13,9 @@ import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
 import { useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
-import { Actions as BuilderActions } from "#/stores/builder/builderStore.actions.ts"
+import { BuilderStateActions } from "#/stores/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/stores/builder/builderStore.dispatch.ts"
-import { Selectors as BuilderSelectors, useBuilderStoreSelector } from "#/stores/builder/builderStore.selectors.ts"
+import { BuilderStateSelectors, useBuilderStoreSelector } from "#/stores/builder/builderStore.selectors.ts"
 import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
 import { Actions as RunnerActions } from "#/stores/runner/runnerStore.actions.ts"
@@ -48,7 +48,7 @@ export const StartingNuyenSection: FC = () => {
   const maxResult = (numDice * 6 + bonus) * mult
 
   const builderDispatch = useBuilderStoreDispatch()
-  const startingNuyen = useBuilderStoreSelector(BuilderSelectors.nuyen.selectStartingNuyen)
+  const startingNuyen = useBuilderStoreSelector(BuilderStateSelectors.nuyen.selectStartingNuyen)
 
   const runnerDispatch = useRunnerStoreDispatch()
   const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
@@ -57,7 +57,7 @@ export const StartingNuyenSection: FC = () => {
   // roller resetting) and back.
   useEffect(() => {
     if (rolledTotal !== null && rolledTotal !== startingNuyen) {
-      builderDispatch(BuilderActions.nuyen.setStartingNuyen(rolledTotal))
+      builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(rolledTotal))
     }
   }, [rolledTotal, startingNuyen, builderDispatch])
 
@@ -68,7 +68,7 @@ export const StartingNuyenSection: FC = () => {
 
   const handleReset = () => {
     if (hasRolled) diceRoller.reset()
-    builderDispatch(BuilderActions.nuyen.setStartingNuyen(undefined))
+    builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(undefined))
   }
 
   return (

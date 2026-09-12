@@ -6,21 +6,21 @@ import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { EntityWithAttrs } from "#/system/entities/traits/entityWithAttrs.ts"
+import type { EntityData } from "#/system/entityData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { EntityProvider, useEntitySelector } from "./entityProvider.tsx"
 
-// `useEntitySelector` also resolves the Runner's own item catalog (for selectors like
-// `ItemSelectors.selectByFilter`), so every test here needs a `RunnerStoreProvider` in scope even
-// when the selector under test only reads `entity` — matching how `EntityProvider` is always used
-// in the app (nested under `RunnerStoreProvider`, per its own doc comment).
-const wrapperFor = (entity: object): FC<PropsWithChildren> => {
+const wrapperFor = (entity: Partial<EntityData>): FC<PropsWithChildren> => {
   const runnerStore = new RunnerDataStore(runnerDataFactory())
+
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={runnerStore}>
-      <EntityProvider entity={entity}>{children}</EntityProvider>
+      <EntityProvider entity={entity as EntityData}>{children}</EntityProvider>
     </RunnerStoreProvider>
   )
+
   return Wrapper
 }
 
@@ -35,11 +35,11 @@ describe("useEntitySelector", () => {
 
   it("applies a no-options selector against the nearest EntityProvider's entity", () => {
     // Arrange
-    const entity = { attributes: { [AttributeKey.body]: 4 } }
+    const entity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.body]: 4 } }
 
     // Act
     const { result } = renderHook(() => useEntitySelector(AttrSelectors.selectAll), {
-      wrapper: wrapperFor(entity),
+      wrapper: wrapperFor(entity as EntityData),
     })
 
     // Assert
@@ -48,7 +48,7 @@ describe("useEntitySelector", () => {
 
   it("applies a selector's options against the nearest EntityProvider's entity", () => {
     // Arrange
-    const entity = { attributes: { [AttributeKey.agility]: 5 } }
+    const entity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.agility]: 5 } }
 
     // Act
     const { result } = renderHook(
@@ -62,13 +62,13 @@ describe("useEntitySelector", () => {
 
   it("resolves to the nearest EntityProvider, not an outer one", () => {
     // Arrange
-    const outerEntity = { attributes: { [AttributeKey.strength]: 2 } }
-    const innerEntity = { attributes: { [AttributeKey.strength]: 6 } }
+    const outerEntity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.strength]: 2 } }
+    const innerEntity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.strength]: 6 } }
     const runnerStore = new RunnerDataStore(runnerDataFactory())
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
       <RunnerStoreProvider store={runnerStore}>
-        <EntityProvider entity={outerEntity}>
-          <EntityProvider entity={innerEntity}>{children}</EntityProvider>
+        <EntityProvider entity={outerEntity as EntityData}>
+          <EntityProvider entity={innerEntity as EntityData}>{children}</EntityProvider>
         </EntityProvider>
       </RunnerStoreProvider>
     )

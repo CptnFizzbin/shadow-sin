@@ -4,9 +4,11 @@ import { createContext, useContext } from "react"
 import { useRunner } from "#/contexts/runner/runnerStore.context.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
+import type { EntityScope } from "#/stores/entityScope.ts"
+import { getEntityScope } from "#/stores/entityScope.ts"
+import type { EntityData } from "#/system/entityData.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
 
 export interface EntitySelectorState {
   runner: RunnerData
@@ -21,10 +23,10 @@ export interface EntitySelectorState {
  * Callers narrow to whatever trait(s) their selector's `TState` needs (`EntityWithAttrs`, ...),
  * the same way `useRunnerSelector` narrows `RunnerData`.
  */
-const EntityContext = createContext<object | null>(null)
+const EntityContext = createContext<EntityData | null>(null)
 
 interface EntityProviderProps extends PropsWithChildren {
-  entity: object
+  entity: EntityData
 }
 
 /**
@@ -44,7 +46,7 @@ export const EntityProvider: FC<EntityProviderProps> = ({ entity, children }) =>
   )
 }
 
-const useEntityContext = (): object => {
+const useEntityContext = (): EntityData => {
   const entity = useContext(EntityContext)
 
   if (!entity) {
@@ -64,23 +66,22 @@ const useEntityContext = (): object => {
  * @example
  * const droneAgility = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.agility })
  */
-export function useEntitySelector<TState extends EntitySelectorState, TReturn>(
-  selector: Selector<TState, TReturn>,
+export function useEntitySelector<TReturn>(
+  selector: Selector<EntityScope, TReturn>,
 ): TReturn
-export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
-  selector: Selector<TState, TReturn, TOptions>,
+export function useEntitySelector<TReturn, TOptions extends object>(
+  selector: Selector<EntityScope, TReturn, TOptions>,
   options: TOptions,
 ): TReturn
-export function useEntitySelector<TState extends EntitySelectorState, TReturn, TOptions extends object>(
-  selector: (state: TState, options?: TOptions) => TReturn,
+export function useEntitySelector<TReturn, TOptions extends object>(
+  selector: (state: EntityScope, options?: TOptions) => TReturn,
   options?: TOptions,
 ): TReturn {
   const entity = useEntityContext()
   const runner = useRunner()
-  const items = getItemCatalog(runner)
 
   // The Context only ever holds `object` — narrowing to whatever `TState`'s `entity` trait(s)
   // require is the caller's responsibility, same as `useRunnerSelector`'s `assembleRunnerState`
   // cast (see docs/adr/0014-selector-input-decomposition.md).
-  return selector({ runner, entity, items } as TState, options)
+  return selector(getEntityScope(runner, entity), options)
 }

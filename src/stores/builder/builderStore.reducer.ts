@@ -1,10 +1,12 @@
-import type { Reducer } from "@reduxjs/toolkit"
-import { combineReducers } from "@reduxjs/toolkit"
+import { createReducer } from "@reduxjs/toolkit"
 
 import type { BuilderState } from "#/components/builder/builderState.ts"
+import { builderStateFactory } from "#/components/builder/builderState.ts"
 
-import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
+import { BuilderStateActions } from "./builderStore.actions.ts"
 
-export const builderStoreReducer: Reducer<BuilderState> = combineReducers({
-  nuyen: nuyenReducer,
+export const builderStoreReducer = createReducer<BuilderState>(builderStateFactory(), (builder) => {
+  builder.addCase(BuilderStateActions.nuyen.setStartingNuyen, (state, action) => {
+    state.nuyen.starting = action.payload ?? null
+  })
 })

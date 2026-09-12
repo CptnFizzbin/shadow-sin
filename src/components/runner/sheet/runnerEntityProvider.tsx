@@ -1,8 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 
 import { EntityProvider } from "#/contexts/entity/entityProvider.tsx"
-import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunner } from "#/contexts/runner/runnerStore.context.ts"
 
 /**
  * Reads the runner sheet's attribute values and provides them via `EntityProvider`, so
@@ -10,10 +9,10 @@ import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
  * specific `EntityProvider`.
  */
 export const RunnerEntityProvider: FC<PropsWithChildren> = ({ children }) => {
-  const attributes = useRunnerSelector(AttrSelectors.selectAll)
+  const runner = useRunner()
 
   return (
-    <EntityProvider entity={{ attributes }}>
+    <EntityProvider entity={runner}>
       {children}
     </EntityProvider>
   )

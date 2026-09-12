@@ -1,15 +1,8 @@
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import type { ItemCatalog } from "#/system/items/itemUtils.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
-
-export interface RunnerSelectorState {
-  runner: RunnerData
-  entity: RunnerData
-  items: ItemCatalog
-}
+import type { EntityScope } from "#/stores/entityScope.ts"
+import { getRunnerScope } from "#/stores/entityScope.ts"
 
 /**
  * The standardized way to read `RunnerData` in a component — assembles whatever `TState` a
@@ -23,17 +16,17 @@ export interface RunnerSelectorState {
  * const system = useRunnerSelector(AttrSelectors.selectValue, { key: AttributeKey.system })
  * const armor = useRunnerSelector(ItemSelectors.selectById, { itemId })
  */
-export function useRunnerSelector<TState extends RunnerSelectorState, TReturn>(
-  selector: Selector<TState, TReturn>,
+export function useRunnerSelector<TReturn>(
+  selector: Selector<EntityScope, TReturn>,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
-  selector: Selector<TState, TReturn, TOptions>,
+export function useRunnerSelector<TReturn, TOptions extends object>(
+  selector: Selector<EntityScope, TReturn, TOptions>,
   options: TOptions,
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
-export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, TOptions extends object>(
-  selector: (state: TState, options?: TOptions) => TReturn,
+export function useRunnerSelector<TReturn, TOptions extends object>(
+  selector: (state: EntityScope, options?: TOptions) => TReturn,
   optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
   compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn {
@@ -43,14 +36,7 @@ export function useRunnerSelector<TState extends RunnerSelectorState, TReturn, T
 
   return useSelector(
     useRunnerStoreContext(),
-    (runner) => selector(
-      {
-        runner,
-        entity: runner,
-        items: getItemCatalog(runner),
-      } as TState,
-      options,
-    ),
+    (runner) => selector(getRunnerScope(runner), options),
     { compare: resolvedCompare },
   )
 }
