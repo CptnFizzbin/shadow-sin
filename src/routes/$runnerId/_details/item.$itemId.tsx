@@ -33,15 +33,18 @@ function ItemDetailsRoute() {
 
   return (
     <Stack sx={{ gap: 0 }}>
-      <Button
-        onClick={handleBack}
-        sx={{ alignSelf: "flex-start" }}
-        startIcon={<RiArrowLeftLine size={20} />}
-        variant="contained"
-        fullWidth
-      >
-        Back
-      </Button>
+      <Stack sx={{ padding: 2 }}>
+        <Button
+          onClick={handleBack}
+          sx={{ alignSelf: "flex-start" }}
+          startIcon={<RiArrowLeftLine size={20} />}
+          variant="contained"
+        >
+          Back
+        </Button>
+
+        {/* TODO: add breadcrumbs */}
+      </Stack>
 
       {!itemId && (
         <Typography color="text.secondary">This item no longer exists.</Typography>

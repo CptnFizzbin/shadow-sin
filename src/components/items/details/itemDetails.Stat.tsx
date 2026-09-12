@@ -39,6 +39,7 @@ export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type }
       borderWidth: 1,
       borderStyle: "solid",
       padding: 1,
+      textAlign: "center",
     }}
   >
     {label && (

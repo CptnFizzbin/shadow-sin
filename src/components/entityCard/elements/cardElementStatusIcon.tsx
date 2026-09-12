@@ -27,7 +27,7 @@ export interface CardElementStatusIconProps {
 const statusIcon: Record<CardElementStatusIconStatus, { icon: IconComponent, label: string }> = {
   "equipped": { icon: Icons.item.equipped, label: "Equipped" },
   "stashed": { icon: Icons.item.stashed, label: "Stashed" },
-  "fixed": { icon: Icons.item.fixed, label: "Fixed" },
+  "fixed": { icon: Icons.item.fixed, label: "Integrated" },
   "wireless-enabled": { icon: Icons.item.wireless.enabled, label: "Wireless" },
   "wireless-disabled": { icon: Icons.item.wireless.disabled, label: "Wireless off" },
   "wireless-removed": { icon: Icons.item.wireless.removed, label: "Wireless removed" },
