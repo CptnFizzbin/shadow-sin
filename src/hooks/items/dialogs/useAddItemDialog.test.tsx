@@ -7,14 +7,14 @@ import { ItemType } from "#/system/itemType.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
-import { useAddItemWorkflow } from "./useAddItemWorkflow.tsx"
+import { useAddItemDialog } from "./useAddItemDialog.tsx"
 
-const AddItemWorkflowHarness: FC = () => {
-  const addItemWorkflow = useAddItemWorkflow()
+const AddItemDialogHarness: FC = () => {
+  const addItemDialog = useAddItemDialog()
   return (
     <>
-      <button onClick={() => addItemWorkflow.open()}>Add Item</button>
-      {addItemWorkflow.outlet}
+      <button onClick={() => addItemDialog.open()}>Add Item</button>
+      {addItemDialog.outlet}
     </>
   )
 }
@@ -24,10 +24,10 @@ function clickInLastDialog(name: RegExp) {
   fireEvent.click(within(dialogs[dialogs.length - 1]).getByRole("button", { name }))
 }
 
-describe("useAddItemWorkflow", () => {
+describe("useAddItemDialog", () => {
   it("adds a Misc item to the runner through the full Type → Stats → Effects → Finalize flow", async () => {
     // Arrange
-    const runnerStore = renderWithRunner(<AddItemWorkflowHarness />)
+    const runnerStore = renderWithRunner(<AddItemDialogHarness />)
 
     // Act — Select Type
     fireEvent.click(screen.getByText("Add Item"))
@@ -56,7 +56,7 @@ describe("useAddItemWorkflow", () => {
 
   it("does nothing when the type picker is cancelled", () => {
     // Arrange
-    const runnerStore = renderWithRunner(<AddItemWorkflowHarness />)
+    const runnerStore = renderWithRunner(<AddItemDialogHarness />)
 
     // Act
     fireEvent.click(screen.getByText("Add Item"))

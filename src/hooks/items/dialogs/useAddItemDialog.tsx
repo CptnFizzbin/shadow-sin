@@ -17,11 +17,12 @@ import type { AddItemSelection } from "#/system/items/addItemSelection.ts"
 
 /**
  * Drives the Add Item workflow end to end: Select Type / Select Subtype (via
- * `useAddItemTypeDialog`), then the resolved gear type's own Enter Stats / Select
- * Effects / Finalize dialog (each `use*FormDialog` in `wizard` mode), then saves the
+ * `useAddItemTypeDialog`, itself an `AddItemTypeWorkflow`), then the resolved gear
+ * type's own Enter Stats / Select Effects / Finalize dialog (each `use*FormDialog` in
+ * `wizard` mode, driven by `ItemDialog`'s own `ItemDialogWizard`), then saves the
  * result to the runner. Render `outlet` once and call `open()` from an "Add Item" trigger.
  */
-export function useAddItemWorkflow() {
+export function useAddItemDialog() {
   const dispatch = useRunnerStoreDispatch()
 
   const typeDialog = useAddItemTypeDialog()

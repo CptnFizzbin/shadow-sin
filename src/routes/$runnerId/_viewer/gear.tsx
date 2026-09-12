@@ -13,7 +13,7 @@ import { GearViewSection } from "#/components/runner/gearPage/gearViewSection.ts
 import { useLicenseCheckDialog } from "#/components/runner/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
-import { useAddItemWorkflow } from "#/hooks/items/dialogs/useAddItemWorkflow.tsx"
+import { useAddItemDialog } from "#/hooks/items/dialogs/useAddItemDialog.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
@@ -24,7 +24,7 @@ function RouteComponent() {
   const searchTerms = searchQuery.trim() ? searchQuery.trim().split(/\s+/) : []
   const isBuilder = useIsBuilder()
   const licenseCheckDialog = useLicenseCheckDialog()
-  const addItemWorkflow = useAddItemWorkflow()
+  const addItemDialog = useAddItemDialog()
 
   return (
     <Stack>
@@ -55,13 +55,13 @@ function RouteComponent() {
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => addItemWorkflow.open()}
+        onClick={() => addItemDialog.open()}
         color="secondary"
         fullWidth
       >
         Add Item
       </Button>
-      {addItemWorkflow.outlet}
+      {addItemDialog.outlet}
 
       {Object.values(GearSection).map((section) => (
         <GearViewSection key={section} section={section} searchTerms={searchTerms} />

@@ -7,7 +7,6 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import { RiDiceLine, RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
-import { useState } from "react"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
@@ -34,11 +33,15 @@ import type { ItemData } from "#/system/itemData.ts"
 import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
 import { ItemDialogActions } from "./itemDialogActions.tsx"
 import { ItemDialogFinalizePreview } from "./itemDialogFinalizePreview.tsx"
+import { ItemDialogWizard, ItemDialogWizardStep, useItemDialogWizard } from "./itemDialogWizard.ts"
 import { ItemDialogWizardActions } from "./itemDialogWizardActions.tsx"
 import { useItemOptionsDialog } from "./itemOptionsDialog.tsx"
 
-const wizardSteps = ["stats", "effects", "finalize"] as const
-type WizardStep = typeof wizardSteps[number]
+const itemDialogWizardSteps = [
+  ItemDialogWizardStep.Stats,
+  ItemDialogWizardStep.Effects,
+  ItemDialogWizardStep.Finalize,
+] as const
 
 export interface ItemDialogProps {
   form: AnyItemForm
@@ -88,7 +91,20 @@ function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
   return config?.forced === true
 }
 
-export const ItemDialog: FC<ItemDialogProps> = ({
+/**
+ * Renders a `form`'s fields as a `Dialog` — the shared shell every gear type's `*FormDialog`
+ * wraps. Always renders under `ItemDialogWizard.Provider` so `wizard` mode (used by the Add Item
+ * workflow) can read step navigation from it; non-wizard callers (Edit, and any non-workflow Add)
+ * simply never read from that workflow, since `ItemDialogBody` only consults it when `wizard`
+ * is set.
+ */
+export const ItemDialog: FC<ItemDialogProps> = (props) => (
+  <ItemDialogWizard.Provider initialStep={ItemDialogWizardStep.Stats} initialData={{}}>
+    <ItemDialogBody {...props} />
+  </ItemDialogWizard.Provider>
+)
+
+const ItemDialogBody: FC<ItemDialogProps> = ({
   form: formArg,
   title,
   ctrl,
@@ -110,10 +126,11 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
 
-  const [wizardStep, setWizardStep] = useState<WizardStep>("stats")
+  const itemWizard = useItemDialogWizard()
+  const wizardStep = itemWizard.currentStep
   // Non-wizard callers (Edit, and every non-workflow Add dialog) always render every
   // step's content on one page, matching ItemDialog's pre-wizard behavior exactly.
-  const activeStep: WizardStep | "all" = wizard ? wizardStep : "all"
+  const activeStep: ItemDialogWizardStep | "all" = wizard ? wizardStep : "all"
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 
@@ -173,7 +190,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <Dialog.Content>
           <Stack sx={{ padding: 1 }}>
-            {(activeStep === "all" || activeStep === "stats") && (
+            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Stats) && (
               <>
                 {slots?.preForm?.()}
 
@@ -293,7 +310,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </>
             )}
 
-            {(activeStep === "all" || activeStep === "effects") && (
+            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Effects) && (
               <>
                 {wizard && !forced.hasEffects && (
                   <FormControlLabel
@@ -313,7 +330,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </>
             )}
 
-            {activeStep === "finalize" && (
+            {activeStep === ItemDialogWizardStep.Finalize && (
               <ItemDialogFinalizePreview
                 values={form.state.values}
                 showRating={localOptions["hasRating"]}
@@ -325,17 +342,17 @@ export const ItemDialog: FC<ItemDialogProps> = ({
         </Dialog.Content>
 
         <Dialog.Actions>
-          {wizard && wizardStep !== "finalize" && (
+          {wizard && wizardStep !== ItemDialogWizardStep.Finalize && (
             <ItemDialogWizardActions
               onCancel={() => ctrl.close()}
-              onBack={wizardStep === "effects" ? () => setWizardStep("stats") : undefined}
-              onNext={() => setWizardStep(wizardSteps[wizardSteps.indexOf(wizardStep) + 1])}
+              onBack={!itemWizard.isFirstStep ? () => itemWizard.back() : undefined}
+              onNext={() => itemWizard.next(itemDialogWizardSteps[itemDialogWizardSteps.indexOf(wizardStep) + 1])}
             />
           )}
 
-          {(!wizard || activeStep === "finalize") && (
+          {(!wizard || activeStep === ItemDialogWizardStep.Finalize) && (
             <>
-              {wizard && <Button onClick={() => setWizardStep("effects")} sx={{ mr: "auto" }}>Back</Button>}
+              {wizard && <Button onClick={() => itemWizard.back()} sx={{ mr: "auto" }}>Back</Button>}
 
               <form.Subscribe
                 selector={(state) => getCost
