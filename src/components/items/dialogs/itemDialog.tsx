@@ -5,8 +5,11 @@ import IconButton from "@mui/material/IconButton"
 import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
+import Tab from "@mui/material/Tab"
+import Tabs from "@mui/material/Tabs"
 import { RiDiceLine, RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
+import { useState } from "react"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
@@ -33,6 +36,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
 import { ItemDialogActions } from "./itemDialogActions.tsx"
 import { ItemDialogFinalizePreview } from "./itemDialogFinalizePreview.tsx"
+import { ItemDialogSubitemsTab } from "./itemDialogSubitemsTab.tsx"
 import { ItemDialogWizard, ItemDialogWizardStep, useItemDialogWizard } from "./itemDialogWizard.ts"
 import { ItemDialogWizardActions } from "./itemDialogWizardActions.tsx"
 import { useItemOptionsDialog } from "./itemOptionsDialog.tsx"
@@ -42,6 +46,8 @@ const itemDialogWizardSteps = [
   ItemDialogWizardStep.Effects,
   ItemDialogWizardStep.Finalize,
 ] as const
+
+type ItemDialogMainTab = "stats" | "subitems"
 
 export interface ItemDialogProps {
   form: AnyItemForm
@@ -153,6 +159,12 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
   const isNewItem = form.state.values.id === NullUuid
   const isAcquireMode = isNewItem && !isBuilder
 
+  const [mainTab, setMainTab] = useState<ItemDialogMainTab>("stats")
+  // A brand-new item has no id yet to attach children to, and the wizard's own Finalize
+  // step already previews the whole item — Subitems only makes sense once editing one that
+  // exists.
+  const showSubitemsTab = !wizard && !isNewItem
+
   const handleSubmitWithAction = async (submitAction: "acquire" | "purchase" | "save") => {
     try {
       await form.handleSubmit({ submitAction })
@@ -189,156 +201,169 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
         <Dialog.Title>{title}</Dialog.Title>
 
         <Dialog.Content>
-          <Stack sx={{ padding: 1 }}>
-            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Stats) && (
-              <>
-                {slots?.preForm?.()}
+          {showSubitemsTab && (
+            <Tabs value={mainTab} onChange={(_, value: ItemDialogMainTab) => setMainTab(value)}>
+              <Tab value="stats" label="Stats" sx={{ flexGrow: 1 }} />
+              <Tab value="subitems" label="Subitems" sx={{ flexGrow: 1 }} />
+            </Tabs>
+          )}
 
-                <Stack direction="row" sx={{ alignItems: "flex-start" }}>
-                  <form.AppField
-                    name="name"
-                    validators={{ onChange: z.string().min(1, "Name is required") }}
-                  >
-                    {(field) => (
-                      <field.TextField
-                        label="Name"
-                        size="small"
-                        sx={{ flex: 1 }}
-                        autoFocus
-                        slotProps={onRandomizeName
-                          ? {
-                              input: {
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      size="small"
-                                      aria-label="Randomize name"
-                                      onClick={() => field.handleChange(onRandomizeName())}
-                                    >
-                                      <RiDiceLine size={18} />
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              },
-                            }
-                          : undefined}
-                      />
-                    )}
-                  </form.AppField>
+          {showSubitemsTab && mainTab === "subitems"
+            ? (
+                <ItemDialogSubitemsTab itemId={form.state.values.id} />
+              )
+            : (
+                <Stack sx={{ padding: 1 }}>
+                  {(activeStep === "all" || activeStep === ItemDialogWizardStep.Stats) && (
+                    <>
+                      {slots?.preForm?.()}
 
-                  {slots?.rating
-                    ? slots.rating()
-                    : localOptions["hasRating"] && (
-                      <form.AppField name="rating">
-                        {(field) => (
-                          <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                      <Stack direction="row" sx={{ alignItems: "flex-start" }}>
+                        <form.AppField
+                          name="name"
+                          validators={{ onChange: z.string().min(1, "Name is required") }}
+                        >
+                          {(field) => (
+                            <field.TextField
+                              label="Name"
+                              size="small"
+                              sx={{ flex: 1 }}
+                              autoFocus
+                              slotProps={onRandomizeName
+                                ? {
+                                    input: {
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <IconButton
+                                            size="small"
+                                            aria-label="Randomize name"
+                                            onClick={() => field.handleChange(onRandomizeName())}
+                                          >
+                                            <RiDiceLine size={18} />
+                                          </IconButton>
+                                        </InputAdornment>
+                                      ),
+                                    },
+                                  }
+                                : undefined}
+                            />
+                          )}
+                        </form.AppField>
+
+                        {slots?.rating
+                          ? slots.rating()
+                          : localOptions["hasRating"] && (
+                            <form.AppField name="rating">
+                              {(field) => (
+                                <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                              )}
+                            </form.AppField>
+                          )}
+                      </Stack>
+
+                      <Divider />
+
+                      <Stack direction="row" sx={{ alignItems: "center" }}>
+                        {localOptions["equipable"] && (
+                          <form.AppField name="equipped">
+                            {(field) => <field.SwitchField label="Equipped" />}
+                          </form.AppField>
                         )}
-                      </form.AppField>
-                    )}
-                </Stack>
 
-                <Divider />
+                        {localOptions["canBeStashed"] && (
+                          <form.AppField name="stashed">
+                            {(field) => <field.SwitchField label="Stashed" />}
+                          </form.AppField>
+                        )}
 
-                <Stack direction="row" sx={{ alignItems: "center" }}>
-                  {localOptions["equipable"] && (
-                    <form.AppField name="equipped">
-                      {(field) => <field.SwitchField label="Equipped" />}
-                    </form.AppField>
+                        <IconButton
+                          size="small"
+                          sx={{ ml: "auto" }}
+                          onClick={() => itemOptionsDialog.open({
+                            initialOptions: localOptions,
+                            forced,
+                            onChange: handleOptionsChange,
+                          })}
+                          aria-label="Item options"
+                        >
+                          <RiSettings3Line size={18} />
+                        </IconButton>
+                      </Stack>
+
+                      {localOptions["showCost"] && (
+                        <GearCostFieldGroup
+                          form={form}
+                          fields={itemFieldMap}
+                          enableQuantity={localOptions["multiple"]}
+                          onBuyMore={(!isBuilder && !isNewItem)
+                            ? () => buyQuantityDialog.open({
+                                defaultCost: form.state.values.cost ?? 0,
+                                onPurchase: handleBuyPurchase,
+                              })
+                            : undefined}
+                        />
+                      )}
+
+                      {localOptions["showAvailability"] && (
+                        <AvailabilityFieldGroup form={form} fields="availability" />
+                      )}
+
+                      {localOptions["isSubItem"] && (
+                        <Stack>
+                          <Label label={parentItemLabel ?? "Attached To"} />
+
+                          <GearAttachmentFieldGroup
+                            form={form}
+                            fields={itemFieldMap}
+                            isFixed={localOptions["fixed"] ?? false}
+                            parentItemOptions={parentItemOptions}
+                            fieldLabel={parentItemLabel ?? "Parent Item"}
+                            attachmentSlot={slots?.attachmentFields}
+                          />
+                        </Stack>
+                      )}
+
+                      {slots?.itemFields?.()}
+
+                      <Label label="Description" />
+
+                      <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
+
+                      <Label label="Source" />
+                      <SourceFieldGroup form={form} fields={itemFieldMap} />
+                    </>
                   )}
 
-                  {localOptions["canBeStashed"] && (
-                    <form.AppField name="stashed">
-                      {(field) => <field.SwitchField label="Stashed" />}
-                    </form.AppField>
+                  {(activeStep === "all" || activeStep === ItemDialogWizardStep.Effects) && (
+                    <>
+                      {wizard && !forced.hasEffects && (
+                        <FormControlLabel
+                          control={(
+                            <Switch
+                              checked={localOptions["hasEffects"]}
+                              onChange={(_, checked) => handleOptionsChange("hasEffects", checked)}
+                            />
+                          )}
+                          label="This item provides Game Effects"
+                        />
+                      )}
+
+                      {localOptions["hasEffects"] && (
+                        <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
+                      )}
+                    </>
                   )}
 
-                  <IconButton
-                    size="small"
-                    sx={{ ml: "auto" }}
-                    onClick={() => itemOptionsDialog.open({
-                      initialOptions: localOptions,
-                      forced,
-                      onChange: handleOptionsChange,
-                    })}
-                    aria-label="Item options"
-                  >
-                    <RiSettings3Line size={18} />
-                  </IconButton>
-                </Stack>
-
-                {localOptions["showCost"] && (
-                  <GearCostFieldGroup
-                    form={form}
-                    fields={itemFieldMap}
-                    enableQuantity={localOptions["multiple"]}
-                    onBuyMore={(!isBuilder && !isNewItem)
-                      ? () => buyQuantityDialog.open({
-                          defaultCost: form.state.values.cost ?? 0,
-                          onPurchase: handleBuyPurchase,
-                        })
-                      : undefined}
-                  />
-                )}
-
-                {localOptions["showAvailability"] && (
-                  <AvailabilityFieldGroup form={form} fields="availability" />
-                )}
-
-                {localOptions["isSubItem"] && (
-                  <Stack>
-                    <Label label={parentItemLabel ?? "Attached To"} />
-
-                    <GearAttachmentFieldGroup
-                      form={form}
-                      fields={itemFieldMap}
-                      isFixed={localOptions["fixed"] ?? false}
-                      parentItemOptions={parentItemOptions}
-                      fieldLabel={parentItemLabel ?? "Parent Item"}
-                      attachmentSlot={slots?.attachmentFields}
+                  {activeStep === ItemDialogWizardStep.Finalize && (
+                    <ItemDialogFinalizePreview
+                      values={form.state.values}
+                      showRating={localOptions["hasRating"]}
+                      showCost={localOptions["showCost"]}
+                      showAvailability={localOptions["showAvailability"]}
                     />
-                  </Stack>
-                )}
-
-                {slots?.itemFields?.()}
-
-                <Label label="Description" />
-
-                <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
-
-                <Label label="Source" />
-                <SourceFieldGroup form={form} fields={itemFieldMap} />
-              </>
-            )}
-
-            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Effects) && (
-              <>
-                {wizard && !forced.hasEffects && (
-                  <FormControlLabel
-                    control={(
-                      <Switch
-                        checked={localOptions["hasEffects"]}
-                        onChange={(_, checked) => handleOptionsChange("hasEffects", checked)}
-                      />
-                    )}
-                    label="This item provides Game Effects"
-                  />
-                )}
-
-                {localOptions["hasEffects"] && (
-                  <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
-                )}
-              </>
-            )}
-
-            {activeStep === ItemDialogWizardStep.Finalize && (
-              <ItemDialogFinalizePreview
-                values={form.state.values}
-                showRating={localOptions["hasRating"]}
-                showCost={localOptions["showCost"]}
-                showAvailability={localOptions["showAvailability"]}
-              />
-            )}
-          </Stack>
+                  )}
+                </Stack>
+              )}
         </Dialog.Content>
 
         <Dialog.Actions>

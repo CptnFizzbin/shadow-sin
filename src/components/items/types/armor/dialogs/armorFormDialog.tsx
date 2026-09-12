@@ -6,19 +6,22 @@ import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFo
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { armorFieldMap, useArmorForm } from "#/hooks/items/types/armor/useArmorForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {
   ctrl: AnyDialogCtrl
   armor?: ArmorData
   wizard?: boolean
+  parentId?: UUID
 }
 
-export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor, wizard }) => {
+export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor, wizard, parentId }) => {
   const title = armor ? "Edit Armor" : "Add Armor"
 
   const form = useArmorForm({
     armor,
+    parentId,
     onSubmit: (armorData) => ctrl.close(armorData),
   })
 
@@ -32,6 +35,7 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor, wizard 
         equipable: { forced: true },
         hasEffects: { forced: true },
         multiple: { forced: true, enabled: false },
+        isSubItem: parentId ? { forced: true } : undefined,
       }}
       slots={{
         itemFields: () => (

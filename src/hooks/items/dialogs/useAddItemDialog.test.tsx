@@ -3,17 +3,20 @@ import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
 import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
+import { EntityKind } from "#/system/entityKind.ts"
+import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { getItemCatalog } from "#/system/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { useAddItemDialog } from "./useAddItemDialog.tsx"
 
-const AddItemDialogHarness: FC = () => {
+const AddItemDialogHarness: FC<{ parentId?: UUID }> = ({ parentId }) => {
   const addItemDialog = useAddItemDialog()
   return (
     <>
-      <button onClick={() => addItemDialog.open()}>Add Item</button>
+      <button onClick={() => addItemDialog.open({ parentId })}>Add Item</button>
       {addItemDialog.outlet}
     </>
   )
@@ -51,6 +54,37 @@ describe("useAddItemDialog", () => {
       const added = items.find((item) => item.name === "Fake SIN Chip")
       expect(added).toBeDefined()
       expect(added?.itemType).toBe(ItemType.other)
+    })
+  })
+
+  it("pre-attaches the new item to the given parentId", async () => {
+    // Arrange
+    const parent: ItemData = {
+      kind: EntityKind.item,
+      id: "00000000-0000-0000-0000-000000000099",
+      itemType: ItemType.armor,
+      name: "Combat Vest",
+      items: { parentId: null, childIds: [] },
+    }
+    const runnerStore = renderWithRunner(<AddItemDialogHarness parentId={parent.id} />, {
+      [parent.id]: parent,
+    })
+
+    // Act
+    fireEvent.click(screen.getByText("Add Item"))
+    fireEvent.click(screen.getByText(GearSection.Misc))
+
+    const nameField = await screen.findByLabelText(/^name$/i)
+    fireEvent.change(nameField, { target: { value: "Plate Insert" } })
+    clickInLastDialog(/next/i)
+    clickInLastDialog(/next/i)
+    clickInLastDialog(/acquire|save/i)
+
+    // Assert
+    await waitFor(() => {
+      const items = Object.values(getItemCatalog(runnerStore.getState()))
+      const added = items.find((item) => item.name === "Plate Insert")
+      expect(added?.items.parentId).toBe(parent.id)
     })
   })
 

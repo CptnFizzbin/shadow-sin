@@ -487,6 +487,52 @@ describe("ItemDialog", () => {
     })
   })
 
+  describe("subitems tab", () => {
+    const existingItem: ItemData = {
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
+      id: crypto.randomUUID(),
+      itemType: ItemType.other,
+      name: "Existing Gadget",
+    }
+
+    it("shows Stats/Subitems tabs when editing an existing item", () => {
+      renderInBuilder(
+        <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} />,
+      )
+
+      expect(screen.getByRole("tab", { name: "Stats" })).toBeDefined()
+      expect(screen.getByRole("tab", { name: "Subitems" })).toBeDefined()
+    })
+
+    it("does not show tabs when adding a new item", () => {
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} />,
+      )
+
+      expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
+    })
+
+    it("does not show tabs in wizard mode, even once past the stats step", () => {
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
+      )
+
+      expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
+    })
+
+    it("switches to the Subitems tab's Add Item button when clicked", () => {
+      renderInBuilder(
+        <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} />,
+      )
+
+      fireEvent.click(screen.getByRole("tab", { name: "Subitems" }))
+
+      expect(screen.getByRole("button", { name: /add item/i })).toBeDefined()
+      expect(screen.queryByLabelText(/^name$/i)).toBeNull()
+    })
+  })
+
   describe("clearing fields when options are toggled off", () => {
     const existingItemId = crypto.randomUUID()
 

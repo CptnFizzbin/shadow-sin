@@ -8,6 +8,7 @@ import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehic
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useVehicleForm, vehicleFieldMap } from "#/hooks/items/types/vehicles/forms/useVehicleForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
@@ -16,12 +17,14 @@ interface VehicleFormDialogProps {
   vehicle?: VehicleData
   vehicleCategory?: VehicleCategory
   wizard?: boolean
+  parentId?: UUID
 }
 
-const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory, wizard }) => {
+const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory, wizard, parentId }) => {
   const form = useVehicleForm({
     vehicle,
     vehicleCategory,
+    parentId,
     onSubmit: (vehicleData) => ctrl.close(vehicleData),
   })
 
@@ -42,6 +45,7 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleC
       wizard={wizard}
       options={{
         hasRating: { enabled: true },
+        isSubItem: parentId ? { forced: true } : undefined,
       }}
       slots={{
         // Suppressed in wizard mode — the workflow's own "Select Subtype" step

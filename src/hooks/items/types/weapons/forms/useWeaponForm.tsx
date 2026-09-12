@@ -2,6 +2,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { EntityKind } from "#/system/entityKind.ts"
@@ -14,6 +15,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 interface WeaponFormOptions {
   weapon?: WeaponData
   weaponType?: WeaponType
+  parentId?: UUID
   onSubmit: (weapon: WeaponData, meta: GearSubmitMeta) => void
 }
 
@@ -180,12 +182,14 @@ function attributeForWeaponType(weaponType: WeaponType): WeaponFormState["attrib
   return ""
 }
 
-export const useWeaponForm = ({ weapon, weaponType, onSubmit }: WeaponFormOptions) => {
+export const useWeaponForm = ({ weapon, weaponType, parentId, onSubmit }: WeaponFormOptions) => {
   return useItemForm<WeaponFormState>({
     item: weapon ? weaponToFormState(weapon) : undefined,
-    defaultValues: weaponType
-      ? { ...defaultFormValues, weaponType, attribute: attributeForWeaponType(weaponType) }
-      : defaultFormValues,
+    defaultValues: {
+      ...defaultFormValues,
+      ...(weaponType && { weaponType, attribute: attributeForWeaponType(weaponType) }),
+      items: parentId ? { ...defaultFormValues.items, parentId } : defaultFormValues.items,
+    },
     onSubmit: (formState, meta) => onSubmit(toWeaponData(formState), meta),
   })
 }

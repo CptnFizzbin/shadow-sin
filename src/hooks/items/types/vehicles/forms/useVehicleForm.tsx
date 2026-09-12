@@ -2,6 +2,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
@@ -11,6 +12,7 @@ import { ItemType } from "#/system/itemType.ts"
 interface VehicleFormOptions {
   vehicle?: VehicleData
   vehicleCategory?: VehicleCategory
+  parentId?: UUID
   onSubmit: (vehicle: VehicleData, meta: GearSubmitMeta) => void
 }
 
@@ -130,10 +132,14 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
   }
 }
 
-export const useVehicleForm = ({ vehicle, vehicleCategory, onSubmit }: VehicleFormOptions) => {
+export const useVehicleForm = ({ vehicle, vehicleCategory, parentId, onSubmit }: VehicleFormOptions) => {
   return useItemForm<VehicleFormState>({
     item: vehicle ? vehicleToFormState(vehicle) : undefined,
-    defaultValues: { ...defaultFormValues, vehicleCategory: vehicleCategory ?? VehicleCategory.vehicle },
+    defaultValues: {
+      ...defaultFormValues,
+      vehicleCategory: vehicleCategory ?? VehicleCategory.vehicle,
+      items: parentId ? { ...defaultFormValues.items, parentId } : defaultFormValues.items,
+    },
     onSubmit: (formState, meta) => onSubmit(toVehicleData(formState), meta),
   })
 }

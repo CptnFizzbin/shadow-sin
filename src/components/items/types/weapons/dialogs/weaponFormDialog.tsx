@@ -6,6 +6,7 @@ import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponF
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useWeaponForm, weaponFieldMap } from "#/hooks/items/types/weapons/forms/useWeaponForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { WeaponData, WeaponType } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
@@ -13,14 +14,16 @@ interface WeaponFormDialogProps {
   weapon?: WeaponData
   weaponType?: WeaponType
   wizard?: boolean
+  parentId?: UUID
 }
 
-export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weaponType, wizard }) => {
+export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weaponType, wizard, parentId }) => {
   const title = weapon ? "Edit Weapon" : "Add Weapon"
 
   const form = useWeaponForm({
     weapon,
     weaponType,
+    parentId,
     onSubmit: (weaponData) => ctrl.close(weaponData),
   })
 
@@ -34,6 +37,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weap
         equipable: { forced: true },
         hasRating: { enabled: true },
         multiple: { forced: true, enabled: false },
+        isSubItem: parentId ? { forced: true } : undefined,
       }}
       slots={{
         itemFields: () => (

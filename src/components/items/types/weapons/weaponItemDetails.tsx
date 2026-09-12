@@ -3,7 +3,7 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useAddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -30,7 +30,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
   const weaponFormDialog = useWeaponFormDialog()
-  const accessoryFormDialog = useItemFormDialog()
+  const addItemDialog = useAddItemDialogContext()
 
   const toggleEquipped = () => dispatch(Actions.item.setItem({ ...weapon, equipped: !weapon.equipped }))
 
@@ -44,10 +44,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
-  const handleAddAccessory = async () => {
-    const saved = await accessoryFormDialog.open({ label: "Accessory" })
-    if (saved) dispatch(Actions.item.addItem({ ...saved, items: { ...saved.items, parentId: weapon.id } }))
-  }
+  const handleAddAccessory = () => addItemDialog.open({ parentId: weapon.id })
 
   return (
     <>
@@ -92,7 +89,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
       </ItemDetailsRoot>
 
       {weaponFormDialog.outlet}
-      {accessoryFormDialog.outlet}
     </>
   )
 }

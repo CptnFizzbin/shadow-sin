@@ -8,6 +8,8 @@ import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinF
 import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
+import type { AddItemDialogOpenOptions } from "#/contexts/items/addItemDialogContext.ts"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
@@ -35,32 +37,32 @@ export function useAddItemDialog() {
   const licenseFormDialog = useLicenseFormDialog()
   const miscFormDialog = useItemFormDialog()
 
-  const openTargetDialog = (selection: AddItemSelection): Promise<ItemData | undefined> => {
+  const openTargetDialog = (selection: AddItemSelection, parentId?: UUID): Promise<ItemData | undefined> => {
     switch (selection.section) {
       case GearSection.Weapons:
-        return weaponFormDialog.open({ wizard: true, weaponType: selection.weaponType })
+        return weaponFormDialog.open({ wizard: true, weaponType: selection.weaponType, parentId })
       case GearSection.Armor:
-        return armorFormDialog.open({ wizard: true })
+        return armorFormDialog.open({ wizard: true, parentId })
       case GearSection.Cyberware:
-        return implantFormDialog.open({ wizard: true })
+        return implantFormDialog.open({ wizard: true, parentId })
       case GearSection.Vehicles:
-        return vehicleFormDialog.open({ wizard: true, vehicleCategory: selection.vehicleCategory })
+        return vehicleFormDialog.open({ wizard: true, vehicleCategory: selection.vehicleCategory, parentId })
       case GearSection.Devices:
-        return deviceFormDialog.open({ wizard: true })
+        return deviceFormDialog.open({ wizard: true, parentId })
       case GearSection.Licenses:
         return selection.licenseKind === "license"
           ? licenseFormDialog.open({ wizard: true })
           : sinFormDialog.open({ wizard: true })
       default:
-        return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item" })
+        return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item", parentId })
     }
   }
 
-  const open = async () => {
+  const open = async (options?: AddItemDialogOpenOptions) => {
     const selection = await typeDialog.open()
     if (!selection) return
 
-    const saved = await openTargetDialog(selection)
+    const saved = await openTargetDialog(selection, options?.parentId)
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 

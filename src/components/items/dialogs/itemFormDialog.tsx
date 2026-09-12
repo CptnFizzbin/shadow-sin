@@ -4,6 +4,7 @@ import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFo
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -15,6 +16,7 @@ interface ItemFormDialogProps {
   itemType?: ItemType
   label?: string
   wizard?: boolean
+  parentId?: UUID
 }
 
 export const ItemFormDialog: FC<ItemFormDialogProps> = ({
@@ -23,6 +25,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
   itemType,
   label = "Item",
   wizard,
+  parentId,
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
 
@@ -32,6 +35,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
       ...itemDefaults,
       itemType: itemType ?? ItemType.other,
       rating: 1,
+      items: parentId ? { ...itemDefaults.items, parentId } : itemDefaults.items,
     },
     onSubmit: (itemData) => ctrl.close(itemData),
   })
@@ -45,6 +49,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
       options={{
         hasRating: { enabled: true },
         multiple: { enabled: true },
+        isSubItem: parentId ? { forced: true } : undefined,
       }}
       slots={{
         itemFields: () => <GearFormLicenseSection form={form} />,

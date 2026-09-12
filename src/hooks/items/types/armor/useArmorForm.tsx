@@ -2,6 +2,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
@@ -9,6 +10,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 interface ArmorFormOptions {
   armor?: ArmorData
+  parentId?: UUID
   onSubmit: (armor: ArmorData, meta: GearSubmitMeta) => void
 }
 
@@ -44,10 +46,12 @@ export const armorFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
 
-export const useArmorForm = ({ armor, onSubmit }: ArmorFormOptions) => {
+export const useArmorForm = ({ armor, parentId, onSubmit }: ArmorFormOptions) => {
   return useItemForm<ArmorData>({
     item: armor,
-    defaultValues: defaultFormValues,
+    defaultValues: parentId
+      ? { ...defaultFormValues, items: { ...defaultFormValues.items, parentId } }
+      : defaultFormValues,
     onSubmit,
   })
 }

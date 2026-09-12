@@ -6,19 +6,22 @@ import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFo
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { deviceFieldMap, useDeviceForm } from "#/hooks/items/types/devices/forms/useDeviceForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { UUID } from "#/lib/uuidUtils.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {
   ctrl: AnyDialogCtrl
   device?: DeviceData
   wizard?: boolean
+  parentId?: UUID
 }
 
-export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device, wizard }) => {
+export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device, wizard, parentId }) => {
   const title = device ? "Edit Device" : "Add Device"
 
   const form = useDeviceForm({
     device,
+    parentId,
     onSubmit: (submittedDevice) => ctrl.close(submittedDevice),
   })
 
@@ -29,6 +32,9 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device, wiza
       ctrl={ctrl}
       wizard={wizard}
       onClosed={() => form.reset()}
+      options={{
+        isSubItem: parentId ? { forced: true } : undefined,
+      }}
       slots={{
         itemFields: () => (
           <>
