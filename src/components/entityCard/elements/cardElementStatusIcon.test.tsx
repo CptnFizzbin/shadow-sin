@@ -9,7 +9,7 @@ describe("CardElementStatusIcon", () => {
   it.each([
     ["equipped", "Equipped"],
     ["stashed", "Stashed"],
-    ["fixed", "Fixed"],
+    ["fixed", "Integrated"],
     ["wireless-enabled", "Wireless"],
     ["wireless-disabled", "Wireless off"],
     ["wireless-removed", "Wireless removed"],
