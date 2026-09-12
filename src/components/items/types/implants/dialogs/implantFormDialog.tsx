@@ -13,6 +13,7 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 interface CyberwareFormDialogProps {
   implant?: ImplantData
   parentId?: UUID
+  wizard?: boolean
 }
 
 export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogProps, "form" | "title">> = ({

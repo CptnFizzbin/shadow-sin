@@ -11,9 +11,10 @@ import type { ArmorData } from "#/system/gear/armorData.ts"
 interface ArmorFormDialogProps {
   ctrl: AnyDialogCtrl
   armor?: ArmorData
+  wizard?: boolean
 }
 
-export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
+export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor, wizard }) => {
   const title = armor ? "Edit Armor" : "Add Armor"
 
   const form = useArmorForm({
@@ -26,6 +27,7 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       options={{
         equipable: { forced: true },
         hasEffects: { forced: true },

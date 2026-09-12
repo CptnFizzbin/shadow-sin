@@ -14,6 +14,7 @@ interface ItemFormDialogProps {
   item?: ItemData
   itemType?: ItemType
   label?: string
+  wizard?: boolean
 }
 
 export const ItemFormDialog: FC<ItemFormDialogProps> = ({
@@ -21,6 +22,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
   item,
   itemType,
   label = "Item",
+  wizard,
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
 
@@ -39,6 +41,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       options={{
         hasRating: { enabled: true },
         multiple: { enabled: true },

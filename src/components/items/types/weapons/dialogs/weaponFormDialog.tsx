@@ -6,18 +6,21 @@ import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponF
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useWeaponForm, weaponFieldMap } from "#/hooks/items/types/weapons/forms/useWeaponForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { WeaponData } from "#/system/gear/weaponData.ts"
+import type { WeaponData, WeaponType } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
   ctrl: AnyDialogCtrl
   weapon?: WeaponData
+  weaponType?: WeaponType
+  wizard?: boolean
 }
 
-export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) => {
+export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weaponType, wizard }) => {
   const title = weapon ? "Edit Weapon" : "Add Weapon"
 
   const form = useWeaponForm({
     weapon,
+    weaponType,
     onSubmit: (weaponData) => ctrl.close(weaponData),
   })
 
@@ -26,6 +29,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) =>
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       options={{
         equipable: { forced: true },
         hasRating: { enabled: true },

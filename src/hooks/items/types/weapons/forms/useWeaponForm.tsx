@@ -13,6 +13,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 
 interface WeaponFormOptions {
   weapon?: WeaponData
+  weaponType?: WeaponType
   onSubmit: (weapon: WeaponData, meta: GearSubmitMeta) => void
 }
 
@@ -173,10 +174,18 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
   }
 }
 
-export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
+function attributeForWeaponType(weaponType: WeaponType): WeaponFormState["attribute"] {
+  if (weaponType === WeaponType.melee) return AttributeKey.strength
+  if (weaponType === WeaponType.firearm) return AttributeKey.agility
+  return ""
+}
+
+export const useWeaponForm = ({ weapon, weaponType, onSubmit }: WeaponFormOptions) => {
   return useItemForm<WeaponFormState>({
     item: weapon ? weaponToFormState(weapon) : undefined,
-    defaultValues: defaultFormValues,
+    defaultValues: weaponType
+      ? { ...defaultFormValues, weaponType, attribute: attributeForWeaponType(weaponType) }
+      : defaultFormValues,
     onSubmit: (formState, meta) => onSubmit(toWeaponData(formState), meta),
   })
 }

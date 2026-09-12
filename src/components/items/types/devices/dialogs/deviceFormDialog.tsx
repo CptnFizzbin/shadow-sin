@@ -11,9 +11,10 @@ import type { DeviceData } from "#/system/gear/deviceData.ts"
 interface DeviceFormDialogProps {
   ctrl: AnyDialogCtrl
   device?: DeviceData
+  wizard?: boolean
 }
 
-export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device }) => {
+export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device, wizard }) => {
   const title = device ? "Edit Device" : "Add Device"
 
   const form = useDeviceForm({
@@ -26,6 +27,7 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device }) =>
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       onClosed={() => form.reset()}
       slots={{
         itemFields: () => (

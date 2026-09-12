@@ -16,6 +16,7 @@ interface LicenseFormDialogProps {
   onDelete?: () => void
   license?: LicenseData
   sin?: SinData
+  wizard?: boolean
 }
 
 export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
@@ -23,6 +24,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onDelete,
   license,
   sin,
+  wizard,
 }) => {
   const title = license ? "Edit License" : "Create License"
 
@@ -37,6 +39,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       onDelete={onDelete}
       getCost={(l) => {
         const licenseValues = l as LicenseData
