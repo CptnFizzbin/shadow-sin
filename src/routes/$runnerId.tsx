@@ -3,6 +3,7 @@ import { useEffect, useMemo } from "react"
 
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
+import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
@@ -59,7 +60,9 @@ function RunnerRoute() {
   return (
     <RunnerStoreProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>
-        <Outlet />
+        <AddItemDialogProvider>
+          <Outlet />
+        </AddItemDialogProvider>
       </DiceTrayProvider>
     </RunnerStoreProvider>
   )

@@ -13,7 +13,7 @@ import { GearViewSection } from "#/components/runner/gearPage/gearViewSection.ts
 import { useLicenseCheckDialog } from "#/components/runner/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
-import { useAddItemDialog } from "#/hooks/items/dialogs/useAddItemDialog.tsx"
+import { useAddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
@@ -24,7 +24,7 @@ function RouteComponent() {
   const searchTerms = searchQuery.trim() ? searchQuery.trim().split(/\s+/) : []
   const isBuilder = useIsBuilder()
   const licenseCheckDialog = useLicenseCheckDialog()
-  const addItemDialog = useAddItemDialog()
+  const addItemDialog = useAddItemDialogContext()
 
   return (
     <Stack>
@@ -61,7 +61,6 @@ function RouteComponent() {
       >
         Add Item
       </Button>
-      {addItemDialog.outlet}
 
       {Object.values(GearSection).map((section) => (
         <GearViewSection key={section} section={section} searchTerms={searchTerms} />

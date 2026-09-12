@@ -12,6 +12,7 @@ import { afterEach } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
+import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
@@ -62,7 +63,9 @@ export function renderWithProviders(
     return (
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
-          <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
+          <RunnerStoreProvider store={runnerStore}>
+            <AddItemDialogProvider>{children}</AddItemDialogProvider>
+          </RunnerStoreProvider>
         </TestRouterProvider>
       </ThemeProvider>
     )
@@ -96,7 +99,7 @@ export function renderInBuilder(
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
           <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
-            {children}
+            <AddItemDialogProvider>{children}</AddItemDialogProvider>
           </BuilderStoreProvider>
         </TestRouterProvider>
       </ThemeProvider>

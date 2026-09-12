@@ -2,7 +2,7 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useAddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -23,7 +23,7 @@ export interface VehicleItemDetailsProps {
 export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRemoved, onOpenAttachment }) => {
   const dispatch = useRunnerStoreDispatch()
   const vehicleFormDialog = useVehicleFormDialog()
-  const modFormDialog = useItemFormDialog()
+  const addItemDialog = useAddItemDialogContext()
   const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: vehicle.id })
   const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
@@ -42,10 +42,7 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
-  const handleAddMod = async () => {
-    const saved = await modFormDialog.open({ label: "Equipment" })
-    if (saved) dispatch(Actions.item.addItem({ ...saved, items: { ...saved.items, parentId: vehicle.id } }))
-  }
+  const handleAddMod = () => addItemDialog.open({ parentId: vehicle.id })
 
   return (
     <>
@@ -80,7 +77,6 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
       </ItemDetailsRoot>
 
       {vehicleFormDialog.outlet}
-      {modFormDialog.outlet}
     </>
   )
 }

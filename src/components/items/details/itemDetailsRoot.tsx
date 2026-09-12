@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Chip from "@mui/material/Chip"
+import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
@@ -149,9 +150,11 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
         <Stack>
           <Label>Stats</Label>
 
-          <Stack direction="row" sx={{ flexWrap: "wrap" }}>
-            {slots.stats}
-          </Stack>
+          <Grid container columns={{ sm: 3, md: 6, lg: 8, xl: 12 }} spacing={1}>
+            {slots.stats.map((stat, index) => (
+              <Grid key={index} size={1}>{stat}</Grid>
+            ))}
+          </Grid>
         </Stack>
       )}
 

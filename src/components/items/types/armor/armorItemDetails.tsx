@@ -3,7 +3,7 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useAddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -24,7 +24,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
   const dispatch = useRunnerStoreDispatch()
   const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: armor.id })
   const armorFormDialog = useArmorFormDialog()
-  const modFormDialog = useItemFormDialog()
+  const addItemDialog = useAddItemDialogContext()
 
   const toggleEquipped = () => dispatch(Actions.item.setItem({ ...armor, equipped: !armor.equipped }))
 
@@ -38,10 +38,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
-  const handleAddMod = async () => {
-    const saved = await modFormDialog.open({ label: "Mod" })
-    if (saved) dispatch(Actions.item.addItem({ ...saved, items: { ...saved.items, parentId: armor.id } }))
-  }
+  const handleAddMod = () => addItemDialog.open({ parentId: armor.id })
 
   return (
     <>
@@ -75,7 +72,6 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
       </ItemDetailsRoot>
 
       {armorFormDialog.outlet}
-      {modFormDialog.outlet}
     </>
   )
 }
