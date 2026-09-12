@@ -1,7 +1,10 @@
+import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
+import FormControlLabel from "@mui/material/FormControlLabel"
 import IconButton from "@mui/material/IconButton"
 import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
+import Switch from "@mui/material/Switch"
 import { RiDiceLine, RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { z } from "zod"
@@ -29,12 +32,28 @@ import type { ItemData } from "#/system/itemData.ts"
 
 import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
 import { ItemDialogActions } from "./itemDialogActions.tsx"
+import { ItemDialogFinalizePreview } from "./itemDialogFinalizePreview.tsx"
+import { ItemDialogWizard, ItemDialogWizardStep, useItemDialogWizard } from "./itemDialogWizard.ts"
+import { ItemDialogWizardActions } from "./itemDialogWizardActions.tsx"
 import { useItemOptionsDialog } from "./itemOptionsDialog.tsx"
+
+const itemDialogWizardSteps = [
+  ItemDialogWizardStep.Stats,
+  ItemDialogWizardStep.Effects,
+  ItemDialogWizardStep.Finalize,
+] as const
 
 export interface ItemDialogProps {
   form: AnyItemForm
   title: ReactNode
   ctrl: AnyDialogCtrl
+  /**
+   * Presents the form across the Add Item workflow's Stats / Effects / Finalize
+   * screens instead of as a single page. Only meaningful when adding a new item —
+   * callers use it for the wizard's per-type "Enter Stats" step and leave it unset
+   * everywhere else (including Edit, which always stays single-page).
+   */
+  wizard?: boolean
   /** Called after the exit animation completes (e.g. to reset form state). */
   onClosed?: () => void
   onDelete?: () => void
@@ -72,10 +91,24 @@ function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
   return config?.forced === true
 }
 
-export const ItemDialog: FC<ItemDialogProps> = ({
+/**
+ * Renders a `form`'s fields as a `Dialog` — the shared shell every gear type's `*FormDialog`
+ * wraps. Always renders under `ItemDialogWizard.Provider` so `wizard` mode (used by the Add Item
+ * workflow) can read step navigation from it; non-wizard callers (Edit, and any non-workflow Add)
+ * simply never read from that workflow, since `ItemDialogBody` only consults it when `wizard`
+ * is set.
+ */
+export const ItemDialog: FC<ItemDialogProps> = (props) => (
+  <ItemDialogWizard.Provider initialStep={ItemDialogWizardStep.Stats} initialData={{}}>
+    <ItemDialogBody {...props} />
+  </ItemDialogWizard.Provider>
+)
+
+const ItemDialogBody: FC<ItemDialogProps> = ({
   form: formArg,
   title,
   ctrl,
+  wizard,
   onClosed,
   onDelete,
   getCost,
@@ -92,6 +125,12 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const isBuilder = useIsBuilder()
   const dispatch = useRunnerStoreDispatch()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
+
+  const itemWizard = useItemDialogWizard()
+  const wizardStep = itemWizard.currentStep
+  // Non-wizard callers (Edit, and every non-workflow Add dialog) always render every
+  // step's content on one page, matching ItemDialog's pre-wizard behavior exactly.
+  const activeStep: ItemDialogWizardStep | "all" = wizard ? wizardStep : "all"
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 
@@ -151,146 +190,189 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <Dialog.Content>
           <Stack sx={{ padding: 1 }}>
-            {slots?.preForm?.()}
+            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Stats) && (
+              <>
+                {slots?.preForm?.()}
 
-            <Stack direction="row" sx={{ alignItems: "flex-start" }}>
-              <form.AppField
-                name="name"
-                validators={{ onChange: z.string().min(1, "Name is required") }}
-              >
-                {(field) => (
-                  <field.TextField
-                    label="Name"
+                <Stack direction="row" sx={{ alignItems: "flex-start" }}>
+                  <form.AppField
+                    name="name"
+                    validators={{ onChange: z.string().min(1, "Name is required") }}
+                  >
+                    {(field) => (
+                      <field.TextField
+                        label="Name"
+                        size="small"
+                        sx={{ flex: 1 }}
+                        autoFocus
+                        slotProps={onRandomizeName
+                          ? {
+                              input: {
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      size="small"
+                                      aria-label="Randomize name"
+                                      onClick={() => field.handleChange(onRandomizeName())}
+                                    >
+                                      <RiDiceLine size={18} />
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              },
+                            }
+                          : undefined}
+                      />
+                    )}
+                  </form.AppField>
+
+                  {slots?.rating
+                    ? slots.rating()
+                    : localOptions["hasRating"] && (
+                      <form.AppField name="rating">
+                        {(field) => (
+                          <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                        )}
+                      </form.AppField>
+                    )}
+                </Stack>
+
+                <Divider />
+
+                <Stack direction="row" sx={{ alignItems: "center" }}>
+                  {localOptions["equipable"] && (
+                    <form.AppField name="equipped">
+                      {(field) => <field.SwitchField label="Equipped" />}
+                    </form.AppField>
+                  )}
+
+                  {localOptions["canBeStashed"] && (
+                    <form.AppField name="stashed">
+                      {(field) => <field.SwitchField label="Stashed" />}
+                    </form.AppField>
+                  )}
+
+                  <IconButton
                     size="small"
-                    sx={{ flex: 1 }}
-                    autoFocus
-                    slotProps={onRandomizeName
-                      ? {
-                          input: {
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  size="small"
-                                  aria-label="Randomize name"
-                                  onClick={() => field.handleChange(onRandomizeName())}
-                                >
-                                  <RiDiceLine size={18} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          },
-                        }
+                    sx={{ ml: "auto" }}
+                    onClick={() => itemOptionsDialog.open({
+                      initialOptions: localOptions,
+                      forced,
+                      onChange: handleOptionsChange,
+                    })}
+                    aria-label="Item options"
+                  >
+                    <RiSettings3Line size={18} />
+                  </IconButton>
+                </Stack>
+
+                {localOptions["showCost"] && (
+                  <GearCostFieldGroup
+                    form={form}
+                    fields={itemFieldMap}
+                    enableQuantity={localOptions["multiple"]}
+                    onBuyMore={(!isBuilder && !isNewItem)
+                      ? () => buyQuantityDialog.open({
+                          defaultCost: form.state.values.cost ?? 0,
+                          onPurchase: handleBuyPurchase,
+                        })
                       : undefined}
                   />
                 )}
-              </form.AppField>
 
-              {slots?.rating
-                ? slots.rating()
-                : localOptions["hasRating"] && (
-                  <form.AppField name="rating">
-                    {(field) => (
-                      <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
-                    )}
-                  </form.AppField>
+                {localOptions["showAvailability"] && (
+                  <AvailabilityFieldGroup form={form} fields="availability" />
                 )}
-            </Stack>
 
-            <Divider />
+                {localOptions["isSubItem"] && (
+                  <Stack>
+                    <Label label={parentItemLabel ?? "Attached To"} />
 
-            <Stack direction="row" sx={{ alignItems: "center" }}>
-              {localOptions["equipable"] && (
-                <form.AppField name="equipped">
-                  {(field) => <field.SwitchField label="Equipped" />}
-                </form.AppField>
-              )}
+                    <GearAttachmentFieldGroup
+                      form={form}
+                      fields={itemFieldMap}
+                      isFixed={localOptions["fixed"] ?? false}
+                      parentItemOptions={parentItemOptions}
+                      fieldLabel={parentItemLabel ?? "Parent Item"}
+                      attachmentSlot={slots?.attachmentFields}
+                    />
+                  </Stack>
+                )}
 
-              {localOptions["canBeStashed"] && (
-                <form.AppField name="stashed">
-                  {(field) => <field.SwitchField label="Stashed" />}
-                </form.AppField>
-              )}
+                {slots?.itemFields?.()}
 
-              <IconButton
-                size="small"
-                sx={{ ml: "auto" }}
-                onClick={() => itemOptionsDialog.open({
-                  initialOptions: localOptions,
-                  forced,
-                  onChange: handleOptionsChange,
-                })}
-                aria-label="Item options"
-              >
-                <RiSettings3Line size={18} />
-              </IconButton>
-            </Stack>
+                <Label label="Description" />
 
-            {localOptions["showCost"] && (
-              <GearCostFieldGroup
-                form={form}
-                fields={itemFieldMap}
-                enableQuantity={localOptions["multiple"]}
-                onBuyMore={(!isBuilder && !isNewItem)
-                  ? () => buyQuantityDialog.open({
-                      defaultCost: form.state.values.cost ?? 0,
-                      onPurchase: handleBuyPurchase,
-                    })
-                  : undefined}
+                <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
+
+                <Label label="Source" />
+                <SourceFieldGroup form={form} fields={itemFieldMap} />
+              </>
+            )}
+
+            {(activeStep === "all" || activeStep === ItemDialogWizardStep.Effects) && (
+              <>
+                {wizard && !forced.hasEffects && (
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        checked={localOptions["hasEffects"]}
+                        onChange={(_, checked) => handleOptionsChange("hasEffects", checked)}
+                      />
+                    )}
+                    label="This item provides Game Effects"
+                  />
+                )}
+
+                {localOptions["hasEffects"] && (
+                  <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
+                )}
+              </>
+            )}
+
+            {activeStep === ItemDialogWizardStep.Finalize && (
+              <ItemDialogFinalizePreview
+                values={form.state.values}
+                showRating={localOptions["hasRating"]}
+                showCost={localOptions["showCost"]}
+                showAvailability={localOptions["showAvailability"]}
               />
-            )}
-
-            {localOptions["showAvailability"] && (
-              <AvailabilityFieldGroup form={form} fields="availability" />
-            )}
-
-            {localOptions["isSubItem"] && (
-              <Stack>
-                <Label label={parentItemLabel ?? "Attached To"} />
-
-                <GearAttachmentFieldGroup
-                  form={form}
-                  fields={itemFieldMap}
-                  isFixed={localOptions["fixed"] ?? false}
-                  parentItemOptions={parentItemOptions}
-                  fieldLabel={parentItemLabel ?? "Parent Item"}
-                  attachmentSlot={slots?.attachmentFields}
-                />
-              </Stack>
-            )}
-
-            {slots?.itemFields?.()}
-
-            <Label label="Description" />
-
-            <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
-
-            <Label label="Source" />
-            <SourceFieldGroup form={form} fields={itemFieldMap} />
-
-            {localOptions["hasEffects"] && (
-              <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
             )}
           </Stack>
         </Dialog.Content>
 
         <Dialog.Actions>
-          <form.Subscribe
-            selector={(state) => getCost
-              ? getCost(state.values)
-              : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
-          >
-            {(totalCost) => (
-              <ItemDialogActions
-                isAcquireMode={isAcquireMode}
-                totalCost={totalCost}
-                onClose={() => ctrl.close()}
-                onAcquire={() => handleSubmitWithAction("acquire")}
-                onPurchase={() => handleSubmitWithAction("purchase")}
-                onSave={() => handleSubmitWithAction("save")}
-                onDelete={onDelete}
-              />
-            )}
-          </form.Subscribe>
+          {wizard && wizardStep !== ItemDialogWizardStep.Finalize && (
+            <ItemDialogWizardActions
+              onCancel={() => ctrl.close()}
+              onBack={!itemWizard.isFirstStep ? () => itemWizard.back() : undefined}
+              onNext={() => itemWizard.next(itemDialogWizardSteps[itemDialogWizardSteps.indexOf(wizardStep) + 1])}
+            />
+          )}
+
+          {(!wizard || activeStep === ItemDialogWizardStep.Finalize) && (
+            <>
+              {wizard && <Button onClick={() => itemWizard.back()} sx={{ mr: "auto" }}>Back</Button>}
+
+              <form.Subscribe
+                selector={(state) => getCost
+                  ? getCost(state.values)
+                  : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
+              >
+                {(totalCost) => (
+                  <ItemDialogActions
+                    isAcquireMode={isAcquireMode}
+                    totalCost={totalCost}
+                    onClose={() => ctrl.close()}
+                    onAcquire={() => handleSubmitWithAction("acquire")}
+                    onPurchase={() => handleSubmitWithAction("purchase")}
+                    onSave={() => handleSubmitWithAction("save")}
+                    onDelete={wizard ? undefined : onDelete}
+                  />
+                )}
+              </form.Subscribe>
+            </>
+          )}
         </Dialog.Actions>
       </ControlledDialog>
 

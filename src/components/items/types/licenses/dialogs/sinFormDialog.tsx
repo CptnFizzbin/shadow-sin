@@ -12,9 +12,10 @@ interface SinFormDialogProps {
   ctrl: AnyDialogCtrl
   onDelete?: () => void
   sin?: SinData
+  wizard?: boolean
 }
 
-export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
+export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete, wizard }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
 
   const form = useSinForm({
@@ -27,6 +28,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) =
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       onDelete={onDelete}
       getCost={(s) => {
         const sinValues = s as SinData

@@ -1,6 +1,4 @@
-import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
-import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
@@ -39,17 +37,6 @@ export const DevicesSectionContent: FC = () => {
           onEdit={() => handleEditDevice(device)}
         />
       ))}
-
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => handleEditDevice()}
-        color="secondary"
-        fullWidth
-      >
-        Add Device
-      </Button>
 
       {deviceFormDialog.outlet}
     </Stack>

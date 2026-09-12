@@ -15,9 +15,10 @@ interface VehicleFormDialogProps {
   ctrl: AnyDialogCtrl
   vehicle?: VehicleData
   vehicleCategory?: VehicleCategory
+  wizard?: boolean
 }
 
-const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory }) => {
+const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory, wizard }) => {
   const form = useVehicleForm({
     vehicle,
     vehicleCategory,
@@ -38,30 +39,35 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleC
       form={form}
       title={title}
       ctrl={ctrl}
+      wizard={wizard}
       options={{
         hasRating: { enabled: true },
       }}
       slots={{
-        preForm: () => (
-          <form.Subscribe selector={({ values }) => values.vehicleCategory}>
-            {(currentCategory) => (
-              <ToggleButtonGroup
-                exclusive
-                size="small"
-                value={currentCategory}
-                onChange={(_, value: VehicleCategory | null) => {
-                  if (value !== null) {
-                    form.setFieldValue("vehicleCategory", value)
-                  }
-                }}
-                fullWidth
-              >
-                <ToggleButton value={VehicleCategory.vehicle}>Vehicle</ToggleButton>
-                <ToggleButton value={VehicleCategory.drone}>Drone</ToggleButton>
-              </ToggleButtonGroup>
-            )}
-          </form.Subscribe>
-        ),
+        // Suppressed in wizard mode — the workflow's own "Select Subtype" step
+        // already resolves Vehicle vs. Drone before this dialog opens.
+        preForm: wizard
+          ? undefined
+          : () => (
+              <form.Subscribe selector={({ values }) => values.vehicleCategory}>
+                {(currentCategory) => (
+                  <ToggleButtonGroup
+                    exclusive
+                    size="small"
+                    value={currentCategory}
+                    onChange={(_, value: VehicleCategory | null) => {
+                      if (value !== null) {
+                        form.setFieldValue("vehicleCategory", value)
+                      }
+                    }}
+                    fullWidth
+                  >
+                    <ToggleButton value={VehicleCategory.vehicle}>Vehicle</ToggleButton>
+                    <ToggleButton value={VehicleCategory.drone}>Drone</ToggleButton>
+                  </ToggleButtonGroup>
+                )}
+              </form.Subscribe>
+            ),
         itemFields: () => (
           <>
             <VehicleFormFields form={form} fields={vehicleFieldMap} />

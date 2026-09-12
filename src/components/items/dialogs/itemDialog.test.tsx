@@ -404,6 +404,89 @@ describe("ItemDialog", () => {
     })
   })
 
+  describe("wizard mode", () => {
+    it("shows only the Name field and a Next button on the first step", () => {
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard options={{ hasEffects: { enabled: true } }} />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+      expect(within(dialog).getByLabelText(/^name$/i)).toBeDefined()
+      expect(within(dialog).getByRole("button", { name: /next/i })).toBeDefined()
+      expect(within(dialog).queryByRole("button", { name: /save/i })).toBeNull()
+      expect(within(dialog).queryByText("This item provides Game Effects")).toBeNull()
+    })
+
+    it("advances to the effects step and shows the effects toggle", () => {
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+
+      expect(within(dialog).getByText("This item provides Game Effects")).toBeDefined()
+      expect(within(dialog).queryByLabelText(/^name$/i)).toBeNull()
+    })
+
+    it("shows the finalize preview and Save button on the last step", () => {
+      renderInBuilder(
+        <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={vi.fn()} wizard />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
+        target: { value: "My New Gadget" },
+      })
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+
+      expect(within(dialog).getByText("My New Gadget")).toBeDefined()
+      expect(within(dialog).getByRole("button", { name: /^save$/i })).toBeDefined()
+      expect(within(dialog).getByRole("button", { name: /^back$/i })).toBeDefined()
+    })
+
+    it("submits on the finalize step's Save button", async () => {
+      const onSave = vi.fn()
+      renderInBuilder(
+        <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} wizard />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
+        target: { value: "Finished Gadget" },
+      })
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.click(within(dialog).getByRole("button", { name: /^save$/i }))
+
+      await waitFor(() => {
+        expect(onSave).toHaveBeenCalledOnce()
+        const submitted: ItemData = onSave.mock.calls[0][0]
+        expect(submitted.name).toBe("Finished Gadget")
+      })
+    })
+
+    it("returns to the stats step when Back is clicked from the effects step", () => {
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
+
+      expect(within(dialog).getByLabelText(/^name$/i)).toBeDefined()
+    })
+  })
+
   describe("clearing fields when options are toggled off", () => {
     const existingItemId = crypto.randomUUID()
 

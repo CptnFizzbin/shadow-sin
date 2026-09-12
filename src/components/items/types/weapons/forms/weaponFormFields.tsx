@@ -13,7 +13,7 @@ import { FirearmFormFields } from "./firearmFormFields.tsx"
 import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
 import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
 
-const weaponTypeOptions = [
+export const weaponTypeOptions = [
   { label: "Melee", value: WeaponType.melee },
   { label: "Firearm", value: WeaponType.firearm },
   { label: "Thrown", value: WeaponType.thrown },
