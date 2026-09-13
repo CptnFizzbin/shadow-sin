@@ -1,19 +1,26 @@
 import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
+import Button from "@mui/material/Button"
 import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
+import { RiAddLine, RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
+import { ArmorSectionContent } from "#/components/runner/gearPage/armorSectionContent.tsx"
+import { DevicesSectionContent } from "#/components/runner/gearPage/devicesSectionContent.tsx"
+import { MiscSectionContent } from "#/components/runner/gearPage/miscSectionContent.tsx"
+import { VehiclesSectionContent } from "#/components/runner/gearPage/vehiclesSectionContent.tsx"
+import { WeaponsSectionContent } from "#/components/runner/gearPage/weaponsSectionContent.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
+import { useAddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
 import {
   useGearBuildPoints,
   useGearTotalCost,
@@ -27,21 +34,17 @@ import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { ArmorPanel } from "./armor/armorPanel.tsx"
-import { DevicesPanel } from "./devices/devicesPanel.tsx"
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
 import { ImplantsPanel } from "./implants/implantsPanel.tsx"
 import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
-import { MiscPanel } from "./misc/miscPanel.tsx"
 import { SectionHeader } from "./sectionHeader.tsx"
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"
-import { VehiclesPanel } from "./vehicles/vehiclesPanel.tsx"
-import { WeaponsPanel } from "./weapons/weaponsPanel.tsx"
 
 export const GearSection: FC = () => {
   const totalNuyen = useGearTotalCost()
   const buildPoints = useGearBuildPoints()
   const { invalidSections } = useGearAvailabilityIssues()
+  const addItemDialog = useAddItemDialogContext()
 
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
@@ -74,6 +77,17 @@ export const GearSection: FC = () => {
           />
         </Stack>
       </EditorMode.IsBuilder>
+
+      <Button
+        variant="outlined"
+        size="small"
+        startIcon={<RiAddLine size={14} />}
+        onClick={() => addItemDialog.open()}
+        color="secondary"
+        fullWidth
+      >
+        Add Item
+      </Button>
 
       {Object.values(SectionHeader).map((sectionName) => (
         <Accordion
@@ -137,11 +151,11 @@ const GearSectionContent: FC<{
 }> = ({ section }) => {
   if (section === SectionHeader.Licenses) return <SinsAndLicensesSection />
   if (section === SectionHeader.Cyberware) return <ImplantsPanel />
-  if (section === SectionHeader.Weapons) return <WeaponsPanel />
-  if (section === SectionHeader.Armor) return <ArmorPanel />
-  if (section === SectionHeader.Vehicles) return <VehiclesPanel />
-  if (section === SectionHeader.Devices) return <DevicesPanel />
-  if (section === SectionHeader.Misc) return <MiscPanel />
+  if (section === SectionHeader.Weapons) return <WeaponsSectionContent />
+  if (section === SectionHeader.Armor) return <ArmorSectionContent />
+  if (section === SectionHeader.Vehicles) return <VehiclesSectionContent />
+  if (section === SectionHeader.Devices) return <DevicesSectionContent />
+  if (section === SectionHeader.Misc) return <MiscSectionContent />
   if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
 }

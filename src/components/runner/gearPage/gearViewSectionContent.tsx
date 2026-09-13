@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
 import { ImplantItemList } from "#/components/items/types/implants/implantItemList.tsx"
+import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 
 import { ArmorSectionContent } from "./armorSectionContent.tsx"
 import { DevicesSectionContent } from "./devicesSectionContent.tsx"
 import { GearSection } from "./gearSectionTypes.ts"
-import { LicensesSectionContent } from "./licensesSectionContent.tsx"
 import { MiscSectionContent } from "./miscSectionContent.tsx"
 import { VehiclesSectionContent } from "./vehiclesSectionContent.tsx"
 import { WeaponsSectionContent } from "./weaponsSectionContent.tsx"
@@ -21,7 +21,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({ sectio
     case GearSection.Weapons:
       return <WeaponsSectionContent />
     case GearSection.Licenses:
-      return <LicensesSectionContent />
+      return <SinsAndLicensesSection />
     case GearSection.Armor:
       return <ArmorSectionContent />
     case GearSection.Vehicles:

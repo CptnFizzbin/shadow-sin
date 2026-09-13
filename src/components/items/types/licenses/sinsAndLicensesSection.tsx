@@ -1,5 +1,3 @@
-import Button from "@mui/material/Button"
-import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
@@ -53,17 +51,6 @@ export const SinsAndLicensesSection: FC = () => {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => handleEditSin()}
-        fullWidth
-      >
-        Add SIN
-      </Button>
-
       {sins.map((sin) => (
         <SinDataCard
           key={sin.id}

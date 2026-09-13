@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { EditorModeProvider } from "#/contexts/builder/editorMode.tsx"
 import { useBuilderStores } from "#/hooks/builder/useBuilderStores.ts"
@@ -49,56 +50,58 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <EditorModeProvider mode="builder">
-        <Stack>
-          <Stack
-            sx={{
-              opacity: isBpPanelExpanded ? 0.6 : 1,
-              transition: "opacity 0.2s ease",
-              pointerEvents: isBpPanelExpanded ? "none" : "auto",
-            }}
-          >
-            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-              <Button
-                variant="outlined"
-                color="inherit"
-                size="small"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
-              <Stack direction="row">
-                <BuilderImportButton onImport={loadRunner} />
-                <ExportRunnerButton />
+        <AddItemDialogProvider>
+          <Stack>
+            <Stack
+              sx={{
+                opacity: isBpPanelExpanded ? 0.6 : 1,
+                transition: "opacity 0.2s ease",
+                pointerEvents: isBpPanelExpanded ? "none" : "auto",
+              }}
+            >
+              <Stack direction="row" sx={{ justifyContent: "space-between" }}>
                 <Button
                   variant="outlined"
-                  color="warning"
+                  color="inherit"
                   size="small"
-                  onClick={() => reset()}
+                  onClick={handleCancel}
                 >
-                  Reset
+                  Cancel
                 </Button>
+                <Stack direction="row">
+                  <BuilderImportButton onImport={loadRunner} />
+                  <ExportRunnerButton />
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="small"
+                    onClick={() => reset()}
+                  >
+                    Reset
+                  </Button>
+                </Stack>
               </Stack>
+
+              <ProfileBuilderSection />
+              <BiologyBuilderSection />
+              <AttributesBuilderSection />
+              <QualitiesBuilderSection />
+              <ActiveSkillsBuilderSection />
+              <KnowledgeSkillsBuilderSection />
+              <AdeptPowersBuilderSection />
+              <SpellsBuilderSection />
+              <ComplexFormsBuilderSection />
+              <SpritesBuilderSection />
+              <GearBuilderSection />
+              <ContactsBuilderSection />
             </Stack>
 
-            <ProfileBuilderSection />
-            <BiologyBuilderSection />
-            <AttributesBuilderSection />
-            <QualitiesBuilderSection />
-            <ActiveSkillsBuilderSection />
-            <KnowledgeSkillsBuilderSection />
-            <AdeptPowersBuilderSection />
-            <SpellsBuilderSection />
-            <ComplexFormsBuilderSection />
-            <SpritesBuilderSection />
-            <GearBuilderSection />
-            <ContactsBuilderSection />
+            <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+
+            <AllBuilderAlerts />
+            <SaveRunnerButton />
           </Stack>
-
-          <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
-
-          <AllBuilderAlerts />
-          <SaveRunnerButton />
-        </Stack>
+        </AddItemDialogProvider>
       </EditorModeProvider>
     </BuilderStoreProvider>
   )
