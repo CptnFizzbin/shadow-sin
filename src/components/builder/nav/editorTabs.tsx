@@ -3,14 +3,15 @@ import Tabs from "@mui/material/Tabs"
 import type { FC } from "react"
 
 import type { EditorTabId } from "./editorTabId.ts"
-import { editorTabOrder, getEditorTabLabel } from "./editorTabId.ts"
+import { getEditorTabLabel } from "./editorTabId.ts"
 
 interface EditorTabsProps {
   value: EditorTabId
+  tabOrder: EditorTabId[]
   onChange: (value: EditorTabId) => void
 }
 
-export const EditorTabs: FC<EditorTabsProps> = ({ value, onChange }) => {
+export const EditorTabs: FC<EditorTabsProps> = ({ value, tabOrder, onChange }) => {
   return (
     <Tabs
       value={value}
@@ -20,7 +21,7 @@ export const EditorTabs: FC<EditorTabsProps> = ({ value, onChange }) => {
       scrollButtons="auto"
       sx={{ flex: 1, minWidth: 0 }}
     >
-      {editorTabOrder.map((id) => (
+      {tabOrder.map((id) => (
         <Tab key={id} label={getEditorTabLabel(id)} value={id} />
       ))}
     </Tabs>

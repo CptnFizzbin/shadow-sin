@@ -10,16 +10,17 @@ import { RiCloseLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import type { EditorTabId } from "./editorTabId.ts"
-import { editorTabOrder, getEditorTabLabel } from "./editorTabId.ts"
+import { getEditorTabLabel } from "./editorTabId.ts"
 
 interface EditorNavDrawerProps {
   open: boolean
   onClose: () => void
   value: EditorTabId
+  tabOrder: EditorTabId[]
   onSelect: (value: EditorTabId) => void
 }
 
-export const EditorNavDrawer: FC<EditorNavDrawerProps> = ({ open, onClose, value, onSelect }) => {
+export const EditorNavDrawer: FC<EditorNavDrawerProps> = ({ open, onClose, value, tabOrder, onSelect }) => {
   const handleSelect = (id: EditorTabId) => {
     onSelect(id)
     onClose()
@@ -39,7 +40,7 @@ export const EditorNavDrawer: FC<EditorNavDrawerProps> = ({ open, onClose, value
       </Toolbar>
 
       <List disablePadding>
-        {editorTabOrder.map((id) => (
+        {tabOrder.map((id) => (
           <ListItem key={id} disablePadding>
             <ListItemButton
               selected={id === value}
