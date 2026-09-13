@@ -130,7 +130,22 @@ describe.concurrent("migrateOldLocalStorageFormat", () => {
       migrateOldLocalStorageFormat(ls)
 
       // Assert
-      const migrated = ls.getItem(`shadowsin:builder/character-form/${characterId}`)
+      const migrated = ls.getItem(`shadowsin:editor/${characterId}`)
+      expect(migrated).not.toBeNull()
+      expect(JSON.parse(migrated!)).toEqual(builderState)
+    })
+
+    it("migrates an old in-progress \"new character\" draft to the fixed builder/new path", () => {
+      // Arrange
+      const ls = makeStorage()
+      const builderState = { character: { id: "new" }, builder: { startingNuyen: 5000 } }
+      ls.setItem(`shadow-sin:character-form:new`, JSON.stringify(builderState))
+
+      // Act
+      migrateOldLocalStorageFormat(ls)
+
+      // Assert
+      const migrated = ls.getItem("shadowsin:builder/new")
       expect(migrated).not.toBeNull()
       expect(JSON.parse(migrated!)).toEqual(builderState)
     })
@@ -153,14 +168,14 @@ describe.concurrent("migrateOldLocalStorageFormat", () => {
       const ls = makeStorage()
       const characterId = "abc-123"
       const existing = JSON.stringify({ character: { id: characterId }, builder: { startingNuyen: 9999 } })
-      ls.setItem(`shadowsin:builder/character-form/${characterId}`, existing)
+      ls.setItem(`shadowsin:editor/${characterId}`, existing)
       ls.setItem(`shadow-sin:character-form:${characterId}`, JSON.stringify({ character: { id: characterId }, builder: { startingNuyen: 1 } }))
 
       // Act
       migrateOldLocalStorageFormat(ls)
 
       // Assert — new-format key is untouched
-      expect(ls.getItem(`shadowsin:builder/character-form/${characterId}`)).toBe(existing)
+      expect(ls.getItem(`shadowsin:editor/${characterId}`)).toBe(existing)
     })
   })
 

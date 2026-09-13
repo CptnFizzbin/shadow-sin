@@ -2,7 +2,9 @@ import Box from "@mui/material/Box"
 import { createFileRoute } from "@tanstack/react-router"
 import { Suspense } from "react"
 
+import { BuilderLoadErrorBoundary } from "#/components/builder/builderLoadErrorBoundary.tsx"
 import { RunnerBuilder } from "#/components/builder/runnerBuilder.tsx"
+import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
 
 export const Route = createFileRoute("/new/")({
   component: RouteComponent,
@@ -11,9 +13,11 @@ export const Route = createFileRoute("/new/")({
 function RouteComponent() {
   return (
     <Box sx={{ padding: 1 }}>
-      <Suspense>
-        <RunnerBuilder />
-      </Suspense>
+      <BuilderLoadErrorBoundary runnerStorageKey={getRunnerStorageKey()}>
+        <Suspense>
+          <RunnerBuilder />
+        </Suspense>
+      </BuilderLoadErrorBoundary>
     </Box>
   )
 }

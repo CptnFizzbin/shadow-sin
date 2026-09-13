@@ -2,8 +2,10 @@ import Box from "@mui/material/Box"
 import { createFileRoute } from "@tanstack/react-router"
 import { Suspense } from "react"
 
+import { BuilderLoadErrorBoundary } from "#/components/builder/builderLoadErrorBoundary.tsx"
 import { RunnerEditor } from "#/components/builder/runnerEditor.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
+import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
 import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -24,9 +26,11 @@ function RouteComponent() {
 
   return (
     <Box sx={{ padding: 1 }}>
-      <Suspense>
-        <RunnerEditor runner={runner} />
-      </Suspense>
+      <BuilderLoadErrorBoundary runnerStorageKey={getRunnerStorageKey(runner.id)}>
+        <Suspense>
+          <RunnerEditor runner={runner} />
+        </Suspense>
+      </BuilderLoadErrorBoundary>
     </Box>
   )
 }
