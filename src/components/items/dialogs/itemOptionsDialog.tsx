@@ -52,107 +52,109 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} onClose={false}>
-      <Dialog.Title>Item Options</Dialog.Title>
+    <>
+      <ControlledDialog ctrl={ctrl} onClose={false}>
+        <Dialog.Title>Item Options</Dialog.Title>
 
-      <Dialog.Content>
-        <Stack>
-          {!forced["equipable"] && (
-            <FormControlLabel
-              label="Equippable"
-              control={(
-                <Checkbox
-                  checked={options["equipable"] ?? false}
-                  onChange={(e) => set("equipable", e.target.checked)}
-                />
-              )}
-            />
-          )}
+        <Dialog.Content>
+          <Stack>
+            {!forced["equipable"] && (
+              <FormControlLabel
+                label="Equippable"
+                control={(
+                  <Checkbox
+                    checked={options["equipable"] ?? false}
+                    onChange={(e) => set("equipable", e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {!forced["canBeStashed"] && (
-            <FormControlLabel
-              label="Can be stashed"
-              control={(
-                <Checkbox
-                  checked={options["canBeStashed"] ?? false}
-                  onChange={(e) => set("canBeStashed", e.target.checked)}
-                />
-              )}
-            />
-          )}
+            {!forced["canBeStashed"] && (
+              <FormControlLabel
+                label="Can be stashed"
+                control={(
+                  <Checkbox
+                    checked={options["canBeStashed"] ?? false}
+                    onChange={(e) => set("canBeStashed", e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {!forced["hasRating"] && (
-            <FormControlLabel
-              label="Has rating"
-              control={(
-                <Checkbox
-                  checked={options["hasRating"] ?? false}
-                  onChange={(e) => set("hasRating", e.target.checked)}
-                />
-              )}
-            />
-          )}
+            {!forced["hasRating"] && (
+              <FormControlLabel
+                label="Has rating"
+                control={(
+                  <Checkbox
+                    checked={options["hasRating"] ?? false}
+                    onChange={(e) => set("hasRating", e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {!forced["multiple"] && (
-            <FormControlLabel
-              label="Can have multiple"
-              control={(
-                <Checkbox
-                  checked={options["multiple"] ?? false}
-                  onChange={(e) => set("multiple", e.target.checked)}
-                />
-              )}
-            />
-          )}
+            {!forced["multiple"] && (
+              <FormControlLabel
+                label="Can have multiple"
+                control={(
+                  <Checkbox
+                    checked={options["multiple"] ?? false}
+                    onChange={(e) => set("multiple", e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {/* Show isSubItem row only when it is user-toggleable. */}
-          {!forced["isSubItem"] && (
-            <FormControlLabel
-              label="Is attachment / sub-item"
-              control={(
-                <Checkbox
-                  checked={options["isSubItem"] ?? false}
-                  onChange={(e) => set("isSubItem", e.target.checked)}
-                />
-              )}
-            />
-          )}
+            {/* Show isSubItem row only when it is user-toggleable. */}
+            {!forced["isSubItem"] && (
+              <FormControlLabel
+                label="Is attachment / sub-item"
+                control={(
+                  <Checkbox
+                    checked={options["isSubItem"] ?? false}
+                    onChange={(e) => set("isSubItem", e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {/* Show fixed row when isSubItem is user-toggleable or forced-on (options["isSubItem"] is true). */}
-          {(!forced["isSubItem"] || options["isSubItem"]) && (
-            <FormControlLabel
-              label="Is fixed / integrated item"
-              sx={{ pl: 4 }}
-              disabled={!options["isSubItem"]}
-              control={(
-                <Checkbox
-                  checked={options["fixed"] ?? false}
-                  onChange={(e) => handleFixedChange(e.target.checked)}
-                />
-              )}
-            />
-          )}
+            {/* Show fixed row when isSubItem is user-toggleable or forced-on (options["isSubItem"] is true). */}
+            {(!forced["isSubItem"] || options["isSubItem"]) && (
+              <FormControlLabel
+                label="Is fixed / integrated item"
+                sx={{ pl: 4 }}
+                disabled={!options["isSubItem"]}
+                control={(
+                  <Checkbox
+                    checked={options["fixed"] ?? false}
+                    onChange={(e) => handleFixedChange(e.target.checked)}
+                  />
+                )}
+              />
+            )}
 
-          {!forced["hasEffects"] && (
-            <FormControlLabel
-              label="Applies game effects"
-              control={(
-                <Checkbox
-                  checked={options["hasEffects"] ?? false}
-                  onChange={(e) => set("hasEffects", e.target.checked)}
-                />
-              )}
-            />
-          )}
-        </Stack>
-      </Dialog.Content>
+            {!forced["hasEffects"] && (
+              <FormControlLabel
+                label="Applies game effects"
+                control={(
+                  <Checkbox
+                    checked={options["hasEffects"] ?? false}
+                    onChange={(e) => set("hasEffects", e.target.checked)}
+                  />
+                )}
+              />
+            )}
+          </Stack>
+        </Dialog.Content>
 
-      <Dialog.Actions>
-        <Button onClick={() => ctrl.close()}>Done</Button>
-      </Dialog.Actions>
+        <Dialog.Actions>
+          <Button onClick={() => ctrl.close()}>Done</Button>
+        </Dialog.Actions>
+      </ControlledDialog>
 
       {confirmDialog.outlet}
-    </ControlledDialog>
+    </>
   )
 }
 
