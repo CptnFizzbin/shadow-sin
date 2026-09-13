@@ -132,6 +132,8 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
           onSelect={setActiveTab}
         />
 
+        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+
         <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
           <Stack>
             <EditorPageNav
@@ -147,8 +149,6 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
           </Stack>
         </SwipeSurface>
       </Stack>
-
-      <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
     </Stack>
   )
 }
