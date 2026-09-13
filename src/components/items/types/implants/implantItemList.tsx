@@ -1,6 +1,4 @@
-import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
-import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
@@ -30,17 +28,6 @@ export const ImplantItemList: FC = () => {
   return (
     <>
       <Stack>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<RiAddLine size={14} />}
-          onClick={() => handleAddImplant()}
-          color="secondary"
-          fullWidth
-        >
-          Add Implant
-        </Button>
-
         {rootImplants.map((implant) => (
           <ImplantDataCard
             key={implant.id}

@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
-import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { DeviceDataCard } from "#/components/items/types/devices/deviceDataCard.tsx"
 import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
+import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -15,7 +15,7 @@ import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 
 export const DevicesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const navigate = useNavigate({ from: "/$runnerId" })
+  const openItemDetails = useOpenItemDetails()
   const devices = useRunnerSelector(ItemSelectors.selectByType, { itemType: ItemType.device }) as ItemCatalog<DeviceData>
   const deviceFormDialog = useDeviceFormDialog()
 
@@ -33,8 +33,8 @@ export const DevicesSectionContent: FC = () => {
         <DeviceDataCard
           key={device.id}
           device={device}
-          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: device.id } })}
-          onEdit={() => handleEditDevice(device)}
+          onOpen={openItemDetails ? () => openItemDetails(device.id) : () => handleEditDevice(device)}
+          onEdit={openItemDetails ? () => handleEditDevice(device) : undefined}
         />
       ))}
 

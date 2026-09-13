@@ -6,9 +6,9 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
-import { ArmorList } from "./armorList.tsx"
+import { ArmorSectionContent } from "./armorSectionContent.tsx"
 
 const jacket: ArmorData = {
   kind: EntityKind.item, items: { parentId: null, childIds: [] },
@@ -19,10 +19,10 @@ const jacket: ArmorData = {
   impact: 6,
 }
 
-describe("ArmorList", () => {
+describe("ArmorSectionContent", () => {
   it("shows armor from the store", () => {
     // Arrange / Act
-    renderInBuilder(<ArmorList />, {
+    renderInBuilder(<ArmorSectionContent />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
     })
 
@@ -30,21 +30,22 @@ describe("ArmorList", () => {
     expect(screen.getByText("Armor Jacket")).toBeDefined()
   })
 
-  it("adding armor dispatches addItem and updates the store", async () => {
+  it("tapping armor opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
-    renderInBuilder(<ArmorList />)
+    renderInBuilder(<ArmorSectionContent />, {
+      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
+    })
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: /add armor/i }))
-    fillNameAndClickSave("Lined Coat")
+    fireEvent.click(screen.getByRole("button", { name: /armor jacket/i }))
 
-    // Assert: the UI re-rendered off the updated store.
-    expect(await screen.findByText("Lined Coat")).toBeDefined()
+    // Assert: the armor form dialog opened, pre-filled for editing.
+    expect(screen.getByRole("dialog", { name: /edit armor/i })).toBeDefined()
   })
 
   it("removing armor dispatches removeItem and updates the store", async () => {
     // Arrange
-    renderInBuilder(<ArmorList />, {
+    renderInBuilder(<ArmorSectionContent />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
     })
     expect(screen.getByText("Armor Jacket")).toBeDefined()

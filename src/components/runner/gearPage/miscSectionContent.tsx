@@ -1,10 +1,10 @@
 import Stack from "@mui/material/Stack"
-import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { OtherDataCard } from "#/components/items/types/other/otherDataCard.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
+import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
@@ -13,7 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const MiscSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const navigate = useNavigate({ from: "/$runnerId" })
+  const openItemDetails = useOpenItemDetails()
   const items = useGearByType<ItemData>(ItemType.other)
   const itemFormDialog = useItemFormDialog()
 
@@ -33,8 +33,8 @@ export const MiscSectionContent: FC = () => {
         <OtherDataCard
           key={item.id}
           item={item}
-          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: item.id } })}
-          onEdit={() => handleEditItem(item)}
+          onOpen={openItemDetails ? () => openItemDetails(item.id) : () => handleEditItem(item)}
+          onEdit={openItemDetails ? () => handleEditItem(item) : undefined}
         />
       ))}
 

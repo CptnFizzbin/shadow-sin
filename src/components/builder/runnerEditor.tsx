@@ -7,6 +7,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
@@ -97,64 +98,66 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <EditorModeProvider mode="edit">
-        <Stack>
-          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <Button
-              variant="outlined"
-              color="inherit"
-              size="small"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Stack direction="row">
-              <BuilderImportButton onImport={loadRunner} />
-              <ExportRunnerButton />
+        <AddItemDialogProvider>
+          <Stack>
+            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
               <Button
                 variant="outlined"
-                color="warning"
+                color="inherit"
                 size="small"
-                onClick={handleRevert}
+                onClick={handleCancel}
               >
-                Revert
+                Cancel
               </Button>
+              <Stack direction="row">
+                <BuilderImportButton onImport={loadRunner} />
+                <ExportRunnerButton />
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  size="small"
+                  onClick={handleRevert}
+                >
+                  Revert
+                </Button>
+              </Stack>
             </Stack>
+
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <EditorTabs value={activeTab} onChange={setActiveTab} />
+
+              <IconButton
+                onClick={() => setNavDrawerOpen(true)}
+                aria-label="Open page menu"
+                sx={{ flexShrink: 0 }}
+              >
+                <RiMenuLine />
+              </IconButton>
+            </Box>
+
+            <EditorNavDrawer
+              open={navDrawerOpen}
+              onClose={() => setNavDrawerOpen(false)}
+              value={activeTab}
+              onSelect={setActiveTab}
+            />
+
+            <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
+              <Stack>
+                <EditorPageNav
+                  value={activeTab}
+                  isFirst={currentIndex === 0}
+                  isLast={currentIndex === editorTabOrder.length - 1}
+                  onPrev={prevTab}
+                  onNext={nextTab}
+                  onFinalize={goToFinalize}
+                />
+
+                <ActiveTabComponent />
+              </Stack>
+            </SwipeSurface>
           </Stack>
-
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <EditorTabs value={activeTab} onChange={setActiveTab} />
-
-            <IconButton
-              onClick={() => setNavDrawerOpen(true)}
-              aria-label="Open page menu"
-              sx={{ flexShrink: 0 }}
-            >
-              <RiMenuLine />
-            </IconButton>
-          </Box>
-
-          <EditorNavDrawer
-            open={navDrawerOpen}
-            onClose={() => setNavDrawerOpen(false)}
-            value={activeTab}
-            onSelect={setActiveTab}
-          />
-
-          <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
-            <Stack>
-              <EditorPageNav
-                value={activeTab}
-                isFirst={currentIndex === 0}
-                isLast={currentIndex === editorTabOrder.length - 1}
-                onPrev={prevTab}
-                onNext={nextTab}
-                onFinalize={goToFinalize}
-              />
-
-              <ActiveTabComponent />
-            </Stack>
-          </SwipeSurface>
-        </Stack>
+        </AddItemDialogProvider>
       </EditorModeProvider>
     </BuilderStoreProvider>
   )

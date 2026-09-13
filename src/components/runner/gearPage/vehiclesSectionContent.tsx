@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
-import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { VehicleDataCard } from "#/components/items/types/vehicles/vehicleDataCard.tsx"
+import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -15,7 +15,7 @@ import type { ItemData } from "#/system/itemData.ts"
 
 export const VehiclesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const navigate = useNavigate({ from: "/$runnerId" })
+  const openItemDetails = useOpenItemDetails()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
   const vehicleFormDialog = useVehicleFormDialog()
 
@@ -35,8 +35,8 @@ export const VehiclesSectionContent: FC = () => {
         <VehicleDataCard
           key={vehicle.id}
           vehicle={vehicle}
-          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: vehicle.id } })}
-          onEdit={() => handleEditVehicle(vehicle)}
+          onOpen={openItemDetails ? () => openItemDetails(vehicle.id) : () => handleEditVehicle(vehicle)}
+          onEdit={openItemDetails ? () => handleEditVehicle(vehicle) : undefined}
         />
       ))}
 

@@ -6,7 +6,7 @@ import { EntityKind } from "#/system/entityKind.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
 
@@ -28,18 +28,6 @@ describe("SinsAndLicensesSection", () => {
 
     // Assert
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
-  })
-
-  it("adding a SIN dispatches addItem and updates the store", async () => {
-    // Arrange
-    renderInBuilder(<SinsAndLicensesSection />)
-
-    // Act
-    fireEvent.click(screen.getByRole("button", { name: /add sin/i }))
-    fillNameAndClickSave("Real SIN")
-
-    // Assert: the UI re-rendered off the updated store.
-    expect(await screen.findByText("Real SIN")).toBeDefined()
   })
 
   it("removing a SIN with no licenses dispatches removeItem and updates the store", async () => {

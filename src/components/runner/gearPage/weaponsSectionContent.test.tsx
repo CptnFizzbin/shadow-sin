@@ -10,9 +10,9 @@ import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
-import { WeaponsList } from "./weaponsList.tsx"
+import { WeaponsSectionContent } from "./weaponsSectionContent.tsx"
 
 const pistol: FirearmData = {
   kind: EntityKind.item, items: { parentId: null, childIds: [] },
@@ -36,10 +36,10 @@ const pistol: FirearmData = {
   },
 }
 
-describe("WeaponsList", () => {
+describe("WeaponsSectionContent", () => {
   it("shows weapons from the store", () => {
     // Arrange / Act
-    renderInBuilder(<WeaponsList />, {
+    renderInBuilder(<WeaponsSectionContent />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
     })
 
@@ -47,21 +47,9 @@ describe("WeaponsList", () => {
     expect(screen.getByText("Ares Predator")).toBeDefined()
   })
 
-  it("adding a weapon dispatches addItem and updates the store", async () => {
+  it("tapping a weapon opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
-    renderInBuilder(<WeaponsList />)
-
-    // Act
-    fireEvent.click(screen.getByRole("button", { name: /add weapon/i }))
-    fillNameAndClickSave("Colt Manhunter")
-
-    // Assert: the UI re-rendered off the updated store.
-    expect(await screen.findByText("Colt Manhunter")).toBeDefined()
-  })
-
-  it("tapping a weapon opens the edit dialog", () => {
-    // Arrange
-    renderInBuilder(<WeaponsList />, {
+    renderInBuilder(<WeaponsSectionContent />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
     })
 
@@ -74,14 +62,14 @@ describe("WeaponsList", () => {
 
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
-    renderInBuilder(<WeaponsList />, {
+    renderInBuilder(<WeaponsSectionContent />, {
       runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
-    screen.getByRole("menuitem", { name: "Remove" }).click()
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Ares Predator")).toBeNull())
