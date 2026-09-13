@@ -201,6 +201,8 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
         id: "364b1c68-15fa-45ef-8c4c-621498a05d72",
         name: "Vanish",
         type: "negative",
+        // Innate to the Pixie metatype package, not separately bought/sold BP — see Uneducated below.
+        bpValue: 0,
         source: { book: "RC", page: 85 },
       },
       {
@@ -208,7 +210,9 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
         id: "38d53d59-5237-4a50-9f34-29aebb478218",
         name: "Uneducated",
         type: "negative",
-        bpValue: 20,
+        // Innate to being a sentient critter (SR4A p.94) rather than a separately bought/sold
+        // Quality — priced at 0 BP here instead of the normal 20 BP a metahuman would get for it.
+        bpValue: 0,
         source: { book: "SR4A", page: 119 },
       },
     ],
