@@ -1,4 +1,8 @@
 import { BuilderSectionId, builderSectionOrder, builderSections } from "#/components/builder/sections/builderSectionId.ts"
+import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
+import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
+import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
+import type { AwakeningType } from "#/system/awakeningType.ts"
 
 export const FINALIZE_TAB_ID = "finalize" as const
 
@@ -20,6 +24,22 @@ export const builderTabOrder: EditorTabId[] = [
 ]
 
 export const isFinalizeTab = (id: EditorTabId): id is typeof FINALIZE_TAB_ID => id === FINALIZE_TAB_ID
+
+// Mirrors the self-gating each resource section already does (e.g. SpellsBuilderSection returns
+// null when `!isMagician(awakening)`) — kept out of the tab list entirely, rather than letting a
+// tab navigate to a section that renders nothing.
+const awakeningGatedTabs: Partial<Record<EditorTabId, (awakening: AwakeningType) => boolean>> = {
+  [BuilderSectionId.spells]: isMagician,
+  [BuilderSectionId.adeptPowers]: isAdept,
+  [BuilderSectionId.complexForms]: isTechnomancer,
+  [BuilderSectionId.sprites]: isTechnomancer,
+}
+
+export const getVisibleTabOrder = (tabOrder: EditorTabId[], awakening: AwakeningType): EditorTabId[] =>
+  tabOrder.filter((id) => {
+    const isVisibleForAwakening = awakeningGatedTabs[id]
+    return !isVisibleForAwakening || isVisibleForAwakening(awakening)
+  })
 
 export const getEditorTabLabel = (id: EditorTabId): string =>
   isFinalizeTab(id) ? "Finalize" : builderSections[id].label

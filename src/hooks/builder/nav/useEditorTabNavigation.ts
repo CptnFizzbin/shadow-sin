@@ -20,7 +20,18 @@ export const useEditorTabNavigation = (
   tabOrder: EditorTabId[],
   initialTab: EditorTabId,
 ): UseEditorTabNavigation => {
-  const [activeTab, setActiveTab] = useState<EditorTabId>(initialTab)
+  const [storedActiveTab, setActiveTab] = useState<EditorTabId>(initialTab)
+
+  // A tab can drop out of `tabOrder` out from under the active tab — e.g. an awakening change
+  // (Biology tab) removes Spells/Powers/Complex Forms/Sprites — leaving `storedActiveTab`
+  // pointing at a tab no longer in the nav. Corrected during render (rather than in an effect) so
+  // there's no extra commit showing the now-hidden tab's content:
+  // https://react.dev/learn/you-might-not-need-an-effect.
+  const activeTab = tabOrder.includes(storedActiveTab) ? storedActiveTab : tabOrder[0]
+  if (activeTab !== storedActiveTab) {
+    setActiveTab(activeTab)
+  }
+
   const currentIndex = tabOrder.indexOf(activeTab)
 
   const nextTab = () => {
