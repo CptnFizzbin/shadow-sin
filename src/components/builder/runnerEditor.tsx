@@ -11,8 +11,8 @@ import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunne
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { EditorModeProvider } from "#/contexts/builder/editorMode.tsx"
+import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
 import { useBuilderStores } from "#/hooks/builder/useBuilderStores.ts"
-import { NumberUtils } from "#/lib/numberUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { BuilderImportButton } from "./builderImportButton.tsx"
@@ -65,24 +65,19 @@ const tabComponents: Record<EditorTabId, FC> = {
 }
 
 export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
-  const [activeTab, setActiveTab] = useState<EditorTabId>(BuilderSectionId.profile)
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
   const { runnerStore, builderStore, loadRunner } = useBuilderStores(runner)
   const navigate = useNavigate()
 
-  const currentIndex = editorTabOrder.indexOf(activeTab)
-
-  const nextTab = () => {
-    const nextIndex = NumberUtils.clamp(currentIndex + 1, { max: editorTabOrder.length - 1 })
-    setActiveTab(editorTabOrder[nextIndex])
-  }
-
-  const prevTab = () => {
-    const prevIndex = NumberUtils.clamp(currentIndex - 1, { min: 0 })
-    setActiveTab(editorTabOrder[prevIndex])
-  }
-
-  const goToFinalize = () => setActiveTab(FINALIZE_TAB_ID)
+  const {
+    activeTab,
+    setActiveTab,
+    isFirst,
+    isLast,
+    nextTab,
+    prevTab,
+    goToFinalize,
+  } = useEditorTabNavigation(editorTabOrder, BuilderSectionId.profile)
 
   const handleCancel = () => {
     navigate({ to: "/$runnerId/about", params: { runnerId: runner.id } })
@@ -122,7 +117,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
           </Stack>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <EditorTabs value={activeTab} onChange={setActiveTab} />
+            <EditorTabs value={activeTab} tabOrder={editorTabOrder} onChange={setActiveTab} />
 
             <IconButton
               onClick={() => setNavDrawerOpen(true)}
@@ -137,6 +132,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
             open={navDrawerOpen}
             onClose={() => setNavDrawerOpen(false)}
             value={activeTab}
+            tabOrder={editorTabOrder}
             onSelect={setActiveTab}
           />
 
@@ -144,8 +140,8 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
             <Stack>
               <EditorPageNav
                 value={activeTab}
-                isFirst={currentIndex === 0}
-                isLast={currentIndex === editorTabOrder.length - 1}
+                isFirst={isFirst}
+                isLast={isLast}
                 onPrev={prevTab}
                 onNext={nextTab}
                 onFinalize={goToFinalize}
