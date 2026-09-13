@@ -170,6 +170,7 @@ export namespace AttrSelectors {
   export const selectHasMaxxed = createMemoizedSelector(
     selectAllInfo,
     (attrs) => Object.values(attrs)
+      .filter((info) => !info.computed)
       .map((info) => ({ max: Math.max(info.max), value: info.value ?? 0 }))
       .filter(({ max, value }) => max >= 1 && value >= 1)
       .some((info) => info.value >= info.max),
