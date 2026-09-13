@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
+import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { EditorModeProvider } from "#/contexts/builder/editorMode.tsx"
 import { useBuilderStores } from "#/hooks/builder/useBuilderStores.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -27,7 +28,9 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <EditorModeProvider mode="builder">
-        <RunnerBuilderContent reset={reset} loadRunner={loadRunner} onCancel={handleCancel} />
+        <AddItemDialogProvider>
+          <RunnerBuilderContent reset={reset} loadRunner={loadRunner} onCancel={handleCancel} />
+        </AddItemDialogProvider>
       </EditorModeProvider>
     </BuilderStoreProvider>
   )

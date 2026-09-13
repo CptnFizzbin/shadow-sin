@@ -1,4 +1,5 @@
 import type { JsonObject, JsonValue } from "#/lib/jsonUtils.ts"
+import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
 
 export function migrateOldLocalStorageFormat(ls: Storage): void {
   const oldCharacterPrefix = "shadow-sin:json:characters/"
@@ -30,7 +31,8 @@ export function migrateOldLocalStorageFormat(ls: Storage): void {
       const characterId = rawKey.slice(oldBuilderPrefix.length)
       const raw = ls.getItem(rawKey)
       if (!raw) continue
-      migrations.push({ newKey: `shadowsin:builder/character-form/${characterId}`, value: raw })
+      const draftKey = getRunnerStorageKey(characterId === "new" ? undefined : characterId)
+      migrations.push({ newKey: `shadowsin:${draftKey}`, value: raw })
       keysToRemove.push(rawKey)
     }
   }

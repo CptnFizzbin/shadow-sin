@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
-import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { WeaponDataCard } from "#/components/items/types/weapons/weaponDataCard.tsx"
+import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -15,7 +15,7 @@ import type { ItemCatalog } from "#/system/items/itemUtils.ts"
 
 export const WeaponsSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const navigate = useNavigate({ from: "/$runnerId" })
+  const openItemDetails = useOpenItemDetails()
   const weapons = useRunnerSelector(ItemSelectors.selectByType, { itemType: ItemType.weapon }) as ItemCatalog<WeaponData>
   const weaponFormDialog = useWeaponFormDialog()
 
@@ -30,8 +30,8 @@ export const WeaponsSectionContent: FC = () => {
         <WeaponDataCard
           key={item.id}
           weapon={item}
-          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: item.id } })}
-          onEdit={() => handleEditWeapon(item)}
+          onOpen={openItemDetails ? () => openItemDetails(item.id) : () => handleEditWeapon(item)}
+          onEdit={openItemDetails ? () => handleEditWeapon(item) : undefined}
         />
       ))}
 
