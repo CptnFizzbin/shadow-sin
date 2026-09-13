@@ -141,6 +141,8 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               onSelect={setActiveTab}
             />
 
+            <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+
             <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
               <Stack>
                 <EditorPageNav
@@ -156,8 +158,6 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               </Stack>
             </SwipeSurface>
           </Stack>
-
-          <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
         </Stack>
       </EditorModeProvider>
     </BuilderStoreProvider>
