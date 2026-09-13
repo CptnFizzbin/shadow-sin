@@ -149,7 +149,11 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       edge: { min: 1, max: 6 },
     }),
   },
-  // stable system UUIDs — do not change
+  // Pixie's innateQualities carry stable system UUIDs — do not change them. biologySection.tsx
+  // matches on these exact ids to strip a metatype's innate Qualities back off a Runner when
+  // switching away from it, and EntityWithQualitiesSchema requires every Quality id to be a valid
+  // `z.uuid()` — a migration backfills the corrected ids onto Runners that picked up the previous,
+  // malformed placeholder ids.
   Pixie: {
     name: MetatypeType.Pixie,
     group: MetatypeGroup.critter,
@@ -194,14 +198,14 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     innateQualities: [
       {
         kind: EntityKind.quality,
-        id: "6c1d4e5f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+        id: "364b1c68-15fa-45ef-8c4c-621498a05d72",
         name: "Vanish",
         type: "negative",
         source: { book: "RC", page: 85 },
       },
       {
         kind: EntityKind.quality,
-        id: "7d2e5f6a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+        id: "38d53d59-5237-4a50-9f34-29aebb478218",
         name: "Uneducated",
         type: "negative",
         bpValue: 20,
