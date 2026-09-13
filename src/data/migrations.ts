@@ -36,6 +36,8 @@ import normalizeSinRating from "./migrations/20260830_00_normalizeSinRating.ts"
 import normalizeLicenseRating from "./migrations/20260830_01_normalizeLicenseRating.ts"
 import normalizeLanguageSkillRating from "./migrations/20260830_02_normalizeLanguageSkillRating.ts"
 import normalizeReputations from "./migrations/20260907_00_normalizeReputations.ts"
+import fixMalformedInnateQualityIds from "./migrations/20260913_00_fixMalformedInnateQualityIds.ts"
+import zeroPixieInnateQualityCost from "./migrations/20260913_01_zeroPixieInnateQualityCost.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -82,6 +84,8 @@ export const migrations: AnyCharacterMigration[] = [
   normalizeLicenseRating,
   normalizeLanguageSkillRating,
   normalizeReputations,
+  fixMalformedInnateQualityIds,
+  zeroPixieInnateQualityCost,
 ]
 
 migrations.forEach((migration, index) => {
