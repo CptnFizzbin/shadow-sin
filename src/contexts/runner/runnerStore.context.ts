@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react"
 
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import type { ItemCatalog } from "#/system/items/itemUtils.ts"
@@ -17,10 +18,16 @@ export const useRunnerStoreContext = (): RunnerStore => {
   return store
 }
 
+/**
+ * Reactive read of the whole Runner sheet — reads via `useSelector` (not `getState()`, which
+ * gives a snapshot that won't trigger re-renders) so consumers (e.g. `RunnerEntityProvider`,
+ * `useEntitySelector`) stay in sync with store updates instead of freezing at whatever `RunnerData`
+ * happened to be current the last time they rendered for some unrelated reason.
+ */
 export const useRunner = (): RunnerData => {
-  return useRunnerStoreContext().getState()
+  return useSelector(useRunnerStoreContext(), (runner) => runner)
 }
 
 export const useItems = (): ItemCatalog => {
-  return useRunnerStoreContext().getState()._data_.items
+  return useSelector(useRunnerStoreContext(), (runner) => runner._data_.items)
 }
