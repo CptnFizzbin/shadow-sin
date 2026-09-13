@@ -235,6 +235,55 @@ const knownNodeFixture = (matrix: Partial<Record<AttributeKey, number>>): KnownN
   matrix,
 })
 
+describe.concurrent("AttrSelectors.selectHasMaxxed", () => {
+  it.each([6, 5])("does not count Essence at %i or inactive attributes toward the maximum", (essence) => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (sheet) => {
+        sheet.attributes[AttributeKey.essence] = essence
+        sheet.attributes[AttributeKey.body] = 5
+        sheet.attributes[AttributeKey.logic] = 5
+      },
+    })
+
+    // Act
+    const hasMaxxedAttribute = AttrSelectors.selectHasMaxxed(stateFor(runner))
+
+    // Assert
+    expect(hasMaxxedAttribute).toBe(false)
+  })
+
+  it.each([AttributeKey.body, AttributeKey.logic])("counts %s at its natural maximum", (attribute) => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (sheet) => {
+        sheet.attributes[AttributeKey.essence] = 5
+        sheet.attributes[attribute] = 6
+      },
+    })
+
+    // Act
+    const hasMaxxedAttribute = AttrSelectors.selectHasMaxxed(stateFor(runner))
+
+    // Assert
+    expect(hasMaxxedAttribute).toBe(true)
+  })
+
+  it("does not count an AI's computed Matrix attributes at their maximum", () => {
+    // Arrange
+    const runner = aiRunnerFor(
+      { charisma: 4, intuition: 4, logic: 4, willpower: 4 },
+      knownNodeFixture({ [AttributeKey.response]: 6, [AttributeKey.signal]: 6 }),
+    )
+
+    // Act
+    const hasMaxxedAttribute = AttrSelectors.selectHasMaxxed(stateFor(runner))
+
+    // Assert
+    expect(hasMaxxedAttribute).toBe(false)
+  })
+})
+
 describe("AttrSelectors.selectValue — AI metatype", () => {
   it("computes System and Firewall from the AI's own Mental attributes", () => {
     // Arrange: RAW's own worked example (Unwired p.167) — CHA 2, INT 5, LOG 4, WIL 3 gives
