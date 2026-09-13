@@ -20,7 +20,7 @@ interface VehicleFormDialogProps {
   parentId?: UUID
 }
 
-const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory, wizard, parentId }) => {
+export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory, wizard, parentId }) => {
   const form = useVehicleForm({
     vehicle,
     vehicleCategory,

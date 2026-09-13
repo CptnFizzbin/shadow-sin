@@ -31,7 +31,7 @@ export const VehicleFormFields = withFieldGroup({
 
             <Stack direction="row" sx={{ flexWrap: "wrap" }}>
               <group.AppField name="handling">
-                {(field) => <field.CounterField label="Handling" min={0} max={20} />}
+                {(field) => <field.CounterField label="Handling" min={-20} max={20} />}
               </group.AppField>
 
               <group.AppField
