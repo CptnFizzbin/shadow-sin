@@ -16,7 +16,7 @@ import { DicePoolSelectors } from "./dicePoolSlice.selectors.ts"
 const stateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
 
 describe("DicePoolSelectors.selectAttrTest", () => {
-  it("returns just the base Attribute rating when no attrMod GameEffects apply", () => {
+  it("returns just the base Attribute rating", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (s) => {
       s.attributes[AttributeKey.agility] = 4
@@ -29,38 +29,13 @@ describe("DicePoolSelectors.selectAttrTest", () => {
     expect(groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
   })
 
-  it("adds a combined mod entry from active attrMod GameEffects targeting the attribute", () => {
+  it("ignores active attrMod GameEffects targeting the attribute", () => {
     // Arrange
     const [implant] = createItem({
       name: "Muscle Augmentation",
       itemType: ItemType.implant,
       equipped: true,
       effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
-    })
-    const runner = runnerDataFactory({
-      items: createItemMap([implant]),
-      afterBuild: (s) => {
-        s.attributes[AttributeKey.agility] = 4
-      },
-    })
-
-    // Act
-    const groups = DicePoolSelectors.selectAttrTest(stateFor(runner), { attr: AttributeKey.agility })
-
-    // Assert
-    expect(groups).toEqual([
-      { name: "AGI", size: 4, type: "attribute" },
-      { name: "AGI Mod", size: 2, type: "bonus" },
-    ])
-  })
-
-  it("ignores attrMod GameEffects targeting a different attribute", () => {
-    // Arrange
-    const [implant] = createItem({
-      name: "Cerebral Booster",
-      itemType: ItemType.implant,
-      equipped: true,
-      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
     })
     const runner = runnerDataFactory({
       items: createItemMap([implant]),
@@ -173,16 +148,9 @@ describe("DicePoolSelectors.selectSkillTest", () => {
 })
 
 describe("DicePoolSelectors.selectStandardTest", () => {
-  it("assembles Base Attribute, Attribute mod(s), Base Skill, and Skill mod(s) in order", () => {
+  it("assembles Base Attribute, Base Skill, and Skill mod(s) in order", () => {
     // Arrange
-    const [implant] = createItem({
-      name: "Muscle Augmentation",
-      itemType: ItemType.implant,
-      equipped: true,
-      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 1 }],
-    })
     const runner = runnerDataFactory({
-      items: createItemMap([implant]),
       afterBuild: (s) => {
         s.attributes[AttributeKey.agility] = 4
         s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3, specialization: "Semi-Automatics" }]
@@ -198,10 +166,9 @@ describe("DicePoolSelectors.selectStandardTest", () => {
     // Assert
     expect(pool.groups).toEqual([
       { name: "AGI", size: 4, type: "attribute" },
-      { name: "AGI Mod", size: 1, type: "bonus" },
       { name: SkillKey.pistols, size: 3, type: "skill" },
       { name: `${SkillKey.pistols} Mod`, size: 2, type: "bonus" },
     ])
-    expect(pool.size).toBe(4 + 1 + 3 + 2)
+    expect(pool.size).toBe(4 + 3 + 2)
   })
 })
