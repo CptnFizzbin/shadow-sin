@@ -39,6 +39,7 @@ export const SelectorOptions = {
   skillName: selectorOption<{ skillName: SkillKey }>("skillName"),
 
   key: {
+    /** @deprecated - use {@link SelectorOptions.attr} instead */
     attr: selectorOption<{ key: AttributeKey }>("key"),
     skill: selectorOption<{ key: SkillKey }>("key"),
     houseRule: selectorOption<{ key: string }>("key"),
@@ -48,7 +49,7 @@ export const SelectorOptions = {
     item: selectorOption<{ filter: (item: ItemData) => boolean }>("filter"),
   },
 
-  /** @deprecated - use {@link SelectorOptions.key.attr} instead */
+  /** @deprecated - use {@link SelectorOptions.attr} instead */
   attributeKey: selectorOption<{ key: AttributeKey }>("key"),
 
   /** @deprecated - use {@link SelectorOptions.key.skill} instead */

@@ -6,21 +6,12 @@ import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts
 import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
 import { SelectorOptions } from "#/stores/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 import { SRC } from "#/system/systemValues.ts"
-
-const selectAttrModTotal = createMemoizedSelector(
-  GameEffectSelectors.selectAll,
-  SelectorOptions.attr,
-  (allEffects, attr) =>
-    allEffects
-      .filter(filterByEffectType(GameEffectType.attrMod))
-      .filter((effect) => effect.target === attr)
-      .reduce((sum, effect) => sum + effect.value, 0),
-)
 
 const selectSkillModTotal = createMemoizedSelector(
   GameEffectSelectors.selectAll,
@@ -32,26 +23,22 @@ const selectSkillModTotal = createMemoizedSelector(
       .reduce((sum, effect) => sum + effect.value, 0),
 )
 
+/** Adapts {@link AttrSelectors.selectValue}'s `key` option to this domain's `attr` option. */
+const selectAttrValue = (
+  state: Parameters<typeof AttrSelectors.selectValue>[0],
+  { attr }: { attr: AttributeKey },
+): number => AttrSelectors.selectValue(state, { key: attr })
+
 export namespace DicePoolSelectors {
   /**
-   * The {@link DiceGroup}s an Attribute contributes to a test: its base rating, plus a combined
-   * entry for any active `attrMod` GameEffects targeting it.
+   * The {@link DiceGroup}s an Attribute contributes to a test: just its base rating.
    */
   export const selectAttrTest = createMemoizedSelector(
-    AttrSelectors.selectAll,
-    selectAttrModTotal,
+    selectAttrValue,
     SelectorOptions.attr,
-    (attributes, modTotal, attr): DiceGroup[] => {
-      const groups: DiceGroup[] = [
-        { name: AttributeLabels[attr], size: attributes[attr] ?? 0, type: "attribute" },
-      ]
-
-      if (modTotal !== 0) {
-        groups.push({ name: `${AttributeLabels[attr]} Mod`, size: modTotal, type: "bonus" })
-      }
-
-      return groups
-    },
+    (attrValue, attr): DiceGroup[] => [
+      { name: AttributeLabels[attr], size: attrValue, type: "attribute" },
+    ],
   )
 
   /**
@@ -90,7 +77,7 @@ export namespace DicePoolSelectors {
 
   /**
    * Assembles the full dice pool for a Standard Test rolling `attr` + `skill`: Base Attribute,
-   * Attribute mod(s), Base Skill, and Skill mod(s), each queried live against active GameEffects.
+   * Base Skill, and Skill mod(s), each queried live against active GameEffects.
    */
   export const selectStandardTest = createMemoizedSelector(
     selectAttrTest,
