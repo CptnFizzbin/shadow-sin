@@ -5,6 +5,7 @@ import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
+import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
@@ -19,12 +20,7 @@ export interface UseBuilderRootStateStore {
   loadRunner: (runner: RunnerData) => void
 }
 
-const runnerStorage = LocalStorageProvider.getStorage().namespace("builder")
-
-/** The storage key a Builder draft for `runnerId` is saved under (a new, unsaved runner when omitted). */
-export function getRunnerStorageKey(runnerId = "new"): string {
-  return `character-form/${runnerId}`
-}
+const runnerStorage = LocalStorageProvider.getStorage()
 
 /**
  * Deletes the saved Builder draft at `runnerStorageKey`, leaving every other saved runner and

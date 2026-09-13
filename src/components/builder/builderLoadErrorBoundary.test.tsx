@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
+import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
+
 import { BuilderLoadErrorBoundary } from "./builderLoadErrorBoundary.tsx"
 
 /**
@@ -11,7 +13,7 @@ import { BuilderLoadErrorBoundary } from "./builderLoadErrorBoundary.tsx"
  * component before committing to the error boundary, and of the wrapper's write debounce.
  */
 function rawStorageKey(runnerStorageKey: string): string {
-  return `shadowsin:builder/${runnerStorageKey}`
+  return `shadowsin:${runnerStorageKey}`
 }
 
 function seedRawDraft(runnerStorageKey: string): void {
@@ -43,7 +45,7 @@ describe("BuilderLoadErrorBoundary", () => {
 
   it("clears the draft and remounts once when the Builder crashes on mount", async () => {
     // Arrange
-    const storageKey = "character-form/crashes-once"
+    const storageKey = getRunnerStorageKey("crashes-once")
     seedRawDraft(storageKey)
 
     // Act
@@ -60,7 +62,7 @@ describe("BuilderLoadErrorBoundary", () => {
 
   it("gives up after a second crash on the same draft instead of retrying forever", async () => {
     // Arrange
-    const storageKey = "character-form/always-crashes"
+    const storageKey = getRunnerStorageKey("always-crashes")
     seedRawDraft(storageKey)
 
     // Act
@@ -80,8 +82,8 @@ describe("BuilderLoadErrorBoundary", () => {
 
   it("does not touch other drafts' storage", async () => {
     // Arrange
-    const crashingKey = "character-form/crashes-once-2"
-    const otherKey = "character-form/untouched"
+    const crashingKey = getRunnerStorageKey("crashes-once-2")
+    const otherKey = getRunnerStorageKey("untouched")
     seedRawDraft(crashingKey)
     globalThis.localStorage.setItem(rawStorageKey(otherKey), JSON.stringify({ profile: { alias: "Kept" } }))
 
@@ -101,7 +103,7 @@ describe("BuilderLoadErrorBoundary", () => {
   it("renders children normally when nothing crashes", () => {
     // Arrange & Act
     render(
-      <BuilderLoadErrorBoundary runnerStorageKey="character-form/never-crashes">
+      <BuilderLoadErrorBoundary runnerStorageKey={getRunnerStorageKey("never-crashes")}>
         <div>Builder loaded</div>
       </BuilderLoadErrorBoundary>,
     )
@@ -112,8 +114,8 @@ describe("BuilderLoadErrorBoundary", () => {
 
   it("recovers again after navigating to a different runner's draft", async () => {
     // Arrange
-    const firstKey = "character-form/first-runner"
-    const secondKey = "character-form/second-runner"
+    const firstKey = getRunnerStorageKey("first-runner")
+    const secondKey = getRunnerStorageKey("second-runner")
     seedRawDraft(firstKey)
     seedRawDraft(secondKey)
     const { rerender } = render(
