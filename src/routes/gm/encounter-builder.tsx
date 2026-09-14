@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { LandingModeSwitch } from "#/components/landing/landingModeSwitch.tsx"
+import { LandingModeSwitch } from "#/components/gmToolbox/landing/landingModeSwitch.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 

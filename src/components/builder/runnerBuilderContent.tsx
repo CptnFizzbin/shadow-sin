@@ -6,33 +6,39 @@ import { RiMenuLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useMemo, useState } from "react"
 
-import { AdeptPowersBuilderSection } from "#/components/adeptPowers/builder/adeptPowersBuilderSection.tsx"
-import { AttributesBuilderSection } from "#/components/attributes/builder/attributesBuilderSection.tsx"
-import { BiologyBuilderSection } from "#/components/biology/builder/biologyBuilderSection.tsx"
-import { ContactsBuilderSection } from "#/components/contacts/builder/contactsBuilderSection.tsx"
-import { ExportRunnerButton } from "#/components/exportImport/exportRunnerButton.tsx"
-import { GearBuilderSection } from "#/components/items/builder/gearBuilderSection.tsx"
-import { SpellsBuilderSection } from "#/components/magician/builder/spellsBuilderSection.tsx"
-import { EditorNavDrawer } from "#/components/nav/builder/editorNavDrawer.tsx"
-import { EditorPageNav } from "#/components/nav/builder/editorPageNav.tsx"
-import type { EditorTabId } from "#/components/nav/builder/editorTabId.ts"
-import { builderTabOrder, FINALIZE_TAB_ID, getVisibleTabOrder } from "#/components/nav/builder/editorTabId.ts"
-import { EditorTabs } from "#/components/nav/builder/editorTabs.tsx"
-import { ProfileBuilderSection } from "#/components/profile/builder/profileBuilderSection.tsx"
-import { QualitiesBuilderSection } from "#/components/qualities/builder/qualitiesBuilderSection.tsx"
-import { ActiveSkillsBuilderSection } from "#/components/skills/builder/activeSkills/activeSkillsBuilderSection.tsx"
-import { KnowledgeSkillsBuilderSection } from "#/components/skills/builder/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
-import { BpSummaryFooter } from "#/components/summary/bpSummaryFooter.tsx"
+import { AttributesBuilderSection } from "#/components/entities/attributes/builder/attributesBuilderSection.tsx"
+import { GearBuilderSection } from "#/components/entities/items/builder/gearBuilderSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "#/components/runner/awakenings/adept/adeptPowers/builder/adeptPowersBuilderSection.tsx"
+import { SpellsBuilderSection } from "#/components/runner/awakenings/magician/builder/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
-} from "#/components/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
-import { SpritesBuilderSection } from "#/components/technomancer/builder/sprites/spritesBuilderSection.tsx"
+} from "#/components/runner/awakenings/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "#/components/runner/awakenings/technomancer/builder/sprites/spritesBuilderSection.tsx"
+import { BiologyBuilderSection } from "#/components/runner/sections/biology/builder/biologyBuilderSection.tsx"
+import { ContactsBuilderSection } from "#/components/runner/sections/contacts/builder/contactsBuilderSection.tsx"
+import { ProfileBuilderSection } from "#/components/runner/sections/profile/builder/profileBuilderSection.tsx"
+import { QualitiesBuilderSection } from "#/components/runner/sections/qualities/builder/qualitiesBuilderSection.tsx"
+import { ActiveSkillsBuilderSection } from "#/components/skills/builder/activeSkills/activeSkillsBuilderSection.tsx"
+import {
+  KnowledgeSkillsBuilderSection,
+} from "#/components/skills/builder/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
+import { ExportRunnerButton } from "#/components/system/exportImport/exportRunnerButton.tsx"
+import { EditorNavDrawer } from "#/components/ui/nav/builder/editorNavDrawer.tsx"
+import { EditorPageNav } from "#/components/ui/nav/builder/editorPageNav.tsx"
+import type { EditorTabId } from "#/components/ui/nav/builder/editorTabId.ts"
+import { builderTabOrder, FINALIZE_TAB_ID, getVisibleTabOrder } from "#/components/ui/nav/builder/editorTabId.ts"
+import { EditorTabs } from "#/components/ui/nav/builder/editorTabs.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
+import { BuildPointsSummary } from "./buildPoints/summary/buildPointsSummary.tsx"
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderSectionId } from "./builderSectionId.ts"
 import { FinalizeSection } from "./finalizeSection.tsx"
@@ -62,7 +68,6 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
 }
 
 export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loadRunner, onCancel }) => {
-  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
@@ -82,73 +87,65 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
 
   return (
     <Stack>
-      <Stack
-        sx={{
-          opacity: isBpPanelExpanded ? 0.6 : 1,
-          transition: "opacity 0.2s ease",
-          pointerEvents: isBpPanelExpanded ? "none" : "auto",
-        }}
-      >
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+      <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="small"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Stack direction="row">
+          <BuilderImportButton onImport={loadRunner} />
+          <ExportRunnerButton />
           <Button
             variant="outlined"
-            color="inherit"
+            color="warning"
             size="small"
-            onClick={onCancel}
+            onClick={() => reset()}
           >
-            Cancel
+            Reset
           </Button>
-          <Stack direction="row">
-            <BuilderImportButton onImport={loadRunner} />
-            <ExportRunnerButton />
-            <Button
-              variant="outlined"
-              color="warning"
-              size="small"
-              onClick={() => reset()}
-            >
-              Reset
-            </Button>
-          </Stack>
         </Stack>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
-
-          <IconButton
-            onClick={() => setNavDrawerOpen(true)}
-            aria-label="Open page menu"
-            sx={{ flexShrink: 0 }}
-          >
-            <RiMenuLine />
-          </IconButton>
-        </Box>
-
-        <EditorNavDrawer
-          open={navDrawerOpen}
-          onClose={() => setNavDrawerOpen(false)}
-          value={activeTab}
-          tabOrder={tabOrder}
-          onSelect={setActiveTab}
-        />
-
-        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
-
-        <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
-          <Stack>
-            <EditorPageNav
-              value={activeTab}
-              isFirst={isFirst}
-              isLast={isLast}
-              onPrev={prevTab}
-              onNext={nextTab}
-              onFinalize={goToFinalize}
-            />
-
-            {ActiveTabComponent && <ActiveTabComponent />}
-          </Stack>
-        </SwipeSurface>
       </Stack>
+
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
+
+        <IconButton
+          onClick={() => setNavDrawerOpen(true)}
+          aria-label="Open page menu"
+          sx={{ flexShrink: 0 }}
+        >
+          <RiMenuLine />
+        </IconButton>
+      </Box>
+
+      <EditorNavDrawer
+        open={navDrawerOpen}
+        onClose={() => setNavDrawerOpen(false)}
+        value={activeTab}
+        tabOrder={tabOrder}
+        onSelect={setActiveTab}
+      />
+
+      <BuildPointsSummary />
+
+      <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
+        <Stack>
+          <EditorPageNav
+            value={activeTab}
+            isFirst={isFirst}
+            isLast={isLast}
+            onPrev={prevTab}
+            onNext={nextTab}
+            onFinalize={goToFinalize}
+          />
+
+          {ActiveTabComponent && <ActiveTabComponent />}
+        </Stack>
+      </SwipeSurface>
     </Stack>
   )
 }

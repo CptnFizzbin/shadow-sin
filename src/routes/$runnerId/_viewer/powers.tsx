@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { AdeptPowersViewerSection } from "#/components/adeptPowers/viewer/adeptPowersViewerSection.tsx"
+import { AdeptPowersViewerSection } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersViewerSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"

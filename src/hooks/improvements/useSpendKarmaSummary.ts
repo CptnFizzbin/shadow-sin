@@ -1,4 +1,4 @@
-import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
+import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import {
   selectHasImprovements,

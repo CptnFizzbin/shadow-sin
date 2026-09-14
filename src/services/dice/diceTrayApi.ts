@@ -4,8 +4,8 @@ import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { markOverlayClosed, markOverlayOpened } from "#/services/dialog/openOverlayTracker.ts"
 
-import { selectWasRolled } from "./diceRoller.selector.ts"
 import { DiceRoller } from "./diceRoller.ts"
+import { selectWasRolled } from "./state/diceRoller.selector.ts"
 import { ExtendedInterval, TestType } from "./testType.ts"
 
 export interface ExtendedRollEntry {

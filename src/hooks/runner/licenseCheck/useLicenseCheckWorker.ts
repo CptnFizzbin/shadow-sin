@@ -1,12 +1,12 @@
 import { milliseconds } from "date-fns"
 import { useEffect, useMemo, useRef, useState } from "react"
 
-import { resolveVerificationCheck } from "#/components/licenseCheck/licenseCheckDice.ts"
-import type { VerificationQueue } from "#/components/licenseCheck/licenseCheckQueue.ts"
-import type { VerificationCheck, VerificationOutcome } from "#/components/licenseCheck/licenseCheckTypes.ts"
-import { selectAllDice, useDiceRollerSelector } from "#/services/dice/diceRoller.selector.ts"
+import { resolveVerificationCheck } from "#/components/system/licenseCheck/licenseCheckDice.ts"
+import type { VerificationQueue } from "#/components/system/licenseCheck/licenseCheckQueue.ts"
+import type { VerificationCheck, VerificationOutcome } from "#/components/system/licenseCheck/licenseCheckTypes.ts"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
-import type { DieState } from "#/services/dice/dieState.ts"
+import { selectAllDice, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
+import type { DieState } from "#/services/dice/state/dieState.ts"
 
 const RESOLVED_HOLD_MS = milliseconds({ seconds: 1 })
 

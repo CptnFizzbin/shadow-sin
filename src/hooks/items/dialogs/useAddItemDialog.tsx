@@ -1,14 +1,14 @@
-import type { AddItemDialogOpenOptions } from "#/components/items/addItemDialogContext.ts"
-import { useAddItemTypeDialog } from "#/components/items/dialogs/addItemTypeDialog.tsx"
-import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
-import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
-import { useImplantFormDialog } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
-import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
-import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
-import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
-import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
-import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import type { AddItemDialogOpenOptions } from "#/components/entities/items/addItemDialogContext.ts"
+import { useAddItemTypeDialog } from "#/components/entities/items/dialogs/addItemTypeDialog.tsx"
+import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
+import { useArmorFormDialog } from "#/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
+import { useDeviceFormDialog } from "#/components/entities/items/types/devices/dialogs/deviceFormDialog.tsx"
+import { useImplantFormDialog } from "#/components/entities/items/types/implants/dialogs/implantFormDialog.tsx"
+import { useLicenseFormDialog } from "#/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
+import { useSinFormDialog } from "#/components/entities/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { useVehicleFormDialog } from "#/components/entities/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
+import { useWeaponFormDialog } from "#/components/entities/items/types/weapons/dialogs/weaponFormDialog.tsx"
+import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
@@ -38,24 +38,27 @@ export function useAddItemDialog() {
   const miscFormDialog = useItemFormDialog()
 
   const openTargetDialog = (selection: AddItemSelection, parentId?: UUID): Promise<ItemData | undefined> => {
-    switch (selection.section) {
-      case GearSection.Weapons:
-        return weaponFormDialog.open({ wizard: true, weaponType: selection.weaponType, parentId })
-      case GearSection.Armor:
-        return armorFormDialog.open({ wizard: true, parentId })
-      case GearSection.Cyberware:
-        return implantFormDialog.open({ wizard: true, parentId })
-      case GearSection.Vehicles:
-        return vehicleFormDialog.open({ wizard: true, vehicleCategory: selection.vehicleCategory, parentId })
-      case GearSection.Devices:
-        return deviceFormDialog.open({ wizard: true, parentId })
-      case GearSection.Licenses:
-        return selection.licenseKind === "license"
-          ? licenseFormDialog.open({ wizard: true })
-          : sinFormDialog.open({ wizard: true })
-      default:
-        return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item", parentId })
+    if (selection.section === GearSection.Weapons && "weaponType" in selection) {
+      return weaponFormDialog.open({ wizard: true, weaponType: selection.weaponType, parentId })
     }
+    if (selection.section === GearSection.Armor) {
+      return armorFormDialog.open({ wizard: true, parentId })
+    }
+    if (selection.section === GearSection.Cyberware) {
+      return implantFormDialog.open({ wizard: true, parentId })
+    }
+    if (selection.section === GearSection.Vehicles && "vehicleCategory" in selection) {
+      return vehicleFormDialog.open({ wizard: true, vehicleCategory: selection.vehicleCategory, parentId })
+    }
+    if (selection.section === GearSection.Devices) {
+      return deviceFormDialog.open({ wizard: true, parentId })
+    }
+    if (selection.section === GearSection.Licenses && "licenseKind" in selection) {
+      return selection.licenseKind === "license"
+        ? licenseFormDialog.open({ wizard: true })
+        : sinFormDialog.open({ wizard: true })
+    }
+    return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item", parentId })
   }
 
   const open = async (options?: AddItemDialogOpenOptions) => {

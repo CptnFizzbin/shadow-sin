@@ -33,7 +33,8 @@ Runner state (`RunnerData`) lives in a Redux Toolkit store — not React state o
 (`attributes`, `biology`, `karma`, `skills`, etc., under `src/stores/runner/<domain>/`) follows a three-file pattern:
 `*Slice.actions.ts` (RTK `createAction`/`createAsyncThunk`), `*Slice.ts` (RTK `createReducer`), and
 `*Slice.selectors.ts` (plain selector functions). `src/stores/runner/runnerStore.reducer.ts` combines them with RTK's
-`combineReducers`. A store instance is created per runner (`RunnerDataStore`, `src/components/runner/sheet/runnerDataStore.ts`)
+`combineReducers`. A store instance is created per runner (`RunnerDataStore`,
+`src/components/runner/sheet/runnerDataStore.ts`)
 and provided through React context via `RunnerStoreProvider` (context in `src/contexts/runner/runnerStore.context.ts`).
 Components subscribe reactively via `useRunnerStoreSelector(selector)` (`src/stores/runner/runnerStore.selectors.ts`)
 and dispatch via `useRunnerStoreDispatch()` (`src/stores/runner/runnerStore.dispatch.ts`) — never read
@@ -55,7 +56,7 @@ localStorage key literals.
   `spriteData.ts`, `traditionData.ts`, etc.
 - `src/system/gameEffects/` — `GameEffectData` and related types; effects attach to gear items via
   `ItemData.effects`
-- `src/system/dice/` — `DiceRoller` store; paired with `src/components/dice/` (`DiceTrayApi`) for the dice tray UI
+- `src/system/dice/` — `DiceRoller` store; paired with `src/components/system/dice` (`DiceTrayApi`) for the dice tray UI
 - `src/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`,
   `SpecialAttributes` grouping constants
 - `src/system/karma/improvements/` — Karma-spend staging: `ImprovementStore` stages `ImprovementEntry` objects
@@ -142,7 +143,8 @@ Supporting hooks in `src/hooks/items/`:
 
 Migrations live in `src/data/migrations/` and are registered in `src/data/migrations.ts`. The shared
 `CharacterMigration<TData>` type lives in `src/data/characterMigration.ts` — the `character` naming was
-deliberately kept here through the `character` → `runner` rename (see `docs/adr/0001-runner-data-not-character-sheet.md`)
+deliberately kept here through the `character` → `runner` rename (see
+`docs/adr/0001-runner-data-not-character-sheet.md`)
 since renaming the type would have forced an edit into every migration file.
 
 Migrations are timestamp-based. Each migration carries a `timestamp` — an ISO 8601 string set to its creation date
@@ -392,8 +394,8 @@ viewport and a Pixel 8 viewport (412×915, as used by Chrome DevTools device emu
 the dev server is running (`yarn dev`) and the change is visible in the browser. Capture the smallest region that
 clearly shows the new state in each viewport. Do not include screenshots in the git commit.
 
-Screenshots only need to reach the reviewer in chat, not the PR — send the actual image files back in your response
-(not a description of them, and not an offer to attach them if wanted) so they render inline for the user
+Screenshots only need to reach the reviewer in chat, not the PR — send the actual image files back in your response (not
+a description of them, and not an offer to attach them if wanted) so they render inline for the user
 immediately. GitHub tooling generally has no way to upload binary image data into a PR comment (no attachment- or
 asset-upload endpoint, and GitHub strips `data:` URIs from rendered comment markdown), so don't try to embed them
 there.

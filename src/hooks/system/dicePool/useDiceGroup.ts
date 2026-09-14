@@ -1,6 +1,6 @@
 import { useId } from "react"
 
-import type { DiceGroup } from "#/components/dicePool/diceGroup.tsx"
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"

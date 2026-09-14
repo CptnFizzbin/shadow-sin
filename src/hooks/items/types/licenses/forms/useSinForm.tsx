@@ -1,5 +1,5 @@
-import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
-import { getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
+import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
+import { getSinCost } from "#/components/entities/items/types/licenses/sinUtils.ts"
 import { useItemForm, itemDefaults } from "#/hooks/items/forms/useItemForm.tsx"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"

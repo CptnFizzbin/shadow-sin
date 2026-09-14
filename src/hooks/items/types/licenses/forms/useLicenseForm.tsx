@@ -1,5 +1,5 @@
-import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
-import { DefaultFakeLicenseRating, getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
+import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
+import { DefaultFakeLicenseRating, getLicenseCost } from "#/components/entities/items/types/licenses/licenseUtils.ts"
 import { useItemForm, itemDefaults } from "#/hooks/items/forms/useItemForm.tsx"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"

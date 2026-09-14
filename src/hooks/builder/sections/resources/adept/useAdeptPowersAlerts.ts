@@ -1,4 +1,4 @@
-import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
+import { isAdept } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"

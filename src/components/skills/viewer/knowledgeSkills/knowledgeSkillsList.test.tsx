@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 

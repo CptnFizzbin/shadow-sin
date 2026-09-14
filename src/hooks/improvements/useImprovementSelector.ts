@@ -1,4 +1,4 @@
-import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
+import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { ImprovementsSelector } from "#/services/improvements/improvementSelectors.ts"
 

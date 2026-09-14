@@ -131,7 +131,7 @@ included):
 Existing terms in play: **SIN**, **Licence**, **Availability**, **Restricted**, **Forbidden**,
 **Hit**, **Dice Pool**, **Opposed Test**, **Optional Rule**.
 
-`Opposed Test` already exists (`TestType.Opposed` in the dice tray, `src/components/dice/testType.ts`)
+`Opposed Test` already exists (`TestType.Opposed` in the dice tray, `../../src/components/system/dice`)
 but there only one side is rolled digitally — the opposing Hit count is entered manually, since
 the dice tray doesn't track an opposing character. License Check is a second consumer of the same
 concept: it rolls both sides digitally in one place, since both pools (credential rating,

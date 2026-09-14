@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-import type { EditorTabId } from "#/components/nav/builder/editorTabId.ts"
-import { FINALIZE_TAB_ID } from "#/components/nav/builder/editorTabId.ts"
+import type { EditorTabId } from "#/components/ui/nav/builder/editorTabId.ts"
+import { FINALIZE_TAB_ID } from "#/components/ui/nav/builder/editorTabId.ts"
 import { NumberUtils } from "#/utils/numberUtils.ts"
 
 export interface UseEditorTabNavigation {

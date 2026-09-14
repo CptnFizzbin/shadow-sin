@@ -1,5 +1,5 @@
 import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { getContactBpCost } from "#/components/contacts/builder/contactsBuilderUtils.ts"
+import { getContactBpCost } from "#/components/runner/sections/contacts/builder/contactsBuilderUtils.ts"
 import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

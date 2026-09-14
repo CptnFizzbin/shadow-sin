@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { ImprovementStore } from "#/services/improvements/improvementStore.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type {

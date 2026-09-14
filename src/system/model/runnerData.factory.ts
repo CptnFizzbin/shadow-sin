@@ -1,7 +1,7 @@
 import { produce } from "immer"
 import * as uuid from "uuid"
 
-import { getAttributesValues } from "#/components/attributes/viewer/getAttributesValues.ts"
+import { getAttributesValues } from "#/components/entities/attributes/viewer/getAttributesValues.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 
 import { metatypes, MetatypeType } from "./biology/metatypeData.ts"

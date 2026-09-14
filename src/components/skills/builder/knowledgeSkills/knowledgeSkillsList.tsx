@@ -4,12 +4,12 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { BuildPoints } from "#/components/builder/buildPoints.tsx"
+import { SkillPoints } from "#/components/builder/skillPoints.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/skills/viewer/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import { useLanguageSkillDialog } from "#/components/skills/viewer/knowledgeSkills/dialogs/languageSkillDialog.tsx"
-import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { SkillPoints } from "#/components/ui/skillPoints.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useKnowledgeSkillsBuildPoints } from "#/hooks/builder/buildPoints/useKnowledgeSkillsBuildPoints.ts"
 import {

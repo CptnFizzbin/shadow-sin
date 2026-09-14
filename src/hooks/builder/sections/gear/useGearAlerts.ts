@@ -1,7 +1,7 @@
 import pluralize from "pluralize"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { useGearAvailabilityIssues } from "#/components/items/builder/gearUtils.ts"
+import { useGearAvailabilityIssues } from "#/components/entities/items/builder/gearUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useGearBuildPoints } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"

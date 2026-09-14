@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
-import { AnyItemDetails } from "#/components/items/details/anyItemDetails.tsx"
+import { AnyItemDetails } from "#/components/entities/items/details/anyItemDetails.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"

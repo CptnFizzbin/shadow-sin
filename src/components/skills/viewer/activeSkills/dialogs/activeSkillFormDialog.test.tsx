@@ -1,7 +1,7 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
