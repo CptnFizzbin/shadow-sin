@@ -1,10 +1,12 @@
 # Top-Level Directory Restructuring
 
-> **Status:** Draft
+> **Status:** In Progress
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. A feature may generate multiple Issues (one per PR slice). -->
-> - #??? — scope of this issue/PR
+> - [#614](https://github.com/CptnFizzbin/shadow-sin/pull/614) — the mechanical renames/moves this
+>   doc describes (all containers, all phases). The two non-mechanical items called out in
+>   Constraints (splitting `attributeCatalog.ts`/`itemUtils.ts`; splitting the three shared
+>   contexts into `.context.ts`/`.provider.tsx`) are not part of this PR.
 
 `src/` has grown enough top-level folders, and enough same-named-but-different folders, that
 finding the right home for a file (or finding an existing one) now takes real search effort. This
@@ -233,19 +235,25 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 
 ## Open Questions
 
-- [ ] **Where does a Context's accessor hook live?** `contexts/<domain>/` now holds only
-      `<name>.context.ts` + `<name>.provider.tsx` (per this doc's Container definitions). Does the
-      matching accessor hook (e.g. `useRunnerStore`) join the existing `hooks/<domain>/` tree, or
-      get a third file back in `contexts/<domain>/`? Leaning toward `hooks/`, since that tree
-      already exists and already groups hooks by the same feature names as `components/`.
-- [ ] **PR slicing order.** 0016 used one PR per slice with no cross-slice dependency; this doc's
-      slices mostly share that property (card nesting, dice renaming, items/gear consolidation,
-      helpers retirement are independent), but the `components/` domain unification is large
-      enough it likely needs its own multi-PR breakdown per domain, not one PR for all of it.
-- [ ] **Exact per-domain file membership for the `components/` unification and the `system/`
-      model/formulas split.** This doc names the domains that unify/split and gives representative
-      examples, but doesn't enumerate every file in either case — that's PRD-Issue-level detail
-      once slicing is agreed.
+- [ ] **Where does a Context's accessor hook live?** Still open — PR #614 left the three shared
+      contexts (`runner/`, `builder/`, `entity/`) unsplit rather than resolving this, since
+      splitting one file into `.context.ts` + `.provider.tsx` is content editing, not a rename (see
+      Constraints).
+- [x] **PR slicing order.** Resolved differently than speculated: landed as one PR (#614) covering
+      every mechanical rename across every container, rather than split per-domain. Validated as one
+      unit — `yarn tsc` clean, file count unchanged (1119 before and after), `yarn fallow dead-code`
+      shows zero new findings (one pre-existing `unused_class_members` false positive moved
+      locations; one real `vi.mock()` string-literal path fallow caught and #614 fixed, since it's
+      not a static import tsc resolves).
+- [x] **Exact per-domain file membership for the `components/` unification and the `system/`
+      model/formulas split.** Resolved by executing it — the current tree is the answer. Three
+      judgment calls made during execution that this doc didn't fully spell out: `magician`,
+      `technomancer`, `adeptPowers`, and `nav` turned out to also be Runner+Builder unify domains
+      (builder's `sections/resources/{magician,technomancer,adept}/` and `builder/nav/` are their
+      Builder halves) rather than Runner-only as originally listed; `components/system/combat/`
+      promoted to top-level `components/combat/` (matching its six siblings) rather than nesting
+      under `items/`; and the two mixed-content files (`attributeCatalog.ts`, `itemUtils.ts`) moved
+      whole into `model/` rather than being split, per the Constraints note.
 
 ## Out of Scope
 
