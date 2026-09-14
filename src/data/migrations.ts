@@ -37,7 +37,8 @@ import v20260830_01_normalizeLicenseRating from "./migrations/20260830_01_normal
 import v20260830_02_normalizeLanguageSkillRating from "./migrations/20260830_02_normalizeLanguageSkillRating.ts"
 import v20260907_00_normalizeReputations from "./migrations/20260907_00_normalizeReputations.ts"
 import v20260913_00_fixMalformedInnateQualityIds from "./migrations/20260913_00_fixMalformedInnateQualityIds.ts"
-import v20260913_01_addExtendedTests from "./migrations/20260913_01_addExtendedTests.ts"
+import v20260913_01_zeroPixieInnateQualityCost from "./migrations/20260913_01_zeroPixieInnateQualityCost.ts"
+import v20260914_00_addExtendedTests from "./migrations/20260914_00_addExtendedTests.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -78,7 +79,8 @@ export const migrations: AnyCharacterMigration[] = [
   v20260830_02_normalizeLanguageSkillRating,
   v20260907_00_normalizeReputations,
   v20260913_00_fixMalformedInnateQualityIds,
-  v20260913_01_addExtendedTests,
+  v20260913_01_zeroPixieInnateQualityCost,
+  v20260914_00_addExtendedTests,
 ]
 
 migrations.forEach((migration, index) => {

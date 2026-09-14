@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20260913_00_addExtendedTests.ts"
+import migration from "./20260914_00_addExtendedTests.ts"
 
 describe.concurrent("addExtendedTests", () => {
   it("adds an empty extendedTests array when entirely missing", () => {
