@@ -1,5 +1,5 @@
+import { attrValue } from "#/system/formulas/attributes/attributeFormulas.ts"
 import type { AttributeCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import { attrValue } from "#/system/model/attributes/attributeCatalog.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { SourceData } from "#/system/model/sourceData.ts"
 

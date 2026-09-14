@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { SpiritCard } from "#/components/cards/spiritCard/spiritCard.tsx"
-import { attrValue } from "#/system/model/attributes/attributeCatalog.ts"
+import { attrValue } from "#/system/formulas/attributes/attributeFormulas.ts"
 import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/model/attributes/attributeKey.ts"
 import type { SpiritData } from "#/system/model/magic/spiritData.ts"
 import {

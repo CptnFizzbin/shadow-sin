@@ -1,4 +1,4 @@
-import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"

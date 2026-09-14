@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/model/attributes/attributeCatalog.ts"
+import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/formulas/attributes/attributeFormulas.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/model/attributes/attributeKey.ts"
 

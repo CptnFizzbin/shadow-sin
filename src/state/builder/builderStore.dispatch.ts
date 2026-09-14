@@ -1,4 +1,4 @@
-import { useBuilderDataContext } from "#/contexts/builder/builderStore.context.ts"
+import { useBuilderDataContext } from "#/hooks/builder/useBuilderStore.ts"
 
 import type { BuilderStore } from "./builderStore.ts"
 

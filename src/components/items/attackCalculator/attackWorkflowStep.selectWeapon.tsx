@@ -8,7 +8,7 @@ import type { RemixiconComponentType } from "@remixicon/react"
 import { RiArrowRightSLine, RiFireLine, RiFocusLine, RiSwordLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"

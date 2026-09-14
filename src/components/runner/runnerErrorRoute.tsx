@@ -6,7 +6,7 @@ import { useNavigate, useRouter } from "@tanstack/react-router"
 import { dump } from "js-yaml"
 
 import { downloadTextFile } from "#/components/exportImport/exportUtils.ts"
-import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import type { JsonValue } from "#/utils/jsonUtils.ts"
 
 /**

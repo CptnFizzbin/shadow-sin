@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
+import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
 import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"

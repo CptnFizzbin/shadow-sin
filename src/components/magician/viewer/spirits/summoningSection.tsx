@@ -9,7 +9,7 @@ import type { FC } from "react"
 
 import { DrainResistanceDicePool } from "#/components/magician/viewer/spells/drainResistanceDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"

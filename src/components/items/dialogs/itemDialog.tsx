@@ -20,7 +20,7 @@ import { GearDescriptionFieldGroup } from "#/components/items/forms/gearDescript
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
+import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
 import type { ItemDialogOptionConfig } from "#/hooks/items/dialogs/useItemOptions.ts"
 import { useItemOptions } from "#/hooks/items/dialogs/useItemOptions.ts"
 import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"

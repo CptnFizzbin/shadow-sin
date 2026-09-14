@@ -2,10 +2,11 @@ import type { Selector as StandardSelector } from "#/integrations/reselect/selec
 import { createMemoizedSelector, createSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
-import { filterRecordByType, itemIsType, toItemCatalogTree } from "#/system/model/items/itemUtils.ts"
+import { filterRecordByType, itemIsType } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 export namespace ItemSelectors {

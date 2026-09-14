@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"

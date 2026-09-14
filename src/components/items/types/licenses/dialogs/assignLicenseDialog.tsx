@@ -17,7 +17,7 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
+import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"

@@ -1,6 +1,6 @@
 import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"

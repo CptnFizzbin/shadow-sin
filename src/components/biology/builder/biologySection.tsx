@@ -11,7 +11,7 @@ import { getAttributesValues } from "#/components/attributes/viewer/getAttribute
 import { InnatePowersDisplay } from "#/components/biology/viewer/innatePowersDisplay.tsx"
 import { MovementDisplay } from "#/components/biology/viewer/movementDisplay.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { metatypes, MetatypeType } from "#/system/model/biology/metatypeData.ts"
