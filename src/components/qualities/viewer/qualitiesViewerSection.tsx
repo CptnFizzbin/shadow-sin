@@ -9,7 +9,7 @@ import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { QualityData } from "#/system/model/qualities/qualityData.ts"
 
-import { useQualityInfoDialog } from "#/components/qualities/viewer/dialogs/qualityInfoDialog.tsx"
+import { useQualityInfoDialog } from "./dialogs/qualityInfoDialog.tsx"
 
 interface QualityViewerRowProps {
   quality: QualityData

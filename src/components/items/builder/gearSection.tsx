@@ -10,6 +10,7 @@ import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
+import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { ArmorSectionContent } from "#/components/items/viewer/armorSectionContent.tsx"
@@ -20,7 +21,6 @@ import { WeaponsSectionContent } from "#/components/items/viewer/weaponsSectionC
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import {
   useGearBuildPoints,
   useGearTotalCost,
@@ -35,8 +35,8 @@ import { isSinData } from "#/system/model/items/sinData.ts"
 import { getProgress } from "#/utils/progressUtils.ts"
 
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
-import { ImplantsPanel } from "#/components/items/builder/implants/implantsPanel.tsx"
-import { LifestylePanel } from "#/components/items/builder/lifestyle/lifestylePanel.tsx"
+import { ImplantsPanel } from "./implants/implantsPanel.tsx"
+import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
 import { SectionHeader } from "./sectionHeader.tsx"
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 

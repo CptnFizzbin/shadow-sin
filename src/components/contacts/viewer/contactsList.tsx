@@ -10,8 +10,8 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"
-import { useLegworkInfoDialog } from "#/components/contacts/viewer/dialogs/legworkInfoDialog.tsx"
-import { useContactFormDialog } from "#/components/contacts/viewer/form/contactFormDialog.tsx"
+import { useLegworkInfoDialog } from "./dialogs/legworkInfoDialog.tsx"
+import { useContactFormDialog } from "./form/contactFormDialog.tsx"
 
 interface ContactsListProps {
   contacts: ContactData[]

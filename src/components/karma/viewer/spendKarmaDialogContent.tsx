@@ -11,12 +11,12 @@ import { SpendKarmaDialogFooter } from "#/components/karma/improvements/spendKar
 import { SpendKarmaHubList } from "#/components/karma/improvements/spendKarmaHubList.tsx"
 import type { SpendKarmaSectionKey } from "#/components/karma/improvements/spendKarmaSections.tsx"
 import { SpendKarmaSectionContent } from "#/components/karma/improvements/spendKarmaSections.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import {
   SpendKarmaDialogProvider,
   useSpendKarmaDialogContext,
 } from "#/components/karma/spendKarmaDialogContext.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
 import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
 

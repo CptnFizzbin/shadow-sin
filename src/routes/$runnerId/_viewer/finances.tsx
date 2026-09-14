@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { CredstickSection } from "#/components/items/types/credsticks/credstickSection.tsx"
 import { FinancesSection } from "#/components/finances/viewer/financesSection.tsx"
+import { CredstickSection } from "#/components/items/types/credsticks/credstickSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/finances")({

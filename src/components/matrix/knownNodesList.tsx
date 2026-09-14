@@ -10,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
 
-import { useKnownNodeFormDialog } from "#/components/matrix/dialogs/knownNodeFormDialog.tsx"
+import { useKnownNodeFormDialog } from "./dialogs/knownNodeFormDialog.tsx"
 import { MatrixNodeCard } from "./matrixNodeCard.tsx"
 
 export const KnownNodesList: FC = () => {

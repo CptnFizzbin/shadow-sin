@@ -1,6 +1,6 @@
+import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
 import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

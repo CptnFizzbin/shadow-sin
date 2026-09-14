@@ -13,10 +13,10 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 
-import { useEndOfMonthDialog } from "#/components/finances/viewer/endOfMonth/endOfMonthDialog.tsx"
-import { LifestyleSection } from "#/components/finances/viewer/lifestyle/lifestyleSection.tsx"
-import { LoansSection } from "#/components/finances/viewer/loans/loansSection.tsx"
-import { NuyenSection } from "#/components/finances/viewer/nuyen/nuyenSection.tsx"
+import { useEndOfMonthDialog } from "./endOfMonth/endOfMonthDialog.tsx"
+import { LifestyleSection } from "./lifestyle/lifestyleSection.tsx"
+import { LoansSection } from "./loans/loansSection.tsx"
+import { NuyenSection } from "./nuyen/nuyenSection.tsx"
 
 export const FinancesSection: FC = () => {
   const endOfMonthDialog = useEndOfMonthDialog()

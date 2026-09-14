@@ -7,9 +7,9 @@ import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
 import { ImprovementsConfig } from "#/components/karma/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
+import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
 import {
   selectAllImprovements,

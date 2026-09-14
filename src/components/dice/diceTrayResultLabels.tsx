@@ -3,7 +3,6 @@ import pluralize from "pluralize"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import {
   selectHits,
@@ -13,6 +12,8 @@ import {
 } from "#/services/dice/diceRoller.selector.ts"
 import { RollState } from "#/services/dice/rollState.ts"
 import { TestType } from "#/services/dice/testType.ts"
+
+import { useDiceTray } from "./diceTrayContext.ts"
 
 export const DiceTrayResultLabels: FC = () => {
   const diceTrayApi = useDiceTray()

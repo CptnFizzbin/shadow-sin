@@ -13,12 +13,12 @@ import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/karma/improvements/improvementQueuedLearnRow.tsx"
 import { ImprovementsConfig } from "#/components/karma/improvements/improvementsConfig.ts"
+import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
 import { KarmaChip } from "#/components/karma/viewer/karmaChip.tsx"
 import { KarmaValue } from "#/components/karma/viewer/karmaValue.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/skills/viewer/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
-import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
 import {
   selectAllImprovements,

@@ -6,29 +6,28 @@ import { RiMenuLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useMemo, useState } from "react"
 
+import { AdeptPowersBuilderSection } from "#/components/adeptPowers/builder/adeptPowersBuilderSection.tsx"
+import { AttributesBuilderSection } from "#/components/attributes/builder/attributesBuilderSection.tsx"
+import { BiologyBuilderSection } from "#/components/biology/builder/biologyBuilderSection.tsx"
+import { ContactsBuilderSection } from "#/components/contacts/builder/contactsBuilderSection.tsx"
 import { ExportRunnerButton } from "#/components/exportImport/exportRunnerButton.tsx"
-import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
-import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { GearBuilderSection } from "#/components/items/builder/gearBuilderSection.tsx"
+import { SpellsBuilderSection } from "#/components/magician/builder/spellsBuilderSection.tsx"
+import { EditorNavDrawer } from "#/components/nav/builder/editorNavDrawer.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { FinalizeSection } from "./finalizeSection.tsx"
-import { EditorNavDrawer } from "#/components/nav/builder/editorNavDrawer.tsx"
 import { EditorPageNav } from "#/components/nav/builder/editorPageNav.tsx"
 import type { EditorTabId } from "#/components/nav/builder/editorTabId.ts"
 import { builderTabOrder, FINALIZE_TAB_ID, getVisibleTabOrder } from "#/components/nav/builder/editorTabId.ts"
 import { EditorTabs } from "#/components/nav/builder/editorTabs.tsx"
-import { AttributesBuilderSection } from "#/components/attributes/builder/attributesBuilderSection.tsx"
-import { BiologyBuilderSection } from "#/components/biology/builder/biologyBuilderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { ContactsBuilderSection } from "#/components/contacts/builder/contactsBuilderSection.tsx"
-import { GearBuilderSection } from "#/components/items/builder/gearBuilderSection.tsx"
+
+import { BuilderSectionId } from "./builderSectionId.ts"
+
 import { ProfileBuilderSection } from "#/components/profile/builder/profileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/qualities/builder/qualitiesBuilderSection.tsx"
-import { AdeptPowersBuilderSection } from "#/components/adeptPowers/builder/adeptPowersBuilderSection.tsx"
-import { SpellsBuilderSection } from "#/components/magician/builder/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "#/components/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
@@ -36,6 +35,9 @@ import { SpritesBuilderSection } from "#/components/technomancer/builder/sprites
 import { ActiveSkillsBuilderSection } from "#/components/skills/builder/activeSkills/activeSkillsBuilderSection.tsx"
 import { KnowledgeSkillsBuilderSection } from "#/components/skills/builder/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/summary/bpSummaryFooter.tsx"
+import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
+import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 
 interface RunnerBuilderContentProps {
   reset: () => void

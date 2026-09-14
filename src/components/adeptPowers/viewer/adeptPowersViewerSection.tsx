@@ -14,7 +14,7 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
 
-import { useAdeptPowerFormDialog } from "#/components/adeptPowers/viewer/dialogs/adeptPowerFormDialog.tsx"
+import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
 
 export const AdeptPowersViewerSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()

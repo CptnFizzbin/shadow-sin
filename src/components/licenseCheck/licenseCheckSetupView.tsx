@@ -7,11 +7,11 @@ import type { FC } from "react"
 import { useMemo } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { buildVerificationLanes } from "./licenseCheckLanes.ts"
 
 const ratingOptions = [1, 2, 3, 4, 5, 6]

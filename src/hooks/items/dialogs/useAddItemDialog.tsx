@@ -1,3 +1,4 @@
+import type { AddItemDialogOpenOptions } from "#/components/items/addItemDialogContext.ts"
 import { useAddItemTypeDialog } from "#/components/items/dialogs/addItemTypeDialog.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
@@ -8,7 +9,6 @@ import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinF
 import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
-import type { AddItemDialogOpenOptions } from "#/components/items/addItemDialogContext.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"

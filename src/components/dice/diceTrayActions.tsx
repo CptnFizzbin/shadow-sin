@@ -2,7 +2,6 @@ import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import type { FC } from "react"
 
-import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import {
   selectHits,
@@ -11,6 +10,8 @@ import {
   useDiceRollerSelector,
 } from "#/services/dice/diceRoller.selector.ts"
 import { TestType } from "#/services/dice/testType.ts"
+
+import { useDiceTray } from "./diceTrayContext.ts"
 
 export const DiceTrayActions: FC = () => {
   const diceTrayApi = useDiceTray()

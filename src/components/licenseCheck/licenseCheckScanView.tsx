@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
 
-import { useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { useVerificationQueuePool } from "#/hooks/runner/licenseCheck/useVerificationQueuePool.ts"
 
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckWorkerSlot } from "./licenseCheckWorkerSlot.tsx"
 
 const WORKER_COUNT = 1

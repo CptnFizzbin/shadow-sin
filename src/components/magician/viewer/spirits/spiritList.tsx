@@ -12,7 +12,7 @@ import { SpiritsSelectors } from "#/state/runner/spirits/spirits.selector.ts"
 import type { SpiritData } from "#/system/model/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/model/magic/spiritData.ts"
 
-import { SpiritFormDialog } from "#/components/magician/viewer/spirits/dialogs/spiritFormDialog.tsx"
+import { SpiritFormDialog } from "./dialogs/spiritFormDialog.tsx"
 import { SpiritDataCard } from "./spiritDataCard.tsx"
 
 export const SpiritList: FC = () => {

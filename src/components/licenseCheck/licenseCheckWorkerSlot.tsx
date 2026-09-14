@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { useLicenseCheckWorker } from "#/hooks/runner/licenseCheck/useLicenseCheckWorker.ts"
 import { HouseRulesSelectors } from "#/state/runner/houseRules/houseRules.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"
 import type { VerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"

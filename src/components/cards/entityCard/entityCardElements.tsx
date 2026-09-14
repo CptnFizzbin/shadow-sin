@@ -1,9 +1,9 @@
-import { CardElementAction } from "#/components/cards/entityCard/elements/cardElementAction.tsx"
-import { CardElementEffects } from "#/components/cards/entityCard/elements/cardElementEffects.tsx"
-import { CardElementRating } from "#/components/cards/entityCard/elements/cardElementRating.tsx"
-import { CardElementSource } from "#/components/cards/entityCard/elements/cardElementSource.tsx"
-import { CardElementStat } from "#/components/cards/entityCard/elements/cardElementStat.tsx"
-import { CardElementTitle } from "#/components/cards/entityCard/elements/cardElementTitle.tsx"
+import { CardElementAction } from "./elements/cardElementAction.tsx"
+import { CardElementEffects } from "./elements/cardElementEffects.tsx"
+import { CardElementRating } from "./elements/cardElementRating.tsx"
+import { CardElementSource } from "./elements/cardElementSource.tsx"
+import { CardElementStat } from "./elements/cardElementStat.tsx"
+import { CardElementTitle } from "./elements/cardElementTitle.tsx"
 
 /**
  * Pure, dependency-free EntityCard content elements, flat — for composition contexts that want

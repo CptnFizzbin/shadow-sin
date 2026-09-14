@@ -9,8 +9,8 @@ import Stack from "@mui/material/Stack"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { KarmaChip } from "#/components/karma/viewer/karmaChip.tsx"
 import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
+import { KarmaChip } from "#/components/karma/viewer/karmaChip.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
 import {
   ImprovementsSelectors,

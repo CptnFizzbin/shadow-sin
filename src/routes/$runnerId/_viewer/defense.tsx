@@ -2,8 +2,6 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { DefenseCalculatorButton } from "#/components/items/defenseCalculator/defenseCalculatorButton.tsx"
-import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
 import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -20,6 +18,8 @@ import {
 } from "#/components/damage/resistanceDicePools.tsx"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { DicePoolList } from "#/components/dicePool/dicePoolList.tsx"
+import { DefenseCalculatorButton } from "#/components/items/defenseCalculator/defenseCalculatorButton.tsx"
+import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"

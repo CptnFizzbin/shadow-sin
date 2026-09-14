@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
+import { getAdeptPowerBpCost } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
 import type { EntityCardProps } from "#/components/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/cards/entityCard/entityCard.tsx"
 import { EntityCardElements } from "#/components/cards/entityCard/entityCardElements.tsx"
-import { getAdeptPowerBpCost } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
 

@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { StatChip } from "#/components/ui/statChip.tsx"
-import { useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { isRealCredential } from "./licenseCheckDice.ts"
 import type { VerificationCheck } from "./licenseCheckTypes.ts"
 

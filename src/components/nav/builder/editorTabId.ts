@@ -1,5 +1,5 @@
-import { BuilderSectionId, builderSectionOrder, builderSections } from "#/components/builder/builderSectionId.ts"
 import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
+import { BuilderSectionId, builderSectionOrder, builderSections } from "#/components/builder/builderSectionId.ts"
 import { isMagician } from "#/components/magician/viewer/magicianUtils.ts"
 import { isTechnomancer } from "#/components/technomancer/viewer/technomancerUtils.ts"
 import type { AwakeningType } from "#/system/model/magic/awakeningType.ts"

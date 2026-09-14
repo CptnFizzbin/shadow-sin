@@ -3,9 +3,9 @@ import type { FC } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { LicenseCheckProvider, useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 
+import { LicenseCheckProvider, useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckResultView } from "./licenseCheckResultView.tsx"
 import { LicenseCheckScanView } from "./licenseCheckScanView.tsx"
 import { LicenseCheckSetupView } from "./licenseCheckSetupView.tsx"

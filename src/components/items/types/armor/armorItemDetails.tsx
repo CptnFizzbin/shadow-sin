@@ -1,9 +1,9 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"

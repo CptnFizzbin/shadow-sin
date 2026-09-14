@@ -9,7 +9,7 @@ import { useInitiativeTracker } from "#/hooks/system/initiativeTracker/useInitia
 
 import { CombatantAvatar } from "./combatantAvatar.tsx"
 import { useCombatantDetailDialog } from "./combatantDetailDialog.tsx"
-import { useCombatantFormDialog } from "#/components/initiativeTracker/form/combatantFormDialog.tsx"
+import { useCombatantFormDialog } from "./form/combatantFormDialog.tsx"
 import { PassPips } from "./passPips.tsx"
 
 /**

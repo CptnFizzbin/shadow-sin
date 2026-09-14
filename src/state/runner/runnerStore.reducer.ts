@@ -3,11 +3,9 @@ import { combineReducers, createSlice } from "@reduxjs/toolkit"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
-
 import { NullUuid } from "#/utils/uuidUtils.ts"
-import { attributesReducer } from "./attributes/attributes.state.ts"
-import { initiativeReducer } from "./initiative/initiative.state.ts"
 
+import { attributesReducer } from "./attributes/attributes.state.ts"
 import { biologyReducer } from "./biology/biology.state.ts"
 import { complexFormsReducer } from "./complexForms/complexForms.state.ts"
 import { contactsReducer } from "./contacts/contacts.state.ts"
@@ -15,6 +13,7 @@ import { damageReducer } from "./damage/damage.state.ts"
 import { edgeReducer } from "./edge/edge.state.ts"
 import { featureFlagsReducer } from "./featureFlags/featureFlags.state.ts"
 import { matrixReducer } from "./gameState/matrix/matrix.state.ts"
+import { initiativeReducer } from "./initiative/initiative.state.ts"
 import { gearReducer } from "./items/items.state.ts"
 import { karmaReducer } from "./karma/karma.state.ts"
 import { metaReducer } from "./meta/meta.state.ts"
@@ -28,7 +27,6 @@ import { spellsReducer } from "./spells/spells.state.ts"
 import { spiritsReducer } from "./spirits/spirits.state.ts"
 import { spritesReducer } from "./sprites/sprites.state.ts"
 import { traditionReducer } from "./tradition/tradition.state.ts"
-
 
 const idSlice = createSlice({
   name: "id",

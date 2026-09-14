@@ -4,9 +4,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useLicenseCheck } from "#/components/licenseCheck/licenseCheckContext.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 
 export const LicenseCheckResultView: FC = () => {
   const { result } = useLicenseCheck()

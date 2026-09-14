@@ -8,9 +8,9 @@ import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ImprovementsConfig } from "#/components/karma/improvements/improvementsConfig.ts"
+import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
 import { KarmaChip } from "#/components/karma/viewer/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import { useSpendKarmaDialogContext } from "#/components/karma/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
 import {
   selectAllImprovements,

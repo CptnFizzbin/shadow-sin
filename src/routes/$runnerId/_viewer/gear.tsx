@@ -8,12 +8,12 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { NuyenSection } from "#/components/finances/viewer/nuyen/nuyenSection.tsx"
+import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
 import { GearViewSection } from "#/components/items/viewer/gearViewSection.tsx"
 import { useLicenseCheckDialog } from "#/components/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
-import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
