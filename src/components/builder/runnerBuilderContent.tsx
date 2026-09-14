@@ -9,14 +9,14 @@ import { useMemo, useState } from "react"
 import { AttributesBuilderSection } from "#/components/entities/attributes/builder/attributesBuilderSection.tsx"
 import { GearBuilderSection } from "#/components/entities/items/builder/gearBuilderSection.tsx"
 import {
-  AdeptPowersBuilderSection
+  AdeptPowersBuilderSection,
 } from "#/components/runner/awakenings/adept/adeptPowers/builder/adeptPowersBuilderSection.tsx"
 import { SpellsBuilderSection } from "#/components/runner/awakenings/magician/builder/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "#/components/runner/awakenings/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
 import {
-  SpritesBuilderSection
+  SpritesBuilderSection,
 } from "#/components/runner/awakenings/technomancer/builder/sprites/spritesBuilderSection.tsx"
 import { BiologyBuilderSection } from "#/components/runner/sections/biology/builder/biologyBuilderSection.tsx"
 import { ContactsBuilderSection } from "#/components/runner/sections/contacts/builder/contactsBuilderSection.tsx"
@@ -68,7 +68,6 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
 }
 
 export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loadRunner, onCancel }) => {
-  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
@@ -88,73 +87,65 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
 
   return (
     <Stack>
-      <Stack
-        sx={{
-          opacity: isBpPanelExpanded ? 0.6 : 1,
-          transition: "opacity 0.2s ease",
-          pointerEvents: isBpPanelExpanded ? "none" : "auto",
-        }}
-      >
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+      <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="small"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Stack direction="row">
+          <BuilderImportButton onImport={loadRunner} />
+          <ExportRunnerButton />
           <Button
             variant="outlined"
-            color="inherit"
+            color="warning"
             size="small"
-            onClick={onCancel}
+            onClick={() => reset()}
           >
-            Cancel
+            Reset
           </Button>
-          <Stack direction="row">
-            <BuilderImportButton onImport={loadRunner} />
-            <ExportRunnerButton />
-            <Button
-              variant="outlined"
-              color="warning"
-              size="small"
-              onClick={() => reset()}
-            >
-              Reset
-            </Button>
-          </Stack>
         </Stack>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
-
-          <IconButton
-            onClick={() => setNavDrawerOpen(true)}
-            aria-label="Open page menu"
-            sx={{ flexShrink: 0 }}
-          >
-            <RiMenuLine />
-          </IconButton>
-        </Box>
-
-        <EditorNavDrawer
-          open={navDrawerOpen}
-          onClose={() => setNavDrawerOpen(false)}
-          value={activeTab}
-          tabOrder={tabOrder}
-          onSelect={setActiveTab}
-        />
-
-        <BuildPointsSummary />
-
-        <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
-          <Stack>
-            <EditorPageNav
-              value={activeTab}
-              isFirst={isFirst}
-              isLast={isLast}
-              onPrev={prevTab}
-              onNext={nextTab}
-              onFinalize={goToFinalize}
-            />
-
-            {ActiveTabComponent && <ActiveTabComponent />}
-          </Stack>
-        </SwipeSurface>
       </Stack>
+
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
+
+        <IconButton
+          onClick={() => setNavDrawerOpen(true)}
+          aria-label="Open page menu"
+          sx={{ flexShrink: 0 }}
+        >
+          <RiMenuLine />
+        </IconButton>
+      </Box>
+
+      <EditorNavDrawer
+        open={navDrawerOpen}
+        onClose={() => setNavDrawerOpen(false)}
+        value={activeTab}
+        tabOrder={tabOrder}
+        onSelect={setActiveTab}
+      />
+
+      <BuildPointsSummary />
+
+      <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
+        <Stack>
+          <EditorPageNav
+            value={activeTab}
+            isFirst={isFirst}
+            isLast={isLast}
+            onPrev={prevTab}
+            onNext={nextTab}
+            onFinalize={goToFinalize}
+          />
+
+          {ActiveTabComponent && <ActiveTabComponent />}
+        </Stack>
+      </SwipeSurface>
     </Stack>
   )
 }
