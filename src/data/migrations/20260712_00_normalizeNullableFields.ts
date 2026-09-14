@@ -1,8 +1,8 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { LifestyleType } from "#/system/lifestyleType.ts"
-import type { TraditionData } from "#/system/magic/traditionData.ts"
+import type { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
+import type { TraditionData } from "#/system/model/magic/traditionData.ts"
 
 type NormalizeNullableFieldsCharacter = {
   profile?: {

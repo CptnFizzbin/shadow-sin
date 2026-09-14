@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import type { FC, ReactNode, TouchEvent as ReactTouchEvent } from "react"
 import { useCallback, useRef } from "react"
 
-import { isAnyOverlayOpen } from "./dialog/openOverlayTracker.ts"
+import { isAnyOverlayOpen } from "#/services/dialog/openOverlayTracker.ts"
 
 const SWIPE_MIN_DISTANCE = 50
 

@@ -7,8 +7,8 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
-import type { CredstickData } from "#/system/gear/credstickData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import type { CredstickData } from "#/system/model/items/credstickData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 import { CredstickDataCard } from "./credstickDataCard.tsx"
 import { useCredstickDialog } from "./credstickDialog.tsx"

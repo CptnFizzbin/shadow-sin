@@ -4,7 +4,7 @@ import type { FC } from "react"
 import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { EditorModeProvider } from "#/contexts/builder/editorMode.tsx"
 import { useBuilderStores } from "#/hooks/builder/useBuilderStores.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
 import { RunnerBuilderContent } from "./runnerBuilderContent.tsx"

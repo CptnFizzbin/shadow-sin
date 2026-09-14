@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import DamageTrack from "#/components/system/damage/damageTrack.tsx"
+import DamageTrack from "#/components/damage/damageTrack.tsx"
 
 export interface ItemDetailsDamageTrackProps {
   label: string

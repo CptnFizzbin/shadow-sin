@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react"
 
-import { buildLicenseCheckResult } from "#/components/runner/licenseCheck/licenseCheckAlerts.ts"
-import { buildVerificationChecks } from "#/components/runner/licenseCheck/licenseCheckChecks.ts"
+import { buildLicenseCheckResult } from "#/components/licenseCheck/licenseCheckAlerts.ts"
+import { buildVerificationChecks } from "#/components/licenseCheck/licenseCheckChecks.ts"
 import type {
   LicenseCheckResult,
   VerificationCheck,
   VerificationOutcome,
-} from "#/components/runner/licenseCheck/licenseCheckTypes.ts"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { ItemData } from "#/system/itemData.ts"
+} from "#/components/licenseCheck/licenseCheckTypes.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
 
 export type LicenseCheckStep = "setup" | "scanning" | "result"
 

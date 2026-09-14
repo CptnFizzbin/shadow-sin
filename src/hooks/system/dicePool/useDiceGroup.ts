@@ -1,17 +1,17 @@
 import { useId } from "react"
 
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroup } from "#/components/dicePool/diceGroup.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
-import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
-import { AttributeLabels } from "#/system/attributeKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
-import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { JsonObject } from "#/lib/jsonUtils.ts"
+import type { JsonObject } from "#/utils/jsonUtils.ts"
 
 import migration from "./20260425_00_addSpiritDamage.ts"
 

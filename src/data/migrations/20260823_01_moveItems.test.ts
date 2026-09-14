@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/entityKind.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 import migration from "./20260823_01_moveItems.ts"
 

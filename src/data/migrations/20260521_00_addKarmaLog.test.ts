@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
+import type { KarmaLedgerEntry } from "#/system/model/karma/karmaLedgerEntry.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import migration from "./20260521_00_addKarmaLog.ts"
 

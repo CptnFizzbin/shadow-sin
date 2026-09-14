@@ -6,8 +6,8 @@ import type { FC } from "react"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
-import type { ArmorData } from "#/system/gear/armorData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 import { ArmorDataCard } from "./armorDataCard.tsx"
 

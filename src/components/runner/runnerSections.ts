@@ -17,7 +17,7 @@ import { Route as SpellsRoute } from "#/routes/$runnerId/_viewer/spells.tsx"
 import { Route as SpiritsRoute } from "#/routes/$runnerId/_viewer/spirits.tsx"
 import { Route as SpritesRoute } from "#/routes/$runnerId/_viewer/sprites.tsx"
 import { Route as VehiclesRoute } from "#/routes/$runnerId/_viewer/vehicles.tsx"
-import { AwakeningType } from "#/system/awakeningType.ts"
+import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 enum SectionKey {
   about = "about",

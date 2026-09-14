@@ -5,9 +5,9 @@ import Tabs from "@mui/material/Tabs"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { ActiveSkillsList } from "#/components/runner/skills/activeSkills/activeSkillsList.tsx"
-import { KnowledgeSkillsList } from "#/components/runner/skills/knowledgeSkills/knowledgeSkillsList.tsx"
-import { LanguageSkillsList } from "#/components/runner/skills/languageSkills/languageSkillsList.tsx"
+import { ActiveSkillsList } from "#/components/skills/viewer/activeSkills/activeSkillsList.tsx"
+import { KnowledgeSkillsList } from "#/components/skills/viewer/knowledgeSkills/knowledgeSkillsList.tsx"
+import { LanguageSkillsList } from "#/components/skills/viewer/languageSkills/languageSkillsList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 type SkillsTabValue = "active" | "knowledge" | "languages"

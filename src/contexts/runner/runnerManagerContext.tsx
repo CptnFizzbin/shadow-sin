@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from "react"
 import { createContext, useContext, useState } from "react"
 
-import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
+import { RunnerManager } from "#/services/persistence/runnerManager.ts"
+import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
 
 const RunnerManagerContext = createContext<RunnerManager | null>(null)
 

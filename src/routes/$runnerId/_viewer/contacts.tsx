@@ -3,11 +3,11 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
+import { ContactsList } from "#/components/contacts/viewer/contactsList.tsx"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { ContactsSelectors } from "#/stores/runner/contacts/contactsSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/contacts")({
   component: RouteComponent,

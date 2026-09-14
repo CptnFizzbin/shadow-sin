@@ -1,4 +1,4 @@
-import { SlotManager } from "#/lib/slotUtils.ts"
+import { SlotManager } from "#/utils/slotUtils.ts"
 
 import { ItemDetailsAvailability } from "./itemDetails.Availability.tsx"
 import { ItemDetailsContent } from "./itemDetails.Content.tsx"

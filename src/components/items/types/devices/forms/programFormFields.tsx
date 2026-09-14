@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 
 import { programFormOpts } from "#/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { ProgramType } from "#/system/gear/programData.ts"
+import { ProgramType } from "#/system/model/items/programData.ts"
 
 const splitCamelCase = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
 const titleCase = (s: string) => s.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")

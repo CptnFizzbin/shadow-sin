@@ -3,7 +3,7 @@ import { useCallback } from "react"
 
 import type { RunnerSection } from "#/components/runner/runnerSections.ts"
 import { runnerSections } from "#/components/runner/runnerSections.ts"
-import { NumberUtils } from "#/lib/numberUtils.ts"
+import { NumberUtils } from "#/utils/numberUtils.ts"
 
 import { useRunnerTabs } from "./useRunnerTabs.ts"
 

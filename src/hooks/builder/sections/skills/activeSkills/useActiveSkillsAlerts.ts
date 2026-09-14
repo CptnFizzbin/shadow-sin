@@ -1,8 +1,8 @@
-import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 
 export const useActiveSkillsAlerts = (): AlertInfo[] => {
   const activeSkills = useRunnerSelector(SkillsSelectors.selectActiveSkills)

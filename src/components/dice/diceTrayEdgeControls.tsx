@@ -4,17 +4,17 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { EdgeSelectors } from "#/stores/runner/edge/edgeSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   selectIsRolling,
   selectWasRolled,
   useDiceRollerSelector,
-} from "#/system/dice/diceRoller.selectors.ts"
+} from "#/services/dice/diceRoller.selector.ts"
+import { EdgeSelectors } from "#/state/runner/edge/edge.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const DiceTrayEdgeControls: FC = () => {
   const diceTrayApi = useDiceTray()

@@ -3,10 +3,10 @@ import type { FC } from "react"
 import { useMemo } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import type { ItemDialogProps } from "./itemDialog.tsx"

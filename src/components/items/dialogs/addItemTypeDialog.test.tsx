@@ -1,11 +1,11 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
-import { WeaponType } from "#/system/gear/weaponData.ts"
-import type { AddItemSelection } from "#/system/items/addItemSelection.ts"
+import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { AddItemSelection } from "#/system/model/items/addItemSelection.ts"
+import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
+import { WeaponType } from "#/system/model/items/weaponData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { AddItemTypeDialog } from "./addItemTypeDialog.tsx"

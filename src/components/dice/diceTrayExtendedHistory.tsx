@@ -4,7 +4,7 @@ import pluralize from "pluralize"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 export const DiceTrayExtendedHistory: FC = () => {

@@ -3,13 +3,13 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { LicenseCoveredItemsSection } from "#/components/items/types/licenses/licenseCoveredItemsSection.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useLicenseForm } from "#/hooks/items/types/licenses/forms/useLicenseForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { LicenseData } from "#/system/gear/licenseData.ts"
-import type { SinData } from "#/system/gear/sinData.ts"
-import { isSinData } from "#/system/gear/sinData.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import type { SinData } from "#/system/model/items/sinData.ts"
+import { isSinData } from "#/system/model/items/sinData.ts"
 
 interface LicenseFormDialogProps {
   ctrl: AnyDialogCtrl

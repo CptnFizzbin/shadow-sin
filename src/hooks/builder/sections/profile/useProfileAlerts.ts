@@ -1,6 +1,6 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {
   const addAlert = (alert: Omit<AlertInfo, "section">) => {

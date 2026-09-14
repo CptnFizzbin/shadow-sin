@@ -1,19 +1,19 @@
 import { load } from "js-yaml"
 import { describe, expect, it } from "vitest"
 
-import type { GearTreeNode } from "#/components/runner/exportImport/exportUtils.ts"
-import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
-import type { JsonObject } from "#/lib/jsonUtils.ts"
-import { toJsonValue } from "#/lib/jsonUtils.ts"
+import type { GearTreeNode } from "#/components/exportImport/exportUtils.ts"
+import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/components/exportImport/exportUtils.ts"
 import {
   isEntityWithAttrs,
   isEntityWithDamage,
   isEntityWithItems,
   isEntityWithQualities,
-} from "#/system/entities/entityTraits.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
-import { RunnerMetaSchema } from "#/system/runnerData.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
+} from "#/system/model/entities/entityTraits.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+import { RunnerMetaSchema } from "#/system/model/runnerData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import type { JsonObject } from "#/utils/jsonUtils.ts"
+import { toJsonValue } from "#/utils/jsonUtils.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.2026-04-18.sin?raw"
 import {
   TEST_CHARACTER_ID,

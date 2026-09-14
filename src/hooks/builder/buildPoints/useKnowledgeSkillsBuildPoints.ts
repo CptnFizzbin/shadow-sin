@@ -1,6 +1,6 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
+import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
 import {
   useKnowledgeSkillPoints,
 } from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"

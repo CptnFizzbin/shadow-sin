@@ -1,12 +1,12 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { LicenseData } from "#/system/gear/licenseData.ts"
-import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { LicenseDataCard } from "./licenseDataCard.tsx"

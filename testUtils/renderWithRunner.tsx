@@ -1,10 +1,10 @@
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { runnerDataFactory, type RunnerFactoryAfterBuildFn } from "#/system/runnerData.factory.ts"
-import type { ItemCatalog } from "#/system/items/itemUtils.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { runnerDataFactory, type RunnerFactoryAfterBuildFn } from "#/system/model/runnerData.factory.ts"
+import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { FC, PropsWithChildren } from "react"
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
 import { render } from "@testing-library/react"
-import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
+import { ExportRunnerButton } from "#/components/exportImport/exportRunnerButton.tsx"
 
 export function renderWithRunner(): RunnerDataStore
 export function renderWithRunner(afterBuild: RunnerFactoryAfterBuildFn): RunnerDataStore

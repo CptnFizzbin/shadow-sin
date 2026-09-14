@@ -2,7 +2,7 @@
 import type { FC, ReactNode } from "react"
 import { useContext } from "react"
 
-import { PrototypeSelectionContext } from "#/contexts/ui/prototypeContext.ts"
+import { PrototypeSelectionContext } from "#/components/ui/prototype/prototypeContext.ts"
 
 export interface PrototypeItemProps {
   /**

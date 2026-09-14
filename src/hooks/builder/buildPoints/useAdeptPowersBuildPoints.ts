@@ -1,8 +1,8 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
+import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
+import { isAdept } from "#/components/adeptPowers/viewer/adeptPowersUtils.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const useAdeptPowersBuildPoints = (): BpLineItem => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

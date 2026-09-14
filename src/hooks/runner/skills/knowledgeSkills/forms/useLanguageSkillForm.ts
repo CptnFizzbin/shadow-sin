@@ -1,7 +1,7 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
-import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import type { LanguageSkillData } from "#/system/model/skills/languageSkillData.ts"
 
 interface LanguageSkillFormOptions {
   skill?: LanguageSkillData

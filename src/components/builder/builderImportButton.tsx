@@ -6,7 +6,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 interface BuilderImportButtonProps {
   onImport: (importedRunner: RunnerData) => void

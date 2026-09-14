@@ -1,21 +1,21 @@
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { Combatant } from "#/stores/initiativeTracker/initiativeTrackerData.ts"
+import type { Combatant } from "#/services/initiativeTracker/initiativeTrackerData.ts"
 import {
   addCombatant,
   endRound,
   nextTurn,
   removeCombatant,
   togglePass,
-} from "#/stores/initiativeTracker/initiativeTrackerSlice.actions.ts"
+} from "#/services/initiativeTracker/initiativeTrackerSlice.actions.ts"
 import {
   selectCurrentTurnId,
   selectRound,
   selectSortedCombatants,
-} from "#/stores/initiativeTracker/initiativeTrackerSlice.selectors.ts"
+} from "#/services/initiativeTracker/initiativeTrackerSlice.selectors.ts"
 import {
   useInitiativeTrackerDispatch,
   useInitiativeTrackerSelector,
-} from "#/stores/initiativeTracker/initiativeTrackerStore.ts"
+} from "#/services/initiativeTracker/initiativeTrackerStore.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 export const useInitiativeTracker = () => {
   const dispatch = useInitiativeTrackerDispatch()

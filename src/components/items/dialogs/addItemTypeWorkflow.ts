@@ -1,4 +1,4 @@
-import type { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
+import type { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
 import { createWorkflow, useWorkflow } from "#/components/ui/workflow/createWorkflow.tsx"
 
 export enum AddItemTypeStep {

@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
-import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
-import type { BuilderStore } from "#/stores/builder/builderStore.ts"
+import type { BuilderStore } from "#/state/builder/builderStore.ts"
+import { OutOfContextError } from "#/utils/errors/outOfContextError.ts"
 
 export const BuilderStoreContext = createContext<BuilderStore | null>(null)
 

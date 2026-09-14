@@ -2,9 +2,9 @@ import { act, renderHook, waitFor } from "@testing-library/react"
 import type { ChangeEvent } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { runnerDataToYaml } from "#/components/runner/exportImport/exportUtils.ts"
+import { runnerDataToYaml } from "#/components/exportImport/exportUtils.ts"
 import { Artemis } from "#/data/fixtures/artemis.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 

@@ -1,9 +1,9 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import type { WeaponData } from "#/system/gear/weaponData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { WeaponFormDialog } from "./weaponFormDialog.tsx"

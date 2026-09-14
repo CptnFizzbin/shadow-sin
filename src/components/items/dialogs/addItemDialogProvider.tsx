@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { AddItemDialogContext } from "#/contexts/items/addItemDialogContext.ts"
+import { AddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
 import { useAddItemDialog } from "#/hooks/items/dialogs/useAddItemDialog.tsx"
 
 /**

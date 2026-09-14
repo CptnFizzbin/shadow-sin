@@ -1,5 +1,5 @@
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { JsonObject } from "#/lib/jsonUtils.ts"
+import type { JsonObject } from "#/utils/jsonUtils.ts"
 
 interface OldAttributeValue {
   value: number

@@ -1,12 +1,12 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { WeaponData } from "#/system/gear/weaponData.ts"
-import { WeaponType } from "#/system/gear/weaponData.ts"
-import { ItemType } from "#/system/itemType.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
+import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { WeaponData } from "#/system/model/items/weaponData.ts"
+import { WeaponType } from "#/system/model/items/weaponData.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { WeaponItemDetails } from "./weaponItemDetails.tsx"

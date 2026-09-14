@@ -3,10 +3,10 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { SinRatingField } from "#/components/items/types/licenses/sinRatingField.tsx"
 import { getRandomSinName, getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useSinForm } from "#/hooks/items/types/licenses/forms/useSinForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { SinData } from "#/system/gear/sinData.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { SinData } from "#/system/model/items/sinData.ts"
 
 interface SinFormDialogProps {
   ctrl: AnyDialogCtrl

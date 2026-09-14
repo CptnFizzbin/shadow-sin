@@ -1,7 +1,7 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
   const qualities = useRunnerSelector(QualitiesSelectors.selectAll)

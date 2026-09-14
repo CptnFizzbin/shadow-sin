@@ -1,9 +1,9 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import type { ProgramData } from "#/system/gear/programData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { ProgramData } from "#/system/model/items/programData.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ProgramFormDialog } from "./programFormDialog.tsx"

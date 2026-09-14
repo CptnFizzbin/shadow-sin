@@ -4,11 +4,11 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { AdeptPowersViewerSection } from "#/components/runner/adeptPowers/adeptPowersViewerSection.tsx"
+import { AdeptPowersViewerSection } from "#/components/adeptPowers/viewer/adeptPowersViewerSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { AwakeningType } from "#/system/awakeningType.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 interface Props {}
 

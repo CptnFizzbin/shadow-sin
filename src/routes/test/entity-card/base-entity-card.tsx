@@ -6,12 +6,12 @@ import { RiStarLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC, ReactNode } from "react"
 
-import { EntityCard } from "#/components/entityCard/entityCard.tsx"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import type { Credential } from "#/system/entities/entityTraits.ts"
-import type { EntityData } from "#/system/entityData.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { EntityCard } from "#/components/cards/entityCard/entityCard.tsx"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { EntityData } from "#/system/model/entities/entityData.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { Credential } from "#/system/model/entities/entityTraits.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 
 export const Route = createFileRoute("/test/entity-card/base-entity-card")({
   component: EntityCardTestPage,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { WeaponType } from "#/system/gear/weaponData.ts"
+import { WeaponType } from "#/system/model/items/weaponData.ts"
 
 import migration from "./20260417_00_setDefaultEquippedWeapons.ts"
 

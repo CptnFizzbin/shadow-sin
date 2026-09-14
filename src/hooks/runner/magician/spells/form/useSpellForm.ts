@@ -1,7 +1,6 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { SpellData } from "#/system/magic/spellData.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { SpellData } from "#/system/model/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -10,7 +9,8 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/system/magic/spellData.ts"
+} from "#/system/model/magic/spellData.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 const defaultValues: SpellData = {
   kind: EntityKind.spell,

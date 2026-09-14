@@ -2,12 +2,12 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { DiceResult } from "#/components/system/dice/diceResult.tsx"
+import { DiceResult } from "#/components/dice/diceResult.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+import { selectAllDice, useDiceRollerSelector } from "#/services/dice/diceRoller.selector.ts"
 
 export const DiceTrayDiceDisplay: FC = () => {
   const diceTrayApi = useDiceTray()

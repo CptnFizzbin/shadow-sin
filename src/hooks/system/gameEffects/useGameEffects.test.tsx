@@ -1,11 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { NullUuid } from "#/lib/uuidUtils.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
-import { createItem, createItemMap } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -13,9 +12,10 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/system/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
+} from "#/system/model/magic/spellData.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { GameEffectSelectors } from "./useGameEffects.ts"
 

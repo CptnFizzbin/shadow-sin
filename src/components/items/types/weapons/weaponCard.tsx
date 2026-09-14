@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { CardElementAmmo } from "#/components/entityCard/elements/cardElementAmmo.tsx"
-import { CardElementDicePool } from "#/components/entityCard/elements/cardElementDicePool.tsx"
-import { EntityCard } from "#/components/entityCard/entityCard.tsx"
-import type { ItemCardProps } from "#/components/itemCard/itemCard.tsx"
-import { ItemCard } from "#/components/itemCard/itemCard.tsx"
-import { ItemCardElements } from "#/components/itemCard/itemCardElements.tsx"
+import { CardElementAmmo } from "#/components/cards/entityCard/elements/cardElementAmmo.tsx"
+import { CardElementDicePool } from "#/components/cards/entityCard/elements/cardElementDicePool.tsx"
+import { EntityCard } from "#/components/cards/entityCard/entityCard.tsx"
+import type { ItemCardProps } from "#/components/cards/itemCard/itemCard.tsx"
+import { ItemCard } from "#/components/cards/itemCard/itemCard.tsx"
+import { ItemCardElements } from "#/components/cards/itemCard/itemCardElements.tsx"
 
 /**
  * Concrete typed-card tier from ADR-0010, sitting directly on `ItemCard` — Weapon has no further

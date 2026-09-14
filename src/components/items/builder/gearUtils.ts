@@ -1,0 +1,79 @@
+import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
+import { getLicenseAvailability } from "#/components/items/types/licenses/licenseUtils.ts"
+import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { isImplant } from "#/system/model/items/implantData.ts"
+import { isLicenseData } from "#/system/model/items/licenseData.ts"
+import { isSinData } from "#/system/model/items/sinData.ts"
+
+import { SectionHeader } from "./sectionHeader.tsx"
+
+type ItemCostInfo = {
+  cost?: number
+  quantity?: number
+}
+
+export const getTotalCost = (...items: ItemCostInfo[]) => {
+  return items
+    .map((item) => ({
+      cost: item.cost ?? 0,
+      quantity: item.quantity ?? 1,
+    }))
+    .map(({ cost, quantity }) => cost * quantity)
+    .reduce((sum, itemCost) => sum + itemCost, 0)
+}
+
+export const useGearAvailabilityIssues = () => {
+  const gear = useRunnerSelector(ItemSelectors.selectAll)
+  const allGear = Object.values(gear)
+
+  const invalidSections = new Set<SectionHeader>()
+  let totalInvalidCount = 0
+
+  const genericSectionKeys: Partial<
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "misc">
+  > = {
+    [SectionHeader.Weapons]: "weapons",
+    [SectionHeader.Armor]: "armor",
+    [SectionHeader.Vehicles]: "vehicles",
+    [SectionHeader.Devices]: "devices",
+    [SectionHeader.Misc]: "misc",
+  }
+
+  Object.values(SectionHeader).forEach((sectionName) => {
+    if (sectionName === SectionHeader.Licenses) {
+      const sins = allGear.filter(isSinData)
+      const licenses = allGear.filter(isLicenseData)
+
+      const sinInvalid = sins.some((s) => getSinAvailability(s.isReal, s.rating ?? 0).rating > GearMaxAvailability)
+      const licInvalid = licenses.some((l) => getLicenseAvailability(l.isReal, l.rating ?? 0).rating > GearMaxAvailability)
+
+      if (sinInvalid || licInvalid) {
+        invalidSections.add(sectionName)
+        totalInvalidCount += sins.filter((s) => getSinAvailability(s.isReal, s.rating ?? 0).rating > GearMaxAvailability).length + licenses.filter((l) => getLicenseAvailability(l.isReal, l.rating ?? 0).rating > GearMaxAvailability).length
+      }
+    } else if (sectionName === SectionHeader.Cyberware) {
+      const invalidImplants = allGear.filter(isImplant)
+        .filter((implant) => (implant.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability)
+      if (invalidImplants.length > 0) {
+        invalidSections.add(sectionName)
+        totalInvalidCount += invalidImplants.length
+      }
+    } else if (sectionName === SectionHeader.Lifestyle) {
+      // no availability to check
+    } else {
+      const sectionKey = genericSectionKeys[sectionName]
+      if (sectionKey) {
+        const items = allGear.filter((i) => i.itemType === sectionKey)
+        const invalidItems = items.filter((it) => (it.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability)
+        if (invalidItems.length > 0) {
+          invalidSections.add(sectionName)
+          totalInvalidCount += invalidItems.length
+        }
+      }
+    }
+  })
+
+  return { invalidSections, totalInvalidCount }
+}

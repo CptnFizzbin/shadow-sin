@@ -1,7 +1,7 @@
-import type { SpendKarmaSection } from "#/components/improvements/spendKarmaSections.tsx"
-import { SPEND_KARMA_SECTIONS } from "#/components/improvements/spendKarmaSections.tsx"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import type { SpendKarmaSection } from "#/components/karma/improvements/spendKarmaSections.tsx"
+import { SPEND_KARMA_SECTIONS } from "#/components/karma/improvements/spendKarmaSections.tsx"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 /** Sections visible for the current runner, per each section's `visibleFor` gate. */
 export const useVisibleSections = (): SpendKarmaSection[] => {

@@ -1,7 +1,7 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { Combatant, SkillEntry, WeaponEntry } from "#/stores/initiativeTracker/initiativeTrackerData.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
-import { AttributeOrder } from "#/system/attributeKey.ts"
+import type { Combatant, SkillEntry, WeaponEntry } from "#/services/initiativeTracker/initiativeTrackerData.ts"
+import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeOrder } from "#/system/model/attributes/attributeKey.ts"
 
 export type CombatantInput = Omit<Combatant, "id" | "passesCompleted">
 

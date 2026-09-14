@@ -13,11 +13,11 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useGearFilter } from "#/hooks/items/gearHooks.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import type { LicenseData } from "#/system/gear/licenseData.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { LicenseData } from "#/system/model/items/licenseData.ts"
 
 interface AddCoveredItemDialogProps extends ControlledDialogProps<boolean> {
   license: LicenseData

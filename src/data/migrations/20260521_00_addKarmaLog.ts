@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { KarmaLedgerEntry } from "#/system/karma/karmaLedgerEntry.ts"
+import type { KarmaLedgerEntry } from "#/system/model/karma/karmaLedgerEntry.ts"
 
 const migration: CharacterMigration<{
   karma?: {

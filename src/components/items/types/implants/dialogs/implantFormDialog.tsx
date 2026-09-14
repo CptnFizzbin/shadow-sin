@@ -7,8 +7,8 @@ import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { implantFieldMap, useImplantForm } from "#/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { ImplantData } from "#/system/gear/implantData.ts"
+import type { ImplantData } from "#/system/model/items/implantData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface CyberwareFormDialogProps {
   implant?: ImplantData

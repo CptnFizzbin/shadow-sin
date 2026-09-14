@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
 
 import migration from "./20260416_00_addVehicleCategory.ts"
 

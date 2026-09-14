@@ -1,8 +1,8 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { VehicleData } from "#/system/model/items/vehicleData.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { VehicleFormDialog } from "./vehicleFormDialog.tsx"

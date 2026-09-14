@@ -1,11 +1,11 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/system/entityKind.ts"
-import type { ProgramData } from "#/system/gear/programData.ts"
-import { ProgramType } from "#/system/gear/programData.ts"
-import { ItemType } from "#/system/itemType.ts"
-import { getItemCatalog } from "#/system/runnerTraits.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { ProgramData } from "#/system/model/items/programData.ts"
+import { ProgramType } from "#/system/model/items/programData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ProgramDataCard } from "./programDataCard.tsx"

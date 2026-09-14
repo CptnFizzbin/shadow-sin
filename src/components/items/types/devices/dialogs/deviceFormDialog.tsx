@@ -3,11 +3,11 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { DeviceFormFields } from "#/components/items/types/devices/forms/deviceFormFields.tsx"
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { deviceFieldMap, useDeviceForm } from "#/hooks/items/types/devices/forms/useDeviceForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { DeviceData } from "#/system/gear/deviceData.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { DeviceData } from "#/system/model/items/deviceData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface DeviceFormDialogProps {
   ctrl: AnyDialogCtrl

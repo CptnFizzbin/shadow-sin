@@ -1,8 +1,8 @@
 import { useState } from "react"
 
 import type { ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
-import { NullUuid } from "#/lib/uuidUtils.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 export interface ItemDialogOptionConfig {
   forced?: boolean
