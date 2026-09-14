@@ -4,14 +4,13 @@ import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
-
-import { NuyenField } from "./nuyenField.tsx"
+import { NuyenInput } from "./nuyenInput.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 
 const ControlledNuyenField: FC<{ initial?: number }> = ({ initial }) => {
   const [value, setValue] = useState(initial)
-  return <NuyenField value={value} onChange={setValue} />
+  return <NuyenInput value={value} onChange={setValue} />
 }
 
 function renderField(initial?: number) {

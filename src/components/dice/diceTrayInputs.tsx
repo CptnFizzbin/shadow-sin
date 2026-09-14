@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"

@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { z } from "zod"
 
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { contactFormOpts } from "#/hooks/runner/contacts/form/useContactForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"

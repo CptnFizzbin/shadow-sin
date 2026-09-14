@@ -1,19 +1,19 @@
 import type { FC } from "react"
 
-import type { NuyenFieldProps } from "#/components/ui/form/fields/nuyenField.tsx"
-import { NuyenField as NuyenInputField } from "#/components/ui/form/fields/nuyenField.tsx"
+import type { NuyenInputProps } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
+import { NuyenInput } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
 
 import { useFieldErrors } from "./useFieldError.ts"
 
-type NuyenFormFieldProps = Omit<NuyenFieldProps, "value" | "onChange">
+type NuyenFormFieldProps = Omit<NuyenInputProps, "value" | "onChange">
 
-export const NuyenFormField: FC<NuyenFormFieldProps> = ({ ...props }) => {
+export const NuyenField: FC<NuyenFormFieldProps> = ({ ...props }) => {
   const field = useFieldContext<number | undefined>()
   const errors = useFieldErrors()
 
   return (
-    <NuyenInputField
+    <NuyenInput
       {...props}
       error={errors ? true : props.error}
       helperText={errors ? errors.join(", ") : props.helperText}

@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"

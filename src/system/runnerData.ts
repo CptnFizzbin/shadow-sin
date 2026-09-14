@@ -13,6 +13,7 @@ import type {
 } from "./entities/entityTraits.ts"
 import type { EntityWithSkills } from "./entities/traits/entityWithSkills.ts"
 import type { EntityKind } from "./entityKind.ts"
+import type { ExtendedTestEntry } from "./extendedTestData.ts"
 import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
 import type { LifestyleType } from "./lifestyleType.ts"
 import type { LoanData } from "./loanData.ts"
@@ -138,6 +139,8 @@ export interface RunnerData extends RunnerTraits {
 
   qualities: QualityData[]
   contacts: ContactData[]
+  /** Long-term Extended Tests tracked on the Notes page — see `ExtendedTestEntry`. */
+  extendedTests: ExtendedTestEntry[]
   tradition: TraditionData | null
   spells: SpellData[]
   complexForms: ComplexFormData[]
