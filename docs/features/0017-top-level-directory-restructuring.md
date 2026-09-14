@@ -125,6 +125,46 @@ Three files stay loose at `system/` root, deliberately:
   carries a `SourceData` citation) rather than something one domain subfolder could own without
   every other domain reaching across into it.
 
+### `model/` vs `formulas/` split
+
+`system/<domain>/` splits one level further, by kind before domain:
+`system/model/<domain>/` and `system/formulas/<domain>/`. The split rule:
+
+- **`model/`** — interfaces, types, Zod schemas, enums, static registries/catalogs of data,
+  type-guard/predicate functions, and a type's own factory function (e.g. `runnerData.factory.ts`
+  stays beside `runnerData.ts` — now both under `model/`, still loose at its root per the exception
+  above).
+- **`formulas/`** — functions whose job is computing a derived SR4A rule value: the `XxxFormulas`
+  namespaces ADR-0015 already establishes, plus the pre-ADR-0015 loose calculation functions
+  everywhere else that haven't been wrapped in that convention yet (unchanged by this doc — see
+  Out of Scope).
+
+Most files sort cleanly by their existing role — `weaponData.ts`, `qualityData.ts`, every enum
+(`entityKind.ts`, `improvementType.ts`, `gameEffectType.ts`), and `entities/traits/*.ts` are
+`model/`; `aiAttrFormulas.ts`, `encumbranceUtils.ts`'s three calculators, and
+`improvements/improvementUtils.ts`'s cost/apply functions are `formulas/`. Three complications
+found while checking, worth flagging rather than papering over:
+
+- **A few files mix both kinds and need an actual split, not just a move**:
+  `attributes/attributeCatalog.ts` (catalog *types* + `attrValue`/`attrMin` compute functions) and
+  `items/itemUtils.ts` (`ItemCatalog`/`AnyItemData` *types* + the `toItemCatalogTree` transform).
+  Splitting these is a small, mechanical extraction (same discipline as 0016's own Slices), not a
+  behavior change — but it's not a pure file move either, so it should be called out as its own
+  PRD Issue step rather than bundled silently into a bulk relocation.
+- **`karma/improvements/improvementSelectors.ts` is neither** — it's a Selector namespace
+  (`ImprovementsSelectors`, built with `createSelector` against `ImprovementsState`), not a type or
+  a rule calculation. It's misfiled in `system/` today; it belongs in `services/improvements/`
+  alongside `ImprovementStore`, per the ad hoc-store table above, not in `model/` or `formulas/` at
+  all.
+- **`karma/improvements/improvementDescription.ts`'s `describeImprovement`** (formats a display
+  string) doesn't cleanly fit either bucket — it's not a type/predicate and it doesn't compute a
+  game-rule value. Filed under `formulas/` as the closer fit, flagged here as a judgment call
+  rather than a confident classification.
+
+Exhaustive per-file membership for every remaining domain isn't enumerated here — same discipline
+as the `components/` unification below: the rule and the representative examples are settled, the
+full file list is PRD-Issue-level detail.
+
 ## `components/` domain unification
 
 Per-domain shape:
@@ -178,6 +218,10 @@ ownership) is explicitly out of scope for this doc to touch.
   moves. ADR-0010's no-import-cycle rule is about module dependencies, not directory nesting, so
   nesting under `components/cards/` doesn't conflict with it.
 - Existing `*.test.ts`/`*.test.tsx` files move with the source file they test, unchanged.
+- The `system/model/` vs `formulas/` split is mechanical for files that are already purely one
+  kind. `attributeCatalog.ts` and `itemUtils.ts` are the exception — splitting their mixed
+  type/compute content is a small, deliberate extraction, called out as its own step rather than
+  folded silently into a bulk `git mv`.
 
 ## Domain Notes
 
@@ -198,9 +242,10 @@ directories — see Out of Scope for what it deliberately doesn't touch.
       slices mostly share that property (card nesting, dice renaming, items/gear consolidation,
       helpers retirement are independent), but the `components/` domain unification is large
       enough it likely needs its own multi-PR breakdown per domain, not one PR for all of it.
-- [ ] **Exact per-domain file membership for the `components/` unification.** This doc names the
-      domains that unify and where they promote to, but doesn't enumerate every file — that's
-      PRD-Issue-level detail once slicing is agreed.
+- [ ] **Exact per-domain file membership for the `components/` unification and the `system/`
+      model/formulas split.** This doc names the domains that unify/split and gives representative
+      examples, but doesn't enumerate every file in either case — that's PRD-Issue-level detail
+      once slicing is agreed.
 
 ## Out of Scope
 
