@@ -67,15 +67,18 @@ subfolder (never flattened into a single bag of files):
 | `components/` | UI, one folder per domain, `ui/` for cross-domain shared primitives | `components/` (reshaped) |
 
 Ad hoc singleton stores and contexts follow one rule instead of getting their own container:
-**colocate with the one feature that owns them; only promote to a shared container if actually
-consumed outside that feature.**
+**colocate with the one feature that owns them; only promote to a shared container if something
+outside that feature reaches into the store's internals directly** — reading it exclusively
+through one feature-owned hook doesn't count as reaching in, even from several unrelated callers,
+since the hook (not the store shape) is the actual public surface. A colocated store's accessor
+hook moves with it instead of joining `hooks/`.
 
 | Store/context | Consumers | Verdict |
 |---|---|---|
-| `DialogCtrl` | `items/`, `karma`, `magician/spirits`, `skills`, `combat`, `defenseCalculator`, `ui/dialog` itself | Shared — stays in `components/ui/dialog/` (no move) |
-| `DiceRoller` | `attackCalculator`, `licenseCheck`, builder's nuyen section, dice tray | Shared — moves to `state/dice/` |
+| `DialogCtrl` | `items/`, `karma`, `magician/spirits`, `skills`, `combat`, `defenseCalculator`, `ui/dialog` itself — a reusable primitive many independent dialogs construct their own instance from, not one singleton behind one hook | Shared — stays in `components/ui/dialog/` (no move) |
+| `DiceRoller` | `attackCalculator`, `licenseCheck`, builder's nuyen section, dice tray — but only ever through `useDiceRoller()`, never its `.selectors`/`.state` directly | Adhoc — colocates under `components/dice/` (store, selectors, state, and the `useDiceRoller` hook all move together) |
 | `ImprovementStore` | Spend Karma dialog only | Adhoc — colocates under the karma domain's components |
-| `DiceTrayApi` | Dice Tray UI only | Adhoc — colocates under the dice-tray domain's components |
+| `DiceTrayApi` | Dice Tray UI only | Adhoc — colocates under the dice-tray domain's components (merges with `DiceRoller`'s new home) |
 | `InitiativeTrackerStore` | Initiative Tracker feature only | Adhoc — colocates under the initiative-tracker domain's components |
 | `contexts/entity/entityProvider.tsx` | Cross-cutting (ADR-0016 Phase 1 builds on it directly) | Shared — stays in `contexts/` |
 | `contexts/items/addItemDialogContext.ts`, `contexts/improvements/spendKarmaDialogContext.tsx`, `contexts/dice/diceTrayContext.ts`, `contexts/ui/prototypeContext.ts` | Single feature each | Adhoc — colocate with their components |
