@@ -14,30 +14,28 @@ import { ExportRunnerButton } from "#/components/exportImport/exportRunnerButton
 import { GearBuilderSection } from "#/components/items/builder/gearBuilderSection.tsx"
 import { SpellsBuilderSection } from "#/components/magician/builder/spellsBuilderSection.tsx"
 import { EditorNavDrawer } from "#/components/nav/builder/editorNavDrawer.tsx"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-
-import { BuilderImportButton } from "./builderImportButton.tsx"
-import { FinalizeSection } from "./finalizeSection.tsx"
 import { EditorPageNav } from "#/components/nav/builder/editorPageNav.tsx"
 import type { EditorTabId } from "#/components/nav/builder/editorTabId.ts"
 import { builderTabOrder, FINALIZE_TAB_ID, getVisibleTabOrder } from "#/components/nav/builder/editorTabId.ts"
 import { EditorTabs } from "#/components/nav/builder/editorTabs.tsx"
-
-import { BuilderSectionId } from "./builderSectionId.ts"
-
 import { ProfileBuilderSection } from "#/components/profile/builder/profileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/qualities/builder/qualitiesBuilderSection.tsx"
+import { ActiveSkillsBuilderSection } from "#/components/skills/builder/activeSkills/activeSkillsBuilderSection.tsx"
+import { KnowledgeSkillsBuilderSection } from "#/components/skills/builder/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
+import { BpSummaryFooter } from "#/components/summary/bpSummaryFooter.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "#/components/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
 import { SpritesBuilderSection } from "#/components/technomancer/builder/sprites/spritesBuilderSection.tsx"
-import { ActiveSkillsBuilderSection } from "#/components/skills/builder/activeSkills/activeSkillsBuilderSection.tsx"
-import { KnowledgeSkillsBuilderSection } from "#/components/skills/builder/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
-import { BpSummaryFooter } from "#/components/summary/bpSummaryFooter.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+
+import { BuilderImportButton } from "./builderImportButton.tsx"
+import { BuilderSectionId } from "./builderSectionId.ts"
+import { FinalizeSection } from "./finalizeSection.tsx"
 
 interface RunnerBuilderContentProps {
   reset: () => void

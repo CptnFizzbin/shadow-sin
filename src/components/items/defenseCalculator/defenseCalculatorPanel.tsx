@@ -18,7 +18,7 @@ import DamageTrack from "#/components/damage/damageTrack.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/dicePool/dicePool.tsx"
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import {

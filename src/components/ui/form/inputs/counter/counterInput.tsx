@@ -10,7 +10,7 @@ import { useState } from "react"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 import { NumberUtils } from "#/utils/numberUtils.ts"
 
-import styles from "./counter.module.css"
+import styles from "./counterInput.module.css"
 
 type OmittedProps =
   | "value"

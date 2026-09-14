@@ -181,6 +181,7 @@ export default defineConfig([
     // the intended shape, not an accidental shadow.
     files: [
       "**/*.selectors.ts",
+      "**/*.selector.ts",
     ],
     rules: {
       "@typescript-eslint/no-namespace": "off",

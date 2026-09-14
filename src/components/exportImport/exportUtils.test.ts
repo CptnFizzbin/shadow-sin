@@ -289,6 +289,18 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     expect(Object.values(getItemCatalog(restored))[0].name).toBe("Sara McCabe")
   })
 
+  it("doesn't leave the exported gear tree on the restored RunnerData", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
+    )
+    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
+
+    const yaml = runnerDataToYaml(original)
+    const restored = yamlToRunnerData(yaml)
+
+    expect(restored).not.toHaveProperty("gear")
+  })
+
   it("round-trips a runner with nested gear (SIN + licenses)", () => {
     const gear = createItemMap(
       createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, isReal: false, rating: 4 }, [

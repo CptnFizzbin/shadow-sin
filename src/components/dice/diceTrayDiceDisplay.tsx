@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { selectAllDice, useDiceRollerSelector } from "#/services/dice/diceRoller.selector.ts"

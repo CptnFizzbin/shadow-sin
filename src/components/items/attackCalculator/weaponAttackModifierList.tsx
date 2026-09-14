@@ -3,7 +3,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

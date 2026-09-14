@@ -1,4 +1,5 @@
-import { renderHook } from "@testing-library/react"
+import { act, renderHook } from "@testing-library/react"
+import { produce } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
@@ -78,6 +79,39 @@ describe("useEntitySelector", () => {
       () => useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.strength }),
       { wrapper: Wrapper },
     )
+
+    // Assert
+    expect(result.current).toBe(6)
+  })
+
+  it("stays in sync when the Runner store updates, via the default RunnerEntityProvider", () => {
+    // Regression test: `RunnerEntityProvider` (which `useEntitySelector` falls back to when no
+    // explicit `EntityProvider` is nested underneath) used to read the runner with `useRunner()`
+    // calling `store.getState()` directly — a non-reactive snapshot — so selectors like
+    // `AttrSelectors.selectValue` kept returning whatever attributes were current the last time
+    // this subtree happened to render for some unrelated reason (e.g. never, on mount) instead of
+    // the live store value. See the free Knowledge skill points calculation
+    // (`useKnowledgeSkillPoints`), which silently froze at the metatype's default attributes.
+
+    // Arrange
+    const runnerStore = new RunnerDataStore(runnerDataFactory())
+    const Wrapper: FC<PropsWithChildren> = ({ children }) => (
+      <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
+    )
+
+    const { result } = renderHook(
+      () => useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic }),
+      { wrapper: Wrapper },
+    )
+
+    expect(result.current).toBe(1) // Human metatype default
+
+    // Act — mimic AttrIncrementButton's onClick exactly.
+    act(() => {
+      runnerStore.setState(produce((draft) => {
+        draft.attributes[AttributeKey.logic] = 6
+      }))
+    })
 
     // Assert
     expect(result.current).toBe(6)

@@ -3,6 +3,7 @@ import { z } from "zod"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import type { AttributeCatalog } from "./attributes/attributeCatalog.ts"
+import type { ExtendedTestEntry } from "./checks/extendedTestData.ts"
 import type { ContactData } from "./contacts/contactData.ts"
 import type { EntityKind } from "./entities/entityKind.ts"
 import type {
@@ -138,6 +139,8 @@ export interface RunnerData extends RunnerTraits {
 
   qualities: QualityData[]
   contacts: ContactData[]
+  /** Long-term Extended Tests tracked on the Notes page — see `ExtendedTestEntry`. */
+  extendedTests: ExtendedTestEntry[]
   tradition: TraditionData | null
   spells: SpellData[]
   complexForms: ComplexFormData[]

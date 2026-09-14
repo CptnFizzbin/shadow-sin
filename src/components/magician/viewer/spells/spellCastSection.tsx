@@ -8,7 +8,7 @@ import { darken, lighten } from "@mui/material/styles"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { withTheme } from "#/integrations/mui/muiUtils.ts"

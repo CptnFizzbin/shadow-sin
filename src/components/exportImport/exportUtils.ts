@@ -112,11 +112,12 @@ export function yamlToRunnerData(
   const parsed = load(yamlContent) as JsonObject
   const isOldFormat = "characterId" in parsed
   const rawGear: unknown = parsed.gear
+  const { gear: _gear, ...parsedWithoutGear } = parsed
 
   const payload = isOldFormat
     ? parsed
     : {
-        ...parsed,
+        ...parsedWithoutGear,
         _data_: {
           ...(parsed._data_ as object | undefined),
           items: gearFromTree(Array.isArray(rawGear) ? (rawGear as GearTreeNode[]) : []),

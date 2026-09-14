@@ -238,6 +238,7 @@ export const Hexen: RunnerData = {
 
   qualities: [],
   contacts: [],
+  extendedTests: [],
   powers: [],
   complexForms: [],
   sprites: [],

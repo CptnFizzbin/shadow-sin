@@ -11,6 +11,7 @@ import { complexFormsReducer } from "./complexForms/complexForms.state.ts"
 import { contactsReducer } from "./contacts/contacts.state.ts"
 import { damageReducer } from "./damage/damage.state.ts"
 import { edgeReducer } from "./edge/edge.state.ts"
+import { extendedTestsReducer } from "./extendedTests/extendedTests.state.ts"
 import { featureFlagsReducer } from "./featureFlags/featureFlags.state.ts"
 import { matrixReducer } from "./gameState/matrix/matrix.state.ts"
 import { initiativeReducer } from "./initiative/initiative.state.ts"
@@ -88,6 +89,7 @@ const domainReducer = combineReducers({
   reputation: reputationReducer,
   biology: biologyReducer,
   contacts: contactsReducer,
+  extendedTests: extendedTestsReducer,
   skills: skillsReducer,
   spells: spellsReducer,
   spirits: spiritsReducer,

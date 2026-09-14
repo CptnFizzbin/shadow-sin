@@ -12,13 +12,10 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
-import {
-  DefaultFakeLicenseRating,
-  getLicenseCost,
-} from "#/components/items/types/licenses/licenseUtils.ts"
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import { DefaultFakeLicenseRating, getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
