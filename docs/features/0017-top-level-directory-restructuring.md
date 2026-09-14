@@ -50,6 +50,10 @@ top-level container, not just `components/`.
   by name** (`attributes`, `biology`, `contacts`, `finances`, `gear`/`gearPage`, `karma`,
   `profile`, `qualities`, `skills`) but live under two different parents, so the two halves of one
   domain's UI aren't found together.
+- **21 of `system/`'s own files sit loose at its root** with no rule for which stay there and
+  which get a domain folder — `contactData.ts`, `metatypeData.ts`, and `qualityData.ts` have no
+  home even though `contacts`, `biology`, and `qualities` are already established domain names one
+  layer up, in `state/` and `components/`.
 - **Business logic and display code are mixed inside the same folder** for every ad hoc singleton
   store — `DiceRoller`/`DiceTrayApi`/`ImprovementStore`/`InitiativeTrackerStore`/`DialogCtrl`'s
   actual store/selector/state files sit in the same folder as the dialogs and display components
@@ -90,6 +94,36 @@ colocate with the one feature that owns them.
 | `InitiativeTrackerStore` | Initiative Tracker feature only | Business logic → `services/initiativeTracker/`. Display stays in `components/initiativeTracker/` |
 | `contexts/entity/entityProvider.tsx` | Cross-cutting (ADR-0016 Phase 1 builds on it directly) | Shared — stays in `contexts/` |
 | `contexts/items/addItemDialogContext.ts`, `contexts/improvements/spendKarmaDialogContext.tsx`, `contexts/dice/diceTrayContext.ts`, `contexts/ui/prototypeContext.ts` | Single feature each | Adhoc — colocate with their components |
+
+## `system/` file-level reorganization
+
+`system/` already sorts most of its content into `<domain>/` subfolders, but 21 files still sit
+loose at `system/` root with no rule for which stay there and which don't. Sorting them the same
+way as everything else:
+
+| Destination | Absorbs |
+|---|---|
+| `attributes/` *(existing)* | `attributeInfo.ts`, `attributeKey.ts`, `movementData.ts` (a Body/Quickness-derived stat table, same category as `attributeInfo.ts`) |
+| `items/` *(existing, absorbing `gear/`)* | `itemData.ts`, `itemType.ts`, `availabilityInfo.ts` (the Item legality/rating term) |
+| `magic/` *(existing)* | `awakeningType.ts` |
+| `entities/` *(existing)* | `entityData.ts`, `entityKind.ts`, `damageTrackKey.ts` (pairs with `entities/traits/entityWithDamage.ts`) |
+| `contacts/` **(new)** | `contactData.ts`, `favourData.ts` (a Contact-legwork mechanic) |
+| `finances/` **(new)** | `lifestyleType.ts`, `loanData.ts` |
+| `biology/` **(new)** | `metatypeData.ts` |
+| `qualities/` **(new)** | `qualityData.ts` |
+
+The four new folders match domain names that already exist one layer up (`state/runner/biology/`,
+`.../contacts/`, `.../qualities/`; `components/finances/`) — `system/` was the one layer still
+missing them.
+
+Three files stay loose at `system/` root, deliberately:
+
+- `runnerData.ts`, `runnerData.factory.ts`, `runnerTraits.ts` — `RunnerData` is "the root domain
+  type" (AGENTS.md); nesting it inside a domain folder would bury the one type everything else in
+  `system/` ultimately composes into.
+- `sourceData.ts`, `systemValues.ts` — genuinely cross-domain primitives (every domain's data
+  carries a `SourceData` citation) rather than something one domain subfolder could own without
+  every other domain reaching across into it.
 
 ## `components/` domain unification
 
