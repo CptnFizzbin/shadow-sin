@@ -39,8 +39,6 @@ import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderSectionId } from "./builderSectionId.ts"
 import { FinalizeSection } from "./finalizeSection.tsx"
 
-
-
 interface RunnerEditorContentProps {
   onCancel: () => void
   onImport: (runner: RunnerData) => void
