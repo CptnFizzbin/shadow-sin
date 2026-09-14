@@ -68,7 +68,6 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
 }
 
 export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loadRunner, onCancel }) => {
-  const [isBpPanelExpanded] = useState(false)
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
@@ -88,73 +87,65 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
 
   return (
     <Stack>
-      <Stack
-        sx={{
-          opacity: isBpPanelExpanded ? 0.6 : 1,
-          transition: "opacity 0.2s ease",
-          pointerEvents: isBpPanelExpanded ? "none" : "auto",
-        }}
-      >
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+      <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="small"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Stack direction="row">
+          <BuilderImportButton onImport={loadRunner} />
+          <ExportRunnerButton />
           <Button
             variant="outlined"
-            color="inherit"
+            color="warning"
             size="small"
-            onClick={onCancel}
+            onClick={() => reset()}
           >
-            Cancel
+            Reset
           </Button>
-          <Stack direction="row">
-            <BuilderImportButton onImport={loadRunner} />
-            <ExportRunnerButton />
-            <Button
-              variant="outlined"
-              color="warning"
-              size="small"
-              onClick={() => reset()}
-            >
-              Reset
-            </Button>
-          </Stack>
         </Stack>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
-
-          <IconButton
-            onClick={() => setNavDrawerOpen(true)}
-            aria-label="Open page menu"
-            sx={{ flexShrink: 0 }}
-          >
-            <RiMenuLine />
-          </IconButton>
-        </Box>
-
-        <EditorNavDrawer
-          open={navDrawerOpen}
-          onClose={() => setNavDrawerOpen(false)}
-          value={activeTab}
-          tabOrder={tabOrder}
-          onSelect={setActiveTab}
-        />
-
-        <BuildPointsSummary />
-
-        <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
-          <Stack>
-            <EditorPageNav
-              value={activeTab}
-              isFirst={isFirst}
-              isLast={isLast}
-              onPrev={prevTab}
-              onNext={nextTab}
-              onFinalize={goToFinalize}
-            />
-
-            {ActiveTabComponent && <ActiveTabComponent />}
-          </Stack>
-        </SwipeSurface>
       </Stack>
+
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <EditorTabs value={activeTab} tabOrder={tabOrder} onChange={setActiveTab} />
+
+        <IconButton
+          onClick={() => setNavDrawerOpen(true)}
+          aria-label="Open page menu"
+          sx={{ flexShrink: 0 }}
+        >
+          <RiMenuLine />
+        </IconButton>
+      </Box>
+
+      <EditorNavDrawer
+        open={navDrawerOpen}
+        onClose={() => setNavDrawerOpen(false)}
+        value={activeTab}
+        tabOrder={tabOrder}
+        onSelect={setActiveTab}
+      />
+
+      <BuildPointsSummary />
+
+      <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
+        <Stack>
+          <EditorPageNav
+            value={activeTab}
+            isFirst={isFirst}
+            isLast={isLast}
+            onPrev={prevTab}
+            onNext={nextTab}
+            onFinalize={goToFinalize}
+          />
+
+          {ActiveTabComponent && <ActiveTabComponent />}
+        </Stack>
+      </SwipeSurface>
     </Stack>
   )
 }
