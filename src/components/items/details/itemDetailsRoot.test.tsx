@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/system/entityKind.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"

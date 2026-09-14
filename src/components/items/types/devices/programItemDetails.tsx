@@ -2,10 +2,10 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import type { ProgramData } from "#/system/gear/programData.ts"
+import { isNewItem } from "#/state/runner/items/items.actions.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import type { ProgramData } from "#/system/model/items/programData.ts"
 
 import { useProgramFormDialog } from "./dialogs/programFormDialog.tsx"
 

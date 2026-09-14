@@ -1,13 +1,13 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { EntityCardLeftAction } from "#/components/entityCard/entityCard.tsx"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { WeaponData } from "#/system/gear/weaponData.ts"
-import { isFirearmData, isMeleeWeaponData } from "#/system/gear/weaponData.ts"
+import type { EntityCardLeftAction } from "#/components/cards/entityCard/entityCard.tsx"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { WeaponData } from "#/system/model/items/weaponData.ts"
+import { isFirearmData, isMeleeWeaponData } from "#/system/model/items/weaponData.ts"
 
 import { WeaponCard } from "./weaponCard.tsx"
 

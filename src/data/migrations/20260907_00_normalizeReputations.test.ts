@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { ReputationStatType } from "#/system/reputation/reputationLedgerEntry.ts"
+import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 
 import migration from "./20260907_00_normalizeReputations.ts"
 

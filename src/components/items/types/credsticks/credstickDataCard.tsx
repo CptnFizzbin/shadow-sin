@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemCard } from "#/components/cards/itemCard/itemCard.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { CredstickData } from "#/system/gear/credstickData.ts"
-import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/gear/credstickData.ts"
+import type { CredstickData } from "#/system/model/items/credstickData.ts"
+import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/model/items/credstickData.ts"
 
 interface CredstickDataCardProps {
   credstick: CredstickData

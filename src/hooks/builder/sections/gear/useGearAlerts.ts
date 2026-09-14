@@ -1,13 +1,13 @@
 import pluralize from "pluralize"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { useGearAvailabilityIssues } from "#/components/builder/sections/gear/gearUtils.ts"
+import { useGearAvailabilityIssues } from "#/components/items/builder/gearUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useGearBuildPoints } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()

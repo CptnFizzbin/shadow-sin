@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { Fragment, useId, useRef, useState } from "react"
 
-import type { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import type { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 
 import { useDialogCtrl } from "./useDialogCtrl.ts"
 

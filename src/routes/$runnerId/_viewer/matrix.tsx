@@ -1,16 +1,16 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { KnownNodesList } from "#/components/runner/matrix/knownNodesList.tsx"
-import { MatrixProgramsSection } from "#/components/runner/matrix/matrixProgramsSection.tsx"
-import DamageTrack from "#/components/system/damage/damageTrack.tsx"
+import DamageTrack from "#/components/damage/damageTrack.tsx"
+import { KnownNodesList } from "#/components/matrix/knownNodesList.tsx"
+import { MatrixProgramsSection } from "#/components/matrix/matrixProgramsSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import { DamageSelectors } from "#/stores/runner/damage/damageSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/matrix")({
   component: RouteComponent,

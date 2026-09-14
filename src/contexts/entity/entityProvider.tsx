@@ -3,12 +3,12 @@ import { createContext, useContext } from "react"
 
 import { useRunner } from "#/contexts/runner/runnerStore.context.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
-import type { EntityScope } from "#/stores/entityScope.ts"
-import { getEntityScope } from "#/stores/entityScope.ts"
-import type { EntityData } from "#/system/entityData.ts"
-import type { ItemCatalog } from "#/system/items/itemUtils.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import type { EntityScope } from "#/state/entityScope.ts"
+import { getEntityScope } from "#/state/entityScope.ts"
+import type { EntityData } from "#/system/model/entities/entityData.ts"
+import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+import { OutOfContextError } from "#/utils/errors/outOfContextError.ts"
 
 export interface EntitySelectorState {
   runner: RunnerData

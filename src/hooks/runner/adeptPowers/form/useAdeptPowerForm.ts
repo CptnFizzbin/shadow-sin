@@ -1,8 +1,8 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
-import { AdeptPowerDataSchema } from "#/system/powers/adeptPowerData.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
+import { AdeptPowerDataSchema } from "#/system/model/powers/adeptPowerData.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 type AdeptPowerFormOptions =
   | { mode: "create", onSubmit: (values: AdeptPowerData) => void }

@@ -3,8 +3,8 @@ import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 interface ItemDialogActionsProps {
   isAcquireMode: boolean

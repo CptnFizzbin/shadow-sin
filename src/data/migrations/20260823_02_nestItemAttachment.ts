@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { UUID } from "#/lib/uuidUtils.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface OldItem {
   parentId?: UUID

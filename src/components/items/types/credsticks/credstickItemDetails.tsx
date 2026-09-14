@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { CredstickData } from "#/system/gear/credstickData.ts"
-import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/gear/credstickData.ts"
+import type { CredstickData } from "#/system/model/items/credstickData.ts"
+import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/model/items/credstickData.ts"
 
 import { useCredstickDialog } from "./credstickDialog.tsx"
 

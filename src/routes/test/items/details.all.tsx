@@ -5,11 +5,11 @@ import { useState } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
-import { Icons } from "#/lib/icons.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { Icons } from "#/utils/icons.ts"
 
 export const Route = createFileRoute("/test/items/details/all")({
   component: ItemDetailsTestPage,

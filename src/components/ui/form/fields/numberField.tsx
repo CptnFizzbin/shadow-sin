@@ -3,7 +3,7 @@ import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { NumberUtils } from "#/lib/numberUtils.ts"
+import { NumberUtils } from "#/utils/numberUtils.ts"
 
 interface NumberFieldProps extends Omit<MuiTextFieldProps, "type" | "value" | "onChange"> {
   value: number

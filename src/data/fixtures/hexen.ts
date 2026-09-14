@@ -1,7 +1,8 @@
 import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { AwakeningType } from "#/system/awakeningType.ts"
-import { EntityKind } from "#/system/entityKind.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -9,11 +10,10 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/system/magic/spellData.ts"
-import { SpiritType } from "#/system/magic/traditionData.ts"
-import { MetatypeType } from "#/system/metatypeData.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
+} from "#/system/model/magic/spellData.ts"
+import { SpiritType } from "#/system/model/magic/traditionData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 export const Hexen: RunnerData = {
   kind: EntityKind.runner,

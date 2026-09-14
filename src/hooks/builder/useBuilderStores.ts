@@ -1,17 +1,17 @@
 import { use, useCallback, useEffect, useMemo } from "react"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import type { JsonValue } from "#/lib/jsonUtils.ts"
-import { toJsonValue } from "#/lib/jsonUtils.ts"
-import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
-import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
-import type { BuilderStore } from "#/stores/builder/builderStore.ts"
-import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import { getRunnerStorageKey } from "#/services/persistence/builderDraftKey.ts"
+import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import { builderStoreReducer } from "#/state/builder/builderStore.reducer.ts"
+import type { BuilderStore } from "#/state/builder/builderStore.ts"
+import type { RunnerStore } from "#/state/runner/runnerStore.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { JsonValue } from "#/utils/jsonUtils.ts"
+import { toJsonValue } from "#/utils/jsonUtils.ts"
 
 export interface UseBuilderRootStateStore {
   runnerStore: RunnerStore

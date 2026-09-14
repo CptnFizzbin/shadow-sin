@@ -5,12 +5,12 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useVehicleForm, vehicleFieldMap } from "#/hooks/items/types/vehicles/forms/useVehicleForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { VehicleData } from "#/system/gear/vehicleData.ts"
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { VehicleData } from "#/system/model/items/vehicleData.ts"
+import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface VehicleFormDialogProps {
   ctrl: AnyDialogCtrl

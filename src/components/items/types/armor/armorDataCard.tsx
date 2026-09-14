@@ -1,12 +1,12 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/itemCard/itemCard.tsx"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { ArmorData } from "#/system/gear/armorData.ts"
+import { ItemCard } from "#/components/cards/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
 
 interface ArmorDataCardProps {
   armor: ArmorData

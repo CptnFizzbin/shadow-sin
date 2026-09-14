@@ -1,10 +1,10 @@
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
-import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import type { ArmorData } from "#/system/gear/armorData.ts"
-import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/gear/encumbranceUtils.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/formulas/items/encumbranceUtils.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 export interface EncumbranceInfo {
   totalBallistic: number

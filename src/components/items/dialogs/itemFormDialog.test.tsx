@@ -1,9 +1,9 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ItemFormDialog } from "./itemFormDialog.tsx"

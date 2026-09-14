@@ -1,18 +1,18 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
+import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
-} from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
+} from "#/components/skills/builder/skillsBuilderUtils.ts"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
-import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/stores/runner/skills/skillsSlice.selectors.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "./useAttributesBuildPoints.ts"

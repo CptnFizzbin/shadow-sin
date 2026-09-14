@@ -1,11 +1,11 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
+import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
+import { getTotalCost } from "#/components/items/builder/gearUtils.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 
 export const useGearTotalCost = () => {
   const gear = useRunnerSelector(ItemSelectors.selectAll)

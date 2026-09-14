@@ -3,10 +3,10 @@ import { useMemo } from "react"
 import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
-import { AttrSelectors } from "#/stores/runner/attributes/attributesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 
 interface InitiativeInfo {
   dicePool: number

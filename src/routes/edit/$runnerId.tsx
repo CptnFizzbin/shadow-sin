@@ -5,10 +5,10 @@ import { Suspense } from "react"
 import { BuilderLoadErrorBoundary } from "#/components/builder/builderLoadErrorBoundary.tsx"
 import { RunnerEditor } from "#/components/builder/runnerEditor.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
-import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
-import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import { getRunnerStorageKey } from "#/services/persistence/builderDraftKey.ts"
+import { RunnerManager } from "#/services/persistence/runnerManager.ts"
+import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })

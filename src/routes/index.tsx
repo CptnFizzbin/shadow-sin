@@ -3,14 +3,14 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
+import { ImportRunnerButton } from "#/components/exportImport/importRunnerButton.tsx"
 import { LandingModeSwitch } from "#/components/landing/landingModeSwitch.tsx"
-import { ImportRunnerButton } from "#/components/runner/exportImport/importRunnerButton.tsx"
 import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
 import { Artemis } from "#/data/fixtures/artemis.ts"
 import { Hexen } from "#/data/fixtures/hexen.ts"
 import { env } from "#/env.ts"
-import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
+import { RunnerManager } from "#/services/persistence/runnerManager.ts"
+import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })

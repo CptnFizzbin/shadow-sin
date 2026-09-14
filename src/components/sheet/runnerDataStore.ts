@@ -1,0 +1,21 @@
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { runnerRootReducer } from "#/state/runner/runnerStore.reducer.ts"
+import type { RunnerStore } from "#/state/runner/runnerStore.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+
+export class RunnerDataStore implements RunnerStore {
+  private readonly compatStore: RunnerStore
+
+  constructor(initialState: RunnerData) {
+    this.compatStore = createCompatStore(initialState, runnerRootReducer)
+  }
+
+  get dispatch() {
+    return this.compatStore.dispatch
+  }
+
+  getState = (): RunnerData => this.compatStore.getState()
+
+  setState = (updater: (prev: RunnerData) => RunnerData): void => this.compatStore.setState(updater)
+  subscribe = (listener: (state: RunnerData) => void) => this.compatStore.subscribe(listener)
+}

@@ -4,9 +4,9 @@ import ListItemText from "@mui/material/ListItemText"
 import type { FC } from "react"
 
 import { weaponTypeOptions } from "#/components/items/types/weapons/forms/weaponFormFields.tsx"
-import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
-import type { AddItemSectionWithSubtype, AddItemSelection, LicenseKind } from "#/system/items/addItemSelection.ts"
+import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import type { AddItemSectionWithSubtype, AddItemSelection, LicenseKind } from "#/system/model/items/addItemSelection.ts"
+import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
 
 const licenseKindOptions: { label: string, value: LicenseKind }[] = [
   { label: "SIN", value: "sin" },

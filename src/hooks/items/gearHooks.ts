@@ -1,7 +1,7 @@
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import type { ItemType } from "#/system/itemType.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemType } from "#/system/model/items/itemType.ts"
 
 /**
  * Reactively read all gear items of a given itemType.

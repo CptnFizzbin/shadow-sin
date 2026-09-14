@@ -4,7 +4,7 @@ import { Suspense } from "react"
 
 import { BuilderLoadErrorBoundary } from "#/components/builder/builderLoadErrorBoundary.tsx"
 import { RunnerBuilder } from "#/components/builder/runnerBuilder.tsx"
-import { getRunnerStorageKey } from "#/lib/persistence/builderDraftKey.ts"
+import { getRunnerStorageKey } from "#/services/persistence/builderDraftKey.ts"
 
 export const Route = createFileRoute("/new/")({
   component: RouteComponent,

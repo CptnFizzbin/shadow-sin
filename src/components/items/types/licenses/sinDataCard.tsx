@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/itemCard/itemCard.tsx"
+import { ItemCard } from "#/components/cards/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { LicenseData } from "#/system/gear/licenseData.ts"
-import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import type { SinData } from "#/system/model/items/sinData.ts"
 
 interface SinDataCardProps {
   sin: SinData

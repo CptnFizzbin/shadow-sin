@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useKnowledgeSkillsAlerts } from "./useKnowledgeSkillsAlerts.ts"

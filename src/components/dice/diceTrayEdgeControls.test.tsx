@@ -2,12 +2,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
+import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
-import { DiceTrayApi } from "./diceTrayApi.ts"
 import { DiceTrayEdgeControls } from "./diceTrayEdgeControls.tsx"
 import { DiceTrayProvider } from "./diceTrayProvider.tsx"
 

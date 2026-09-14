@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/lib/uuidUtils.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { EntityKind } from "#/system/entityKind.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type {
   ImprovementEntry,
   SkillIncreaseEntry,
   SkillSpecializationEntry,
-} from "#/system/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
-import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
+} from "#/system/model/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
+import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { sectionForEntry } from "./useSectionQueuedSummaries.ts"
 

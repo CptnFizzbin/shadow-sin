@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
+import type { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { sectionHasSubtypeStep } from "#/system/items/addItemSelection.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { sectionHasSubtypeStep } from "#/system/model/items/addItemSelection.ts"
 
 import { AddItemCategoryStep } from "./addItemCategoryStep.tsx"
 import { AddItemSubtypeStep } from "./addItemSubtypeStep.tsx"

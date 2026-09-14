@@ -1,4 +1,4 @@
-import type { DialogCtrl } from "./dialogCtrl.ts"
+import type { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 
 /**
  * Props shared by all controlled dialog components.

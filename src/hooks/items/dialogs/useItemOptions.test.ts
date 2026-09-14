@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { NullUuid } from "#/lib/uuidUtils.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { ItemData } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { initializeOptions } from "./useItemOptions.ts"
 

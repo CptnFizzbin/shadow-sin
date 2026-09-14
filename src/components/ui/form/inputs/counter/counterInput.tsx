@@ -8,7 +8,7 @@ import type { ChangeEventHandler, FC } from "react"
 import { useState } from "react"
 
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
-import { NumberUtils } from "#/lib/numberUtils.ts"
+import { NumberUtils } from "#/utils/numberUtils.ts"
 
 import styles from "./counterInput.module.css"
 

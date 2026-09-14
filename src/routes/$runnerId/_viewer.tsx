@@ -4,15 +4,15 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import { RiDice6Line } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 
-import { RunnerHeaderSummary } from "#/components/runner/header/runnerHeaderSummary.tsx"
-import { RunnerNav } from "#/components/runner/nav/runnerNav.tsx"
-import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessButton.tsx"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
+import { RunnerHeaderSummary } from "#/components/header/runnerHeaderSummary.tsx"
+import { RunnerNav } from "#/components/nav/viewer/runnerNav.tsx"
+import { QuickAccessButton } from "#/components/quickPanel/quickAccessButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
-import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useRunnerNav } from "#/hooks/runner/nav/useRunnerNav.ts"
 import { useDocumentTitle } from "#/hooks/ui/useDocumentTitle.ts"
-import { ProfileSelectors } from "#/stores/runner/profile/profileSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 /**
  * The tabbed-sheet chrome: `RunnerNav` and the swipe-between-sections

@@ -1,0 +1,229 @@
+import Accordion from "@mui/material/Accordion"
+import AccordionDetails from "@mui/material/AccordionDetails"
+import AccordionSummary from "@mui/material/AccordionSummary"
+import Button from "@mui/material/Button"
+import LinearProgress from "@mui/material/LinearProgress"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { RiAddLine, RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
+import type { FC, SyntheticEvent } from "react"
+import { useState } from "react"
+
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
+import { useAddItemDialogContext } from "#/components/items/addItemDialogContext.ts"
+import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
+import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
+import { ArmorSectionContent } from "#/components/items/viewer/armorSectionContent.tsx"
+import { DevicesSectionContent } from "#/components/items/viewer/devicesSectionContent.tsx"
+import { MiscSectionContent } from "#/components/items/viewer/miscSectionContent.tsx"
+import { VehiclesSectionContent } from "#/components/items/viewer/vehiclesSectionContent.tsx"
+import { WeaponsSectionContent } from "#/components/items/viewer/weaponsSectionContent.tsx"
+import { BuildPoints } from "#/components/ui/buildPoints.tsx"
+import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { EditorMode } from "#/contexts/builder/editorMode.tsx"
+import {
+  useGearBuildPoints,
+  useGearTotalCost,
+} from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { isImplant } from "#/system/model/items/implantData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { isLicenseData } from "#/system/model/items/licenseData.ts"
+import { isSinData } from "#/system/model/items/sinData.ts"
+import { getProgress } from "#/utils/progressUtils.ts"
+
+import { useGearAvailabilityIssues } from "./gearUtils.ts"
+import { ImplantsPanel } from "./implants/implantsPanel.tsx"
+import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
+import { SectionHeader } from "./sectionHeader.tsx"
+import { StartingNuyenSection } from "./startingNuyenSection.tsx"
+
+export const GearSection: FC = () => {
+  const totalNuyen = useGearTotalCost()
+  const buildPoints = useGearBuildPoints()
+  const { invalidSections } = useGearAvailabilityIssues()
+  const addItemDialog = useAddItemDialogContext()
+
+  const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
+
+  const onSectionChange = (section: SectionHeader) => {
+    return (_: SyntheticEvent, isExpanded: boolean) => {
+      setActiveSection(isExpanded ? section : null)
+    }
+  }
+
+  return (
+    <Stack>
+      <EditorMode.IsBuilder>
+        <Stack sx={{ gap: 0.5 }}>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between", alignItems: "center" }}
+          >
+            <Typography>
+              <Nuyen amount={totalNuyen} />
+              {" / "}
+              <Nuyen amount={BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance} />
+            </Typography>
+            <BuildPoints value={buildPoints.spent} total={buildPoints.allowance} />
+          </Stack>
+
+          <LinearProgress
+            variant="determinate"
+            value={getProgress(buildPoints.spent, BuilderConfig.gear.bpAllowance)}
+            color={buildPoints.isOverBudget ? "error" : "primary"}
+          />
+        </Stack>
+      </EditorMode.IsBuilder>
+
+      <Button
+        variant="outlined"
+        size="small"
+        startIcon={<RiAddLine size={14} />}
+        onClick={() => addItemDialog.open()}
+        color="secondary"
+        fullWidth
+      >
+        Add Item
+      </Button>
+
+      {Object.values(SectionHeader).map((sectionName) => (
+        <Accordion
+          key={sectionName}
+          expanded={activeSection === sectionName}
+          onChange={onSectionChange(sectionName)}
+          disableGutters
+          elevation={0}
+          sx={{
+            "border": "1px solid",
+            "borderColor": "divider",
+            "padding": 0,
+            "margin": 0,
+            "& .MuiAccordionSummary-content": {
+              margin: 0,
+            },
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<RiArrowDownSLine />}
+            sx={{ padding: 1, margin: 0, minHeight: "unset" }}
+          >
+            <Stack
+              direction="row"
+              sx={{
+                justifyContent: "space-between", flexGrow: 1,
+                paddingRight: 1,
+                marginRight: 1,
+                borderRight: "1px solid",
+                borderColor: "divider",
+              }}
+            >
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <Typography>{sectionName}</Typography>
+                {invalidSections.has(sectionName) && (
+                  <RiErrorWarningLine
+                    size={16}
+                    style={{ color: "var(--mui-palette-warning-main)" }}
+                  />
+                )}
+              </Stack>
+
+              <GearSectionNuyen section={sectionName} />
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails sx={{ padding: 1 }}>
+            <GearSectionContent section={sectionName} />
+          </AccordionDetails>
+        </Accordion>
+      ))}
+
+      <EditorMode.IsBuilder>
+        <StartingNuyenSection />
+      </EditorMode.IsBuilder>
+    </Stack>
+  )
+}
+
+const GearSectionContent: FC<{
+  section: SectionHeader
+}> = ({ section }) => {
+  if (section === SectionHeader.Licenses) return <SinsAndLicensesSection />
+  if (section === SectionHeader.Cyberware) return <ImplantsPanel />
+  if (section === SectionHeader.Weapons) return <WeaponsSectionContent />
+  if (section === SectionHeader.Armor) return <ArmorSectionContent />
+  if (section === SectionHeader.Vehicles) return <VehiclesSectionContent />
+  if (section === SectionHeader.Devices) return <DevicesSectionContent />
+  if (section === SectionHeader.Misc) return <MiscSectionContent />
+  if (section === SectionHeader.Lifestyle) return <LifestylePanel />
+  return null
+}
+
+const GearSectionNuyen: FC<{
+  section: SectionHeader
+}> = ({ section }) => {
+  const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
+
+  const lifestyleInfo = useRunnerSelector(ProfileSelectors.selectLifestyleInfo)
+  const lifestyleMonths = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
+
+  if (section === SectionHeader.Lifestyle) {
+    return (
+      <Typography color="text.secondary">
+        <Nuyen amount={(lifestyleInfo?.upkeep ?? 0) * lifestyleMonths} />
+      </Typography>
+    )
+  }
+
+  if (section === SectionHeader.Licenses) {
+    const sins = Object.values(allGearItems).filter(isSinData)
+    const licenses = Object.values(allGearItems).filter(isLicenseData)
+    return (
+      <Typography color="text.secondary">
+        <Nuyen
+          amount={
+            sins.reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
+            + licenses.reduce((sum, license) => sum + (license.cost ?? 0), 0)
+          }
+        />
+      </Typography>
+    )
+  }
+  if (section === SectionHeader.Cyberware) {
+    const implants = Object.values(allGearItems).filter(isImplant)
+
+    return (
+      <Typography color="text.secondary">
+        <Nuyen
+          amount={
+            implants.reduce(
+              (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
+              0,
+            )
+          }
+        />
+      </Typography>
+    )
+  }
+
+  const genericSectionTypes: Partial<
+    Record<SectionHeader, ItemType>
+  > = {
+    [SectionHeader.Weapons]: ItemType.weapon,
+    [SectionHeader.Armor]: ItemType.armor,
+    [SectionHeader.Vehicles]: ItemType.vehicle,
+    [SectionHeader.Devices]: ItemType.device,
+    [SectionHeader.Misc]: ItemType.other,
+  }
+
+  const nuyen = Object.values(allGearItems)
+    .filter((i) => i.itemType === genericSectionTypes[section])
+    .reduce((sum, item) => sum + (item.cost ?? 0), 0)
+
+  return (
+    <Typography color="text.secondary">
+      <Nuyen amount={nuyen} />
+    </Typography>
+  )
+}

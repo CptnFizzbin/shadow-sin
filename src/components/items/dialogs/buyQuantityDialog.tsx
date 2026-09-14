@@ -12,8 +12,8 @@ import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 interface BuyQuantityDialogProps extends ControlledDialogProps<void> {
   defaultCost: number

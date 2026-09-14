@@ -3,12 +3,12 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { programFieldMap, useProgramForm } from "#/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { ProgramData } from "#/system/gear/programData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { ProgramData } from "#/system/model/items/programData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface ProgramFormDialogProps {
   ctrl: AnyDialogCtrl

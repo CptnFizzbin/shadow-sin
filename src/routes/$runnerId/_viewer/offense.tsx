@@ -2,14 +2,14 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { CombatActionsCheatSheetButton } from "#/components/combat/combatActionsCheatSheetButton.tsx"
+import { InitiativeSection } from "#/components/initiative/initiativeSection.tsx"
 import { EquippedWeaponsSection } from "#/components/items/types/weapons/equippedWeaponsSection.tsx"
-import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsViewerSection.tsx"
-import { CombatActionsCheatSheetButton } from "#/components/system/combat/combatActionsCheatSheetButton.tsx"
-import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
+import { SpellsViewerSection } from "#/components/magician/viewer/spells/spellsViewerSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { AwakeningType } from "#/system/awakeningType.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/offense")({
   component: RouteComponent,

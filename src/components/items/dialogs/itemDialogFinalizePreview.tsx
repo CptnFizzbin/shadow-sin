@@ -6,7 +6,7 @@ import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import type { ItemData } from "#/system/itemData.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
 
 interface ItemDialogFinalizePreviewProps {
   values: ItemData

@@ -9,10 +9,10 @@ import { alpha } from "@mui/material/styles"
 import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
 import type { FC, PropsWithChildren, ReactNode } from "react"
 
-import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
+import { getEffectLabel } from "#/components/gameEffects/gameEffectsSummary.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { Icons } from "#/lib/icons.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { Icons } from "#/utils/icons.ts"
 
 import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
 

@@ -14,20 +14,20 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { NuyenSelectors } from "#/stores/runner/nuyen/nuyenSlice.selectors.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { CredstickData } from "#/system/gear/credstickData.ts"
+import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import {
   CredstickMaxBalance,
   CredstickPurchaseCost,
   CredstickType,
   CredstickTypeLabel,
-} from "#/system/gear/credstickData.ts"
-import { createItem } from "#/system/itemData.ts"
-import { ItemType } from "#/system/itemType.ts"
+} from "#/system/model/items/credstickData.ts"
+import { createItem } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 type CredstickDialogMode = "add" | "add-certified" | "edit"
 

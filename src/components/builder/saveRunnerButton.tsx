@@ -6,7 +6,7 @@ import type { FC } from "react"
 import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
 import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
 import { useAllAlerts } from "#/hooks/builder/alerts/useAllAlerts.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 interface SaveRunnerButtonProps {
   // Character creation enforces build-point validity; editing an existing runner should not

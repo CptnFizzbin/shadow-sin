@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 import { useContext } from "react"
 
-import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
+import { OutOfContextError } from "#/utils/errors/outOfContextError.ts"
 
 import type { WorkflowContext } from "./workflowContext.ts"
 

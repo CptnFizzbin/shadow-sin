@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ItemType } from "#/system/itemType.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 
 import { useProgramForm } from "./useProgramForm.tsx"
 

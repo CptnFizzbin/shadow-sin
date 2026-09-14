@@ -1,12 +1,12 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { CredstickData } from "#/system/gear/credstickData.ts"
-import { CredstickType } from "#/system/gear/credstickData.ts"
-import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { CredstickData } from "#/system/model/items/credstickData.ts"
+import { CredstickType } from "#/system/model/items/credstickData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { CredstickSection } from "./credstickSection.tsx"

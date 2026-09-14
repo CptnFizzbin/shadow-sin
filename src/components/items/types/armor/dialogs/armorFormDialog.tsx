@@ -3,11 +3,11 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
 import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { armorFieldMap, useArmorForm } from "#/hooks/items/types/armor/useArmorForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { UUID } from "#/lib/uuidUtils.ts"
-import type { ArmorData } from "#/system/gear/armorData.ts"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface ArmorFormDialogProps {
   ctrl: AnyDialogCtrl

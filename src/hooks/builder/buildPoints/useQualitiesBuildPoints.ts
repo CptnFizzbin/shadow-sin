@@ -1,7 +1,7 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { QualitiesSelectors } from "#/stores/runner/qualities/qualitiesSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
+import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
+import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 interface QualitiesBuildPoints extends BpLineItem {
   positive: number

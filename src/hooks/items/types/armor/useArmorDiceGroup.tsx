@@ -1,7 +1,7 @@
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { ItemSelectors } from "#/stores/runner/gear/gearSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { ArmorRatingType } from "#/system/gear/armorData.ts"
+import type { DiceGroup } from "#/components/dicePool/diceGroup.tsx"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
 
 export function useArmorDiceGroup(type: ArmorRatingType): DiceGroup {
   const ratings = useRunnerSelector(ItemSelectors.Armor.selectEffective)

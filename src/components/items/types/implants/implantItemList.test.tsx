@@ -1,12 +1,12 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { EntityKind } from "#/system/entityKind.ts"
-import type { ImplantData } from "#/system/gear/implantData.ts"
-import { ImplantType } from "#/system/gear/implantData.ts"
-import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ImplantData } from "#/system/model/items/implantData.ts"
+import { ImplantType } from "#/system/model/items/implantData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ImplantItemList } from "./implantItemList.tsx"

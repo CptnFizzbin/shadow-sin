@@ -1,9 +1,9 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { AttributeKey } from "#/system/attributeKey.ts"
-import { WeaponType } from "#/system/gear/weaponData.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { WeaponType } from "#/system/model/items/weaponData.ts"
 
 import { useWeaponForm } from "./useWeaponForm.tsx"
 

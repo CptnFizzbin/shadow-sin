@@ -1,6 +1,6 @@
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { FeatureFlagsData } from "#/system/featureFlags/featureFlagsData.ts"
-import type { ItemCatalog } from "#/system/items/itemUtils.ts"
+import type { FeatureFlagsData } from "#/system/model/featureFlags/featureFlagsData.ts"
+import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 
 type RunnerBefore = {
   gear?: ItemCatalog

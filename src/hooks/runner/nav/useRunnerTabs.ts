@@ -1,7 +1,7 @@
 import type { RunnerSection } from "#/components/runner/runnerSections.ts"
 import { runnerSectionOrder } from "#/components/runner/runnerSections.ts"
-import { BiologySelectors } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export function useRunnerTabs(): RunnerSection[] {
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)

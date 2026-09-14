@@ -1,16 +1,16 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
-import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
 import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
 import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
-import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
+import { RunnerManager } from "#/services/persistence/runnerManager.ts"
+import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })

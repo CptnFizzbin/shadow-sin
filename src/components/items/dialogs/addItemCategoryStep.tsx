@@ -13,8 +13,8 @@ import {
 } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearSection } from "#/components/runner/gearPage/gearSectionTypes.ts"
-import type { IconComponent } from "#/lib/icons.ts"
+import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import type { IconComponent } from "#/utils/icons.ts"
 
 const categoryIcons: Record<GearSection, IconComponent> = {
   [GearSection.Cyberware]: RiCpuLine,

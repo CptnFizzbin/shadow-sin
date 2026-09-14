@@ -1,0 +1,59 @@
+import { describe, expect, it } from "vitest"
+
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
+import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
+import { NodeType } from "#/system/model/matrix/nodeType.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+
+import { MatrixSelectors } from "./matrix.selector.ts"
+
+const stateFor = (runner: RunnerData) => ({ runner })
+
+const node: KnownNode = {
+  kind: EntityKind.matrixNode,
+  id: "node-1",
+  name: "Renraku Arcology",
+  matrix: { system: 4 },
+  nodeType: NodeType.general,
+  accessLevel: AccessLevel.public,
+}
+
+describe("MatrixSelectors", () => {
+  it("selects known nodes and active programs", () => {
+    // Arrange
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
+      data.gameState.matrix = {
+        knownNodes: [node],
+        activePrograms: [{ sourceId: "program-1", nodeId: "node-1" }],
+      }
+    } })
+
+    // Act / Assert
+    expect(MatrixSelectors.selectKnownNodes(stateFor(sheet))).toEqual([node])
+    expect(MatrixSelectors.selectActivePrograms(stateFor(sheet))).toEqual([{ sourceId: "program-1", nodeId: "node-1" }])
+  })
+
+  it("selects the active node id and resolved node", () => {
+    // Arrange
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
+      data.gameState.matrix = { knownNodes: [node], activeNodeId: "node-1", activePrograms: [] }
+    } })
+
+    // Act / Assert
+    expect(MatrixSelectors.selectActiveNodeId(stateFor(sheet))).toBe("node-1")
+    expect(MatrixSelectors.selectActiveNode(stateFor(sheet))).toEqual(node)
+  })
+
+  it("returns undefined for the active node when nothing is active", () => {
+    // Arrange
+    const sheet = runnerDataFactory({ afterBuild: (data) => {
+      data.gameState.matrix = { knownNodes: [node], activePrograms: [] }
+    } })
+
+    // Act / Assert
+    expect(MatrixSelectors.selectActiveNodeId(stateFor(sheet))).toBeUndefined()
+    expect(MatrixSelectors.selectActiveNode(stateFor(sheet))).toBeUndefined()
+  })
+})

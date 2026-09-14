@@ -1,6 +1,6 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { ContactsSelectors } from "#/stores/runner/contacts/contactsSlice.selectors.ts"
-import { useRunnerSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {
   const alerts: AlertInfo[] = []

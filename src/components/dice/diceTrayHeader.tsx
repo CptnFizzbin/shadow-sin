@@ -7,10 +7,10 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
-import { useDiceTray } from "#/contexts/dice/diceTrayContext.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { TestType, TestTypeLabels } from "#/services/dice/testType.ts"
 
-import { TestType, TestTypeLabels } from "./testType.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 
 export const DiceTrayHeader: FC = () => {
   const diceTrayApi = useDiceTray()
