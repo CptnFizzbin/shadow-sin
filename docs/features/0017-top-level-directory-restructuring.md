@@ -1,12 +1,15 @@
 # Top-Level Directory Restructuring
 
-> **Status:** In Progress
+> **Status:** Implemented
 >
 > **GitHub Issues / PRs:**
 > - [#614](https://github.com/CptnFizzbin/shadow-sin/pull/614) — the mechanical renames/moves this
->   doc describes (all containers, all phases). The two non-mechanical items called out in
->   Constraints (splitting `attributeCatalog.ts`/`itemUtils.ts`; splitting the three shared
->   contexts into `.context.ts`/`.provider.tsx`) are not part of this PR.
+>   doc describes (all containers, all phases).
+> - Follow-up PR (branch `claude/component-file-reorganization-xvb941`) — the two non-mechanical
+>   items #614 deferred: splitting `attributeCatalog.ts`/`itemUtils.ts` into `model/`/`formulas/`
+>   halves, and splitting the shared `runner/`, `builder/`, `entity/`, and `runnerManager`
+>   contexts into `.context.ts` + `.provider.tsx` (with their accessor hooks moved to
+>   `hooks/<domain>/`).
 
 `src/` has grown enough top-level folders, and enough same-named-but-different folders, that
 finding the right home for a file (or finding an existing one) now takes real search effort. This
@@ -152,7 +155,11 @@ found while checking, worth flagging rather than papering over:
   `items/itemUtils.ts` (`ItemCatalog`/`AnyItemData` *types* + the `toItemCatalogTree` transform).
   Splitting these is a small, mechanical extraction (same discipline as 0016's own Slices), not a
   behavior change — but it's not a pure file move either, so it should be called out as its own
-  PRD Issue step rather than bundled silently into a bulk relocation.
+  PRD Issue step rather than bundled silently into a bulk relocation. **Done** in the follow-up to
+  #614: `attributeCatalog.ts` kept its catalog types and factory; `attrValue`/`attrMin`/`attrMax`/
+  `attrNaturalMax`/`attrAugmentedMax` moved to `formulas/attributes/attributeFormulas.ts`.
+  `itemUtils.ts` kept its types, `itemIsType` guard, and the filtering `ItemUtils` namespace;
+  `toItemCatalogTree` moved to `formulas/items/itemCatalogTree.ts`.
 - **`karma/improvements/improvementSelectors.ts` is neither** — it's a Selector namespace
   (`ImprovementsSelectors`, built with `createSelector` against `ImprovementsState`), not a type or
   a rule calculation. It's misfiled in `system/` today; it belongs in `services/improvements/`
@@ -235,10 +242,16 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 
 ## Open Questions
 
-- [ ] **Where does a Context's accessor hook live?** Still open — PR #614 left the three shared
-      contexts (`runner/`, `builder/`, `entity/`) unsplit rather than resolving this, since
-      splitting one file into `.context.ts` + `.provider.tsx` is content editing, not a rename (see
-      Constraints).
+- [x] **Where does a Context's accessor hook live?** Resolved: `hooks/<domain>/`. PR #614 left the
+      shared contexts (`runner/`, `builder/`, `entity/`) unsplit since splitting one file into
+      `.context.ts` + `.provider.tsx` is content editing, not a rename (see Constraints); the
+      follow-up work split all four mixed context files found (`runner/runnerStore.context.ts`,
+      `runner/runnerManagerContext.tsx`, `builder/builderStore.context.ts`,
+      `entity/entityProvider.tsx`) into a `.context.ts` (just the `createContext` call), a
+      `.provider.tsx` (the Provider component), and a `useXxx` accessor hook under
+      `hooks/<domain>/`. `contexts/builder/editorMode.tsx` was deliberately left unsplit — it's
+      already marked for retirement once ADR-0016 Phase 2 lands, so splitting it now would be
+      wasted work.
 - [x] **PR slicing order.** Resolved differently than speculated: landed as one PR (#614) covering
       every mechanical rename across every container, rather than split per-domain. Validated as one
       unit — `yarn tsc` clean, file count unchanged (1119 before and after), `yarn fallow dead-code`
@@ -253,7 +266,8 @@ directories — see Out of Scope for what it deliberately doesn't touch.
       Builder halves) rather than Runner-only as originally listed; `components/system/combat/`
       promoted to top-level `components/combat/` (matching its six siblings) rather than nesting
       under `items/`; and the two mixed-content files (`attributeCatalog.ts`, `itemUtils.ts`) moved
-      whole into `model/` rather than being split, per the Constraints note.
+      whole into `model/` as an interim step in #614, then split into `model/`/`formulas/` halves
+      in the follow-up PR, per the Constraints note.
 
 ## Out of Scope
 
