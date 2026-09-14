@@ -1,5 +1,5 @@
-import type { DicePoolData } from "#/components/dicePool/dicePoolData.tsx"
-import { createDicePool } from "#/components/dicePool/dicePoolData.tsx"
+import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"

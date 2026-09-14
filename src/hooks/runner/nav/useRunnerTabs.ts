@@ -1,5 +1,5 @@
-import type { RunnerSection } from "#/components/runner/runnerSections.ts"
-import { runnerSectionOrder } from "#/components/runner/runnerSections.ts"
+import type { RunnerSection } from "#/components/runner/sections/runnerSections.ts"
+import { runnerSectionOrder } from "#/components/runner/sections/runnerSections.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

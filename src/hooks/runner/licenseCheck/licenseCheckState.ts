@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react"
 
-import { buildLicenseCheckResult } from "#/components/licenseCheck/licenseCheckAlerts.ts"
-import { buildVerificationChecks } from "#/components/licenseCheck/licenseCheckChecks.ts"
+import { buildLicenseCheckResult } from "#/components/system/licenseCheck/licenseCheckAlerts.ts"
+import { buildVerificationChecks } from "#/components/system/licenseCheck/licenseCheckChecks.ts"
 import type {
   LicenseCheckResult,
   VerificationCheck,
   VerificationOutcome,
-} from "#/components/licenseCheck/licenseCheckTypes.ts"
+} from "#/components/system/licenseCheck/licenseCheckTypes.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"

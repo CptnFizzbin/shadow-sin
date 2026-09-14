@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
-import { DicePool } from "#/components/dicePool/dicePool.tsx"
-import type { DicePoolData } from "#/components/dicePool/dicePoolData.tsx"
+import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"

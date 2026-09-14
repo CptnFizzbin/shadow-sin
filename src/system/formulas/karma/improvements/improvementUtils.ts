@@ -1,7 +1,7 @@
 import type { Draft } from "immer"
 import { produce } from "immer"
 
-import { ImprovementsConfig } from "#/components/karma/improvements/improvementsConfig.ts"
+import { ImprovementsConfig } from "#/components/runner/karma/improvements/improvementsConfig.ts"
 import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
 import type { ImprovementStore } from "#/services/improvements/improvementStore.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"

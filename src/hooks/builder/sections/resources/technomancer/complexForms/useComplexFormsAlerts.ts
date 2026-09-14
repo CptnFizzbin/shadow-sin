@@ -1,4 +1,4 @@
-import { isTechnomancer } from "#/components/technomancer/viewer/technomancerUtils.ts"
+import { isTechnomancer } from "#/components/runner/awakenings/technomancer/viewer/technomancerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"

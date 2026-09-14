@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import type { VerificationQueue } from "#/components/licenseCheck/licenseCheckQueue.ts"
-import { createVerificationQueue } from "#/components/licenseCheck/licenseCheckQueue.ts"
-import type { VerificationCheck, VerificationOutcome } from "#/components/licenseCheck/licenseCheckTypes.ts"
+import type { VerificationQueue } from "#/components/system/licenseCheck/licenseCheckQueue.ts"
+import { createVerificationQueue } from "#/components/system/licenseCheck/licenseCheckQueue.ts"
+import type { VerificationCheck, VerificationOutcome } from "#/components/system/licenseCheck/licenseCheckTypes.ts"
 
 interface UseVerificationQueuePoolArgs {
   checks: VerificationCheck[]

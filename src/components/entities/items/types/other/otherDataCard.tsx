@@ -1,0 +1,37 @@
+import type { FC } from "react"
+
+import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+
+interface OtherDataCardProps {
+  item: ItemData
+  onOpen?: () => void
+  onEdit?: () => void
+}
+
+export const OtherDataCard: FC<OtherDataCardProps> = ({ item, onOpen, onEdit }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const subItems = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: item.id })
+  const hasSubItems = Object.keys(subItems).length > 0
+
+  const removeItem = () => dispatch(Actions.item.removeItem({ id: item.id, removeChildren: true }))
+
+  return (
+    <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={removeItem}>
+      {hasSubItems && (
+        <ItemCard.Layout.BodyRow
+          direction="column"
+          sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
+        >
+          {Object.values(subItems).map((subItem) => (
+            <ItemCard.Subitem key={subItem.id} name={subItem.name} />
+          ))}
+        </ItemCard.Layout.BodyRow>
+      )}
+    </ItemCard>
+  )
+}

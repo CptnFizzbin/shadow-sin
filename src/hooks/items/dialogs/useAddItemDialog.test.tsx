@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
-import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"

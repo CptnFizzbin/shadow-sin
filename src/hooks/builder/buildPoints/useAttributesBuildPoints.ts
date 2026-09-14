@@ -1,4 +1,4 @@
-import type { BpLineItem } from "#/components/buildPoints/bpLineItem.ts"
+import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"

@@ -1,8 +1,8 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { AppFieldExtendedReactFormApi } from "@tanstack/react-form"
 
-import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
+import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
+import { defaultGearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"

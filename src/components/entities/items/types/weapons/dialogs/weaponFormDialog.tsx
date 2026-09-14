@@ -1,0 +1,58 @@
+import type { FC } from "react"
+
+import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
+import { GearFormLicenseSection } from "#/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import { WeaponFormFields } from "#/components/entities/items/types/weapons/forms/weaponFormFields.tsx"
+import { useWeaponForm, weaponFieldMap } from "#/hooks/items/types/weapons/forms/useWeaponForm.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { WeaponData, WeaponType } from "#/system/model/items/weaponData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
+
+interface WeaponFormDialogProps {
+  ctrl: AnyDialogCtrl
+  weapon?: WeaponData
+  weaponType?: WeaponType
+  wizard?: boolean
+  parentId?: UUID
+}
+
+export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weaponType, wizard, parentId }) => {
+  const title = weapon ? "Edit Weapon" : "Add Weapon"
+
+  const form = useWeaponForm({
+    weapon,
+    weaponType,
+    parentId,
+    onSubmit: (weaponData) => ctrl.close(weaponData),
+  })
+
+  return (
+    <ItemDialog
+      form={form}
+      title={title}
+      ctrl={ctrl}
+      wizard={wizard}
+      options={{
+        equipable: { forced: true },
+        hasRating: { enabled: true },
+        multiple: { forced: true, enabled: false },
+        isSubItem: parentId ? { forced: true } : undefined,
+      }}
+      slots={{
+        itemFields: () => (
+          <>
+            <WeaponFormFields form={form} fields={weaponFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+
+type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "ctrl">
+
+export const useWeaponFormDialog = () => useDialog<WeaponData, UseWeaponFormDialogProps | undefined>(
+  (ctrl, props) => <WeaponFormDialog ctrl={ctrl} {...props} />,
+)

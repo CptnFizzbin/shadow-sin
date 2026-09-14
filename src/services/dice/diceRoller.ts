@@ -3,9 +3,9 @@ import { produce } from "immer"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { NumberUtils } from "#/utils/numberUtils.ts"
 
-import { selectAllSettled, selectIsRolling } from "./diceRoller.selector.ts"
-import type { DiceRollerState } from "./diceRoller.state.ts"
-import type { DieState } from "./dieState.ts"
+import { selectAllSettled, selectIsRolling } from "./state/diceRoller.selector.ts"
+import type { DiceRollerState } from "./state/diceRoller.state.ts"
+import type { DieState } from "./state/dieState.ts"
 
 type IntervalId = ReturnType<typeof setInterval>
 

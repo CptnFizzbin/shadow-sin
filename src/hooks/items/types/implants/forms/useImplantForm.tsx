@@ -1,6 +1,6 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
+import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"

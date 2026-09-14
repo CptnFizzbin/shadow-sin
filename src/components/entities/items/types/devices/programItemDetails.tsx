@@ -1,0 +1,41 @@
+import type { FC } from "react"
+
+import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
+import { isNewItem } from "#/state/runner/items/items.actions.ts"
+import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import type { ProgramData } from "#/system/model/items/programData.ts"
+
+import { useProgramFormDialog } from "./dialogs/programFormDialog.tsx"
+
+export interface ProgramItemDetailsProps {
+  program: ProgramData
+  onRemoved?: () => void
+}
+
+export const ProgramItemDetails: FC<ProgramItemDetailsProps> = ({ program, onRemoved }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const programFormDialog = useProgramFormDialog()
+
+  const removeProgram = () => {
+    dispatch(Actions.item.programs.destroy(program.id))
+    onRemoved?.()
+  }
+
+  const handleEdit = async () => {
+    const saved = await programFormDialog.open({ program })
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
+  }
+
+  return (
+    <>
+      <ItemDetailsRoot item={program} onEdit={handleEdit} onRemove={removeProgram}>
+        <ItemDetailsSlot.Stat label="Rating" value={program.rating} type="rating" />
+        <ItemDetailsSlot.Stat label="Type" value={program.programType} />
+      </ItemDetailsRoot>
+
+      {programFormDialog.outlet}
+    </>
+  )
+}

@@ -1,5 +1,5 @@
-import type { SpendKarmaSection } from "#/components/karma/improvements/spendKarmaSections.tsx"
-import { SPEND_KARMA_SECTIONS } from "#/components/karma/improvements/spendKarmaSections.tsx"
+import type { SpendKarmaSection } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
+import { SPEND_KARMA_SECTIONS } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

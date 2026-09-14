@@ -1,6 +1,5 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { isMagician } from "#/components/magician/viewer/magicianUtils.ts"
-import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
+import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
@@ -10,6 +9,7 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { useActiveSkill } from "#/utils/runnerUtils.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

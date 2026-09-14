@@ -2,8 +2,8 @@ import { fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
-import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
+import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 

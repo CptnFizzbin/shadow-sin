@@ -1,0 +1,55 @@
+import type { FC } from "react"
+
+import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
+import { SinRatingField } from "#/components/entities/items/types/licenses/sinRatingField.tsx"
+import { getRandomSinName, getSinCost } from "#/components/entities/items/types/licenses/sinUtils.ts"
+import { useSinForm } from "#/hooks/items/types/licenses/forms/useSinForm.tsx"
+import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import type { SinData } from "#/system/model/items/sinData.ts"
+
+interface SinFormDialogProps {
+  ctrl: AnyDialogCtrl
+  onDelete?: () => void
+  sin?: SinData
+  wizard?: boolean
+}
+
+export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete, wizard }) => {
+  const title = sin ? "Edit SIN" : "Create SIN"
+
+  const form = useSinForm({
+    sin,
+    onSubmit: (sinData) => ctrl.close(sinData),
+  })
+
+  return (
+    <ItemDialog
+      form={form}
+      title={title}
+      ctrl={ctrl}
+      wizard={wizard}
+      onDelete={onDelete}
+      getCost={(s) => {
+        const sinValues = s as SinData
+        return getSinCost(sinValues.isReal, sinValues.rating ?? 0)
+      }}
+      ratingMax={6}
+      onRandomizeName={getRandomSinName}
+      slots={{
+        rating: () => <SinRatingField form={form} />,
+      }}
+      options={{
+        hasRating: { forced: true, enabled: false },
+        showCost: { forced: true, enabled: false },
+        showAvailability: { forced: true, enabled: false },
+      }}
+    />
+  )
+}
+
+type UseSinFormDialogProps = Omit<SinFormDialogProps, "ctrl">
+
+export const useSinFormDialog = () => useDialog<SinData, UseSinFormDialogProps | undefined>(
+  (ctrl, props) => <SinFormDialog ctrl={ctrl} {...props} />,
+)

@@ -1,7 +1,7 @@
 import type { ChangeEvent, InputHTMLAttributes, RefObject } from "react"
 import { useRef } from "react"
 
-import { yamlToRunnerData } from "#/components/exportImport/exportUtils.ts"
+import { yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 interface UseYamlFileImportOptions {

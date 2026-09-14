@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { ContactsList } from "#/components/contacts/viewer/contactsList.tsx"
+import { ContactsList } from "#/components/runner/sections/contacts/viewer/contactsList.tsx"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"

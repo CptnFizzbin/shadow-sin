@@ -1,4 +1,4 @@
-import { GearSection } from "#/components/items/viewer/gearSectionTypes.ts"
+import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 
 import type { VehicleCategory } from "./vehicleData.ts"
 import type { WeaponType } from "./weaponData.ts"

@@ -6,7 +6,7 @@ import { RiStarLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC, ReactNode } from "react"
 
-import { EntityCard } from "#/components/cards/entityCard/entityCard.tsx"
+import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { EntityData } from "#/system/model/entities/entityData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"

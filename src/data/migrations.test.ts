@@ -1,8 +1,8 @@
 import { load } from "js-yaml"
 import { describe, expect, it } from "vitest"
 
-import type { GearTreeNode } from "#/components/exportImport/exportUtils.ts"
-import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/components/exportImport/exportUtils.ts"
+import type { GearTreeNode } from "#/components/system/exportImport/exportUtils.ts"
+import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
 import {
   isEntityWithAttrs,
   isEntityWithDamage,
