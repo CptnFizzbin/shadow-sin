@@ -2,8 +2,8 @@ import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
+import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { useImportConflictDialog } from "./importConflictDialog.tsx"

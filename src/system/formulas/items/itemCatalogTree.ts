@@ -1,5 +1,5 @@
-import type { ItemCatalog, ItemCatalogTree } from "#/system/model/items/itemUtils.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemCatalog, ItemCatalogTree } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 export function toItemCatalogTree(catalog: ItemCatalog): ItemCatalogTree {

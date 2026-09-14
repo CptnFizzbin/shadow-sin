@@ -1,7 +1,7 @@
+import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/formulas/attributes/attributeFormulas.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { MetatypeData } from "#/system/model/biology/metatypeData.ts"
 import type { AwakeningData } from "#/system/model/magic/awakeningType.ts"
-import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/formulas/attributes/attributeFormulas.ts"
 
 interface AttributeInfo {
   attr: AttributeKey
