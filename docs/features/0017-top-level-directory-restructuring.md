@@ -30,7 +30,10 @@ top-level container, not just `components/`.
 - **"items" vs "gear" in `system/` has no rule.** `system/gear/` holds typed sub-data
   (`weaponData.ts`, `armorData.ts`, ...); `system/items/` is a near-empty sibling holding only
   `itemUtils.ts` + `addItemSelection.ts`; `itemData.ts`/`itemType.ts` sit loose at `system/` root.
-  Three homes, no obvious rule for a new file.
+  Three homes, no obvious rule for a new file — and CONTEXT.md already settled which name wins:
+  **Item** is the code identifier, **Gear** is UI-copy-only (route labels, "Add Gear"), and a
+  rename of the remaining Gear-named code identifiers to Item-prefixed equivalents is already
+  planned there. `system/gear/` is exactly that remaining Gear-named identifier.
 - **`components/helpers/` is a vague catch-all** for `attackCalculator/` and `defenseCalculator/`
   — both combat mechanics UI, conceptual siblings of `components/system/combat/`, but not
   discoverable by searching "combat" or anything else meaningful.
@@ -47,6 +50,10 @@ top-level container, not just `components/`.
   by name** (`attributes`, `biology`, `contacts`, `finances`, `gear`/`gearPage`, `karma`,
   `profile`, `qualities`, `skills`) but live under two different parents, so the two halves of one
   domain's UI aren't found together.
+- **Business logic and display code are mixed inside the same folder** for every ad hoc singleton
+  store — `DiceRoller`/`DiceTrayApi`/`ImprovementStore`/`InitiativeTrackerStore`/`DialogCtrl`'s
+  actual store/selector/state files sit in the same folder as the dialogs and display components
+  that consume them, instead of the state-vs-UI split every other container already draws.
 
 ## Container definitions
 
@@ -61,25 +68,26 @@ subfolder (never flattened into a single bag of files):
 | `contexts/` | React Context definitions + Providers: `<domain>/<name>.context.ts` / `<name>.provider.tsx` | `contexts/` (reshaped) |
 | `hooks/` | Custom React hooks, including Context accessor hooks | `hooks/` (absorbs contexts' accessor hooks — see Open Questions) |
 | `utils/` | Generic, non-domain helper functions (`arrayUtils`, `numberUtils`, `errors/`, ...) | `lib/` (utility half) |
-| `services/` | Cohesive subsystems: persistence (`RunnerManager`), storage | `lib/` (persistence/storage half) |
+| `services/` | Cohesive subsystems and business logic: persistence (`RunnerManager`), storage, plus every ad hoc singleton store's actual store/selector/state code | `lib/` (persistence/storage half) + the non-display half of five stores currently in `system/`/`components/`/`stores/` |
 | `data/` | Fixtures, migrations, `applyMigrations` | *(unchanged — stays top-level)* |
 | `integrations/` | Third-party adapter/wrapper code (Redux compat store, MUI, TanStack) | *(unchanged — stays top-level)* |
 | `components/` | UI, one folder per domain, `ui/` for cross-domain shared primitives | `components/` (reshaped) |
 
-Ad hoc singleton stores and contexts follow one rule instead of getting their own container:
-**colocate with the one feature that owns them; only promote to a shared container if something
-outside that feature reaches into the store's internals directly** — reading it exclusively
-through one feature-owned hook doesn't count as reaching in, even from several unrelated callers,
-since the hook (not the store shape) is the actual public surface. A colocated store's accessor
-hook moves with it instead of joining `hooks/`.
+Ad hoc singleton stores split along the same line as everything else: **business logic
+(the store, its selectors, its state shape) goes in `services/<feature>/`; display code (dialogs,
+panels, cards) stays in `components/<feature>/`.** This applies regardless of how many features
+consume a store — being reached from several unrelated callers doesn't make something belong in a
+shared container, as long as every caller goes through one feature-owned hook rather than the
+store's internals directly; the hook (which stays in `hooks/<feature>/`) is the real public
+surface, not the store's shape. Ad hoc *contexts* follow the plainer version of the same rule:
+colocate with the one feature that owns them.
 
 | Store/context | Consumers | Verdict |
 |---|---|---|
-| `DialogCtrl` | `items/`, `karma`, `magician/spirits`, `skills`, `combat`, `defenseCalculator`, `ui/dialog` itself — a reusable primitive many independent dialogs construct their own instance from, not one singleton behind one hook | Shared — stays in `components/ui/dialog/` (no move) |
-| `DiceRoller` | `attackCalculator`, `licenseCheck`, builder's nuyen section, dice tray — but only ever through `useDiceRoller()`, never its `.selectors`/`.state` directly | Adhoc — colocates under `components/dice/` (store, selectors, state, and the `useDiceRoller` hook all move together) |
-| `ImprovementStore` | Spend Karma dialog only | Adhoc — colocates under the karma domain's components |
-| `DiceTrayApi` | Dice Tray UI only | Adhoc — colocates under the dice-tray domain's components (merges with `DiceRoller`'s new home) |
-| `InitiativeTrackerStore` | Initiative Tracker feature only | Adhoc — colocates under the initiative-tracker domain's components |
+| `DialogCtrl` | `items/`, `karma`, `magician/spirits`, `skills`, `combat`, `defenseCalculator`, `ui/dialog` itself — a reusable primitive many independent dialogs construct their own instance from, not one singleton behind one hook | Business logic → `services/dialog/`. Display (`Dialog`, `ControlledDialog`) stays in `components/ui/dialog/`; `useDialog`/`useDialogCtrl` stay in `hooks/ui/dialog/` |
+| `DiceRoller` + `DiceTrayApi` | `attackCalculator`, `licenseCheck`, builder's nuyen section, dice tray — but only ever through `useDiceRoller()`, never `DiceRoller`'s `.selectors`/`.state` directly | One service — both stores' logic merges into `services/dice/`. `useDiceRoller` stays in `hooks/dice/`; the Dice Tray display (dialog, header, inputs, results) stays in `components/dice/` |
+| `ImprovementStore` | Spend Karma dialog only | Business logic → `services/improvements/`. Display stays in `components/karma/` |
+| `InitiativeTrackerStore` | Initiative Tracker feature only | Business logic → `services/initiativeTracker/`. Display stays in `components/initiativeTracker/` |
 | `contexts/entity/entityProvider.tsx` | Cross-cutting (ADR-0016 Phase 1 builds on it directly) | Shared — stays in `contexts/` |
 | `contexts/items/addItemDialogContext.ts`, `contexts/improvements/spendKarmaDialogContext.tsx`, `contexts/dice/diceTrayContext.ts`, `contexts/ui/prototypeContext.ts` | Single feature each | Adhoc — colocate with their components |
 
@@ -95,9 +103,11 @@ src/components/<domain>/<subcomponent>+/
 
 Domains where Runner (`components/runner/<domain>/`) and Builder
 (`components/builder/sections/<domain>/`) already mirror each other by name unify into one
-`components/<domain>/` tree: `attributes`, `biology`, `contacts`, `finances`, `gear` (absorbing
-`gearPage` and `items/`), `karma` (absorbing `improvements/`, which is a karma-spend mechanism, not
-its own domain), `profile`, `qualities`, `skills`.
+`components/<domain>/` tree: `attributes`, `biology`, `contacts`, `finances`, `items` (absorbing
+`gearPage`, the existing `items/`, and `system/gear/`'s display-adjacent pieces — **item**, not
+gear, per CONTEXT.md's Item entry), `karma` (absorbing `improvements/`'s display, which is a
+karma-spend mechanism, not its own domain — `ImprovementStore` itself peels off to
+`services/improvements/`, per the ad hoc table above), `profile`, `qualities`, `skills`.
 
 Runner-only domains promote from `components/runner/<domain>/` straight to `components/<domain>/`
 with no mode split needed: `magician`, `matrix`, `quickPanel`, `reputation`, `technomancer`,
@@ -110,7 +120,8 @@ Builder-only domains promote from `components/builder/sections/<domain>/` the sa
 `initiativeTracker`, `sources`) promote to top-level `components/` the same way as
 `components/helpers/`'s (`attackCalculator`, `defenseCalculator`) — this retires both
 `components/system/` and `components/helpers/` and resolves the `system`-naming collision for
-free.
+free. `initiativeTracker/`'s display promotes with the rest; `InitiativeTrackerStore` itself
+peels off to `services/initiativeTracker/`, per the ad hoc table above.
 
 The card tier hierarchy (`entityCard`, `itemCard`, `powerCard`, `spiritCard`) nests under
 `components/cards/` rather than promoting further — it's one designed hierarchy (ADR-0010), not
@@ -136,8 +147,11 @@ ownership) is explicitly out of scope for this doc to touch.
 
 ## Domain Notes
 
-No new domain terms (see `CONTEXT.md`). This doc is source-tree organization only, not a rename of
-any exported type, component, or store.
+No new domain terms. This doc executes a rename CONTEXT.md's **Item** entry already calls for:
+Item is the code identifier, Gear is UI-copy-only, and "a rename of the remaining Gear-named code
+identifiers to `Item`-prefixed equivalents is planned." Folding `system/gear/` into `system/items/`
+and `components/gear/`-shaped folders into `components/items/` is that rename, scoped to
+directories — see Out of Scope for what it deliberately doesn't touch.
 
 ## Open Questions
 
@@ -162,9 +176,13 @@ any exported type, component, or store.
   above) — none of them change shape, get merged into `RootState`, or gain/lose reducer logic.
 - **Any change to `RunnerData`, migrations, or rule behavior.** Same discipline as 0016: this is
   strictly "move code to where it now claims to live."
-- **Renaming any exported type, component, hook, or store.** File location changes only, unless a
-  slice's own PRD Issue says otherwise (e.g. a `*Slice.ts` file becoming `*.state.ts` is a file
-  rename, not an export rename).
+- **Renaming any exported type, component, hook, or store**, beyond what following folders to
+  their new names mechanically requires. File location changes only, unless a slice's own PRD
+  Issue says otherwise (e.g. a `*Slice.ts` file becoming `*.state.ts` is a file rename, not an
+  export rename).
+- **Renaming the persisted `RunnerData.gear` field.** CONTEXT.md's Item entry explicitly calls
+  this out as "a heavier, separate decision needing a migration ... not yet decided whether it's
+  in scope" — unaffected by this doc regardless of what any slice renames a folder to.
 - **The card hierarchy's internal architecture** (ADR-0010's elements/tiers design) — nesting
   location only.
 - **Fallow-flagged dead code, duplication, or complexity** — separate, unrelated cleanup; run via
@@ -172,6 +190,9 @@ any exported type, component, or store.
 
 ## Related Features
 
+- `CONTEXT.md`'s **Item** glossary entry — already calls for the Gear→Item code-identifier rename
+  this doc's `items/` folders execute, and already carves the persisted `RunnerData.gear` field
+  out of that rename's scope.
 - [`0016-code-organization-cleanup.md`](./0016-code-organization-cleanup.md) — the direct
   predecessor; its "Out of Scope" note is what this doc follows up on.
 - [`docs/adr/0010-entity-card-composition.md`](../adr/0010-entity-card-composition.md) — governs
