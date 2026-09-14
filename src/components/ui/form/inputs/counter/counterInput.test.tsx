@@ -3,8 +3,9 @@ import type { FC } from "react"
 import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
+
+import { CounterInput } from "./counterInput.tsx"
 
 interface ControlledCounterProps {
   initial?: number | null

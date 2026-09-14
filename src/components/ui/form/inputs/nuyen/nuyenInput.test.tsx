@@ -4,6 +4,7 @@ import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
+
 import { NuyenInput } from "./nuyenInput.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
