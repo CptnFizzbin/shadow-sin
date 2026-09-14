@@ -12,6 +12,7 @@ export const TestTypeLabels: Record<TestType, string> = {
   [TestType.Extended]: "Extended",
 }
 
+/** @deprecated use {@link Duration} instead */
 export enum ExtendedInterval {
   CombatRound = "combat-round",
   OneMinute = "1-minute",
@@ -23,6 +24,7 @@ export enum ExtendedInterval {
   OneMonth = "1-month",
 }
 
+/** @deprecated use {@link DurationUtils.format} instead */
 export const ExtendedIntervalLabels: Record<ExtendedInterval, string> = {
   [ExtendedInterval.CombatRound]: "1 Combat Round",
   [ExtendedInterval.OneMinute]: "1 Minute",

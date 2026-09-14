@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import type { CounterFieldProps as CounterInputProps } from "#/components/ui/counter/counterInput.tsx"
-import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
+import type { CounterFieldProps as CounterInputProps } from "#/components/ui/form/inputs/counter/counterInput.tsx"
+import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
 
 interface CounterFieldProps extends Omit<CounterInputProps, "value" | "onChange" | "onBlur"> {

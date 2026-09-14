@@ -87,6 +87,7 @@ export function runnerDataFactory(options?: {
     complexForms: [],
     sprites: [],
     contacts: [],
+    extendedTests: [],
 
     initiateGrade: 0,
     submersionGrade: 0,

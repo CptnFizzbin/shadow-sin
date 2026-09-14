@@ -4,6 +4,7 @@ import * as complexFormsActions from "./complexForms/complexFormsSlice.actions.t
 import * as contactsActions from "./contacts/contactsSlice.actions.ts"
 import * as damageActions from "./damage/damageSlice.actions.ts"
 import * as edgeActions from "./edge/edgeSlice.actions.ts"
+import * as extendedTestsActions from "./extendedTests/extendedTestsSlice.actions.ts"
 import * as matrixActions from "./gameState/matrix/matrixSlice.actions.ts"
 import * as gearActions from "./gear/gearSlice.actions.ts"
 import * as initiativeActions from "./initiative/initiativeSlice.actions.ts"
@@ -33,6 +34,7 @@ export const Actions = {
   contacts: contactsActions,
   damage: damageActions,
   edge: edgeActions,
+  extendedTests: extendedTestsActions,
   gameState: { matrix: matrixActions },
   item: gearActions,
   initiative: initiativeActions,
