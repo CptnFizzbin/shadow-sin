@@ -1,10 +1,10 @@
 import type { FC, ReactNode } from "react"
-import { createContext, useContext, useState } from "react"
+import { useState } from "react"
 
 import { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
 
-const RunnerManagerContext = createContext<RunnerManager | null>(null)
+import { RunnerManagerContext } from "./runnerManager.context.ts"
 
 interface RunnerManagerProviderProps {
   children: ReactNode
@@ -21,12 +21,4 @@ export const RunnerManagerProvider: FC<RunnerManagerProviderProps> = ({ children
       {children}
     </RunnerManagerContext.Provider>
   )
-}
-
-export function useRunnerManager(): RunnerManager {
-  const manager = useContext(RunnerManagerContext)
-  if (!manager) {
-    throw new Error("useRunnerManager must be used within a RunnerManagerProvider")
-  }
-  return manager
 }

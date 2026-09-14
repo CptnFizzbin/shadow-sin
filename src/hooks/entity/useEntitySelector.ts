@@ -1,7 +1,6 @@
-import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
+import { useContext } from "react"
 
-import { useRunner } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunner } from "#/hooks/runner/useRunnerStore.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { getEntityScope } from "#/state/entityScope.ts"
@@ -10,40 +9,12 @@ import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { OutOfContextError } from "#/utils/errors/outOfContextError.ts"
 
+import { EntityContext } from "#/contexts/entity/entity.context.ts"
+
 export interface EntitySelectorState {
   runner: RunnerData
   entity: object
   items: ItemCatalog
-}
-
-/**
- * The Entity currently in scope for `useEntitySelector`. Kept as `object` rather than
- * `EntityBase` — not every Entity kind this can hold (e.g. Spirit/Sprite, which have no `source`
- * field and don't use `EntityData.rating`) structurally satisfies `EntityData`'s full shape.
- * Callers narrow to whatever trait(s) their selector's `TState` needs (`EntityWithAttrs`, ...),
- * the same way `useRunnerSelector` narrows `RunnerData`.
- */
-const EntityContext = createContext<EntityData | null>(null)
-
-interface EntityProviderProps extends PropsWithChildren {
-  entity: EntityData
-}
-
-/**
- * Provides the Entity in scope for `useEntitySelector` to the component tree. Wrap a subtree with
- * this provider to swap the entity in scope away from the Runner — a device, agent, spirit,
- * sprite, or other Entity — for everything nested inside; nested `EntityProvider`s shadow outer
- * ones with standard Context semantics.
- *
- * `RunnerStoreProvider` already nests a `RunnerEntityProvider` populated from the runner sheet, so
- * most consumers never render this directly.
- */
-export const EntityProvider: FC<EntityProviderProps> = ({ entity, children }) => {
-  return (
-    <EntityContext.Provider value={entity}>
-      {children}
-    </EntityContext.Provider>
-  )
 }
 
 const useEntityContext = (): EntityData => {

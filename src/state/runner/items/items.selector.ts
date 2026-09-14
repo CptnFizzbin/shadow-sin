@@ -5,8 +5,10 @@ import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
-import { filterRecordByType, itemIsType, toItemCatalogTree } from "#/system/model/items/itemUtils.ts"
+import { filterRecordByType, itemIsType } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
+
+import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 
 export namespace ItemSelectors {
   export type ItemSelector<TReturn, TOptions extends object | never = never> = StandardSelector<

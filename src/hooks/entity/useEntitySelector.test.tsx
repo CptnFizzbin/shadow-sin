@@ -5,13 +5,14 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
+import { EntityProvider } from "#/contexts/entity/entity.provider.tsx"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { EntityData } from "#/system/model/entities/entityData.ts"
 import type { EntityWithAttrs } from "#/system/model/entities/traits/entityWithAttrs.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
-import { EntityProvider, useEntitySelector } from "./entityProvider.tsx"
+import { useEntitySelector } from "./useEntitySelector.ts"
 
 const wrapperFor = (entity: Partial<EntityData>): FC<PropsWithChildren> => {
   const runnerStore = new RunnerDataStore(runnerDataFactory())

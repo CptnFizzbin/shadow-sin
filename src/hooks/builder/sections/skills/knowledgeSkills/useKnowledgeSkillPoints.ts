@@ -1,6 +1,6 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/skills/builder/skillsBuilderUtils.ts"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"

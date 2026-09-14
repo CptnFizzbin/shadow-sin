@@ -20,7 +20,7 @@ import { useState } from "react"
 
 import { downloadTextFile } from "#/components/exportImport/exportUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import type { RunnerLoadError } from "#/services/persistence/runnerLoadError.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 

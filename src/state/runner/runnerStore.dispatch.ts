@@ -1,4 +1,4 @@
-import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 

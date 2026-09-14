@@ -1,6 +1,6 @@
 import { useNavigate } from "@tanstack/react-router"
 
-import { useIsBuilder } from "#/contexts/builder/builderStore.context.ts"
+import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"

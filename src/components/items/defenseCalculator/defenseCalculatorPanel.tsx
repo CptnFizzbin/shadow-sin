@@ -20,7 +20,7 @@ import { DicePool } from "#/components/dicePool/dicePool.tsx"
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import {
   useActiveSkillDiceGroup,
   useEncumbranceDiceGroup,

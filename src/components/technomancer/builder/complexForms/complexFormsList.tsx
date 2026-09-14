@@ -8,7 +8,7 @@ import type { FC } from "react"
 
 import { useComplexFormDialog } from "#/components/technomancer/viewer/dialogs/complexFormDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useComplexFormsBuildPoints } from "#/hooks/builder/buildPoints/useComplexFormsBuildPoints.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"

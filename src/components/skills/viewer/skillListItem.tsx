@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"

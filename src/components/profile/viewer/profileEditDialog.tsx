@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useRunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"

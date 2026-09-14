@@ -1,5 +1,5 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"

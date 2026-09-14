@@ -6,7 +6,7 @@ import type { FC } from "react"
 
 import { PowerCard } from "#/components/cards/powerCard/powerCard.tsx"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"

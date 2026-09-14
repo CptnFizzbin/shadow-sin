@@ -6,7 +6,7 @@ import { AddItemDialogProvider } from "#/components/items/dialogs/addItemDialogP
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
 import { RunnerDataStore } from "#/components/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/sheet/runnerStoreProvider.tsx"
-import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
 import { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"

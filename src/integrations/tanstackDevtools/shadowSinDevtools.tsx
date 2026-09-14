@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { useRunnerManager } from "#/contexts/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import { Artemis } from "#/data/fixtures/artemis.ts"
 import { Hexen } from "#/data/fixtures/hexen.ts"
 

@@ -11,7 +11,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 
 import type * as ExportUtils from "#/components/exportImport/exportUtils.ts"
 import { downloadTextFile } from "#/components/exportImport/exportUtils.ts"
-import { RunnerManagerProvider } from "#/contexts/runner/runnerManagerContext.tsx"
+import { RunnerManagerProvider } from "#/contexts/runner/runnerManager.provider.tsx"
 import type { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"

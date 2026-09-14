@@ -1,4 +1,4 @@
-import { useEntitySelector } from "#/contexts/entity/entityProvider.tsx"
+import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/formulas/items/encumbranceUtils.ts"

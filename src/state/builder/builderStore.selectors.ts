@@ -1,5 +1,5 @@
 import type { BuilderState } from "#/components/builder/builderState.ts"
-import { useBuilderDataContext } from "#/contexts/builder/builderStore.context.ts"
+import { useBuilderDataContext } from "#/hooks/builder/useBuilderStore.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
 
