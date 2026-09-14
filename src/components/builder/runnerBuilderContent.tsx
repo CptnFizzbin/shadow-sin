@@ -9,14 +9,14 @@ import { useMemo, useState } from "react"
 import { AttributesBuilderSection } from "#/components/entities/attributes/builder/attributesBuilderSection.tsx"
 import { GearBuilderSection } from "#/components/entities/items/builder/gearBuilderSection.tsx"
 import {
-  AdeptPowersBuilderSection
+  AdeptPowersBuilderSection,
 } from "#/components/runner/awakenings/adept/adeptPowers/builder/adeptPowersBuilderSection.tsx"
 import { SpellsBuilderSection } from "#/components/runner/awakenings/magician/builder/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "#/components/runner/awakenings/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
 import {
-  SpritesBuilderSection
+  SpritesBuilderSection,
 } from "#/components/runner/awakenings/technomancer/builder/sprites/spritesBuilderSection.tsx"
 import { BiologyBuilderSection } from "#/components/runner/sections/biology/builder/biologyBuilderSection.tsx"
 import { ContactsBuilderSection } from "#/components/runner/sections/contacts/builder/contactsBuilderSection.tsx"
@@ -68,7 +68,7 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
 }
 
 export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loadRunner, onCancel }) => {
-  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
+  const [isBpPanelExpanded] = useState(false)
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
