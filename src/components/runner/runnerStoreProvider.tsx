@@ -5,7 +5,6 @@ import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
 import type { RunnerState } from "#/state/runnerState.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
-import { toRunnerData } from "#/state/toRunnerData.ts"
 
 import { RunnerEntityProvider } from "./runnerEntityProvider.tsx"
 
@@ -15,10 +14,13 @@ interface RunnerDataProviderProps extends PropsWithChildren {
 }
 
 /**
- * Bridges a test-isolation `store` (e.g. `RunnerDataStore`) into a real `RunnerState` singleton,
- * provided via `RunnerStateProvider` — so `useRunnerState`/`useRunnerStateDispatch` (and the
+ * Provides a real `RunnerState` singleton, seeded from `store`'s current value, via
+ * `RunnerStateProvider` — so `useRunnerState`/`useRunnerStateDispatch` (and the
  * `useRunnerSelector`/`useRunnerStoreDispatch` wrappers built on them) work the same as they do
- * against the production singleton.
+ * against the production singleton. `store` (e.g. a test's `RunnerDataStore`) is redirected to
+ * read/write through this same singleton's `runner` slice from then on, rather than keeping its
+ * own value in sync alongside it — so a test that seeded `store` before rendering can still call
+ * `store.getState()`/`store.setState(...)` afterward and see/drive the real store.
  */
 export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   mode = "viewer",
@@ -26,30 +28,24 @@ export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   children,
 }) => {
   const appStore = useMemo(() => {
-    // `store` (a test-isolation seed, e.g. `RunnerDataStore`) and `mappedStore` (the singleton
-    // `RunnerState` shape) mirror each other's `RunnerData`: writes to one flow to the other so
-    // either can be read from or written to. Without `isApplyingExternalWrite`, each side's own
-    // write would immediately echo back as a write to itself, looping forever — the write that
-    // originates the change sets the flag so the echo triggered by its own mirroring is skipped,
-    // instead of triggering another round-trip.
-    let isApplyingExternalWrite = false
-
     const mappedStore = createRunnerStateStore({
       mode,
       runner: store.getState(),
-      onChange: (state) => {
-        if (isApplyingExternalWrite) return
-        store.setState(() => toRunnerData(state))
-      },
     })
 
-    store.subscribe((runner) => {
-      isApplyingExternalWrite = true
-      try {
-        mappedStore.dispatch(RunnerActions.load(runner))
-      } finally {
-        isApplyingExternalWrite = false
-      }
+    store.redirectTo({
+      getState: () => mappedStore.getState().runner,
+      setState: (updater) => mappedStore.dispatch(RunnerActions.update(updater)),
+      subscribe: (listener) => {
+        let previousRunner = mappedStore.getState().runner
+        const unsubscribe = mappedStore.subscribe(() => {
+          const nextRunner = mappedStore.getState().runner
+          if (nextRunner === previousRunner) return
+          previousRunner = nextRunner
+          listener(nextRunner)
+        })
+        return { unsubscribe }
+      },
     })
 
     return mappedStore

@@ -16,7 +16,6 @@ import type { BuilderStore } from "#/state/builder/builderStore.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
-import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -92,49 +91,45 @@ export function renderInBuilder(
     builderStore = createSimpleStore(builderStateFactory()),
   }: RenderInBuilderOptions = {},
 ) {
-  // See the matching guard in `RunnerStoreProvider` — `runnerStore`/`builderStore` (test-isolation
-  // seeds) and `appStore` (the singleton `RunnerState` shape) mirror each other's state; without
-  // this flag, each side's own write would echo back as a write to itself, looping forever.
-  let isApplyingExternalWrite = false
-
+  // `createRunnerStateStore` always seeds `builder` from `builderStateFactory()` — it has no way
+  // to take a caller-supplied initial `BuilderState` — so a `builderStore` passed in with its own
+  // starting value (e.g. a persisted `nuyen.starting`) is applied as one explicit dispatch below,
+  // before `runnerStore`/`builderStore` are redirected to read/write through `appStore` directly.
   const appStore = createRunnerStateStore({
     mode: "builder",
     runner: runnerStore.getState(),
-    onChange: (state) => {
-      if (isApplyingExternalWrite) return
-      runnerStore.setState(() => toRunnerData(state))
-      builderStore.setState(() => state.builder!)
+  })
+  appStore.dispatch(BuilderActions.setState(builderStore.getState()))
+
+  runnerStore.redirectTo({
+    getState: () => appStore.getState().runner,
+    setState: (updater) => appStore.dispatch(RunnerActions.update(updater)),
+    subscribe: (listener) => {
+      let previousRunner = appStore.getState().runner
+      const unsubscribe = appStore.subscribe(() => {
+        const nextRunner = appStore.getState().runner
+        if (nextRunner === previousRunner) return
+        previousRunner = nextRunner
+        listener(nextRunner)
+      })
+      return { unsubscribe }
     },
   })
 
-  runnerStore.subscribe((runner) => {
-    isApplyingExternalWrite = true
-    try {
-      appStore.dispatch(RunnerActions.load(runner))
-    } finally {
-      isApplyingExternalWrite = false
-    }
+  builderStore.redirectTo({
+    getState: () => appStore.getState().builder!,
+    setState: (updater) => appStore.dispatch(BuilderActions.setState(updater(appStore.getState().builder!))),
+    subscribe: (listener) => {
+      let previousBuilder = appStore.getState().builder
+      const unsubscribe = appStore.subscribe(() => {
+        const nextBuilder = appStore.getState().builder
+        if (nextBuilder === previousBuilder) return
+        previousBuilder = nextBuilder
+        listener(nextBuilder!)
+      })
+      return { unsubscribe }
+    },
   })
-
-  builderStore.subscribe((state) => {
-    isApplyingExternalWrite = true
-    try {
-      appStore.dispatch(BuilderActions.setState(state))
-    } finally {
-      isApplyingExternalWrite = false
-    }
-  })
-
-  // `createRunnerStateStore` always seeds `builder` from `builderStateFactory()` — it has no way to take
-  // a caller-supplied initial `BuilderState` — so a `builderStore` passed in with its own starting
-  // value (e.g. a persisted `nuyen.starting`) needs one explicit sync here to actually reach
-  // `appStore` before the first render.
-  isApplyingExternalWrite = true
-  try {
-    appStore.dispatch(BuilderActions.setState(builderStore.getState()))
-  } finally {
-    isApplyingExternalWrite = false
-  }
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
