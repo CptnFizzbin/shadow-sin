@@ -2,6 +2,7 @@ import type { FC } from "react"
 import { useMemo } from "react"
 
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
+import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
 import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
@@ -34,9 +35,11 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
 
   return (
     <AppStateProvider store={store}>
-      <AddItemDialogProvider>
-        <RunnerEditorContent />
-      </AddItemDialogProvider>
+      <RunnerEntityProvider>
+        <AddItemDialogProvider>
+          <RunnerEditorContent />
+        </AddItemDialogProvider>
+      </RunnerEntityProvider>
     </AppStateProvider>
   )
 }

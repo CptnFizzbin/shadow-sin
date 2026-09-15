@@ -1,4 +1,5 @@
-import { combineReducers, createReducer, createSlice } from "@reduxjs/toolkit"
+import type { Reducer } from "@reduxjs/toolkit"
+import { combineReducers, createSlice } from "@reduxjs/toolkit"
 
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
@@ -121,24 +122,16 @@ const domainReducer = combineReducers({
  */
 const nameReducer = (profile: RunnerData["profile"]): RunnerData["name"] => profile.alias || profile.name
 
-export const runnerRootReducer = createReducer(
-  () => runnerDataFactory(),
-  ({ addCase, addDefaultCase }) => {
-    addCase(BuilderActions.reset, () => {
-      return runnerDataFactory()
-    })
+// A plain function, not `createReducer` — `domainReducer`'s own leaves (`edgeReducer`,
+// `attributesReducer`, etc.) are each already immer-wrapped `createReducer`s. Wrapping this
+// outer reducer in `createReducer` too would make `state` here an immer draft, so a leaf
+// mutating its slice (e.g. `burnEdge` fanning out to both `edgeReducer` and `attributesReducer`)
+// marks that draft modified — which immer then rejects once this function also explicitly
+// returns a new value below ("An immer producer returned a new value *and* modified its draft").
+export const runnerRootReducer: Reducer<RunnerData> = (state = runnerDataFactory(), action) => {
+  if (BuilderActions.reset.match(action)) return runnerDataFactory()
+  if (RunnerActions.load.match(action)) return action.payload
 
-    addCase(RunnerActions.load, (_state, { payload }) => {
-      return payload
-    })
-
-    addCase(RunnerActions.update.fulfilled, (_state, { payload }) => {
-      return payload
-    })
-
-    addDefaultCase((state, action) => {
-      const next = domainReducer(state, action)
-      return { ...next, name: nameReducer(next.profile) }
-    })
-  },
-)
+  const next = domainReducer(state, action)
+  return { ...next, name: nameReducer(next.profile) }
+}

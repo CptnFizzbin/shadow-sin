@@ -6,7 +6,9 @@ import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderActions } from "./builderStore.actions.ts"
 
 export const builderStoreReducer = createReducer<BuilderState>(builderStateFactory(), (builder) => {
-  builder.addCase(BuilderActions.nuyen.setStartingNuyen, (state, action) => {
-    state.nuyen.starting = action.payload ?? null
-  })
+  builder
+    .addCase(BuilderActions.setState, (_state, action) => action.payload)
+    .addCase(BuilderActions.nuyen.setStartingNuyen, (state, action) => {
+      state.nuyen.starting = action.payload ?? null
+    })
 })

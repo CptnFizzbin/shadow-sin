@@ -7,17 +7,22 @@ import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
 export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => {
+  // Copy `action.payload` rather than storing it by reference: the same action also reaches
+  // `gearReducer` (`src/state/runner/items/items.state.ts`), and Immer freezes whatever a
+  // produce call incorporates by reference into its output — so without the copy, whichever of
+  // the two reducers runs second would be handed an already-frozen payload and throw the moment
+  // `reconcileEquippedForStash`/`relinkItem` tried to write to it.
   addCase(ItemActions.addItem, (state, action) => {
-    state[action.payload.id] = action.payload
+    state[action.payload.id] = { ...action.payload }
     ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], false)
-    ItemStateUtils.relinkItem(state, action.payload)
+    ItemStateUtils.relinkItem(state, state[action.payload.id])
   })
 
   addCase(setItem, (state, action) => {
     const wasStashed = state[action.payload.id]?.stashed === true
-    state[action.payload.id] = action.payload
+    state[action.payload.id] = { ...action.payload }
     ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], wasStashed)
-    ItemStateUtils.relinkItem(state, action.payload)
+    ItemStateUtils.relinkItem(state, state[action.payload.id])
   })
 
   addCase(ItemActions.patchItem, (state, action) => {
@@ -55,10 +60,6 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
   })
 
   addCase(RunnerActions.load, (_state, { payload }) => {
-    return getItemCatalog(payload)
-  })
-
-  addCase(RunnerActions.update.fulfilled, (_state, { payload }) => {
     return getItemCatalog(payload)
   })
 })

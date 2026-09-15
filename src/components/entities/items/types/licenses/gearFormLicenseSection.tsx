@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { RatingChip } from "#/components/ui/chips/ratingChip.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -18,7 +18,7 @@ import { useAssignLicenseDialog } from "./dialogs/assignLicenseDialog.tsx"
 import { isLicenseQuickBuyEligible } from "./licenseUtils.ts"
 
 const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
-  const isBuilder = useIsBuilder()
+  const isBuilder = !useEditorMode().isViewer
   const dispatch = useRunnerStoreDispatch()
   // Read live from the store rather than the form's own (possibly stale) draft values,
   // since assigning/changing/removing a license dispatches directly to the gear store

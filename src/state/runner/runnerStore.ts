@@ -1,4 +1,4 @@
-import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import type { SimpleStore } from "#/lib/simpleStore.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
-export type RunnerStore = CompatStore<RunnerData>
+export type RunnerStore = SimpleStore<RunnerData>

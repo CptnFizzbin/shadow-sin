@@ -24,16 +24,30 @@ export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   children,
 }) => {
   const appStore = useMemo(() => {
+    // `store` (a test-isolation seed, e.g. `RunnerDataStore`) and `mappedStore` (the singleton
+    // `RootState` shape) mirror each other's `RunnerData`: writes to one flow to the other so
+    // either can be read from or written to. Without `isApplyingExternalWrite`, each side's own
+    // write would immediately echo back as a write to itself, looping forever — the write that
+    // originates the change sets the flag so the echo triggered by its own mirroring is skipped,
+    // instead of triggering another round-trip.
+    let isApplyingExternalWrite = false
+
     const mappedStore = createRootStore({
       mode,
       runner: store.getState(),
       onChange: (state) => {
+        if (isApplyingExternalWrite) return
         store.setState(() => toRunnerData(state))
       },
     })
 
     store.subscribe((runner) => {
-      mappedStore.dispatch(RunnerActions.load(runner))
+      isApplyingExternalWrite = true
+      try {
+        mappedStore.dispatch(RunnerActions.load(runner))
+      } finally {
+        isApplyingExternalWrite = false
+      }
     })
 
     return mappedStore

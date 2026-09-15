@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 import { produce } from "immer"
 
-import { createThunk } from "#/state/createAppThunk.ts"
+import type { AppDispatch, AppState } from "#/state/rootState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
@@ -27,12 +27,25 @@ import * as spiritsActions from "./spirits/spirits.actions.ts"
 import * as spritesActions from "./sprites/sprites.actions.ts"
 import * as traditionActions from "./tradition/tradition.actions.ts"
 
-export const RunnerActions = {
-  load: createAction<RunnerData>("runner/load"),
+const load = createAction<RunnerData>("runner/load")
 
-  update: createThunk("runner/update", (updater: (runner: RunnerData) => void | RunnerData, { getState }) => {
-    return produce(toRunnerData(getState()), updater)
-  }),
+export const RunnerActions = {
+  load,
+
+  /**
+   * Applies `updater` to a snapshot of the current `RunnerData` — merged via `toRunnerData` so
+   * `_data_.items` reflects the canonical normalized `items` catalog rather than this slice's own
+   * possibly-stale mirror — then loads the result back in via {@link load}. A plain, synchronous
+   * thunk rather than `createAsyncThunk`: `getState`/`dispatch` both run synchronously here, so
+   * callers that read the store again immediately after dispatching (no `await`) see the result.
+   */
+  update: (updater: (runner: RunnerData) => void | RunnerData) => {
+    return (dispatch: AppDispatch, getState: () => AppState): RunnerData => {
+      const next = produce(toRunnerData(getState()), updater)
+      dispatch(load(next))
+      return next
+    }
+  },
 }
 
 /**

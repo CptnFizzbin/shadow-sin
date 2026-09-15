@@ -99,16 +99,21 @@ export const ItemStateUtils = {
 
 export const gearReducer = createReducer(initialState, (builder) => {
   builder
+    // Copy `action.payload` rather than storing it by reference: the same action also reaches
+    // the normalized `items` catalog's `itemsRootReducer` (`src/state/items/items.reducer.ts`),
+    // and Immer freezes whatever a produce call incorporates by reference into its output —
+    // so without the copy, the second reducer to run would be handed an already-frozen payload
+    // and throw the moment `reconcileEquippedForStash`/`relinkItem` tried to write to it.
     .addCase(addItem, (state, action) => {
-      state[action.payload.id] = action.payload
+      state[action.payload.id] = { ...action.payload }
       reconcileEquippedForStash(state[action.payload.id], false)
-      relinkItem(state, action.payload)
+      relinkItem(state, state[action.payload.id])
     })
     .addCase(setItem, (state, action) => {
       const wasStashed = state[action.payload.id]?.stashed === true
-      state[action.payload.id] = action.payload
+      state[action.payload.id] = { ...action.payload }
       reconcileEquippedForStash(state[action.payload.id], wasStashed)
-      relinkItem(state, action.payload)
+      relinkItem(state, state[action.payload.id])
     })
     .addCase(patchItem, (state, action) => {
       const item = state[action.payload.itemId]

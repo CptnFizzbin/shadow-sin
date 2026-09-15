@@ -17,7 +17,7 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
@@ -174,7 +174,7 @@ interface AssignLicenseDialogProps extends ControlledDialogProps<boolean> {
 }
 
 export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }) => {
-  const isBuilder = useIsBuilder()
+  const isBuilder = !useEditorMode().isViewer
   const dispatch = useRunnerStoreDispatch()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)

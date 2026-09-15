@@ -13,7 +13,7 @@ import { GearViewSection } from "#/components/entities/items/viewer/gearViewSect
 import { NuyenSection } from "#/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
 import { useLicenseCheckDialog } from "#/components/system/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/gear")({
 function RouteComponent() {
   const [searchQuery, setSearchQuery] = useState("")
   const searchTerms = searchQuery.trim() ? searchQuery.trim().split(/\s+/) : []
-  const isBuilder = useIsBuilder()
+  const isBuilder = !useEditorMode().isViewer
   const licenseCheckDialog = useLicenseCheckDialog()
   const addItemDialog = useAddItemDialogContext()
 

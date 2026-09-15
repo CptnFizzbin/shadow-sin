@@ -4,9 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { createSimpleStore } from "#/lib/simpleStore.ts"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
-import { builderStoreReducer } from "#/state/builder/builderStore.reducer.ts"
 import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
@@ -20,7 +19,7 @@ function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
         runner.profile = { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } }
       },
     })),
-    builderStore: createCompatStore({ ...builderStateFactory(), ...builderOverrides }, builderStoreReducer),
+    builderStore: createSimpleStore({ ...builderStateFactory(), ...builderOverrides }),
   })
 }
 

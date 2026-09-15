@@ -8,10 +8,10 @@ import { afterEach } from "vitest"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
+import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { createSimpleStore } from "#/lib/simpleStore.ts"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
-import { builderStoreReducer } from "#/state/builder/builderStore.reducer.ts"
 import type { BuilderStore } from "#/state/builder/builderStore.ts"
 import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
@@ -89,32 +89,61 @@ export function renderInBuilder(
   element: ReactElement,
   {
     runnerStore = new RunnerDataStore(runnerDataFactory()),
-    builderStore = createCompatStore(builderStateFactory(), builderStoreReducer),
+    builderStore = createSimpleStore(builderStateFactory()),
   }: RenderInBuilderOptions = {},
 ) {
+  // See the matching guard in `RunnerStoreProvider` — `runnerStore`/`builderStore` (test-isolation
+  // seeds) and `appStore` (the singleton `RootState` shape) mirror each other's state; without
+  // this flag, each side's own write would echo back as a write to itself, looping forever.
+  let isApplyingExternalWrite = false
+
   const appStore = createRootStore({
     mode: "builder",
     runner: runnerStore.getState(),
     onChange: (state) => {
+      if (isApplyingExternalWrite) return
       runnerStore.setState(() => toRunnerData(state))
       builderStore.setState(() => state.builder!)
     },
   })
 
   runnerStore.subscribe((runner) => {
-    appStore.dispatch(RunnerActions.load(runner))
+    isApplyingExternalWrite = true
+    try {
+      appStore.dispatch(RunnerActions.load(runner))
+    } finally {
+      isApplyingExternalWrite = false
+    }
   })
 
   builderStore.subscribe((state) => {
-    appStore.dispatch(BuilderActions.setState(state))
+    isApplyingExternalWrite = true
+    try {
+      appStore.dispatch(BuilderActions.setState(state))
+    } finally {
+      isApplyingExternalWrite = false
+    }
   })
+
+  // `createRootStore` always seeds `builder` from `builderStateFactory()` — it has no way to take
+  // a caller-supplied initial `BuilderState` — so a `builderStore` passed in with its own starting
+  // value (e.g. a persisted `nuyen.starting`) needs one explicit sync here to actually reach
+  // `appStore` before the first render.
+  isApplyingExternalWrite = true
+  try {
+    appStore.dispatch(BuilderActions.setState(builderStore.getState()))
+  } finally {
+    isApplyingExternalWrite = false
+  }
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
           <AppStateProvider store={appStore}>
-            <AddItemDialogProvider>{children}</AddItemDialogProvider>
+            <RunnerEntityProvider>
+              <AddItemDialogProvider>{children}</AddItemDialogProvider>
+            </RunnerEntityProvider>
           </AppStateProvider>
         </TestRouterProvider>
       </ThemeProvider>
