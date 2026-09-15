@@ -1,6 +1,6 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
-import { useAppSelector } from "#/state/rootState.ts"
+import { useRunnerState } from "#/state/runnerState.ts"
 
 /**
  * The standardized way to read `RunnerData` in a component — assembles whatever `TState` a
@@ -28,7 +28,7 @@ export function useRunnerSelector<TReturn, TOptions extends object>(
   const isCompareArg = typeof optionsOrCompare === "function"
   const options = isCompareArg ? undefined : optionsOrCompare
 
-  return useAppSelector((state) => {
+  return useRunnerState((state) => {
     return selector({ ...state, entity: state.runner }, options)
   })
 }

@@ -9,7 +9,7 @@ import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
 import { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
-import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
+import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
@@ -45,7 +45,7 @@ function RunnerRoute() {
   const runnerManager = useRunnerManager()
 
   const store = useMemo(() => {
-    return createRootStore({
+    return createRunnerStateStore({
       mode: "viewer",
       runner: runner,
       onChange: async (state) => {
@@ -61,7 +61,7 @@ function RunnerRoute() {
   const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
 
   return (
-    <AppStateProvider store={store}>
+    <RunnerStateProvider store={store}>
       <RunnerEntityProvider>
         <DiceTrayProvider diceTrayApi={diceTrayApi}>
           <AddItemDialogProvider>
@@ -69,6 +69,6 @@ function RunnerRoute() {
           </AddItemDialogProvider>
         </DiceTrayProvider>
       </RunnerEntityProvider>
-    </AppStateProvider>
+    </RunnerStateProvider>
   )
 }

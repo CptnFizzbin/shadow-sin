@@ -217,7 +217,7 @@ ownership) is explicitly out of scope for this doc to touch.
   `yarn fallow dead-code --format json` — no behavior change, no new abstractions, matching 0016's
   discipline for its own Slices 1–3.
 - `state/` renaming should not race ADR-0016 (`unify-redux-state`). That ADR's Phase 1 (assembly
-  interface standardization) hasn't landed yet, and Phase 2 (the `RootState` merge) is gated on
+  interface standardization) hasn't landed yet, and Phase 2 (the `RunnerState` merge) is gated on
   it. Rename `stores/<domain>/` → `state/<domain>/` and the file suffixes now (mechanical, no
   shape change), but don't try to pre-guess Phase 2's `state/current/` + `state/builder/` shape —
   that's a second, later move once ADR-0016 Phase 2 actually lands.
@@ -271,10 +271,10 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 
 ## Out of Scope
 
-- **ADR-0016's actual `RootState` merge.** This doc only renames/relocates the existing
+- **ADR-0016's actual `RunnerState` merge.** This doc only renames/relocates the existing
   `stores/<domain>/` slices; it does not implement Phase 1 or Phase 2 of that ADR.
 - **The five ad hoc stores' behavior or lifecycle.** Classified for *location* only (see table
-  above) — none of them change shape, get merged into `RootState`, or gain/lose reducer logic.
+  above) — none of them change shape, get merged into `RunnerState`, or gain/lose reducer logic.
 - **Any change to `RunnerData`, migrations, or rule behavior.** Same discipline as 0016: this is
   strictly "move code to where it now claims to live."
 - **Renaming any exported type, component, hook, or store**, beyond what following folders to

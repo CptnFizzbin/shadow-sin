@@ -4,7 +4,7 @@ import { use, useMemo } from "react"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
-import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
+import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { toJsonValue } from "#/utils/jsonUtils.ts"
@@ -31,7 +31,7 @@ export const RunnerBuilder: FC = () => {
   const savedRunner = useSavedRunnerData()
 
   const store = useMemo(() => {
-    return createRootStore({
+    return createRunnerStateStore({
       mode: "builder",
       runner: savedRunner,
       onChange: async (state) => {
@@ -45,12 +45,12 @@ export const RunnerBuilder: FC = () => {
   }, [savedRunner])
 
   return (
-    <AppStateProvider store={store}>
+    <RunnerStateProvider store={store}>
       <RunnerEntityProvider>
         <AddItemDialogProvider>
           <RunnerBuilderContent />
         </AddItemDialogProvider>
       </RunnerEntityProvider>
-    </AppStateProvider>
+    </RunnerStateProvider>
   )
 }

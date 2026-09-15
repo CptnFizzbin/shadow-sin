@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 import { produce } from "immer"
 
-import type { AppDispatch, AppState } from "#/state/rootState.ts"
+import type { RunnerStateDispatch, RunnerState } from "#/state/runnerState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
@@ -40,7 +40,7 @@ export const RunnerActions = {
    * callers that read the store again immediately after dispatching (no `await`) see the result.
    */
   update: (updater: (runner: RunnerData) => void | RunnerData) => {
-    return (dispatch: AppDispatch, getState: () => AppState): RunnerData => {
+    return (dispatch: RunnerStateDispatch, getState: () => RunnerState): RunnerData => {
       const next = produce(toRunnerData(getState()), updater)
       dispatch(load(next))
       return next

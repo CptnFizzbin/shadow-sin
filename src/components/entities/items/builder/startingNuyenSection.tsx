@@ -16,11 +16,11 @@ import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { BuilderStateSelectors } from "#/state/builder/builderStore.selectors.ts"
-import { useAppDispatch, useAppSelector } from "#/state/rootState.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions as RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch, useRunnerState } from "#/state/runnerState.ts"
 import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
@@ -46,8 +46,8 @@ export const StartingNuyenSection: FC = () => {
   const minResult = (numDice + bonus) * mult
   const maxResult = (numDice * 6 + bonus) * mult
 
-  const dispatch = useAppDispatch()
-  const startingNuyen = useAppSelector((state) => {
+  const dispatch = useRunnerStateDispatch()
+  const startingNuyen = useRunnerState((state) => {
     return state.builder ? BuilderStateSelectors.nuyen.selectStartingNuyen(state.builder) : null
   })
 

@@ -1,9 +1,9 @@
 import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { selectHasImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
-import { useAppDispatch } from "#/state/rootState.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { applyImprovements } from "#/system/formulas/karma/improvements/improvementUtils.ts"
 
 import { useImprovementSelector } from "./useImprovementSelector.ts"
@@ -21,7 +21,7 @@ export interface SpendKarmaSummary {
 /** Karma budget numbers + save action for the Spend Karma dialog. */
 export const useSpendKarmaSummary = (): SpendKarmaSummary => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const dispatch = useAppDispatch()
+  const dispatch = useRunnerStateDispatch()
 
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const karmaCost = useImprovementSelector(selectImprovementsTotalCost)

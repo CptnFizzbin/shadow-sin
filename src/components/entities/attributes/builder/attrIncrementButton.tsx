@@ -5,10 +5,10 @@ import type { FC } from "react"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
-import { useAppDispatch } from "#/state/rootState.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 interface AttrIncrementButtonProps {
@@ -22,7 +22,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const { budget } = useAttributesBuildPoints()
   const editorMode = useEditorMode()
 
-  const dispatch = useAppDispatch()
+  const dispatch = useRunnerStateDispatch()
   const attrKey = props.attr
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: attrKey })
   const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })

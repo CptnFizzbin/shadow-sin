@@ -4,7 +4,7 @@ import type { RunnerData } from "#/system/model/runnerData.ts"
 
 /**
  * A test-isolation seed for `RunnerStoreProvider`: constructs a fresh `RunnerStore` instance from
- * a starting `RunnerData` value, without needing a real `RootState` singleton around it. Tests
+ * a starting `RunnerData` value, without needing a real `RunnerState` singleton around it. Tests
  * hold onto the instance to seed a Provider and, when needed, poke `setState` directly to mimic
  * an external write.
  */

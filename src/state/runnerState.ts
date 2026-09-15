@@ -13,7 +13,14 @@ import { editorStateFactory } from "./editor/editor.state.ts"
 import { itemsRootReducer } from "./items/items.reducer.ts"
 import { runnerRootReducer } from "./runner/runnerStore.reducer.ts"
 
-export interface RootState {
+/**
+ * The single Redux state shape for one open Runner — Viewer, Builder, and Editor all read/write
+ * through the same store instance (see ADR-0016). Despite the "app-wide" feel of a singleton
+ * Redux store, this is always scoped to whichever Runner is currently open, not to the app as a
+ * whole — there's a fresh store per mount of the Viewer/Builder/Editor route, not one shared for
+ * the app's lifetime.
+ */
+export interface RunnerState {
   mode: "viewer" | "editor" | "builder"
 
   runner: RunnerData
@@ -24,12 +31,12 @@ export interface RootState {
   editor: null | EditorState
 }
 
-export const createRootStore = (config: {
-  mode: RootState["mode"]
+export const createRunnerStateStore = (config: {
+  mode: RunnerState["mode"]
   runner: RunnerData
-  onChange?: (state: RootState) => void
+  onChange?: (state: RunnerState) => void
 }) => {
-  const preloadedState: RootState = {
+  const preloadedState: RunnerState = {
     mode: config.mode,
     runner: config.runner,
     items: getItemCatalog(config.runner),
@@ -37,7 +44,7 @@ export const createRootStore = (config: {
     editor: editorStateFactory(config.runner),
   }
 
-  const store = configureStore<RootState>({
+  const store = configureStore<RunnerState>({
     preloadedState: preloadedState,
 
     reducer: {
@@ -66,13 +73,12 @@ export const createRootStore = (config: {
   return store
 }
 
-export type AppStore = ReturnType<typeof createRootStore>
-export const useAppStore = useStore.withTypes<AppStore>()
+export type RunnerStateStore = ReturnType<typeof createRunnerStateStore>
+export const useRunnerStateStore = useStore.withTypes<RunnerStateStore>()
 
-export type AppDispatch = AppStore["dispatch"]
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
+export type RunnerStateDispatch = RunnerStateStore["dispatch"]
+export const useRunnerStateDispatch = useDispatch.withTypes<RunnerStateDispatch>()
 
-export type AppState = RootState
-export const useAppSelector = useSelector.withTypes<AppState>()
+export const useRunnerState = useSelector.withTypes<RunnerState>()
 
-export const AppStateProvider = Provider
+export const RunnerStateProvider = Provider

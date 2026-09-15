@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { useAllAlerts } from "#/hooks/builder/alerts/useAllAlerts.ts"
 import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
-import { useAppStore } from "#/state/rootState.ts"
+import { useRunnerStateStore } from "#/state/runnerState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -16,7 +16,7 @@ interface SaveRunnerButtonProps {
 }
 
 export const SaveRunnerButton: FC<SaveRunnerButtonProps> = ({ requireValid = true }) => {
-  const store = useAppStore()
+  const store = useRunnerStateStore()
   const navigate = useNavigate()
   const runnerManager = useRunnerManager()
 

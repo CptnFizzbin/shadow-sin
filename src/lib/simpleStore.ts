@@ -7,8 +7,8 @@ export interface SimpleStore<TState> {
 /**
  * A plain "read a snapshot, write a next value, get notified on change" state container: no
  * dispatchable actions, no reducer, no middleware. Use this where something only ever needs to
- * hold and observe a single value — e.g. seeding the singleton `RootState` store
- * (`src/state/rootState.ts`) with a test's initial `RunnerData`/`BuilderState` — as opposed to
+ * hold and observe a single value — e.g. seeding the singleton `RunnerState` store
+ * (`src/state/runnerState.ts`) with a test's initial `RunnerData`/`BuilderState` — as opposed to
  * `createCompatStore` (`src/integrations/reduxToolkit/compatStore.ts`), which backs a real
  * `configureStore` instance for callers that need dispatchable actions/thunks.
  */

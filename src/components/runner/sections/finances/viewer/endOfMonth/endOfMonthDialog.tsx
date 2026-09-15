@@ -11,11 +11,11 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { useAppDispatch, useAppStore } from "#/state/rootState.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch, useRunnerStateStore } from "#/state/runnerState.ts"
 import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -32,8 +32,8 @@ interface EndOfMonthLineItem {
 type Props = ControlledDialogProps<void>
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
-  const store = useAppStore()
-  const dispatch = useAppDispatch()
+  const store = useRunnerStateStore()
+  const dispatch = useRunnerStateDispatch()
 
   const loans = useRunnerSelector(NuyenSelectors.selectLoans)
   const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street

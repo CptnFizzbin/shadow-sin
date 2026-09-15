@@ -36,10 +36,10 @@ import { EditorTabs } from "#/components/ui/nav/builder/editorTabs.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
-import { useAppDispatch } from "#/state/rootState.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuildPointsSummary } from "./buildPoints/summary/buildPointsSummary.tsx"
@@ -68,7 +68,7 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
 export const RunnerBuilderContent: FC = () => {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
 
-  const dispatch = useAppDispatch()
+  const dispatch = useRunnerStateDispatch()
   const navigate = useNavigate()
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)

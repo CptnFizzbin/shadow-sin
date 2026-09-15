@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { useAppSelector } from "#/state/rootState.ts"
+import { useRunnerState } from "#/state/runnerState.ts"
 
 export interface EditorModeInfo {
   isViewer: boolean
@@ -9,7 +9,7 @@ export interface EditorModeInfo {
 }
 
 export const useEditorMode = (): EditorModeInfo => {
-  const mode = useAppSelector((state) => state.mode)
+  const mode = useRunnerState((state) => state.mode)
 
   return {
     isViewer: mode === "viewer",

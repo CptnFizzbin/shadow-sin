@@ -1,8 +1,8 @@
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
-import type { AppState } from "./rootState.ts"
+import type { RunnerState } from "./runnerState.ts"
 
-export const toRunnerData = (state: AppState): RunnerData => {
+export const toRunnerData = (state: RunnerState): RunnerData => {
   const { runner, items } = state
 
   return {

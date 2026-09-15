@@ -9,12 +9,12 @@ import { useState } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { useAppDispatch } from "#/state/rootState.ts"
 import { BiologyActions } from "#/state/runner/biology/biology.actions.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ProfileActions } from "#/state/runner/profile/profile.actions.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 
 import type { ProfileFieldsValue } from "./profileFields.tsx"
 import { ProfileFields } from "./profileFields.tsx"
@@ -22,7 +22,7 @@ import { ProfileFields } from "./profileFields.tsx"
 type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useRunnerStateDispatch()
   const profile = useRunnerSelector(ProfileSelectors.select)
   const biology = useRunnerSelector(BiologySelectors.select)
 
