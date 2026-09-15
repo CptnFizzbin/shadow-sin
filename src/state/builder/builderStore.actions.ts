@@ -1,11 +1,13 @@
 import { createAction } from "@reduxjs/toolkit"
 
-/**
- * Namespaced access to `BuilderState`'s action creators (`Actions.nuyen.setStartingNuyen(...)`).
- * Mirrors `Actions` in `runnerStore.actions.ts`.
- */
-export const BuilderStateActions = {
+import type { BuilderState } from "#/components/builder/builderState.ts"
+
+export const BuilderActions = {
+  reset: createAction("builder/reset"),
+
+  setState: createAction<BuilderState>("builder/set"),
+
   nuyen: {
-    setStartingNuyen: createAction<number | undefined>("builder/setStartingNuyen"),
+    setStartingNuyen: createAction<number | null>("builder/setStartingNuyen"),
   },
 }

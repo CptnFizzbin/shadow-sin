@@ -3,7 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useTraditionFormDialog } from "#/components/runner/awakenings/magician/viewer/spells/dialogs/traditionFormDialog.tsx"
+import {
+  useTraditionFormDialog,
+} from "#/components/runner/awakenings/magician/viewer/spells/dialogs/traditionFormDialog.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"

@@ -1,15 +1,16 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
+import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { DiceTrayProvider } from "#/components/system/dice/diceTrayProvider.tsx"
 import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
 import { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)
@@ -41,29 +42,33 @@ export const Route = createFileRoute("/$runnerId")({
 
 function RunnerRoute() {
   const runner = Route.useLoaderData()
-  const store = useMemo(() => new RunnerDataStore(runner), [runner])
-  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
   const runnerManager = useRunnerManager()
 
-  useEffect(() => {
-    const { unsubscribe } = store.subscribe(async (sheet) => {
-      try {
-        await runnerManager.save(sheet)
-      } catch (error) {
-        console.error("Failed to save runner sheet.", error)
-      }
+  const store = useMemo(() => {
+    return createRootStore({
+      mode: "viewer",
+      runner: runner,
+      onChange: async (state) => {
+        try {
+          await runnerManager.save(toRunnerData(state))
+        } catch (error) {
+          console.error("Failed to save runner sheet.", error)
+        }
+      },
     })
+  }, [runner, runnerManager])
 
-    return () => unsubscribe()
-  }, [store, runnerManager])
+  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
 
   return (
-    <RunnerStoreProvider store={store}>
-      <DiceTrayProvider diceTrayApi={diceTrayApi}>
-        <AddItemDialogProvider>
-          <Outlet />
-        </AddItemDialogProvider>
-      </DiceTrayProvider>
-    </RunnerStoreProvider>
+    <AppStateProvider store={store}>
+      <RunnerEntityProvider>
+        <DiceTrayProvider diceTrayApi={diceTrayApi}>
+          <AddItemDialogProvider>
+            <Outlet />
+          </AddItemDialogProvider>
+        </DiceTrayProvider>
+      </RunnerEntityProvider>
+    </AppStateProvider>
   )
 }

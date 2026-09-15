@@ -14,7 +14,7 @@ import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
 import { useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
-import { BuilderStateActions } from "#/state/builder/builderStore.actions.ts"
+import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/state/builder/builderStore.dispatch.ts"
 import { BuilderStateSelectors, useBuilderStoreSelector } from "#/state/builder/builderStore.selectors.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
@@ -57,7 +57,7 @@ export const StartingNuyenSection: FC = () => {
   // roller resetting) and back.
   useEffect(() => {
     if (rolledTotal !== null && rolledTotal !== startingNuyen) {
-      builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(rolledTotal))
+      builderDispatch(BuilderActions.nuyen.setStartingNuyen(rolledTotal))
     }
   }, [rolledTotal, startingNuyen, builderDispatch])
 
@@ -68,7 +68,7 @@ export const StartingNuyenSection: FC = () => {
 
   const handleReset = () => {
     if (hasRolled) diceRoller.reset()
-    builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(undefined))
+    builderDispatch(BuilderActions.nuyen.setStartingNuyen(null))
   }
 
   return (
@@ -105,15 +105,15 @@ export const StartingNuyenSection: FC = () => {
           </Stack>
           {resolvedNuyen !== null
             ? (
-                <Box component="span" sx={{ fontWeight: "bold" }}>
-                  {formatNuyen(resolvedNuyen)}
-                </Box>
-              )
+              <Box component="span" sx={{ fontWeight: "bold" }}>
+                {formatNuyen(resolvedNuyen)}
+              </Box>
+            )
             : (
-                <Typography color="text.secondary">
-                  {formatNuyen(minResult)} – {formatNuyen(maxResult)}
-                </Typography>
-              )}
+              <Typography color="text.secondary">
+                {formatNuyen(minResult)} – {formatNuyen(maxResult)}
+              </Typography>
+            )}
         </Stack>
 
         {isResolved && !hasRolled && (

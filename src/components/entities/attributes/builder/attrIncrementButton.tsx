@@ -1,13 +1,13 @@
 import Button from "@mui/material/Button"
 import { RiArrowRightBoxLine } from "@remixicon/react"
-import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
+import { useAppDispatch } from "#/state/rootState.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
@@ -22,7 +22,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const { budget } = useAttributesBuildPoints()
   const editorMode = useEditorMode()
 
-  const store = useRunnerStoreContext()
+  const dispatch = useAppDispatch()
   const attrKey = props.attr
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: attrKey })
   const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
@@ -61,7 +61,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    store.setState(produce((draft) => {
+    dispatch(RunnerActions.update((draft) => {
       draft.attributes[attrKey] = (draft.attributes[attrKey] ?? 0) + 1
     }))
   }

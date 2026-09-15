@@ -2,14 +2,14 @@ import DownloadIcon from "@mui/icons-material/Download"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
+import { useAppStore } from "#/state/rootState.ts"
 import { recordLastExport } from "#/state/runner/meta/meta.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 
-import { runnerDataToYaml, downloadTextFile } from "./exportUtils.ts"
+import { downloadTextFile, runnerDataToYaml } from "./exportUtils.ts"
 
 export const ExportRunnerButton: FC = () => {
-  const store = useRunnerStoreContext()
+  const store = useAppStore()
   const dispatch = useRunnerStoreDispatch()
 
   const handleExport = () => {
@@ -17,7 +17,7 @@ export const ExportRunnerButton: FC = () => {
     const isoTimestamp = now.toISOString()
     const isoDate = isoTimestamp.slice(0, 10)
 
-    const runnerData = store.getState()
+    const runnerData = store.getState().runner
     const sanitizedName =
       (runnerData.profile.alias || runnerData.profile.name || "runner")
         .toLowerCase()

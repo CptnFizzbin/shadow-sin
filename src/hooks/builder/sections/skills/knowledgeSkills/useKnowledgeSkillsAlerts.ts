@@ -5,9 +5,7 @@ import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 
-import {
-  useKnowledgeSkillPoints,
-} from "./useKnowledgeSkillPoints.ts"
+import { useKnowledgeSkillPoints } from "./useKnowledgeSkillPoints.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)

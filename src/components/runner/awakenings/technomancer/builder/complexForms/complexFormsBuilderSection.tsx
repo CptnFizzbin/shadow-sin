@@ -9,9 +9,7 @@ import {
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
-import {
-  ComplexFormsList,
-} from "./complexFormsList.tsx"
+import { ComplexFormsList } from "./complexFormsList.tsx"
 
 export const ComplexFormsBuilderSection: FC = () => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

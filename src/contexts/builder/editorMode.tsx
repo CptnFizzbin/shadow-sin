@@ -1,27 +1,20 @@
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
 
-type EditorModeValue = "builder" | "edit"
-
-// Defaults to "builder" so components that render outside an explicit provider
-// (e.g. in isolation in tests) keep their original character-creation behavior.
-const EditorModeContext = createContext<EditorModeValue>("builder")
-
-export const EditorModeProvider: FC<PropsWithChildren<{ mode: EditorModeValue }>> = ({ mode, children }) => (
-  <EditorModeContext.Provider value={mode}>{children}</EditorModeContext.Provider>
-)
+import { useAppSelector } from "#/state/rootState.ts"
 
 export interface EditorModeInfo {
+  isViewer: boolean
   isBuilder: boolean
   isEdit: boolean
 }
 
 export const useEditorMode = (): EditorModeInfo => {
-  const mode = useContext(EditorModeContext)
+  const mode = useAppSelector((state) => state.mode)
 
   return {
+    isViewer: mode === "viewer",
     isBuilder: mode === "builder",
-    isEdit: mode === "edit",
+    isEdit: mode === "editor",
   }
 }
 
@@ -35,4 +28,7 @@ const IsEdit: FC<PropsWithChildren> = ({ children }) => {
   return editorMode.isEdit ? children : null
 }
 
-export const EditorMode = { IsBuilder, IsEdit }
+export const EditorMode = {
+  IsBuilder,
+  IsEdit,
+}

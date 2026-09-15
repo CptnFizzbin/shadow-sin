@@ -13,31 +13,17 @@ import { ImprovementsConfig } from "#/components/runner/karma/improvements/impro
 import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { KarmaValue } from "#/components/runner/karma/viewer/karmaValue.tsx"
 import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
-import {
-  useActiveSkillDialog,
-} from "#/components/skills/viewer/activeSkills/dialogs/activeSkillFormDialog.tsx"
+import { useActiveSkillDialog } from "#/components/skills/viewer/activeSkills/dialogs/activeSkillFormDialog.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { getImprovementCost } from "#/system/formulas/karma/improvements/improvementUtils.ts"
-import {
-  getActiveSkillCap,
-  hasAptitudeFor,
-} from "#/system/model/karma/improvements/improvementCaps.ts"
-import type {
-  LearnActiveSkillEntry,
-  SkillIncreaseEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
-import {
-  isLearnActiveSkillEntry,
-  isSkillIncreaseEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
+import { getActiveSkillCap, hasAptitudeFor } from "#/system/model/karma/improvements/improvementCaps.ts"
+import type { LearnActiveSkillEntry, SkillIncreaseEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
+import { isLearnActiveSkillEntry, isSkillIncreaseEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 

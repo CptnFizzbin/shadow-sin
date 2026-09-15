@@ -1,12 +1,12 @@
 import Button from "@mui/material/Button"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
-import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
+import { useAppDispatch } from "#/state/rootState.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
@@ -18,8 +18,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
     throw new Error("Essence cannot be decremented")
   }
-
-  const store = useRunnerStoreContext()
+  const dispatch = useAppDispatch()
   const attrInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: props.attr })
   const attrValue = useRunnerSelector(AttrSelectors.selectBase, { key: props.attr })
   const editorMode = useEditorMode()
@@ -45,7 +44,8 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   const onClick = () => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
-    store.setState(produce((sheet) => {
+
+    dispatch(RunnerActions.update((sheet) => {
       sheet.attributes[props.attr] = (sheet.attributes[props.attr] ?? 0) - 1
     }))
   }

@@ -3,15 +3,16 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { useAppDispatch } from "#/state/rootState.ts"
+import { BiologyActions } from "#/state/runner/biology/biology.actions.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { ProfileActions } from "#/state/runner/profile/profile.actions.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
@@ -21,7 +22,7 @@ import { ProfileFields } from "./profileFields.tsx"
 type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
-  const store = useRunnerStoreContext()
+  const dispatch = useAppDispatch()
   const profile = useRunnerSelector(ProfileSelectors.select)
   const biology = useRunnerSelector(BiologySelectors.select)
 
@@ -42,19 +43,23 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   }
 
   const handleSave = () => {
-    store.setState(
-      produce((prev) => {
-        prev.profile.alias = profileFields.alias
-        prev.profile.name = profileFields.name
-        prev.profile.archetype = profileFields.archetype || null
-        prev.profile.description = profileFields.description || null
-        prev.profile.personality = profileFields.personality || null
-        prev.biology.gender = gender || null
-        prev.biology.age = age ? Number(age) : null
-        prev.biology.height = height || null
-        prev.biology.weight = weight || null
-      }),
-    )
+    dispatch(ProfileActions.patch({
+      alias: profileFields.alias,
+      name: profileFields.name,
+      archetype: profileFields.archetype || null,
+      description: profileFields.description || null,
+      personality: profileFields.personality || null,
+    }))
+
+    dispatch(BiologyActions.setBiology({
+      awakening: biology.awakening,
+      metatype: biology.metatype,
+      gender: gender || null,
+      age: age ? Number(age) : null,
+      height: height || null,
+      weight: weight || null,
+    }))
+
     ctrl.close()
   }
 

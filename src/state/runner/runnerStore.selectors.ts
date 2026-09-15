@@ -1,8 +1,6 @@
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
-import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
-import { getRunnerScope } from "#/state/entityScope.ts"
+import { useAppSelector } from "#/state/rootState.ts"
 
 /**
  * The standardized way to read `RunnerData` in a component — assembles whatever `TState` a
@@ -18,25 +16,19 @@ import { getRunnerScope } from "#/state/entityScope.ts"
  */
 export function useRunnerSelector<TReturn>(
   selector: Selector<EntityScope, TReturn>,
-  compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
 export function useRunnerSelector<TReturn, TOptions extends object>(
   selector: Selector<EntityScope, TReturn, TOptions>,
   options: TOptions,
-  compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn
 export function useRunnerSelector<TReturn, TOptions extends object>(
   selector: (state: EntityScope, options?: TOptions) => TReturn,
   optionsOrCompare?: TOptions | ((prev: TReturn, next: TReturn) => boolean),
-  compare?: (prev: TReturn, next: TReturn) => boolean,
 ): TReturn {
   const isCompareArg = typeof optionsOrCompare === "function"
   const options = isCompareArg ? undefined : optionsOrCompare
-  const resolvedCompare = isCompareArg ? optionsOrCompare : compare
 
-  return useSelector(
-    useRunnerStoreContext(),
-    (runner) => selector(getRunnerScope(runner), options),
-    { compare: resolvedCompare },
-  )
+  return useAppSelector((state) => {
+    return selector({ ...state, entity: state.runner }, options)
+  })
 }

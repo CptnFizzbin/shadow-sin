@@ -7,7 +7,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DrainResistanceDicePool } from "#/components/runner/awakenings/magician/viewer/spells/drainResistanceDicePool.tsx"
+import {
+  DrainResistanceDicePool,
+} from "#/components/runner/awakenings/magician/viewer/spells/drainResistanceDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"

@@ -9,7 +9,12 @@ import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/model/attributes/attributeKey.ts"
+import {
+  AttributeLabels,
+  MentalAttributes,
+  PhysicalAttributes,
+  SpecialAttributes,
+} from "#/system/model/attributes/attributeKey.ts"
 import { metatypes } from "#/system/model/biology/metatypeData.ts"
 import { awakenings } from "#/system/model/magic/awakeningType.ts"
 

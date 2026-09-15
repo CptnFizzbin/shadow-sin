@@ -3,17 +3,22 @@ import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import { RiMenuLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useMemo, useState } from "react"
 
 import { AttributesBuilderSection } from "#/components/entities/attributes/builder/attributesBuilderSection.tsx"
 import { GearBuilderSection } from "#/components/entities/items/builder/gearBuilderSection.tsx"
-import { AdeptPowersBuilderSection } from "#/components/runner/awakenings/adept/adeptPowers/builder/adeptPowersBuilderSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "#/components/runner/awakenings/adept/adeptPowers/builder/adeptPowersBuilderSection.tsx"
 import { SpellsBuilderSection } from "#/components/runner/awakenings/magician/builder/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "#/components/runner/awakenings/technomancer/builder/complexForms/complexFormsBuilderSection.tsx"
-import { SpritesBuilderSection } from "#/components/runner/awakenings/technomancer/builder/sprites/spritesBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "#/components/runner/awakenings/technomancer/builder/sprites/spritesBuilderSection.tsx"
 import { KarmaBuilderSection } from "#/components/runner/karma/builder/karmaBuilderSection.tsx"
 import { BiologyBuilderSection } from "#/components/runner/sections/biology/builder/biologyBuilderSection.tsx"
 import { ContactsBuilderSection } from "#/components/runner/sections/contacts/builder/contactsBuilderSection.tsx"
@@ -33,19 +38,15 @@ import { EditorTabs } from "#/components/ui/nav/builder/editorTabs.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
+import { useAppDispatch } from "#/state/rootState.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderSectionId } from "./builderSectionId.ts"
 import { FinalizeSection } from "./finalizeSection.tsx"
-
-interface RunnerEditorContentProps {
-  onCancel: () => void
-  onImport: (runner: RunnerData) => void
-  onRevert: () => void
-}
 
 const tabComponents: Record<EditorTabId, FC> = {
   [BuilderSectionId.profile]: ProfileBuilderSection,
@@ -66,11 +67,19 @@ const tabComponents: Record<EditorTabId, FC> = {
   [FINALIZE_TAB_ID]: FinalizeSection,
 }
 
-export const RunnerEditorContent: FC<RunnerEditorContentProps> = ({ onCancel, onImport, onRevert }) => {
+export const RunnerEditorContent: FC = () => {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
   const tabOrder = useMemo(() => getVisibleTabOrder(editorTabOrder, awakening), [awakening])
+
+  const onCancel = () => navigate({ to: `/` })
+  const onImport = (runner: RunnerData) => dispatch(RunnerActions.load(runner))
+  const onRevert = () => {
+
+  }
 
   const {
     activeTab,

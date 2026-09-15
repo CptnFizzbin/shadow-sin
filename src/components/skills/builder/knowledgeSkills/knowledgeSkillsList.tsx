@@ -12,9 +12,7 @@ import {
 import { useLanguageSkillDialog } from "#/components/skills/viewer/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useKnowledgeSkillsBuildPoints } from "#/hooks/builder/buildPoints/useKnowledgeSkillsBuildPoints.ts"
-import {
-  useKnowledgeSkillPoints,
-} from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
+import { useKnowledgeSkillPoints } from "#/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -22,12 +20,8 @@ import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import type { KnowledgeSkillData } from "#/system/model/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/model/skills/languageSkillData.ts"
 
-import {
-  KnowledgeSkillsListItem,
-} from "./knowledgeSkillsListItem.tsx"
-import {
-  LanguageSkillsListItem,
-} from "./languageSkillsListItem.tsx"
+import { KnowledgeSkillsListItem } from "./knowledgeSkillsListItem.tsx"
+import { LanguageSkillsListItem } from "./languageSkillsListItem.tsx"
 
 export const KnowledgeSkillsList: FC = () => {
   const dispatch = useRunnerStoreDispatch()

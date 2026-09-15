@@ -1,3 +1,10 @@
+import { createAction } from "@reduxjs/toolkit"
+import { produce } from "immer"
+
+import { createThunk } from "#/state/createAppThunk.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+
 import * as attributesActions from "./attributes/attributes.actions.ts"
 import * as biologyActions from "./biology/biology.actions.ts"
 import * as complexFormsActions from "./complexForms/complexForms.actions.ts"
@@ -19,6 +26,14 @@ import * as spellsActions from "./spells/spells.actions.ts"
 import * as spiritsActions from "./spirits/spirits.actions.ts"
 import * as spritesActions from "./sprites/sprites.actions.ts"
 import * as traditionActions from "./tradition/tradition.actions.ts"
+
+export const RunnerActions = {
+  load: createAction<RunnerData>("runner/load"),
+
+  update: createThunk("runner/update", (updater: (runner: RunnerData) => void | RunnerData, { getState }) => {
+    return produce(toRunnerData(getState()), updater)
+  }),
+}
 
 /**
  * Namespaced access to every `RunnerData` domain's action creators — native and compound alike, all

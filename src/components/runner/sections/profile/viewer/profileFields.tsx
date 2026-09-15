@@ -16,7 +16,7 @@ interface ProfileFieldsProps {
   autoFocus?: boolean
 }
 
-/** Shared Alias/Name/Archetype/Description/Personality fields, used by both the builder's live-bound profile section and the viewer's locally-buffered edit dialog. */
+/** Shared Alias/Name/Archetype/Description/Personality fields, used by both the builder's live-bound profile section and the editor's locally-buffered edit dialog. */
 export const ProfileFields: FC<ProfileFieldsProps> = ({ value, onChange, autoFocus = false }) => (
   <>
     <MuiTextField

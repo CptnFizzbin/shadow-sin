@@ -11,10 +11,7 @@ import { ImprovementsConfig } from "#/components/runner/karma/improvements/impro
 import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"

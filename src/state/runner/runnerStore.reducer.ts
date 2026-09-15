@@ -1,7 +1,8 @@
-import type { Reducer, UnknownAction } from "@reduxjs/toolkit"
-import { combineReducers, createSlice } from "@reduxjs/toolkit"
+import { combineReducers, createReducer, createSlice } from "@reduxjs/toolkit"
 
+import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -23,6 +24,7 @@ import { powersReducer } from "./powers/powers.state.ts"
 import { profileReducer } from "./profile/profile.state.ts"
 import { qualitiesReducer } from "./qualities/qualities.state.ts"
 import { reputationReducer } from "./reputation/reputation.state.ts"
+import { RunnerActions } from "./runnerStore.actions.ts"
 import { skillsReducer } from "./skills/skills.state.ts"
 import { spellsReducer } from "./spells/spells.state.ts"
 import { spiritsReducer } from "./spirits/spirits.state.ts"
@@ -119,7 +121,24 @@ const domainReducer = combineReducers({
  */
 const nameReducer = (profile: RunnerData["profile"]): RunnerData["name"] => profile.alias || profile.name
 
-export const runnerRootReducer: Reducer<RunnerData> = (state, action: UnknownAction) => {
-  const next = domainReducer(state, action)
-  return { ...next, name: nameReducer(next.profile) }
-}
+export const runnerRootReducer = createReducer(
+  () => runnerDataFactory(),
+  ({ addCase, addDefaultCase }) => {
+    addCase(BuilderActions.reset, () => {
+      return runnerDataFactory()
+    })
+
+    addCase(RunnerActions.load, (_state, { payload }) => {
+      return payload
+    })
+
+    addCase(RunnerActions.update.fulfilled, (_state, { payload }) => {
+      return payload
+    })
+
+    addDefaultCase((state, action) => {
+      const next = domainReducer(state, action)
+      return { ...next, name: nameReducer(next.profile) }
+    })
+  },
+)

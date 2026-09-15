@@ -19,9 +19,7 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
 import { getImprovementCost } from "#/system/formulas/karma/improvements/improvementUtils.ts"
 import type { LearnSpellEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
-import {
-  isLearnSpellEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
+import { isLearnSpellEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
 
 export const ImprovementSpellList: FC = () => {

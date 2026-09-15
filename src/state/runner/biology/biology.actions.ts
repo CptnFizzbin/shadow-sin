@@ -8,3 +8,7 @@ import type { RunnerData } from "#/system/model/runnerData.ts"
  * express on its own — those call sites write via `sheet.setState(...)` directly instead.
  */
 export const setBiology = createAction<RunnerData["biology"]>("biology/set")
+
+export const BiologyActions = {
+  setBiology,
+}

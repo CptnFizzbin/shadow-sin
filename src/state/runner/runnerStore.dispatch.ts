@@ -1,5 +1,5 @@
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { useAppDispatch } from "#/state/rootState.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
@@ -15,9 +15,11 @@ export type RunnerAction = Parameters<RunnerDispatch>[0]
  * ({@link runnerRootReducer}); thunks (including `createAsyncThunk` actions) run natively via
  * `configureStore`'s default thunk middleware. Works unchanged in both the Viewer and the Builder,
  * since both are reached through the same `useRunnerStoreContext()`.
+ *
+ * @deprecated use {@link useAppDispatch} instead
  */
 export function useRunnerStoreDispatch(): RunnerDispatch {
-  return useRunnerStoreContext().dispatch
+  return useAppDispatch()
 }
 
 /**

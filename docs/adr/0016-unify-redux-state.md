@@ -90,7 +90,7 @@ interface RootState {
   cache: {
     savedRunners: Record<UUID, RunnerRef>
   }
-  mode: "builder" | "editor" | "viewer"
+  mode: "builder" | "editor" | "editor"
   current: null | RunnerScope
   builder: null | BuilderState
 }

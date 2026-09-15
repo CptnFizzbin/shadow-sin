@@ -17,10 +17,7 @@ import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarma
 import { KarmaChip } from "#/components/runner/karma/viewer/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/viewer/karmaValue.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"

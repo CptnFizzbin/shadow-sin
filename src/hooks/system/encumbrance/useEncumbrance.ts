@@ -1,7 +1,11 @@
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/formulas/items/encumbranceUtils.ts"
+import {
+  calculateArmorBulk,
+  calculateArmorTotals,
+  calculateEncumbrancePenalty,
+} from "#/system/formulas/items/encumbranceUtils.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"

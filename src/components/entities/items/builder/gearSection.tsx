@@ -21,10 +21,7 @@ import { VehiclesSectionContent } from "#/components/entities/items/viewer/vehic
 import { WeaponsSectionContent } from "#/components/entities/items/viewer/weaponsSectionContent.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
-import {
-  useGearBuildPoints,
-  useGearTotalCost,
-} from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useGearBuildPoints, useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"

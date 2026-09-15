@@ -90,6 +90,13 @@ function reconcileEquippedForStash(item: ItemData, wasStashed: boolean): void {
   }
 }
 
+export const ItemStateUtils = {
+  relinkItem,
+  removeItemById,
+  removeItemTree,
+  reconcileEquippedForStash,
+}
+
 export const gearReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(addItem, (state, action) => {

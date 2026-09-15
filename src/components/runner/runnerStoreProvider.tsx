@@ -1,11 +1,16 @@
 import type { FC, PropsWithChildren } from "react"
+import { useMemo } from "react"
 
-import { RunnerStoreContext } from "#/contexts/runner/runnerStore.context.ts"
+import type { RootState } from "#/state/rootState.ts"
+import { AppStateProvider, createRootStore } from "#/state/rootState.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
 
 import { RunnerEntityProvider } from "./runnerEntityProvider.tsx"
 
 interface RunnerDataProviderProps extends PropsWithChildren {
+  mode?: RootState["mode"]
   store: RunnerStore
 }
 
@@ -14,14 +19,31 @@ interface RunnerDataProviderProps extends PropsWithChildren {
  * `useRunnerStoreDispatch` can read and write runner state.
  */
 export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
+  mode = "viewer",
   store,
   children,
 }) => {
+  const appStore = useMemo(() => {
+    const mappedStore = createRootStore({
+      mode,
+      runner: store.getState(),
+      onChange: (state) => {
+        store.setState(() => toRunnerData(state))
+      },
+    })
+
+    store.subscribe((runner) => {
+      mappedStore.dispatch(RunnerActions.load(runner))
+    })
+
+    return mappedStore
+  }, [mode, store])
+
   return (
-    <RunnerStoreContext.Provider value={store}>
+    <AppStateProvider store={appStore}>
       <RunnerEntityProvider>
         {children}
       </RunnerEntityProvider>
-    </RunnerStoreContext.Provider>
+    </AppStateProvider>
   )
 }
