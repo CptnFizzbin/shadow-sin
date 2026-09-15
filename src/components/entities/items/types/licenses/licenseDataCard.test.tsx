@@ -5,7 +5,6 @@ import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { LicenseDataCard } from "./licenseDataCard.tsx"
@@ -84,6 +83,6 @@ describe("LicenseDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[fakeLicense.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[fakeLicense.id]).toBeUndefined())
   })
 })

@@ -5,7 +5,6 @@ import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ProgramDataCard } from "./programDataCard.tsx"
@@ -68,6 +67,6 @@ describe("ProgramDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[fakeProgram.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[fakeProgram.id]).toBeUndefined())
   })
 })

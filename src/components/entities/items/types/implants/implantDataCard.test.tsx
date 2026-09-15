@@ -9,7 +9,6 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ImplantDataCard } from "./implantDataCard.tsx"
@@ -131,6 +130,6 @@ describe("ImplantDataCard", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[alphaImplant.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[alphaImplant.id]).toBeUndefined())
   })
 })

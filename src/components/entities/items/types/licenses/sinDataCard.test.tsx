@@ -8,7 +8,6 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { SinDataCard } from "./sinDataCard.tsx"
@@ -101,7 +100,7 @@ describe("SinDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[fakeSin.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[fakeSin.id]).toBeUndefined())
     expect(screen.queryByRole("dialog")).toBeNull()
   })
 
@@ -115,13 +114,13 @@ describe("SinDataCard", () => {
 
     // Assert
     expect(await screen.findByRole("dialog")).toBeDefined()
-    expect(getItemCatalog(runnerStore.getState().runner)[sinWithLicense.id]).toBeDefined()
+    expect(runnerStore.getState().items[sinWithLicense.id]).toBeDefined()
 
     // Act: confirm
     fireEvent.click(screen.getByRole("button", { name: "Remove SIN" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[sinWithLicense.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[sinWithLicense.id]).toBeUndefined())
   })
 
   it("navigates via onOpen when tapped", () => {

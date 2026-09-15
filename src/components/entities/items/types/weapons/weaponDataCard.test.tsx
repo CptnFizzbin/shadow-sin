@@ -8,7 +8,6 @@ import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/model/it
 import { FirearmAttachmentPoint, MeleeWeaponType, WeaponType } from "#/system/model/items/weaponData.ts"
 import { FirearmTypeKey } from "#/system/model/items/weapons/firearms/firearmTypeKey.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -139,7 +138,7 @@ describe("WeaponDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
     // Assert
-    expect(getItemCatalog(runnerStore.getState().runner)[weapon.id].equipped).toBe(true)
+    expect(runnerStore.getState().items[weapon.id].equipped).toBe(true)
   })
 
   it("offers a Remove action", () => {

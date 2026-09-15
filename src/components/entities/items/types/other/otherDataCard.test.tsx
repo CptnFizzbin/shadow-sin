@@ -7,7 +7,6 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { OtherDataCard } from "./otherDataCard.tsx"
@@ -93,7 +92,7 @@ describe("OtherDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[survivalKit.id]).toBeUndefined())
-    expect(getItemCatalog(runnerStore.getState().runner)[flashlight.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState().items[survivalKit.id]).toBeUndefined())
+    expect(runnerStore.getState().items[flashlight.id]).toBeUndefined()
   })
 })
