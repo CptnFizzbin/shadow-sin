@@ -1,4 +1,4 @@
 import type { BuilderState } from "#/components/builder/builderState.ts"
-import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import type { SimpleStore } from "#/lib/simpleStore.ts"
 
-export type BuilderStore = CompatStore<BuilderState>
+export type BuilderStore = SimpleStore<BuilderState>

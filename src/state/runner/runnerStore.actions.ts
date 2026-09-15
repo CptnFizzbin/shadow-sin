@@ -1,3 +1,10 @@
+import { createAction } from "@reduxjs/toolkit"
+import { produce } from "immer"
+
+import type { RunnerStateDispatch, RunnerState } from "#/state/runnerState.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
+
 import * as attributesActions from "./attributes/attributes.actions.ts"
 import * as biologyActions from "./biology/biology.actions.ts"
 import * as complexFormsActions from "./complexForms/complexForms.actions.ts"
@@ -19,6 +26,27 @@ import * as spellsActions from "./spells/spells.actions.ts"
 import * as spiritsActions from "./spirits/spirits.actions.ts"
 import * as spritesActions from "./sprites/sprites.actions.ts"
 import * as traditionActions from "./tradition/tradition.actions.ts"
+
+const load = createAction<RunnerData>("runner/load")
+
+export const RunnerActions = {
+  load,
+
+  /**
+   * Applies `updater` to a snapshot of the current `RunnerData` — merged via `toRunnerData` so
+   * `_data_.items` reflects the canonical normalized `items` catalog rather than this slice's own
+   * possibly-stale mirror — then loads the result back in via {@link load}. A plain, synchronous
+   * thunk rather than `createAsyncThunk`: `getState`/`dispatch` both run synchronously here, so
+   * callers that read the store again immediately after dispatching (no `await`) see the result.
+   */
+  update: (updater: (runner: RunnerData) => void | RunnerData) => {
+    return (dispatch: RunnerStateDispatch, getState: () => RunnerState): RunnerData => {
+      const next = produce(toRunnerData(getState()), updater)
+      dispatch(load(next))
+      return next
+    }
+  },
+}
 
 /**
  * Namespaced access to every `RunnerData` domain's action creators — native and compound alike, all

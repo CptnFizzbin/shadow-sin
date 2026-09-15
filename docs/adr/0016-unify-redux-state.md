@@ -1,4 +1,4 @@
-# Application state unifies under one top-level `RootState`
+# Application state unifies under one top-level `RunnerState`
 
 **Status:** proposed — describes the target end-state only; see Sequencing below before starting
 any implementation.
@@ -15,9 +15,9 @@ Today there is no single Redux store — there are at least seven independent `c
 `ImprovementStore`, and `DiceTrayApi` — each with its own Provider shape (`RunnerStoreProvider` vs.
 `BuilderStoreProvider`), which keeps multiplying "from where" answers instead of converging them.
 We're collapsing the domain-data half of this — Runner and Builder — into one singleton store
-with a single `RootState`, while deliberately leaving the ad hoc UI-state stores alone. A single
-`RootState` also matches the conventional shape Redux/RTK itself expects — one canonical
-`RootState`, one dispatch, one DevTools timeline — a secondary but real benefit.
+with a single `RunnerState`, while deliberately leaving the ad hoc UI-state stores alone. A single
+`RunnerState` also matches the conventional shape Redux/RTK itself expects — one canonical
+`RunnerState`, one dispatch, one DevTools timeline — a secondary but real benefit.
 
 Note what this does and doesn't fix: it makes "from where" uniform (always a path off one root,
 never a different Context/store lookup per hook), but it doesn't remove the assembly *cast*
@@ -86,7 +86,7 @@ Explicitly **not** in Phase 1:
 ## The shape
 
 ```ts
-interface RootState {
+interface RunnerState {
   cache: {
     savedRunners: Record<UUID, RunnerRef>
   }
@@ -102,7 +102,7 @@ interface RunnerScope {
 ```
 
 (`RunnerScope` here is a distinct type from Phase 1's `EntityScope` above, despite the family
-resemblance — `RunnerScope` is a slice of persisted/hydrated `RootState`, `EntityScope` is a
+resemblance — `RunnerScope` is a slice of persisted/hydrated `RunnerState`, `EntityScope` is a
 per-render hook-assembly shape for selectors. They aren't meant to merge into one type.)
 
 - **`cache.savedRunners`** is a rebuildable index across every known Runner, local and remote —
@@ -164,7 +164,7 @@ store for the app's lifetime.
   `DiceTrayApi`, `ImprovementStore`, `InitiativeTrackerStore`. `AGENTS.md`'s existing "Redux
   Toolkit store patterns" section already draws this line — these are UI/interaction-scoped
   (several are deliberately created-and-discarded per interaction), not domain data, and don't
-  belong in `RootState`.
+  belong in `RunnerState`.
 - **Full Entity-kind normalization is out of scope.** `entities` starts Items-only, matching what
   0015 actually tickets today (Slice 5). Spirits, sprites, qualities, spells, complexForms, and
   adeptPowers stay nested inside `RunnerData` for now; each would need its own future,

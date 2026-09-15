@@ -10,13 +10,12 @@ import { useState } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch, useRunnerStateStore } from "#/state/runnerState.ts"
 import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -33,8 +32,8 @@ interface EndOfMonthLineItem {
 type Props = ControlledDialogProps<void>
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
-  const runnerDataStore = useRunnerStoreContext()
-  const dispatch = useRunnerStoreDispatch()
+  const store = useRunnerStateStore()
+  const dispatch = useRunnerStateDispatch()
 
   const loans = useRunnerSelector(NuyenSelectors.selectLoans)
   const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
@@ -113,10 +112,13 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   }
 
   const handleTransitionExited = () => {
+    const runner = store.getState().runner
+
     // Read fresh state directly from stores so the reset always matches current data
-    const freshLoans = runnerDataStore.getState().nuyen.loans
-    const freshQuality = runnerDataStore.getState().profile.lifestyle?.quality ?? LifestyleType.Street
+    const freshLoans = runner.nuyen.loans
+    const freshQuality = runner.profile.lifestyle?.quality ?? LifestyleType.Street
     const freshUpkeep = Lifestyles[freshQuality].upkeep
+
     setCheckedIds(new Set([
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),
       ...(freshUpkeep > 0 ? ["lifestyle"] : []),

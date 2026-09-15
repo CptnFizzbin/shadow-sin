@@ -26,7 +26,7 @@ function renderWithQualities(qualities: QualityData[]) {
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
+    <RunnerStoreProvider store={store} mode="builder">{children}</RunnerStoreProvider>
   )
 
   render(<QualitiesList />, { wrapper: Wrapper })

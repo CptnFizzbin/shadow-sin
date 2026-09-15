@@ -6,13 +6,14 @@ import type { FC } from "react"
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { stringifyError } from "#/utils/errors/errorUtils.ts"
 
 export const ImportCurrentRunnerButton: FC = () => {
-  const store = useRunnerStoreContext()
+  const dispatch = useRunnerStateDispatch()
   const runnerName = useRunnerSelector(ProfileSelectors.selectDisplayName)
 
   const confirmDialog = useConfirmDialog()
@@ -34,7 +35,7 @@ export const ImportCurrentRunnerButton: FC = () => {
       })
 
       if (performOverwrite) {
-        store.setState(() => runner)
+        dispatch(RunnerActions.load(runner))
       }
     },
     onError: async (error) => {

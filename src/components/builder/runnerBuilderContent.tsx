@@ -3,6 +3,7 @@ import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import { RiMenuLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useMemo, useState } from "react"
 
@@ -34,20 +35,17 @@ import { builderTabOrder, FINALIZE_TAB_ID, getVisibleTabOrder } from "#/componen
 import { EditorTabs } from "#/components/ui/nav/builder/editorTabs.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
+import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuildPointsSummary } from "./buildPoints/summary/buildPointsSummary.tsx"
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderSectionId } from "./builderSectionId.ts"
 import { FinalizeSection } from "./finalizeSection.tsx"
-
-interface RunnerBuilderContentProps {
-  reset: () => void
-  loadRunner: (runner: RunnerData) => void
-  onCancel: () => void
-}
 
 // Reputation, Karma, and Finances aren't in builderTabOrder (see editorTabId.ts), so they're
 // omitted here too — this only needs an entry for every tab the Builder actually navigates to.
@@ -67,11 +65,26 @@ const tabComponents: Partial<Record<EditorTabId, FC>> = {
   [FINALIZE_TAB_ID]: FinalizeSection,
 }
 
-export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loadRunner, onCancel }) => {
+export const RunnerBuilderContent: FC = () => {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
+
+  const dispatch = useRunnerStateDispatch()
+  const navigate = useNavigate()
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
   const tabOrder = useMemo(() => getVisibleTabOrder(builderTabOrder, awakening), [awakening])
+
+  const onCancel = () => {
+    navigate({ to: "/" })
+  }
+
+  const reset = () => {
+    dispatch(BuilderActions.reset())
+  }
+
+  const loadRunner = (runner: RunnerData) => {
+    dispatch(RunnerActions.load(runner))
+  }
 
   const {
     activeTab,
@@ -99,6 +112,7 @@ export const RunnerBuilderContent: FC<RunnerBuilderContentProps> = ({ reset, loa
         <Stack direction="row">
           <BuilderImportButton onImport={loadRunner} />
           <ExportRunnerButton />
+
           <Button
             variant="outlined"
             color="warning"

@@ -5,7 +5,8 @@ import type { FC } from "react"
 
 import { useAllAlerts } from "#/hooks/builder/alerts/useAllAlerts.ts"
 import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
+import { useRunnerStateStore } from "#/state/runnerState.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
 interface SaveRunnerButtonProps {
@@ -15,19 +16,20 @@ interface SaveRunnerButtonProps {
 }
 
 export const SaveRunnerButton: FC<SaveRunnerButtonProps> = ({ requireValid = true }) => {
-  const store = useRunnerStoreContext()
+  const store = useRunnerStateStore()
   const navigate = useNavigate()
   const runnerManager = useRunnerManager()
 
   const saveRunner = useMutation({
     mutationFn: async () => {
-      let runner = store.getState()
+      const state = store.getState()
+      let runner = { ...state.runner }
 
       if (runner.id === NullUuid) {
         runner = { ...runner, id: crypto.randomUUID() }
       }
 
-      await runnerManager.saveRunner(runner)
+      await runnerManager.saveRunner(toRunnerData({ ...state, runner: runner }))
       await navigate({ to: "/$runnerId", params: { runnerId: runner.id } })
     },
   })

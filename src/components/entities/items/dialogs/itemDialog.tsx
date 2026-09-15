@@ -20,7 +20,7 @@ import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffec
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import type { ItemDialogOptionConfig } from "#/hooks/items/dialogs/useItemOptions.ts"
 import { useItemOptions } from "#/hooks/items/dialogs/useItemOptions.ts"
 import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
@@ -128,7 +128,7 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
   // Cast once from AnyItemForm to ItemForm for use with the typed field group
   // components. ItemDialog only accesses ItemData fields from the form, so this is safe.
   const form = formArg as ItemForm
-  const isBuilder = useIsBuilder()
+  const isBuilder = !useEditorMode().isViewer
   const dispatch = useRunnerStoreDispatch()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
 

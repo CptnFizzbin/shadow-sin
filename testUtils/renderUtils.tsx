@@ -1,24 +1,22 @@
 import { ThemeProvider } from "@mui/material/styles"
-import {
-  createMemoryHistory,
-  createRootRoute,
-  createRouter,
-  RouterContextProvider,
-} from "@tanstack/react-router"
+import { createMemoryHistory, createRootRoute, createRouter, RouterContextProvider } from "@tanstack/react-router"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
+import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { builderStoreReducer } from "#/state/builder/builderStore.reducer.ts"
+import { createSimpleStore } from "#/lib/simpleStore.ts"
+import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import type { BuilderStore } from "#/state/builder/builderStore.ts"
+import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
+import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -91,16 +89,62 @@ export function renderInBuilder(
   element: ReactElement,
   {
     runnerStore = new RunnerDataStore(runnerDataFactory()),
-    builderStore = createCompatStore(builderStateFactory(), builderStoreReducer),
+    builderStore = createSimpleStore(builderStateFactory()),
   }: RenderInBuilderOptions = {},
 ) {
+  // See the matching guard in `RunnerStoreProvider` — `runnerStore`/`builderStore` (test-isolation
+  // seeds) and `appStore` (the singleton `RunnerState` shape) mirror each other's state; without
+  // this flag, each side's own write would echo back as a write to itself, looping forever.
+  let isApplyingExternalWrite = false
+
+  const appStore = createRunnerStateStore({
+    mode: "builder",
+    runner: runnerStore.getState(),
+    onChange: (state) => {
+      if (isApplyingExternalWrite) return
+      runnerStore.setState(() => toRunnerData(state))
+      builderStore.setState(() => state.builder!)
+    },
+  })
+
+  runnerStore.subscribe((runner) => {
+    isApplyingExternalWrite = true
+    try {
+      appStore.dispatch(RunnerActions.load(runner))
+    } finally {
+      isApplyingExternalWrite = false
+    }
+  })
+
+  builderStore.subscribe((state) => {
+    isApplyingExternalWrite = true
+    try {
+      appStore.dispatch(BuilderActions.setState(state))
+    } finally {
+      isApplyingExternalWrite = false
+    }
+  })
+
+  // `createRunnerStateStore` always seeds `builder` from `builderStateFactory()` — it has no way to take
+  // a caller-supplied initial `BuilderState` — so a `builderStore` passed in with its own starting
+  // value (e.g. a persisted `nuyen.starting`) needs one explicit sync here to actually reach
+  // `appStore` before the first render.
+  isApplyingExternalWrite = true
+  try {
+    appStore.dispatch(BuilderActions.setState(builderStore.getState()))
+  } finally {
+    isApplyingExternalWrite = false
+  }
+
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
-          <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
-            <AddItemDialogProvider>{children}</AddItemDialogProvider>
-          </BuilderStoreProvider>
+          <RunnerStateProvider store={appStore}>
+            <RunnerEntityProvider>
+              <AddItemDialogProvider>{children}</AddItemDialogProvider>
+            </RunnerEntityProvider>
+          </RunnerStateProvider>
         </TestRouterProvider>
       </ThemeProvider>
     )

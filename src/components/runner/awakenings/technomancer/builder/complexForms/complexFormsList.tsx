@@ -19,9 +19,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ComplexFormData } from "#/system/model/magic/complexFormData.ts"
 import { getProgress } from "#/utils/progressUtils.ts"
 
-import {
-  ComplexFormsListItem,
-} from "./complexFormsListItem.tsx"
+import { ComplexFormsListItem } from "./complexFormsListItem.tsx"
 
 export const ComplexFormsList: FC = () => {
   const resonance = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.resonance })

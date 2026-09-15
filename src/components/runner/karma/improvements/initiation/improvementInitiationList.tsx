@@ -12,10 +12,7 @@ import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarma
 import { KarmaChip } from "#/components/runner/karma/viewer/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"

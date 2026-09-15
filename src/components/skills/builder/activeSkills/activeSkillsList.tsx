@@ -17,14 +17,9 @@ import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import type { ActiveSkillData } from "#/system/model/skills/activeSkillData.ts"
 import type { SkillGroupData } from "#/system/model/skills/skillGroupData.ts"
 
-import {
-  ActiveSkillGroupsListItem,
-} from "./activeSkillGroupsListItem.tsx"
+import { ActiveSkillGroupsListItem } from "./activeSkillGroupsListItem.tsx"
 import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
-import {
-  getDisabledGroups,
-  getDisabledSkills,
-} from "./activeSkillsUtils.ts"
+import { getDisabledGroups, getDisabledSkills } from "./activeSkillsUtils.ts"
 
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()

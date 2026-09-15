@@ -75,3 +75,26 @@ export const sins = makeTypeActions<SinData>()
 export const credsticks = makeTypeActions<CredstickData>()
 export const programs = makeTypeActions<ProgramData>()
 export const other = makeTypeActions<ItemData>()
+
+export const ItemActions = {
+  addItem,
+  setItem,
+  patchItem,
+  removeItem,
+  setEquipped,
+  setStashed,
+
+  licenses,
+  armor,
+  implants,
+  firearms,
+  software,
+  vehicles,
+  weapons,
+  devices,
+  firearmAccessories,
+  sins,
+  credsticks,
+  programs,
+  other,
+}

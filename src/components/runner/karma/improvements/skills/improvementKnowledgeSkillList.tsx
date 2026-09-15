@@ -20,10 +20,7 @@ import {
   useKnowledgeSkillDialog,
 } from "#/components/skills/viewer/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"

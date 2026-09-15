@@ -7,7 +7,12 @@ import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/system/formulas/attributes/attributeFormulas.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/model/attributes/attributeKey.ts"
+import {
+  AttributeLabels,
+  MentalAttributes,
+  PhysicalAttributes,
+  SpecialAttributes,
+} from "#/system/model/attributes/attributeKey.ts"
 
 import { AttributeValueRow } from "./attributeValueRow.tsx"
 

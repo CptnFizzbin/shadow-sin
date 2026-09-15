@@ -14,14 +14,13 @@ import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
 import { useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
-import { BuilderStateActions } from "#/state/builder/builderStore.actions.ts"
-import { useBuilderStoreDispatch } from "#/state/builder/builderStore.dispatch.ts"
-import { BuilderStateSelectors, useBuilderStoreSelector } from "#/state/builder/builderStore.selectors.ts"
+import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
+import { BuilderStateSelectors } from "#/state/builder/builderStore.selectors.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions as RunnerActions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch, useRunnerState } from "#/state/runnerState.ts"
 import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
@@ -47,19 +46,20 @@ export const StartingNuyenSection: FC = () => {
   const minResult = (numDice + bonus) * mult
   const maxResult = (numDice * 6 + bonus) * mult
 
-  const builderDispatch = useBuilderStoreDispatch()
-  const startingNuyen = useBuilderStoreSelector(BuilderStateSelectors.nuyen.selectStartingNuyen)
+  const dispatch = useRunnerStateDispatch()
+  const startingNuyen = useRunnerState((state) => {
+    return state.builder ? BuilderStateSelectors.nuyen.selectStartingNuyen(state.builder) : null
+  })
 
-  const runnerDispatch = useRunnerStoreDispatch()
   const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   // Persist a completed roll so it survives navigating away from this section (and the dice
   // roller resetting) and back.
   useEffect(() => {
     if (rolledTotal !== null && rolledTotal !== startingNuyen) {
-      builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(rolledTotal))
+      dispatch(BuilderActions.nuyen.setStartingNuyen(rolledTotal))
     }
-  }, [rolledTotal, startingNuyen, builderDispatch])
+  }, [rolledTotal, startingNuyen, dispatch])
 
   // A roll this session takes priority; otherwise fall back to a roll persisted earlier.
   const resolvedNuyen = rolledTotal ?? startingNuyen ?? null
@@ -68,7 +68,7 @@ export const StartingNuyenSection: FC = () => {
 
   const handleReset = () => {
     if (hasRolled) diceRoller.reset()
-    builderDispatch(BuilderStateActions.nuyen.setStartingNuyen(undefined))
+    dispatch(BuilderActions.nuyen.setStartingNuyen(null))
   }
 
   return (
@@ -140,7 +140,7 @@ export const StartingNuyenSection: FC = () => {
             variant="outlined"
             color="secondary"
             disabled={isApplied}
-            onClick={() => runnerDispatch(RunnerActions.nuyen.setNuyenAmount(resolvedNuyen))}
+            onClick={() => dispatch(RunnerActions.nuyen.setNuyenAmount(resolvedNuyen))}
           >
             {isApplied ? "Applied to Nuyen" : "Apply to Nuyen"}
           </Button>

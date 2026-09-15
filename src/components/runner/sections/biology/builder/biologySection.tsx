@@ -4,23 +4,23 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { produce } from "immer"
 import type { FC } from "react"
 
 import { BuildPoints } from "#/components/builder/buildPoints.tsx"
 import { getAttributesValues } from "#/components/entities/attributes/viewer/getAttributesValues.ts"
 import { InnatePowersDisplay } from "#/components/runner/sections/biology/viewer/innatePowersDisplay.tsx"
 import { MovementDisplay } from "#/components/runner/sections/biology/viewer/movementDisplay.tsx"
-import { useRunnerStoreContext } from "#/hooks/runner/useRunnerStore.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { metatypes, MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { awakenings, AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
-  const sheet = useRunnerStoreContext()
+  const dispatch = useRunnerStateDispatch()
   const metatypeKey = useRunnerSelector(BiologySelectors.selectMetatype)
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
 
@@ -34,7 +34,7 @@ export const BiologySection: FC = () => {
           value={metatypeKey}
           label="Metatype"
           onChange={(event) => {
-            sheet.setState(produce((prev) => {
+            dispatch(RunnerActions.update((prev) => {
               const newMetatype = metatypes[event.target.value]
               const oldMetatype = metatypes[prev.biology.metatype]
 
@@ -78,7 +78,7 @@ export const BiologySection: FC = () => {
             value={awakeningType}
             label="Awakening"
             onChange={(event) => {
-              sheet.setState(produce((prev) => {
+              dispatch(RunnerActions.update((prev) => {
                 const metatype = metatypes[prev.biology.metatype]
                 const awakening = awakenings[event.target.value]
 

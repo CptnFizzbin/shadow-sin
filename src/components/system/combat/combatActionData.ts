@@ -59,7 +59,7 @@ export const combatActions: CombatActionData[] = [
     name: "Change Linked Device Mode",
     category: "free",
     description:
-      "Activate, deactivate, or switch modes on any device you're linked to neurally or wirelessly — cyberware, a smartgun's fire mode, thermographic vision, a commlink's hidden mode, wireless toggles, and the like.",
+      "Activate, deactivate, or switch rootStates on any device you're linked to neurally or wirelessly — cyberware, a smartgun's fire mode, thermographic vision, a commlink's hidden mode, wireless toggles, and the like.",
   },
   {
     name: "Drop Object",

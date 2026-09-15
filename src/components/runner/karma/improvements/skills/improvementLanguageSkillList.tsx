@@ -16,14 +16,9 @@ import { ImprovementsConfig } from "#/components/runner/karma/improvements/impro
 import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { KarmaChip } from "#/components/runner/karma/viewer/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/viewer/karmaValue.tsx"
-import {
-  useLanguageSkillDialog,
-} from "#/components/skills/viewer/knowledgeSkills/dialogs/languageSkillDialog.tsx"
+import { useLanguageSkillDialog } from "#/components/skills/viewer/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { useImprovementSelector } from "#/hooks/improvements/useImprovementSelector.ts"
-import {
-  selectAllImprovements,
-  selectImprovementsTotalCost,
-} from "#/services/improvements/improvementSelectors.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
@@ -33,10 +28,7 @@ import type {
   LearnLanguageSkillEntry,
   SkillIncreaseEntry,
 } from "#/system/model/karma/improvements/improvementEntry.ts"
-import {
-  isLearnLanguageSkillEntry,
-  isSkillIncreaseEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
+import { isLearnLanguageSkillEntry, isSkillIncreaseEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 

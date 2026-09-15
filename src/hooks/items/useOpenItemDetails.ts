@@ -1,6 +1,6 @@
 import { useNavigate } from "@tanstack/react-router"
 
-import { useIsBuilder } from "#/hooks/builder/useBuilderStore.ts"
+import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -20,7 +20,7 @@ import type { UUID } from "#/utils/uuidUtils.ts"
 // context, which Builder-context tests don't provide, and `useGearByType` and friends already
 // prove the store is reachable in both contexts.
 export function useOpenItemDetails(): ((itemId: UUID) => void) | undefined {
-  const isBuilder = useIsBuilder()
+  const isBuilder = !useEditorMode().isViewer
   const runnerId = useRunnerSelector(ViewerStateSelectors.selectRunner).id
   const navigate = useNavigate()
 

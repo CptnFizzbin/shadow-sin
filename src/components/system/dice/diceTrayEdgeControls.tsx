@@ -5,11 +5,7 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import {
-  selectIsRolling,
-  selectWasRolled,
-  useDiceRollerSelector,
-} from "#/services/dice/state/diceRoller.selector.ts"
+import { selectIsRolling, selectWasRolled, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
 import { EdgeSelectors } from "#/state/runner/edge/edge.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"

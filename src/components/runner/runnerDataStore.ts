@@ -1,21 +1,23 @@
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { runnerRootReducer } from "#/state/runner/runnerStore.reducer.ts"
+import { createSimpleStore } from "#/lib/simpleStore.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
+/**
+ * A test-isolation seed for `RunnerStoreProvider`: constructs a fresh `RunnerStore` instance from
+ * a starting `RunnerData` value, without needing a real `RunnerState` singleton around it. Tests
+ * hold onto the instance to seed a Provider and, when needed, poke `setState` directly to mimic
+ * an external write.
+ */
 export class RunnerDataStore implements RunnerStore {
-  private readonly compatStore: RunnerStore
+  private readonly store: RunnerStore
 
   constructor(initialState: RunnerData) {
-    this.compatStore = createCompatStore(initialState, runnerRootReducer)
+    this.store = createSimpleStore(initialState)
   }
 
-  get dispatch() {
-    return this.compatStore.dispatch
-  }
+  getState = (): RunnerData => this.store.getState()
 
-  getState = (): RunnerData => this.compatStore.getState()
+  setState = (updater: (prev: RunnerData) => RunnerData): void => this.store.setState(updater)
 
-  setState = (updater: (prev: RunnerData) => RunnerData): void => this.compatStore.setState(updater)
-  subscribe = (listener: (state: RunnerData) => void) => this.compatStore.subscribe(listener)
+  subscribe = (listener: (state: RunnerData) => void) => this.store.subscribe(listener)
 }

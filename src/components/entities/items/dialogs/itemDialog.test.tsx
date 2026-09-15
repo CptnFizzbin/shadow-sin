@@ -197,7 +197,7 @@ describe("ItemDialog", () => {
     expect(screen.getByTestId("custom-fields")).toBeDefined()
   })
 
-  it("shows acquire and purchase buttons in viewer mode", () => {
+  it("shows acquire and purchase buttons in editor mode", () => {
     renderWithProviders(
       <ItemDialogWrapper title="Add Item" onSave={vi.fn()} />,
     )
@@ -211,7 +211,7 @@ describe("ItemDialog", () => {
   describe("nuyen deduction on purchase", () => {
     afterEach(() => vi.restoreAllMocks())
 
-    it("calls onSave and deducts nuyen on successful purchase in viewer mode", async () => {
+    it("calls onSave and deducts nuyen on successful purchase in editor mode", async () => {
       // Arrange
       const withdrawSpy = vi.spyOn(Actions.nuyen, "withdrawNuyen")
       const onSave = vi.fn()
