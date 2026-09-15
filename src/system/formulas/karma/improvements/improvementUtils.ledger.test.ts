@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { ImprovementStore } from "#/services/improvements/improvementStore.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type {
   AttrIncreaseEntry,
@@ -10,12 +11,21 @@ import type {
 } from "#/system/model/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { applyImprovements } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
+
+function makeRunnerStore(sheet: RunnerData) {
+  const store = createRunnerStateStore({ mode: "viewer", runner: sheet })
+  return {
+    store,
+    setState: (updater: (runner: RunnerData) => void | RunnerData) => store.dispatch(RunnerActions.update(updater)),
+  }
+}
 
 describe.concurrent("applyImprovements — karma ledger writes", () => {
   it("appends one ledger entry per applied improvement", () => {
@@ -27,7 +37,7 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
       draft.karma.current = 100
       draft.karma.total = 100
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
     const attrEntry: Omit<AttrIncreaseEntry, "id"> = {
       type: ImprovementType.attrIncrease,
@@ -43,17 +53,17 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     improvementStore.add(learnEntry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert
-    const log = runnerStore.getState().karma.log
+    const log = store.getState().runner.karma.log
     expect(log).toHaveLength(2)
     expect(log.every((entry) => entry.source === "spendKarma")).toBe(true)
     expect(log.every((entry) => entry.amount < 0)).toBe(true)
     // Total amount in ledger matches karma deducted
     const totalDeducted = log.reduce((sum, entry) => sum + entry.amount, 0)
     expect(totalDeducted).toBe(-(20 + 4))
-    expect(runnerStore.getState().karma.current).toBe(100 - 20 - 4)
+    expect(store.getState().runner.karma.current).toBe(100 - 20 - 4)
   })
 
   it("preserves the full ImprovementEntry on each ledger entry for v2 undo support", () => {
@@ -63,7 +73,7 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
       draft.skills.skillGroups = []
       draft.karma.current = 50
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
     const entry: Omit<SkillIncreaseEntry, "id"> = {
       type: ImprovementType.skillIncrease,
@@ -75,10 +85,10 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     const added = improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert — improvement payload round-trips onto the ledger entry
-    const logged = runnerStore.getState().karma.log[0]
+    const logged = store.getState().runner.karma.log[0]
     expect(logged.improvement).toEqual(added)
   })
 
@@ -88,7 +98,7 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
       draft.attributes[AttributeKey.agility] = 4
       draft.karma.current = 50
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
     const entry: Omit<AttrIncreaseEntry, "id"> = {
       type: ImprovementType.attrIncrease,
@@ -99,10 +109,10 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert
-    expect(runnerStore.getState().karma.log[0].description).toBe("Raised AGI 4 → 5")
+    expect(store.getState().runner.karma.log[0].description).toBe("Raised AGI 4 → 5")
   })
 
   it("does not append to the ledger when the improvement queue is empty", () => {
@@ -110,14 +120,14 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.karma.current = 50
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert
-    expect(runnerStore.getState().karma.log).toEqual([])
+    expect(store.getState().runner.karma.log).toEqual([])
   })
 
   it("stamps each entry with an ISO 8601 timestamp", () => {
@@ -126,7 +136,7 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
       draft.attributes[AttributeKey.body] = 3
       draft.karma.current = 50
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
     const entry: Omit<AttrIncreaseEntry, "id"> = {
       type: ImprovementType.attrIncrease,
@@ -137,10 +147,10 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert — ISO 8601 round-trips cleanly to a valid Date
-    const timestamp = runnerStore.getState().karma.log[0].timestamp
+    const timestamp = store.getState().runner.karma.log[0].timestamp
     expect(new Date(timestamp).toISOString()).toBe(timestamp)
   })
 
@@ -149,7 +159,7 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     const sheet = runnerDataFactory({ afterBuild: (draft) => {
       draft.karma.current = 50
     } })
-    const runnerStore = new RunnerDataStore(sheet)
+    const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
     const entry: Omit<AttrIncreaseEntry, "id"> = {
       type: ImprovementType.attrIncrease,
@@ -160,11 +170,11 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    applyImprovements(improvementStore, { setState })
 
     // Assert — ledger entry has its own id, distinct from FAKE_ID
-    expect(runnerStore.getState().karma.log[0].id).not.toBe(FAKE_ID)
-    expect(runnerStore.getState().karma.log[0].id).toMatch(
+    expect(store.getState().runner.karma.log[0].id).not.toBe(FAKE_ID)
+    expect(store.getState().runner.karma.log[0].id).toMatch(
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
     )
   })

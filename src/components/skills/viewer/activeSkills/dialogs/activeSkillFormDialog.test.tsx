@@ -1,7 +1,6 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -59,9 +58,9 @@ describe("ActiveSkillFormDialog", () => {
 
     // Act: a Mundane runner can't learn the Technomancer-only skill "compiling"
     renderWithProviders(<ActiveSkillFormDialog ctrl={ctrl} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
+      runner: runnerDataFactory({ afterBuild: (sheet) => {
         sheet.biology.awakening = AwakeningType.Mundane
-      } })),
+      } }),
     })
     openSkillDropdown()
 

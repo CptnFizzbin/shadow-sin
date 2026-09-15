@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -24,11 +23,11 @@ const weapon: WeaponData = {
 }
 
 const runnerStoreWithWeapon = () =>
-  new RunnerDataStore(runnerDataFactory({ items: { [weapon.id]: weapon } }))
+  runnerDataFactory({ items: { [weapon.id]: weapon } })
 
 describe("AnyItemCard", () => {
   it("dispatches weapons to WeaponDataCard", () => {
-    renderWithProviders(<AnyItemCard item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
+    renderWithProviders(<AnyItemCard item={weapon} />, { runner: runnerStoreWithWeapon() })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.getByText("DV: 8P")).toBeDefined()
@@ -56,7 +55,7 @@ describe("AnyItemCard", () => {
     }
 
     renderWithProviders(<AnyItemCard item={item} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [item.id]: item } })),
+      runner: runnerDataFactory({ items: { [item.id]: item } }),
     })
 
     expect(screen.getByText("Survival Kit")).toBeDefined()
@@ -65,7 +64,7 @@ describe("AnyItemCard", () => {
   it("passes onOpen through to the rendered card", () => {
     const onOpen = vi.fn()
     renderWithProviders(<AnyItemCard item={weapon} onOpen={onOpen} />, {
-      runnerStore: runnerStoreWithWeapon(),
+      runner: runnerStoreWithWeapon(),
     })
 
     // WeaponDataCard always has its own Actions menu button (it self-handles Remove), so the
@@ -78,7 +77,7 @@ describe("AnyItemCard", () => {
   it("passes onEdit through to the rendered card's actions menu", () => {
     const onEdit = vi.fn()
     renderWithProviders(<AnyItemCard item={weapon} onEdit={onEdit} />, {
-      runnerStore: runnerStoreWithWeapon(),
+      runner: runnerStoreWithWeapon(),
     })
 
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))

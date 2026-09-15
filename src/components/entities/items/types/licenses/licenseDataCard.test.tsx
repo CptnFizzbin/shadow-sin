@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
@@ -29,11 +28,8 @@ const realLicense: LicenseData = {
 }
 
 const renderLicenseCard = (license: LicenseData) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ items: { [license.id]: license } }),
-  )
-  renderWithProviders(<LicenseDataCard license={license} />, { runnerStore })
-  return runnerStore
+  const runner = runnerDataFactory({ items: { [license.id]: license } })
+  return renderWithProviders(<LicenseDataCard license={license} />, { runner })
 }
 
 describe("LicenseDataCard", () => {
@@ -88,6 +84,6 @@ describe("LicenseDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[fakeLicense.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[fakeLicense.id]).toBeUndefined())
   })
 })

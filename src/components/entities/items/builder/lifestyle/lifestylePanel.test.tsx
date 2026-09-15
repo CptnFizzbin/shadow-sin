@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -13,7 +13,7 @@ function renderWithLifestyle(lifestyle: { quality: LifestyleType, monthsPaid: nu
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.profile.lifestyle = lifestyle
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -52,7 +52,7 @@ describe("LifestylePanel", () => {
     fireEvent.click(screen.getByRole("option", { name: LifestyleType.Middle }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().profile.lifestyle?.quality).toBe(LifestyleType.Middle))
+    await waitFor(() => expect(store.getState().runner.profile.lifestyle?.quality).toBe(LifestyleType.Middle))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByRole("combobox").textContent).toBe(LifestyleType.Middle)
   })
@@ -65,6 +65,6 @@ describe("LifestylePanel", () => {
     fireEvent.change(screen.getByLabelText("Months prepaid"), { target: { value: "5" } })
 
     // Assert
-    await waitFor(() => expect(store.getState().profile.lifestyle?.monthsPaid).toBe(5))
+    await waitFor(() => expect(store.getState().runner.profile.lifestyle?.monthsPaid).toBe(5))
   })
 })

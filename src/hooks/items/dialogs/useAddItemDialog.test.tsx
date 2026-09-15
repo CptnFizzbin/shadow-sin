@@ -50,7 +50,7 @@ describe("useAddItemDialog", () => {
 
     // Assert
     await waitFor(() => {
-      const items = Object.values(getItemCatalog(runnerStore.getState()))
+      const items = Object.values(getItemCatalog(runnerStore.getState().runner))
       const added = items.find((item) => item.name === "Fake SIN Chip")
       expect(added).toBeDefined()
       expect(added?.itemType).toBe(ItemType.other)
@@ -82,7 +82,7 @@ describe("useAddItemDialog", () => {
 
     // Assert
     await waitFor(() => {
-      const items = Object.values(getItemCatalog(runnerStore.getState()))
+      const items = Object.values(getItemCatalog(runnerStore.getState().runner))
       const added = items.find((item) => item.name === "Plate Insert")
       expect(added?.items.parentId).toBe(parent.id)
     })
@@ -97,6 +97,6 @@ describe("useAddItemDialog", () => {
     clickInLastDialog(/cancel/i)
 
     // Assert
-    expect(Object.values(getItemCatalog(runnerStore.getState()))).toHaveLength(0)
+    expect(Object.values(getItemCatalog(runnerStore.getState().runner))).toHaveLength(0)
   })
 })

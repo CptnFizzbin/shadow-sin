@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -57,11 +56,8 @@ const accessory: ItemData = {
 }
 
 const renderWeaponCard = (data: WeaponData, extraGear: Record<string, ItemData> = {}) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ items: { [data.id]: data, ...extraGear } }),
-  )
-  renderWithProviders(<WeaponDataCard weapon={data} />, { runnerStore })
-  return runnerStore
+  const runner = runnerDataFactory({ items: { [data.id]: data, ...extraGear } })
+  return renderWithProviders(<WeaponDataCard weapon={data} />, { runner })
 }
 
 describe("WeaponDataCard", () => {
@@ -143,7 +139,7 @@ describe("WeaponDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
     // Assert
-    expect(getItemCatalog(runnerStore.getState())[weapon.id].equipped).toBe(true)
+    expect(getItemCatalog(runnerStore.getState().runner)[weapon.id].equipped).toBe(true)
   })
 
   it("offers a Remove action", () => {

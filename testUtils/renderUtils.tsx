@@ -5,17 +5,13 @@ import type { FC, PropsWithChildren, ReactElement } from "react"
 import { useMemo } from "react"
 import { afterEach } from "vitest"
 
-import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { createBuilderDataStore } from "#/components/builder/builderDataStore.ts"
+import type { BuilderState } from "#/components/builder/builderState.ts"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
-import type { BuilderStore } from "#/state/builder/builderStore.ts"
+import type { RunnerStateStore } from "#/state/runnerState.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
-import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
-import type { RunnerStore } from "#/state/runner/runnerStore.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -42,25 +38,25 @@ const TestRouterProvider: FC<PropsWithChildren> = ({ children }) => {
 }
 
 export interface RenderWithProvidersOptions {
-  runnerStore?: RunnerStore
+  runner?: RunnerData
 }
 
-export interface RenderInBuilderOptions {
-  runnerStore?: RunnerStore
-  builderStore?: BuilderStore
-}
-
+/**
+ * Renders `element` under a real `RunnerState` store (`mode: "viewer"`), seeded from `runner`.
+ * Returns the store itself — assert against `store.getState().runner`, drive it with
+ * `store.dispatch(...)`, same as any other `RunnerState` consumer.
+ */
 export function renderWithProviders(
   element: ReactElement,
-  {
-    runnerStore = new RunnerDataStore(runnerDataFactory()),
-  }: RenderWithProvidersOptions = {},
-) {
+  { runner = runnerDataFactory() }: RenderWithProvidersOptions = {},
+): RunnerStateStore {
+  const store = createRunnerStateStore({ mode: "viewer", runner })
+
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
-          <RunnerStoreProvider store={runnerStore}>
+          <RunnerStoreProvider store={store}>
             <AddItemDialogProvider>{children}</AddItemDialogProvider>
           </RunnerStoreProvider>
         </TestRouterProvider>
@@ -68,74 +64,45 @@ export function renderWithProviders(
     )
   }
 
-  return render(element, { wrapper: Wrapper })
+  render(element, { wrapper: Wrapper })
+  return store
 }
 
 /**
- * Seeds a fresh `RunnerDataStore`'s gear from the given map and renders `element` under it via
- * `renderWithProviders` — the `new RunnerDataStore(runnerDataFactory({ items: gear }))`
- * boilerplate every typed-card unit test (`SinDataCard`, `DeviceDataCard`, ...) otherwise repeats
- * for itself. Returns the store so callers can assert against it or seed a reactive wrapper
- * component keyed off it.
+ * Seeds a fresh Runner's gear from the given map and renders `element` under it via
+ * `renderWithProviders` — the `runnerDataFactory({ items: gear })` boilerplate every typed-card
+ * unit test (`SinDataCard`, `DeviceDataCard`, ...) otherwise repeats for itself. Returns the store
+ * so callers can assert against it or seed a reactive wrapper component keyed off it.
  */
-export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData> = {}) {
-  const runnerStore = new RunnerDataStore(runnerDataFactory({ items: gear }))
-  renderWithProviders(element, { runnerStore })
-  return runnerStore
+export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData> = {}): RunnerStateStore {
+  return renderWithProviders(element, { runner: runnerDataFactory({ items: gear }) })
 }
 
+export interface RenderInBuilderOptions {
+  runner?: RunnerData
+  builder?: Partial<BuilderState>
+}
+
+/**
+ * Renders `element` under a real `RunnerState` store (`mode: "builder"`), seeded from `runner`
+ * and, optionally, an initial `builder` slice (`createRunnerStateStore` itself always starts
+ * `builder` from `builderStateFactory()`, so a caller-supplied value is applied as one explicit
+ * dispatch right after construction). Returns the store — see `renderWithProviders`.
+ */
 export function renderInBuilder(
   element: ReactElement,
-  {
-    runnerStore = new RunnerDataStore(runnerDataFactory()),
-    builderStore = createBuilderDataStore(builderStateFactory()),
-  }: RenderInBuilderOptions = {},
-) {
-  // `createRunnerStateStore` always seeds `builder` from `builderStateFactory()` — it has no way
-  // to take a caller-supplied initial `BuilderState` — so a `builderStore` passed in with its own
-  // starting value (e.g. a persisted `nuyen.starting`) is applied as one explicit dispatch below,
-  // before `runnerStore`/`builderStore` are redirected to read/write through `appStore` directly.
-  const appStore = createRunnerStateStore({
-    mode: "builder",
-    runner: runnerStore.getState(),
-  })
-  appStore.dispatch(BuilderActions.setState(builderStore.getState()))
-
-  runnerStore.redirectTo({
-    getState: () => appStore.getState().runner,
-    setState: (updater) => appStore.dispatch(RunnerActions.update(updater)),
-    subscribe: (listener) => {
-      let previousRunner = appStore.getState().runner
-      const unsubscribe = appStore.subscribe(() => {
-        const nextRunner = appStore.getState().runner
-        if (nextRunner === previousRunner) return
-        previousRunner = nextRunner
-        listener(nextRunner)
-      })
-      return { unsubscribe }
-    },
-  })
-
-  builderStore.redirectTo({
-    getState: () => appStore.getState().builder!,
-    setState: (updater) => appStore.dispatch(BuilderActions.setState(updater(appStore.getState().builder!))),
-    subscribe: (listener) => {
-      let previousBuilder = appStore.getState().builder
-      const unsubscribe = appStore.subscribe(() => {
-        const nextBuilder = appStore.getState().builder
-        if (nextBuilder === previousBuilder) return
-        previousBuilder = nextBuilder
-        listener(nextBuilder!)
-      })
-      return { unsubscribe }
-    },
-  })
+  { runner = runnerDataFactory(), builder }: RenderInBuilderOptions = {},
+): RunnerStateStore {
+  const store = createRunnerStateStore({ mode: "builder", runner })
+  if (builder) {
+    store.dispatch(BuilderActions.setState({ ...store.getState().builder!, ...builder }))
+  }
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
         <TestRouterProvider>
-          <RunnerStateProvider store={appStore}>
+          <RunnerStateProvider store={store}>
             <RunnerEntityProvider>
               <AddItemDialogProvider>{children}</AddItemDialogProvider>
             </RunnerEntityProvider>
@@ -145,7 +112,8 @@ export function renderInBuilder(
     )
   }
 
-  return render(element, { wrapper: Wrapper })
+  render(element, { wrapper: Wrapper })
+  return store
 }
 
 /**
@@ -166,11 +134,11 @@ export function fillNameAndClickSave(nameValue: string) {
 afterEach(() => cleanup())
 
 /**
- * Returns a React wrapper component that provides a RunnerDataStore populated
- * from the given sheet. Pass it directly to `renderHook(..., { wrapper })`.
+ * Returns a React wrapper component that provides a real `RunnerState` store seeded from
+ * `runnerData`. Pass it directly to `renderHook(..., { wrapper })`.
  */
 export function makeRunnerDataWrapper(runnerData: RunnerData): FC<PropsWithChildren> {
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>

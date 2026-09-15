@@ -1,12 +1,12 @@
 import { act, renderHook } from "@testing-library/react"
-import { produce } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { EntityProvider } from "#/contexts/entity/entity.provider.tsx"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { EntityData } from "#/system/model/entities/entityData.ts"
 import type { EntityWithAttrs } from "#/system/model/entities/traits/entityWithAttrs.ts"
@@ -15,10 +15,10 @@ import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { useEntitySelector } from "./useEntitySelector.ts"
 
 const wrapperFor = (entity: Partial<EntityData>): FC<PropsWithChildren> => {
-  const runnerStore = new RunnerDataStore(runnerDataFactory())
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerDataFactory() })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerStoreProvider store={runnerStore}>
+    <RunnerStoreProvider store={store}>
       <EntityProvider entity={entity as EntityData}>{children}</EntityProvider>
     </RunnerStoreProvider>
   )
@@ -66,9 +66,9 @@ describe("useEntitySelector", () => {
     // Arrange
     const outerEntity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.strength]: 2 } }
     const innerEntity: Partial<EntityData & EntityWithAttrs> = { attributes: { [AttributeKey.strength]: 6 } }
-    const runnerStore = new RunnerDataStore(runnerDataFactory())
+    const store = createRunnerStateStore({ mode: "viewer", runner: runnerDataFactory() })
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-      <RunnerStoreProvider store={runnerStore}>
+      <RunnerStoreProvider store={store}>
         <EntityProvider entity={outerEntity as EntityData}>
           <EntityProvider entity={innerEntity as EntityData}>{children}</EntityProvider>
         </EntityProvider>
@@ -95,9 +95,9 @@ describe("useEntitySelector", () => {
     // (`useKnowledgeSkillPoints`), which silently froze at the metatype's default attributes.
 
     // Arrange
-    const runnerStore = new RunnerDataStore(runnerDataFactory())
+    const store = createRunnerStateStore({ mode: "viewer", runner: runnerDataFactory() })
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-      <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
+      <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
     )
 
     const { result } = renderHook(
@@ -109,7 +109,7 @@ describe("useEntitySelector", () => {
 
     // Act — mimic AttrIncrementButton's onClick exactly.
     act(() => {
-      runnerStore.setState(produce((draft) => {
+      store.dispatch(RunnerActions.update((draft) => {
         draft.attributes[AttributeKey.logic] = 6
       }))
     })

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { ReputationUtils } from "#/system/model/reputation/createLedgerEntry.ts"
 import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -20,7 +20,7 @@ function renderWithReputation(streetCred: number, notoriety: number) {
       ]
     }
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -55,7 +55,7 @@ describe("ReputationSection", () => {
     fireEvent.click(within(form).getByRole("button", { name: "Add Event" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().reputation.ledger).toHaveLength(1))
+    await waitFor(() => expect(store.getState().runner.reputation.ledger).toHaveLength(1))
     // ...and both the dialog's own display and the section underneath (still open, still
     // mounted) read off that same state — two ReputationDisplay instances, one number.
     expect(await screen.findAllByText("5")).toHaveLength(2)

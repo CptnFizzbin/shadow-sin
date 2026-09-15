@@ -2,7 +2,6 @@ import { fireEvent, screen, within } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -15,7 +14,7 @@ import { ReputationLedgerList } from "./reputationLedgerList.tsx"
 function renderList(afterBuild?: (sheet: RunnerData) => void) {
   return renderWithProviders(
     <ReputationLedgerList />,
-    { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
+    { runner: runnerDataFactory({ afterBuild }) },
   )
 }
 
@@ -38,7 +37,7 @@ function renderFilterableList(afterBuild?: (sheet: RunnerData) => void) {
 
   return renderWithProviders(
     <Harness />,
-    { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
+    { runner: runnerDataFactory({ afterBuild }) },
   )
 }
 

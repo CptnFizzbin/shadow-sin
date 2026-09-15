@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -27,7 +26,7 @@ describe("DevicesSectionContent", () => {
   it("shows devices from the store", () => {
     // Arrange / Act
     renderInBuilder(<DevicesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [commlink.id]: commlink } })),
+      runner: runnerDataFactory({ items: { [commlink.id]: commlink } }),
     })
 
     // Assert
@@ -37,7 +36,7 @@ describe("DevicesSectionContent", () => {
   it("tapping a device opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
     renderInBuilder(<DevicesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [commlink.id]: commlink } })),
+      runner: runnerDataFactory({ items: { [commlink.id]: commlink } }),
     })
 
     // Act
@@ -50,7 +49,7 @@ describe("DevicesSectionContent", () => {
   it("removing a device dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<DevicesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [commlink.id]: commlink } })),
+      runner: runnerDataFactory({ items: { [commlink.id]: commlink } }),
     })
     expect(screen.getByText("Renraku Sensei")).toBeDefined()
 

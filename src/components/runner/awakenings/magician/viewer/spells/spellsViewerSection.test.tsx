@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
@@ -39,7 +39,7 @@ function renderWithSpells(spells: SpellData[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.spells = spells
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -76,6 +76,6 @@ describe("SpellsViewerSection", () => {
     fireEvent.click(screen.getByLabelText("Not Sustained"))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spells[0].sustained).toBe(true))
+    await waitFor(() => expect(store.getState().runner.spells[0].sustained).toBe(true))
   })
 })

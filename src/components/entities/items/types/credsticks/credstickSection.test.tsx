@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import { CredstickType } from "#/system/model/items/credstickData.ts"
@@ -24,7 +23,7 @@ describe("CredstickSection", () => {
   it("shows credsticks from the store", () => {
     // Arrange / Act
     renderWithProviders(<CredstickSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [streetStick.id]: streetStick } })),
+      runner: runnerDataFactory({ items: { [streetStick.id]: streetStick } }),
     })
 
     // Assert
@@ -48,12 +47,12 @@ describe("CredstickSection", () => {
   it("withdrawing a credstick removes it, once confirmed, and deposits its balance to nuyen", async () => {
     // Arrange
     renderWithProviders(<CredstickSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({
+      runner: runnerDataFactory({
         items: { [streetStick.id]: streetStick },
         afterBuild: (data) => {
           data.nuyen.current = 100
         },
-      })),
+      }),
     })
 
     // Act

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -26,7 +26,7 @@ function renderWithComplexForms(complexForms: ComplexFormData[]) {
     data.attributes[AttributeKey.logic] = 6
     data.complexForms = complexForms
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -60,8 +60,8 @@ describe("ComplexFormsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().complexForms).toHaveLength(1))
-    expect(store.getState().complexForms[0].name).toBe("Puppeteer")
+    await waitFor(() => expect(store.getState().runner.complexForms).toHaveLength(1))
+    expect(store.getState().runner.complexForms[0].name).toBe("Puppeteer")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Puppeteer")).toBeDefined()
   })
@@ -75,7 +75,7 @@ describe("ComplexFormsList", () => {
     fireEvent.click(deleteButton!)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().complexForms).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.complexForms).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Diagnostics")).toBeNull()
   })

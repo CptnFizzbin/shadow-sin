@@ -2,7 +2,6 @@ import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import {
   SpellCategory,
@@ -24,9 +23,9 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementSpellList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
+      runner: runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
-      } })),
+      } }),
     },
   )
 }

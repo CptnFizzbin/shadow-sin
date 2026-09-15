@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -14,7 +14,7 @@ function renderWithEdge(max: number, current: number) {
     data.attributes[AttributeKey.edge] = max
     data.edge.current = current
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -53,7 +53,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Spend 1" }))
 
     // Assert: state updated (setCurrentEdge is an async thunk)...
-    await waitFor(() => expect(store.getState().edge.current).toBe(0))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(0))
     // ...and the UI re-rendered off that same state.
     expect((screen.getByRole("button", { name: "Spend 1" }) as HTMLButtonElement).disabled).toBe(true)
   })
@@ -66,7 +66,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Regain 1" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().edge.current).toBe(3))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(3))
   })
 
   it("clicking an edge cell above current sets current to that cell's value", async () => {
@@ -77,7 +77,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "4" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().edge.current).toBe(4))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(4))
   })
 
   it("clicking the cell matching current toggles it back by one", async () => {
@@ -88,7 +88,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "2" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(1))
   })
 
   it("disables the burn button when max edge is 1", () => {
@@ -108,8 +108,8 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(await screen.findByRole("button", { name: "BURN IT" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().attributes[AttributeKey.edge]).toBe(3))
-    expect(store.getState().edge.current).toBe(0)
+    await waitFor(() => expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(3))
+    expect(store.getState().runner.edge.current).toBe(0)
     expect(await screen.findByRole("button", { name: "3" })).toBeDefined()
   })
 
@@ -123,7 +123,7 @@ describe("QuickEdgeSection", () => {
 
     // Assert: dialog closes without dispatching burnEdge
     await waitFor(() => expect(screen.queryByRole("button", { name: "BURN IT" })).toBeNull())
-    expect(store.getState().attributes[AttributeKey.edge]).toBe(4)
-    expect(store.getState().edge.current).toBe(2)
+    expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(4)
+    expect(store.getState().runner.edge.current).toBe(2)
   })
 })

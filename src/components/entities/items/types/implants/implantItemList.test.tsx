@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantType } from "#/system/model/items/implantData.ts"
@@ -24,8 +23,8 @@ function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | 
 }
 
 function renderWithGear(gear: Record<string, ImplantData>) {
-  const runnerStore = new RunnerDataStore(runnerDataFactory({ items: gear }))
-  renderInBuilder(<ImplantItemList />, { runnerStore })
+  const runner = runnerDataFactory({ items: gear })
+  renderInBuilder(<ImplantItemList />, { runner })
 }
 
 describe("ImplantItemList", () => {

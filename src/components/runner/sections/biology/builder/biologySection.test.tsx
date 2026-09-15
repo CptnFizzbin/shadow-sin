@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -23,7 +23,7 @@ function renderWithBiology(metatype: MetatypeType, awakening: AwakeningType) {
     data.biology.metatype = metatype
     data.biology.awakening = awakening
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -53,7 +53,7 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /Troll/ }))
 
     // Assert: state updated...
-    expect(store.getState().biology.metatype).toBe(MetatypeType.Troll)
+    expect(store.getState().runner.biology.metatype).toBe(MetatypeType.Troll)
     // ...and the UI re-rendered off that same state.
     expect(metatypeCombobox().textContent).toContain("Troll")
   })
@@ -75,8 +75,8 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /^AI/ }))
 
     // Assert
-    expect(store.getState().biology.metatype).toBe(MetatypeType.AI)
-    expect(store.getState().biology.awakening).toBe(AwakeningType.None)
+    expect(store.getState().runner.biology.metatype).toBe(MetatypeType.AI)
+    expect(store.getState().runner.biology.awakening).toBe(AwakeningType.None)
     expect(screen.getAllByRole("combobox")).toHaveLength(1)
   })
 
@@ -89,8 +89,8 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /Human/ }))
 
     // Assert
-    expect(store.getState().biology.metatype).toBe(MetatypeType.Human)
-    expect(store.getState().biology.awakening).toBe(AwakeningType.Mundane)
+    expect(store.getState().runner.biology.metatype).toBe(MetatypeType.Human)
+    expect(store.getState().runner.biology.awakening).toBe(AwakeningType.Mundane)
     expect(awakeningCombobox().textContent).toContain("Mundane")
   })
 
@@ -114,7 +114,7 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /Magician/ }))
 
     // Assert
-    expect(store.getState().biology.awakening).toBe(AwakeningType.Magician)
+    expect(store.getState().runner.biology.awakening).toBe(AwakeningType.Magician)
     expect(awakeningCombobox().textContent).toContain("Magician")
   })
 })

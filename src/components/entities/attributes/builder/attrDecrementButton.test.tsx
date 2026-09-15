@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -14,7 +14,7 @@ import { AttrDecrementButton } from "./attrDecrementButton.tsx"
 
 function renderButton(attr: AttributeKey, afterBuild: RunnerFactoryAfterBuildFn) {
   const runnerData = runnerDataFactory({ afterBuild })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -36,7 +36,7 @@ describe("AttrDecrementButton", () => {
     fireEvent.click(screen.getByRole("button"))
 
     // Assert
-    expect(store.getState().attributes[AttributeKey.charisma]).toBe(2)
+    expect(store.getState().runner.attributes[AttributeKey.charisma]).toBe(2)
   })
 
   it("leaves Edge alone when it's already within the new Rating", () => {
@@ -55,7 +55,7 @@ describe("AttrDecrementButton", () => {
     fireEvent.click(screen.getByRole("button"))
 
     // Assert
-    expect(store.getState().attributes[AttributeKey.edge]).toBe(1)
+    expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(1)
   })
 
   it("doesn't touch Edge for a non-AI metatype", () => {
@@ -70,6 +70,6 @@ describe("AttrDecrementButton", () => {
     fireEvent.click(screen.getByRole("button"))
 
     // Assert
-    expect(store.getState().attributes[AttributeKey.edge]).toBe(6)
+    expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(6)
   })
 })

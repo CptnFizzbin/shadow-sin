@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -10,12 +9,12 @@ import { KnowledgeSkillsList } from "./knowledgeSkillsList.tsx"
 describe("KnowledgeSkillsList", () => {
   it("renders skills with name, rating, and optional specialization", () => {
     renderWithProviders(<KnowledgeSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (runnerData) => {
+      runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.knowledgeSkills = [
           { name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
           { name: "Ancient History", rating: 4 },
         ]
-      } })),
+      } }),
     })
 
     expect(screen.getByText("Knowledge Skills")).toBeTruthy()

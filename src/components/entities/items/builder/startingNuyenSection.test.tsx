@@ -1,10 +1,8 @@
 import { act, fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { createBuilderDataStore } from "#/components/builder/builderDataStore.ts"
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
 import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -14,12 +12,12 @@ import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
 function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
   return renderInBuilder(<StartingNuyenSection />, {
-    runnerStore: new RunnerDataStore(runnerDataFactory({
+    runner: runnerDataFactory({
       afterBuild: (runner) => {
         runner.profile = { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } }
       },
-    })),
-    builderStore: createBuilderDataStore({ ...builderStateFactory(), ...builderOverrides }),
+    }),
+    builder: { ...builderStateFactory(), ...builderOverrides },
   })
 }
 

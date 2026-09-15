@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -40,7 +39,7 @@ describe("WeaponsSectionContent", () => {
   it("shows weapons from the store", () => {
     // Arrange / Act
     renderInBuilder(<WeaponsSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
     })
 
     // Assert
@@ -50,7 +49,7 @@ describe("WeaponsSectionContent", () => {
   it("tapping a weapon opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
     renderInBuilder(<WeaponsSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
     })
 
     // Act
@@ -63,7 +62,7 @@ describe("WeaponsSectionContent", () => {
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<WeaponsSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [pistol.id]: pistol } })),
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 

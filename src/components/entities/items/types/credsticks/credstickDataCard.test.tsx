@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import { CredstickType } from "#/system/model/items/credstickData.ts"
@@ -22,11 +21,8 @@ const streetStick: CredstickData = {
 }
 
 const renderCredstickCard = (credstick: CredstickData) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ items: { [credstick.id]: credstick } }),
-  )
-  renderWithProviders(<CredstickDataCard credstick={credstick} />, { runnerStore })
-  return runnerStore
+  const runner = runnerDataFactory({ items: { [credstick.id]: credstick } })
+  return renderWithProviders(<CredstickDataCard credstick={credstick} />, { runner })
 }
 
 describe("CredstickDataCard", () => {

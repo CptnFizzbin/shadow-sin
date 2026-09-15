@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { SpiritData } from "#/system/model/magic/spiritData.ts"
 import { SpiritType } from "#/system/model/magic/spiritData.ts"
@@ -28,7 +28,7 @@ function renderWithSpirits(spirits: SpiritData[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.spirits = spirits
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -58,7 +58,7 @@ describe("SpiritList", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Dismiss" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spirits).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.spirits).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Ember")).toBeNull()
   })
@@ -67,15 +67,15 @@ describe("SpiritList", () => {
     // Arrange: seeded with 2 boxes of physical damage taken; box 3 is the first wound-marker
     // cell (labeled "-1") on both Physical and Stun tracks — Physical renders first.
     const store = renderWithSpirits([fireSpirit])
-    expect(store.getState().spirits[0].damage.physical).toBe(2)
+    expect(store.getState().runner.spirits[0].damage.physical).toBe(2)
 
     // Act
     const [physicalWoundCell] = screen.getAllByRole("button", { name: "-1" })
     fireEvent.click(physicalWoundCell)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spirits[0].damage.physical).toBe(3))
+    await waitFor(() => expect(store.getState().runner.spirits[0].damage.physical).toBe(3))
     // ...and the UI re-rendered off that same state.
-    expect(store.getState().spirits[0].damage.stun).toBe(0)
+    expect(store.getState().runner.spirits[0].damage.stun).toBe(0)
   })
 })

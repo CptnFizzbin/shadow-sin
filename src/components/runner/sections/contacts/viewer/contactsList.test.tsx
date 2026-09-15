@@ -2,10 +2,10 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
 import { FavourDirection } from "#/system/model/contacts/favourData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -31,7 +31,7 @@ function renderWithContacts(contacts: ContactData[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.contacts = contacts
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -64,9 +64,9 @@ describe("ContactsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().contacts).toHaveLength(1))
-    expect(store.getState().contacts[0].name).toBe("Fixer Sam")
-    expect(store.getState().contacts[0].id).not.toBe("")
+    await waitFor(() => expect(store.getState().runner.contacts).toHaveLength(1))
+    expect(store.getState().runner.contacts[0].name).toBe("Fixer Sam")
+    expect(store.getState().runner.contacts[0].id).not.toBe("")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
@@ -95,8 +95,8 @@ describe("ContactsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert
-    await waitFor(() => expect(store.getState().contacts).toHaveLength(1))
-    const [contact] = store.getState().contacts
+    await waitFor(() => expect(store.getState().runner.contacts).toHaveLength(1))
+    const [contact] = store.getState().runner.contacts
     expect(contact.knowledgeSkills).toEqual([{ name: "Street Gangs", rating: 1 }])
     expect(contact.favours).toEqual([
       { description: "Owes for a smuggling run", direction: FavourDirection.contactOwes },
@@ -112,7 +112,7 @@ describe("ContactsList", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().contacts).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.contacts).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
   })

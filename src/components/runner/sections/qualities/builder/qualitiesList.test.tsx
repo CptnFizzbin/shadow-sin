@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { QualityData } from "#/system/model/qualities/qualityData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -23,10 +23,10 @@ function renderWithQualities(qualities: QualityData[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.qualities = qualities
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "builder", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerStoreProvider store={store} mode="builder">{children}</RunnerStoreProvider>
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
 
   render(<QualitiesList />, { wrapper: Wrapper })
@@ -52,7 +52,7 @@ describe("QualitiesList", () => {
     fireEvent.click(screen.getByRole("button", { name: "Remove quality Toughness" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().qualities).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.qualities).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Toughness")).toBeNull()
     expect(screen.getByText("No Qualities qualities added")).toBeDefined()
@@ -72,7 +72,7 @@ describe("QualitiesList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().qualities[0].bpValue).toBe(15))
+    await waitFor(() => expect(store.getState().runner.qualities[0].bpValue).toBe(15))
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("15 BP")).toBeDefined()
     expect(screen.queryByText("10 BP")).toBeNull()

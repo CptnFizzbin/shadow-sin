@@ -3,9 +3,9 @@ import { render, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
@@ -18,7 +18,7 @@ interface TestProvidersProps extends PropsWithChildren {
 }
 
 const TestProviders: FC<TestProvidersProps> = ({ runnerData, children }) => {
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   return (
     <ThemeProvider theme={theme}>

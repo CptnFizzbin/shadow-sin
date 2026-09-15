@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { KarmaBuilderSection } from "./karmaBuilderSection.tsx"
@@ -15,7 +15,7 @@ describe("KarmaBuilderSection", () => {
       data.karma.current = 5
       data.karma.total = 20
     } })
-    const store = new RunnerDataStore(runnerData)
+    const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
       <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
     )

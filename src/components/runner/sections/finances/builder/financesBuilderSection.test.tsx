@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { FinancesBuilderSection } from "./financesBuilderSection.tsx"
@@ -12,7 +12,7 @@ function renderSection(nuyen: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.nuyen.current = nuyen
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -42,6 +42,6 @@ describe("FinancesBuilderSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Set" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().nuyen.current).toBe(2500))
+    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(2500))
   })
 })

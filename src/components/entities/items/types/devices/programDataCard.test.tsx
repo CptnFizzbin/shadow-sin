@@ -68,6 +68,6 @@ describe("ProgramDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[fakeProgram.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[fakeProgram.id]).toBeUndefined())
   })
 })

@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -23,7 +22,7 @@ describe("ArmorSectionContent", () => {
   it("shows armor from the store", () => {
     // Arrange / Act
     renderInBuilder(<ArmorSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
+      runner: runnerDataFactory({ items: { [jacket.id]: jacket } }),
     })
 
     // Assert
@@ -33,7 +32,7 @@ describe("ArmorSectionContent", () => {
   it("tapping armor opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
     renderInBuilder(<ArmorSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
+      runner: runnerDataFactory({ items: { [jacket.id]: jacket } }),
     })
 
     // Act
@@ -46,7 +45,7 @@ describe("ArmorSectionContent", () => {
   it("removing armor dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<ArmorSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [jacket.id]: jacket } })),
+      runner: runnerDataFactory({ items: { [jacket.id]: jacket } }),
     })
     expect(screen.getByText("Armor Jacket")).toBeDefined()
 

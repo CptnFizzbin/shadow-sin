@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
@@ -40,7 +40,7 @@ function renderWithMagic(magic: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes[AttributeKey.magic] = magic
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -93,7 +93,7 @@ describe("SpellCastSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Apply 1 drain" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().damage.stun).toBe(1))
+    await waitFor(() => expect(store.getState().runner.damage.stun).toBe(1))
     expect(onClose).toHaveBeenCalled()
   })
 })

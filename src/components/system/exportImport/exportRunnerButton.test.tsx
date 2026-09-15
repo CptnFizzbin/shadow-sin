@@ -46,7 +46,7 @@ describe("ExportRunnerButton", () => {
     fireEvent.click(screen.getByRole("button", { name: "Export" }))
 
     // Assert
-    expect(store.getState()._meta_.lastExportDate).toBe("2026-08-12T12:00:00.000Z")
+    expect(store.getState().runner._meta_.lastExportDate).toBe("2026-08-12T12:00:00.000Z")
   })
 
   it("bakes the export timestamp into the exported file itself", () => {

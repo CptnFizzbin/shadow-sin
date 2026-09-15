@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -24,11 +23,11 @@ const weapon: WeaponData = {
 }
 
 const runnerStoreWithWeapon = () =>
-  new RunnerDataStore(runnerDataFactory({ items: { [weapon.id]: weapon } }))
+  runnerDataFactory({ items: { [weapon.id]: weapon } })
 
 describe("AnyItemDetails", () => {
   it("dispatches weapons to WeaponItemDetails", () => {
-    renderWithProviders(<AnyItemDetails item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
+    renderWithProviders(<AnyItemDetails item={weapon} />, { runner: runnerStoreWithWeapon() })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.getByText("DV")).toBeDefined()
@@ -44,7 +43,7 @@ describe("AnyItemDetails", () => {
     }
 
     renderWithProviders(<AnyItemDetails item={item} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [item.id]: item } })),
+      runner: runnerDataFactory({ items: { [item.id]: item } }),
     })
 
     expect(screen.getByText("Fake SIN")).toBeDefined()

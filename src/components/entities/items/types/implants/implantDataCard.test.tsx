@@ -131,6 +131,6 @@ describe("ImplantDataCard", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[alphaImplant.id]).toBeUndefined())
+    await waitFor(() => expect(getItemCatalog(runnerStore.getState().runner)[alphaImplant.id]).toBeUndefined())
   })
 })

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { ProfileSection } from "./profileSection.tsx"
@@ -13,7 +13,7 @@ function renderSection() {
     data.profile.alias = "Ghost"
     data.profile.name = "Jane Doe"
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -42,7 +42,7 @@ describe("ProfileSection", () => {
     fireEvent.change(screen.getByLabelText("Alias"), { target: { value: "Wraith" } })
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().profile.alias).toBe("Wraith"))
+    await waitFor(() => expect(store.getState().runner.profile.alias).toBe("Wraith"))
     // ...and the UI re-rendered off that same state.
     expect((screen.getByLabelText("Alias") as HTMLInputElement).value).toBe("Wraith")
   })
@@ -51,12 +51,12 @@ describe("ProfileSection", () => {
     // Arrange
     const store = renderSection()
     fireEvent.change(screen.getByLabelText("Archetype"), { target: { value: "Street Samurai" } })
-    await waitFor(() => expect(store.getState().profile.archetype).toBe("Street Samurai"))
+    await waitFor(() => expect(store.getState().runner.profile.archetype).toBe("Street Samurai"))
 
     // Act
     fireEvent.change(screen.getByLabelText("Archetype"), { target: { value: "" } })
 
     // Assert
-    await waitFor(() => expect(store.getState().profile.archetype).toBeNull())
+    await waitFor(() => expect(store.getState().runner.profile.archetype).toBeNull())
   })
 })

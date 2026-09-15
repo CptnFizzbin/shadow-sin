@@ -3,7 +3,6 @@ import { act, fireEvent, screen } from "@testing-library/react"
 import type { FC } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
@@ -48,7 +47,7 @@ const knife: MeleeWeaponData = {
 }
 
 function buildRunnerStore() {
-  return new RunnerDataStore(runnerDataFactory({
+  return runnerDataFactory({
     items: {
       [pistol.id]: pistol,
       [knife.id]: knife,
@@ -62,7 +61,7 @@ function buildRunnerStore() {
         ],
       }
     },
-  }))
+  })
 }
 
 async function openCalculator() {
@@ -76,7 +75,7 @@ async function openCalculator() {
     )
   }
 
-  renderWithProviders(<Wrapper />, { runnerStore: buildRunnerStore() })
+  renderWithProviders(<Wrapper />, { runner: buildRunnerStore() })
   fireEvent.click(screen.getByRole("button", { name: /attack/i }))
 
   const dialog = await screen.findByRole("dialog", { name: "Test Pistol" })
