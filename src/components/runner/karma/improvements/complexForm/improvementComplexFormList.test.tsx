@@ -2,7 +2,6 @@ import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -17,9 +16,9 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementComplexFormList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
+      runner: runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
-      } })),
+      } }),
     },
   )
 }

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -16,7 +16,7 @@ function renderWithDamage(physical: number, stun: number) {
     data.damage.physical = physical
     data.damage.stun = stun
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -31,16 +31,16 @@ describe("QuickDamageSection", () => {
   it("resetting physical damage dispatches setDamage and updates the store", async () => {
     // Arrange: seeded with damage taken on both tracks
     const store = renderWithDamage(3, 2)
-    expect(store.getState().damage.physical).toBe(3)
+    expect(store.getState().runner.damage.physical).toBe(3)
 
     // Act: the Physical track's Reset button is the first of the two.
     const [resetPhysical] = screen.getAllByRole("button", { name: "Reset" })
     fireEvent.click(resetPhysical)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().damage.physical).toBe(0))
+    await waitFor(() => expect(store.getState().runner.damage.physical).toBe(0))
     // ...and the stun track (untouched) is unaffected.
-    expect(store.getState().damage.stun).toBe(2)
+    expect(store.getState().runner.damage.stun).toBe(2)
   })
 
   it("resetting stun damage dispatches setDamage and updates the store", async () => {
@@ -52,7 +52,7 @@ describe("QuickDamageSection", () => {
     fireEvent.click(resetStun)
 
     // Assert
-    await waitFor(() => expect(store.getState().damage.stun).toBe(0))
-    expect(store.getState().damage.physical).toBe(3)
+    await waitFor(() => expect(store.getState().runner.damage.stun).toBe(0))
+    expect(store.getState().runner.damage.physical).toBe(3)
   })
 })

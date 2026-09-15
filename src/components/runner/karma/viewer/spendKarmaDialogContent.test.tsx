@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -23,9 +22,9 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(
     <SpendKarmaDialogContent ctrl={ctrl} />,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
+      runner: runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
-      } })),
+      } }),
     },
   )
 }

@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { ReputationUtils } from "#/system/model/reputation/createLedgerEntry.ts"
 import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -13,7 +12,7 @@ import { ReputationDisplay } from "./reputationDisplay.tsx"
 function renderDisplay(afterBuild: (sheet: RunnerData) => void) {
   return renderWithProviders(
     <ReputationDisplay />,
-    { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) },
+    { runner: runnerDataFactory({ afterBuild }) },
   )
 }
 

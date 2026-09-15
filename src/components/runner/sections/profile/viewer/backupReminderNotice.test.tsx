@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { BackupReminderNotice } from "./backupReminderNotice.tsx"
@@ -12,7 +12,7 @@ function renderWithLastExportDate(lastExportDate: string | null) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data._meta_.lastExportDate = lastExportDate
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>

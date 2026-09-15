@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -10,12 +9,12 @@ import { LanguageSkillsList } from "./languageSkillsList.tsx"
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {
     renderWithProviders(<LanguageSkillsList />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (runnerData) => {
+      runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.languageSkills = [
           { name: "Sperethiel", isNative: true },
           { name: "English", isNative: false, rating: 5, lingo: "Seattle Sprawl" },
         ]
-      } })),
+      } }),
     })
 
     expect(screen.getByText("Languages")).toBeTruthy()

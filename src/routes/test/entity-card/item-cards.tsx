@@ -17,8 +17,8 @@ import { LicenseDataCard } from "#/components/entities/items/types/licenses/lice
 import { SinDataCard } from "#/components/entities/items/types/licenses/sinDataCard.tsx"
 import { VehicleDataCard } from "#/components/entities/items/types/vehicles/vehicleDataCard.tsx"
 import { WeaponDataCard } from "#/components/entities/items/types/weapons/weaponDataCard.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
@@ -451,8 +451,8 @@ const DEMO_WEAPON_ACCESSORY: ItemData = {
  *
  * All of these dispatch through the runner store for their built-in Remove/Equip actions (and
  * `SinDataCard` reads its covered licenses back out of it), so this page wraps everything in a
- * real `RunnerStoreProvider`/`RunnerDataStore` seeded from all of the items, rebuilt from the
- * toggle state on every change.
+ * real `RunnerState` store, seeded from all of the items, rebuilt from the toggle state on every
+ * change.
  */
 function MigratedItemCardsTestPage() {
   const [credstickToggles, setCredstickToggles] = useState<CredstickFieldToggles>({
@@ -484,7 +484,7 @@ function MigratedItemCardsTestPage() {
       [WEAPON_ID]: DEMO_WEAPON,
       [WEAPON_ACCESSORY_ID]: DEMO_WEAPON_ACCESSORY,
     } })
-    return new RunnerDataStore(runnerData)
+    return createRunnerStateStore({ mode: "viewer", runner: runnerData })
   }, [credstickItem, licenseItem, sinItem, sinToggles.coveredLicense])
 
   return (

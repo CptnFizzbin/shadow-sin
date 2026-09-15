@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
@@ -31,7 +30,7 @@ describe("VehiclesSectionContent", () => {
   it("shows vehicles from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
 
     // Assert
@@ -41,7 +40,7 @@ describe("VehiclesSectionContent", () => {
   it("tapping a vehicle opens the edit dialog directly — the Builder has no details page", () => {
     // Arrange
     renderInBuilder(<VehiclesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
 
     // Act
@@ -54,7 +53,7 @@ describe("VehiclesSectionContent", () => {
   it("removing a vehicle dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<VehiclesSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 

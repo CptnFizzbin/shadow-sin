@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
@@ -25,7 +25,7 @@ function renderWithPowers(powers: AdeptPowerData[]) {
     data.attributes[AttributeKey.magic] = 6
     data.powers = powers
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -55,7 +55,7 @@ describe("AdeptPowersViewerSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Delete" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().powers).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.powers).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("No adept powers learned")).toBeDefined()
   })

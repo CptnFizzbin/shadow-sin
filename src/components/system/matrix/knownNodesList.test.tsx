@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
@@ -26,7 +26,7 @@ function renderWithMatrixState(matrixState: MatrixGameState) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.gameState.matrix = matrixState
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -70,9 +70,9 @@ describe("KnownNodesList", () => {
     fireEvent.click(screen.getByRole("button", { name: "Save" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().gameState.matrix.knownNodes).toHaveLength(1))
-    expect(store.getState().gameState.matrix.knownNodes[0].name).toBe("Ares Datavault")
-    expect(store.getState().gameState.matrix.knownNodes[0].accessLevel).toBe(AccessLevel.public)
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.knownNodes).toHaveLength(1))
+    expect(store.getState().runner.gameState.matrix.knownNodes[0].name).toBe("Ares Datavault")
+    expect(store.getState().runner.gameState.matrix.knownNodes[0].accessLevel).toBe(AccessLevel.public)
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("Ares Datavault")).toBeDefined()
   })
@@ -86,7 +86,7 @@ describe("KnownNodesList", () => {
     fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().gameState.matrix.knownNodes).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.knownNodes).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Renraku Arcology")).toBeNull()
   })
@@ -99,7 +99,7 @@ describe("KnownNodesList", () => {
     clickCardAction("Set Active")
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().gameState.matrix.activeNodeId).toBe("node-1"))
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.activeNodeId).toBe("node-1"))
     // ...and the UI re-rendered off that same state — the actions menu stays open (custom
     // Actions don't auto-close it, unlike the fixed Edit/Remove items) and now offers Deactivate.
     expect(screen.getByText("Active")).toBeDefined()
@@ -118,8 +118,8 @@ describe("KnownNodesList", () => {
     clickCardAction("Deactivate")
 
     // Assert
-    await waitFor(() => expect(store.getState().gameState.matrix.activeNodeId).toBeUndefined())
-    expect(store.getState().gameState.matrix.knownNodes).toHaveLength(1)
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.activeNodeId).toBeUndefined())
+    expect(store.getState().runner.gameState.matrix.knownNodes).toHaveLength(1)
     expect(screen.queryByText("Active")).toBeNull()
   })
 
@@ -136,8 +136,8 @@ describe("KnownNodesList", () => {
     fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().gameState.matrix.knownNodes).toHaveLength(0))
-    expect(store.getState().gameState.matrix.activeNodeId).toBeUndefined()
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.knownNodes).toHaveLength(0))
+    expect(store.getState().runner.gameState.matrix.activeNodeId).toBeUndefined()
   })
 
   it("editing a node through the dialog dispatches updateKnownNode", async () => {
@@ -151,7 +151,7 @@ describe("KnownNodesList", () => {
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Save" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().gameState.matrix.knownNodes[0].name).toBe("Renraku Tsurugi"))
-    expect(store.getState().gameState.matrix.knownNodes[0].id).toBe("node-1")
+    await waitFor(() => expect(store.getState().runner.gameState.matrix.knownNodes[0].name).toBe("Renraku Tsurugi"))
+    expect(store.getState().runner.gameState.matrix.knownNodes[0].id).toBe("node-1")
   })
 })

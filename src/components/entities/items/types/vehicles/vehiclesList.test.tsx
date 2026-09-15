@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
@@ -31,7 +30,7 @@ describe("VehiclesList", () => {
   it("shows vehicles matching the category from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
 
     // Assert
@@ -44,7 +43,7 @@ describe("VehiclesList", () => {
   it("toggling a damage box dispatches setItem and updates the store", () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
 
     // Act
@@ -69,7 +68,7 @@ describe("VehiclesList", () => {
   it("removing a vehicle dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [bike.id]: bike } })),
+      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
     })
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 

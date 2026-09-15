@@ -2,8 +2,8 @@ import { fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
@@ -15,7 +15,7 @@ function renderPistols() {
     data.attributes.logic = 6
     data.skills.activeSkills = [{ name: SkillKey.pistols, rating: 4 }]
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>

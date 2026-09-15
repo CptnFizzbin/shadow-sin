@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
@@ -73,7 +72,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [license.id]: license } })),
+      runner: runnerDataFactory({ items: { [license.id]: license } }),
     })
 
     // Assert
@@ -85,7 +84,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [license.id]: license, [coveredItem.id]: coveredItem } })),
+      runner: runnerDataFactory({ items: { [license.id]: license, [coveredItem.id]: coveredItem } }),
     })
 
     // Assert
@@ -97,7 +96,7 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [license.id]: license, [coveredItem.id]: coveredItem } })),
+      runner: runnerDataFactory({ items: { [license.id]: license, [coveredItem.id]: coveredItem } }),
     })
 
     // Act
@@ -114,12 +113,12 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: {
+      runner: runnerDataFactory({ items: {
         [license.id]: license,
         [otherLicense.id]: otherLicense,
         [unlicensedItem.id]: unlicensedItem,
         [itemLicensedElsewhere.id]: itemLicensedElsewhere,
-      } })),
+      } }),
     })
 
     // Act
@@ -145,11 +144,11 @@ describe("LicenseCoveredItemsSection (via LicenseFormDialog)", () => {
     const ctrl = new DialogCtrl<LicenseData>()
     ctrl.open()
     renderInBuilder(<LicenseFormDialog ctrl={ctrl} license={license} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: {
+      runner: runnerDataFactory({ items: {
         [license.id]: license,
         [otherLicense.id]: otherLicense,
         [itemLicensedElsewhere.id]: itemLicensedElsewhere,
-      } })),
+      } }),
     })
 
     // Act

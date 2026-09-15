@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -21,7 +20,7 @@ describe("MiscSectionContent", () => {
   it("shows items from the store", () => {
     // Arrange / Act
     renderInBuilder(<MiscSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [trodes.id]: trodes } })),
+      runner: runnerDataFactory({ items: { [trodes.id]: trodes } }),
     })
 
     // Assert
@@ -31,7 +30,7 @@ describe("MiscSectionContent", () => {
   it("tapping an item opens the edit dialog directly — the Builder has no details page", async () => {
     // Arrange
     renderInBuilder(<MiscSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [trodes.id]: trodes } })),
+      runner: runnerDataFactory({ items: { [trodes.id]: trodes } }),
     })
 
     // Act
@@ -44,7 +43,7 @@ describe("MiscSectionContent", () => {
   it("removing an item dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<MiscSectionContent />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [trodes.id]: trodes } })),
+      runner: runnerDataFactory({ items: { [trodes.id]: trodes } }),
     })
     expect(screen.getByText("Trodes")).toBeDefined()
 

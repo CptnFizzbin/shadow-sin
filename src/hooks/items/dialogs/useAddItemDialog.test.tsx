@@ -6,7 +6,6 @@ import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
@@ -50,7 +49,7 @@ describe("useAddItemDialog", () => {
 
     // Assert
     await waitFor(() => {
-      const items = Object.values(getItemCatalog(runnerStore.getState()))
+      const items = Object.values(runnerStore.getState().items)
       const added = items.find((item) => item.name === "Fake SIN Chip")
       expect(added).toBeDefined()
       expect(added?.itemType).toBe(ItemType.other)
@@ -82,7 +81,7 @@ describe("useAddItemDialog", () => {
 
     // Assert
     await waitFor(() => {
-      const items = Object.values(getItemCatalog(runnerStore.getState()))
+      const items = Object.values(runnerStore.getState().items)
       const added = items.find((item) => item.name === "Plate Insert")
       expect(added?.items.parentId).toBe(parent.id)
     })
@@ -97,6 +96,6 @@ describe("useAddItemDialog", () => {
     clickInLastDialog(/cancel/i)
 
     // Assert
-    expect(Object.values(getItemCatalog(runnerStore.getState()))).toHaveLength(0)
+    expect(Object.values(runnerStore.getState().items)).toHaveLength(0)
   })
 })

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { InitiativeSection } from "./initiativeSection.tsx"
@@ -12,7 +12,7 @@ function renderWithPasses(passesCompleted: number[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.initiative.passesCompleted = passesCompleted
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -32,7 +32,7 @@ describe("InitiativeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "End Round" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().initiative.passesCompleted).toEqual([]))
+    await waitFor(() => expect(store.getState().runner.initiative.passesCompleted).toEqual([]))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByRole("button", { name: "1" }).className).toContain("MuiButton-outlined")
   })

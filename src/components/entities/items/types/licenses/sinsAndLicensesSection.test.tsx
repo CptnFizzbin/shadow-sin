@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
@@ -23,7 +22,7 @@ describe("SinsAndLicensesSection", () => {
   it("shows SINs from the store", () => {
     // Arrange / Act
     renderInBuilder(<SinsAndLicensesSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [fakeSin.id]: fakeSin } })),
+      runner: runnerDataFactory({ items: { [fakeSin.id]: fakeSin } }),
     })
 
     // Assert
@@ -33,7 +32,7 @@ describe("SinsAndLicensesSection", () => {
   it("removing a SIN with no licenses dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<SinsAndLicensesSection />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [fakeSin.id]: fakeSin } })),
+      runner: runnerDataFactory({ items: { [fakeSin.id]: fakeSin } }),
     })
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
 

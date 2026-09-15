@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -42,7 +42,7 @@ function renderWithSpells(spells: SpellData[]) {
     data.skills.activeSkills = [{ name: SkillKey.spellcasting, rating: 4 }]
     data.spells = spells
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -75,8 +75,8 @@ describe("SpellsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spells).toHaveLength(1))
-    expect(store.getState().spells[0].name).toBe("Fireball")
+    await waitFor(() => expect(store.getState().runner.spells).toHaveLength(1))
+    expect(store.getState().runner.spells[0].name).toBe("Fireball")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fireball")).toBeDefined()
   })
@@ -91,7 +91,7 @@ describe("SpellsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Delete" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spells).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.spells).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Manabolt")).toBeNull()
   })

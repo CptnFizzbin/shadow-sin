@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { ArmorFormDialog } from "#/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
@@ -70,7 +69,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={unrestrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [unrestrictedArmor.id]: unrestrictedArmor } })),
+      runner: runnerDataFactory({ items: { [unrestrictedArmor.id]: unrestrictedArmor } }),
     })
 
     // Assert
@@ -84,7 +83,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } })),
+      runner: runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } }),
     })
 
     // Assert
@@ -98,7 +97,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
 
     // Act
     renderWithProviders(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } })),
+      runner: runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor } }),
     })
 
     // Assert
@@ -110,7 +109,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={restrictedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } })),
+      runner: runnerDataFactory({ items: { [restrictedArmor.id]: restrictedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } }),
     })
 
     // Act
@@ -132,7 +131,7 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={licensedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: { [licensedArmor.id]: licensedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } })),
+      runner: runnerDataFactory({ items: { [licensedArmor.id]: licensedArmor, [fakeSin.id]: fakeSin, [existingLicense.id]: existingLicense } }),
     })
     expect(within(getLastDialog()).getByText(existingLicense.name)).toBeDefined()
 
@@ -151,12 +150,12 @@ describe("GearFormLicenseSection (via ArmorFormDialog)", () => {
     const ctrl = new DialogCtrl<ArmorData>()
     ctrl.open()
     renderInBuilder(<ArmorFormDialog ctrl={ctrl} armor={licensedArmor} />, {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ items: {
+      runner: runnerDataFactory({ items: {
         [licensedArmor.id]: licensedArmor,
         [fakeSin.id]: fakeSin,
         [existingLicense.id]: existingLicense,
         [secondLicense.id]: secondLicense,
-      } })),
+      } }),
     })
 
     // Act

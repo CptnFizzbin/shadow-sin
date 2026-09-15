@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { KarmaSection } from "./karmaSection.tsx"
@@ -13,7 +13,7 @@ function renderWithKarma(current: number, total: number) {
     data.karma.current = current
     data.karma.total = total
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -44,8 +44,8 @@ describe("KarmaSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /add/i }))
 
     // Assert: state updated (default Amount is 1)...
-    await waitFor(() => expect(store.getState().karma.current).toBe(6))
-    expect(store.getState().karma.total).toBe(21)
+    await waitFor(() => expect(store.getState().runner.karma.current).toBe(6))
+    expect(store.getState().runner.karma.total).toBe(21)
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("6")).toBeDefined()
     expect(screen.getByText("21")).toBeDefined()

@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -23,7 +22,7 @@ const Harness: FC = () => {
 }
 
 function renderHarness(afterBuild?: (sheet: RunnerData) => void) {
-  renderWithProviders(<Harness />, { runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild })) })
+  renderWithProviders(<Harness />, { runner: runnerDataFactory({ afterBuild }) })
   fireEvent.click(screen.getByRole("button", { name: "Open Adjust Reputation" }))
 }
 

@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import type { LoanData } from "#/system/model/finances/loanData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -20,7 +20,7 @@ function renderWithLoans(loans: LoanData[]) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.nuyen.loans = loans
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -52,9 +52,9 @@ describe("LoansSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().nuyen.loans).toHaveLength(1))
-    expect(store.getState().nuyen.loans[0].lender).toBe("Fixer Sam")
-    expect(store.getState().nuyen.loans[0].id).not.toBe("")
+    await waitFor(() => expect(store.getState().runner.nuyen.loans).toHaveLength(1))
+    expect(store.getState().runner.nuyen.loans[0].lender).toBe("Fixer Sam")
+    expect(store.getState().runner.nuyen.loans[0].id).not.toBe("")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
@@ -70,7 +70,7 @@ describe("LoansSection", () => {
     fireEvent.click(await within(dialog).findByRole("button", { name: /confirm remove/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().nuyen.loans).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.nuyen.loans).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
   })

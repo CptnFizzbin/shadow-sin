@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
@@ -9,7 +8,6 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { SinDataCard } from "./sinDataCard.tsx"
@@ -45,11 +43,8 @@ const sinWithLicense: SinData = { ...fakeSin, items: { ...fakeSin.items, childId
 
 /** `SinDataCard` reads its own covered licenses from the store via `sin.id`, so every render needs the SIN itself seeded into gear. */
 const renderSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}, onOpen?: () => void) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } }),
-  )
-  renderWithProviders(<SinDataCard sin={sin} onOpen={onOpen} />, { runnerStore })
-  return runnerStore
+  const runner = runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } })
+  return renderWithProviders(<SinDataCard sin={sin} onOpen={onOpen} />, { runner })
 }
 
 /**
@@ -64,11 +59,8 @@ const RemovableSinCard = ({ sinId }: { sinId: SinData["id"] }) => {
 }
 
 const renderRemovableSinCard = (sin: SinData, extraGear: Record<string, LicenseData> = {}) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } }),
-  )
-  renderWithProviders(<RemovableSinCard sinId={sin.id} />, { runnerStore })
-  return runnerStore
+  const runner = runnerDataFactory({ items: { [sin.id]: sin, ...extraGear } })
+  return renderWithProviders(<RemovableSinCard sinId={sin.id} />, { runner })
 }
 
 describe("SinDataCard", () => {
@@ -108,7 +100,7 @@ describe("SinDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[fakeSin.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[fakeSin.id]).toBeUndefined())
     expect(screen.queryByRole("dialog")).toBeNull()
   })
 
@@ -122,13 +114,13 @@ describe("SinDataCard", () => {
 
     // Assert
     expect(await screen.findByRole("dialog")).toBeDefined()
-    expect(getItemCatalog(runnerStore.getState())[sinWithLicense.id]).toBeDefined()
+    expect(runnerStore.getState().items[sinWithLicense.id]).toBeDefined()
 
     // Act: confirm
     fireEvent.click(screen.getByRole("button", { name: "Remove SIN" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[sinWithLicense.id]).toBeUndefined())
+    await waitFor(() => expect(runnerStore.getState().items[sinWithLicense.id]).toBeUndefined())
   })
 
   it("navigates via onOpen when tapped", () => {

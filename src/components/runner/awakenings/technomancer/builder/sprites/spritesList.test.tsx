@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -27,7 +27,7 @@ function renderWithSprites(sprites: SpriteData[]) {
     data.attributes[AttributeKey.charisma] = 6
     data.sprites = sprites
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -61,8 +61,8 @@ describe("SpritesList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().sprites).toHaveLength(1))
-    expect(store.getState().sprites[0].name).toBe("Fault")
+    await waitFor(() => expect(store.getState().runner.sprites).toHaveLength(1))
+    expect(store.getState().runner.sprites[0].name).toBe("Fault")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fault")).toBeDefined()
   })
@@ -76,7 +76,7 @@ describe("SpritesList", () => {
     fireEvent.click(deleteButton!)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().sprites).toHaveLength(0))
+    await waitFor(() => expect(store.getState().runner.sprites).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Courier")).toBeNull()
   })

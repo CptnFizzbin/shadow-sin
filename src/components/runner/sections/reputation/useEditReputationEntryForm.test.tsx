@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import type { ReputationLedgerEntry } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -38,7 +38,7 @@ const Harness: FC = () => {
 }
 
 function renderHarness(afterBuild?: (sheet: RunnerData) => void) {
-  const store = new RunnerDataStore(runnerDataFactory({ afterBuild }))
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerDataFactory({ afterBuild }) })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -75,8 +75,8 @@ describe("EditReputationEntryForm", () => {
 
     // Assert — dialog closed (MUI's exit transition is async) and the ledger reflects the edit
     await waitFor(() => expect(screen.queryByText("Edit Reputation Event")).toBeNull())
-    expect(store.getState().reputation.ledger).toHaveLength(1)
-    const [entry] = store.getState().reputation.ledger
+    expect(store.getState().runner.reputation.ledger).toHaveLength(1)
+    const [entry] = store.getState().runner.reputation.ledger
     expect(entry.stat).toBe("notoriety")
     expect(entry.description).toBe("Actually a botched job")
     // id, amount, and timestamp are untouched by the stat/description edit
@@ -95,6 +95,6 @@ describe("EditReputationEntryForm", () => {
 
     // Assert
     await waitFor(() => expect(screen.queryByText("Edit Reputation Event")).toBeNull())
-    expect(store.getState().reputation.ledger[0].description).toBe("Successful run")
+    expect(store.getState().runner.reputation.ledger[0].description).toBe("Successful run")
   })
 })

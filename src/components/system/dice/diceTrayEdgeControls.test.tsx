@@ -2,9 +2,9 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -16,7 +16,7 @@ function renderWithEdge(max: number, current: number) {
     data.attributes[AttributeKey.edge] = max
     data.edge.current = current
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
   const diceTrayApi = new DiceTrayApi()
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
@@ -65,7 +65,7 @@ describe("DiceTrayEdgeControls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
 
     // Assert: state updated (setCurrentEdge is an async thunk)...
-    await waitFor(() => expect(store.getState().edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(1))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("Edge (1/4)")).toBeDefined()
   })
@@ -76,7 +76,7 @@ describe("DiceTrayEdgeControls", () => {
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
-    await waitFor(() => expect(store.getState().edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().runner.edge.current).toBe(1))
 
     // Assert: rollEdge() marked the dice tray as edgeSpent, so a second click is a no-op
     expect(diceTrayApi.store.getState().edgeSpent).toBe(true)

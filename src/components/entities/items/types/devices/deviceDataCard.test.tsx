@@ -9,7 +9,6 @@ import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { DeviceDataCard } from "./deviceDataCard.tsx"
@@ -133,7 +132,7 @@ describe("DeviceDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(runnerStore.getState())[deviceWithProgram.id]).toBeUndefined())
-    expect(getItemCatalog(runnerStore.getState())[runningProgram.id]).toBeUndefined()
+    await waitFor(() => expect(runnerStore.getState().items[deviceWithProgram.id]).toBeUndefined())
+    expect(runnerStore.getState().items[runningProgram.id]).toBeUndefined()
   })
 })

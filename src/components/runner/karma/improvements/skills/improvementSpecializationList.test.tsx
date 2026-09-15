@@ -2,7 +2,6 @@ import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import type { LearnActiveSkillEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -43,9 +42,9 @@ function renderList(
       <ImprovementSpecializationList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: new RunnerDataStore(runnerDataFactory({ afterBuild: (sheet) => {
+      runner: runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
-      } })),
+      } }),
     },
   )
 }

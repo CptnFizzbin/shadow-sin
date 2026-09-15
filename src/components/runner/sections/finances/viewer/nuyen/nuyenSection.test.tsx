@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { NuyenSection } from "./nuyenSection.tsx"
@@ -12,7 +12,7 @@ function renderWithNuyen(current: number) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.nuyen.current = current
   } })
-  const store = new RunnerDataStore(runnerData)
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
@@ -33,7 +33,7 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Deposit" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().nuyen.current).toBe(150))
+    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(150))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("150¥")).toBeDefined()
   })
@@ -47,7 +47,7 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Withdraw" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().nuyen.current).toBe(70))
+    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(70))
   })
 
   it("setting dispatches setNuyenAmount and replaces the balance", async () => {
@@ -59,6 +59,6 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Set" }))
 
     // Assert
-    await waitFor(() => expect(store.getState().nuyen.current).toBe(42))
+    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(42))
   })
 })
