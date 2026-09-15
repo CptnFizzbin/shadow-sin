@@ -1,27 +1,40 @@
-import { createSimpleStore } from "#/lib/simpleStore.ts"
 import type { RunnerStore } from "#/state/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 /**
- * A test-isolation seed for `RunnerStoreProvider`: constructs a fresh `RunnerStore` instance from
- * a starting `RunnerData` value, without needing a real `RunnerState` singleton around it up
- * front. Tests hold onto the instance to seed a Provider and, when needed, poke `setState`
- * directly to mimic an external write — `RunnerStoreProvider` redirects the instance to read and
- * write through the real `RunnerState` store it creates, so those calls keep working the same way
- * once one exists, without this store keeping its own value in sync alongside it.
+ * A test-isolation seed for `RunnerStoreProvider`: holds a starting `RunnerData` value, without
+ * needing a real `RunnerState` singleton around it up front. Tests hold onto the instance to seed
+ * a Provider and, when needed, poke `setState` directly to mimic an external write —
+ * `RunnerStoreProvider` redirects the instance (via `redirectTo`) to read and write through the
+ * real `RunnerState` store it creates, so those calls keep working the same way once one exists,
+ * without this store keeping its own value in sync alongside it.
  */
 export class RunnerDataStore implements RunnerStore {
-  private readonly store: RunnerStore
+  private state: RunnerData
+  private delegate: Omit<RunnerStore, "redirectTo"> | null = null
 
   constructor(initialState: RunnerData) {
-    this.store = createSimpleStore(initialState)
+    this.state = initialState
   }
 
-  getState = (): RunnerData => this.store.getState()
+  getState = (): RunnerData => this.delegate ? this.delegate.getState() : this.state
 
-  setState = (updater: (prev: RunnerData) => RunnerData): void => this.store.setState(updater)
+  setState = (updater: (prev: RunnerData) => RunnerData): void => {
+    if (this.delegate) {
+      this.delegate.setState(updater)
+      return
+    }
+    this.state = updater(this.state)
+  }
 
-  subscribe = (listener: (state: RunnerData) => void) => this.store.subscribe(listener)
+  // Nothing subscribes before `redirectTo` runs — `RunnerStoreProvider` calls it synchronously
+  // while constructing the store this instance is seeding, before render (and therefore before
+  // any test code) can run — so there's never a standalone value's own change to notify here.
+  subscribe = (listener: (state: RunnerData) => void) => {
+    return this.delegate ? this.delegate.subscribe(listener) : { unsubscribe: () => {} }
+  }
 
-  redirectTo = (delegate: Omit<RunnerStore, "redirectTo">): void => this.store.redirectTo(delegate)
+  redirectTo = (delegate: Omit<RunnerStore, "redirectTo">): void => {
+    this.delegate = delegate
+  }
 }

@@ -6,11 +6,11 @@ import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
+import { createBuilderDataStore } from "#/components/builder/builderDataStore.ts"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/runnerDataStore.ts"
 import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createSimpleStore } from "#/lib/simpleStore.ts"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import type { BuilderStore } from "#/state/builder/builderStore.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
@@ -88,7 +88,7 @@ export function renderInBuilder(
   element: ReactElement,
   {
     runnerStore = new RunnerDataStore(runnerDataFactory()),
-    builderStore = createSimpleStore(builderStateFactory()),
+    builderStore = createBuilderDataStore(builderStateFactory()),
   }: RenderInBuilderOptions = {},
 ) {
   // `createRunnerStateStore` always seeds `builder` from `builderStateFactory()` — it has no way
