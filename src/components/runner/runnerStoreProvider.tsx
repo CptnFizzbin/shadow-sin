@@ -12,9 +12,7 @@ interface RunnerStoreProviderProps extends PropsWithChildren {
 /**
  * Test-only convenience: nests the two Providers a rendered `RunnerState` store always needs —
  * `RunnerStateProvider` itself and `RunnerEntityProvider` (so `useRunnerSelector`/
- * `useEntitySelector`'s default-to-Runner fallback resolves). `store` is a real
- * `createRunnerStateStore(...)` instance built by the caller — same as production
- * (`RunnerBuilder`/`RunnerEditor`/the `$runnerId` route) — not a seed bridged into one.
+ * `useEntitySelector`'s default-to-Runner fallback resolves).
  */
 export const RunnerStoreProvider: FC<RunnerStoreProviderProps> = ({ store, children }) => (
   <RunnerStateProvider store={store}>
