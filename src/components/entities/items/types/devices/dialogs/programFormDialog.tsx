@@ -6,6 +6,7 @@ import { GearFormLicenseSection } from "#/components/entities/items/types/licens
 import { programFieldMap, useProgramForm } from "#/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { isAgentData } from "#/system/model/items/agentData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -31,8 +32,9 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, p
       title={title}
       ctrl={ctrl}
       onClosed={() => form.reset()}
-      parentItemFilter={(item) => item.itemType === ItemType.device}
-      parentItemLabel="Device"
+      parentItemFilter={(item) =>
+        item.itemType === ItemType.device || (item.itemType === ItemType.program && isAgentData(item as ProgramData))}
+      parentItemLabel="Device / Agent"
       options={{
         hasRating: { forced: true },
         isSubItem: { forced: true },

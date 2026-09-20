@@ -3,6 +3,7 @@ import type { FC } from "react"
 import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
 import { ArmorItemDetails } from "#/components/entities/items/types/armor/armorItemDetails.tsx"
 import { CredstickItemDetails } from "#/components/entities/items/types/credsticks/credstickItemDetails.tsx"
+import { AgentItemDetails } from "#/components/entities/items/types/devices/agentItemDetails.tsx"
 import { DeviceItemDetails } from "#/components/entities/items/types/devices/deviceItemDetails.tsx"
 import { ProgramItemDetails } from "#/components/entities/items/types/devices/programItemDetails.tsx"
 import { ImplantItemDetails } from "#/components/entities/items/types/implants/implantItemDetails.tsx"
@@ -13,6 +14,7 @@ import { WeaponItemDetails } from "#/components/entities/items/types/weapons/wea
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { isAgentData } from "#/system/model/items/agentData.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
@@ -114,13 +116,23 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
           onOpenAttachment={onOpenAttachment}
         />
       )
-    case ItemType.program:
-      return (
-        <ProgramItemDetails
-          program={item as ProgramData}
-          onRemoved={onRemoved}
-        />
-      )
+    case ItemType.program: {
+      const program = item as ProgramData
+      return isAgentData(program)
+        ? (
+            <AgentItemDetails
+              agent={program}
+              onRemoved={onRemoved}
+              onOpenAttachment={onOpenAttachment}
+            />
+          )
+        : (
+            <ProgramItemDetails
+              program={program}
+              onRemoved={onRemoved}
+            />
+          )
+    }
     case ItemType.implant:
       return (
         <ImplantItemDetails
