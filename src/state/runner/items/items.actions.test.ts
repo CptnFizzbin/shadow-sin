@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest"
 
+import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { AgentData } from "#/system/model/items/agentData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import { ProgramType } from "#/system/model/items/programData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import {
@@ -16,6 +19,7 @@ import {
   licenses,
   other,
   programs,
+  setDamage,
   sins,
   software,
   vehicles,
@@ -178,5 +182,72 @@ describe.each([
       // Assert
       expect(next[item.id]).toBeUndefined()
     })
+  })
+})
+
+describe("setDamage", () => {
+  const makeAgent = (overrides: Partial<AgentData> = {}): AgentData => ({
+    kind: EntityKind.item, items: { parentId: null, childIds: [] },
+    id: crypto.randomUUID() as UUID,
+    name: "Griffin",
+    itemType: ItemType.program,
+    programType: ProgramType.agent,
+    rating: 3,
+    attributes: { system: 4 },
+    damage: { matrix: 0 },
+    ...overrides,
+  })
+
+  it("sets the named track on an item that implements EntityWithDamage", () => {
+    // Arrange
+    const agent = makeAgent()
+
+    // Act
+    const next = gearReducer(
+      { [agent.id]: agent },
+      setDamage({ itemId: agent.id, track: DamageTrackKey.matrix, value: 3 }),
+    )
+
+    // Assert
+    expect((next[agent.id] as AgentData).damage.matrix).toBe(3)
+  })
+
+  it("clamps a negative value to 0", () => {
+    // Arrange
+    const agent = makeAgent({ damage: { matrix: 2 } })
+
+    // Act
+    const next = gearReducer(
+      { [agent.id]: agent },
+      setDamage({ itemId: agent.id, track: DamageTrackKey.matrix, value: -1 }),
+    )
+
+    // Assert
+    expect((next[agent.id] as AgentData).damage.matrix).toBe(0)
+  })
+
+  it("is a no-op when the item doesn't exist", () => {
+    // Arrange / Act
+    const next = gearReducer(
+      {},
+      setDamage({ itemId: crypto.randomUUID() as UUID, track: DamageTrackKey.matrix, value: 3 }),
+    )
+
+    // Assert
+    expect(next).toEqual({})
+  })
+
+  it("is a no-op when the item doesn't implement EntityWithDamage", () => {
+    // Arrange
+    const weapon = makeItem({ itemType: ItemType.weapon })
+
+    // Act
+    const next = gearReducer(
+      { [weapon.id]: weapon },
+      setDamage({ itemId: weapon.id, track: DamageTrackKey.matrix, value: 3 }),
+    )
+
+    // Assert
+    expect(next[weapon.id]).toEqual(weapon)
   })
 })

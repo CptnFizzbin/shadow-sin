@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
+import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
@@ -27,6 +28,9 @@ export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("
 export const setEquipped = createAction<{ id: UUID, equipped: boolean }>("gear/setEquipped")
 
 export const setStashed = createAction<{ id: UUID, stashed: boolean }>("gear/setStashed")
+
+/** Sets one damage track on an item that implements `EntityWithDamage` (e.g. Agent, Vehicle) — a no-op if the item doesn't have that track. */
+export const setDamage = createAction<{ itemId: UUID, track: DamageTrackKey, value: number }>("gear/setDamage")
 
 /** Lets a caller decide whether to dispatch `addItem` or `setItem` for a save. */
 export function isNewItem(item: ItemData): boolean {
@@ -83,6 +87,7 @@ export const ItemActions = {
   removeItem,
   setEquipped,
   setStashed,
+  setDamage,
 
   licenses,
   armor,
