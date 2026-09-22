@@ -29,14 +29,6 @@ on the Matrix tab (`knownNodesList.tsx`). The store slice includes `startActiveP
 `stopActiveProgram` actions, but the per-card "Load Program" picker UI described above is not
 wired up yet — still open for a follow-up slice.
 
-`Agent` has since landed (`ProgramType.agent`, `AgentData`, `matrixAgentsSection.tsx` on the
-Matrix tab), ahead of and slightly diverging from the shape sketched below/in #443: it carries a
-real `attributes` bag (`system`/`firewall`) rather than overloading `rating` for every stat, and
-"running Programs on it" is expressed via the existing Attachment mechanism (a Program's
-`items.parentId` pointing at the Agent) rather than the `ActiveProgram`/Node hosting model. The
-live Response/Signal-from-hosting-`MatrixNode` resolver described below is **not yet
-implemented** — still open, tracked by #443.
-
 ## Open Questions
 
 - [ ] **Cheatsheet content** — what exact list of Matrix Actions (with descriptions/formulas)
@@ -54,7 +46,7 @@ implemented** — still open, tracked by #443.
       for starting an `ActiveProgram` lives on the Node, not on the Program card) listing that
       card's currently-running Programs with a stop control. `MatrixProgramsSection` (the gear
       list) is unchanged by this slice. Cheatsheet placement remains open above.
-- [ ] **Agent StatusSheet contents** — Agent now exists (`rating`, an `attributes` bag with
+- [ ] **Agent stat block contents** — Agent now exists (`rating`, an `attributes` bag with
       `system`/`firewall`, and a Matrix damage track). Still open: does it need anything else in
       its stat block, and does it ever act independently of being an `ActiveProgram`?
       `ActiveProgram.sourceId` still only ever references a `Program` (Agent isn't wired into
@@ -74,11 +66,12 @@ implemented** — still open, tracked by #443.
   type, wherever Entity kinds are enumerated/switched over.
 - `Program` (existing `ItemType.program`) gains `Agent` as a subtype (`Entity → Item → Program →
   Agent`), distinguished via `programType: ProgramType.agent` rather than a separate boolean flag.
-  Agent requires a `StatusSheet`, following the `Vehicle` precedent that being an `Item` doesn't
-  preclude one. Agent's `rating` serves as the Skill side of its dice pool; System/Firewall are
-  tracked as their own `attributes` values (not derived from `rating`). Its Response/Signal are
-  meant to resolve live from whichever `MatrixNode` currently hosts it as an `ActiveProgram` — that
-  resolver is not yet implemented (see the Open Questions above).
+  Agent composes `EntityWithAttrs`/`EntityWithDamage` directly onto the base Item shape, giving it
+  its own attribute ratings and Matrix damage track. Agent's `rating` serves as the Skill side of
+  its dice pool; System/Firewall are tracked as their own `attributes` values (not derived from
+  `rating`). Its Response/Signal are meant to resolve live from whichever `MatrixNode` currently
+  hosts it as an `ActiveProgram` — that resolver is not yet implemented (see the Open Questions
+  above).
 - `RunnerData.gameState` is a brand-new top-level namespace; `gameState.matrix` is its only
   member so far. The migration that adds it also retires the old flat `RunnerData.matrix` node:
   its `{name, system, firewall, response, signal}` become `knownNodes[0]` (Access Level `public`,
@@ -188,7 +181,18 @@ interface AgentData extends ProgramData, EntityWithAttrs, EntityWithDamage {
   Tests; this feature's `MatrixAttrs`/`ActiveProgram` groundwork directly informs that doc's open
   "GameEffect integration" question (answered: Node/Program ratings are literal `AttributeKey`
   entries, so no separate resolver is needed) but doesn't implement the dice pool itself
-- [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md) — Agent's
-  StatusSheet follows the same pattern established there for Spirit/Sprite/Vehicle
+- [`docs/features/0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md)
+  — the `EntityWithAttrs`/`EntityWithDamage` capability traits Agent composes onto the base Item
+  shape
 - [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) — the attribute
   unification and Agent-as-Item decisions this feature is built on
+
+## Implementation Updates
+
+- `Agent` has landed (`ProgramType.agent`, `AgentData`, `matrixAgentsSection.tsx` on the Matrix
+  tab), ahead of and slightly diverging from the shape sketched above/in #443: it carries a real
+  `attributes` bag (`system`/`firewall`) rather than overloading `rating` for every stat, and
+  "running Programs on it" is expressed via the existing Attachment mechanism (a Program's
+  `items.parentId` pointing at the Agent) rather than the `ActiveProgram`/Node hosting model. The
+  live Response/Signal-from-hosting-`MatrixNode` resolver described above is **not yet
+  implemented** — still open, tracked by #443.

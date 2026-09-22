@@ -400,18 +400,20 @@ _Avoid_: app, software (software is the broader category; Program is the matrix-
 
 **Agent**:
 An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
-construct, not just loaded software. Like **Vehicle**, being an `Item` doesn't exclude requiring
-a **StatusSheet**: Agent gets one, the same way Vehicle does. Distinguished from a plain Program
-by its `programType` value (`"agent"`, alongside the plain-Program categories like Attack or
-Browse) rather than a separate boolean flag. `rating` remains the Skill side of any dice pool it
-rolls (an Agent has no separate skill list), but System and Firewall are tracked as their own
-explicit `attributes` values rather than derived from `rating` — an Agent can have distinct
-System/Firewall ratings, the same way a Commlink or `MatrixNode` can. Its Response and Signal are
-never its own; they resolve live from whichever `MatrixNode` currently hosts it as an
-**ActiveProgram** (see **Entity Matrix Presence**) — that live resolver is not yet implemented.
-Like a Commlink, other Programs may be attached to an Agent as children (the existing
-**Attachment** mechanism) to represent Programs running on it, in addition to the Agent itself
-being attachable to a Device.
+construct, not just loaded software. Composes `EntityWithAttrs` and `EntityWithDamage` directly
+onto the base Item shape, giving it its own attribute ratings and a Matrix damage track without a
+separate structure — the same composition every Entity kind's stat-bearing needs go through (see
+**`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`EntityWithItems`**
+above). Distinguished from a plain Program by its `programType` value (`"agent"`, alongside the
+plain-Program categories like Attack or Browse) rather than a separate boolean flag. `rating`
+remains the Skill side of any dice pool it rolls (an Agent has no separate skill list), but System
+and Firewall are tracked as their own explicit `attributes` values rather than derived from
+`rating` — an Agent can have distinct System/Firewall ratings, the same way a Commlink or
+`MatrixNode` can. Its Response and Signal are never its own; they resolve live from whichever
+`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**) — that
+live resolver is not yet implemented. Like a Commlink, other Programs may be attached to an Agent
+as children (the existing **Attachment** mechanism) to represent Programs running on it, in
+addition to the Agent itself being attachable to a Device.
 _Avoid_: bot
 
 **ActiveProgram**:
