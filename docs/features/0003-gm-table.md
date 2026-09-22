@@ -33,6 +33,10 @@ what's still in the air.
       a Player uses (while logged into their own Account) to add one of their cloud-stored
       Runners to the Table. The Invite Code is how a Player *finds* a Table, not how they prove
       *who* they are — that's the Account's job.
+- [x] **Account credentials — username + password, or a Passkey, for v1.** No third-party OAuth
+      in the first version; `api.shadowsin.app` owns credential storage/verification itself
+      (password hashing, or WebAuthn passkey registration/verification). Both methods are
+      available from v1 — a user picks either at signup.
 - [ ] **GM permissions** — can the GM edit Runners, or is GM access read-only?
 - [ ] **Real-time sync** — do Player changes appear live in the GM view, or as a snapshot?
 - [ ] **Offline play** — what happens when a Player is offline during a session?
