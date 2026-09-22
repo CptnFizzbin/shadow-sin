@@ -17,7 +17,8 @@ what's still in the air.
 - [x] **Storage — a new, independent `StorageSource` backed by a dedicated server
       (`api.shadowsin.app`), written in C#.** Not tied to Table membership: a Player may use it
       as a plain cloud `StorageSource` for their own Runners (parallel to `local`/`gdrive`) with
-      no Table involved at all.
+      no Table involved at all. Requires a Player Account (see Identity & auth below) — Runners
+      in cloud storage are owned by an Account, not anonymous.
 - [x] **Runner ownership — cloud storage is a prerequisite for adding a Runner to a Table, and
       Table membership does not create a second copy.** A Runner must already live in the cloud
       `StorageSource` (i.e. already have a cloud `RunnerId`) before it can be added to a Table;
@@ -26,11 +27,12 @@ what's still in the air.
       source is a normal cross-source copy and mints a new `RunnerId`, same as any other
       `StorageSource` change today — but that happens once, on the way into cloud storage, not
       again on the way into a Table.
-- [ ] **Identity & auth — partially resolved.** A GM creates a Table and gets a unique access
-      key; Players use that key to add their Runners to the Table. Still open: is the access key
-      the *entire* auth model (no accounts, no login), or is there also some notion of a Player
-      account tied to their cloud-stored Runners independent of any Table? Does the GM's key
-      differ from the Players' key (e.g. one key for viewing/management, another for joining)?
+- [x] **Identity & auth — account-based, with a Table-scoped Invite Code.** Every user (GM and
+      Player alike) has an Account on `api.shadowsin.app` and logs in — there is no anonymous
+      access. A Table is created by a GM Account; that GM gets an **Invite Code** to share, which
+      a Player uses (while logged into their own Account) to add one of their cloud-stored
+      Runners to the Table. The Invite Code is how a Player *finds* a Table, not how they prove
+      *who* they are — that's the Account's job.
 - [ ] **GM permissions** — can the GM edit Runners, or is GM access read-only?
 - [ ] **Real-time sync** — do Player changes appear live in the GM view, or as a snapshot?
 - [ ] **Offline play** — what happens when a Player is offline during a session?

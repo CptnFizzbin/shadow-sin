@@ -27,6 +27,19 @@ view all Runners in the group.
 _Avoid_: campaign, session (session is in-combat state), party, Game (renamed to Table — see
 `docs/features/0003-gm-table.md`)
 
+**Account**:
+A login identity on the `api.shadowsin.app` cloud server. Every user — GM or Player — has one;
+there is no anonymous access to cloud storage or a Table. Distinct from **Player** and **Game
+Master (GM)**, which are roles a person plays in the app, not a server-side identity — the same
+Account can act as a GM on one Table and a Player on another.
+_Avoid_: user, login (use Account)
+
+**Invite Code**:
+A Table-scoped code a GM shares so a Player (already logged into their own Account) can add one
+of their cloud-stored Runners to that Table. Identifies *which* Table to join, not *who* is
+joining — identity is the Account's job. See `docs/features/0003-gm-table.md`.
+_Avoid_: access key, join code (use Invite Code)
+
 **Runner**:
 A player character in Shadowrun. The primary thing a Player creates and manages. A Player may
 have multiple Runners.
