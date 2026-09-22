@@ -9,34 +9,49 @@ Currently ShadowSIN is a single-player tool: each Player manages their own Runne
 A **Table** is a GM-managed group that links multiple Players and their Runners together. The GM
 creates a Table, Players join it, and the GM gets a shared view of all Runners in the group.
 
-## Open Questions
+## Open & Resolved Questions
 
-- [ ] **Identity & auth** — how are Players and GMs identified? Login system, or shared
-      link/code?
-- [ ] **Storage** — where does a Table and its member list live? LocalStorage is per-device, so
-      this likely requires a backend or shared cloud storage source (e.g. Google Drive).
-- [ ] **Runner ownership** — when a Runner joins a Table, does it stay in the Player's
-      `StorageSource`, or is it copied/moved to shared Table storage? How does the `RunnerId`
-      `source` prefix work in this context?
+Resolved items are marked `[x]` with the decision inline; unresolved ones keep `[ ]` and explain
+what's still in the air.
+
+- [x] **Storage — a new, independent `StorageSource` backed by a dedicated server
+      (`api.shadowsin.app`), written in C#.** Not tied to Table membership: a Player may use it
+      as a plain cloud `StorageSource` for their own Runners (parallel to `local`/`gdrive`) with
+      no Table involved at all.
+- [x] **Runner ownership — cloud storage is a prerequisite for adding a Runner to a Table, and
+      Table membership does not create a second copy.** A Runner must already live in the cloud
+      `StorageSource` (i.e. already have a cloud `RunnerId`) before it can be added to a Table;
+      the Table then references that Runner by its existing `RunnerId` rather than copying it
+      into separate Table-scoped storage. Moving a Runner from `local`/`gdrive` into the cloud
+      source is a normal cross-source copy and mints a new `RunnerId`, same as any other
+      `StorageSource` change today — but that happens once, on the way into cloud storage, not
+      again on the way into a Table.
+- [ ] **Identity & auth — partially resolved.** A GM creates a Table and gets a unique access
+      key; Players use that key to add their Runners to the Table. Still open: is the access key
+      the *entire* auth model (no accounts, no login), or is there also some notion of a Player
+      account tied to their cloud-stored Runners independent of any Table? Does the GM's key
+      differ from the Players' key (e.g. one key for viewing/management, another for joining)?
 - [ ] **GM permissions** — can the GM edit Runners, or is GM access read-only?
 - [ ] **Real-time sync** — do Player changes appear live in the GM view, or as a snapshot?
 - [ ] **Offline play** — what happens when a Player is offline during a session?
 
 ## Constraints
 
-- The existing `StorageSource` abstraction must accommodate a new shared Table source without
-  breaking per-Player local storage.
-- A Runner copied to a shared source must receive a new `RunnerId` (new UUID + new source
-  prefix) — a copy is a distinct Runner, not a replica.
-- Google Drive integration currently exists only as a placeholder stub; it may need to be
-  completed or replaced before this feature is feasible.
+- The existing `StorageSource` abstraction must accommodate a new cloud source (backed by
+  `api.shadowsin.app`) without breaking per-Player local storage.
+- A Runner copied to the cloud source must receive a new `RunnerId` (new UUID + new source
+  prefix) — a copy is a distinct Runner, not a replica. Adding an already-cloud-stored Runner to
+  a Table does not mint another new `RunnerId` — see Runner ownership above.
+- Google Drive integration currently exists only as a placeholder stub; unrelated to this
+  feature, which introduces its own separate cloud source instead of building on `gdrive`.
 
 ## Domain Notes
 
 - **Table** — a GM-managed group linking Players and their Runners
 - **Game Master (GM)** — creates and manages the Table
 - **Player** — joins a Table; manages their own Runners within it
-- **StorageSource** — named, pluggable persistence backend; a Table would introduce a new source
+- **StorageSource** — named, pluggable persistence backend; this feature introduces a new cloud
+  source backed by `api.shadowsin.app`
 - **RunnerId** — `source|uuid`; copying a Runner to a new source always generates a new ID
 
 ## Out of Scope
