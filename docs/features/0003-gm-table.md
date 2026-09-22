@@ -37,7 +37,9 @@ what's still in the air.
       in the first version; `api.shadowsin.app` owns credential storage/verification itself
       (password hashing, or WebAuthn passkey registration/verification). Both methods are
       available from v1 — a user picks either at signup.
-- [ ] **GM permissions** — can the GM edit Runners, or is GM access read-only?
+- [x] **GM permissions — read-only for now.** The GM can view every Runner in the Table but
+      cannot edit them from the Table view. Revisit if a future need for GM edits emerges — not
+      designed against today.
 - [ ] **Real-time sync** — do Player changes appear live in the GM view, or as a snapshot?
 - [ ] **Offline play** — what happens when a Player is offline during a session?
 
