@@ -17,14 +17,15 @@ The person using the app. A Player manages one or more Runners.
 _Avoid_: user (too generic)
 
 **Game Master (GM)**:
-The person running the Shadowrun game. In the app, the GM can create a **Game** and invite
+The person running the Shadowrun game. In the app, the GM can create a **Table** and invite
 Players, giving them a shared view of the Runners in the group.
 _Avoid_: dungeon master, DM, storyteller (use GM)
 
-**Game**:
+**Table**:
 A GM-managed group that links multiple Players and their Runners together. Allows the GM to
 view all Runners in the group.
-_Avoid_: campaign, session (session is in-combat state), party
+_Avoid_: campaign, session (session is in-combat state), party, Game (renamed to Table — see
+`docs/features/0003-gm-table.md`)
 
 **Runner**:
 A player character in Shadowrun. The primary thing a Player creates and manages. A Player may
@@ -742,8 +743,8 @@ sourcebook/table-variant concepts unrelated to code structure)
 
 ## Relationships
 
-- A **Player** manages one or more **Runners**; a **Game** groups multiple Players' Runners
-  under a single GM _(Game not yet implemented)_
+- A **Player** manages one or more **Runners**; a **Table** groups multiple Players' Runners
+  under a single GM _(Table not yet implemented)_
 - A **Runner** belongs to exactly one **StorageSource** at a time; copying to another source
   generates a new **RunnerId** (new UUID + new source prefix) — the copy is a distinct Runner
 - **RunnerData** holds its item collection at `_data_.items` (an `ItemContainer`, keyed by id) —
