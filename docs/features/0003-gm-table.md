@@ -76,6 +76,11 @@ what's still in the air.
       are the same site, so the cookie works without cross-site workarounds. The server accepts
       credentialed cross-origin requests from `https://shadowsin.app` only.
 
+- [x] **Server stack — .NET 10 with ASP.NET Core Minimal APIs, EF Core, and ASP.NET Core
+      Identity.** Identity provides Accounts, password hashing, passkeys, and the session cookie.
+      EF Core, on its SQLite provider for phase 1, keeps a later move to another database mostly a
+      provider swap.
+
 ## Constraints
 
 - The server is fully optional. Every existing feature must keep working with no server and no
