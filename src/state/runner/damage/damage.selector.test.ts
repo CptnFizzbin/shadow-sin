@@ -8,6 +8,7 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 
 import { DamageSelectors } from "./damage.selector.ts"
 
@@ -379,5 +380,29 @@ describe("DamageSelectors.track", () => {
     // Assert
     expect(result.current).toBe(3)
     expect(result.woundInterval).toBe(2)
+  })
+})
+
+describe("DamageSelectors.selectMatrixMax", () => {
+  it("sizes the Matrix track off the entity's own System", () => {
+    // Arrange
+    const agent = makeAgent({ attributes: { system: 5 } })
+
+    // Act
+    const max = DamageSelectors.selectMatrixMax({ entity: agent })
+
+    // Assert
+    expect(max).toBe(11)
+  })
+
+  it("floors at 8 when the entity has no System", () => {
+    // Arrange
+    const agent = makeAgent({ attributes: {} })
+
+    // Act
+    const max = DamageSelectors.selectMatrixMax({ entity: agent })
+
+    // Assert
+    expect(max).toBe(8)
   })
 })

@@ -88,6 +88,32 @@ describe.concurrent("ItemSelectors.selectAll", () => {
   })
 })
 
+describe.concurrent("ItemSelectors.selectChildListOf", () => {
+  it("returns the parent's attached children as an array", () => {
+    // Arrange
+    const child = makeItem({ name: "Analyze", itemType: ItemType.program })
+    const parent = makeItem({ itemType: ItemType.program, items: { parentId: null, childIds: [child.id] } })
+    const items: ItemCatalog = { [parent.id]: parent, [child.id]: { ...child, items: { parentId: parent.id, childIds: [] } } }
+
+    // Act
+    const children = ItemSelectors.selectChildListOf({ items }, { itemId: parent.id })
+
+    // Assert
+    expect(children.map((c) => c.name)).toEqual(["Analyze"])
+  })
+
+  it("returns an empty array for an item with no children", () => {
+    // Arrange
+    const parent = makeItem()
+
+    // Act
+    const children = ItemSelectors.selectChildListOf({ items: { [parent.id]: parent } }, { itemId: parent.id })
+
+    // Assert
+    expect(children).toEqual([])
+  })
+})
+
 describe.concurrent("ItemSelectors.selectById", () => {
   it("finds an item by id", () => {
     // Arrange
