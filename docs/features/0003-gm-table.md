@@ -43,7 +43,11 @@ what's still in the air.
 - [x] **Real-time sync — snapshots in phase 1, live updates in phase 2.** Phase 1: the GM view
       shows each Runner as of when the GM loaded or refreshed it. Phase 2 adds live push over
       WebSockets so Player changes appear without a refresh.
-- [ ] **Offline play** — what happens when a Player is offline during a session?
+- [x] **Offline play — local-first, sync on reconnect.** A cloud-stored Runner keeps a local
+      copy; edits save locally as they happen and are pushed to `api.shadowsin.app` once the
+      connection returns. Being offline never blocks editing.
+- [ ] **Sync conflicts** — when a pushed edit is based on an older revision than the server
+      holds (same Account, two devices), what happens?
 
 ## Constraints
 
