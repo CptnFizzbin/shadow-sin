@@ -46,8 +46,10 @@ what's still in the air.
 - [x] **Offline play — local-first, sync on reconnect.** A cloud-stored Runner keeps a local
       copy; edits save locally as they happen and are pushed to `api.shadowsin.app` once the
       connection returns. Being offline never blocks editing.
-- [ ] **Sync conflicts** — when a pushed edit is based on an older revision than the server
-      holds (same Account, two devices), what happens?
+- [x] **Sync conflicts — reject and ask.** Each cloud Runner carries a server-side revision. A
+      push based on an older revision than the server holds is rejected, and the Player chooses
+      whether to keep this device's version or the server's. Nothing is silently overwritten. A
+      smarter resolution (e.g. replaying edits) may replace this later.
 
 ## Constraints
 
