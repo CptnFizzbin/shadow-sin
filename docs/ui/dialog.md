@@ -243,7 +243,7 @@ export const ExamplePage = () => {
 
 If this pattern reuses a single mounted instance to edit different targets (like `SpiritList` does), add
 `key={item?.id ?? "new"}` to the `Dialog` element so it remounts (and re-initializes any form) when the target
-changes — see `AGENTS.md` → *Dialogs and forms*. `useDialog`-based dialogs don't need this since they remount
+changes — see `src/components/AGENTS.md` → *Dialogs and forms*. `useDialog`-based dialogs don't need this since they remount
 automatically on every `open()` call (the outlet always renders fresh).
 
 ## Guidelines

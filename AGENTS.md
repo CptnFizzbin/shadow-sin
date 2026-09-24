@@ -33,44 +33,23 @@ yarn fallow   # codebase health analysis (see "Fallow" below)
 
 ## Architecture principles
 
-- Runner state lives in a Redux Toolkit store, not in React state or Context values. The store's shape, how it's
-  created, and its selector/dispatch hooks are defined under `src/state/` (see `docs/adr/0016-unify-redux-state.md`).
-- Components read state reactively through a selector hook and write through dispatched actions, so every write goes
-  through the domain reducers. Never read a store snapshot (`getState()` or equivalent) in a component — it won't
-  re-render when the state changes.
-- Store instances are stable — never re-create one on every render.
-- Small ad hoc UI stores wrap `configureStore` via the compat-store helper in `src/integrations/reduxToolkit/`; read
-  them with that folder's `useSelector(store, selector)`. `@tanstack/react-store`'s `useSelector` is only for
-  `@tanstack/react-form`'s own internal form stores — never for ours.
+- Runner state lives in a Redux Toolkit store, not in React state or Context values — see `src/state/AGENTS.md`.
 - The root domain type is `RunnerData`. The older `character` naming deliberately survives only in the migration
   subsystem and localStorage key literals — see `docs/adr/0001-runner-data-not-character-sheet.md`.
-- File-based routing via TanStack Router. **Never edit `src/routeTree.gen.ts`** — the Vite plugin regenerates it on
-  `yarn dev`/`yarn build`. Add routes by creating files under `src/routes/`.
+- **Never edit `src/routeTree.gen.ts`** — the TanStack Router Vite plugin regenerates it on `yarn dev`/`yarn build`.
 
-## Character migrations
+## Directory-specific instructions
 
-Migrations are registered in `src/data/migrations.ts`; `src/data/applyMigrations.ts` decides which ones run (every
-migration whose `timestamp` is newer than the runner's `_meta_.sinVersion`, in ascending order). Read both before
-adding one.
+Rules that only apply to one part of the tree live in an `AGENTS.md` next to that code (each with a sibling
+`CLAUDE.md` that imports it). Read the one for the area you're changing:
 
-**Never edit an existing migration file.** Once committed, it may already have run against real character data in
-user storage; changing its logic would behave differently on a re-run and could corrupt or silently mis-migrate
-characters.
-
-- **Schema changes always require a new migration** — whenever a `RunnerData` field is added, renamed, or removed.
-- **Naming:** `<date>_<seq>_describeChange.ts`, where `<date>` is the current UTC date as `YYYYMMDD`
-  (`date -u +%Y%m%d`) and `<seq>` is a two-digit counter for that day starting at `00` (e.g. `20260824_00_addFoo.ts`).
-  Register it at the bottom of `migrations.ts`.
-- **Timestamp:** set `timestamp` to the actual creation instant as an ISO 8601 string with a UTC offset (e.g.
-  `"2026-08-24T15:30:00Z"`). It must sort after every existing migration — `migrations.ts` throws at import time
-  otherwise, and CI (`migration-timestamps`) rejects a timestamp that isn't newer than the base branch's latest, since
-  such a migration would never run for already-migrated runners.
-- **Every migration must be idempotent** — runners from the pre-timestamp versioning scheme can re-run every
-  registered migration once. Guard with a shape check (`??=`, or return early once the migrated shape is detected).
-- **Don't re-check `_meta_.sinVersion` inside `up`** — `applyMigrations` already only calls `up` when it's pending.
-- **Earlier migrations may see either field name** — when a migration renames a field, update earlier migrations to
-  handle both (`draft.oldField ?? draft.newField`) so partially migrated runners stay correct.
-- **Add a matching `*.test.ts`** for every new migration, documenting the before/after shapes.
+| File | Covers |
+|---|---|
+| `src/state/AGENTS.md` | The Redux store: shape, writes, ad hoc stores |
+| `src/data/AGENTS.md` | Runner schema migrations |
+| `src/routes/AGENTS.md` | File-based routing |
+| `src/components/AGENTS.md` | React components: reading state, MUI, dialogs and forms |
+| `src/components/entities/items/AGENTS.md` | Gear item types |
 
 ## Conventions
 
@@ -96,9 +75,6 @@ characters.
   the page was checked — an invented one is worse than no citation at all.
 - Use descriptive identifiers (`characterHealth`, not `hp`; `damageThreshold`, not `dt`). Short names are fine only for
   well-known conventions (`id`, `ok`, `vs`) or tiny local scopes.
-- One React component per `.tsx` file — including small internal helpers.
-- Functional components as a named exported const with an explicit props interface
-  (`export const Header: FC<Props> = ({ ... }) => { ... }`). No class components or default anonymous exports.
 - Formatting is ESLint + @stylistic: 2-space indentation, double quotes for JS/TS strings. Run `yarn fix` after
   changes.
 
@@ -134,42 +110,6 @@ checks entirely and hides real type incompatibilities.
   // ❌ — hides the incompatibility
   form={form as unknown as ItemForm}
   ```
-
-## MUI
-
-Only pass MUI style props that deviate from the theme defaults, and use MUI CSS variables (not palette callbacks) for
-theme-responsive styles. Read the full rules in `.agents/guidelines/mui.md` before writing or editing MUI code:
-
-@.agents/guidelines/mui.md
-
-## Dialogs and forms
-
-- New dialogs use a `use*Dialog` hook built on `useDialog`, which returns `{ open, outlet }`. There is no provider or
-  global registry — render the returned `outlet` once, next to whatever calls `open(props)`. Keep the returned object
-  named rather than destructuring it:
-  ```tsx
-  const addKarmaDialog = useAddKarmaDialog()
-
-  return (
-    <>
-      <Button onClick={() => addKarmaDialog.open()}>Add Karma</Button>
-      {addKarmaDialog.outlet}
-    </>
-  )
-  ```
-  Because dialogs render at the caller's real tree position, React context propagates normally. See
-  `docs/ui/dialog.md` for the `Dialog`/`ControlledDialog` components and confirmation prompts, and
-  `docs/adr/0004-dialog-api-goes-local-only.md` for the rationale.
-- `useDialog` remounts its content fresh on every `open(props)` call, so each open gets a brand-new form.
-- TanStack Form's `defaultValues` are frozen at first mount — the form doesn't reset when props change. For a
-  hand-rolled dialog that doesn't go through `useDialog`, add `key={item?.id ?? "new"}` to the dialog element so it
-  remounts when the target item changes.
-- Wire submit buttons as `onClick={() => form.handleSubmit()}`, not `onClick={form.handleSubmit}`, to avoid
-  forwarding the click event.
-- Gear item types each follow a three-layer pattern — a `useXxxForm` hook, an `XxxFormFields` component, and an
-  `XxxFormDialog` — with the acquire/purchase/save submit decision centralised in the shared item form dialog. When
-  adding a type, copy the structure of an existing one (e.g. weapons: `useWeaponForm`, `WeaponFormFields`,
-  `WeaponFormDialog`).
 
 ## UI changes
 
