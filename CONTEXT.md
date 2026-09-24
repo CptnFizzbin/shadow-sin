@@ -311,7 +311,31 @@ attributes, Response/Signal borrowed from its current Active Node — displayed 
 alongside its purchasable attributes. Every other metatype's MatrixAttrs stay fixed at 0; this
 does not make MatrixAttrs a general Runner capability.
 
+**Matrix Entity**:
+The matrix side of anything that can be a matrix node — its matrix attributes, optional **Node
+Type**, the Programs **Loaded** on it, and the Programs **Running** on it. A full Entity in its own
+right: an Item with a matrix presence (a commlink, a drone, a smartgun) points at its Matrix Entity
+rather than containing it, and physical attachments stay on the Item while everything
+program-related lives on the Matrix Entity. An **Agent** is itself a Matrix Entity. See
+`docs/features/0018-matrix-entities.md`.
+_Avoid_: persona (a Runner's matrix self, not a device's), matrix stats (just the attributes)
+
+**Loaded** (Program):
+A Program stored on a **Matrix Entity** — attached to it the same way an accessory attaches to
+gear. A Program Item is loaded in at most one place at a time; putting it on a second device means
+either moving it or copying it into a new Program Item.
+_Avoid_: installed
+
+**Running** (Program):
+A Program currently active on a **Matrix Entity**, as opposed to merely **Loaded** there.
+Stopping a running Program is **Terminate**.
+_Avoid_: active (overloaded with Active Node), executing
+
+**Copy Protection**:
+A Program flag: a copy-protected Program can be moved to another device but never copied.
+
 **Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
+_Being superseded by **Matrix Entity** — see `docs/adr/0018-matrix-entity-by-reference.md`._
 Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a
 "simplified" presence: all four `MatrixAttrs` resolve to the Entity's own **Rating**, with no
 separate data stored (avoids a value that could drift out of sync after the Entity's Rating
@@ -400,7 +424,9 @@ _Avoid_: app, software (software is the broader category; Program is the matrix-
 
 **Agent**:
 An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
-construct, not just loaded software. Like **Vehicle**, being an `Item` doesn't exclude requiring
+construct, not just loaded software. It is also a **Matrix Entity**, so it has Programs of its own
+**Loaded** and **Running** on it, which move with it when it moves to another node; it also
+carries a script. Like **Vehicle**, being an `Item` doesn't exclude requiring
 a **StatusSheet**: Agent gets one, the same way Vehicle does. Its single `rating` doubles as
 Pilot, System, Firewall, and the Skill side of any dice pool it rolls — an Agent has no separate
 skill list. Its Response and Signal are never its own; they're resolved live from whichever
@@ -408,6 +434,8 @@ skill list. Its Response and Signal are never its own; they're resolved live fro
 _Avoid_: bot
 
 **ActiveProgram**:
+_Kept only for Known Nodes; other nodes track **Running** Programs on their **Matrix Entity** — see
+`docs/features/0018-matrix-entities.md`._
 A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
 owned Program/Agent `Item` and the Known Node hosting it. `(sourceId, nodeId)` is a unique pair: the
 same source can run on several different Nodes at once, but not twice on the same Node. Each

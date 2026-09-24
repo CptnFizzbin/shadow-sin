@@ -17,8 +17,9 @@ and matrix test dice pool calculations are not yet implemented.
 
 ## Open Questions
 
-- [ ] **Loaded vs installed** — is a Program an Attachment on a Commlink (parent/child), or does
-      the Commlink track a separate `loadedProgramIds` field?
+- [x] **Loaded vs installed** — resolved by `docs/features/0018-matrix-entities.md`: a Program is
+      loaded by attaching it (parent/child) to the device's Matrix Entity; no separate
+      `loadedProgramIds` field.
 - [ ] **Program slots** — concurrent program load limit is capped by the Commlink's System
       rating. Enforced in Builder, Viewer, or both?
 - [ ] **`ItemType.software` vs `ItemType.program`** — are these synonyms to merge, or does

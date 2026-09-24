@@ -177,5 +177,8 @@ interface AgentData extends ProgramData {
   entries, so no separate resolver is needed) but doesn't implement the dice pool itself
 - [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md) — Agent's
   StatusSheet follows the same pattern established there for Spirit/Sprite/Vehicle
+- [`docs/features/0018-matrix-entities.md`](./0018-matrix-entities.md) — next design round:
+  Matrix Entities, Loaded/Running Programs, and Agents; supersedes this doc's `matrix?: true |
+  MatrixStats` presence and `ActiveProgram` model for everything except Known Nodes
 - [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) — the attribute
   unification and Agent-as-Item decisions this feature is built on
