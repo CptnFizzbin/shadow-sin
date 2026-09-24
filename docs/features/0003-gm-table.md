@@ -55,7 +55,16 @@ what's still in the air.
       `packages/client`, and the C# server lives in `packages/server`. See
       `docs/adr/0018-monorepo-client-and-server.md`.
 
+- [x] **How the server treats `RunnerData` — as an opaque document.** The server stores each
+      Runner's JSON as-is and reads only the few fields it needs (owner Account, revision, name,
+      SIN Version). The client keeps sole ownership of the schema and its Migrations, and migrates
+      a Runner after loading it from the server, the same as from any other `StorageSource`. See
+      `docs/adr/0019-server-stores-runner-data-opaquely.md`.
+
 ## Constraints
+
+- The server is fully optional. Every existing feature must keep working with no server and no
+  Account; only cloud storage and Tables depend on it.
 
 - The existing `StorageSource` abstraction must accommodate a new cloud source (`api.shadowsin.app`)
   without breaking per-Player local storage.
