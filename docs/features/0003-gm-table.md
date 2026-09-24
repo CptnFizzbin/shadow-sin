@@ -40,7 +40,9 @@ what's still in the air.
 - [x] **GM permissions — read-only for now.** The GM can view every Runner in the Table but
       cannot edit them from the Table view. Revisit if a future need for GM edits emerges — not
       designed against today.
-- [ ] **Real-time sync** — do Player changes appear live in the GM view, or as a snapshot?
+- [x] **Real-time sync — snapshots in phase 1, live updates in phase 2.** Phase 1: the GM view
+      shows each Runner as of when the GM loaded or refreshed it. Phase 2 adds live push over
+      WebSockets so Player changes appear without a refresh.
 - [ ] **Offline play** — what happens when a Player is offline during a session?
 
 ## Constraints
