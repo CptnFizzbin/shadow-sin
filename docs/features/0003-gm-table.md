@@ -61,6 +61,10 @@ what's still in the air.
       a Runner after loading it from the server, the same as from any other `StorageSource`. See
       `docs/adr/0019-server-stores-runner-data-opaquely.md`.
 
+- [x] **Database — SQLite for phase 1.** A single database file next to the server. That limits
+      phase 1 to one server instance on a host with a persistent disk. Revisit when phase 2 adds
+      WebSockets or if more than one instance is ever needed.
+
 ## Constraints
 
 - The server is fully optional. Every existing feature must keep working with no server and no
