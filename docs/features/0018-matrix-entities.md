@@ -16,7 +16,7 @@ will be built on. It supersedes the `matrix?: true | MatrixStats` presence flag 
 
 ## Decisions so far
 
-Settled in a design grilling session; see [ADR 0018](../adr/0018-matrix-entity-by-reference.md)
+Settled in a design grilling session; see [ADR 0020](../adr/0020-matrix-entity-by-reference.md)
 for the structural "why".
 
 - **Any Item can be a matrix node.** Items opt in through the `EntityWithMatrixNode` trait. Not
@@ -72,6 +72,11 @@ for the structural "why".
 - [ ] **Device hardware stats** — `DeviceData.response/signal/system/firewall` move into its
       Matrix Entity's `attributes`; what happens to `deviceRating`, `dataProcessing`, and
       `programSlots`?
+- [ ] **Reconcile with the shipped Agent (#622)** — Agents now exist (`ProgramType.agent`,
+      `AgentData` with its own `attributes`), and a Program attached to an Agent currently means
+      it is *running* on the Agent. This doc treats attachment as **Loaded** and tracks
+      **Running** separately in `programs.runningIds`; the Agent slice needs a migration from
+      one meaning to the other.
 - [ ] **Agent `kind`** — an Agent is a Program Item and a Matrix Entity; which `kind` does it
       carry, and how do "find all Matrix Entities" selectors include it?
 
@@ -146,4 +151,4 @@ interface RunnerData {
   question (loaded = attached to a Matrix Entity)
 - [`0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md) —
   introduced `_data_.items` and `EntityWithItems`, which this renames and reuses
-- [`docs/adr/0018-matrix-entity-by-reference.md`](../adr/0018-matrix-entity-by-reference.md)
+- [`docs/adr/0020-matrix-entity-by-reference.md`](../adr/0020-matrix-entity-by-reference.md)

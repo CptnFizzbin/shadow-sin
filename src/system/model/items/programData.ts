@@ -2,6 +2,7 @@ import type { ItemData } from "./itemData.ts"
 import type { ItemType } from "./itemType.ts"
 
 export enum ProgramType {
+  agent = "agent",
   attack = "attack",
   browse = "browse",
   command = "command",

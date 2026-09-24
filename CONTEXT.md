@@ -17,13 +17,25 @@ The person using the app. A Player manages one or more Runners.
 _Avoid_: user (too generic)
 
 **Game Master (GM)**:
-The person running the Shadowrun game. The GM can create a **Game** and invite Players into it.
+The person running the Shadowrun game. The GM can create a **Table** and invite Players into it.
 _Avoid_: dungeon master, DM, storyteller (use GM)
 
-**Game**:
+**Table**:
 A GM-managed group that links multiple Players and their Runners together, so the GM can view
 every Runner in the group.
-_Avoid_: campaign, session (session is in-combat state), party
+_Avoid_: campaign, session (session is in-combat state), party, game
+
+**Account**:
+A person's login identity for cloud storage and Tables. Every GM and Player has one; nothing in the
+cloud is anonymous. Player and GM are roles, not identities — the same Account can be the GM of one
+Table and a Player at another.
+_Avoid_: user, login
+
+**Invite Code**:
+A code a GM shares so a Player, already signed in to their own Account, can bring one of their
+cloud-saved Runners to that Table. It says *which* Table to join, not *who* is joining. Each Table
+has one, reusable until the GM replaces it.
+_Avoid_: access key, join code
 
 **Runner**:
 A player character in Shadowrun — the primary thing a Player creates and manages. A Player may
@@ -317,11 +329,12 @@ _Avoid_: kill, close
 A property of a Program: a copy-protected Program can be moved to another device but never copied.
 
 **Agent**:
-An autonomous Program — a matrix construct that acts on its own, not just software a persona uses.
-It is also a **Matrix Entity**: it has its own Loaded and Running Programs, which go with it when it
-moves to another Node, and a script. Its Rating serves as its Pilot, System, Firewall, and the
-skill side of any test it rolls; its Response and Signal always come from the Node it's running on.
-Needs a **StatusSheet**.
+An autonomous Program — a matrix construct that acts on its own, not just software a persona uses —
+distinguished from other Programs by its category, alongside categories like Attack or Browse. It
+is also a **Matrix Entity**: it has its own Loaded and Running Programs, which go with it when it
+moves to another Node, and a script. It has its own System and Firewall ratings and a Matrix damage
+track; its Rating is the skill side of any test it rolls, and its Response and Signal always come
+from the Node it's running on. Needs a **StatusSheet**.
 _Avoid_: bot
 
 **Matrix Test**:
@@ -529,8 +542,9 @@ run.
 
 ## Relationships
 
-- A **Player** manages one or more **Runners**; a **Game** groups several Players' Runners under
-  one GM.
+- A **Player** manages one or more **Runners**. A **Table** belongs to one GM and holds many
+  Runners; each Runner is at no more than one Table, and Players belong to a Table only through
+  their Runners.
 - A **Runner** lives in exactly one **Storage Source**; copying it elsewhere makes a new Runner.
 - An **Item** can have **Attachments**, which can have their own, to any depth.
 - An **Item** can have a **Matrix Entity**, which makes it a **Node**. A **Program** is **Loaded**

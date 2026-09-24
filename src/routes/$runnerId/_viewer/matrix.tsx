@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { KnownNodesList } from "#/components/system/matrix/knownNodesList.tsx"
+import { MatrixAgentsSection } from "#/components/system/matrix/matrixAgentsSection.tsx"
 import { MatrixProgramsSection } from "#/components/system/matrix/matrixProgramsSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
@@ -27,6 +28,8 @@ function RouteComponent() {
       <UnderConstruction description="Matrix tests, loaded program limits, and dice pool calculations aren't implemented yet. For now, track Matrix damage and manage your Known Nodes and programs here." />
 
       <KnownNodesList />
+
+      <MatrixAgentsSection />
 
       <DamageTrack
         label="Matrix"

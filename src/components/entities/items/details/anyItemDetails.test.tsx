@@ -8,6 +8,7 @@ import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { AnyItemDetails } from "./anyItemDetails.tsx"
@@ -25,6 +26,8 @@ const weapon: WeaponData = {
 const runnerStoreWithWeapon = () =>
   runnerDataFactory({ items: { [weapon.id]: weapon } })
 
+const agent = makeAgent({ id: "00000000-0000-0000-0000-000000000004" })
+
 describe("AnyItemDetails", () => {
   it("dispatches weapons to WeaponItemDetails", () => {
     renderWithProviders(<AnyItemDetails item={weapon} />, { runner: runnerStoreWithWeapon() })
@@ -32,6 +35,16 @@ describe("AnyItemDetails", () => {
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.getByText("DV")).toBeDefined()
     expect(screen.getByText("8P")).toBeDefined()
+  })
+
+  it("dispatches Agents (Program items with programType agent) to AgentItemDetails", () => {
+    renderWithProviders(<AnyItemDetails item={agent} />, {
+      runner: runnerDataFactory({ items: { [agent.id]: agent } }),
+    })
+
+    expect(screen.getByText("Griffin")).toBeDefined()
+    expect(screen.getByText("System")).toBeDefined()
+    expect(screen.getByText("Firewall")).toBeDefined()
   })
 
   it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
