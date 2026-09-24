@@ -71,7 +71,7 @@ const daysUntil = (date: Date) => Math.floor((date.getTime() - Date.now()) / MS_
 
 **Exemptions** — these don't need to fit any style:
 
-- The `// Arrange` / `// Act` / `// Assert` labels required by `AGENTS.md` → "Testing conventions" — they're structural
+- The `// Arrange` / `// Act` / `// Assert` labels required by the testing conventions (`.agents/guidelines/testing.md`) — they're structural
   section labels, not documentation or explanation.
 - Tool directives such as `// eslint-disable-next-line` or `// @ts-expect-error` — they instruct tooling, not
   readers.
