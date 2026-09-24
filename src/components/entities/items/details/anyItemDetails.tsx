@@ -116,23 +116,21 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
           onOpenAttachment={onOpenAttachment}
         />
       )
-    case ItemType.program: {
-      const program = item as ProgramData
-      return isAgentData(program)
+    case ItemType.program:
+      return isAgentData(item)
         ? (
             <AgentItemDetails
-              agent={program}
+              agent={item}
               onRemoved={onRemoved}
               onOpenAttachment={onOpenAttachment}
             />
           )
         : (
             <ProgramItemDetails
-              program={program}
+              program={item as ProgramData}
               onRemoved={onRemoved}
             />
           )
-    }
     case ItemType.implant:
       return (
         <ImplantItemDetails

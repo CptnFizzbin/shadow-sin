@@ -12,14 +12,11 @@ import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { AgentData } from "#/system/model/items/agentData.ts"
 import { isAgentData } from "#/system/model/items/agentData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { ProgramData } from "#/system/model/items/programData.ts"
 
 export const MatrixAgentsSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const navigate = useNavigate({ from: "/$runnerId" })
-  const agents = useGearFilter((item): item is AgentData =>
-    item.itemType === ItemType.program && isAgentData(item as ProgramData))
+  const agents = useGearFilter(isAgentData)
   const agentFormDialog = useAgentFormDialog()
 
   const handleEdit = async (agent?: AgentData) => {

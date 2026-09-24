@@ -8,21 +8,19 @@ const ATTRIBUTE_MAX = 99
 
 export const AgentFormFields = withFieldGroup({
   ...agentFormOpts,
-  render: ({ group }) => {
-    return (
-      <Stack direction="row" sx={{ flexWrap: "wrap" }}>
-        <group.AppField name="attributes.system">
-          {(field) => (
-            <field.CounterField label="System" size="small" min={ATTRIBUTE_MIN} max={ATTRIBUTE_MAX} />
-          )}
-        </group.AppField>
+  render: ({ group }) => (
+    <Stack direction="row" sx={{ flexWrap: "wrap" }}>
+      <group.AppField name="attributes.system">
+        {(field) => (
+          <field.CounterField label="System" size="small" min={ATTRIBUTE_MIN} max={ATTRIBUTE_MAX} />
+        )}
+      </group.AppField>
 
-        <group.AppField name="attributes.firewall">
-          {(field) => (
-            <field.CounterField label="Firewall" size="small" min={ATTRIBUTE_MIN} max={ATTRIBUTE_MAX} />
-          )}
-        </group.AppField>
-      </Stack>
-    )
-  },
+      <group.AppField name="attributes.firewall">
+        {(field) => (
+          <field.CounterField label="Firewall" size="small" min={ATTRIBUTE_MIN} max={ATTRIBUTE_MAX} />
+        )}
+      </group.AppField>
+    </Stack>
+  ),
 })

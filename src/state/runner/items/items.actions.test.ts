@@ -6,8 +6,8 @@ import type { AgentData } from "#/system/model/items/agentData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import { ProgramType } from "#/system/model/items/programData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 
 import {
   armor,
@@ -186,18 +186,6 @@ describe.each([
 })
 
 describe("setDamage", () => {
-  const makeAgent = (overrides: Partial<AgentData> = {}): AgentData => ({
-    kind: EntityKind.item, items: { parentId: null, childIds: [] },
-    id: crypto.randomUUID() as UUID,
-    name: "Griffin",
-    itemType: ItemType.program,
-    programType: ProgramType.agent,
-    rating: 3,
-    attributes: { system: 4 },
-    damage: { matrix: 0 },
-    ...overrides,
-  })
-
   it("sets the named track on an item that implements EntityWithDamage", () => {
     // Arrange
     const agent = makeAgent()

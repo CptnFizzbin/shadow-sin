@@ -149,6 +149,6 @@ export const gearReducer = createReducer(initialState, (builder) => {
     .addCase(setDamage, (state, action) => {
       const item = state[action.payload.itemId]
       if (!item || !isEntityWithDamage(item)) return
-      item.damage = { ...item.damage, [action.payload.track]: Math.max(0, action.payload.value) }
+      item.damage[action.payload.track] = Math.max(0, action.payload.value)
     })
 })

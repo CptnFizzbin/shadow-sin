@@ -6,20 +6,12 @@ import type { AgentData } from "#/system/model/items/agentData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { AgentDataCard } from "./agentDataCard.tsx"
 
-const fakeAgent: AgentData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
-  id: crypto.randomUUID(),
-  name: "Griffin",
-  itemType: ItemType.program,
-  programType: ProgramType.agent,
-  rating: 3,
-  attributes: { system: 4, firewall: 2 },
-  damage: { matrix: 0 },
-}
+const fakeAgent = makeAgent()
 
 describe("AgentDataCard", () => {
   it("renders the agent's rating and matrix attributes", () => {

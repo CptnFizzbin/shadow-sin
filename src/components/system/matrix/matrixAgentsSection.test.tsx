@@ -1,24 +1,13 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { AgentData } from "#/system/model/items/agentData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { ProgramType } from "#/system/model/items/programData.ts"
+import { isAgentData } from "#/system/model/items/agentData.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { MatrixAgentsSection } from "./matrixAgentsSection.tsx"
 
-const griffin: AgentData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
-  id: "agent-1",
-  name: "Griffin",
-  itemType: ItemType.program,
-  programType: ProgramType.agent,
-  rating: 3,
-  attributes: { system: 4, firewall: 2 },
-  damage: { matrix: 0 },
-}
+const griffin = makeAgent()
 
 describe("MatrixAgentsSection", () => {
   it("shows agents from the store", () => {
@@ -49,8 +38,7 @@ describe("MatrixAgentsSection", () => {
     // Assert
     await waitFor(() => expect(Object.values(runnerStore.getState().items)).toHaveLength(1))
     const [savedAgent] = Object.values(runnerStore.getState().items)
-    expect(savedAgent.itemType).toBe(ItemType.program)
-    expect((savedAgent as AgentData).programType).toBe(ProgramType.agent)
+    expect(isAgentData(savedAgent)).toBe(true)
     expect(screen.getByText("Griffin")).toBeDefined()
   })
 })

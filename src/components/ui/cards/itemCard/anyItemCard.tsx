@@ -66,12 +66,10 @@ export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemo
     case ItemType.device:
       return <DeviceDataCard device={item as DeviceData} onOpen={onOpen} onEdit={onEdit} />
 
-    case ItemType.program: {
-      const program = item as ProgramData
-      return isAgentData(program)
-        ? <AgentDataCard agent={program} onOpen={onOpen} onEdit={onEdit} />
-        : <ProgramDataCard program={program} onOpen={onOpen} onEdit={onEdit} />
-    }
+    case ItemType.program:
+      return isAgentData(item)
+        ? <AgentDataCard agent={item} onOpen={onOpen} onEdit={onEdit} />
+        : <ProgramDataCard program={item as ProgramData} onOpen={onOpen} onEdit={onEdit} />
 
     case ItemType.implant:
       return <ImplantDataCard implant={item as ImplantData} onOpen={onOpen} onEdit={onEdit} />

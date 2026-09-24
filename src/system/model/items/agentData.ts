@@ -3,6 +3,8 @@ import type { EntityDamage } from "#/system/model/entities/entityData.ts"
 import type { EntityWithAttrs } from "#/system/model/entities/traits/entityWithAttrs.ts"
 import type { EntityWithDamage } from "#/system/model/entities/traits/entityWithDamage.ts"
 
+import type { ItemData } from "./itemData.ts"
+import { ItemType } from "./itemType.ts"
 import type { ProgramData } from "./programData.ts"
 import { ProgramType } from "./programData.ts"
 
@@ -16,6 +18,6 @@ export interface AgentData extends ProgramData, EntityWithAttrs, EntityWithDamag
   damage: EntityDamage<DamageTrackKey.matrix>
 }
 
-export function isAgentData(item: ProgramData): item is AgentData {
-  return item.programType === ProgramType.agent
+export function isAgentData(item: ItemData): item is AgentData {
+  return item.itemType === ItemType.program && (item as ProgramData).programType === ProgramType.agent
 }

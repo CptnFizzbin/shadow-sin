@@ -17,7 +17,7 @@ export const MatrixProgramsSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const navigate = useNavigate({ from: "/$runnerId" })
   const programs = useGearFilter((item): item is ProgramData =>
-    item.itemType === ItemType.program && !isAgentData(item as ProgramData))
+    item.itemType === ItemType.program && !isAgentData(item))
   const programFormDialog = useProgramFormDialog()
 
   const handleEdit = async (program?: ProgramData) => {
