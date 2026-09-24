@@ -3,6 +3,7 @@ import { createMemoizedSelector, injectOption } from "#/integrations/reselect/se
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { DamageFormulas } from "#/system/formulas/damage/damageFormulas.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { isEntityWithDamage, isEntityWithQualities } from "#/system/model/entities/entityTraits.ts"
@@ -138,6 +139,12 @@ export namespace DamageSelectors {
       }),
     )
   }
+
+  /** Matrix damage-track capacity for the System-rated entity in scope (e.g. an Agent). */
+  export const selectMatrixMax = createMemoizedSelector(
+    AttrSelectors.forAttr(AttributeKey.system).selectValue,
+    (system) => DamageFormulas.matrixMax({ system }),
+  )
 
   export const track = {
     physical: createDamageTrackSelector(

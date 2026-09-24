@@ -78,6 +78,12 @@ export namespace ItemSelectors {
     },
   )
 
+  /** {@link selectChildrenOf} as an array, in `childIds` order. */
+  export const selectChildListOf = createMemoizedSelector(
+    selectChildrenOf,
+    (children) => Object.values(children),
+  )
+
   /**
    * The item at `itemId`, narrowed to `type` — `undefined` if no such item exists or it isn't of
    * that type. Shared by every per-type sub-namespace below.

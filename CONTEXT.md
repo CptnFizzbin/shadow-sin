@@ -400,11 +400,15 @@ _Avoid_: app, software (software is the broader category; Program is the matrix-
 
 **Agent**:
 An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
-construct, not just loaded software. Like **Vehicle**, being an `Item` doesn't exclude requiring
-a **StatusSheet**: Agent gets one, the same way Vehicle does. Its single `rating` doubles as
-Pilot, System, Firewall, and the Skill side of any dice pool it rolls — an Agent has no separate
-skill list. Its Response and Signal are never its own; they're resolved live from whichever
-`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**).
+construct, not just loaded software, with its own attribute ratings and a Matrix damage track.
+Distinguished from a plain Program by category, alongside categories like Attack or Browse. Its
+Rating remains the Skill side of any dice pool it rolls (an Agent has no separate skill list), but
+System and Firewall are tracked as their own explicit ratings rather than derived from that
+Rating — an Agent can have distinct System/Firewall ratings, the same way a Commlink or
+`MatrixNode` can. Its Response and Signal are never its own; they resolve live from whichever
+`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**) — that
+live resolver is not yet implemented. Like a Commlink, other Programs may be attached to an Agent
+to represent Programs running on it, in addition to the Agent itself being attachable to a Device.
 _Avoid_: bot
 
 **ActiveProgram**:

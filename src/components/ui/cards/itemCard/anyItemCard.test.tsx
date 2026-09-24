@@ -8,6 +8,7 @@ import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 import { renderWithProviders, ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { AnyItemCard } from "./anyItemCard.tsx"
@@ -24,6 +25,8 @@ const weapon: WeaponData = {
 
 const runnerStoreWithWeapon = () =>
   runnerDataFactory({ items: { [weapon.id]: weapon } })
+
+const agent = makeAgent({ id: "00000000-0000-0000-0000-000000000004" })
 
 describe("AnyItemCard", () => {
   it("dispatches weapons to WeaponDataCard", () => {
@@ -44,6 +47,16 @@ describe("AnyItemCard", () => {
     render(<AnyItemCard item={item} />, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("Cyberdeck Firmware")).toBeDefined()
+  })
+
+  it("dispatches Agents (Program items with programType agent) to AgentDataCard", () => {
+    renderWithProviders(<AnyItemCard item={agent} />, {
+      runner: runnerDataFactory({ items: { [agent.id]: agent } }),
+    })
+
+    expect(screen.getByText("Griffin")).toBeDefined()
+    expect(screen.getByText("System: 4")).toBeDefined()
+    expect(screen.getByText("Firewall: 2")).toBeDefined()
   })
 
   it("dispatches miscellaneous items to OtherDataCard", () => {

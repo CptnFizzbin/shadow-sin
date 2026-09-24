@@ -1,10 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./items.actions.ts"
+import { addItem, patchItem, removeItem, setDamage, setEquipped, setItem, setStashed } from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
 
@@ -144,5 +145,10 @@ export const gearReducer = createReducer(initialState, (builder) => {
       const wasStashed = item.stashed === true
       item.stashed = action.payload.stashed
       reconcileEquippedForStash(item, wasStashed)
+    })
+    .addCase(setDamage, (state, action) => {
+      const item = state[action.payload.itemId]
+      if (!item || !isEntityWithDamage(item)) return
+      item.damage[action.payload.track] = Math.max(0, action.payload.value)
     })
 })
