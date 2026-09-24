@@ -51,6 +51,10 @@ what's still in the air.
       whether to keep this device's version or the server's. Nothing is silently overwritten. A
       smarter resolution (e.g. replaying edits) may replace this later.
 
+- [x] **Where the server code lives — this repo, restructured as a monorepo.** The SPA moves to
+      `packages/client`, and the C# server lives in `packages/server`. See
+      `docs/adr/0018-monorepo-client-and-server.md`.
+
 ## Constraints
 
 - The existing `StorageSource` abstraction must accommodate a new cloud source (`api.shadowsin.app`)
