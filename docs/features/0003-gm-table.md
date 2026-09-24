@@ -65,6 +65,11 @@ what's still in the air.
       phase 1 to one server instance on a host with a persistent disk. Revisit when phase 2 adds
       WebSockets or if more than one instance is ever needed.
 
+- [x] **Hosting — an existing DigitalOcean VPS, deployed with Docker Compose.** The server ships
+      as a Docker image and runs under Docker Compose on the VPS. The SQLite file lives on a
+      mounted volume, so it survives container rebuilds. The client stays on GitHub Pages, so the
+      server has to allow cross-origin requests from the client's origin.
+
 ## Constraints
 
 - The server is fully optional. Every existing feature must keep working with no server and no
