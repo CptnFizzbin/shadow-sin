@@ -89,8 +89,10 @@ for the structural "why".
 
 ## Domain Notes
 
-New/changed `CONTEXT.md` terms: **Matrix Entity**, **Loaded**, **Running**, **Copy Protection**,
-**Agent** (revised), **Program** (revised), **Entity Matrix Presence** (superseded).
+New/changed `CONTEXT.md` terms: **Matrix Entity**, **Node** (now any Matrix Entity, including the
+Runner's own devices), **Active Node**, **Loaded**, **Running**, **Terminate**, **Copy
+Protection**, **Agent** (revised), **Program** (revised). **Entity Matrix Presence**,
+**ActiveProgram**, and **Matrix Game State** are no longer glossary entries.
 
 ## Rough Interface Sketches
 

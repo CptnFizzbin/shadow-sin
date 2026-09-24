@@ -17,788 +17,551 @@ The person using the app. A Player manages one or more Runners.
 _Avoid_: user (too generic)
 
 **Game Master (GM)**:
-The person running the Shadowrun game. In the app, the GM can create a **Game** and invite
-Players, giving them a shared view of the Runners in the group.
+The person running the Shadowrun game. The GM can create a **Game** and invite Players into it.
 _Avoid_: dungeon master, DM, storyteller (use GM)
 
 **Game**:
-A GM-managed group that links multiple Players and their Runners together. Allows the GM to
-view all Runners in the group.
+A GM-managed group that links multiple Players and their Runners together, so the GM can view
+every Runner in the group.
 _Avoid_: campaign, session (session is in-combat state), party
 
 **Runner**:
-A player character in Shadowrun. The primary thing a Player creates and manages. A Player may
+A player character in Shadowrun — the primary thing a Player creates and manages. A Player may
 have multiple Runners.
-_Avoid_: Character (ambiguous with DOM/Node types), PC
+_Avoid_: character, PC
 
-**RunnerData**:
-The complete serialised data record for a single Runner. The root type of the domain model,
-persisted as JSON and versioned via migrations. Formerly called `CharacterSheet`; renamed to align
-with the `*Data` naming convention used throughout the domain (e.g. `ItemData`, `SpellData`,
-`QualityData`).
-_Avoid_: CharacterSheet, CharacterData (conflicts with DOM/Node globals)
+**Contact**:
+An NPC a Runner has an established relationship with, rated by **Connection** (how useful and
+well-networked they are) and **Loyalty** (how much they like the Runner).
+_Avoid_: ally, NPC (too broad)
 
-**sheet** _(variable-name alias)_:
-Shorthand identifier for a `RunnerData` value used in hook selectors, component props, and update
-functions. Preserved as an alias so existing call sites do not need renaming.
-_Avoid_: `character` as a variable name for this type
+**Entity**:
+Anything with a stat block, ratings, or effects it can contribute — a stat-bearing thing, not just
+carried equipment. Runners, Items, Spirits, Sprites, Qualities, Spells, Complex Forms, Adept
+Powers, and **Matrix Entities** are all Entities. Every Item is an Entity; not every Entity is an
+Item.
+_Avoid_: object, game entity
+
+**Rating**:
+The strength or level of an Entity — e.g. Armor's protection, an Adept Power's level, a Spirit's
+Force, a Program's or Device's rating. Not every Entity has one (Spells don't). Cases with no
+meaningful rating — a Real SIN, a Real Licence, a native Language — are marked as such rather than
+given a placeholder rating.
+_Avoid_: confusing with **AI Rating**, an unrelated AI-metatype value
 
 ### Damage
 
 **Damage Track**:
-A counted record of damage boxes filled on a subject. Track capacity is derived from stats
-(never stored directly); only the current filled-box count is persisted.
+A count of damage boxes filled on a subject. Its capacity always comes from the subject's stats;
+only the number of filled boxes is recorded.
 
 **Physical Damage Track**:
-Tracks lethal damage on a Runner or Vehicle. Capacity = `8 + ⌈Body / 2⌉`. Overflow spills into
-the Stun track (for Runners); a Vehicle at full physical damage is destroyed.
+Tracks lethal damage on a Runner or Vehicle. Capacity is 8 + half Body, rounded up. For a Runner,
+overflow spills into the Stun track; a Vehicle with a full Physical track is destroyed.
 _Avoid_: HP, health points, wounds
 
 **Stun Damage Track**:
-Tracks non-lethal damage on a Runner. Capacity = `8 + ⌈Willpower / 2⌉`. When filled, overflow
-converts to Physical damage.
+Tracks non-lethal damage on a Runner. Capacity is 8 + half Willpower, rounded up. When filled,
+further Stun damage becomes Physical damage.
 _Avoid_: stun points, fatigue
 
 **Matrix Damage Track**:
-Tracks damage taken in the matrix. Applies to:
-- **Runners** (hot-sim VR biofeedback)
-- **Sprites** (compiled matrix beings — their primary damage track)
-- **Matrix-capable devices** (commlinks, nodes — tracked on the device's StatusSheet)
-
-Capacity formula varies by subject type. Separate from Physical/Stun because it heals separately
-and applies to non-biological subjects.
+Tracks damage taken in the matrix, by Runners (hot-sim VR biofeedback), **Sprites** (their primary
+track), and matrix-capable devices. Kept separate from Physical/Stun because it heals separately
+and applies to non-biological subjects. Capacity depends on the kind of subject.
 
 **Wound Modifier**:
-A dice pool penalty derived from filled damage boxes. Formula per track:
-`floor(max(0, damage − hptOffset) / woundInterval)`. Default interval is 3 boxes per −1 die.
-**High Pain Tolerance** increases the offset (ignoring the first N boxes); **Low Pain Tolerance**
-shrinks the interval (penalties kick in sooner). Both are read from `GameEffect` entries on
-equipped gear and active qualities.
-_Avoid_: wound penalty, damage penalty (use Wound Modifier)
+A dice pool penalty from filled damage boxes: −1 die for every full interval of damage (3 boxes by
+default). **High Pain Tolerance** ignores the first few boxes; **Low Pain Tolerance** shortens the
+interval so penalties start sooner.
+_Avoid_: wound penalty, damage penalty
 
 ### Reputation
 
 **Street Cred**:
-A tracked count of a Runner's professional reputation. Formula: `floor(total Karma earned / 10)
-+ sum of reputation ledger entries affecting streetCred` — the GM adjusts it for notable runs via
-ledger entries on top of the Karma-derived base. Contributes to the derived **Public Awareness**
-value.
+A Runner's professional reputation: one point per 10 Karma earned in total, plus any adjustments
+the GM awards for notable runs. Contributes to **Public Awareness**.
 
 **Notoriety**:
-A tracked count of a Runner's negative or infamous reputation. Awarded by the GM for reckless or
-criminal acts. Contributes to the derived **Public Awareness** value. Gaining Notoriety does not
-automatically remove Street Cred — they are independent tallies.
+A Runner's negative or infamous reputation, awarded by the GM for reckless or criminal acts.
+Contributes to **Public Awareness**. Independent of Street Cred — gaining one never removes the
+other.
 
 **Public Awareness**:
-A derived value representing how recognisable the Runner is to the general public.
-Formula: `Street Cred + Notoriety + publicAwareness`. The modifier is a GM-controlled
-delta that can be positive (extra exposure) or negative (exceptional anonymity).
-_Avoid_: fame, infamy (use Public Awareness)
+How recognisable the Runner is to the general public: Street Cred + Notoriety + a GM adjustment,
+which can be positive (extra exposure) or negative (exceptional anonymity).
+_Avoid_: fame, infamy
 
 ### Progression & Economy
 
 **Karma**:
-The experience currency used to purchase improvements to a Runner after character creation.
-In the **Karma Build** creation method, Karma is also the creation currency.
+The experience currency spent to improve a Runner after creation. In a **Karma Build**, Karma is
+also the creation currency.
 _Avoid_: XP, experience points
 
 **Build Points (BP)**:
-The creation-time budget for the standard **BP Build** method. Spent on attributes, skills, gear,
-and qualities during character creation. Not used post-creation.
+The creation-time budget in a **BP Build**, spent on attributes, skills, gear, and qualities. Not
+used after creation.
 _Avoid_: creation points, starting points
 
-**Loan**:
-A debt record on a Runner tracking principal, interest rate, and lender. Interest is
-automatically deducted from `nuyen.current` when the Player triggers the **End of Month**
-action. If there is insufficient Nuyen to pay, the unpaid interest compounds into the principal.
-The in-game consequences of unpaid loans are managed by the GM outside the app.
-
-**End of Month**:
-A Player-triggered action on the finances page that processes all outstanding Loans — deducting
-interest from `nuyen.current` and compounding any shortfall into each Loan's principal.
-_Avoid_: monthly tick, interest sweep
-
 **Build Mode**:
-The ruleset used to create a Runner. Determines which resources are available and how they are
-allocated. Three modes are planned:
+The ruleset used to create a Runner, deciding which resources are available and how they're
+allocated:
+- **BP Build** — one fixed pool of Build Points covers all creation spending.
+- **Priority Build** — a priority table (A–E) allocates resources across metatype, attributes,
+  skills, magic, and resources.
+- **Karma Build** — the whole Runner is built with Karma alone.
 
-- **BP Build** _(current)_ — a fixed pool of Build Points covers all creation spending.
-- **Priority Build** _(planned)_ — a static priority table (ratings A–E) assigns resource
-  allocations across categories (metatype, attributes, skills, magic, resources).
-- **Karma Build** _(planned)_ — the entire Runner is built using only Karma; no BP pool.
-
-Only one Build Mode is active per Runner. Karma as a post-creation advancement currency is
-independent of Build Mode.
+A Runner has exactly one Build Mode. Post-creation Karma advancement works the same regardless.
 _Avoid_: character creation method, build system
 
 **Nuyen (¥)**:
-The in-world monetary currency. Spent on gear during play and character creation. Tracked in
-`RunnerData.nuyen.current`. Does not include funds stored on Credsticks.
+The in-world currency, spent on gear during creation and play. A Runner's Nuyen balance does not
+include funds held on **Credsticks**.
 _Avoid_: credits, money
 
 **Credstick**:
-An anonymous, untraceable currency carrier stored as an Item (`ItemType.credstick`). Tracked
-separately from `nuyen.current` — the value on a credstick is not part of the Runner's main
-Nuyen balance. May be dropped as a feature in the future.
+An anonymous, untraceable currency carrier. Its balance is separate from the Runner's main Nuyen.
 _Avoid_: cash, anonymous funds
+
+**Loan**:
+A debt a Runner owes a lender, with a principal and an interest rate. Interest is paid from the
+Runner's Nuyen at **End of Month**; any unpaid interest is added to the principal. The in-game
+consequences of unpaid loans are the GM's business.
+
+**End of Month**:
+A Player-triggered action that settles every Loan's interest for the month.
+_Avoid_: monthly tick, interest sweep
 
 ### Biology & Awakening
 
 **Metatype**:
-The species of a Runner (Human, Ork, Dwarf, Elf, Troll, Pixie, AI). Determines base attribute
-ranges and any innate qualities or powers.
+A Runner's species (Human, Ork, Dwarf, Elf, Troll, Pixie, AI). Sets base attribute ranges and any
+innate qualities or powers.
 _Avoid_: race, species
 
 **Awakening**:
-A Runner's relationship to magic or the matrix (Mundane, Adept, Magician, Mystic Adept,
-Technomancer, or None). Determines which special attributes (Magic or Resonance) are available.
-`None` is reserved exclusively for the AI metatype — an AI may never have an Awakening at all,
-which is a different statement from a metahuman choosing Mundane, even though both currently lock
-Magic and Resonance to 0. `None` is auto-assigned when a Runner's metatype switches to AI and is
-never offered as a manual choice for any other metatype.
-_Avoid_: class, archetype (archetype is a separate freeform profile field)
+A Runner's relationship to magic or the matrix: Mundane, Adept, Magician, Mystic Adept,
+Technomancer, or None. Decides whether Magic or Resonance is available. **None** belongs to the AI
+metatype alone — an AI can never Awaken, which is a different statement from a metahuman being
+Mundane, even though both rule out Magic and Resonance. None is assigned automatically when a
+Runner becomes an AI and is never a choice for anyone else.
+_Avoid_: class, archetype (archetype is a separate freeform profile detail)
 
 **AI Rating**:
-A measure of an AI Runner's overall capability — the average of its four Mental attributes,
-rounded up (SR4A/Unwired) — which also sets the natural maximum for its Edge attribute. Unrelated
-to the generic **Rating** entry below despite the shared name; the two must not be conflated.
+An AI Runner's overall capability — the average of its four Mental attributes, rounded up — which
+also caps its natural Edge. Unrelated to **Rating** despite the name.
 
 ### Capabilities
 
 **Attribute**:
-A numerical stat (1–6 base, higher with metatype bonuses). Grouped as **Physical** (BOD, AGI, REA,
-STR), **Mental** (CHA, INT, LOG, WIL), or **Special** (MAG, RES, EDG, ESS).
+A numeric stat (1–6 base, higher with metatype bonuses), grouped as **Physical** (Body, Agility,
+Reaction, Strength), **Mental** (Charisma, Intuition, Logic, Willpower), or **Special** (Magic,
+Resonance, Edge, Essence).
 
 **Edge**:
-A special attribute with two distinct roles. `RunnerData.attributes.edge` is the **Edge Rating**
-— it sets the maximum size of the Edge pool and is the number of bonus dice added to a roll
-when Edge is spent. `RunnerData.edge.current` is the **Edge Pool** — the spendable points
-available right now, decremented when the Player spends Edge during play.
-_Avoid_: luck points, hero points (use Edge)
+A special attribute with two sides. The **Edge Rating** is the attribute itself — the size of the
+Edge Pool, and the number of bonus dice Edge adds to a roll. The **Edge Pool** is how many Edge
+points the Runner can still spend right now.
+_Avoid_: luck points, hero points
 
 **Skill**:
-A rated capability tied to an attribute. Comes in three flavours: **Active** (used in tests),
+A rated capability tied to an attribute, in three flavours: **Active** (used in tests),
 **Knowledge** (background expertise), and **Language**. Active skills may have a
-**Specialization** (+2 dice for that narrow focus). Knowledge and Language skills are free-text,
-Player-entered entries (no fixed list like Active skills) and carry their own identity independent
-of their display name, so a `GameEffect` targeting one specific entry survives the Player renaming
-it later.
+**Specialization** (+2 dice in that narrow focus). Knowledge and Language skills are named by the
+Player rather than picked from a fixed list, and keep their identity when renamed — effects that
+target one still apply after a rename.
 
 **Quality**:
-A positive or negative trait a Runner possesses (e.g. High Pain Tolerance, Uneducated). Purchased
-with BP at creation; some are innate to the metatype.
+A positive or negative trait (e.g. High Pain Tolerance, Uneducated). Bought at creation; some are
+innate to the metatype.
 
 **Spirit**:
-A magical being summoned and bound by a Magician or Mystic Adept. Has its own stat block, Force
-rating, and a pool of Services owed to the Runner. Requires a **StatusSheet**.
-_Avoid_: creature, critter (critter is a specific Shadowrun term for wild paranatural animals)
+A magical being summoned and bound by a Magician or Mystic Adept. Has its own stat block, Force,
+and a number of Services owed. Needs a **StatusSheet**.
+_Avoid_: creature, critter (critter is a specific Shadowrun term for paranatural animals)
 
 **Sprite**:
-A matrix being compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
-own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
-_Avoid_: creature, critter (same reasoning as Spirit)
+A matrix being compiled by a Technomancer — the matrix counterpart of a Spirit. Has its own stat
+block, Level, and Services owed. Needs a **StatusSheet**.
+_Avoid_: creature, critter
 
-**Entity**:
-The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
-stat-bearing thing, not just carried equipment. Includes **Runner** itself, alongside every kind
-listed by the `kind` discriminant below — the discriminant is the source of truth for which
-kinds are covered, not this entry.
-_Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
-the `*Data` DTO suffix convention — see RunnerData)
-
-**`kind`** _(`EntityData.kind: EntityKind`)_:
-The discriminant every Entity carries — `EntityKind` is a closed string union: `"runner" |
-"item" | "spirit" | "sprite" | "matrixNode" | "quality" | "spell" | "complexForm" |
-"adeptPower"`. Lets code that needs to tell Entity kinds apart (e.g. resolving a Spell's caster,
-which may be a Runner or a Spirit) dispatch without ad hoc, per-domain checks. Each kind's own
-second-level discriminant (`itemType`, `spiritType`, ...) stays nested under `kind` where it
-already exists — e.g. every Vehicle, Weapon, or Armor is `kind: "item"` with `itemType`
-distinguishing them further. See `docs/features/0015-entity-interface-decomposition.md`.
-
-**`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`EntityWithItems`**:
-Composable capability interfaces an Entity kind implements when it has a stat block
-(`EntityWithAttrs`), a damage track (`EntityWithDamage`), a Matrix presence
-(`WithMatrixPresence`), or an Attachment position (`EntityWithItems`) — so selectors
-(`AttrSelector`, `DamageSelector`, ...) can be written once against the capability instead of
-each domain re-implementing its own access. See
-`docs/features/0015-entity-interface-decomposition.md` for each interface's shape and which
-Entity kinds implement it.
-
-**EntityCard**:
-The shared card-rendering system for Entities, replacing the old `DataCard`. See
-`docs/adr/0010-entity-card-composition.md` for the architecture.
-
-**Rating**:
-An optional numeric field representing the strength or level of an Entity — e.g. Armor's
-protection rating, an Adept Power's rating, a Spirit's Force, software/Complex Form/Device
-ratings. Not every Entity populates it (Spells have none). Always a plain number — an unrated/
-default case (a Real SIN or Licence, a native Language skill) is expressed with its own explicit
-flag (**isReal**, **isNative**) rather than a sentinel value on `rating` itself; see
-`docs/features/0015-entity-interface-decomposition.md`.
-_Avoid_: confusing with **AI Rating** — a same-named but unrelated AI-metatype attribute
-
-### Magic & Matrix
+### Magic
 
 **Spell**:
-A magical effect cast by a Magician or Mystic Adept. Has a Drain cost paid as stun damage.
+A magical effect cast by a Magician or Mystic Adept, costing **Drain**.
 
 **Drain**:
-The stun damage a caster takes after casting a spell. Resisted with a Drain resistance test.
+The Stun damage a caster takes after casting, resisted with a Drain resistance test.
+
+**Tradition**:
+A magical discipline that sets a Magician's Drain resistance attribute and the spirits available
+to them.
 
 **Adept Power**:
-A physical or mystical ability available only to Adepts and Mystic Adepts. Purchased with Power
-Points derived from the Magic attribute.
+A physical or mystical ability for Adepts and Mystic Adepts, bought with Power Points that come
+from Magic.
 
 **Complex Form**:
 A Technomancer's equivalent of a spell — a matrix effect compiled from Resonance.
 
-**Tradition**:
-A magical discipline that governs a Magician's drain resistance attribute and available spirits.
-
 **Focus**:
-A magical item that a Runner can own, bond, and activate. Owning a focus has no mechanical
-effect on its own — a focus must first be **bonded** (a permanent Karma expenditure) before it
-can be **activated** (a play-time toggle). Only activated foci contribute `GameEffect` entries
-to dice pools or sustain spells. Focus subtypes include Power, Spellcasting, Summoning,
-Banishing, Centering, Sustaining, and Weapon.
-_(Not yet implemented — see issue #282)_
+A magical item a Runner can own, **Bond**, and **Activate**. Owning a focus does nothing by itself;
+it must be bonded before it can be activated, and only activated foci add effects or sustain
+spells. Subtypes: Power, Spellcasting, Summoning, Banishing, Centering, Sustaining, and Weapon.
 _Avoid_: fetish, magical tool
 
 **Bond** / **Bonding**:
-A one-time Karma expenditure that permanently links a Focus to a Runner. Bonding is a
-prerequisite for activation — a focus cannot be activated until it has been bonded. Recorded as
-a `bondFocus` ImprovementEntry. Karma spent on bonding is permanently lost if the Focus is
-subsequently lost, destroyed, or un-bonded.
-_Avoid_: activate, attune (bonding is not the same as activating — a bonded focus can still be
-inactive)
+A one-time Karma cost that permanently links a Focus to a Runner, and a prerequisite for
+activating it. The Karma is lost for good if the focus is later lost, destroyed, or unbonded.
+_Avoid_: activate, attune (a bonded focus can still be inactive)
 
 **Activate** / **Activation**:
-A play-time action that switches a bonded Focus on or off. Only bonded foci can be activated.
-Activation is toggled via a UI action on the focus item card in the Viewer; it does not cost
-Karma. Only activated foci contribute effects. Stored as `ItemData.equipped` — the existing
-field that gates `GameEffect` application.
-_Avoid_: bond (activation is free and reversible; bonding is permanent and costs Karma)
+Switching a bonded Focus on or off during play. Free and reversible, unlike Bonding. An activated
+focus is the focus's form of **Equipped**.
+_Avoid_: bond
 
 **Bonded Foci Limit**:
-The cap on how many foci a Runner can have bonded simultaneously. Rule: count of bonded foci
-≤ Magic attribute (SR4A p.199). Bonding an additional focus past the cap is prohibited
-regardless of activation state. The app surfaces a violation as a warning chip, not a hard block.
-_Avoid_: active foci limit, focus cap, foci cap (the limit applies to bonded foci, not activated ones)
+A Runner may have at most as many bonded foci as their Magic (SR4A p.199), whether or not they're
+active. Going over is flagged as a warning rather than blocked.
+_Avoid_: active foci limit, focus cap (the limit counts bonded foci, not active ones)
 
 **Foci Force Limit**:
-The cap on the total Force of foci a Runner can have bonded at one time. Rule: sum of Force
-ratings of all bonded foci ≤ Magic × 5 (SR4A p.199). Applies regardless of activation state —
-bonding a new focus that would push the total over the cap is prohibited.
-_Avoid_: bonded foci cap, total force cap (the limit applies to combined Force, not count)
+The combined Force of a Runner's bonded foci may not exceed Magic × 5 (SR4A p.199), whether or not
+they're active.
+_Avoid_: bonded foci cap, total force cap
 
 **Sustaining Focus**:
-A Focus subtype that holds one `Sustained` spell active so the caster does not need to maintain
-concentration. Linked to a specific spell via `slottedSpellId`; the spell category
-(`spellCategory`) is fixed at item creation and restricts which spells can be slotted. The
-slotted spell still appears in the Runner's spell list.
+A Focus that keeps one sustained spell running so the caster needn't concentrate on it. Its spell
+category is fixed when the focus is made and limits which spells it can hold. The held spell still
+appears in the Runner's spell list.
 _Avoid_: spell holder
 
-**MatrixAttrs**:
-The four matrix-test stats — Firewall, Response, Signal, System — that substitute for Attributes
-in Matrix Tests (see **Commlink**, **Matrix Test**). Shares the same `AttributeKey` enum used for
-Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests already mirror
-Attribute + Skill tests structurally. A key that's absent or not computable for a given subject
-(e.g. asking a Runner for Firewall) resolves to `0`.
+### Matrix
 
-The AI metatype is the one deliberate exception to "a Runner asking for its own Firewall resolves
-to 0": an AI Runner has live MatrixAttrs of its own — System/Firewall computed from its own Mental
-attributes, Response/Signal borrowed from its current Active Node — displayed as read-only rows
-alongside its purchasable attributes. Every other metatype's MatrixAttrs stay fixed at 0; this
-does not make MatrixAttrs a general Runner capability.
+**Matrix Attributes**:
+Response, System, Firewall, and Signal — the stats that stand in for Attributes in a **Matrix
+Test**. They are ordinary attributes; a subject with no matrix side has 0 in each. An AI Runner is
+the one Runner with matrix attributes of its own: System and Firewall come from its Mental
+attributes, and Response and Signal come from its current **Active Node**.
+_Avoid_: hardware stats, device stats
 
 **Matrix Entity**:
-The matrix side of anything that can act as a matrix node — a commlink, a drone, a smartgun, an
-**Agent**. It has matrix attributes, a **Node Type**, the Programs **Loaded** on it, and the
-Programs **Running** on it. A device's physical accessories belong to the device, not to its
-Matrix Entity.
+The matrix side of anything that can act as a matrix node — a commlink, a drone, a smartgun, a
+**Known Node**, an **Agent**. It has Matrix Attributes, a **Node Type**, the Programs **Loaded** on
+it, and the Programs **Running** on it. A device's physical accessories belong to the device, not
+to its Matrix Entity.
 _Avoid_: persona (a Runner's own matrix self, not a device's)
 
+**Node**:
+Any Matrix Entity a Runner can connect to and run Programs on — the Runner's own devices as well as
+systems they've hacked into.
+_Avoid_: host
+
+**Node Type** (General | Nexus):
+Decides a Node's **Processor Limit** and nothing else. A Node is General unless stated otherwise.
+
+**Processor Limit**:
+How many Programs a Node can run before it slows down: System for a General node, System × 3 for a
+Nexus. Going over isn't forbidden — each full multiple of the limit reached costs the Node 1
+Response (e.g. with a limit of 3: −1 at 3 programs running, −2 at 6, −3 at 9).
+
+**Known Node**:
+A Node the Runner doesn't own but has some access to — a corp server, a security system, another
+character's commlink. A newly known Node starts at **Public** access: being known only means the
+Runner is aware of it and can reach its public surface.
+_Avoid_: subscribed node (every Known Node other than the Active Node is informally a subscription)
+
+**Active Node**:
+The Node the Runner is working in right now — one of their own devices or a Known Node.
+_Avoid_: current node
+
+**Subscription Limit**:
+How many Known Nodes a Runner can hold at once: the System of the commlink they're running their
+persona from.
+
+**Access Level** (None | Public | User | Security | Admin):
+How much access the Runner has on a Known Node. Public needs no hacking at all; None means no
+access whatsoever. The hacking threshold to reach User, Security, or Admin is Firewall (+ System
+when Probing), +0 for User, +3 for Security, +6 for Admin.
+
+**Clear Matrix Session**:
+A Player-triggered action at the start of a new run that forgets every Known Node and stops
+everything Running on them.
+
+**Commlink**:
+A Runner's personal matrix device and network hub, and their most common Node. Its Matrix
+Attributes are its hardware ratings.
+
+**Program**:
+Software that runs on a Node. In a Matrix Test a Program plays the part a Skill plays in a physical
+test (e.g. Response + Analyze). Each copy of a Program is **Loaded** on at most one Matrix Entity.
+_Avoid_: app, software (software is the broader category; Program is the kind used in tests)
+
 **Loaded** (Program):
-A Program stored on a **Matrix Entity**. A given copy of a Program is loaded in only one place at
-a time; putting it on a second device means moving it or making a new copy.
+A Program stored on a Matrix Entity. Putting it on a second device means moving it or making a new
+copy.
 _Avoid_: installed
 
 **Running** (Program):
-A Program currently active on a **Matrix Entity**, as opposed to merely **Loaded** there. Ending
-it is **Terminate**.
+A Program active on a Node, as opposed to merely **Loaded** somewhere. Running a Program on a Known
+Node needs at least User access there, and each running Program counts toward that Node's
+**Processor Limit**.
 _Avoid_: active (overloaded with Active Node), executing
+
+**Terminate**:
+Stopping a **Running** Program.
+_Avoid_: kill, close
 
 **Copy Protection**:
 A property of a Program: a copy-protected Program can be moved to another device but never copied.
 
-**Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
-Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a
-"simplified" presence: all four `MatrixAttrs` resolve to the Entity's own **Rating**, with no
-separate data stored (avoids a value that could drift out of sync after the Entity's Rating
-changes). `matrix: MatrixStats` (a `Partial<MatrixAttrs>`) is a "fully specced" presence — set
-keys override that stat, unset keys still fall back to Rating. `undefined` means the Entity has
-no matrix presence at all. **Commlink** is the canonical fully-specced case. **MatrixNode**
-(below) is always fully specced, by definition.
-
-Response and Signal are a special case for anything *running on* a `MatrixNode` (a loaded
-**Program**, a running **Agent**): those two stats are never stored on the running thing itself —
-they're resolved live from whichever Node currently hosts it. Only System/Firewall (and, for
-Agent, its Pilot/Skill use) come from the running thing's own rating.
-
-**MatrixNode** _(displayed as "Node")_:
-A hackable system in the matrix — a corp server, security system, or other host a Runner can
-connect to and gain an account on. It is itself an **Entity** (added to the list under
-**Entity**, below), not a field bolted onto some other Entity — its `matrix` is always a
-`MatrixStats` value, since being a matrix presence is its entire purpose. User-facing copy and
-rulebook references say "Node"; the code identifier is `MatrixNode` to avoid colliding with the
-DOM global `Node` (same naming-collision class as `RunnerData` vs. `CharacterData` — see
-`RunnerData` above).
-_Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
-
-**Node Type** (`General` | `Nexus`):
-Determines a `MatrixNode`'s **Processor Limit** formula and nothing else — no other mechanical
-difference between the two.
-
-**Processor Limit**:
-The cap on programs a `MatrixNode` can run simultaneously, mirroring the existing rule that a
-Commlink's loaded programs are capped by its System rating (`docs/features/0005-matrix-programs.md`).
-Formula depends on **Node Type**: `General` = System rating; `Nexus` = System rating × 3.
-Exceeding it isn't a hard block — every multiple of the Processor Limit reached (running count ÷
-Processor Limit, rounded down) drops the Node's effective Response by 1. E.g. Processor Limit 3:
-Response −1 at 3 programs running, −2 at 6, −3 at 9.
-
-**Subscription Limit**:
-The cap on how many `MatrixNode`s a Runner can hold a **Known Node** entry for at once (see
-**Matrix Game State**). Equal to the System rating of whichever Commlink the Runner is currently
-running their persona from.
-
-**Access Level** (`none` | `public` | `user` | `security` | `admin`):
-How much access a Runner has on a given `MatrixNode`. `public` means an unauthenticated foothold
-that needs no hacking test at all — the (display-only) hacking threshold
-(`Firewall + (System if Probing) + Access Level offset`) only applies to the `user`/`security`/
-`admin` rungs (`user` +0, `security` +3, `admin` +6); `none` means no access of any kind, not even
-public. Player-set directly on a **Known Node** entry — this pass doesn't simulate the hacking
-test itself (Hacking on the Fly / Probing), just tracks the outcome and displays the threshold as
-a reference number.
-
-**Matrix Game State** (`RunnerData.gameState.matrix`):
-The Player-facing matrix session-management state — the helper-tools scope of this feature, as
-opposed to simulating hacking tests or matrix combat. Holds:
-- `knownNodes: KnownNode[]` — every `MatrixNode` the Runner currently has some access to
-- `activeNodeId` — which Known Node the Runner is presently working in; every other Known Node is
-  informally a "subscription" (nothing marks them separately — non-active is the only distinction)
-- `activePrograms` — running copies of Programs/Agents (see **ActiveProgram**, below)
-
-Cleared by the Player-triggered **Clear Matrix Session** action (start of a new run), not
-automatically. `RunnerData.gameState` is a new top-level namespace intended to eventually hold
-other in-play state beyond matrix (nothing else lives there yet).
-
-**Known Node**:
-A `MatrixNode` the Runner currently has some access to, with its Access Level flattened onto the
-same record (not wrapped in a separate `node` field) since a Known Node only ever exists inside
-**Matrix Game State** today. A newly-added Known Node defaults to `public` **Access Level** —
-being "known" only requires the Runner to be aware of the Node and have its public-facing surface,
-not an authenticated account yet.
-_Avoid_: Subscribed Node (there's no separate subscribed-nodes list — every Known Node other than
-the Active Node is one)
-
-**Clear Matrix Session**:
-A Player-triggered action (parallel to **End of Month**) that wipes `gameState.matrix` —
-`knownNodes` and `activePrograms` — at the start of a new run.
-
-**Commlink**:
-A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
-**System**, **Firewall**, and **Signal** — that substitute for attributes in matrix tests.
-Stored as an Item with `ItemType.device`. May have Programs loaded onto it as Attachments.
-
-**Program**:
-Software loaded onto a Commlink. Used in matrix tests the same way Active Skills are used in
-physical tests — e.g. `Response + Analyze` forms a valid dice pool. A Commlink has a limited
-number of program slots determined by its System rating. An owned Program can be run as an
-**ActiveProgram** on a `MatrixNode` (see below).
-_Avoid_: app, software (software is the broader category; Program is the matrix-test-relevant subtype)
-
 **Agent**:
-An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
-construct, not just loaded software. It is also a **Matrix Entity**: it has its own **Loaded** and
-**Running** Programs, which go with it when it moves to another node, and a script. Like **Vehicle**, being an `Item` doesn't exclude requiring
-a **StatusSheet**: Agent gets one, the same way Vehicle does. Its single `rating` doubles as
-Pilot, System, Firewall, and the Skill side of any dice pool it rolls — an Agent has no separate
-skill list. Its Response and Signal are never its own; they're resolved live from whichever
-`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**).
+An autonomous Program — a matrix construct that acts on its own, not just software a persona uses.
+It is also a **Matrix Entity**: it has its own Loaded and Running Programs, which go with it when it
+moves to another Node, and a script. Its Rating serves as its Pilot, System, Firewall, and the
+skill side of any test it rolls; its Response and Signal always come from the Node it's running on.
+Needs a **StatusSheet**.
 _Avoid_: bot
 
-**ActiveProgram**:
-A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
-owned Program/Agent `Item` and the Known Node hosting it. `(sourceId, nodeId)` is a unique pair: the
-same source can run on several different Nodes at once, but not twice on the same Node. Each
-running copy consumes one **Processor Limit** slot on its Node. Requires at least `user`
-**Access Level** on that Node to start.
-_Avoid_: Running Instance (earlier working name)
-
 **Matrix Test**:
-A dice pool test using a Commlink stat (Response, System, Firewall, or Signal) combined with a
-Program rating. Parallel in structure to a skill test (Attribute + Skill).
-_Avoid_: hacking roll, matrix roll (use Matrix Test)
+A test rolling a Matrix Attribute + a Program — the matrix counterpart of Attribute + Skill.
+_Avoid_: hacking roll, matrix roll
 
-**Contact**:
-An NPC with whom a Runner has an established relationship, rated by **Connection** (how useful
-and well-networked they are) and **Loyalty** (how much they like the Runner). Currently stored
-as reference data for legwork and roleplay tracking only — no mechanical integration. A planned
-upgrade will let players roll checks through a contact to locate gear or gather information for
-a Nuyen fee.
-_Avoid_: ally, NPC (too broad)
+### Gear
 
 **Item**:
-Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
-implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
-section headings, e.g. "Add Gear") — code identifiers (types, props, filenames, directories) use
-**Item**, not Gear. _(A rename of the remaining Gear-named code identifiers to `Item`-prefixed
-equivalents is planned; user-facing copy is unaffected. Renaming the persisted `RunnerData.gear`
-field itself is a heavier, separate decision needing a migration rather than a plain find-and-
-replace, and not yet decided whether it's in scope.)_
-_Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
+Any physical or digital piece of equipment a Runner owns — armor, firearms, implants, devices,
+programs, vehicles, and so on. "Gear" is acceptable in on-screen wording.
+_Avoid_: gear (outside on-screen wording)
+
+**Attachment**:
+An Item mounted on, installed in, or otherwise belonging to another Item — a scope on a rifle, a
+Licence on a SIN. Attachments can have attachments of their own.
+_Avoid_: child item, accessory (too weapon-specific), mod
 
 **Equipped**:
-`ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
-owned. Currently opt-in per `ItemType`: only weapons and armor expose the toggle; other item
-types don't offer it. `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item
-opt-in on every `ItemType` instead, as part of unifying it with **Stash** into one action menu.
-Mutually exclusive with **Stashed** — an item is never both Equipped and Stashed at once; stashing
-clears Equipped and restores it automatically on un-stash (see **Stash**).
+Whether an Item is actively worn or wielded right now, as opposed to merely owned. Never true of a
+**Stashed** Item.
 
 **Stashed**:
-`ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
-safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. Stashing an item always clears **Equipped**, restoring its prior value automatically
-on un-stash. A stashed item is greyed out and sorted to the bottom of gear listings, and cascades
-to its child items (stashing a weapon stashes its attachments too).
-_Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
-unequipped, and not stashed, e.g. a spare pistol in a holster)
+Whether an Item has been left behind ("at the safehouse") rather than carried. Stashing an Item
+unequips it, and un-stashing restores whatever it was before; stashing an Item stashes its
+Attachments too. Stashed Items are greyed out and listed last.
+_Avoid_: unequipped (an Item can be carried and unequipped, e.g. a spare pistol in a holster)
 
 **Available**:
-The inverse of **Stashed** — `!item.stashed`, i.e. an item the Runner currently has on hand,
-regardless of whether it's **Equipped**. Used to exclude stashed gear from listings and logic that
-only care about carried items — e.g. gear-list filtering and the **License Check** lane filters.
-_Avoid_: confusing with **Availability** (the Item legality/rating term below) — unrelated
-concept that happens to share the word
+Not **Stashed** — an Item the Runner has on hand, Equipped or not.
+_Avoid_: confusing with **Availability**, an unrelated Item term
 
 **Vehicle**:
-An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
-track) and requires a **StatusSheet** during play, same as Spirit and Sprite.
+An Item with its own stat block (Pilot, Sensor, Armor, Body, damage track) that needs a
+**StatusSheet** during play, like a Spirit or Sprite.
 _Avoid_: asset, transport
 
 **Drone**:
-A conceptual subtype of Vehicle — typically small, unmanned, and remote-controlled. Has no
-mechanical distinction from a Vehicle in the data model; the same `ItemType.vehicle` is used.
-Any Vehicle can be a Drone, but not all Drones are cars, planes, ships, or tanks.
-_Avoid_: bot, UAV, UGV (use Drone)
+A small, unmanned, remote-controlled Vehicle. Mechanically no different from any other Vehicle.
+_Avoid_: bot, UAV, UGV
 
 **StatusSheet**:
-The in-play tracking view for a Spirit, Sprite, or Vehicle, showing its own damage
-track, stats, and session state independently of the Runner's main sheet.
-_Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet is the UI view)
-
-**Attachment**:
-An Item that is mounted on, installed in, or otherwise associated with a parent Item. Attachments
-may themselves have attachments (e.g. a scope on a rifle that also has a laser sight). Stored as
-sibling entries in `RunnerData.gear`; the relationship is expressed via `parentId` on the child and
-`childIds` on the parent, nested under `EntityWithItems.items` (see
-`docs/features/0015-entity-interface-decomposition.md`). `RunnerData` also implements
-`EntityWithItems`, always with a degenerate `{ parentId: null, childIds: [] }` — it is never a
-child and never attaches to anything itself.
-_Avoid_: child item, accessory (too weapon-specific), mod, attachmentIds/attachedToId (an earlier
-planned rename, superseded — the field names stay as `parentId`/`childIds`)
+The in-play tracking view for a Spirit, Sprite, Vehicle, or Agent — its own damage track, stats,
+and session state, separate from the Runner's main sheet.
+_Avoid_: mini-sheet, sub-sheet, stat block (the stat block is the data; the StatusSheet is the view)
 
 **SIN** _(System Identification Number)_:
-A matrix identity stored as an Item (`ItemType.sin`). Runners typically carry one or more fake
-SINs. Licences are logically tied to a SIN — owning a Restricted item legally requires a Licence
-on a SIN. There is no "active"/"in use" distinction between a Runner's SINs — every owned SIN is
-equally valid and equally eligible (e.g. for **License Check**), since a SIN is a held identity,
-not carried gear with a state of its own.
-_Avoid_: active SIN (there is no activity state — see above)
-_Avoid_: ID, identity (use SIN)
+A matrix identity. Runners usually carry one or more fake SINs. Every SIN a Runner holds is equally
+valid — there's no "active" SIN.
+_Avoid_: ID, identity, active SIN
 
 **Licence**:
-An Item (`ItemType.license`) granting legal permission to carry a Restricted piece of gear.
-Belongs to a SIN via the existing Attachment mechanism (`Licence.parentId` = the SIN's id). A
-Licence may cover multiple gear items — typically several instances of the same item, since a
-Licence generally certifies a gear type rather than a single serial number — via each covered
-Item's `licenseId` field; an item is covered by at most one Licence, so assigning an already-
-covered item to a different Licence silently moves it. Acquiring, changing, or removing the
-Licence covering a Restricted item is done from that item's own edit form (Builder and Viewer
-both); adding or removing the items a Licence covers is done from the Licence's own edit form.
-Not offered for **Forbidden** items — Forbidden gear has no legal Licence path. The Licence's
-rating always matches its SIN's reality — the Real SIN produces a free, unrestricted Real
-Licence with no rating to set; a Fake SIN produces a Fake Licence with an adjustable rating,
-defaulting to 3 (`DefaultFakeLicenseRating`). In the Builder the Licence is simply added (its
-cost counts toward the Gear BP budget like any other item); in the Viewer, Nuyen is withdrawn
-unless the Player chooses "Acquire" (free, matching the existing acquire/purchase distinction on
-new gear). _(Formerly acquired through a standalone Quick-Buy dialog; see
-`docs/adr/0007-license-management-moves-into-item-form.md`.)_
-_Avoid_: permit, registration; Licence Quick-Buy (retired term — see ADR-0007)
+Legal permission to carry Restricted gear, issued against a SIN. One Licence can cover several
+Items, usually several of the same kind, but each Item is covered by at most one Licence. A Real
+SIN's Licence is Real and has no rating; a Fake SIN's Licence is Fake and has a rating (3 unless
+changed). Forbidden gear can never be licensed.
+_Avoid_: permit, registration
 
 **Availability**:
-A rating + restriction code on an Item describing how hard it is to obtain and whether ownership
-is legal. Restriction codes: none (legal), **Restricted** (`R`, requires Licence), **Forbidden**
-(`F`, illegal to own). Displayed via `AvailabilityChip`.
+How hard an Item is to obtain and whether owning it is legal: a rating plus a restriction —
+none (legal), **Restricted** (needs a Licence), or **Forbidden** (illegal to own).
 
-**License Check** _(not yet implemented — see `docs/features/0011-license-check-dialog.md`)_:
-A simulated security scan of a Runner's carried gear: every owned SIN and every Restricted item is
-Opposed-Tested against a **Verification System Rating** to see whether its credentials hold up.
-Player self-check only — there is no GM-triggered variant.
-_Avoid_: security check, license scan (use License Check)
+**License Check**:
+A simulated security scan of what a Runner is carrying: every SIN and every Restricted Item is
+tested against a **Verification System Rating** to see whether its credentials hold up. Only the
+Player runs it on themselves; there's no GM-triggered version.
+_Avoid_: security check, license scan
 
-**Verification System Rating** _(not yet implemented — see `docs/features/0011-license-check-dialog.md`)_:
-The 1–6 rating representing a scanning system's strength for one **License Check** run; a fresh
-Player-chosen value each run, not persisted or tied to any location. Forms one side of each
-Opposed Test in that check.
+**Verification System Rating**:
+The 1–6 strength of the scanning system in one License Check, chosen fresh by the Player each time.
+
+### Effects & Rules
 
 **GameEffect**:
-A mechanical modifier that changes a derived stat — e.g. an attribute bonus, dice pool modifier,
-extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
-(cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Complex Forms**, **Adept
-Powers**, drugs, matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others.
-How a source's effects resolve onto a target is **Scope**'s job — see **Granted Effects** /
-**Applied Effects** below. These sources are a *subset* of **Entity**, not all of it — Spirit,
-Sprite, and Agent are Entities too but aren't GameEffect sources today; matrix connection mode is
-a state the Runner is in, not an Entity at all.
+A mechanical modifier to a derived stat — an attribute bonus, a dice pool modifier, extra
+initiative passes, a pain tolerance change. Comes from Items (cyberware, weapons, armor),
+Qualities, sustained Spells, Complex Forms, Adept Powers, drugs, or the Runner's matrix connection
+mode (AR, hot-sim VR, cold-sim VR). Spirits, Sprites, and Agents are Entities but don't grant
+GameEffects; a connection mode is a state the Runner is in, not an Entity.
 _Avoid_: modifier, bonus (too generic)
 
 **Granted Effects**:
-The `GameEffect` entries a single source (an Item, Quality, Spell, ...) directly carries as its
-own. Contrast with **Applied Effects**.
+The GameEffects a single source carries as its own.
 
 **Applied Effects**:
-The `GameEffect` entries that actually resolve onto a given target — an Item, or the Runner
-itself — once every source's **Scope** has been evaluated relative to that source's own position
-in the item tree. See `docs/adr/0011-game-effect-scope-resolution.md`.
-_Avoid_: "effects for X" (ambiguous with Granted Effects — always say "applied to" or "granted
-by")
+The GameEffects that actually land on a given target — an Item or the Runner — once every source's
+**Scope** has been worked out from where that source sits among the Runner's Items.
+_Avoid_: "effects for X" (ambiguous — say "applied to" or "granted by")
 
 **Scope**:
-Declares which item instance(s) a `GameEffect` reaches, independent of *what* it modifies.
-Defaults to reaching only the item that grants the effect — or the Runner, for effects not
-attached to an Item. Can instead be widened to that item's parent, children, or siblings, or to
-its full chain of ancestors or descendants; or widened by first climbing to the top of its
-ownership chain, so one item's effect can reach its siblings too (e.g. a drone's autosoft
-reaching the other weapons mounted on that same drone, not just its own descendants — it has
-none). Can also be narrowed to a specific kind of item. The Runner itself is the only valid
-starting point for effects not attached to an Item (Qualities, Spells, Complex Forms, Powers),
-since those aren't part of the Item ownership tree.
-_Avoid_: "target" for describing which item(s) a Scope reaches — a `GameEffect`'s `target`
-means something unrelated (see **Pool Id**)
+Which Items a GameEffect reaches, independent of what it modifies. By default, only the Item that
+grants it (or the Runner, for effects not on an Item). It can be widened to that Item's parent,
+children, siblings, all ancestors, or all descendants, or to everything under the top of its
+ownership chain (e.g. a drone's autosoft reaching the other weapons mounted on the same drone). It
+can also be narrowed to one kind of Item. Effects from Qualities, Spells, Complex Forms, and Powers
+always start from the Runner.
+_Avoid_: target (reserved for which dice pool an effect modifies — see **Pool Id**)
 
 **Source**:
-A reference to the rulebook and page number where a rule or item is defined
-(e.g. `{ book: "SR4A", page: 42 }`).
+The rulebook and page where a rule or item is defined (e.g. SR4A p.42).
 
 **Optional Rule**:
-A published variant rule from a Shadowrun source book that modifies core SR4e mechanics and must
-be explicitly opted into. Stored as `featureFlags.optionalRules` on a Runner, carries a `Source`
-citation, and is disabled by default. See `docs/adr/0002-feature-flags-design.md`.
-_Avoid_: house rule (a House Rule is app-invented; an Optional Rule is from a source book — see
-below)
+A published variant rule from a Shadowrun sourcebook that changes core SR4 mechanics. Always cites
+its Source and is off unless a table turns it on.
+_Avoid_: house rule
 
-**House Rule** _(not yet implemented — see `docs/adr/0005-house-rules-feature-flag-namespace.md`)_:
-An app-invented mechanical choice that isn't from a Shadowrun source book — so it carries no
-`Source` citation — but still needs to be toggleable per table. Stored as `featureFlags.houseRules`.
-Each House Rule sets its own default (often enabled, since it's usually core to how a feature was
-designed to behave) rather than uniformly defaulting to disabled like Optional Rules.
-_Avoid_: optional rule (reserve for published sourcebook variants — see above)
+**House Rule**:
+A mechanical choice the app itself invents, with no sourcebook behind it, that a table can still
+switch on or off. Each House Rule picks its own default — often on, since it's usually how a
+feature was designed to work.
+_Avoid_: optional rule
 
 ### Dice
 
 **Dice Pool**:
-The number of d6s rolled for a test. Assembled from Attribute + Skill (or Program for matrix
-tests) plus any active **GameEffect** modifiers. The Wound Modifier subtracts from the pool. Every
-Dice Pool carries a stable **Pool Id** so a GameEffect can target it.
+The number of d6s rolled for a test: Attribute + Skill (or Matrix Attribute + Program), plus any
+GameEffects, minus the Wound Modifier. Every Dice Pool belongs to a **Pool Id**, which is what
+GameEffects target.
 
 **Pool Id**:
-A stable identifier for a Dice Pool's category — what kind of test it is — independent of any
-specific item. Organized as a tree with a hand-authored branch shape (e.g. Active Skills,
-Knowledge Skills, Attack); branches backed by a fixed list (like Active Skills) generate one leaf
-per entry in that list, while free-text branches (Knowledge Skills, Languages, which a Player
-types in themselves rather than picking from a fixed list) generate one leaf per entry the Player
-has actually added — which is why those entries need an identity independent of their display
-name (see **Skill**). A free-text branch can also be targeted as a whole (e.g. "all Knowledge
-skill tests"). The tree's grouped, human-readable labels ("Skills / Active Skills / Data Search")
-are for browsing only and don't need to match the identifier's own internal form.
-_Avoid_: "target" used bare without saying "pool" — conflicts with **Scope**, a different concept
-that also answers a "which" question
+Which kind of test a Dice Pool is, independent of any particular Item. Pool Ids form a tree of
+categories (e.g. Active Skills, Knowledge Skills, Attack), with one entry per Active Skill and one
+per Knowledge or Language skill the Player has added. A whole branch can be targeted at once (e.g.
+"all Knowledge skill tests").
+_Avoid_: target (without saying "pool") — conflicts with **Scope**
 
 **Hit**:
-A die result of 5 or 6. Hits are counted against a **Threshold** to determine success.
+A die showing 5 or 6. Hits are counted against a **Threshold**.
 
 **Threshold**:
-The target Hit count a test must meet or exceed to succeed (`DiceTrayState.threshold`). Set
-directly for a **Standard Test**, or accumulated toward across multiple rolls for an **Extended
-Test**. An **Opposed Test** has no Threshold — the two pools are compared to each other instead.
+The number of Hits a test needs to succeed — met in one roll for a **Standard Test**, or built up
+over several for an **Extended Test**. An **Opposed Test** has none.
 
 **Standard Test**:
-A single **Dice Pool** rolled against a fixed **Threshold** (a target Hit count); meeting or
-exceeding it succeeds. The default test type in the dice tray.
+One Dice Pool rolled against a Threshold. The default kind of test.
 
 **Opposed Test**:
-Two Dice Pools compared against each other; the side with more Hits wins (net Hits = difference).
-In the dice tray (`TestType.Opposed`), only the Player's own pool is rolled digitally — the
-opposing side's Hit count (`opposedHits`) is entered manually, since the app does not track the
-opposing character. **License Check** (`docs/features/0011-license-check-dialog.md`) is a second
-consumer of the same concept, but rolls both sides digitally in one place since both pools belong
-to values the app already tracks.
+Two Dice Pools rolled against each other; the side with more Hits wins by the difference (net
+Hits). When the other side is someone the app doesn't track, the Player enters their Hits by hand.
 
 **Extended Test**:
-A **Standard Test** repeated across multiple rolls, accumulating Hits toward the Threshold over
-time (`extendedInterval`); each intermediate roll is logged (`extendedHistory`), and
-`shrinkingPool` optionally removes a die from the pool each subsequent roll.
+A Standard Test rolled repeatedly over time, adding up Hits toward the Threshold, with each roll
+recorded. Optionally the pool shrinks by one die per roll.
 
 **Hidden Test**:
-_Not yet implemented._ In SR4e, a Hidden Test is rolled without revealing the Hit count to the
-Player (typically Perception-type tests), so a failure can't be distinguished from nothing to
-notice.
+A test whose Hits are kept from the Player (typically Perception), so failing looks the same as
+there being nothing to notice.
 
 **Glitch**:
-Triggered when half or more of the dice in the pool show 1s. A **Critical Glitch** occurs when
-the pool also scores zero hits.
+Half or more of the dice show 1s. A **Critical Glitch** is a Glitch with zero Hits.
 
 **Digital Roll**:
-The app assembles the dice pool, rolls digitally, and displays the hit count and glitch status.
+The app builds the pool, rolls it, and shows the Hits and any Glitch.
 
 **Physical Roll**:
-The Player rolls real dice and records the result in the app. The app still provides the
-calculated pool size; the Player enters hits (and optionally the 1s count for glitch detection).
+The Player rolls real dice and enters the result; the app still works out the pool size.
 
 ### App Contexts
 
 **Builder**:
-The character creation and editing mode. Operates on a BP budget, allows structural changes to
-a Runner (metatype, awakening, attribute allocation, quality selection).
+The mode for creating and restructuring a Runner — metatype, awakening, attribute allocation,
+quality selection — against their creation budget.
 _Avoid_: editor, creator, creation mode
 
 **Viewer**:
-The play-time mode for an existing Runner. Used to track damage, roll dice, spend Edge, and
-manage active resources during a session.
+The play-time mode for an existing Runner: tracking damage, rolling dice, spending Edge, and
+managing resources during a session.
 _Avoid_: sheet view, player view, read mode
 
-### Infrastructure
-
-**RunnerMeta**:
-Versioning metadata embedded in every `RunnerData` record. Holds `sinVersion` — the value
-`applyMigrations` compares against each registered Migration's timestamp to decide which
-Migrations still need to run — plus `appVersion` (informational only) and the Runner's most
-recent export timestamp.
-
-**SIN Version**:
-`RunnerMeta.sinVersion` — an ISO 8601 timestamp identifying the Runner's most recent successful
-**Migration** run. The only field `applyMigrations` gates pending Migrations on; individual
-Migrations never read or write it. Stamped to the **Migration Timestamp** of the most recently
-registered Migration that ran whenever a Migration actually runs against the Runner — a fully
-migrated Runner's `sinVersion` always exactly equals `LATEST_MIGRATION_TIMESTAMP`.
-_Avoid_: app version, appVersion (that field is informational only and plays no part in deciding
-which migrations run — see below)
-
-**App Version**:
-The running app's own version: the timestamp of the latest commit on the default branch, baked in
-at build time, or the dev server's start time under `yarn dev`. Stamped onto a Runner's
-`RunnerMeta.appVersion` (alongside `RunnerMeta.sinVersion`) after `applyMigrations` runs any
-pending Migrations against it. `RunnerMeta.appVersion` is purely informational, recording which
-build last touched the Runner; it is never compared against a Migration's timestamp.
-
-**RunnerId**:
-A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
-`local|3f8a…`). A plain UUID with no `|` defaults to the `"local"` source. Because the source is
-embedded in the ID, copying a Runner to a different storage location always produces a new
-`RunnerId` with a new UUID — a copy is a distinct Runner, not a replica.
-_Avoid_: UUID alone (ambiguous without source), character key, CharacterId
-
-**StorageSource**:
-A named, pluggable persistence backend (e.g. `"local"` for `localStorage`, `"gdrive"` for Google
-Drive). A Runner belongs to exactly one source at a time; moving it to another source requires
-generating a new `RunnerId`. The underlying `localStorage` key format is a fixed historical string
-and was intentionally not renamed alongside the `character` → `runner` identifier rename —
-changing it would orphan every already-saved Runner. The migration system and its legacy-format
-detection still reference `character`-shaped literal strings on purpose.
-
 **Session State**:
-Combat-round and in-session data stored directly on `RunnerData` (e.g. initiative rolls, passes
-completed, sustained spells). Persisted to the active **StorageSource** on every change — not
-cleared between sessions — so that a page reload does not lose in-progress combat. A future
-`SessionApi` backed by the browser's `sessionStorage` may provide a separate, tab-scoped tier
-for truly transient state, but all state is currently written to the primary source.
-_Avoid_: temporary state, volatile state (all state is durable by design)
+In-play details such as initiative rolls, completed passes, and sustained spells. Saved as durably
+as everything else, so reloading the page mid-combat loses nothing.
+_Avoid_: temporary state, volatile state
+
+### Storage & Versioning
+
+**Runner ID**:
+What uniquely identifies a Runner: which **Storage Source** it lives in plus a unique code. Copying
+a Runner to another Storage Source produces a new Runner with a new ID, not a replica.
+_Avoid_: character key
+
+**Storage Source**:
+Where a Runner is saved — e.g. this browser or Google Drive. A Runner lives in exactly one at a
+time.
 
 **Migration**:
-A single, immutable schema-upgrade step that transforms one version of `RunnerData` into the
-next. Migrations operate on potentially invalid or incomplete data and must never be edited after
-commit — if a migration has a bug, a new migration fixes the output. Each migration has a
-**Migration Timestamp** — its creation date; only migrations newer than a Runner's
-`RunnerMeta.sinVersion` are ever applied, in ascending timestamp order — individual migrations
-don't check the current SIN version themselves. Because migration files must never be edited, the
-shared migration type and the migration files themselves were deliberately left out of the
-`character`→`runner` identifier rename — renaming the shared type would have forced an edit into
-every migration file.
-_Avoid_: upgrade, patch, update (use migration)
+One permanent upgrade step that brings saved Runners from an older data shape to a newer one. A
+Migration is never changed once released; a mistake is fixed by a later Migration. Each carries a
+**Migration Timestamp**, and a Runner only goes through the ones newer than its **SIN Version**, in
+order.
+_Avoid_: upgrade, patch, update
 
 **Migration Timestamp**:
-A Migration's creation date, as an ISO 8601 string — the value its filename is prefixed with and
-its `timestamp` field holds. A CI check enforces that every new Migration's timestamp is newer
-than the base branch's **SIN Version** (the highest Migration Timestamp already registered there),
-so that a Runner already fully migrated on the base branch is guaranteed to pick up the new
-Migration once merged, instead of silently skipping it forever.
+When a Migration was created. Every new Migration must be newer than all released ones, so that
+already-upgraded Runners still pick it up.
 
-**Selector**:
-A function that reads a derived value from Runner or Entity state — read via `useRunnerSelector`
-for the Runner's own state, or `useEntitySelector` for whichever Entity is currently in scope. A
-Selector *collects*: it gathers whatever a calculation needs out of state without interpreting it.
-_Avoid_: this term for a `<Select>` form field's dropdown choices — those are **Options**, an
-unrelated UI-form concept.
+**SIN Version**:
+The Migration Timestamp of the last Migration a Runner went through — the only thing that decides
+which Migrations it still needs. Unrelated to a **SIN**.
+_Avoid_: app version
 
-**Formula**:
-A pure function in `system/` encoding one SR4A calculation. A Formula *decides*: given whatever a
-Selector collected, it computes what the rule actually says. A Formula is always reached through a
-Selector — never called directly by a hook or component. See
-`docs/adr/0015-formulas-for-rule-calculations.md` for the input rules and naming convention.
-_Avoid_: "calculator" (use Formula); "rule" (Rule is reserved for Optional Rule / House Rule, both
-sourcebook/table-variant concepts unrelated to code structure)
+**App Version**:
+Which build of the app last saved a Runner. For reference only; it never decides which Migrations
+run.
 
 ## Relationships
 
-- A **Player** manages one or more **Runners**; a **Game** groups multiple Players' Runners
-  under a single GM _(Game not yet implemented)_
-- A **Runner** belongs to exactly one **StorageSource** at a time; copying to another source
-  generates a new **RunnerId** (new UUID + new source prefix) — the copy is a distinct Runner
-- **RunnerData** holds its item collection at `_data_.items` (an `ItemContainer`, keyed by id) —
-  **Attachment** relationships are expressed via `parentId` on the child and `childIds` on the
-  parent, nested under `EntityWithItems.items`; attachments may nest recursively. `RunnerData`
-  itself implements `EntityWithItems` too, always with a degenerate empty value — see
-  `docs/features/0015-entity-interface-decomposition.md`
-- **GameEffect** entries attach to a subset of **Entities** — Items, Qualities, Spells, Complex
-  Forms, and Adept Powers, not Spirits/Sprites/Agents — never stored directly on base attributes.
-  Each entry's **Scope** is resolved relative to its own source's position in the Item ownership
-  tree, independent of what the effect modifies (see `docs/adr/0011-game-effect-scope-resolution.md`)
+- A **Player** manages one or more **Runners**; a **Game** groups several Players' Runners under
+  one GM.
+- A **Runner** lives in exactly one **Storage Source**; copying it elsewhere makes a new Runner.
+- An **Item** can have **Attachments**, which can have their own, to any depth.
+- An **Item** can have a **Matrix Entity**, which makes it a **Node**. A **Program** is **Loaded**
+  on exactly one Matrix Entity and can be **Running** on any number of Nodes.
+- An **Agent** is both a **Program** and a **Matrix Entity**, so Programs can be Loaded and Running
+  on an Agent, which is itself Loaded and Running somewhere else.
+- **GameEffects** come from Items, Qualities, Spells, Complex Forms, and Adept Powers — never from
+  Spirits, Sprites, or Agents — and each one's **Scope** is worked out from where its source sits
+  among the Runner's Items.
 - **Karma** and **Build Points** are separate economies: BP is creation-only, Karma is
-  post-creation
-- An **Awakening** of Adept, Magician, or Mystic Adept unlocks the **Magic** special attribute;
-  Technomancer unlocks **Resonance**; Mundane locks both to 0
+  post-creation.
+- An **Awakening** of Adept, Magician, or Mystic Adept unlocks Magic; Technomancer unlocks
+  Resonance; Mundane and None lock both to 0.
 
 ## Example dialogue
 
-> **Dev:** "When a user buys new **gear**, do we deduct from **Karma** or **Nuyen**?"
-> **Domain expert:** "Gear costs **Nuyen**, not Karma. Karma is only for improving **Attributes**,
-> **Skills**, and buying **Qualities** after creation."
+> **Dev:** "When a Runner buys new gear, do we deduct **Karma** or **Nuyen**?"
+> **Domain expert:** "Gear costs **Nuyen**. Karma is only for improving **Attributes** and
+> **Skills** and buying **Qualities** after creation."
 >
-> **Dev:** "What's the difference between the `sheet` prop and a `RunnerData` type?"
-> **Domain expert:** "They're the same thing. `sheet` is just the variable name convention;
-> `RunnerData` is the type. We kept the alias so we didn't have to rename every selector."
+> **Dev:** "If I **Terminate** the sniffer program on the corp server, is it gone from my
+> commlink?"
+> **Domain expert:** "No — it's still **Loaded** on your commlink. It just isn't **Running** on
+> that **Known Node** any more."
 
 ## Flagged ambiguities
 
-- `CharacterSheet` was used as the root type to avoid a naming collision with `CharacterData` (a
-  DOM/Node global). Resolved: canonical type name is **RunnerData**; `sheet` is the variable-name
-  alias.
-- `character` as a variable name was overloaded between Runner identity and `RunnerData` payload.
-  Resolved: use `sheet` for the data payload variable; `runner` for identity/display contexts.
-- `CharacterId`, `CharacterManager`, and the various `character`-named identifiers were renamed to
-  `RunnerId`, `RunnerManager`, etc. Resolved, with one deliberate exception: the `localStorage` key
-  literals, the legacy YAML export's field detection, and the migration subsystem were left
-  untouched — see **StorageSource** and **Migration** above.
+- "Character" meant both the Runner and the record holding their data. Resolved: say **Runner**.
+- "Node" meant only hacked systems, excluding the Runner's own devices. Resolved: a **Node** is any
+  Matrix Entity you can connect to; a **Known Node** is one you don't own.
+- "Active" is used for the **Active Node**, activating a **Focus**, and **Active** Skills. A
+  Program on a Node is **Running**, never "active".
+- **Available** (not stashed) and **Availability** (how hard an Item is to obtain) are unrelated.
+- **Rating** and **AI Rating** are unrelated.
