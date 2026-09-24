@@ -2,8 +2,8 @@ import type { ActiveProgram } from "./activeProgram.ts"
 import type { KnownNode } from "./knownNode.ts"
 
 /**
- * Player-facing Matrix session-management state — see CONTEXT.md's **Matrix Game State**
- * glossary entry. Every other Known Node besides the Active Node is informally a "subscription";
+ * Player-facing Matrix session-management state: the Runner's Known Nodes, Active Node, and
+ * what's Running on them — see CONTEXT.md's **Known Node** and **Active Node** glossary entries. Every other Known Node besides the Active Node is informally a "subscription";
  * nothing marks them separately.
  */
 export interface MatrixGameState {

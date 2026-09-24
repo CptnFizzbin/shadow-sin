@@ -184,6 +184,9 @@ interface AgentData extends ProgramData, EntityWithAttrs, EntityWithDamage {
 - [`docs/features/0015-entity-interface-decomposition.md`](./0015-entity-interface-decomposition.md)
   — the `EntityWithAttrs`/`EntityWithDamage` capability traits Agent composes onto the base Item
   shape
+- [`docs/features/0018-matrix-entities.md`](./0018-matrix-entities.md) — next design round:
+  Matrix Entities, Loaded/Running Programs, and Agents; supersedes this doc's `matrix?: true |
+  MatrixStats` presence and `ActiveProgram` model for everything except Known Nodes
 - [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) — the attribute
   unification and Agent-as-Item decisions this feature is built on
 

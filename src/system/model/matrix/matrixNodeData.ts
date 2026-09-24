@@ -10,7 +10,7 @@ import { NodeType } from "./nodeType.ts"
 
 /**
  * A hackable system in the Matrix — a corp server, security system, or other host a Runner can
- * connect to and gain an account on. See CONTEXT.md's **MatrixNode** glossary entry.
+ * connect to and gain an account on. See CONTEXT.md's **Node** and **Known Node** glossary entries.
  *
  * `matrix` is always fully specced (never derived from a Rating) — a `MatrixNode`'s entire
  * purpose is being a Matrix presence, so it carries no separate `rating` fallback.

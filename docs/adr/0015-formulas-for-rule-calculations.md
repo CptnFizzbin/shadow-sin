@@ -23,7 +23,7 @@ value for no reason beyond satisfying a directory convention.
 
 ## Decision
 
-**Formula** (see `CONTEXT.md`) names the extracted concept: a pure function in `system/`, grouped
+**Formula** names the extracted concept: a pure function in `system/`, grouped
 into a `Xxx`**`Formulas`** namespace with `get*` methods — `DamageFormulas.getWoundMod`,
 `AttrFormulas.getValue`, `ReputationFormulas.getLedgerAdjustedValue` — mirroring ADR-0014's
 `XxxSelectors`/`select*` namespaces one for one. A Selector passes a Formula **by reference** as
@@ -105,8 +105,9 @@ if it doesn't.
   into a named, independently unit-tested Formula and passed by reference; the Selector's own
   signature and every call site are unaffected. For `selectWoundIntervalModifier` specifically,
   this means the *whole* combiner body moves, GameEffect walking included — see below.
-- `CONTEXT.md` gains the **Formula** term, cross-referenced from **Selector** — see `CONTEXT.md`
-  for the full definition and worked examples.
+- The Selector/Formula split — a Selector *collects* what a calculation needs from state, a
+  Formula *decides* what the rule says — is defined by this ADR. `CONTEXT.md` stays free of
+  code-structure terms, so neither is a glossary entry.
 - `GameEffect` accumulation (walking equipped items/Qualities for matching effects) and ledger
   summation move into `system/` as Formulas — `DamageFormulas.getWoundIntervalModifier({ qualities,
   items, track })`, `ReputationFormulas.getLedgerAdjustedValue({ base, ledger, stat })` — rather
