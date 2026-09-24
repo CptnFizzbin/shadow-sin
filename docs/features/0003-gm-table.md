@@ -45,19 +45,21 @@ what's still in the air.
 
 ## Constraints
 
-- The existing `StorageSource` abstraction must accommodate a new cloud source (backed by
-  `api.shadowsin.app`) without breaking per-Player local storage.
-- A Runner copied to the cloud source must receive a new `RunnerId` (new UUID + new source
-  prefix) — a copy is a distinct Runner, not a replica. Adding an already-cloud-stored Runner to
-  a Table does not mint another new `RunnerId` — see Runner ownership above.
-- Google Drive integration currently exists only as a placeholder stub; unrelated to this
-  feature, which introduces its own separate cloud source instead of building on `gdrive`.
+- The existing `StorageSource` abstraction must accommodate a new cloud source (`api.shadowsin.app`)
+  without breaking per-Player local storage.
+- Moving a Runner into the cloud source mints a new `RunnerId`, same as any cross-source copy;
+  adding it to a Table afterward does not mint another one — see Runner ownership above.
+- Google Drive integration is an unrelated placeholder stub — this feature adds its own cloud
+  source rather than building on `gdrive`.
 
 ## Domain Notes
 
 - **Table** — a GM-managed group linking Players and their Runners
 - **Game Master (GM)** — creates and manages the Table
 - **Player** — joins a Table; manages their own Runners within it
+- **Account** — a login identity on `api.shadowsin.app`; every GM and Player has one
+- **Invite Code** — a Table-scoped code that lets a Player join a Table; identifies which Table,
+  not who's joining
 - **StorageSource** — named, pluggable persistence backend; this feature introduces a new cloud
   source backed by `api.shadowsin.app`
 - **RunnerId** — `source|uuid`; copying a Runner to a new source always generates a new ID
