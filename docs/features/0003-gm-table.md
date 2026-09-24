@@ -70,6 +70,12 @@ what's still in the air.
       mounted volume, so it survives container rebuilds. The client stays on GitHub Pages, so the
       server has to allow cross-origin requests from the client's origin.
 
+- [x] **Staying logged in — an HttpOnly session cookie.** After login, `api.shadowsin.app` sets
+      a `Secure`, `HttpOnly`, `SameSite=Lax` session cookie, and the client sends it with
+      credentialed requests. The client (`shadowsin.app`) and the server (`api.shadowsin.app`)
+      are the same site, so the cookie works without cross-site workarounds. The server accepts
+      credentialed cross-origin requests from `https://shadowsin.app` only.
+
 ## Constraints
 
 - The server is fully optional. Every existing feature must keep working with no server and no
