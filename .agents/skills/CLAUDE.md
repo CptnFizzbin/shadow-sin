@@ -22,5 +22,4 @@ instructions; the description here is the skill's own frontmatter `description`.
 | [`ubiquitous-language`](./ubiquitous-language/SKILL.md) | Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. |
 | [`write-a-skill`](./write-a-skill/SKILL.md) | Create new agent skills with proper structure, progressive disclosure, and bundled resources. |
 
-See also `AGENTS.md` → "Skills inventory" for the same list grouped by theme, and
-`.agents/skills/fallow/SKILL.md` for the fallow command reference used throughout `AGENTS.md`.
+See also `.agents/skills/fallow/SKILL.md` for the fallow command reference used in `AGENTS.md`.
