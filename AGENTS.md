@@ -137,28 +137,10 @@ checks entirely and hides real type incompatibilities.
 
 ## MUI
 
-Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**. Do not
-pass props that merely repeat a default — if the theme already sets `gap`, `padding`, `fontSize`, `variant`,
-`size`, `color`, etc., omitting the prop produces the same result and keeps the code easier to read.
+Only pass MUI style props that deviate from the theme defaults, and use MUI CSS variables (not palette callbacks) for
+theme-responsive styles. Read the full rules in `.agents/guidelines/mui.md` before writing or editing MUI code:
 
-```tsx
-// ✅ — no padding/gap props; theme defaults apply
-<Stack>…</Stack>
-
-// ✅ — intentionally overrides the default gap for a tighter list
-<Stack gap={0.5}>…</Stack>
-
-// ❌ — just repeats the theme default, adds noise
-<Stack gap={2} variant="outlined">…</Stack>
-```
-
-This applies to every MUI component: `Stack`, `Paper`, `Typography`, `Button`, `TextField`, `Chip`, etc. When in
-doubt, omit the prop and let the theme do the work.
-
-`colorSchemeSelector: "data"` is active, so palette callbacks like `(t) => t.palette.background.paper` return static hex
-values that won't respond to color-scheme changes. Use CSS variable strings instead:
-`"var(--mui-palette-background-paper)"`, and channel variables for opacity tints:
-`"rgba(var(--mui-palette-error-mainChannel) / 0.15)"`.
+@.agents/guidelines/mui.md
 
 ## Dialogs and forms
 
@@ -227,8 +209,8 @@ change resolves them.
 
 ## Agent skills
 
-- **Issue tracker:** GitHub Issues on `CptnFizzbin/shadow-sin` — see `docs/agents/issue-tracker.md`.
+- **Issue tracker:** GitHub Issues on `CptnFizzbin/shadow-sin` — see `.agents/guidelines/issue-tracker.md`.
 - **Triage labels:** `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` — see
-  `docs/agents/triage-labels.md`.
-- **Domain docs:** single-context repo (`CONTEXT.md` and `docs/adr/` at the root) — see `docs/agents/domain.md`.
+  `.agents/guidelines/triage-labels.md`.
+- **Domain docs:** single-context repo (`CONTEXT.md` and `docs/adr/` at the root) — see `.agents/guidelines/domain.md`.
 - **Skills:** `.agents/skills/CLAUDE.md` indexes every skill in `.agents/skills/`.
