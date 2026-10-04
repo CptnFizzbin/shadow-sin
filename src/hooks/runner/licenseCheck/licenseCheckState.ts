@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 
 import { buildLicenseCheckResult } from "#/components/system/licenseCheck/licenseCheckAlerts.ts"
 import { buildVerificationChecks } from "#/components/system/licenseCheck/licenseCheckChecks.ts"
+import { resolveActiveSinId } from "#/components/system/licenseCheck/licenseCheckLanes.ts"
 import type {
   LicenseCheckResult,
   VerificationCheck,
@@ -18,6 +19,10 @@ export interface LicenseCheckState {
 
   scannerRating: number
   setScannerRating: (rating: number) => void
+
+  /** The SIN being presented; `undefined` until chosen, which resolves to the Runner's first SIN. */
+  activeSinId: string | undefined
+  setActiveSinId: (sinId: string) => void
 
   items: ItemData[]
   setItems: (items: ItemData[]) => void
@@ -42,6 +47,7 @@ export function useLicenseCheckState(): LicenseCheckState {
 
   const [step, setStep] = useState<LicenseCheckStep>("setup")
   const [scannerRating, setScannerRating] = useState(3)
+  const [activeSinId, setActiveSinId] = useState<string | undefined>(undefined)
   const [items, setItems] = useState<ItemData[]>(() => Object.values(allGear))
   const [checks, setChecks] = useState<VerificationCheck[]>([])
   const [result, setResult] = useState<LicenseCheckResult | null>(null)
@@ -51,6 +57,9 @@ export function useLicenseCheckState(): LicenseCheckState {
 
     scannerRating,
     setScannerRating,
+
+    activeSinId: resolveActiveSinId(allGear, activeSinId),
+    setActiveSinId,
 
     items,
     setItems,
@@ -63,7 +72,7 @@ export function useLicenseCheckState(): LicenseCheckState {
     startScan: () => {
       // Built fresh here from the Setup checklist's current checked selection, flattened and
       // shuffled into one queue the worker pool pulls from — unchecked items are never scanned.
-      setChecks(buildVerificationChecks(allGear, items))
+      setChecks(buildVerificationChecks(allGear, items, activeSinId))
       setStep("scanning")
     },
     completeScan: (outcomes) => {
@@ -74,5 +83,5 @@ export function useLicenseCheckState(): LicenseCheckState {
       setStep("setup")
       setItems(Object.values(allGear))
     },
-  }), [step, scannerRating, items, checks, result, allGear])
+  }), [step, scannerRating, activeSinId, items, checks, result, allGear])
 }
