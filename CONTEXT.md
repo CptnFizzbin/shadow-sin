@@ -100,8 +100,8 @@ Contributes to **Public Awareness**. Independent of Street Cred — gaining one 
 other.
 
 **Public Awareness**:
-How recognisable the Runner is to the general public: Street Cred + Notoriety + a GM adjustment,
-which can be positive (extra exposure) or negative (exceptional anonymity).
+How recognisable the Runner is to the general public. Rises with Street Cred and Notoriety, and can be
+adjusted by the GM for extra exposure or exceptional anonymity. Never negative.
 _Avoid_: fame, infamy
 
 ### Progression & Economy

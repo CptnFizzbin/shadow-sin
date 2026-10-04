@@ -49,8 +49,8 @@ export namespace ReputationSelectors {
   )
 
   /**
-   * Calculates Public Awareness modifier from base value + ledger entries.
-   * Formula: profile.publicAwareness + sum of ledger entries where stat === "publicAwareness"
+   * Calculates Public Awareness from Street Cred, Notoriety, and ledger adjustments.
+   * Formula: max(0, floor((streetCred + notoriety) / 3) + sum of ledger entries where stat === "publicAwareness")
    */
   export const selectPublicAwareness = createMemoizedSelector(
     selectStreetCred,
@@ -59,50 +59,51 @@ export namespace ReputationSelectors {
     (streetCred, notoriety, ledger) => {
       const base = Math.floor((streetCred + notoriety) / 3)
 
-      return base + ledger
+      const adjustments = ledger
         .filter((entry) => entry.stat === ReputationStatType.publicAwareness)
         .reduce((sum, entry) => sum + entry.amount, 0)
+
+      return Math.max(0, base + adjustments)
     },
   )
 
-  export const selectPublicAwarenessRating = createMemoizedSelector(
-    selectStreetCred,
-    selectNotoriety,
-    selectPublicAwareness,
-    (streetCred, notoriety, modifier) => Math.floor((streetCred + notoriety + modifier) / 3),
-  )
-
+  /**
+   * Selects the Public Awareness rating with its rank title and flavour description: 0 New, 1-2 Known,
+   * 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend.
+   */
   export const selectPublicAwarenessInfo = createMemoizedSelector(
-    selectPublicAwarenessRating,
+    selectPublicAwareness,
     (awareness) => {
       const ranks = [{
-        title: "Nobody",
-        description: "",
-      }, {
-        title: "Shadow",
-        description: "",
-      }, {
-        title: "Mentioned",
-        description: "",
-      }, {
-        title: "Known",
-        description: "",
-      }, {
-        title: "Wanted",
-        description: "",
-      }, {
-        title: "Most Wanted",
-        description: "",
-      }, {
+        minRating: 10,
         title: "Legend",
-        description: "",
+        description: "You've made the record books. Everybody from the barrens to the arcologies knows your name, "
+          + "and some trideo exec is already pitching the biopic.",
       }, {
-        title: "Mythical",
-        description: "",
+        minRating: 8,
+        title: "Most Wanted",
+        description: "Most of the megacorps want a word, either because you're a prime asset or because you're "
+          + "too much drek to leave breathing.",
+      }, {
+        minRating: 6,
+        title: "Wanted",
+        description: "You've kicked up enough drek that at least one megacorp has your name on a list.",
+      }, {
+        minRating: 3,
+        title: "Criminal",
+        description: "The shadow community knows your handle, chummer, and corp security has a dossier on you.",
+      }, {
+        minRating: 1,
+        title: "Known",
+        description: "Word's getting around the street. You're starting to make a name for yourself.",
+      }, {
+        minRating: 0,
+        title: "New",
+        description: "Fresh meat on the scene. Nobody in the Sprawl knows your name, omae.",
       }]
 
-      const index = Math.min(awareness, ranks.length - 1)
-      return { rating: awareness, ...ranks[index] }
+      const rank = ranks.find((candidate) => awareness >= candidate.minRating)!
+      return { rating: awareness, title: rank.title, description: rank.description }
     },
   )
 
