@@ -48,7 +48,7 @@ const AdjustReputationDialog: FC<AdjustReputationDialogProps> = ({ ctrl }) => {
         <Dialog.Content>
           <Stack sx={{ gap: 2 }}>
             {/* Same full-size display as the About page's Reputation card */}
-            <ReputationDisplay />
+            <ReputationDisplay descriptionStyle="inline" />
 
             <Divider />
 
