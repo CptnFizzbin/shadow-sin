@@ -56,4 +56,16 @@ describe("ReputationDisplay", () => {
     // Assert
     expect((await screen.findByRole("tooltip")).textContent).toContain("starting to make a name for yourself")
   })
+
+  it("renders the rank description as text, without a help button, in inline mode", () => {
+    // Arrange
+    renderWithProviders(
+      <ReputationDisplay descriptionStyle="inline" />,
+      { runner: runnerDataFactory({ afterBuild: (sheet) => { sheet.karma.total = 40 } }) },
+    )
+
+    // Assert
+    expect(screen.getByText(/starting to make a name for yourself/)).toBeTruthy()
+    expect(screen.queryByRole("button", { name: "About the Known rank" })).toBeNull()
+  })
 })

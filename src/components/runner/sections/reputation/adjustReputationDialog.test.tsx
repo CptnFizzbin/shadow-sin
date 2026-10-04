@@ -37,6 +37,7 @@ describe("AdjustReputationDialog", () => {
     expect(screen.getByText("4")).toBeTruthy()
     expect(screen.getByText("0")).toBeTruthy()
     expect(screen.getByText("1 - Known")).toBeTruthy()
+    expect(screen.getByText(/starting to make a name for yourself/)).toBeTruthy()
     expect(screen.getByText("No reputation events recorded yet")).toBeTruthy()
   })
 
