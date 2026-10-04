@@ -28,7 +28,7 @@ function renderHarness(afterBuild?: (sheet: RunnerData) => void) {
 
 describe("AdjustReputationDialog", () => {
   it("shows the runner's current reputation values and an empty ledger", () => {
-    // Arrange / Act — streetCred=4, notoriety=0 ⇒ awareness rating floor((4+0)/3)=1 ("Shadow"):
+    // Arrange / Act — streetCred=4, notoriety=0 ⇒ awareness rating floor((4+0)/3)=1 ("New"):
     // this is the same full-size ReputationDisplay the About page uses, rank title included
     renderHarness((sheet) => {
       sheet.karma.total = 40
@@ -37,7 +37,7 @@ describe("AdjustReputationDialog", () => {
     // Assert
     expect(screen.getByText("4")).toBeTruthy()
     expect(screen.getByText("0")).toBeTruthy()
-    expect(screen.getByText("1 - Shadow")).toBeTruthy()
+    expect(screen.getByText("1 - New")).toBeTruthy()
     expect(screen.getByText("No reputation events recorded yet")).toBeTruthy()
   })
 

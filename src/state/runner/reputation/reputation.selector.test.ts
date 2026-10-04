@@ -143,17 +143,7 @@ describe.concurrent("ReputationSelectors.selectPublicAwareness", () => {
     expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(3)
   })
 
-  it("defaults the base modifier to 0 when unset", () => {
-    // Arrange
-    const runner = runnerDataFactory()
-
-    // Act / Assert
-    expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(0)
-  })
-})
-
-describe.concurrent("ReputationSelectors.selectPublicAwarenessRating", () => {
-  it("computes floor((streetCred + notoriety + modifier) / 3), including ledger adjustments", () => {
+  it("adds floor((streetCred + notoriety) / 3) to the ledger adjustments", () => {
     // Arrange
     const runner = runnerDataFactory({
       afterBuild: (data) => {
@@ -166,8 +156,16 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessRating", () => {
       },
     })
 
-    // Act / Assert: streetCred = floor(50 / 10) + 1 = 6; floor((6 + 2 + 1) / 3) = 3
-    expect(ReputationSelectors.selectPublicAwarenessRating(stateFor(runner))).toBe(3)
+    // Act / Assert: streetCred = floor(50 / 10) + 1 = 6; floor((6 + 2) / 3) + 1 = 3
+    expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(3)
+  })
+
+  it("defaults the base modifier to 0 when unset", () => {
+    // Arrange
+    const runner = runnerDataFactory()
+
+    // Act / Assert
+    expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(0)
   })
 })
 
@@ -181,16 +179,29 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessInfo", () => {
 
     // Assert
     expect(result.rating).toBe(0)
-    expect(result.title).toBe("Nobody")
+    expect(result.title).toBe("New")
   })
 
-  it("clamps the rank lookup to the last rank for very high ratings", () => {
+  it.each([
+    [0, "New"],
+    [1, "New"],
+    [2, "Known"],
+    [3, "Known"],
+    [4, "Criminal"],
+    [5, "Criminal"],
+    [6, "Wanted"],
+    [7, "Wanted"],
+    [8, "Most Wanted"],
+    [9, "Most Wanted"],
+    [10, "Legend"],
+    [30, "Legend"],
+    [-3, "New"],
+  ])("titles a rating of %i as %s", (rating, title) => {
     // Arrange
     const runner = runnerDataFactory({
       afterBuild: (data) => {
-        data.karma.total = 1000
         data.reputation.ledger = [
-          ReputationUtils.createLedgerEntry({ stat: ReputationStatType.notoriety, amount: 100, description: "testing" }),
+          ReputationUtils.createLedgerEntry({ stat: ReputationStatType.publicAwareness, amount: rating, description: "testing" }),
         ]
       },
     })
@@ -199,7 +210,8 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessInfo", () => {
     const result = ReputationSelectors.selectPublicAwarenessInfo(stateFor(runner))
 
     // Assert
-    expect(result.title).toBe("Mythical")
+    expect(result.rating).toBe(rating)
+    expect(result.title).toBe(title)
   })
 })
 
