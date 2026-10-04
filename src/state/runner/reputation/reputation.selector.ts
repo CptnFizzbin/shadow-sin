@@ -50,7 +50,7 @@ export namespace ReputationSelectors {
 
   /**
    * Calculates Public Awareness from Street Cred, Notoriety, and ledger adjustments.
-   * Formula: floor((streetCred + notoriety) / 3) + sum of ledger entries where stat === "publicAwareness"
+   * Formula: max(0, floor((streetCred + notoriety) / 3) + sum of ledger entries where stat === "publicAwareness")
    */
   export const selectPublicAwareness = createMemoizedSelector(
     selectStreetCred,
@@ -59,15 +59,17 @@ export namespace ReputationSelectors {
     (streetCred, notoriety, ledger) => {
       const base = Math.floor((streetCred + notoriety) / 3)
 
-      return base + ledger
+      const adjustments = ledger
         .filter((entry) => entry.stat === ReputationStatType.publicAwareness)
         .reduce((sum, entry) => sum + entry.amount, 0)
+
+      return Math.max(0, base + adjustments)
     },
   )
 
   /**
    * Selects the Public Awareness rating with its rank title and flavour description: 0 New, 1-2 Known,
-   * 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend. Ratings below 0 are ranked "New".
+   * 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend.
    */
   export const selectPublicAwarenessInfo = createMemoizedSelector(
     selectPublicAwareness,
@@ -95,7 +97,7 @@ export namespace ReputationSelectors {
         title: "Known",
         description: "Word's getting around the street. You're starting to make a name for yourself.",
       }, {
-        minRating: -Infinity,
+        minRating: 0,
         title: "New",
         description: "Fresh meat on the scene. Nobody in the Sprawl knows your name, omae.",
       }]

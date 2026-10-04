@@ -160,6 +160,20 @@ describe.concurrent("ReputationSelectors.selectPublicAwareness", () => {
     expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(3)
   })
 
+  it("never drops below 0, however negative the ledger adjustments are", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (data) => {
+        data.reputation.ledger = [
+          ReputationUtils.createLedgerEntry({ stat: ReputationStatType.publicAwareness, amount: -3, description: "Laid low" }),
+        ]
+      },
+    })
+
+    // Act / Assert
+    expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(0)
+  })
+
   it("defaults the base modifier to 0 when unset", () => {
     // Arrange
     const runner = runnerDataFactory()
@@ -194,7 +208,6 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessInfo", () => {
     [9, "Most Wanted"],
     [10, "Legend"],
     [30, "Legend"],
-    [-3, "New"],
   ])("titles a rating of %i as %s", (rating, title) => {
     // Arrange
     const runner = runnerDataFactory({
