@@ -28,8 +28,7 @@ function renderHarness(afterBuild?: (sheet: RunnerData) => void) {
 
 describe("AdjustReputationDialog", () => {
   it("shows the runner's current reputation values and an empty ledger", () => {
-    // Arrange / Act — streetCred=4, notoriety=0 ⇒ awareness rating floor((4+0)/3)=1 ("Known"):
-    // this is the same full-size ReputationDisplay the About page uses, rank title included
+    // Arrange / Act
     renderHarness((sheet) => {
       sheet.karma.total = 40
     })

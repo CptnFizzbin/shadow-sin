@@ -100,9 +100,8 @@ Contributes to **Public Awareness**. Independent of Street Cred — gaining one 
 other.
 
 **Public Awareness**:
-How recognisable the Runner is to the general public: floor((Street Cred + Notoriety) / 3) plus a GM
-adjustment, which can be positive (extra exposure) or negative (exceptional anonymity), never below 0. Ranks: 0 New,
-1-2 Known, 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend.
+How recognisable the Runner is to the general public. Rises with Street Cred and Notoriety, and can be
+adjusted by the GM for extra exposure or exceptional anonymity. Never negative.
 _Avoid_: fame, infamy
 
 ### Progression & Economy

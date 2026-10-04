@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react"
+import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { ReputationUtils } from "#/system/model/reputation/createLedgerEntry.ts"
@@ -34,7 +34,7 @@ describe("ReputationDisplay", () => {
   })
 
   it("shows Public Awareness as its rating alongside the rank title", () => {
-    // Arrange / Act — streetCred=floor(40/10)=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("Known")
+    // Arrange / Act
     renderDisplay((sheet) => {
       sheet.karma.total = 40
     })
@@ -42,5 +42,18 @@ describe("ReputationDisplay", () => {
     // Assert
     expect(screen.getByText("Public Awareness")).toBeTruthy()
     expect(screen.getByText("1 - Known")).toBeTruthy()
+  })
+
+  it("explains the current Public Awareness rank in a tooltip when its help button is clicked", async () => {
+    // Arrange
+    renderDisplay((sheet) => {
+      sheet.karma.total = 40
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "About the Known rank" }))
+
+    // Assert
+    expect((await screen.findByRole("tooltip")).textContent).toContain("starting to make a name for yourself")
   })
 })
