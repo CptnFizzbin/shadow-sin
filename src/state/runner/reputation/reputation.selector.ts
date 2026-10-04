@@ -66,23 +66,42 @@ export namespace ReputationSelectors {
   )
 
   /**
-   * Selects the Public Awareness rating with its rank title: 0-1 New, 2-3 Known, 4-5 Criminal,
-   * 6-7 Wanted, 8-9 Most Wanted, 10+ Legend. Ratings below 0 are titled "New".
+   * Selects the Public Awareness rating with its rank title and flavour description: 0 New, 1-2 Known,
+   * 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend. Ratings below 0 are ranked "New".
    */
   export const selectPublicAwarenessInfo = createMemoizedSelector(
     selectPublicAwareness,
     (awareness) => {
-      const ranks = [
-        { title: "New", description: "" },
-        { title: "Known", description: "" },
-        { title: "Criminal", description: "" },
-        { title: "Wanted", description: "" },
-        { title: "Most Wanted", description: "" },
-        { title: "Legend", description: "" },
-      ]
+      const ranks = [{
+        minRating: 10,
+        title: "Legend",
+        description: "You've made the record books. Everybody from the barrens to the arcologies knows your name, "
+          + "and some trideo exec is already pitching the biopic.",
+      }, {
+        minRating: 8,
+        title: "Most Wanted",
+        description: "Most of the megacorps want a word, either because you're a prime asset or because you're "
+          + "too much drek to leave breathing.",
+      }, {
+        minRating: 6,
+        title: "Wanted",
+        description: "You've kicked up enough drek that at least one megacorp has your name on a list.",
+      }, {
+        minRating: 3,
+        title: "Criminal",
+        description: "The shadow community knows your handle, chummer, and corp security has a dossier on you.",
+      }, {
+        minRating: 1,
+        title: "Known",
+        description: "Word's getting around the street. You're starting to make a name for yourself.",
+      }, {
+        minRating: -Infinity,
+        title: "New",
+        description: "Fresh meat on the scene. Nobody in the Sprawl knows your name, omae.",
+      }]
 
-      const index = Math.min(Math.max(Math.floor(awareness / 2), 0), ranks.length - 1)
-      return { rating: awareness, ...ranks[index] }
+      const rank = ranks.find((candidate) => awareness >= candidate.minRating)!
+      return { rating: awareness, title: rank.title, description: rank.description }
     },
   )
 

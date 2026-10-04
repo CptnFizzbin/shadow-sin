@@ -34,13 +34,13 @@ describe("ReputationDisplay", () => {
   })
 
   it("shows Public Awareness as its rating alongside the rank title", () => {
-    // Arrange / Act — streetCred=floor(40/10)=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("New")
+    // Arrange / Act — streetCred=floor(40/10)=4, notoriety=0 ⇒ floor((4+0)/3) = 1 ("Known")
     renderDisplay((sheet) => {
       sheet.karma.total = 40
     })
 
     // Assert
     expect(screen.getByText("Public Awareness")).toBeTruthy()
-    expect(screen.getByText("1 - New")).toBeTruthy()
+    expect(screen.getByText("1 - Known")).toBeTruthy()
   })
 })

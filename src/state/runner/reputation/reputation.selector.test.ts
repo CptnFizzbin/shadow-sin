@@ -184,10 +184,9 @@ describe.concurrent("ReputationSelectors.selectPublicAwarenessInfo", () => {
 
   it.each([
     [0, "New"],
-    [1, "New"],
+    [1, "Known"],
     [2, "Known"],
-    [3, "Known"],
-    [4, "Criminal"],
+    [3, "Criminal"],
     [5, "Criminal"],
     [6, "Wanted"],
     [7, "Wanted"],

@@ -101,8 +101,8 @@ other.
 
 **Public Awareness**:
 How recognisable the Runner is to the general public: floor((Street Cred + Notoriety) / 3) plus a GM
-adjustment, which can be positive (extra exposure) or negative (exceptional anonymity). Ranks: 0-1 New,
-2-3 Known, 4-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend.
+adjustment, which can be positive (extra exposure) or negative (exceptional anonymity). Ranks: 0 New,
+1-2 Known, 3-5 Criminal, 6-7 Wanted, 8-9 Most Wanted, 10+ Legend.
 _Avoid_: fame, infamy
 
 ### Progression & Economy
