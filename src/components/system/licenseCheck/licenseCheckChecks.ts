@@ -1,7 +1,7 @@
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ArrayUtils } from "#/utils/arrayUtils.ts"
 
-import { buildVerificationLanes } from "./licenseCheckLanes.ts"
+import { buildVerificationLanes, resolveActiveSinId } from "./licenseCheckLanes.ts"
 import type { VerificationCheck } from "./licenseCheckTypes.ts"
 
 /**
@@ -15,14 +15,17 @@ import type { VerificationCheck } from "./licenseCheckTypes.ts"
 export function buildVerificationChecks(
   gear: Record<string, ItemData>,
   checkedItems: ItemData[],
+  activeSinId?: string,
 ): VerificationCheck[] {
   const checkedIds = new Set<string>(checkedItems.map((item) => item.id))
-  const lanes = buildVerificationLanes(gear)
+  const lanes = buildVerificationLanes(gear, activeSinId)
+  const resolvedActiveSinId = resolveActiveSinId(gear, activeSinId)
 
   const checks: VerificationCheck[] = []
   for (const lane of lanes) {
     const [firstCheck, ...restChecks] = lane.checks
     if (firstCheck.kind === "sin") {
+      if (lane.key !== resolvedActiveSinId) continue
       const checkedGear = restChecks.filter((check) => checkedIds.has(check.itemId))
       if (!checkedIds.has(firstCheck.itemId) && checkedGear.length === 0) continue
       checks.push(firstCheck, ...checkedGear)

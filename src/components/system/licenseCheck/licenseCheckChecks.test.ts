@@ -119,4 +119,25 @@ describe.concurrent("buildVerificationChecks", () => {
       { itemId: itemId2, kind: "unlicensed-gear" },
     ]))
   })
+
+  it("only presents the active SIN, and flags gear licensed through an inactive SIN as unlicensed", () => {
+    const otherSinId = "00000000-0000-0000-0000-000000000005" as UUID
+    const otherLicenseId = "00000000-0000-0000-0000-000000000006" as UUID
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const otherSin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: otherSinId, name: "Jane Doe", itemType: ItemType.sin, isReal: false, rating: 2 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const otherLicense: LicenseData = { kind: EntityKind.item, id: otherLicenseId, name: "Other License", itemType: ItemType.license, isReal: false, rating: 2, items: { parentId: otherSinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, availability: { rating: 4, restricted: true }, licenseId }
+    const otherWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "Ares Alpha", itemType: ItemType.weapon, availability: { rating: 4, restricted: true }, licenseId: otherLicenseId }
+    const gear = gearMap(sin, otherSin, license, otherLicense, weapon, otherWeapon)
+
+    const checks = buildVerificationChecks(gear, Object.values(gear), sinId)
+
+    expect(checks).toHaveLength(3)
+    expect(checks).toEqual(expect.arrayContaining([
+      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
+      { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
+      { itemId: itemId2, kind: "unlicensed-gear" },
+    ]))
+  })
 })
