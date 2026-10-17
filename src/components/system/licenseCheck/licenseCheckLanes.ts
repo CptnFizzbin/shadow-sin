@@ -18,6 +18,15 @@ const isRestricted = (item: ItemData) => item.availability?.restricted === true 
 const isForbidden = (item: ItemData) => item.availability?.forbidden === true
 const isSinOrLicense = (item: ItemData) => item.itemType === ItemType.sin || item.itemType === ItemType.license
 
+/**
+ * Resolves which SIN is presented for a License Check: `requestedSinId` when it names an unstashed
+ * SIN, otherwise the first unstashed SIN. `undefined` when the Runner has no unstashed SIN.
+ */
+export function resolveActiveSinId(gear: Record<string, ItemData>, requestedSinId?: string): string | undefined {
+  const sins = Object.values(gear).filter(isSinData).filter((item) => !item.stashed)
+  return (sins.find((sin) => sin.id === requestedSinId) ?? sins[0])?.id
+}
+
 function buildSinLane(
   sin: SinData,
   licenses: LicenseData[],
@@ -54,18 +63,25 @@ function buildSinLane(
  * checklist, per docs/features/0011-license-check-dialog.md. One lane per owned SIN (unbounded,
  * not a hardcoded count — a SIN is a held identity with no carry state of its own, so it's always
  * eligible even with no licensed gear submitted underneath it) plus up to two fixed lanes, each
- * omitted when empty. Within a lane, checks other than a SIN's own (always-first) credential run
+ * omitted when empty. A Licence is only honoured while its SIN is the active one (see
+ * `resolveActiveSinId`): a Restricted item covered by a Licence of any other SIN lands in the
+ * Unlicensed lane. Within a lane, checks other than a SIN's own (always-first) credential run
  * in a random order each time lanes are built, rather than a fixed data-insertion order.
  */
-export function buildVerificationLanes(gear: Record<string, ItemData>): VerificationLane[] {
+export function buildVerificationLanes(gear: Record<string, ItemData>, activeSinId?: string): VerificationLane[] {
   const allItems = Object.values(gear)
   const licenses = allItems.filter(isLicenseData)
+  const resolvedActiveSinId = resolveActiveSinId(gear, activeSinId)
+
+  // A Licence not attached to any SIN isn't tied to an identity, so it can't be "inactive".
+  const activeLicenses = licenses.filter((license) =>
+    license.items.parentId === null || license.items.parentId === resolvedActiveSinId)
 
   const sins = allItems.filter(isSinData).filter((item) => !item.stashed)
   const lanes: VerificationLane[] = sins.map((sin) => buildSinLane(sin, licenses, allItems))
 
   const unlicensedItems = allItems.filter((item) =>
-    !item.stashed && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, licenses))
+    !item.stashed && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, activeLicenses))
 
   if (unlicensedItems.length > 0) {
     lanes.push({

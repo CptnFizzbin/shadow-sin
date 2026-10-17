@@ -1,7 +1,7 @@
 import Checkbox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import type { FC } from "react"
+import type { FC, ReactNode } from "react"
 
 import { StatChip } from "#/components/ui/chips/statChip.tsx"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
@@ -14,6 +14,8 @@ import type { VerificationCheck } from "./licenseCheckTypes.ts"
 interface LicenseCheckChecklistRowProps {
   item: ItemData
   check: VerificationCheck
+  /** Replaces the include-in-scan checkbox, making the row non-toggleable (e.g. a SIN's active-SIN radio). */
+  control?: ReactNode
 }
 
 function getRatingBadge(check: VerificationCheck): string | null {
@@ -24,12 +26,13 @@ function getRatingBadge(check: VerificationCheck): string | null {
   return isRealCredential(credential) ? "Real" : `Fake License | R${credential.rating ?? 0}`
 }
 
-export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ item, check }) => {
+export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ item, check, control }) => {
   const { items, addItem, removeItem } = useLicenseCheck()
   const ratingBadge = getRatingBadge(check)
-  const isChecked = items.some((checkedItem) => checkedItem.id === item.id)
+  const isChecked = control !== undefined || items.some((checkedItem) => checkedItem.id === item.id)
 
   const handleRowClick = () => {
+    if (control !== undefined) return
     if (isChecked) {
       removeItem(item)
     } else {
@@ -43,11 +46,13 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ it
       sx={{ alignItems: "center" }}
       onClick={handleRowClick}
     >
-      <Checkbox
-        size="small"
-        checked={isChecked}
-        slotProps={{ input: { "aria-label": `Include in scan: ${item.name}` } }}
-      />
+      {control ?? (
+        <Checkbox
+          size="small"
+          checked={isChecked}
+          slotProps={{ input: { "aria-label": `Include in scan: ${item.name}` } }}
+        />
+      )}
 
       <Stack
         direction="column"
