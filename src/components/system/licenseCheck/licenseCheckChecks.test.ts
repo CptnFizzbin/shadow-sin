@@ -38,7 +38,7 @@ describe.concurrent("buildVerificationChecks", () => {
     expect(checks).toHaveLength(2)
   })
 
-  it("drops a SIN entirely when neither it nor any of its licensed gear is checked", () => {
+  it("still presents the active SIN's own credential when none of its licensed gear is checked", () => {
     const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
     const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
@@ -46,10 +46,10 @@ describe.concurrent("buildVerificationChecks", () => {
 
     const checks = buildVerificationChecks(gear, [])
 
-    expect(checks).toEqual([])
+    expect(checks).toEqual([{ itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } }])
   })
 
-  it("keeps a SIN's own credential when it is checked directly, even with no licensed gear checked", () => {
+  it("presents the active SIN's own credential alone when no licensed gear is checked", () => {
     const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
     const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
@@ -76,7 +76,7 @@ describe.concurrent("buildVerificationChecks", () => {
     expect(checks).toHaveLength(2)
   })
 
-  it("drops a SIN with multiple licensed gear items when every one of them is unchecked", () => {
+  it("presents only the SIN, not its gear, when every one of its licensed gear items is unchecked", () => {
     const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
     const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
     const firstWeapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
@@ -89,8 +89,12 @@ describe.concurrent("buildVerificationChecks", () => {
 
     const checks = buildVerificationChecks(gear, [unrelatedUnlicensed])
 
-    expect(checks).toEqual([{ itemId: unrelatedId, kind: "unlicensed-gear" }])
-    expect(checks.some((check) => check.itemId === sinId)).toBe(false)
+    expect(checks).toHaveLength(2)
+    expect(checks).toEqual(expect.arrayContaining([
+      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
+      { itemId: unrelatedId, kind: "unlicensed-gear" },
+    ]))
+    expect(checks.some((check) => check.itemId === itemId || check.itemId === itemId2)).toBe(false)
   })
 
   it("drops an unchecked Unlicensed or Forbidden item but keeps a checked one", () => {

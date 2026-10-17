@@ -27,7 +27,6 @@ export function buildVerificationChecks(
     if (firstCheck.kind === "sin") {
       if (lane.key !== resolvedActiveSinId) continue
       const checkedGear = restChecks.filter((check) => checkedIds.has(check.itemId))
-      if (!checkedIds.has(firstCheck.itemId) && checkedGear.length === 0) continue
       checks.push(firstCheck, ...checkedGear)
     } else {
       checks.push(...lane.checks.filter((check) => checkedIds.has(check.itemId)))

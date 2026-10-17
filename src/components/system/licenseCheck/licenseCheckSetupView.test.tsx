@@ -73,6 +73,7 @@ describe("LicenseCheckSetupView — a Runner with multiple SINs and licensed gea
     expect(screen.getAllByRole("radio", { name: /^Active SIN:/ })).toHaveLength(2)
     expect(alphaRadio.checked).toBe(true)
     expect(betaRadio.checked).toBe(false)
+    expect(screen.queryByRole("checkbox", { name: /Include in scan: (Alpha|Beta) SIN/ })).toBeNull()
   })
 
   it("lists each item's license-covered gear under the SIN its license is linked to", () => {

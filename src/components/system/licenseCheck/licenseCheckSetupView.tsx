@@ -78,14 +78,17 @@ export const LicenseCheckSetupView: FC = () => {
 
               return (
                 <Stack key={lane.key} role="group" aria-label={`SIN: ${lane.title}`} sx={{ gap: 0.5, border: "1px solid", borderColor: "divider", padding: 1 }}>
-                  <Stack direction="row" sx={{ alignItems: "center" }}>
-                    <Radio
-                      size="small"
-                      value={lane.key}
-                      slotProps={{ input: { "aria-label": `Active SIN: ${gear[sinCheck.itemId].name}` } }}
-                    />
-                    <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} />
-                  </Stack>
+                  <LicenseCheckChecklistRow
+                    item={gear[sinCheck.itemId]}
+                    check={sinCheck}
+                    control={(
+                      <Radio
+                        size="small"
+                        value={lane.key}
+                        slotProps={{ input: { "aria-label": `Active SIN: ${gear[sinCheck.itemId].name}` } }}
+                      />
+                    )}
+                  />
 
                   {gearChecks.length > 0 && (
                     <Stack
