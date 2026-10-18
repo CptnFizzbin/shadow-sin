@@ -89,8 +89,6 @@ describe("AdjustReputationDialog", () => {
     expect(screen.getByText("No reputation events recorded yet")).toBeTruthy()
   })
 
-  // Regression test: the reducer had no case for removeReputationEntry, so confirming a delete
-  // silently left the entry in the ledger — most visibly when trying to clear duplicate entries.
   it("deletes only the confirmed entry when the ledger holds duplicate entries", async () => {
     // Arrange
     renderHarness((sheet) => {
