@@ -1,13 +1,20 @@
 import type { ChangeEvent, InputHTMLAttributes, RefObject } from "react"
 import { useRef } from "react"
 
-import { yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
+import type { ImportedFile } from "#/components/system/exportImport/dataPacketUtils.ts"
+import { DataPacketExtension, parseImportedYaml } from "#/components/system/exportImport/dataPacketUtils.ts"
+import type { DataPacketData } from "#/system/model/dataPacket/dataPacketData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 interface UseYamlFileImportOptions {
   /** Called with the parsed runner sheet after a successful YAML parse. */
   onParsed: (runner: RunnerData) => void | Promise<void>
-  /** Called when YAML parsing throws. */
+  /**
+   * Called with the parsed Data Packet when the file is one. When omitted, picking a Data Packet
+   * reports an error through `onError` instead.
+   */
+  onDataPacket?: (packet: DataPacketData) => void | Promise<void>
+  /** Called when YAML parsing throws, or the file is a Data Packet this caller can't accept. */
   onError?: (error: unknown) => void
 }
 
@@ -23,18 +30,18 @@ interface UseYamlFileImportResult {
 }
 
 type ParseResult =
-  | { ok: true, runner: RunnerData }
+  | { ok: true, file: ImportedFile }
   | { ok: false, error: unknown }
 
 /**
- * Parses YAML content into a RunnerData, capturing any thrown error instead
+ * Parses YAML content into a Runner or Data Packet, capturing any thrown error instead
  * of letting it propagate.
  */
 // Kept as a plain function outside `useYamlFileImport` rather than inlined in its closure —
 // the React Compiler transform mishandles a try/catch nested directly inside a hook's returned closures.
 function parseYamlContent(yamlContent: string): ParseResult {
   try {
-    return { ok: true, runner: yamlToRunnerData(yamlContent) }
+    return { ok: true, file: parseImportedYaml(yamlContent) }
   } catch (error) {
     return { ok: false, error }
   }
@@ -50,6 +57,7 @@ function parseYamlContent(yamlContent: string): ParseResult {
  */
 export function useYamlFileImport({
   onParsed,
+  onDataPacket,
   onError,
 }: UseYamlFileImportOptions): UseYamlFileImportResult {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -69,13 +77,20 @@ export function useYamlFileImport({
       return
     }
 
-    await onParsed(result.runner)
+    const { file: importedFile } = result
+    if (importedFile.kind === "runner") {
+      await onParsed(importedFile.runner)
+    } else if (onDataPacket) {
+      await onDataPacket(importedFile.packet)
+    } else {
+      onError?.(new Error("Data packets can only be imported into an existing runner — open the runner and import it from there."))
+    }
   }
 
   const inputProps = {
     ref: inputRef,
     type: "file",
-    accept: ".sin,.yaml,.yml",
+    accept: `.sin,.${DataPacketExtension},.yaml,.yml`,
     style: { display: "none" },
     onChange: (event: ChangeEvent<HTMLInputElement>) => { void handleFileChange(event) },
   }

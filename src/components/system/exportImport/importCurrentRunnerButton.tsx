@@ -6,6 +6,7 @@ import type { FC } from "react"
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
+import { mergeContacts } from "#/state/runner/contacts/contacts.actions.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -36,6 +37,38 @@ export const ImportCurrentRunnerButton: FC = () => {
 
       if (performOverwrite) {
         dispatch(RunnerActions.load(runner))
+      }
+    },
+    onDataPacket: async (packet) => {
+      const contacts = packet.contacts ?? []
+      if (contacts.length === 0) {
+        await alertDialog.open({
+          title: "Nothing to import",
+          body: "The selected data packet doesn't contain anything to add to this runner.",
+        })
+        return
+      }
+
+      const performMerge = await confirmDialog.confirm({
+        title: "Import data packet?",
+        body: (
+          <>
+            <Typography gutterBottom>
+              The following contacts will be added to <strong>{runnerName}</strong>. Any of them imported
+              from an earlier packet will be updated in place.
+            </Typography>
+            <Typography component="ul">
+              {contacts.map((contact) => <li key={contact.id}>{contact.name}</li>)}
+            </Typography>
+          </>
+        ),
+        slotProps: {
+          confirmButton: { label: "Import", color: "primary" },
+        },
+      })
+
+      if (performMerge) {
+        dispatch(mergeContacts(contacts))
       }
     },
     onError: async (error) => {

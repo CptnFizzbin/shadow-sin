@@ -127,6 +127,14 @@ export function yamlToRunnerData(
   return applyMigrations(payload)
 }
 
+/** Turns a display name into a lowercase, hyphen-separated slug safe for use in a file name. */
+export function toFileNameSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+}
+
 /**
  * Trigger a browser file-download for the given text content.
  */

@@ -2,9 +2,11 @@ import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
+import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport.ts"
 import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { stringifyError } from "#/utils/errors/errorUtils.ts"
 
 import { useImportConflictDialog } from "./importConflictDialog.tsx"
 import { resolveConflictedRunner } from "./importUtils.ts"
@@ -15,6 +17,7 @@ interface ImportRunnerButtonProps {
 
 export const ImportRunnerButton: FC<ImportRunnerButtonProps> = ({ onImported }) => {
   const importConflictDialog = useImportConflictDialog()
+  const alertDialog = useAlertDialog()
   const runnerManager = useRunnerManager()
 
   const handleParsed = async (runner: RunnerData) => {
@@ -32,8 +35,12 @@ export const ImportRunnerButton: FC<ImportRunnerButtonProps> = ({ onImported }) 
 
   const { inputProps, openFilePicker } = useYamlFileImport({
     onParsed: handleParsed,
-    onError: (error) => {
+    onError: async (error) => {
       console.error("Failed to parse YAML file:", error)
+      await alertDialog.open({
+        title: "Import failed",
+        body: `The selected file could not be imported: ${stringifyError(error)}`,
+      })
     },
   })
 
@@ -48,6 +55,7 @@ export const ImportRunnerButton: FC<ImportRunnerButtonProps> = ({ onImported }) 
         Import
       </Button>
       {importConflictDialog.outlet}
+      {alertDialog.outlet}
     </>
   )
 }

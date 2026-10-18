@@ -15,6 +15,7 @@ import { Route as RunnerIdDetailsRouteImport } from './routes/$runnerId/_details
 import { Route as RunnerIdViewerRouteImport } from './routes/$runnerId/_viewer'
 import { Route as EditRunnerIdRouteImport } from './routes/edit/$runnerId'
 import { Route as GmIndexRouteImport } from './routes/gm/index'
+import { Route as GmContactsRouteImport } from './routes/gm/contacts'
 import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
 import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
 import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
@@ -71,6 +72,11 @@ const EditRunnerIdRoute = EditRunnerIdRouteImport.update({
 const GmIndexRoute = GmIndexRouteImport.update({
   id: '/gm/',
   path: '/gm/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmContactsRoute = GmContactsRouteImport.update({
+  id: '/gm/contacts',
+  path: '/gm/contacts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GmEncounterBuilderRoute = GmEncounterBuilderRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$runnerId': typeof RunnerIdRouteWithChildren
   '/edit/$runnerId': typeof EditRunnerIdRoute
+  '/gm/contacts': typeof GmContactsRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -262,6 +269,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$runnerId': typeof RunnerIdViewerIndexRoute
   '/edit/$runnerId': typeof EditRunnerIdRoute
+  '/gm/contacts': typeof GmContactsRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -299,6 +307,7 @@ export interface FileRoutesById {
   '/$runnerId/_details': typeof RunnerIdDetailsRouteWithChildren
   '/$runnerId/_viewer': typeof RunnerIdViewerRouteWithChildren
   '/edit/$runnerId': typeof EditRunnerIdRoute
+  '/gm/contacts': typeof GmContactsRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -336,6 +345,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$runnerId'
     | '/edit/$runnerId'
+    | '/gm/contacts'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -371,6 +381,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$runnerId'
     | '/edit/$runnerId'
+    | '/gm/contacts'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -407,6 +418,7 @@ export interface FileRouteTypes {
     | '/$runnerId/_details'
     | '/$runnerId/_viewer'
     | '/edit/$runnerId'
+    | '/gm/contacts'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -443,6 +455,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RunnerIdRoute: typeof RunnerIdRouteWithChildren
   EditRunnerIdRoute: typeof EditRunnerIdRoute
+  GmContactsRoute: typeof GmContactsRoute
   GmEncounterBuilderRoute: typeof GmEncounterBuilderRoute
   GmInitiativeTrackerRoute: typeof GmInitiativeTrackerRoute
   GmNpcBuilderRoute: typeof GmNpcBuilderRoute
@@ -497,6 +510,13 @@ declare module '@tanstack/react-router' {
       path: '/gm'
       fullPath: '/gm/'
       preLoaderRoute: typeof GmIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/contacts': {
+      id: '/gm/contacts'
+      path: '/gm/contacts'
+      fullPath: '/gm/contacts'
+      preLoaderRoute: typeof GmContactsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gm/encounter-builder': {
@@ -783,6 +803,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RunnerIdRoute: RunnerIdRouteWithChildren,
   EditRunnerIdRoute: EditRunnerIdRoute,
+  GmContactsRoute: GmContactsRoute,
   GmEncounterBuilderRoute: GmEncounterBuilderRoute,
   GmInitiativeTrackerRoute: GmInitiativeTrackerRoute,
   GmNpcBuilderRoute: GmNpcBuilderRoute,
