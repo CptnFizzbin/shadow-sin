@@ -8,6 +8,7 @@ import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"
 import { useLegworkInfoDialog } from "./dialogs/legworkInfoDialog.tsx"
@@ -26,6 +27,14 @@ export const ContactsList: FC<ContactsListProps> = ({
   const contactFormDialog = useContactFormDialog()
   const legworkInfoDialog = useLegworkInfoDialog()
   const dispatch = useRunnerStoreDispatch()
+
+  const onSubmit = (contact: ContactData) => {
+    if (contact.id === NullUuid) {
+      dispatch(Actions.contacts.addContact(contact))
+    } else {
+      dispatch(Actions.contacts.updateContact(contact))
+    }
+  }
 
   const onRemove = async (contact: ContactData) => {
     if (await confirmDialog.confirm({
@@ -49,7 +58,7 @@ export const ContactsList: FC<ContactsListProps> = ({
         <ContactRow
           key={contact.id}
           contact={contact}
-          onClick={() => contactFormDialog.open({ contact })}
+          onClick={() => contactFormDialog.open({ contact, onSubmit })}
           onLegwork={() => legworkInfoDialog.open({ contact })}
           onRemove={() => onRemove(contact)}
         />
@@ -59,7 +68,7 @@ export const ContactsList: FC<ContactsListProps> = ({
         variant="outlined"
         color="secondary"
         startIcon={<RiAddLine />}
-        onClick={() => contactFormDialog.open()}
+        onClick={() => contactFormDialog.open({ onSubmit })}
         size="small"
       >
         Add Contact

@@ -47,6 +47,12 @@ An NPC a Runner has an established relationship with, rated by **Connection** (h
 well-networked they are) and **Loyalty** (how much they like the Runner).
 _Avoid_: ally, NPC (too broad)
 
+**Data Packet**:
+A fragment of Runner data — such as a set of Contacts — that a GM hands to Players so each can
+merge it into one of their existing Runners. It adds to a Runner rather than replacing it; anything
+the Runner already received from an earlier packet is updated in place.
+_Avoid_: patch, partial export, bundle
+
 **Entity**:
 Anything with a stat block, ratings, or effects it can contribute — a stat-bearing thing, not just
 carried equipment. Runners, Items, Spirits, Sprites, Qualities, Spells, Complex Forms, Adept

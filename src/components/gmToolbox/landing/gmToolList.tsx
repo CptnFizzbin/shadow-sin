@@ -22,11 +22,13 @@ export const GmToolList: FC = () => (
               primary={<Typography variant="h2">{tool.label}</Typography>}
               secondary={<Typography color="text.secondary">{tool.description}</Typography>}
             />
-            <Tooltip title="Under construction">
-              <ListItemIcon sx={{ minWidth: "auto", color: "warning.main" }}>
-                <RiBarricadeFill />
-              </ListItemIcon>
-            </Tooltip>
+            {tool.underConstruction && (
+              <Tooltip title="Under construction">
+                <ListItemIcon sx={{ minWidth: "auto", color: "warning.main" }}>
+                  <RiBarricadeFill />
+                </ListItemIcon>
+              </Tooltip>
+            )}
           </ListItemButton>
         </ListItem>
       ))}

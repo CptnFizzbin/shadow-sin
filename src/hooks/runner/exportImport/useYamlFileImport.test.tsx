@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react"
 import type { ChangeEvent } from "react"
 import { describe, expect, it, vi } from "vitest"
 
+import { contactsDataPacket, dataPacketToYaml } from "#/components/system/exportImport/dataPacketUtils.ts"
 import { runnerDataToYaml } from "#/components/system/exportImport/exportUtils.ts"
 import { Artemis } from "#/data/fixtures/artemis.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -164,7 +165,40 @@ describe("useYamlFileImport", () => {
 
     // Assert
     expect(result.current.inputProps.type).toBe("file")
-    expect(result.current.inputProps.accept).toBe(".sin,.yaml,.yml")
+    expect(result.current.inputProps.accept).toBe(".sin,.sind,.yaml,.yml")
     expect(result.current.inputProps.ref).toBe(result.current.inputRef)
+  })
+
+  it("passes a data packet to onDataPacket instead of onParsed", async () => {
+    // Arrange
+    const packet = contactsDataPacket([
+      { id: "5b0d2d0e-3f1c-4a8e-9b7a-2f6c1d9e4a10", name: "Mama Hu", connection: 4, loyalty: 2 },
+    ])
+    const onParsed = vi.fn()
+    const onDataPacket = vi.fn()
+    const { result } = renderHook(() => useYamlFileImport({ onParsed, onDataPacket }))
+
+    // Act
+    fireChange(result, makeChangeEvent(dataPacketToYaml(packet)))
+
+    // Assert
+    await waitFor(() => {
+      expect(onDataPacket).toHaveBeenCalledWith(packet)
+    })
+    expect(onParsed).not.toHaveBeenCalled()
+  })
+
+  it("reports a data packet as an error when the caller doesn't accept one", async () => {
+    // Arrange
+    const { result, onParsed, onError } = makeHookWithMocks()
+
+    // Act
+    fireChange(result, makeChangeEvent(dataPacketToYaml(contactsDataPacket([]))))
+
+    // Assert
+    await waitFor(() => {
+      expect(onError).toHaveBeenCalledTimes(1)
+    })
+    expect(onParsed).not.toHaveBeenCalled()
   })
 })

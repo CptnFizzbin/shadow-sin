@@ -7,39 +7,27 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { contactFieldMap, useContactForm } from "#/hooks/runner/contacts/form/useContactForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
 
 interface ContactFormDialogProps extends ControlledDialogProps<void> {
   contact?: ContactData
-  onSaved?: (contact: ContactData) => void
+  /** Persists the submitted contact; a new contact arrives with `NullUuid` as its `id`. */
+  onSubmit: (contact: ContactData) => void
 }
 
 const ContactFormDialog: FC<ContactFormDialogProps> = ({
   ctrl,
   contact,
-  onSaved,
+  onSubmit,
 }) => {
   const isEditMode = !!contact
   const title = isEditMode ? "Edit Contact" : "Add Contact"
-  const dispatch = useRunnerStoreDispatch()
   const formId = useId()
 
   const handleSubmit = (savedContact: ContactData) => {
-    let persistedContact: ContactData
-    if (!savedContact.id || savedContact.id === NullUuid) {
-      const action = Actions.contacts.addContact(savedContact)
-      dispatch(action)
-      persistedContact = action.payload
-    } else {
-      dispatch(Actions.contacts.updateContact(savedContact))
-      persistedContact = savedContact
-    }
-    onSaved?.(persistedContact)
+    onSubmit(savedContact)
     ctrl.close()
   }
 
@@ -89,11 +77,8 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
   )
 }
 
-interface UseContactFormDialogProps {
-  contact?: ContactData
-  onSaved?: (contact: ContactData) => void
-}
+type UseContactFormDialogProps = Omit<ContactFormDialogProps, keyof ControlledDialogProps<void>>
 
-export const useContactFormDialog = () => useDialog<void, UseContactFormDialogProps | undefined>(
+export const useContactFormDialog = () => useDialog<void, UseContactFormDialogProps>(
   (ctrl, props) => <ContactFormDialog ctrl={ctrl} {...props} />,
 )

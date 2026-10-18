@@ -6,7 +6,7 @@ import { recordLastExport } from "#/state/runner/meta/meta.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerStateStore } from "#/state/runnerState.ts"
 
-import { downloadTextFile, runnerDataToYaml } from "./exportUtils.ts"
+import { downloadTextFile, runnerDataToYaml, toFileNameSlug } from "./exportUtils.ts"
 
 export const ExportRunnerButton: FC = () => {
   const store = useRunnerStateStore()
@@ -18,11 +18,7 @@ export const ExportRunnerButton: FC = () => {
     const isoDate = isoTimestamp.slice(0, 10)
 
     const runnerData = store.getState().runner
-    const sanitizedName =
-      (runnerData.profile.alias || runnerData.profile.name || "runner")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
+    const sanitizedName = toFileNameSlug(runnerData.profile.alias || runnerData.profile.name || "runner")
 
     // The exported file should record this export as its own last-export date,
     // not the one from before this export ran.
