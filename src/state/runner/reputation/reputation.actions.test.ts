@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 
-import { addReputationEntry, editReputationEntry } from "./reputation.actions.ts"
+import { addReputationEntry, editReputationEntry, removeReputationEntry } from "./reputation.actions.ts"
 import { reputationReducer } from "./reputation.state.ts"
 
 const makeReputation = (overrides: Partial<ReturnType<typeof reputationReducer>> = {}) => ({
@@ -124,6 +124,47 @@ describe.concurrent("editReputationEntry", () => {
 
     // Act
     const next = reputationReducer(state, editReputationEntry("00000000-0000-0000-0000-000000000099", ReputationStatType.notoriety, 5, "Nonexistent"))
+
+    // Assert
+    expect(next.ledger).toEqual(state.ledger)
+  })
+})
+
+describe.concurrent("removeReputationEntry", () => {
+  it("removes the entry matching the given id", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, 1, "Leaking Plans"))
+    const [{ id }] = state.ledger
+
+    // Act
+    const next = reputationReducer(state, removeReputationEntry({ id }))
+
+    // Assert
+    expect(next.ledger).toHaveLength(0)
+  })
+
+  it("only removes the matching entry when another entry has the same stat, amount, and description", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, 1, "Breaking Contract"))
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.notoriety, 1, "Breaking Contract"))
+    const [first, second] = state.ledger
+
+    // Act
+    const next = reputationReducer(state, removeReputationEntry({ id: first.id }))
+
+    // Assert
+    expect(next.ledger).toEqual([second])
+  })
+
+  it("does nothing when no entry matches the given id", () => {
+    // Arrange
+    let state = makeReputation()
+    state = reputationReducer(state, addReputationEntry(ReputationStatType.streetCred, 1, "First"))
+
+    // Act
+    const next = reputationReducer(state, removeReputationEntry({ id: "00000000-0000-0000-0000-000000000099" }))
 
     // Assert
     expect(next.ledger).toEqual(state.ledger)

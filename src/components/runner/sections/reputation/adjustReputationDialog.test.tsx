@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
+import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -86,5 +87,38 @@ describe("AdjustReputationDialog", () => {
     // Assert
     await waitFor(() => expect(screen.queryByText("Add Reputation Event")).toBeNull())
     expect(screen.getByText("No reputation events recorded yet")).toBeTruthy()
+  })
+
+  // Regression test: the reducer had no case for removeReputationEntry, so confirming a delete
+  // silently left the entry in the ledger — most visibly when trying to clear duplicate entries.
+  it("deletes only the confirmed entry when the ledger holds duplicate entries", async () => {
+    // Arrange
+    renderHarness((sheet) => {
+      sheet.reputation.ledger = [
+        {
+          id: "00000000-0000-0000-0000-000000000001",
+          stat: ReputationStatType.notoriety,
+          timestamp: "2026-09-06T16:03:20.030Z",
+          amount: 1,
+          description: "Breaking Contract",
+          source: "manual",
+        },
+        {
+          id: "00000000-0000-0000-0000-000000000002",
+          stat: ReputationStatType.notoriety,
+          timestamp: "2026-09-06T16:03:33.594Z",
+          amount: 1,
+          description: "Breaking Contract",
+          source: "manual",
+        },
+      ]
+    })
+
+    // Act
+    fireEvent.click(screen.getAllByRole("button", { name: /^Delete .* entry$/ })[0])
+    fireEvent.click(screen.getByRole("button", { name: "Delete Entry" }))
+
+    // Assert
+    await waitFor(() => expect(screen.getAllByText("Breaking Contract")).toHaveLength(1))
   })
 })
