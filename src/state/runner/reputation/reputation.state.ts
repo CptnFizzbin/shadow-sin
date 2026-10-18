@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit"
 
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
-import { addReputationEntry, editReputationEntry } from "./reputation.actions.ts"
+import { addReputationEntry, editReputationEntry, removeReputationEntry } from "./reputation.actions.ts"
 
 const initialState: RunnerData["reputation"] = {
   ledger: [],
@@ -21,5 +21,8 @@ export const reputationReducer = createReducer(initialState, (builder) => {
       entry.stat = stat
       entry.amount = amount
       entry.description = description
+    })
+    .addCase(removeReputationEntry, (state, action) => {
+      state.ledger = state.ledger.filter((entry) => entry.id !== action.payload.id)
     })
 })

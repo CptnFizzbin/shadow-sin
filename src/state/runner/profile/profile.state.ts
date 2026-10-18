@@ -4,6 +4,7 @@ import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import {
+  ProfileActions,
   setLifestyleMonthsPaid,
   setLifestyleQuality,
   setProfileAlias,
@@ -24,6 +25,9 @@ const initialState: RunnerData["profile"] = {
 
 export const profileReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(ProfileActions.patch, (state, action) => {
+      Object.assign(state, action.payload)
+    })
     .addCase(setProfileName, (state, action) => {
       state.name = action.payload
     })
