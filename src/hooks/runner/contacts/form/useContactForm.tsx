@@ -10,7 +10,7 @@ const defaultValues: ContactData = {
   connection: 1,
   loyalty: 1,
   notes: "",
-  knowledgeSkills: [],
+  skills: [],
   favours: [],
 }
 
