@@ -3,18 +3,18 @@ import FormControl from "@mui/material/FormControl"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
-import Paper from "@mui/material/Paper"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { z } from "zod"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { contactFormOpts } from "#/hooks/runner/contacts/form/useContactForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { FavourDirection } from "#/system/model/contacts/favourData.ts"
+
+import { ContactSkillsEditor } from "./contactSkillsEditor.tsx"
 
 const RATING_MIN = 1
 const RATING_MAX = 6
@@ -78,70 +78,10 @@ export const ContactFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.AppField name="knowledgeSkills">
-          {(field) => {
-            const skills = field.state.value ?? []
-            return (
-              <Stack>
-                <Label label="Knowledge Skills" variant="outlined" />
-
-                {skills.map((skill, index) => (
-                  <Stack component={Paper} key={index} direction="row" sx={{ padding: 1 }}>
-                    <Stack sx={{ flexGrow: 1 }}>
-                      <TextField
-                        label="Skill"
-                        size="small"
-                        fullWidth
-                        value={skill.name}
-                        onChange={(e) => field.replaceValue(index, { ...skill, name: e.target.value })}
-                      />
-
-                      <Stack direction="row">
-                        <CounterInput
-                          label="Rating"
-                          size="small"
-                          sx={{ minWidth: 120 }}
-                          min={RATING_MIN}
-                          max={RATING_MAX}
-                          value={skill.rating}
-                          onChange={(newValue) => field.replaceValue(index, {
-                            ...skill,
-                            rating: newValue ?? RATING_MIN,
-                          })}
-                        />
-                        <TextField
-                          label="Specialization (optional)"
-                          size="small"
-                          fullWidth
-                          value={skill.specialization ?? ""}
-                          onChange={(e) => field.replaceValue(index, { ...skill, specialization: e.target.value })}
-                        />
-                      </Stack>
-                    </Stack>
-
-                    <IconButton
-                      size="small"
-                      color="error"
-                      aria-label="Remove skill"
-                      onClick={() => field.removeValue(index)}
-                    >
-                      <RiDeleteBin6Line size={16} />
-                    </IconButton>
-                  </Stack>
-                ))}
-
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  size="small"
-                  startIcon={<RiAddLine />}
-                  onClick={() => field.pushValue({ name: "", rating: 1 })}
-                >
-                  Add Skill
-                </Button>
-              </Stack>
-            )
-          }}
+        <group.AppField name="skills">
+          {(field) => (
+            <ContactSkillsEditor skills={field.state.value ?? []} onChange={field.handleChange} />
+          )}
         </group.AppField>
 
         <group.AppField name="favours">

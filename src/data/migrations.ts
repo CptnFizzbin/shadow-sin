@@ -39,6 +39,7 @@ import v20260907_00_normalizeReputations from "./migrations/20260907_00_normaliz
 import v20260913_00_fixMalformedInnateQualityIds from "./migrations/20260913_00_fixMalformedInnateQualityIds.ts"
 import v20260913_01_zeroPixieInnateQualityCost from "./migrations/20260913_01_zeroPixieInnateQualityCost.ts"
 import v20260914_00_addExtendedTests from "./migrations/20260914_00_addExtendedTests.ts"
+import v20261025_00_splitContactSkills from "./migrations/20261025_00_splitContactSkills.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -81,6 +82,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20260913_00_fixMalformedInnateQualityIds,
   v20260913_01_zeroPixieInnateQualityCost,
   v20260914_00_addExtendedTests,
+  v20261025_00_splitContactSkills,
 ]
 
 migrations.forEach((migration, index) => {

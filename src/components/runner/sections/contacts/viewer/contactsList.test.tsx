@@ -7,6 +7,7 @@ import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import { ContactSkillType } from "#/system/model/contacts/contactSkillData.ts"
 import { FavourDirection } from "#/system/model/contacts/favourData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
@@ -71,7 +72,7 @@ describe("ContactsList", () => {
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
 
-  it("adding a knowledge skill and a favour on the contact form persists both", async () => {
+  it("adding key active and knowledge skills and a favour on the contact form persists both", async () => {
     // Arrange
     const store = renderWithContacts([])
 
@@ -82,8 +83,13 @@ describe("ContactsList", () => {
       target: { value: "Fixer Sam" },
     })
 
-    fireEvent.click(within(dialog).getByRole("button", { name: /add skill/i }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /add key active skill/i }))
     fireEvent.change(within(dialog).getByLabelText(/^skill/i), {
+      target: { value: "Pistols" },
+    })
+
+    fireEvent.click(within(dialog).getByRole("button", { name: /add knowledge skill/i }))
+    fireEvent.change(within(dialog).getAllByLabelText(/^skill/i)[1], {
       target: { value: "Street Gangs" },
     })
 
@@ -97,7 +103,10 @@ describe("ContactsList", () => {
     // Assert
     await waitFor(() => expect(store.getState().runner.contacts).toHaveLength(1))
     const [contact] = store.getState().runner.contacts
-    expect(contact.knowledgeSkills).toEqual([{ name: "Street Gangs", rating: 1 }])
+    expect(contact.skills).toEqual([
+      { id: expect.any(String), name: "Pistols", type: ContactSkillType.keyActive },
+      { id: expect.any(String), name: "Street Gangs", type: ContactSkillType.knowledge },
+    ])
     expect(contact.favours).toEqual([
       { description: "Owes for a smuggling run", direction: FavourDirection.contactOwes },
     ])
