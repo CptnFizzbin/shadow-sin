@@ -31,7 +31,7 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   return store
 }
 
-describe("SpendKarmaStep", () => {
+describe("ManageKarmaStepSpend", () => {
   it("opens on the hub with a row per category", () => {
     // Arrange
     renderDialog((sheet) => {
@@ -220,5 +220,23 @@ describe("SpendKarmaStep", () => {
 
     // Assert — Pistols visible in the skills section
     expect(screen.getByText("Pistols")).toBeTruthy()
+  })
+
+  it("discards queued improvements when backing out to the Manage Karma options", () => {
+    // Arrange — queue Body, then return to the hub
+    renderDialog((sheet) => {
+      sheet.attributes[AttributeKey.body] = 3
+      sheet.karma.current = 50
+    })
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
+    fireEvent.click(screen.getByRole("button", { name: /bod/i }))
+    fireEvent.click(screen.getByRole("button", { name: /back to categories/i }))
+
+    // Act — leave Spend Karma and come back
+    fireEvent.click(screen.getByRole("button", { name: /back to options/i }))
+    fireEvent.click(screen.getByRole("button", { name: /spend karma/i }))
+
+    // Assert
+    expect(screen.queryByText("1 queued")).toBeNull()
   })
 })

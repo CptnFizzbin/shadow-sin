@@ -7,10 +7,10 @@ import {
   RiTrophyLine,
 } from "@remixicon/react"
 
-export type ManageKarmaOptionKey = "earn" | "buy" | "spend" | "sell" | "edit"
+import { ManageKarmaStep, ManageKarmaStepLabels } from "./manageKarmaWorkflow.ts"
 
 export interface ManageKarmaOption {
-  key: ManageKarmaOptionKey
+  step: ManageKarmaStep
   label: string
   description: string
   Icon: RemixiconComponentType
@@ -18,23 +18,18 @@ export interface ManageKarmaOption {
   requiresNuyenExchange?: boolean
 }
 
-/** The workflows offered on the Manage Karma dialog's landing step, in display order. */
+const option = (
+  step: ManageKarmaStep,
+  description: string,
+  Icon: RemixiconComponentType,
+  requiresNuyenExchange?: boolean,
+): ManageKarmaOption => ({ step, label: ManageKarmaStepLabels[step], description, Icon, requiresNuyenExchange })
+
+/** The workflows offered on the Manage Karma dialog's menu, in display order. */
 export const MANAGE_KARMA_OPTIONS: ManageKarmaOption[] = [
-  { key: "earn", label: "Earn Karma", description: "Karma awarded by the GM", Icon: RiTrophyLine },
-  {
-    key: "buy",
-    label: "Buy Karma",
-    description: "Trade nuyen for karma",
-    Icon: RiShoppingCartLine,
-    requiresNuyenExchange: true,
-  },
-  { key: "spend", label: "Spend Karma", description: "Spend karma on advancements", Icon: RiArrowUpCircleLine },
-  {
-    key: "sell",
-    label: "Sell Karma",
-    description: "Trade karma for nuyen",
-    Icon: RiHandCoinLine,
-    requiresNuyenExchange: true,
-  },
-  { key: "edit", label: "Edit Karma", description: "Make changes to karma outside of the rules", Icon: RiEditLine },
+  option(ManageKarmaStep.Earn, "Karma awarded by the GM", RiTrophyLine),
+  option(ManageKarmaStep.Buy, "Trade nuyen for karma", RiShoppingCartLine, true),
+  option(ManageKarmaStep.Spend, "Spend karma on advancements", RiArrowUpCircleLine),
+  option(ManageKarmaStep.Sell, "Trade karma for nuyen", RiHandCoinLine, true),
+  option(ManageKarmaStep.Edit, "Make changes to karma outside of the rules", RiEditLine),
 ]

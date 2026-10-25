@@ -1,36 +1,69 @@
-import Button from "@mui/material/Button"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import type { FC } from "react"
-import { useState } from "react"
 
+import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
-import { EarnKarmaStep } from "./earnKarmaStep.tsx"
-import { EditKarmaStep } from "./editKarmaStep.tsx"
-import { KarmaExchangeStep } from "./karmaExchangeStep.tsx"
+import { ManageKarmaActions } from "./manageKarmaActions.tsx"
 import { ManageKarmaMenu } from "./manageKarmaMenu.tsx"
-import type { ManageKarmaOptionKey } from "./manageKarmaOptions.ts"
-import type { ManageKarmaStepProps } from "./manageKarmaStepProps.ts"
-import { SpendKarmaStep } from "./spendKarmaStep.tsx"
+import { ManageKarmaStepEarn } from "./manageKarmaStep.earn.tsx"
+import { ManageKarmaStepEdit } from "./manageKarmaStep.edit.tsx"
+import { ManageKarmaStepExchange } from "./manageKarmaStep.exchange.tsx"
+import { ManageKarmaStepSpend } from "./manageKarmaStep.spend.tsx"
+import { ManageKarmaTitle } from "./manageKarmaTitle.tsx"
+import { createManageKarmaData, ManageKarmaStep, ManageKarmaWorkflow, useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
 
-interface ManageKarmaStepContentProps extends ManageKarmaStepProps {
-  step: ManageKarmaOptionKey
-}
+/** Must render under `ManageKarmaWorkflow.Provider` and `SpendKarmaDialogProvider`. */
+const ManageKarmaDialogContent: FC<ControlledDialogProps> = ({ ctrl }) => {
+  const theme = useTheme()
+  const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
+  const workflow = useManageKarmaWorkflow()
+  const isOnMenu = workflow.currentStep === ManageKarmaStep.Menu
 
-const ManageKarmaStepContent: FC<ManageKarmaStepContentProps> = ({ step, ...stepProps }) => {
-  switch (step) {
-    case "earn":
-      return <EarnKarmaStep {...stepProps} />
-    case "buy":
-      return <KarmaExchangeStep direction="buy" {...stepProps} />
-    case "spend":
-      return <SpendKarmaStep {...stepProps} />
-    case "sell":
-      return <KarmaExchangeStep direction="sell" {...stepProps} />
-    case "edit":
-      return <EditKarmaStep {...stepProps} />
-  }
+  return (
+    <ControlledDialog
+      ctrl={ctrl}
+      maxWidth="sm"
+      // Only Spend Karma's long category lists need the whole screen on a phone.
+      fullScreen={isNarrowViewport && workflow.currentStep === ManageKarmaStep.Spend}
+      // Backdrop/Escape close only on the menu, so a half-filled step isn't lost by a stray click.
+      onClose={isOnMenu ? undefined : false}
+    >
+      <Dialog.Title>
+        <ManageKarmaTitle />
+      </Dialog.Title>
+
+      <Dialog.Content>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Menu}>
+          <ManageKarmaMenu />
+        </ManageKarmaWorkflow.Step>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Earn}>
+          <ManageKarmaStepEarn />
+        </ManageKarmaWorkflow.Step>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Buy}>
+          <ManageKarmaStepExchange direction="buy" />
+        </ManageKarmaWorkflow.Step>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Spend}>
+          <ManageKarmaStepSpend />
+        </ManageKarmaWorkflow.Step>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Sell}>
+          <ManageKarmaStepExchange direction="sell" />
+        </ManageKarmaWorkflow.Step>
+        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Edit}>
+          <ManageKarmaStepEdit />
+        </ManageKarmaWorkflow.Step>
+      </Dialog.Content>
+
+      <Dialog.Actions>
+        <ManageKarmaActions ctrl={ctrl} />
+      </Dialog.Actions>
+    </ControlledDialog>
+  )
 }
 
 /**
@@ -38,28 +71,14 @@ const ManageKarmaStepContent: FC<ManageKarmaStepContentProps> = ({ step, ...step
  * sell, edit), and each workflow can step back to that menu.
  */
 export const ManageKarmaDialog: FC<ControlledDialogProps> = ({ ctrl }) => {
-  const [step, setStep] = useState<ManageKarmaOptionKey | null>(null)
-  const [hasLeftMenu, setHasLeftMenu] = useState(false)
-
-  const handleSelectOption = (option: ManageKarmaOptionKey) => {
-    setStep(option)
-    setHasLeftMenu(true)
-  }
-
-  if (step !== null) {
-    return <ManageKarmaStepContent step={step} ctrl={ctrl} onBack={() => setStep(null)} />
-  }
+  const karma = useRunnerSelector(KarmaSelectors.select)
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" disableEnterTransition={hasLeftMenu}>
-      <Dialog.Title>Manage Karma</Dialog.Title>
-      <Dialog.Content>
-        <ManageKarmaMenu onSelectOption={handleSelectOption} />
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Button color="secondary" onClick={() => ctrl.close()}>Close</Button>
-      </Dialog.Actions>
-    </ControlledDialog>
+    <ManageKarmaWorkflow.Provider initialStep={ManageKarmaStep.Menu} initialData={createManageKarmaData(karma)}>
+      <SpendKarmaDialogProvider>
+        <ManageKarmaDialogContent ctrl={ctrl} />
+      </SpendKarmaDialogProvider>
+    </ManageKarmaWorkflow.Provider>
   )
 }
 
