@@ -9,6 +9,7 @@ import type { FC } from "react"
 
 import type { ContactSkillData } from "#/system/model/contacts/contactSkillData.ts"
 import { ContactSkillType } from "#/system/model/contacts/contactSkillData.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 export const contactSkillTypeLabels: Record<ContactSkillType, string> = {
   [ContactSkillType.keyActive]: "Key Active Skills",
@@ -34,40 +35,38 @@ export const ContactSkillTypeList: FC<ContactSkillTypeListProps> = ({
   type,
   onChange,
 }) => {
-  const replaceSkill = (index: number, skill: ContactSkillData) =>
-    onChange(skills.map((existing, existingIndex) => existingIndex === index ? skill : existing))
+  const replaceSkill = (skill: ContactSkillData) =>
+    onChange(skills.map((existing) => existing.id === skill.id ? skill : existing))
 
-  const removeSkill = (index: number) =>
-    onChange(skills.filter((_, existingIndex) => existingIndex !== index))
+  const removeSkill = (skillId: UUID) =>
+    onChange(skills.filter((existing) => existing.id !== skillId))
 
-  const entries = skills
-    .map((skill, index) => ({ skill, index }))
-    .filter(({ skill }) => skill.type === type)
+  const skillsOfType = skills.filter((skill) => skill.type === type)
 
   return (
     <Stack>
-      {entries.length === 0 && (
+      {skillsOfType.length === 0 && (
         <Typography color="text.secondary" sx={{ pl: 1 }}>
           None
         </Typography>
       )}
 
-      {entries.map(({ skill, index }) => (
-        <Stack component={Paper} key={index} direction="row" sx={{ padding: 1 }}>
+      {skillsOfType.map((skill) => (
+        <Stack component={Paper} key={skill.id} direction="row" sx={{ padding: 1 }}>
           <Stack direction={{ xs: "column", sm: "row" }} sx={{ flexGrow: 1 }}>
             <TextField
               label="Skill"
               size="small"
               fullWidth
               value={skill.name}
-              onChange={(e) => replaceSkill(index, { ...skill, name: e.target.value })}
+              onChange={(e) => replaceSkill({ ...skill, name: e.target.value })}
             />
             <TextField
               label="Specialization (optional)"
               size="small"
               fullWidth
               value={skill.specialization ?? ""}
-              onChange={(e) => replaceSkill(index, { ...skill, specialization: e.target.value })}
+              onChange={(e) => replaceSkill({ ...skill, specialization: e.target.value })}
             />
           </Stack>
 
@@ -75,7 +74,7 @@ export const ContactSkillTypeList: FC<ContactSkillTypeListProps> = ({
             size="small"
             color="error"
             aria-label="Remove skill"
-            onClick={() => removeSkill(index)}
+            onClick={() => removeSkill(skill.id)}
           >
             <RiDeleteBin6Line size={16} />
           </IconButton>
@@ -87,7 +86,7 @@ export const ContactSkillTypeList: FC<ContactSkillTypeListProps> = ({
         color="secondary"
         size="small"
         startIcon={<RiAddLine />}
-        onClick={() => onChange([...skills, { name: "", type }])}
+        onClick={() => onChange([...skills, { id: crypto.randomUUID(), name: "", type }])}
       >
         {addSkillLabels[type]}
       </Button>

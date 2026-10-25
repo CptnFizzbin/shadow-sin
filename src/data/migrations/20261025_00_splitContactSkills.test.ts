@@ -20,23 +20,36 @@ describe.concurrent("splitContactSkills", () => {
     // Assert
     expect(result.contacts).toEqual([{
       skills: [
-        { name: "Street Gangs", type: "knowledge" },
-        { name: "Corporate Politics", type: "knowledge", specialization: "Ares" },
+        { id: expect.any(String), name: "Street Gangs", type: "knowledge" },
+        { id: expect.any(String), name: "Corporate Politics", type: "knowledge", specialization: "Ares" },
       ],
     }])
   })
 
-  it("keeps the type of skills that already have one", () => {
+  it("keeps the id and type of skills that already have them", () => {
+    // Arrange
+    const skill = { id: "00000000-0000-4000-8000-000000000001", name: "Pistols", type: "keyActive" }
+    const character = { contacts: [{ skills: [skill] }] }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result.contacts).toEqual([{ skills: [skill] }])
+  })
+
+  it("gives each migrated skill a distinct id", () => {
     // Arrange
     const character = {
-      contacts: [{ skills: [{ name: "Pistols", type: "keyActive" }] }],
+      contacts: [{ knowledgeSkills: [{ name: "Street Gangs", rating: 3 }, { name: "Smuggling", rating: 2 }] }],
     }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result.contacts).toEqual([{ skills: [{ name: "Pistols", type: "keyActive" }] }])
+    const [first, second] = result.contacts?.[0].skills ?? []
+    expect(first.id).not.toBe(second.id)
   })
 
   it("gives a contact with no skills an empty skills list", () => {

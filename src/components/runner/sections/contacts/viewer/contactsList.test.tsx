@@ -104,8 +104,8 @@ describe("ContactsList", () => {
     await waitFor(() => expect(store.getState().runner.contacts).toHaveLength(1))
     const [contact] = store.getState().runner.contacts
     expect(contact.skills).toEqual([
-      { name: "Pistols", type: ContactSkillType.keyActive },
-      { name: "Street Gangs", type: ContactSkillType.knowledge },
+      { id: expect.any(String), name: "Pistols", type: ContactSkillType.keyActive },
+      { id: expect.any(String), name: "Street Gangs", type: ContactSkillType.knowledge },
     ])
     expect(contact.favours).toEqual([
       { description: "Owes for a smuggling run", direction: FavourDirection.contactOwes },

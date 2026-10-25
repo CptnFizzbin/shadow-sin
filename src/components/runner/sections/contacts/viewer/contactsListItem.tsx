@@ -99,9 +99,9 @@ export const ContactRow: FC<ContactRowProps> = ({
 
         {skills.length > 0 && (
           <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5 }}>
-            {skills.map((skill, index) => (
+            {skills.map((skill) => (
               <Chip
-                key={index}
+                key={skill.id}
                 label={skillChipLabel(skill)}
                 size="small"
                 color="secondary"

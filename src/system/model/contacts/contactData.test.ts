@@ -19,18 +19,19 @@ describe.concurrent("ContactDataSchema", () => {
     const contact = ContactDataSchema.parse(input)
 
     // Assert
-    expect(contact.skills).toEqual([{ name: "Street Gangs", type: ContactSkillType.knowledge }])
+    expect(contact.skills).toEqual([{ id: expect.any(String), name: "Street Gangs", type: ContactSkillType.knowledge }])
   })
 
-  it("keeps an imported skill's type", () => {
+  it("keeps an imported skill's id and type", () => {
     // Arrange
-    const input = { ...baseContact, skills: [{ name: "Pistols", type: ContactSkillType.keyActive }] }
+    const skill = { id: "00000000-0000-4000-8000-000000000002", name: "Pistols", type: ContactSkillType.keyActive }
+    const input = { ...baseContact, skills: [skill] }
 
     // Act
     const contact = ContactDataSchema.parse(input)
 
     // Assert
-    expect(contact.skills).toEqual([{ name: "Pistols", type: ContactSkillType.keyActive }])
+    expect(contact.skills).toEqual([skill])
   })
 
   it("imports rated knowledgeSkills as unrated knowledge skills", () => {
@@ -42,7 +43,7 @@ describe.concurrent("ContactDataSchema", () => {
 
     // Assert
     expect(contact.skills).toEqual([
-      { name: "Street Gangs", type: ContactSkillType.knowledge, specialization: "Halloweeners" },
+      { id: expect.any(String), name: "Street Gangs", type: ContactSkillType.knowledge, specialization: "Halloweeners" },
     ])
     expect(contact).not.toHaveProperty("knowledgeSkills")
   })
