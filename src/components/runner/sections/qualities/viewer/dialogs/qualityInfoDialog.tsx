@@ -5,6 +5,7 @@ import type { FC } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { QualityData } from "#/system/model/qualities/qualityData.ts"
 import { bookOptions } from "#/system/model/sourceData.ts"
@@ -60,9 +61,7 @@ const QualityInfoDialog: FC<QualityInfoDialogProps> = ({ ctrl, quality }) => {
         </Stack>
 
         {quality.description && (
-          <Typography color="text.secondary">
-            {quality.description}
-          </Typography>
+          <MarkdownText color="text.secondary">{quality.description}</MarkdownText>
         )}
       </Stack>
     </DetailDialog>

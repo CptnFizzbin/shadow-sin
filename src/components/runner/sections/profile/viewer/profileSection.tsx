@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
@@ -15,9 +16,7 @@ export const ProfileSection: FC = () => {
       {profile.description && (
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Description" />
-          <Typography sx={{ whiteSpace: "pre-wrap" }}>
-            {profile.description}
-          </Typography>
+          <MarkdownText>{profile.description}</MarkdownText>
         </Stack>
       )}
 
