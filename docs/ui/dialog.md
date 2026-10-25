@@ -30,6 +30,7 @@ where it's used. See `docs/adr/0004-dialog-api-goes-local-only.md` for why this 
 | `onClosed`   | `() => void`                                    | —       | Called after the exit animation finishes — use this to reset form state or run cleanup   |
 | `maxWidth`   | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| false` | `"sm"`  | Maximum width breakpoint                                                                 |
 | `fullScreen` | `boolean`                                        | —       | Render the dialog full-screen (useful on narrow viewports)                               |
+| `disableEnterTransition` | `boolean`                         | —       | Skip the enter animation, for a dialog replacing one already on screen (e.g. a wizard's next step) |
 
 ### `ControlledDialog`
 

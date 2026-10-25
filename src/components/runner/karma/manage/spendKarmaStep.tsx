@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box"
-import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { RiArrowLeftLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -11,20 +8,18 @@ import { SpendKarmaDialogFooter } from "#/components/runner/karma/improvements/s
 import { SpendKarmaHubList } from "#/components/runner/karma/improvements/spendKarmaHubList.tsx"
 import type { SpendKarmaSectionKey } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
 import { SpendKarmaSectionContent } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
-import {
-  SpendKarmaDialogProvider,
-  useSpendKarmaDialogContext,
-} from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
 import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
 
-// Inner component that consumes SpendKarmaDialogProvider context
-const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
+import { ManageKarmaStepDialog } from "./manageKarmaStepDialog.tsx"
+import { ManageKarmaStepHeader } from "./manageKarmaStepHeader.tsx"
+import type { ManageKarmaStepProps } from "./manageKarmaStepProps.ts"
+
+const SpendKarmaStepInner: FC<ManageKarmaStepProps> = ({ ctrl, onBack }) => {
   const theme = useTheme()
   const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
-  const { improvementStore } = useSpendKarmaDialogContext()
   const visibleSections = useVisibleSections()
   const { saveImprovements } = useSpendKarmaSummary()
 
@@ -33,39 +28,23 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
     (section) => section.key === activeSection,
   ) ?? null
 
-  const goToHub = () => setActiveSection(null)
-
   const handleSave = () => {
     saveImprovements()
     ctrl.close()
   }
 
-  const handleClosed = () => {
-    improvementStore.removeAll()
-    setActiveSection(null)
-  }
-
   return (
-    <ControlledDialog
-      ctrl={ctrl}
-      maxWidth="sm"
-      fullScreen={isNarrowViewport}
-      onClose={false}
-      onClosed={handleClosed}
-    >
+    <ManageKarmaStepDialog ctrl={ctrl} fullScreen={isNarrowViewport}>
       <Dialog.Title>
         {activeSectionConfig
           ? (
-              <Stack direction="row" sx={{ alignItems: "center" }}>
-                <IconButton aria-label="Back to categories" onClick={goToHub}>
-                  <RiArrowLeftLine size={20} />
-                </IconButton>
-                <Box sx={{ flex: 1 }}>{activeSectionConfig.label}</Box>
-                {/* Spacer mirrors the back button so the title stays centered. */}
-                <Box sx={{ width: 36 }} />
-              </Stack>
+              <ManageKarmaStepHeader
+                title={activeSectionConfig.label}
+                onBack={() => setActiveSection(null)}
+                backLabel="Back to categories"
+              />
             )
-          : "Spend Karma"}
+          : <ManageKarmaStepHeader title="Spend Karma" onBack={onBack} />}
       </Dialog.Title>
 
       <Dialog.Content>
@@ -79,12 +58,16 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
       <Dialog.Actions>
         <SpendKarmaDialogFooter onCancel={() => ctrl.close()} onSave={handleSave} />
       </Dialog.Actions>
-    </ControlledDialog>
+    </ManageKarmaStepDialog>
   )
 }
 
-export const SpendKarmaDialogContent: FC<ControlledDialogProps> = ({ ctrl, onClose }) => (
+/**
+ * Manage Karma step for queueing improvements and paying for them with karma. Queued improvements
+ * are discarded when the step is left without saving.
+ */
+export const SpendKarmaStep: FC<ManageKarmaStepProps> = (props) => (
   <SpendKarmaDialogProvider>
-    <SpendKarmaDialogInner ctrl={ctrl} onClose={onClose} />
+    <SpendKarmaStepInner {...props} />
   </SpendKarmaDialogProvider>
 )

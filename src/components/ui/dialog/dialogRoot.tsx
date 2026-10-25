@@ -2,6 +2,7 @@ import type { DialogProps as MuiDialogProps } from "@mui/material/Dialog"
 import MuiDialog from "@mui/material/Dialog"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
+import { useTheme } from "@mui/material/styles"
 import type { FC, ReactElement, ReactNode } from "react"
 import { Children, isValidElement } from "react"
 
@@ -37,6 +38,11 @@ export interface DialogRootProps {
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false
   /** Render the dialog in full-screen mode (useful on narrow viewports). */
   fullScreen?: boolean
+  /**
+   * Skip the enter animation — for a dialog that replaces another one already on screen, such as
+   * the next step of a wizard, so the swap doesn't flash the page behind it.
+   */
+  disableEnterTransition?: boolean
   children: ReactNode
 }
 
@@ -46,8 +52,10 @@ export const DialogRoot = ({
   onClosed,
   maxWidth = "sm",
   fullScreen,
+  disableEnterTransition,
   children,
 }: DialogRootProps) => {
+  const theme = useTheme()
   useCloseOnBrowserBack(open, onClose)
 
   const childArray = Children.toArray(children)
@@ -67,6 +75,9 @@ export const DialogRoot = ({
       maxWidth={maxWidth}
       fullWidth
       fullScreen={fullScreen}
+      transitionDuration={disableEnterTransition
+        ? { enter: 0, exit: theme.transitions.duration.leavingScreen }
+        : undefined}
       slotProps={{
         transition: { onExited: onClosed },
         // MUI's default paper margin is 32px (top/bottom), keep 40px on

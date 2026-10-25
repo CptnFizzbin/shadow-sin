@@ -3,16 +3,17 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 
-interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
+import { ManageKarmaStepDialog } from "./manageKarmaStepDialog.tsx"
+import { ManageKarmaStepHeader } from "./manageKarmaStepHeader.tsx"
+import type { ManageKarmaStepProps } from "./manageKarmaStepProps.ts"
 
-const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
+/** Manage Karma step for recording karma awarded by the GM. */
+export const EarnKarmaStep: FC<ManageKarmaStepProps> = ({ ctrl, onBack }) => {
   const dispatch = useRunnerStoreDispatch()
 
   const form = useAppForm({
@@ -24,8 +25,10 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
   })
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="xs" onClose={false}>
-      <Dialog.Title>Add Karma</Dialog.Title>
+    <ManageKarmaStepDialog ctrl={ctrl}>
+      <Dialog.Title>
+        <ManageKarmaStepHeader title="Earn Karma" onBack={onBack} />
+      </Dialog.Title>
       <Dialog.Content>
         <form.AppForm>
           <Stack sx={{ pt: 1 }}>
@@ -41,19 +44,11 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
         </form.AppForm>
       </Dialog.Content>
       <Dialog.Actions>
-        <Button color="secondary" onClick={() => ctrl.close()}>
-          Cancel
-        </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => form.handleSubmit()}
-        >
-          Add
+        <Button color="secondary" onClick={() => ctrl.close()}>Cancel</Button>
+        <Button color="secondary" variant="contained" onClick={() => form.handleSubmit()}>
+          Earn
         </Button>
       </Dialog.Actions>
-    </ControlledDialog>
+    </ManageKarmaStepDialog>
   )
 }
-
-export const useAddKarmaDialog = () => useDialog<void>((ctrl) => <AddKarmaDialog ctrl={ctrl} />)

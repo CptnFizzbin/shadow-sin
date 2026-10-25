@@ -34,14 +34,16 @@ describe("KarmaSection", () => {
     expect(screen.getByText("20")).toBeDefined()
   })
 
-  it("adding karma dispatches addKarma, updating current and total in the store and the UI", async () => {
+  it("earning karma through Manage Karma updates current and total in the store and the UI", async () => {
     // Arrange
     const store = renderWithKarma(5, 20)
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: /add karma/i }))
-    const dialog = await screen.findByRole("dialog", { name: "Add Karma" })
-    fireEvent.click(within(dialog).getByRole("button", { name: /add/i }))
+    fireEvent.click(screen.getByRole("button", { name: /manage karma/i }))
+    const dialog = await screen.findByRole("dialog", { name: "Manage Karma" })
+    fireEvent.click(within(dialog).getByRole("button", { name: /earn karma/i }))
+    const earnDialog = await screen.findByRole("dialog", { name: "Earn Karma" })
+    fireEvent.click(within(earnDialog).getByRole("button", { name: /^earn$/i }))
 
     // Assert: state updated (default Amount is 1)...
     await waitFor(() => expect(store.getState().runner.karma.current).toBe(6))

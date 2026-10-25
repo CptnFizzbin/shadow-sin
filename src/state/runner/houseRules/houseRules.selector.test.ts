@@ -11,6 +11,14 @@ describe.concurrent("HouseRulesSelectors.select", () => {
     expect(HouseRulesSelectors.select({ runner }, { key: "items.licenseCheck.ratingPlusRating" })).toBe(true)
   })
 
+  it("returns true for the karma.nuyenExchange key, so buying and selling karma is on by default", () => {
+    // Arrange
+    const runner = runnerDataFactory()
+
+    // Act / Assert
+    expect(HouseRulesSelectors.select({ runner }, { key: "karma.nuyenExchange" })).toBe(true)
+  })
+
   it("returns false for an unknown key", () => {
     const runner = runnerDataFactory()
 
