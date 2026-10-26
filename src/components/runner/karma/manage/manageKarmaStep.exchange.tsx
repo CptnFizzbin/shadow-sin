@@ -43,13 +43,13 @@ export const ManageKarmaStepExchange: FC<ManageKarmaStepExchangeProps> = ({ dire
           label="Karma"
           before={<KarmaValue amount={exchange.currentKarma} />}
           after={<KarmaValue amount={exchange.karmaAfter} />}
-          isInvalid={exchange.karmaAfter < 0}
+          isInvalid={!isBuying && !exchange.isAffordable}
         />
         <KarmaBalanceChange
           label="Nuyen"
           before={<Nuyen amount={exchange.currentNuyen} />}
           after={<Nuyen amount={exchange.nuyenAfter} />}
-          isInvalid={exchange.nuyenAfter < 0}
+          isInvalid={isBuying && !exchange.isAffordable}
         />
       </Stack>
       {!exchange.isAffordable && (

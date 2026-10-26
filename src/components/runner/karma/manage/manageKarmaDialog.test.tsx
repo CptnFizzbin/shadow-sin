@@ -89,6 +89,19 @@ describe("ManageKarmaDialog", () => {
     expect(store.getState().runner.nuyen.current).toBe(7600)
   })
 
+  it("sells karma for nuyen even while the Runner's nuyen is negative", async () => {
+    // Arrange
+    const { store } = renderDialog({ karma: 10, nuyen: -14535 })
+    fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
+
+    // Assert
+    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(-12035))
+    expect(store.getState().runner.karma.current).toBe(9)
+  })
+
   it("edits current and total karma directly and logs the adjustment", async () => {
     // Arrange
     const { store } = renderDialog({ karma: 10, total: 20 })
