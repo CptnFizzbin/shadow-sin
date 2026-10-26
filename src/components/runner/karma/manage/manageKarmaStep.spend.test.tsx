@@ -9,7 +9,7 @@ import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
-import { SpendKarmaDialogContent } from "./spendKarmaDialogContent.tsx"
+import { ManageKarmaDialog } from "./manageKarmaDialog.tsx"
 
 function makeOpenCtrl() {
   const ctrl = new DialogCtrl<void>()
@@ -19,17 +19,19 @@ function makeOpenCtrl() {
 
 function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   const ctrl = makeOpenCtrl()
-  return renderWithProviders(
-    <SpendKarmaDialogContent ctrl={ctrl} />,
+  const store = renderWithProviders(
+    <ManageKarmaDialog ctrl={ctrl} />,
     {
       runner: runnerDataFactory({ afterBuild: (sheet) => {
         updateRunnerData?.(sheet)
       } }),
     },
   )
+  fireEvent.click(screen.getByRole("button", { name: /spend karma/i }))
+  return store
 }
 
-describe("SpendKarmaDialogContent", () => {
+describe("ManageKarmaStepSpend", () => {
   it("opens on the hub with a row per category", () => {
     // Arrange
     renderDialog((sheet) => {
@@ -146,6 +148,18 @@ describe("SpendKarmaDialogContent", () => {
     expect((saveButton as HTMLButtonElement).disabled).toBe(true)
   })
 
+  it("returns to the Manage Karma options via the back button on the hub", () => {
+    // Arrange
+    renderDialog()
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /back to options/i }))
+
+    // Assert
+    expect(screen.getByText("Manage Karma")).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /attributes/i })).toBeNull()
+  })
+
   it("drills into a section and returns to the hub via the back button", () => {
     // Arrange
     renderDialog((sheet) => {
@@ -206,5 +220,23 @@ describe("SpendKarmaDialogContent", () => {
 
     // Assert — Pistols visible in the skills section
     expect(screen.getByText("Pistols")).toBeTruthy()
+  })
+
+  it("discards queued improvements when backing out to the Manage Karma options", () => {
+    // Arrange — queue Body, then return to the hub
+    renderDialog((sheet) => {
+      sheet.attributes[AttributeKey.body] = 3
+      sheet.karma.current = 50
+    })
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
+    fireEvent.click(screen.getByRole("button", { name: /bod/i }))
+    fireEvent.click(screen.getByRole("button", { name: /back to categories/i }))
+
+    // Act — leave Spend Karma and come back
+    fireEvent.click(screen.getByRole("button", { name: /back to options/i }))
+    fireEvent.click(screen.getByRole("button", { name: /spend karma/i }))
+
+    // Assert
+    expect(screen.queryByText("1 queued")).toBeNull()
   })
 })

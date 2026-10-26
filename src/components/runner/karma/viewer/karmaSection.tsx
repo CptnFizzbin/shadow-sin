@@ -3,27 +3,17 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useManageKarmaDialog } from "#/components/runner/karma/manage/manageKarmaDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
-import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
 import { KarmaValue } from "./karmaValue.tsx"
-import { useSpendKarmaDialog } from "./spendKarmaDialog.tsx"
 
 export const KarmaSection: FC = () => {
-  const addKarmaDialog = useAddKarmaDialog()
-  const spendKarmaDialog = useSpendKarmaDialog()
+  const manageKarmaDialog = useManageKarmaDialog()
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const totalKarma = useRunnerSelector(KarmaSelectors.selectTotal)
-
-  const handleOpenAddKarma = () => {
-    addKarmaDialog.open()
-  }
-
-  const handleOpenSpendKarma = () => {
-    spendKarmaDialog.open()
-  }
 
   return (
     <>
@@ -42,21 +32,14 @@ export const KarmaSection: FC = () => {
           </Stack>
         </Grid>
 
-        <Grid size={1}>
-          <Button size="small" variant="outlined" onClick={handleOpenAddKarma} fullWidth>
-            Add Karma
-          </Button>
-        </Grid>
-
-        <Grid size={1}>
-          <Button size="small" variant="outlined" onClick={handleOpenSpendKarma} fullWidth>
-            Spend Karma
+        <Grid size={2}>
+          <Button size="small" variant="outlined" onClick={() => manageKarmaDialog.open()} fullWidth>
+            Manage Karma
           </Button>
         </Grid>
       </Grid>
 
-      {addKarmaDialog.outlet}
-      {spendKarmaDialog.outlet}
+      {manageKarmaDialog.outlet}
     </>
   )
 }
