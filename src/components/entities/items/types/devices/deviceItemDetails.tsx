@@ -3,7 +3,6 @@ import type { FC } from "react"
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
 import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
-import { useRunProgramDialog } from "#/components/system/matrix/dialogs/runProgramDialog.tsx"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -13,11 +12,9 @@ import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
-import { Icons } from "#/utils/icons.ts"
 
+import { DeviceProgramsSection } from "./deviceProgramsSection.tsx"
 import { useDeviceFormDialog } from "./dialogs/deviceFormDialog.tsx"
-import { useProgramFormDialog } from "./dialogs/programFormDialog.tsx"
-import { LoadedProgramCard } from "./loadedProgramCard.tsx"
 
 export interface DeviceItemDetailsProps {
   device: DeviceData
@@ -33,8 +30,6 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const attachments = useRunnerSelector(ItemSelectors.selectChildListOf, { itemId: device.id })
   const deviceFormDialog = useDeviceFormDialog()
-  const programFormDialog = useProgramFormDialog()
-  const runProgramDialog = useRunProgramDialog()
   const addItemDialog = useAddItemDialogContext()
 
   const programs = attachments.filter((item): item is ProgramData => item.itemType === ItemType.program)
@@ -52,11 +47,6 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
 
   const handleEdit = async () => {
     const saved = await deviceFormDialog.open({ device })
-    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
-  }
-
-  const handleAddProgram = async () => {
-    const saved = await programFormDialog.open({ parentId: device.id })
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
@@ -79,20 +69,9 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
         {device.system !== undefined && <ItemDetailsSlot.Stat label="System" value={device.system} />}
         {device.firewall !== undefined && <ItemDetailsSlot.Stat label="Firewall" value={device.firewall} />}
 
-        <ItemDetailsSlot.SubitemList label="Programs" addLabel="Add Program" onAdd={handleAddProgram}>
-          {programs.map((program) => (
-            <LoadedProgramCard
-              key={program.id}
-              program={program}
-              onOpen={onOpenAttachment ? () => onOpenAttachment(program) : undefined}
-              leftAction={{
-                label: "Run",
-                icon: <Icons.item.run />,
-                onClick: () => runProgramDialog.open({ program }),
-              }}
-            />
-          ))}
-        </ItemDetailsSlot.SubitemList>
+        <ItemDetailsSlot.Section>
+          <DeviceProgramsSection device={device} programs={programs} onOpenProgram={onOpenAttachment} />
+        </ItemDetailsSlot.Section>
 
         {subitems.map((item) => (
           <ItemDetailsSlot.Subitem
@@ -104,8 +83,6 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
       </ItemDetailsRoot>
 
       {deviceFormDialog.outlet}
-      {programFormDialog.outlet}
-      {runProgramDialog.outlet}
     </>
   )
 }

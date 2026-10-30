@@ -8,10 +8,10 @@ import { ItemDetailsFooter } from "./itemDetails.Footer.tsx"
 import { ItemDetailsQuantity } from "./itemDetails.Quantity.tsx"
 import { ItemDetailsQuickAction } from "./itemDetails.QuickAction.tsx"
 import { ItemDetailsRating } from "./itemDetails.Rating.tsx"
+import { ItemDetailsSection } from "./itemDetails.Section.tsx"
 import { ItemDetailsSource } from "./itemDetails.Source.tsx"
 import { ItemDetailsStat } from "./itemDetails.Stat.tsx"
 import { ItemDetailsSubitem } from "./itemDetails.Subitem.tsx"
-import { ItemDetailsSubitemList } from "./itemDetails.SubitemList.tsx"
 import { ItemDetailsTitle } from "./itemDetails.Title.tsx"
 import { ItemDetailsType } from "./itemDetails.Type.tsx"
 import { ItemDetailsStatus } from "./itemDetailsStatus.tsx"
@@ -43,7 +43,7 @@ export type { ItemDetailsTypeProps } from "./itemDetails.Type.tsx"
  * `type` prop) by default, since every item carries them — these slots exist
  * only so a typed view can override that default rendering when it needs
  * to. `Rating` and `Content` have no such default; they're purely additive,
- * like `Stat`/`Subitem`/`SubitemList`/`DamageTrack`/`Footer`/`QuickAction`.
+ * like `Stat`/`Subitem`/`Section`/`DamageTrack`/`Footer`/`QuickAction`.
  */
 export const ItemDetailsSlot = {
   Title: ItemDetailsTitle,
@@ -55,7 +55,7 @@ export const ItemDetailsSlot = {
   Rating: ItemDetailsRating,
   Stat: ItemDetailsStat,
   Subitem: ItemDetailsSubitem,
-  SubitemList: ItemDetailsSubitemList,
+  Section: ItemDetailsSection,
   DamageTrack: ItemDetailsDamageTrack,
   Footer: ItemDetailsFooter,
   Content: ItemDetailsContent,
@@ -104,8 +104,8 @@ export class ItemDetailsSlotManager extends SlotManager {
     return this.filter(ItemDetailsSubitem)
   }
 
-  get subitemLists() {
-    return this.filter(ItemDetailsSubitemList)
+  get sections() {
+    return this.filter(ItemDetailsSection)
   }
 
   get damageTracks() {
