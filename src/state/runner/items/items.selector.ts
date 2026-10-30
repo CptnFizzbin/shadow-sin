@@ -2,6 +2,7 @@ import type { Selector as StandardSelector } from "#/integrations/reselect/selec
 import { createMemoizedSelector, createSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { calculateArmorBulk } from "#/system/formulas/items/encumbranceUtils.ts"
 import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -116,6 +117,12 @@ export namespace ItemSelectors {
         ballistic: equipped.reduce((sum, item) => sum + item.ballistic, 0),
         impact: equipped.reduce((sum, item) => sum + item.impact, 0),
       }),
+    ) satisfies ItemSelector<ArmorRating>
+
+    /** The summed printed ratings of all equipped armor, which drives Encumbrance. */
+    export const selectBulk = createMemoizedSelector(
+      selectEquipped,
+      calculateArmorBulk,
     ) satisfies ItemSelector<ArmorRating>
 
     export const selectEffective = createMemoizedSelector(

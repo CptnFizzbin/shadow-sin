@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest"
 
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
@@ -110,5 +114,32 @@ describe("SkillsSelectors.selectAllowedActive", () => {
     // Assert
     expect(allowed[SkillKey.pistols]).toBeDefined()
     expect(Object.values(allowed).every((info) => !info.awakening)).toBe(true)
+  })
+})
+
+describe("SkillsSelectors.selectRatingBreakdown", () => {
+  it("adds active skillMod GameEffects to the raw value, named after their source", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Skillwire",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.skillMod, target: SkillKey.pistols, value: 1 }],
+    })
+    const runner = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
+      },
+    })
+
+    // Act
+    const breakdown = SkillsSelectors.selectRatingBreakdown(
+      { runner, entity: runner, items: getItemCatalog(runner) },
+      { skill: SkillKey.pistols },
+    )
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 3, modifiers: [{ name: "Skillwire", value: 1 }], rating: 4 })
   })
 })

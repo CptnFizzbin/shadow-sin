@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
@@ -15,7 +16,9 @@ import {
   MeleeFullBlockDicePool,
   MeleeFullDodgeDicePool,
   MeleeFullParryDicePool,
+  RangedDefenseDicePool,
   RangedFullDefenseDicePool,
+  ResistDamageDicePool,
 } from "./resistanceDicePools.tsx"
 
 interface TestProvidersProps extends PropsWithChildren {
@@ -174,5 +177,29 @@ describe("MeleeFullBlockDicePool", () => {
 
     // Assert
     expect(view.queryByText(/Defaulting/)).toBeNull()
+  })
+})
+
+describe("ResistDamageDicePool", () => {
+  it("leaves out the Wound Modifier, which never applies to a resistance test", () => {
+    // Arrange / Act
+    const view = renderWithRunner(<ResistDamageDicePool type="P" armor={ArmorRatingType.ballistic} />, (sheet) => {
+      sheet.damage.physical = 6
+    })
+
+    // Assert
+    expect(view.queryByText("Wound")).toBeNull()
+  })
+})
+
+describe("RangedDefenseDicePool", () => {
+  it("includes the Wound Modifier, which applies to a defense test", () => {
+    // Arrange / Act
+    const view = renderWithRunner(<RangedDefenseDicePool />, (sheet) => {
+      sheet.damage.physical = 6
+    })
+
+    // Assert
+    expect(view.getAllByText("Wound").length).toBeGreaterThan(0)
   })
 })

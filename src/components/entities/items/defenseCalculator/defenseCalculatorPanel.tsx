@@ -23,12 +23,12 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import {
   useActiveSkillDiceGroup,
-  useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { DiceGroupSelectors } from "#/state/runner/diceGroup/diceGroup.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -64,7 +64,7 @@ const wizardSteps: { step: WizardStep, label: string }[] = [
 
 interface SkillDefenseEntry {
   rating: number
-  diceGroup: DiceGroup
+  diceGroups: DiceGroup[]
 }
 
 /** Drilled-down view of the Defense Calculator: a paginated wizard for one attack type. */
@@ -92,9 +92,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
-  const reaction = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
-  const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
-  const willpower = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.willpower })
+  const body = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.body })
+  const willpower = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.willpower })
 
   const dodgeRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.dodge })
   const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
@@ -112,16 +111,15 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling, { defaulting: false })
 
   const skillDataByKey: Partial<Record<SkillKey, SkillDefenseEntry>> = {
-    [SkillKey.dodge]: { rating: dodgeRating, diceGroup: dodgeGroup },
-    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroup: unarmedGroup },
-    [SkillKey.blades]: { rating: bladesRating, diceGroup: bladesGroup },
-    [SkillKey.clubs]: { rating: clubsRating, diceGroup: clubsGroup },
-    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroup: counterspellingGroup },
+    [SkillKey.dodge]: { rating: dodgeRating, diceGroups: dodgeGroup },
+    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroups: unarmedGroup },
+    [SkillKey.blades]: { rating: bladesRating, diceGroups: bladesGroup },
+    [SkillKey.clubs]: { rating: clubsRating, diceGroups: clubsGroup },
+    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroups: counterspellingGroup },
   }
 
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   const woundGroup = useWoundDiceGroup()
-  const encumbranceGroup = useEncumbranceDiceGroup()
   const armorTotals = useEncumbrance()
 
   const visibleSkillOptions = skillOptions.filter((option) => {
@@ -147,23 +145,21 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? (spellType === "indirect" ? AttributeKey.reaction : spellDamageAttr)
     : AttributeKey.reaction
 
-  const attributeGroup: DiceGroup = {
-    name: AttributeLabels[baseAttr],
-    size: attackType === "spell" ? (spellType === "indirect" ? reaction : spellDamageAttrValue) : reaction,
-  }
+  // Sized by the Attribute's rating, so Reaction already carries any Encumbrance penalty.
+  const attributeGroups = useEntitySelector(DiceGroupSelectors.selectAttr, { attr: baseAttr })
 
-  const spellSkillGroup: DiceGroup | null = attackType === "spell" && counterspellingEnabled
+  const spellSkillGroups: DiceGroup[] = attackType === "spell" && counterspellingEnabled
     ? (counterspellingSource === "self"
         ? counterspellingGroup
-        : { id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating })
-    : null
+        : [{ id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating }])
+    : []
 
-  const skillGroupForTotal = attackType === "spell" ? spellSkillGroup : (selectedSkillEntry?.diceGroup ?? null)
+  const skillGroupsForTotal = attackType === "spell" ? spellSkillGroups : (selectedSkillEntry?.diceGroups ?? [])
 
   // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
-  const doubledSkillGroup: DiceGroup | null = attackType !== "spell" && selectedOption.doubleSkill && selectedSkillEntry?.diceGroup
-    ? { ...selectedSkillEntry.diceGroup, id: `${selectedSkillEntry.diceGroup.id ?? selectedOption.key}-double` }
-    : null
+  const doubledSkillGroups: DiceGroup[] = attackType !== "spell" && selectedOption.doubleSkill
+    ? selectedSkillEntry?.diceGroups ?? []
+    : []
 
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
@@ -200,11 +196,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   })
 
   const groups: DiceGroupList = [
-    attributeGroup,
-    skillGroupForTotal,
-    doubledSkillGroup,
+    attributeGroups,
+    skillGroupsForTotal,
+    doubledSkillGroups,
     woundGroup,
-    attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
   ]
 
@@ -227,6 +222,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const resistGroups: DiceGroupList = isDirectSpell
     // Same test as the Defense roll — Body/Willpower + Counterspelling, including modifiers.
     ? groups
+    // Damage resistance is a Resistance Test, so it never takes the Wound Modifier.
     : [
         { name: AttributeLabels[resistAttr], size: resistAttrValue },
         attackType === "spell"

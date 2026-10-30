@@ -10,10 +10,10 @@ import { useContext, useState } from "react"
 
 import { DiceTrayContext } from "#/components/system/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
-import { useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 
 import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
 import { flattenDiceGroups } from "./diceGroup.tsx"
+import { DiceGroupModifierRow } from "./diceGroupModifierRow.tsx"
 import { getPoolSize } from "./dicePoolData.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
@@ -32,16 +32,15 @@ function getGroupColor(group: DiceGroup): string {
 
 interface DicePoolProps {
   name: string
+  /** Every group in the pool, the Wound Modifier included — `DicePoolSelectors` pools add it already. */
   groups: DiceGroupList
-  includeWound?: boolean
 }
 
-export const DicePool: FC<DicePoolProps> = ({ name, groups, includeWound = true }) => {
+export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
-  const woundDiceGroup = useWoundDiceGroup()
 
-  const diceGroups = flattenDiceGroups([groups, includeWound && woundDiceGroup])
+  const diceGroups = flattenDiceGroups(groups)
 
   const total = getPoolSize(diceGroups)
   const penalties = diceGroups.filter((group) => group.size < 0)
@@ -103,12 +102,12 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups, includeWound = true 
 
           {penalties.length > 0 && (
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5 }}>
-              {penalties.map((group) => {
+              {penalties.map((group, index) => {
                 const groupColor = getGroupColor(group)
 
                 return (
                   <Stack
-                    key={group.id ?? group.name}
+                    key={`${index}-${group.name}`}
                     direction="row"
                     sx={{
                       gap: 0.5,
@@ -142,22 +141,24 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups, includeWound = true 
 
       <Collapse in={isOpen}>
         <Stack sx={{ gap: 0.5, paddingTop: 1 }} className="ledger">
-          {diceGroups.map((group) => {
+          {diceGroups.map((group, index) => {
             const groupColor = getGroupColor(group)
 
             return (
-              <Stack
-                key={group.id ?? group.name}
-                direction="row"
-                sx={{ justifyContent: "space-between" }}
-              >
-                <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
-                >
-                  {group.size}
-                </Typography>
+              <Stack key={`${index}-${group.name}`}>
+                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                  <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
+                  >
+                    {group.size}
+                  </Typography>
+                </Stack>
+
+                {group.modifiers?.map((modifier, modifierIndex) => (
+                  <DiceGroupModifierRow key={`${modifierIndex}-${modifier.name}`} modifier={modifier} />
+                ))}
               </Stack>
             )
           })}

@@ -13,7 +13,6 @@ import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
-import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -26,7 +25,6 @@ import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { useActiveAttackWeapon, useAttackWorkflow } from "./attackWorkflow.ts"
 
@@ -39,14 +37,11 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const skill = useRunnerSelector(SkillsSelectors.selectActiveSkill, { skillName: workflow.data.selectedSkill })
 
   const attrKey = weapon.attribute ?? skill.attr
-  const affectedByEncumbrance = attrKey === AttributeKey.agility || attrKey === AttributeKey.reaction
 
   const skillPool = useRunnerSelector(DicePoolSelectors.selectStandardTest, {
     skill: skill.name,
     attr: attrKey,
   })
-
-  const encumbranceGroup = useEncumbranceDiceGroup()
 
   const modifierGroups = Object.entries(workflow.data.modifiers).map(([label, value]): DiceGroup => {
     return { name: label, size: value }
@@ -54,7 +49,6 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
 
   const groups: DiceGroupList = [
     skillPool.groups,
-    affectedByEncumbrance ? encumbranceGroup : null,
     ...modifierGroups,
   ]
   const poolTotal = getPoolSize(groups.flat())

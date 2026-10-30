@@ -1,9 +1,6 @@
 import type { FC } from "react"
 
-import {
-  useAttrDiceGroup,
-  useWoundDiceGroup,
-} from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { SpellCard } from "./spellCard.tsx"
@@ -12,21 +9,15 @@ interface DrainResistanceDicePoolProps {
   drainAttribute: AttributeKey
 }
 
+/** Drain Resistance is a Resistance Test, so the pool never takes the Wound Modifier. */
 export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
-  const willpowerGroup = useAttrDiceGroup(AttributeKey.willpower)
-  const drainAttrGroup = useAttrDiceGroup(drainAttribute)
-  const woundGroup = useWoundDiceGroup()
-
-  // When drainAttribute is willpower, disambiguate group names to avoid duplicate React keys
-  const resolvedDrainAttrGroup =
-    drainAttrGroup.name === willpowerGroup.name
-      ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
-      : drainAttrGroup
+  const willpowerGroups = useAttrDiceGroup(AttributeKey.willpower)
+  const drainAttrGroups = useAttrDiceGroup(drainAttribute)
 
   return (
     <SpellCard.DicePool
       name="Drain Resistance"
-      groups={[willpowerGroup, resolvedDrainAttrGroup, woundGroup]}
+      groups={[willpowerGroups, drainAttrGroups]}
     />
   )
 }

@@ -11,7 +11,7 @@ import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
@@ -33,16 +33,15 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
   const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
     // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
-    // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
-    // rows from colliding on the same React key.
-    { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
-    { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
+    { name: "Connection", size: contact.connection },
+    { name: "Connection", size: contact.connection },
   ])
 
   const playerPool = createDicePool("legwork.player", "Legwork Test", [
     useAttrDiceGroup(AttributeKey.charisma),
     useActiveSkillDiceGroup(SkillKey.etiquette),
     { name: "Loyalty", size: contact.loyalty },
+    useWoundDiceGroup(),
   ])
 
   return (
