@@ -2,6 +2,7 @@ import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemType } from "#/system/model/items/itemType.ts"
 import type { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
@@ -23,17 +24,25 @@ import type { UUID } from "#/utils/uuidUtils.ts"
  * called `key`, just on different `TOptions` shapes.
  */
 export const SelectorOptions = {
+  armorRating: selectorOption<{ armorRating: ArmorRatingType }>("armorRating"),
   attr: selectorOption<{ attr: AttributeKey }>("attr"),
+  attrOverride: selectorOption<{ attrOverride?: AttributeKey }>("attrOverride"),
   damageSystem: selectorOption<{ system?: number }>("system"),
   damageTrack: selectorOption<{ track: DamageTrackKey }>("track"),
   excludeDefaulting: selectorOption<{ excludeDefaulting?: boolean }>("excludeDefaulting"),
   gameEffectType: selectorOption<{ gameEffectType: GameEffectType }>("gameEffectType"),
+  isNative: selectorOption<{ isNative: boolean }>("isNative"),
   isSpecialized: selectorOption<{ isSpecialized?: boolean }>("isSpecialized"),
   itemId: selectorOption<{ itemId: UUID }>("itemId"),
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
+  knowledge: selectorOption<{ knowledge: string }>("knowledge"),
+  language: selectorOption<{ language: string }>("language"),
   licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
+  lingo: selectorOption<{ lingo?: string }>("lingo"),
+  rating: selectorOption<{ rating: number }>("rating"),
   repType: selectorOption<{ repType: ReputationStatType }>("repType"),
   skill: selectorOption<{ skill: SkillKey }>("skill"),
+  specialization: selectorOption<{ specialization?: string }>("specialization"),
 
   /** @deprecated - use {@link SelectorOptions.skill} instead */
   skillName: selectorOption<{ skillName: SkillKey }>("skillName"),

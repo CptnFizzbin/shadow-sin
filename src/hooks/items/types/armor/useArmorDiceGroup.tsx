@@ -1,12 +1,9 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
 
+/** @deprecated - use `useRunnerSelector(DicePoolSelectors.selectArmorGroup, { armorRating })` instead */
 export function useArmorDiceGroup(type: ArmorRatingType): DiceGroup {
-  const ratings = useRunnerSelector(ItemSelectors.Armor.selectEffective)
-  return {
-    name: `Armor (${type})`,
-    size: ratings[type] ?? 0,
-  }
+  return useRunnerSelector(DicePoolSelectors.selectArmorGroup, { armorRating: type })
 }
