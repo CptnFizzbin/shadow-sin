@@ -6,6 +6,7 @@ import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/entities/items/availability/availabilityChip.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 
 interface ItemDialogFinalizePreviewProps {
@@ -57,7 +58,7 @@ export const ItemDialogFinalizePreview: FC<ItemDialogFinalizePreviewProps> = ({
         )}
 
         {values.description && (
-          <Typography variant="body2">{values.description}</Typography>
+          <MarkdownText variant="body2">{values.description}</MarkdownText>
         )}
 
         {values.source?.book && (
