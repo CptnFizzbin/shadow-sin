@@ -4,6 +4,7 @@ import { AttributeKey, AttrKey } from "#/system/model/attributes/attributeKey.ts
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
@@ -386,5 +387,48 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
 
     // Assert
     expect(breakdown).toEqual({ rawValue: 3, modifiers: [], rating: 3 })
+  })
+})
+
+describe("AttrSelectors.selectRatingBreakdown with Encumbrance", () => {
+  const ratingStateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
+  const heavyArmorRunner = () => {
+    const [armor] = createItem<ArmorData>({
+      name: "Heavy Armor",
+      itemType: ItemType.armor,
+      equipped: true,
+      ballistic: 10,
+      impact: 6,
+    })
+    return runnerDataFactory({
+      items: createItemMap([armor]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.body] = 3
+        s.attributes[AttributeKey.agility] = 5
+        s.attributes[AttributeKey.strength] = 4
+      },
+    })
+  }
+
+  it("applies the Encumbrance penalty to Agility", () => {
+    // Arrange
+    const runner = heavyArmorRunner()
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 5, modifiers: [{ name: "Encumbrance", value: -2 }], rating: 3 })
+  })
+
+  it("leaves attributes other than Agility and Reaction alone", () => {
+    // Arrange
+    const runner = heavyArmorRunner()
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.strength })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 4, modifiers: [], rating: 4 })
   })
 })

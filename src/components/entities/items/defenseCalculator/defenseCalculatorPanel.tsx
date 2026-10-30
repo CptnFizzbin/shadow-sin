@@ -23,12 +23,12 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import {
   useActiveSkillDiceGroup,
-  useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { DiceGroupSelectors } from "#/state/runner/diceGroup/diceGroup.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -92,9 +92,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
-  const reaction = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
-  const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
-  const willpower = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.willpower })
+  const body = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.body })
+  const willpower = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.willpower })
 
   const dodgeRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.dodge })
   const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
@@ -121,7 +120,6 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
   const woundGroup = useWoundDiceGroup()
-  const encumbranceGroup = useEncumbranceDiceGroup()
   const armorTotals = useEncumbrance()
 
   const visibleSkillOptions = skillOptions.filter((option) => {
@@ -147,10 +145,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? (spellType === "indirect" ? AttributeKey.reaction : spellDamageAttr)
     : AttributeKey.reaction
 
-  const attributeGroup: DiceGroup = {
-    name: AttributeLabels[baseAttr],
-    size: attackType === "spell" ? (spellType === "indirect" ? reaction : spellDamageAttrValue) : reaction,
-  }
+  // Sized by the Attribute's rating, so Reaction already carries any Encumbrance penalty.
+  const attributeGroups = useEntitySelector(DiceGroupSelectors.selectAttr, { attr: baseAttr })
 
   const spellSkillGroups: DiceGroup[] = attackType === "spell" && counterspellingEnabled
     ? (counterspellingSource === "self"
@@ -200,11 +196,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   })
 
   const groups: DiceGroupList = [
-    attributeGroup,
+    attributeGroups,
     skillGroupsForTotal,
     doubledSkillGroups,
     woundGroup,
-    attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
   ]
 
@@ -232,7 +227,6 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
         attackType === "spell"
           ? { name: "Armor (Impact, half)", size: halfImpactArmor, color: "info.main" }
           : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
-        woundGroup,
       ]
 
   const currentStep = wizardSteps[stepIndex].step

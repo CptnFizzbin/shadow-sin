@@ -22,8 +22,3 @@ export function useActiveSkillDiceGroup(
 export function useWoundDiceGroup(): DiceGroup[] {
   return useRunnerSelector(DiceGroupSelectors.selectWound)
 }
-
-/** @deprecated - use `useRunnerSelector(DiceGroupSelectors.selectEncumbrance)` instead */
-export function useEncumbranceDiceGroup(): DiceGroup[] {
-  return useRunnerSelector(DiceGroupSelectors.selectEncumbrance)
-}

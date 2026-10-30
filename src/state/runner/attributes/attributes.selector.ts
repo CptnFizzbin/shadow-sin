@@ -3,10 +3,12 @@ import { createMemoizedSelector, injectOption } from "#/integrations/reselect/se
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { SourcedGameEffectSelectors } from "#/state/runner/gameEffects/gameEffects.selector.ts"
 import { MatrixSelectors } from "#/state/runner/gameState/matrix/matrix.selector.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
 import { attrAugmentedMax } from "#/system/formulas/attributes/attributeFormulas.ts"
+import { calculateEncumbrancePenalty, isEncumberedAttribute } from "#/system/formulas/items/encumbranceUtils.ts"
 import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
 import { RatingFormulas } from "#/system/formulas/ratings/ratingFormulas.ts"
 import type {
@@ -109,16 +111,33 @@ export namespace AttrSelectors {
       ? attrAugmentedMax(selectBounds(state), attr)
       : undefined
 
+  const selectPenalties = createMemoizedSelector(
+    ViewerStateSelectors.selectEntity,
+    ItemSelectors.Armor.selectBulk,
+    injectOption(selectRawValue, { attr: AttributeKey.body }),
+    SelectorOptions.attr,
+    (entity, bulk, body, attr): RatingModifier[] => {
+      // Worn armor belongs to the Runner, so it only encumbers the Runner's own attributes.
+      if (!isRunnerWithBiology(entity) || !isEncumberedAttribute(attr)) return []
+      const penalty = calculateEncumbrancePenalty(bulk.ballistic, bulk.impact, body)
+      return penalty === 0 ? [] : [{ name: "Encumbrance", value: -penalty }]
+    },
+  )
+
   /** The rating for `attr` with the raw value and named modifiers it was computed from. */
   export const selectRatingBreakdown = createMemoizedSelector(
     selectRawValue,
     selectModifiers,
     selectAugmentedMax,
-    (rawValue, modifiers, augmentedMax): RatingBreakdown =>
-      RatingFormulas.getAttrRating({ rawValue, modifiers, augmentedMax }),
+    selectPenalties,
+    (rawValue, modifiers, augmentedMax, penalties): RatingBreakdown =>
+      RatingFormulas.getAttrRating({ rawValue, modifiers, augmentedMax, penalties }),
   )
 
-  /** The rating for `attr` used in tests and dice pools: its raw value plus active modifiers, capped at the augmented maximum. */
+  /**
+   * The rating for `attr` used in tests and dice pools: its raw value plus active modifiers, capped
+   * at the augmented maximum, less any Encumbrance penalty.
+   */
   export const selectRating = createMemoizedSelector(
     selectRatingBreakdown,
     (breakdown) => breakdown.rating,

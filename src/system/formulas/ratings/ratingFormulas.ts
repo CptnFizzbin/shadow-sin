@@ -44,22 +44,25 @@ export const RatingFormulas = {
       .map(({ sourceName, effect }) => ({ name: sourceName, value: effect.value })),
 
   /**
-   * An Attribute's rating: `rawValue` plus `modifiers`, capped at `augmentedMax` when one is given.
-   * A cap that applies is listed as its own negative modifier.
+   * An Attribute's rating: `rawValue` plus `modifiers`, capped at `augmentedMax` when one is given,
+   * then reduced by `penalties` (which the cap never absorbs). A cap that applies is listed as its
+   * own negative modifier.
    */
-  getAttrRating: ({ rawValue, modifiers, augmentedMax }: {
+  getAttrRating: ({ rawValue, modifiers, augmentedMax, penalties = [] }: {
     rawValue: number
     modifiers: RatingModifier[]
     augmentedMax?: number
+    penalties?: RatingModifier[]
   }): RatingBreakdown => {
     const augmented = rawValue + sumModifiers(modifiers)
     const cap = augmentedMax === undefined ? augmented : Math.max(rawValue, augmentedMax)
-    if (augmented <= cap) return { rawValue, modifiers, rating: augmented }
+    const capModifiers = augmented > cap ? [{ name: "Augmented maximum", value: cap - augmented }] : []
+    const allModifiers = [...modifiers, ...capModifiers, ...penalties]
 
     return {
       rawValue,
-      modifiers: [...modifiers, { name: "Augmented maximum", value: cap - augmented }],
-      rating: cap,
+      modifiers: allModifiers,
+      rating: rawValue + sumModifiers(allModifiers),
     }
   },
 

@@ -93,3 +93,26 @@ describe.concurrent("RatingFormulas.getSkillRating", () => {
     expect(breakdown).toEqual({ rawValue: 3, modifiers: [{ name: "Skillwire", value: 1 }], rating: 4 })
   })
 })
+
+describe.concurrent("RatingFormulas.getAttrRating with penalties", () => {
+  it("applies penalties after the augmented maximum caps the modifiers", () => {
+    // Arrange / Act
+    const breakdown = RatingFormulas.getAttrRating({
+      rawValue: 6,
+      modifiers: [{ name: "Muscle Toner", value: 5 }],
+      augmentedMax: 9,
+      penalties: [{ name: "Encumbrance", value: -1 }],
+    })
+
+    // Assert
+    expect(breakdown).toEqual({
+      rawValue: 6,
+      modifiers: [
+        { name: "Muscle Toner", value: 5 },
+        { name: "Augmented maximum", value: -2 },
+        { name: "Encumbrance", value: -1 },
+      ],
+      rating: 8,
+    })
+  })
+})

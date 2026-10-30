@@ -265,19 +265,8 @@ describe("DiceGroupSelectors.selectWound", () => {
   })
 })
 
-describe("DiceGroupSelectors.selectEncumbrance", () => {
-  it("returns nothing when unencumbered", () => {
-    // Arrange
-    const runner = runnerDataFactory()
-
-    // Act
-    const groups = DiceGroupSelectors.selectEncumbrance(stateFor(runner))
-
-    // Assert
-    expect(groups).toEqual([])
-  })
-
-  it("returns the Encumbrance penalty when worn armor exceeds Body x 2", () => {
+describe("DiceGroupSelectors.selectAttr with Encumbrance", () => {
+  it("lists Encumbrance as a modifier on Reaction, already counted in its size", () => {
     // Arrange
     const [armor] = createItem<ArmorData>({
       name: "Heavy Armor",
@@ -290,14 +279,20 @@ describe("DiceGroupSelectors.selectEncumbrance", () => {
       items: createItemMap([armor]),
       afterBuild: (s) => {
         s.attributes[AttributeKey.body] = 3
+        s.attributes[AttributeKey.reaction] = 4
       },
     })
 
     // Act
-    const groups = DiceGroupSelectors.selectEncumbrance(stateFor(runner))
+    const groups = DiceGroupSelectors.selectAttr(stateFor(runner), { attr: AttributeKey.reaction })
 
     // Assert
-    expect(groups).toEqual([{ name: "Encumbrance", size: -2, type: "penalty" }])
+    expect(groups).toEqual([{
+      name: "REA",
+      size: 2,
+      type: "attribute",
+      modifiers: [{ name: "Encumbrance", value: -2 }],
+    }])
   })
 })
 

@@ -5,7 +5,6 @@ import { useArmorDiceGroup } from "#/hooks/items/types/armor/useArmorDiceGroup.t
 import {
   useActiveSkillDiceGroup,
   useAttrDiceGroup,
-  useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
@@ -19,7 +18,6 @@ export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType 
       groups={[
         useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
         useArmorDiceGroup(armor),
-        useWoundDiceGroup(),
       ]}
     />
   )
@@ -31,7 +29,6 @@ export const ResistDirectManaSpellDicePool = () => {
       name="Resist Mana Spell"
       groups={[
         useAttrDiceGroup(AttributeKey.willpower),
-        useWoundDiceGroup(),
       ]}
     />
   )
@@ -43,7 +40,6 @@ export const ResistDirectPhysicalSpellDicePool = () => {
       name="Resist Physical Spell"
       groups={[
         useAttrDiceGroup(AttributeKey.body),
-        useWoundDiceGroup(),
       ]}
     />
   )
@@ -56,7 +52,6 @@ export const RangedDefenseDicePool = () => {
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -70,7 +65,6 @@ export const RangedFullDefenseDicePool = () => {
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -86,7 +80,6 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(weaponSkill),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -100,7 +93,6 @@ export const MeleeBlockDicePool = () => {
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.unarmedCombat),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -114,7 +106,6 @@ export const MeleeDodgeDicePool = () => {
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -131,7 +122,6 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useActiveSkillDiceGroup(weaponSkill),
         useActiveSkillDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -146,7 +136,6 @@ export const MeleeFullBlockDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.unarmedCombat),
         useActiveSkillDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -161,7 +150,6 @@ export const MeleeFullDodgeDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.dodge),
         useActiveSkillDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
       ]}
     />
   )

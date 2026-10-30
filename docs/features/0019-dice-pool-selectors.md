@@ -6,7 +6,7 @@
 > - Stage 1: https://github.com/CptnFizzbin/shadow-sin/pull/650
 
 Dice groups and dice pools are built today by a family of hooks — `useAttrDiceGroup`,
-`useActiveSkillDiceGroup`, `useWoundDiceGroup`, `useEncumbranceDiceGroup`, `useArmorDiceGroup`,
+`useActiveSkillDiceGroup`, `useWoundDiceGroup`, `useEncumbranceDiceGroup` (removed), `useArmorDiceGroup`,
 `useActiveSkillDicePool`, `useKnowledgeSkillDicePool`, `useLanguageSkillDicePool`. Each one reads
 state through `useRunnerSelector`/`useEntitySelector` and then does rule arithmetic in the hook
 body. That is a second read path next to Selectors, and it hides rule logic where it can't be unit
@@ -26,7 +26,8 @@ The selectors form one chain, each layer reading only the one below it:
    Runner's own attributes and skills, not to another entity in scope such as an Agent.
 3. **Rating** = raw value + modifiers: `AttrSelectors.selectRating` / `selectRatingBreakdown` and
    `SkillsSelectors.selectRating` / `selectRatingBreakdown`. An Attribute's rating is capped at its
-   augmented maximum, and a cap that applies is listed as its own negative modifier, so `rating`
+   augmented maximum, and a cap that applies is listed as its own negative modifier. Agility and
+   Reaction also carry the Encumbrance penalty as a modifier, applied after the cap. `rating`
    always equals `rawValue` plus the sum of `modifiers` (`RatingFormulas`).
 4. **Dice groups** (`DiceGroupSelectors`) are sized by a rating. A group's optional `modifiers`
    list what the size is made of, for display only: the size already includes them, so a pool
@@ -34,9 +35,9 @@ The selectors form one chain, each layer reading only the one below it:
    The Specialization bonus and Defaulting stay their own groups, never folded into the skill's
    rating.
 5. **Dice pools** (`DicePoolSelectors`) are built only from `DiceGroupSelectors` groups, and add the
-   Wound Modifier automatically unless the caller passes `includeWound: false`. The `DicePool`
-   component no longer adds a Wound group itself, which fixes the Wound Modifier being counted
-   twice.
+   Wound Modifier automatically unless the caller passes `includeWound: false`. Resistance tests
+   (damage, spell, and Drain resistance) never include it. The `DicePool` component no longer adds
+   a Wound group itself, which fixes the Wound Modifier being counted twice.
 
 Other decisions:
 
@@ -59,10 +60,11 @@ Other decisions:
 1. **Ratings, selectors, and Formulas; hooks become wrappers.** Add the raw value / rating
    selectors, `RatingFormulas`, `DicePoolFormulas`, `DiceGroupSelectors`
    (`selectAttr`, `selectSkill`, `selectKnowledgeSkill`, `selectLanguageSkill`, `selectWound`,
-   `selectEncumbrance`, `selectArmor`), and `DicePoolSelectors` (`selectStandardTest`,
+   `selectArmor`), and `DicePoolSelectors` (`selectStandardTest`,
    `selectActiveSkill`, `selectKnowledgeSkill`, `selectLanguageSkill`). Each hook becomes a
-   one-line delegation marked `@deprecated`. `DicePool` keys its rows by index, so groups no
-   longer need a `useId()`-generated `id`, which a Selector can't produce.
+   one-line delegation marked `@deprecated`, except `useEncumbranceDiceGroup`, which is removed now
+   that Encumbrance lives in the ratings. `DicePool` keys its rows by index, so groups no longer
+   need a `useId()`-generated `id`, which a Selector can't produce.
 2. **Migrate call sites, one area per PR.** Replace hook calls with
    `useRunnerSelector(DiceGroupSelectors.…)` / `useRunnerSelector(DicePoolSelectors.…)` (or
    `useEntitySelector` for Attribute groups) one area at a time: skills lists, magician pools
@@ -74,17 +76,10 @@ Other decisions:
 
 ## Open questions
 
-- **Encumbrance.** It's still its own penalty group. SR4A describes it as a penalty to Agility and
-  Reaction, so it could instead become a modifier on those two ratings. Doing that means removing
-  the separate Encumbrance group from every pool that adds one, or it's counted twice.
-- **Wound on damage resistance.** `ResistDamageDicePool`, the Defense Calculator's Resist Damage
-  pool, and the GM's legwork pool used to get a Wound group only from `DicePool`'s automatic one.
-  The first two now add it explicitly, so they behave as before. The GM's pool no longer has one:
-  it's the Contact's roll, not the Runner's. Whether Wound belongs on damage resistance at all is
-  still to be checked against the rules.
+- **Direct combat spells.** The Defense Calculator reuses the direct-spell defense roll (Body or
+  Willpower + Counterspelling) as its resistance roll, and `PhysicalSpellDefenseDicePool` /
+  `ManaSpellDefenseDicePool` roll the same test. They still include the Wound Modifier. If that
+  test counts as a resistance test, they should drop it too.
 - **"Equipped" for implants.** Modifiers come only from equipped Items, and implants such as the
   sample Runner Artemis's Cerebral Booster don't set `equipped`, so their effects don't apply.
   That predates this feature.
-- **Entity scope for Encumbrance.** `useEncumbrance` read Body through `useEntitySelector`. The
-  Stage 1 wrapper reads `selectEncumbrance` through `useRunnerSelector`. Today every caller sits in
-  Runner scope, so the result is the same.

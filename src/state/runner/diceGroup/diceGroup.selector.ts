@@ -7,9 +7,9 @@ import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { DicePoolFormulas } from "#/system/formulas/dicePool/dicePoolFormulas.ts"
-import { calculateEncumbrancePenalty } from "#/system/formulas/items/encumbranceUtils.ts"
 import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
-import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 import { SRC } from "#/system/model/systemValues.ts"
@@ -109,16 +109,6 @@ export namespace DiceGroupSelectors {
   export const selectWound = createMemoizedSelector(
     DamageSelectors.selectWoundMod,
     (woundMod): DiceGroup[] => woundMod === 0 ? [] : [{ name: "Wound", size: -woundMod, type: "penalty" }],
-  )
-
-  /** The armor Encumbrance penalty. */
-  export const selectEncumbrance = createMemoizedSelector(
-    ItemSelectors.Armor.selectBulk,
-    AttrSelectors.forAttr(AttributeKey.body).selectRawValue,
-    (bulk, body): DiceGroup[] => {
-      const penalty = calculateEncumbrancePenalty(bulk.ballistic, bulk.impact, body)
-      return penalty === 0 ? [] : [{ name: "Encumbrance", size: -penalty, type: "penalty" }]
-    },
   )
 
   /** The best equipped armor's `armorRating`. */
