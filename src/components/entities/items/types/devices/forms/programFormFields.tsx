@@ -7,8 +7,7 @@ import { ProgramType } from "#/system/model/items/programData.ts"
 const splitCamelCase = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
 const titleCase = (s: string) => s.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
 
-// Agents carry stats a plain Program doesn't, so they're added through the Agent form instead.
-const programTypeOptions = Object.values(ProgramType).filter((programType) => programType !== ProgramType.agent).map((programType) => ({
+const programTypeOptions = Object.values(ProgramType).map((programType) => ({
   label: titleCase(splitCamelCase(programType)),
   value: programType,
 }))
