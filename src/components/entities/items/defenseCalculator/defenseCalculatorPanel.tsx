@@ -222,6 +222,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const resistGroups: DiceGroupList = isDirectSpell
     // Same test as the Defense roll — Body/Willpower + Counterspelling, including modifiers.
     ? groups
+    // Damage resistance is a Resistance Test, so it never takes the Wound Modifier.
     : [
         { name: AttributeLabels[resistAttr], size: resistAttrValue },
         attackType === "spell"

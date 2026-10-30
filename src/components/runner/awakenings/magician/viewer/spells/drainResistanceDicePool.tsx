@@ -9,6 +9,7 @@ interface DrainResistanceDicePoolProps {
   drainAttribute: AttributeKey
 }
 
+/** Drain Resistance is a Resistance Test, so the pool never takes the Wound Modifier. */
 export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
   const willpowerGroups = useAttrDiceGroup(AttributeKey.willpower)
   const drainAttrGroups = useAttrDiceGroup(drainAttribute)

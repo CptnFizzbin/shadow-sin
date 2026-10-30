@@ -35,8 +35,8 @@ The selectors form one chain, each layer reading only the one below it:
    The Specialization bonus and Defaulting stay their own groups, never folded into the skill's
    rating.
 5. **Dice pools** (`DicePoolSelectors`) are built only from `DiceGroupSelectors` groups, and add the
-   Wound Modifier automatically unless the caller passes `includeWound: false`. Resistance tests
-   (damage, spell, and Drain resistance) never include it. The `DicePool` component no longer adds
+   Wound Modifier automatically unless the caller passes `includeWound: false`. A Resistance Test
+   (resisting damage, a direct spell, or Drain) never includes it; defense and spell tests do. The `DicePool` component no longer adds
    a Wound group itself, which fixes the Wound Modifier being counted twice.
 
 Other decisions:
@@ -76,10 +76,6 @@ Other decisions:
 
 ## Open questions
 
-- **Direct combat spells.** The Defense Calculator reuses the direct-spell defense roll (Body or
-  Willpower + Counterspelling) as its resistance roll, and `PhysicalSpellDefenseDicePool` /
-  `ManaSpellDefenseDicePool` roll the same test. They still include the Wound Modifier. If that
-  test counts as a resistance test, they should drop it too.
 - **"Equipped" for implants.** Modifiers come only from equipped Items, and implants such as the
   sample Runner Artemis's Cerebral Booster don't set `equipped`, so their effects don't apply.
   That predates this feature.

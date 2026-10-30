@@ -11,6 +11,8 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
+// The three Resist* pools are Resistance Tests, which never take the Wound Modifier — unlike the
+// defense and spell pools below, which do.
 export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => {
   return (
     <DicePool
