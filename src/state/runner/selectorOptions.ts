@@ -30,6 +30,7 @@ export const SelectorOptions = {
   damageSystem: selectorOption<{ system?: number }>("system"),
   damageTrack: selectorOption<{ track: DamageTrackKey }>("track"),
   excludeDefaulting: selectorOption<{ excludeDefaulting?: boolean }>("excludeDefaulting"),
+  includeWound: selectorOption<{ includeWound?: boolean }>("includeWound"),
   gameEffectType: selectorOption<{ gameEffectType: GameEffectType }>("gameEffectType"),
   isNative: selectorOption<{ isNative: boolean }>("isNative"),
   itemId: selectorOption<{ itemId: UUID }>("itemId"),

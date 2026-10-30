@@ -232,6 +232,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
         attackType === "spell"
           ? { name: "Armor (Impact, half)", size: halfImpactArmor, color: "info.main" }
           : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
+        woundGroup,
       ]
 
   const currentStep = wizardSteps[stepIndex].step

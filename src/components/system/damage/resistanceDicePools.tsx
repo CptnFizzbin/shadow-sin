@@ -19,6 +19,7 @@ export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType 
       groups={[
         useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
         useArmorDiceGroup(armor),
+        useWoundDiceGroup(),
       ]}
     />
   )
@@ -65,10 +66,10 @@ export const RangedFullDefenseDicePool = () => {
   return (
     <DicePool
       name="Ranged Full Defense"
-      includeWound
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
+        useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
     />

@@ -31,7 +31,7 @@ describe("DiceGroupSelectors.selectAttr", () => {
     expect(groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
   })
 
-  it("ignores active attrMod GameEffects targeting the attribute", () => {
+  it("includes active attrMod GameEffects in the size and lists them as modifiers", () => {
     // Arrange
     const [implant] = createItem({
       name: "Muscle Augmentation",
@@ -50,7 +50,12 @@ describe("DiceGroupSelectors.selectAttr", () => {
     const groups = DiceGroupSelectors.selectAttr(stateFor(runner), { attr: AttributeKey.agility })
 
     // Assert
-    expect(groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+    expect(groups).toEqual([{
+      name: "AGI",
+      size: 6,
+      type: "attribute",
+      modifiers: [{ name: "Muscle Augmentation", value: 2 }],
+    }])
   })
 
   it("returns the same reference for equal options passed as a new object", () => {
@@ -116,7 +121,7 @@ describe("DiceGroupSelectors.selectSkill", () => {
     expect(groups).toEqual([{ name: SkillKey.pistols, size: 0, type: "skill" }])
   })
 
-  it("adds a combined mod entry from active skillMod GameEffects targeting the skill", () => {
+  it("includes active skillMod GameEffects in the size and lists them as modifiers", () => {
     // Arrange
     const [implant] = createItem({
       name: "Reflex Recorder",
@@ -135,13 +140,15 @@ describe("DiceGroupSelectors.selectSkill", () => {
     const groups = DiceGroupSelectors.selectSkill(stateFor(runner), { skill: SkillKey.pistols })
 
     // Assert
-    expect(groups).toEqual([
-      { name: SkillKey.pistols, size: 3, type: "skill" },
-      { name: `${SkillKey.pistols} Mod`, size: 2, type: "bonus" },
-    ])
+    expect(groups).toEqual([{
+      name: SkillKey.pistols,
+      size: 5,
+      type: "skill",
+      modifiers: [{ name: "Reflex Recorder", value: 2 }],
+    }])
   })
 
-  it("adds the Specialization bonus, including matching skillSpecializationMod GameEffects", () => {
+  it("adds a separate Specialization group, including matching skillSpecializationMod GameEffects", () => {
     // Arrange
     const [implant] = createItem({
       name: "Revolver Focus",
@@ -170,7 +177,29 @@ describe("DiceGroupSelectors.selectSkill", () => {
     // Assert
     expect(groups).toEqual([
       { name: SkillKey.pistols, size: 3, type: "skill" },
-      { name: "Revolvers", size: 3, type: "bonus" },
+      { name: "Specialization: Revolvers", size: 3, type: "bonus", modifiers: [{ name: "Revolver Focus", value: 1 }] },
+    ])
+  })
+})
+
+describe("DiceGroupSelectors.selectSkill when defaulting", () => {
+  it("keeps the skill group alongside Defaulting when modifiers give it dice", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Skillwire",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.skillMod, target: SkillKey.pistols, value: 1 }],
+    })
+    const runner = runnerDataFactory({ items: createItemMap([implant]) })
+
+    // Act
+    const groups = DiceGroupSelectors.selectSkill(stateFor(runner), { skill: SkillKey.pistols })
+
+    // Assert
+    expect(groups).toEqual([
+      { name: SkillKey.pistols, size: 1, type: "skill", modifiers: [{ name: "Skillwire", value: 1 }] },
+      { name: `${SkillKey.pistols} - Defaulting`, size: -1, type: "defaulting" },
     ])
   })
 })
@@ -189,7 +218,7 @@ describe("DiceGroupSelectors.selectKnowledgeSkill", () => {
     // Assert
     expect(groups).toEqual([
       { name: "Gangs", size: 2, type: "skill" },
-      { name: "Seattle", size: 2, type: "bonus" },
+      { name: "Specialization: Seattle", size: 2, type: "bonus" },
     ])
   })
 })

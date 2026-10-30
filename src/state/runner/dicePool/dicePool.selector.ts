@@ -8,6 +8,13 @@ import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attribu
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 
+/** The Wound Modifier, unless the caller turns it off with `includeWound: false`. */
+const selectWoundUnlessExcluded = createMemoizedSelector(
+  DiceGroupSelectors.selectWound,
+  SelectorOptions.includeWound,
+  (woundGroups, includeWound) => includeWound === false ? [] : woundGroups,
+)
+
 const skillPoolId = (baseId: string, specialization?: string): string =>
   specialization ? `${baseId}.${specialization}` : baseId
 
@@ -15,21 +22,23 @@ const skillPoolName = (skillName: string, specialization?: string): string =>
   specialization ? `${skillName} (${specialization})` : skillName
 
 /**
- * Whole dice pools for a test, each assembled only from `DiceGroupSelectors` groups. Use
+ * Whole dice pools for a test, each assembled only from `DiceGroupSelectors` groups. Every pool
+ * includes the Wound Modifier unless the caller passes `includeWound: false`. Use
  * `DiceGroupSelectors` directly when a caller needs to add its own groups alongside.
  */
 export namespace DicePoolSelectors {
-  /** A Standard Test rolling `attr` + `skill`: the Attribute, then the skill's groups. */
+  /** A Standard Test rolling `attr` + `skill`: the Attribute, the skill's groups, and the Wound Modifier. */
   export const selectStandardTest = createMemoizedSelector(
     DiceGroupSelectors.selectAttr,
     DiceGroupSelectors.selectSkill,
+    selectWoundUnlessExcluded,
     SelectorOptions.attr,
     SelectorOptions.skill,
-    (attrGroups, skillGroups, attr, skill): DicePoolData =>
+    (attrGroups, skillGroups, woundGroups, attr, skill): DicePoolData =>
       createDicePool(
         `standardTest.${attr}.${skill}`,
         `${AttributeLabels[attr]} + ${skill}`,
-        [...attrGroups, ...skillGroups],
+        [...attrGroups, ...skillGroups, ...woundGroups],
       ),
   )
 
@@ -41,7 +50,7 @@ export namespace DicePoolSelectors {
     DiceGroupSelectors.selectSkill,
     (state: EntityScope, { skill, attrOverride }: { skill: SkillKey, attrOverride?: AttributeKey }) =>
       DiceGroupSelectors.selectAttr(state, { attr: attrOverride ?? skillList[skill].attr }),
-    DiceGroupSelectors.selectWound,
+    selectWoundUnlessExcluded,
     SelectorOptions.skill,
     SelectorOptions.specialization,
     (skillGroups, attrGroups, woundGroups, skill, specialization): DicePoolData =>
@@ -56,7 +65,7 @@ export namespace DicePoolSelectors {
   export const selectKnowledgeSkill = createMemoizedSelector(
     DiceGroupSelectors.selectKnowledgeSkill,
     injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.logic }),
-    DiceGroupSelectors.selectWound,
+    selectWoundUnlessExcluded,
     SelectorOptions.knowledge,
     SelectorOptions.specialization,
     (skillGroups, attrGroups, woundGroups, knowledge, specialization): DicePoolData =>
@@ -71,7 +80,7 @@ export namespace DicePoolSelectors {
   export const selectLanguageSkill = createMemoizedSelector(
     DiceGroupSelectors.selectLanguageSkill,
     injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.intuition }),
-    DiceGroupSelectors.selectWound,
+    selectWoundUnlessExcluded,
     SelectorOptions.language,
     SelectorOptions.lingo,
     (skillGroups, attrGroups, woundGroups, language, lingo): DicePoolData =>

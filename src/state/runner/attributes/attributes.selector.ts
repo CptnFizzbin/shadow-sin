@@ -1,10 +1,14 @@
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { SourcedGameEffectSelectors } from "#/state/runner/gameEffects/gameEffects.selector.ts"
 import { MatrixSelectors } from "#/state/runner/gameState/matrix/matrix.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
+import { attrAugmentedMax } from "#/system/formulas/attributes/attributeFormulas.ts"
+import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
+import { RatingFormulas } from "#/system/formulas/ratings/ratingFormulas.ts"
 import type {
   AttributeCatalog,
   AttributeInfoCatalog,
@@ -15,6 +19,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { isMatrixNode } from "#/system/model/matrix/matrixNodeData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
@@ -36,11 +41,15 @@ export namespace AttrSelectors {
     (attributes, key) => attributes[key] ?? 0,
   )
 
-  /** The effective value for `key` used in tests and dice pools, or `0` if unset or inapplicable. */
-  export const selectValue = createMemoizedSelector(
+  /**
+   * The value for `attr` before any modifiers apply, or `0` if unset or inapplicable. For most
+   * entities this is the stored value; a Matrix node reads its matrix attributes, and an AI Runner
+   * derives its Matrix attributes.
+   */
+  export const selectRawValue = createMemoizedSelector(
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
     selectAllRaw,
-    SelectorOptions.key.attr,
+    SelectorOptions.attr,
     (entity, attrs, attr): number => {
       if (isMatrixNode(entity)) {
         return entity.matrix[attr] ?? 0
@@ -79,9 +88,48 @@ export namespace AttrSelectors {
     },
   )
 
+  /** @deprecated - use {@link selectRawValue} (before modifiers) or {@link selectRating} (after) instead */
+  export const selectValue = (state: { entity: object }, { key }: { key: AttributeKey }): number =>
+    selectRawValue(state, { attr: key })
+
+  const selectModifiers = createMemoizedSelector(
+    ViewerStateSelectors.selectEntity,
+    SourcedGameEffectSelectors.selectAll,
+    SelectorOptions.attr,
+    (entity, sourcedEffects, attr): RatingModifier[] =>
+      // GameEffects belong to the Runner, so they only modify the Runner's own attributes — not
+      // those of an Agent or other entity in scope.
+      isRunnerWithBiology(entity)
+        ? RatingFormulas.getModifiers({ sourcedEffects, type: GameEffectType.attrMod, target: attr })
+        : [],
+  )
+
+  const selectAugmentedMax = (state: { entity: object, runner: RunnerData }, { attr }: { attr: AttributeKey }) =>
+    isRunnerWithBiology(state.entity) && selectBounds(state)[attr]
+      ? attrAugmentedMax(selectBounds(state), attr)
+      : undefined
+
+  /** The rating for `attr` with the raw value and named modifiers it was computed from. */
+  export const selectRatingBreakdown = createMemoizedSelector(
+    selectRawValue,
+    selectModifiers,
+    selectAugmentedMax,
+    (rawValue, modifiers, augmentedMax): RatingBreakdown =>
+      RatingFormulas.getAttrRating({ rawValue, modifiers, augmentedMax }),
+  )
+
+  /** The rating for `attr` used in tests and dice pools: its raw value plus active modifiers, capped at the augmented maximum. */
+  export const selectRating = createMemoizedSelector(
+    selectRatingBreakdown,
+    (breakdown) => breakdown.rating,
+  )
+
   export const forAttr = (attr: AttributeKey) => ({
     selectBase: injectOption(selectBase, { key: attr }),
+    /** @deprecated - use `selectRawValue` or `selectRating` instead */
     selectValue: injectOption(selectValue, { key: attr }),
+    selectRawValue: injectOption(selectRawValue, { attr }),
+    selectRating: injectOption(selectRating, { attr }),
   })
 
   export const selectBounds = createMemoizedSelector(

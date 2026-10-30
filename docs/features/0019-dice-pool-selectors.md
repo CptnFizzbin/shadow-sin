@@ -16,26 +16,35 @@ tested without rendering. This feature moves it onto memoized, namespaced Select
 
 ## Decisions
 
-- **Two namespaces.** `DiceGroupSelectors` (`src/state/runner/diceGroup/`) builds the individual
-  groups. `DicePoolSelectors` (`src/state/runner/dicePool/`) builds whole pools.
-- **Pools are built only from groups.** `DicePoolSelectors` imports `DiceGroupSelectors` and
-  nothing else from the store: no `AttrSelectors`, `SkillsSelectors`, or GameEffect reads.
-- **Groups read raw value selectors.** Each `DiceGroupSelectors` member reads plain value
-  selectors (`AttrSelectors.selectValue`, `SkillsSelectors.selectValue`,
-  `DamageSelectors.selectWoundMod`, `ItemSelectors.Armor.selectBulk` / `selectEffective`) and
-  turns the values into groups. Groups never build on other groups. Knowledge and Language Skills
-  have no stable key to look a rating up by, so their group selectors take the rating as an option.
-- **Every group selector returns `DiceGroup[]`.** It's empty when the group contributes nothing
-  (no Wound Modifier, for example), so pools concatenate groups without null checks.
-- **One Active Skill rule.** `DiceGroupSelectors.selectSkill` respects
-  `skillList[skill].defaultable` and lists the `skillMod` total and the Specialization bonus as
-  separate `bonus` groups. The old hook folded mods into the skill's group and let every skill
-  default. The earlier `selectAttrTest` / `selectSkillTest` moved into `DiceGroupSelectors` as
-  `selectAttr` / `selectSkill`.
-- **A Selector collects, a Formula decides.** GameEffect summing and the trained / Defaulting /
-  untrained decision are `DicePoolFormulas` in `system/formulas/dicePool/`. Encumbrance reuses the
-  existing `calculateArmorBulk` / `calculateEncumbrancePenalty`. Labels, group types, and pool
-  ids/names are presentation, so they stay in the Selector.
+The selectors form one chain, each layer reading only the one below it:
+
+1. **Raw value**, before any modifiers: `AttrSelectors.selectRawValue`, `SkillsSelectors.selectRawValue`.
+   The term "value" is deprecated: `selectValue` survives only as a `@deprecated` alias of
+   `selectRawValue`.
+2. **Modifiers**: active GameEffects targeting the attribute or skill, each named after its source
+   (`SourcedGameEffectSelectors.selectAll`, `RatingFormulas.getModifiers`). They only apply to the
+   Runner's own attributes and skills, not to another entity in scope such as an Agent.
+3. **Rating** = raw value + modifiers: `AttrSelectors.selectRating` / `selectRatingBreakdown` and
+   `SkillsSelectors.selectRating` / `selectRatingBreakdown`. An Attribute's rating is capped at its
+   augmented maximum, and a cap that applies is listed as its own negative modifier, so `rating`
+   always equals `rawValue` plus the sum of `modifiers` (`RatingFormulas`).
+4. **Dice groups** (`DiceGroupSelectors`) are sized by a rating. A group's optional `modifiers`
+   list what the size is made of, for display only: the size already includes them, so a pool
+   never adds them again. Every group selector returns `DiceGroup[]`, empty when it adds nothing.
+   The Specialization bonus and Defaulting stay their own groups, never folded into the skill's
+   rating.
+5. **Dice pools** (`DicePoolSelectors`) are built only from `DiceGroupSelectors` groups, and add the
+   Wound Modifier automatically unless the caller passes `includeWound: false`. The `DicePool`
+   component no longer adds a Wound group itself, which fixes the Wound Modifier being counted
+   twice.
+
+Other decisions:
+
+- Knowledge and Language Skills have no stable key to look a rating up by, so their group
+  selectors take the rating as an option.
+- **A Selector collects, a Formula decides.** `RatingFormulas` (modifiers, ratings, the cap) and
+  `DicePoolFormulas.isDefaulting` hold the rule logic. Labels, group types, and pool ids/names are
+  presentation, so they stay in the Selector.
 
 ## Constraints
 
@@ -47,7 +56,8 @@ tested without rendering. This feature moves it onto memoized, namespaced Select
 
 ## Stages
 
-1. **Selectors + Formulas, hooks become wrappers.** Add `DicePoolFormulas`, `DiceGroupSelectors`
+1. **Ratings, selectors, and Formulas; hooks become wrappers.** Add the raw value / rating
+   selectors, `RatingFormulas`, `DicePoolFormulas`, `DiceGroupSelectors`
    (`selectAttr`, `selectSkill`, `selectKnowledgeSkill`, `selectLanguageSkill`, `selectWound`,
    `selectEncumbrance`, `selectArmor`), and `DicePoolSelectors` (`selectStandardTest`,
    `selectActiveSkill`, `selectKnowledgeSkill`, `selectLanguageSkill`). Each hook becomes a
@@ -64,10 +74,17 @@ tested without rendering. This feature moves it onto memoized, namespaced Select
 
 ## Open questions
 
-- **Wound counted twice.** `DicePool` adds the Wound group itself (`includeWound` defaults to
-  `true`), but many pools also pass `useWoundDiceGroup()` in `groups`, so the Wound Modifier is
-  applied twice. `ResistDamageDicePool` also applies it, even though it doesn't list it. Stage 2
-  is the natural place to settle which side owns the Wound group.
+- **Encumbrance.** It's still its own penalty group. SR4A describes it as a penalty to Agility and
+  Reaction, so it could instead become a modifier on those two ratings. Doing that means removing
+  the separate Encumbrance group from every pool that adds one, or it's counted twice.
+- **Wound on damage resistance.** `ResistDamageDicePool`, the Defense Calculator's Resist Damage
+  pool, and the GM's legwork pool used to get a Wound group only from `DicePool`'s automatic one.
+  The first two now add it explicitly, so they behave as before. The GM's pool no longer has one:
+  it's the Contact's roll, not the Runner's. Whether Wound belongs on damage resistance at all is
+  still to be checked against the rules.
+- **"Equipped" for implants.** Modifiers come only from equipped Items, and implants such as the
+  sample Runner Artemis's Cerebral Booster don't set `equipped`, so their effects don't apply.
+  That predates this feature.
 - **Entity scope for Encumbrance.** `useEncumbrance` read Body through `useEntitySelector`. The
   Stage 1 wrapper reads `selectEncumbrance` through `useRunnerSelector`. Today every caller sits in
   Runner scope, so the result is the same.

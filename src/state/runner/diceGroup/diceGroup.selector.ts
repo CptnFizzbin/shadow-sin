@@ -1,6 +1,4 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import type { GameEffectsState } from "#/hooks/system/gameEffects/useGameEffects.ts"
-import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
@@ -10,76 +8,68 @@ import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { DicePoolFormulas } from "#/system/formulas/dicePool/dicePoolFormulas.ts"
 import { calculateEncumbrancePenalty } from "#/system/formulas/items/encumbranceUtils.ts"
+import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 import { SRC } from "#/system/model/systemValues.ts"
 
-const selectSkillMods = (state: GameEffectsState) =>
-  GameEffectSelectors.selectByType(state, { gameEffectType: GameEffectType.skillMod })
+/** Adapts the domain selectors' option names to this domain's `attr` / `skill` / `specialization` options. */
+const selectAttrRating = (state: EntityScope, { attr }: { attr: AttributeKey }) =>
+  AttrSelectors.selectRatingBreakdown(state, { attr })
 
-const selectSpecializationMods = (state: GameEffectsState) =>
-  GameEffectSelectors.selectByType(state, { gameEffectType: GameEffectType.skillSpecializationMod })
+const selectSkillRating = (state: EntityScope, { skill }: { skill: SkillKey }) =>
+  SkillsSelectors.selectRatingBreakdown(state, { skill })
 
-/** Adapts {@link AttrSelectors.selectValue}'s `key` option to this domain's `attr` option. */
-const selectAttrValue = (state: EntityScope, { attr }: { attr: AttributeKey }): number =>
-  AttrSelectors.selectValue(state, { key: attr })
+const selectSpecialization = (state: EntityScope, options: { skill: SkillKey, specialization?: string }) =>
+  SkillsSelectors.selectSpecializationBreakdown(state, options)
 
-/** Adapts {@link SkillsSelectors.selectValue}'s `skillName` option to this domain's `skill` option. */
-const selectSkillValue = (state: EntityScope, { skill }: { skill: SkillKey }): number =>
-  SkillsSelectors.selectValue(state, { skillName: skill })
-
-/** A Specialization's flat bonus as a group, or nothing when no `specialization` is given. */
-const specializationGroups = (specialization: string | undefined, modTotal: number): DiceGroup[] =>
-  specialization
-    ? [{ name: specialization, size: SRC.Skills.Specialization.Modifier + modTotal, type: "bonus" }]
-    : []
+/** A group sized by a rating, listing the rating's modifiers when there are any. */
+const ratingGroup = (group: Omit<DiceGroup, "size" | "modifiers">, { rating, modifiers }: RatingBreakdown): DiceGroup =>
+  modifiers.length === 0 ? { ...group, size: rating } : { ...group, size: rating, modifiers }
 
 /**
- * The individual {@link DiceGroup}s a test's dice pool is assembled from. Every member returns a
- * `DiceGroup[]` — empty when it contributes nothing (e.g. no Wound Modifier) — so a dice pool can
- * concatenate them without null checks. Use `DicePoolSelectors` for a whole pool.
+ * The individual {@link DiceGroup}s a test's dice pool is assembled from, each sized by a rating
+ * (raw value plus modifiers). A group's `modifiers` only explain its size — they are already
+ * included in it. Every member returns a `DiceGroup[]`, empty when it contributes nothing, so a
+ * dice pool can concatenate them. Use `DicePoolSelectors` for a whole pool.
  */
 export namespace DiceGroupSelectors {
   /** An Attribute's rating. */
   export const selectAttr = createMemoizedSelector(
-    selectAttrValue,
+    selectAttrRating,
     SelectorOptions.attr,
-    (attrValue, attr): DiceGroup[] => [
-      { name: AttributeLabels[attr], size: attrValue, type: "attribute" },
-    ],
+    (breakdown, attr): DiceGroup[] => [ratingGroup({ name: AttributeLabels[attr], type: "attribute" }, breakdown)],
   )
 
   /**
-   * An Active Skill: its rating (or a Defaulting penalty when untrained, defaultable, and
-   * `excludeDefaulting` isn't set), a combined entry for active `skillMod` GameEffects, and the
-   * Specialization bonus when `specialization` is given.
+   * An Active Skill: its rating, a separate Defaulting penalty when untrained, defaultable, and
+   * `excludeDefaulting` isn't set, and a separate Specialization bonus when `specialization` is given.
+   * An untrained skill being defaulted only lists its own group when modifiers give it dice.
    */
   export const selectSkill = createMemoizedSelector(
-    selectSkillValue,
-    selectSkillMods,
-    selectSpecializationMods,
+    selectSkillRating,
+    selectSpecialization,
     SelectorOptions.skill,
     SelectorOptions.specialization,
     SelectorOptions.excludeDefaulting,
-    (rating, skillMods, specializationMods, skill, specialization, excludeDefaulting): DiceGroup[] => {
-      const modTotal = DicePoolFormulas.getSkillModTotal({ skillMods, skill })
-      const skillDice = DicePoolFormulas.getActiveSkillDice({
-        rating,
+    (breakdown, specializationBreakdown, skill, specialization, excludeDefaulting): DiceGroup[] => {
+      const isDefaulting = DicePoolFormulas.isDefaulting({
+        rawValue: breakdown.rawValue,
         defaulting: !excludeDefaulting && (skillList[skill].defaultable ?? true),
       })
-      const specializationModTotal = specialization
-        ? DicePoolFormulas.getSpecializationModTotal({ specializationMods, skill, specialization })
-        : 0
 
-      return [
-        skillDice.isDefaulting
-          ? { name: `${skill} - Defaulting`, size: skillDice.size, type: "defaulting" }
-          : { name: skill, size: skillDice.size, type: "skill" },
-        ...(modTotal === 0 ? [] : [{ name: `${skill} Mod`, size: modTotal, type: "bonus" } satisfies DiceGroup]),
-        ...specializationGroups(specialization, specializationModTotal),
-      ]
+      const groups: DiceGroup[] = []
+      if (!isDefaulting || breakdown.modifiers.length > 0) {
+        groups.push(ratingGroup({ name: skill, type: "skill" }, breakdown))
+      }
+      if (isDefaulting) {
+        groups.push({ name: `${skill} - Defaulting`, size: SRC.Skills.Defaulting.Modifier, type: "defaulting" })
+      }
+      if (specialization && specializationBreakdown) {
+        groups.push(ratingGroup({ name: `Specialization: ${specialization}`, type: "bonus" }, specializationBreakdown))
+      }
+      return groups
     },
   )
 
@@ -93,7 +83,9 @@ export namespace DiceGroupSelectors {
     SelectorOptions.specialization,
     (knowledge, rating, specialization): DiceGroup[] => [
       { name: knowledge, size: rating, type: "skill" },
-      ...specializationGroups(specialization, 0),
+      ...(specialization
+        ? [{ name: `Specialization: ${specialization}`, size: SRC.Skills.Specialization.Modifier, type: "bonus" } satisfies DiceGroup]
+        : []),
     ],
   )
 
@@ -109,7 +101,7 @@ export namespace DiceGroupSelectors {
     SelectorOptions.lingo,
     (language, isNative, rating, lingo): DiceGroup[] => [
       { name: language, size: isNative ? 0 : rating, type: "skill" },
-      ...specializationGroups(lingo, 0),
+      ...(lingo ? [{ name: `Lingo: ${lingo}`, size: SRC.Skills.Specialization.Modifier, type: "bonus" } satisfies DiceGroup] : []),
     ],
   )
 
@@ -122,7 +114,7 @@ export namespace DiceGroupSelectors {
   /** The armor Encumbrance penalty. */
   export const selectEncumbrance = createMemoizedSelector(
     ItemSelectors.Armor.selectBulk,
-    AttrSelectors.forAttr(AttributeKey.body).selectValue,
+    AttrSelectors.forAttr(AttributeKey.body).selectRawValue,
     (bulk, body): DiceGroup[] => {
       const penalty = calculateEncumbrancePenalty(bulk.ballistic, bulk.impact, body)
       return penalty === 0 ? [] : [{ name: "Encumbrance", size: -penalty, type: "penalty" }]

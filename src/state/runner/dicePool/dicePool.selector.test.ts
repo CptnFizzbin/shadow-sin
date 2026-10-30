@@ -35,10 +35,44 @@ describe("DicePoolSelectors.selectStandardTest", () => {
       groups: [
         { name: "AGI", size: 4, type: "attribute" },
         { name: SkillKey.pistols, size: 3, type: "skill" },
-        { name: "Semi-Automatics", size: 2, type: "bonus" },
+        { name: "Specialization: Semi-Automatics", size: 2, type: "bonus" },
       ],
       size: 9,
     })
+  })
+})
+
+describe("DicePoolSelectors wound handling", () => {
+  it("includes the Wound Modifier by default", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.damage.physical = 3
+    } })
+
+    // Act
+    const pool = DicePoolSelectors.selectStandardTest(
+      stateFor(runner),
+      { attr: AttributeKey.agility, skill: SkillKey.pistols },
+    )
+
+    // Assert
+    expect(pool.groups).toContainEqual({ name: "Wound", size: -1, type: "penalty" })
+  })
+
+  it("leaves the Wound Modifier out when includeWound is false", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.damage.physical = 3
+    } })
+
+    // Act
+    const pool = DicePoolSelectors.selectStandardTest(
+      stateFor(runner),
+      { attr: AttributeKey.agility, skill: SkillKey.pistols, includeWound: false },
+    )
+
+    // Assert
+    expect(pool.groups).not.toContainEqual({ name: "Wound", size: -1, type: "penalty" })
   })
 })
 
@@ -63,7 +97,7 @@ describe("DicePoolSelectors.selectActiveSkill", () => {
       name: `${SkillKey.pistols} (Revolvers)`,
       groups: [
         { name: SkillKey.pistols, size: 3, type: "skill" },
-        { name: "Revolvers", size: 2, type: "bonus" },
+        { name: "Specialization: Revolvers", size: 2, type: "bonus" },
         { name: "AGI", size: 4, type: "attribute" },
         { name: "Wound", size: -1, type: "penalty" },
       ],
@@ -107,7 +141,7 @@ describe("DicePoolSelectors.selectKnowledgeSkill", () => {
       name: "Gangs (Seattle)",
       groups: [
         { name: "Gangs", size: 2, type: "skill" },
-        { name: "Seattle", size: 2, type: "bonus" },
+        { name: "Specialization: Seattle", size: 2, type: "bonus" },
         { name: "LOG", size: 3, type: "attribute" },
       ],
       size: 7,
@@ -131,7 +165,7 @@ describe("DicePoolSelectors.selectLanguageSkill", () => {
     // Assert
     expect(pool.groups).toEqual([
       { name: "English", size: 3, type: "skill" },
-      { name: "Cityspeak", size: 2, type: "bonus" },
+      { name: "Lingo: Cityspeak", size: 2, type: "bonus" },
       { name: "INT", size: 4, type: "attribute" },
     ])
   })
