@@ -64,7 +64,7 @@ const wizardSteps: { step: WizardStep, label: string }[] = [
 
 interface SkillDefenseEntry {
   rating: number
-  diceGroup: DiceGroup
+  diceGroups: DiceGroup[]
 }
 
 /** Drilled-down view of the Defense Calculator: a paginated wizard for one attack type. */
@@ -112,11 +112,11 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling, { defaulting: false })
 
   const skillDataByKey: Partial<Record<SkillKey, SkillDefenseEntry>> = {
-    [SkillKey.dodge]: { rating: dodgeRating, diceGroup: dodgeGroup },
-    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroup: unarmedGroup },
-    [SkillKey.blades]: { rating: bladesRating, diceGroup: bladesGroup },
-    [SkillKey.clubs]: { rating: clubsRating, diceGroup: clubsGroup },
-    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroup: counterspellingGroup },
+    [SkillKey.dodge]: { rating: dodgeRating, diceGroups: dodgeGroup },
+    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroups: unarmedGroup },
+    [SkillKey.blades]: { rating: bladesRating, diceGroups: bladesGroup },
+    [SkillKey.clubs]: { rating: clubsRating, diceGroups: clubsGroup },
+    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroups: counterspellingGroup },
   }
 
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
@@ -152,18 +152,18 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     size: attackType === "spell" ? (spellType === "indirect" ? reaction : spellDamageAttrValue) : reaction,
   }
 
-  const spellSkillGroup: DiceGroup | null = attackType === "spell" && counterspellingEnabled
+  const spellSkillGroups: DiceGroup[] = attackType === "spell" && counterspellingEnabled
     ? (counterspellingSource === "self"
         ? counterspellingGroup
-        : { id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating })
-    : null
+        : [{ id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating }])
+    : []
 
-  const skillGroupForTotal = attackType === "spell" ? spellSkillGroup : (selectedSkillEntry?.diceGroup ?? null)
+  const skillGroupsForTotal = attackType === "spell" ? spellSkillGroups : (selectedSkillEntry?.diceGroups ?? [])
 
   // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
-  const doubledSkillGroup: DiceGroup | null = attackType !== "spell" && selectedOption.doubleSkill && selectedSkillEntry?.diceGroup
-    ? { ...selectedSkillEntry.diceGroup, id: `${selectedSkillEntry.diceGroup.id ?? selectedOption.key}-double` }
-    : null
+  const doubledSkillGroups: DiceGroup[] = attackType !== "spell" && selectedOption.doubleSkill
+    ? selectedSkillEntry?.diceGroups ?? []
+    : []
 
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
@@ -201,8 +201,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const groups: DiceGroupList = [
     attributeGroup,
-    skillGroupForTotal,
-    doubledSkillGroup,
+    skillGroupsForTotal,
+    doubledSkillGroups,
     woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,

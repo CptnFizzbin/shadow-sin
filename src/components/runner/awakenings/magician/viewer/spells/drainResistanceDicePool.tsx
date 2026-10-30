@@ -13,20 +13,14 @@ interface DrainResistanceDicePoolProps {
 }
 
 export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
-  const willpowerGroup = useAttrDiceGroup(AttributeKey.willpower)
-  const drainAttrGroup = useAttrDiceGroup(drainAttribute)
-  const woundGroup = useWoundDiceGroup()
-
-  // When drainAttribute is willpower, disambiguate group names to avoid duplicate React keys
-  const resolvedDrainAttrGroup =
-    drainAttrGroup.name === willpowerGroup.name
-      ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
-      : drainAttrGroup
+  const willpowerGroups = useAttrDiceGroup(AttributeKey.willpower)
+  const drainAttrGroups = useAttrDiceGroup(drainAttribute)
+  const woundGroups = useWoundDiceGroup()
 
   return (
     <SpellCard.DicePool
       name="Drain Resistance"
-      groups={[willpowerGroup, resolvedDrainAttrGroup, woundGroup]}
+      groups={[willpowerGroups, drainAttrGroups, woundGroups]}
     />
   )
 }

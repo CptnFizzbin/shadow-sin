@@ -32,7 +32,6 @@ export const SelectorOptions = {
   excludeDefaulting: selectorOption<{ excludeDefaulting?: boolean }>("excludeDefaulting"),
   gameEffectType: selectorOption<{ gameEffectType: GameEffectType }>("gameEffectType"),
   isNative: selectorOption<{ isNative: boolean }>("isNative"),
-  isSpecialized: selectorOption<{ isSpecialized?: boolean }>("isSpecialized"),
   itemId: selectorOption<{ itemId: UUID }>("itemId"),
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
   knowledge: selectorOption<{ knowledge: string }>("knowledge"),

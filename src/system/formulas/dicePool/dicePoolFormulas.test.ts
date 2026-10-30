@@ -44,27 +44,27 @@ describe.concurrent("DicePoolFormulas.getSpecializationModTotal", () => {
 })
 
 describe.concurrent("DicePoolFormulas.getActiveSkillDice", () => {
-  it("adds the mod total to a trained rating", () => {
+  it("returns the rating when trained", () => {
     // Arrange / Act
-    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 3, modTotal: 2, defaulting: true })
+    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 3, defaulting: true })
 
     // Assert
-    expect(dice).toEqual({ size: 5, isDefaulting: false })
+    expect(dice).toEqual({ size: 3, isDefaulting: false })
   })
 
   it("returns the Defaulting penalty when untrained and defaulting is allowed", () => {
     // Arrange / Act
-    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 0, modTotal: 2, defaulting: true })
+    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 0, defaulting: true })
 
     // Assert
     expect(dice).toEqual({ size: -1, isDefaulting: true })
   })
 
-  it("returns just the mod total when untrained and defaulting is not allowed", () => {
+  it("returns no dice when untrained and defaulting is not allowed", () => {
     // Arrange / Act
-    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 0, modTotal: 2, defaulting: false })
+    const dice = DicePoolFormulas.getActiveSkillDice({ rating: 0, defaulting: false })
 
     // Assert
-    expect(dice).toEqual({ size: 2, isDefaulting: false })
+    expect(dice).toEqual({ size: 0, isDefaulting: false })
   })
 })

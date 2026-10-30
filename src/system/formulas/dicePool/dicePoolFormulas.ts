@@ -26,16 +26,12 @@ export const DicePoolFormulas = {
       .reduce((sum, effect) => sum + effect.value, 0),
 
   /**
-   * The dice an Active Skill contributes to a test: its rating plus `modTotal` when trained, a
-   * Defaulting penalty when untrained and `defaulting` is allowed, otherwise just `modTotal`.
+   * The base dice an Active Skill contributes to a test, before modifiers: its rating when
+   * trained, a Defaulting penalty when untrained and `defaulting` is allowed, otherwise none.
    */
-  getActiveSkillDice: ({ rating, modTotal, defaulting }: {
-    rating: number
-    modTotal: number
-    defaulting: boolean
-  }): ActiveSkillDice => {
-    if (rating >= 1) return { size: rating + modTotal, isDefaulting: false }
+  getActiveSkillDice: ({ rating, defaulting }: { rating: number, defaulting: boolean }): ActiveSkillDice => {
+    if (rating >= 1) return { size: rating, isDefaulting: false }
     if (defaulting) return { size: SRC.Skills.Defaulting.Modifier, isDefaulting: true }
-    return { size: modTotal, isDefaulting: false }
+    return { size: 0, isDefaulting: false }
   },
 }
