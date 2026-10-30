@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import { buyKarma, sellKarma } from "#/state/runner/karma/karma.actions.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import {
@@ -29,6 +30,12 @@ export const nuyenReducer = createReducer(initialState, (builder) => {
     })
     .addCase(withdrawNuyen, (state, action) => {
       state.current -= action.payload
+    })
+    .addCase(buyKarma, (state, action) => {
+      state.current -= action.payload.nuyenCost
+    })
+    .addCase(sellKarma, (state, action) => {
+      state.current += action.payload.nuyenGain
     })
     .addCase(addLoan, (state, action) => {
       state.loans.push(action.payload)

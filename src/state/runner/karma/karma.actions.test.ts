@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { addKarma, spendKarma } from "./karma.actions.ts"
+import { addKarma, adjustKarma, buyKarma, sellKarma, spendKarma } from "./karma.actions.ts"
 import { karmaReducer } from "./karma.state.ts"
 
 const makeKarma = (overrides: Partial<ReturnType<typeof karmaReducer>> = {}) => ({
@@ -91,5 +91,99 @@ describe.concurrent("spendKarma", () => {
     // Arrange / Act / Assert
     expect(() => spendKarma(0)).toThrow(/positive/i)
     expect(() => spendKarma(-1)).toThrow(/positive/i)
+  })
+})
+
+describe.concurrent("buyKarma", () => {
+  it("raises current karma, leaves total earned alone, and logs the nuyen cost", () => {
+    // Arrange
+    const state = makeKarma({ current: 4, total: 10 })
+
+    // Act
+    const next = karmaReducer(state, buyKarma(2, 5000))
+
+    // Assert
+    expect(next.current).toBe(6)
+    expect(next.total).toBe(10)
+    expect(next.log).toHaveLength(1)
+    expect(next.log[0]).toMatchObject({ amount: 2, source: "buyKarma" })
+    expect(next.log[0].description).toMatch(/10,000¥/)
+  })
+
+  it("throws when amount is non-positive", () => {
+    // Arrange / Act / Assert
+    expect(() => buyKarma(0, 5000)).toThrow(/positive/i)
+  })
+})
+
+describe.concurrent("sellKarma", () => {
+  it("lowers current karma and logs a negative entry with the nuyen gained", () => {
+    // Arrange
+    const state = makeKarma({ current: 4, total: 10 })
+
+    // Act
+    const next = karmaReducer(state, sellKarma(3, 2500))
+
+    // Assert
+    expect(next.current).toBe(1)
+    expect(next.total).toBe(10)
+    expect(next.log[0]).toMatchObject({ amount: -3, source: "sellKarma" })
+    expect(next.log[0].description).toMatch(/7,500¥/)
+  })
+
+  it("throws when selling more karma than the Runner has", () => {
+    // Arrange
+    const state = makeKarma({ current: 2, total: 5 })
+
+    // Act
+    const oversell = () => karmaReducer(state, sellKarma(3, 2500))
+
+    // Assert
+    expect(oversell).toThrow(/insufficient karma/i)
+  })
+})
+
+describe.concurrent("adjustKarma", () => {
+  it("applies both deltas and logs the change to current karma with the reason", () => {
+    // Arrange
+    const state = makeKarma({ current: 4, total: 10 })
+
+    // Act
+    const next = karmaReducer(state, adjustKarma({ currentDelta: -1, totalDelta: 5, reason: "GM correction" }))
+
+    // Assert
+    expect(next.current).toBe(3)
+    expect(next.total).toBe(15)
+    expect(next.log[0]).toMatchObject({ amount: -1, source: "adjustKarma" })
+    expect(next.log[0].description).toBe("Adjusted karma (current -1, total earned +5): GM correction")
+  })
+
+  it("logs a zero-amount entry when only the total earned changes", () => {
+    // Arrange
+    const state = makeKarma({ current: 4, total: 10 })
+
+    // Act
+    const next = karmaReducer(state, adjustKarma({ currentDelta: 0, totalDelta: 2 }))
+
+    // Assert
+    expect(next.current).toBe(4)
+    expect(next.total).toBe(12)
+    expect(next.log[0]).toMatchObject({ amount: 0, description: "Adjusted karma (total earned +2)" })
+  })
+
+  it("throws when the adjustment would leave karma negative", () => {
+    // Arrange
+    const state = makeKarma({ current: 1, total: 1 })
+
+    // Act
+    const overAdjust = () => karmaReducer(state, adjustKarma({ currentDelta: -2, totalDelta: 0 }))
+
+    // Assert
+    expect(overAdjust).toThrow(/negative/i)
+  })
+
+  it("throws when nothing changes", () => {
+    // Arrange / Act / Assert
+    expect(() => adjustKarma({ currentDelta: 0, totalDelta: 0 })).toThrow(/non-zero/i)
   })
 })
