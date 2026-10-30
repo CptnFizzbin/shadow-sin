@@ -3,7 +3,7 @@
 > **Status:** In Progress
 >
 > **GitHub Issues / PRs:**
-> <!-- Stage 1 PR is linked here once opened. -->
+> - Stage 1: https://github.com/CptnFizzbin/shadow-sin/pull/650
 
 Dice groups and dice pools are built today by a family of hooks — `useAttrDiceGroup`,
 `useActiveSkillDiceGroup`, `useWoundDiceGroup`, `useEncumbranceDiceGroup`, `useArmorDiceGroup`,
