@@ -8,6 +8,8 @@ import {
   RiForbidLine,
   RiLoopLeftFill,
   RiLoopLeftLine,
+  RiPlayLine,
+  RiStopLine,
   RiPushpinFill,
   RiSignalWifiLine,
   RiSignalWifiOffLine,
@@ -40,6 +42,8 @@ export const Icons = {
     },
     add: RiAddLine,
     move: RiDragMoveLine,
+    run: RiPlayLine,
+    terminate: RiStopLine,
   },
 
   spell: {
