@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { KnowledgeSkillsList } from "./knowledgeSkillsList.tsx"
@@ -11,8 +12,8 @@ describe("KnowledgeSkillsList", () => {
     renderWithProviders(<KnowledgeSkillsList />, {
       runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.knowledgeSkills = [
-          { id: crypto.randomUUID(), name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
-          { id: crypto.randomUUID(), name: "Ancient History", rating: 4 },
+          { id: uuid.v7(), name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
+          { id: uuid.v7(), name: "Ancient History", rating: 4 },
         ]
       } }),
     })

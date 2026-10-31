@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { LanguageSkillsList } from "./languageSkillsList.tsx"
@@ -11,8 +12,8 @@ describe("LanguageSkillsList", () => {
     renderWithProviders(<LanguageSkillsList />, {
       runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.languageSkills = [
-          { id: crypto.randomUUID(), name: "Sperethiel", isNative: true },
-          { id: crypto.randomUUID(), name: "English", isNative: false, rating: 5, lingo: "Seattle Sprawl" },
+          { id: uuid.v7(), name: "Sperethiel", isNative: true },
+          { id: uuid.v7(), name: "English", isNative: false, rating: 5, lingo: "Seattle Sprawl" },
         ]
       } }),
     })

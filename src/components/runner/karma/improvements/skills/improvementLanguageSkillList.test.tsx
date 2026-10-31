@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementLanguageSkillList } from "./improvementLanguageSkillList.tsx"
@@ -37,7 +38,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("renders language skills with an Improve button", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 3 }]
+      sheet.skills.languageSkills = [{ id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -51,7 +52,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("shows Native chip and disables Improve button for native-rated language skills", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ id: crypto.randomUUID(), name: "Sperethiel", isNative: true }]
+      sheet.skills.languageSkills = [{ id: uuid.v7(), name: "Sperethiel", isNative: true }]
       sheet.karma.current = 50
     })
 
@@ -66,7 +67,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("shows Max chip and disables Improve button for language skills at rating 6", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 6 }]
+      sheet.skills.languageSkills = [{ id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 6 }]
       sheet.karma.current = 50
     })
 
@@ -81,7 +82,7 @@ describe("ImprovementLanguageSkillList", () => {
   it("clicking Improve queues a language skill increase (button becomes aria-pressed)", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.languageSkills = [{ id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 3 }]
+      sheet.skills.languageSkills = [{ id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
     const improveButton = screen.getByRole("button", { name: /improve rating/i })

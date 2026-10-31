@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 
 import { removeKnowledgeSkill, removeLanguageSkill, setKnowledgeSkill, setLanguageSkill } from "./skills.actions.ts"
 import { skillsReducer } from "./skills.state.ts"
@@ -15,7 +16,7 @@ const emptySkills = (): RunnerData["skills"] => ({
 describe.concurrent("setKnowledgeSkill", () => {
   it("renames a Knowledge Skill in place instead of adding a second one", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "Gangs", rating: 3 }
+    const skill = { id: uuid.v7(), name: "Gangs", rating: 3 }
     const state = { ...emptySkills(), knowledgeSkills: [skill] }
 
     // Act
@@ -27,8 +28,8 @@ describe.concurrent("setKnowledgeSkill", () => {
 
   it("adds a Knowledge Skill with a new id", () => {
     // Arrange
-    const existing = { id: crypto.randomUUID(), name: "Gangs", rating: 3 }
-    const added = { id: crypto.randomUUID(), name: "Gangs", rating: 1 }
+    const existing = { id: uuid.v7(), name: "Gangs", rating: 3 }
+    const added = { id: uuid.v7(), name: "Gangs", rating: 1 }
     const state = { ...emptySkills(), knowledgeSkills: [existing] }
 
     // Act
@@ -42,8 +43,8 @@ describe.concurrent("setKnowledgeSkill", () => {
 describe.concurrent("removeKnowledgeSkill", () => {
   it("removes only the Knowledge Skill with the given id", () => {
     // Arrange
-    const kept = { id: crypto.randomUUID(), name: "Gangs", rating: 3 }
-    const removed = { id: crypto.randomUUID(), name: "Gangs", rating: 1 }
+    const kept = { id: uuid.v7(), name: "Gangs", rating: 3 }
+    const removed = { id: uuid.v7(), name: "Gangs", rating: 1 }
     const state = { ...emptySkills(), knowledgeSkills: [kept, removed] }
 
     // Act
@@ -57,7 +58,7 @@ describe.concurrent("removeKnowledgeSkill", () => {
 describe.concurrent("setLanguageSkill", () => {
   it("renames a Language Skill in place instead of adding a second one", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "Elven", isNative: false, rating: 3 }
+    const skill = { id: uuid.v7(), name: "Elven", isNative: false, rating: 3 }
     const state = { ...emptySkills(), languageSkills: [skill] }
 
     // Act
@@ -71,8 +72,8 @@ describe.concurrent("setLanguageSkill", () => {
 describe.concurrent("removeLanguageSkill", () => {
   it("removes only the Language Skill with the given id", () => {
     // Arrange
-    const kept = { id: crypto.randomUUID(), name: "English", isNative: true }
-    const removed = { id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 3 }
+    const kept = { id: uuid.v7(), name: "English", isNative: true }
+    const removed = { id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 3 }
     const state = { ...emptySkills(), languageSkills: [kept, removed] }
 
     // Act

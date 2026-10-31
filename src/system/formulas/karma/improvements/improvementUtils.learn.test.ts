@@ -12,6 +12,7 @@ import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 
 import {
   applyImprovement,
@@ -71,7 +72,7 @@ describe.concurrent("getImprovementCost — learn entries", () => {
     const entry: LearnKnowledgeSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnKnowledgeSkill,
-      skill: { id: crypto.randomUUID(), name: "Ancient History", rating: 1 },
+      skill: { id: uuid.v7(), name: "Ancient History", rating: 1 },
     }
 
     // Act
@@ -86,7 +87,7 @@ describe.concurrent("getImprovementCost — learn entries", () => {
     const entry: LearnLanguageSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnLanguageSkill,
-      skill: { id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 1 },
+      skill: { id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 1 },
     }
 
     // Act

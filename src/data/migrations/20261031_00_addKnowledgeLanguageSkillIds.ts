@@ -1,6 +1,7 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 
 interface MigratingSkill {
   id?: string
@@ -18,7 +19,7 @@ const migration: CharacterMigration<{
   up: (character) => {
     return produce(character, (draft) => {
       for (const skill of [...(draft.skills?.knowledgeSkills ?? []), ...(draft.skills?.languageSkills ?? [])]) {
-        skill.id ??= crypto.randomUUID()
+        skill.id ??= uuid.v7()
       }
     })
   },

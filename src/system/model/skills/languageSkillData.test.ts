@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest"
 
+import { uuid } from "#/utils/uuidUtils.ts"
+
 import { LanguageSkillDataSchema } from "./languageSkillData.ts"
 
 describe.concurrent("LanguageSkillDataSchema", () => {
   it("validates a native language skill (isNative: true, no rating)", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "English", isNative: true }
+    const skill = { id: uuid.v7(), name: "English", isNative: true }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
@@ -16,7 +18,7 @@ describe.concurrent("LanguageSkillDataSchema", () => {
 
   it("validates a learned language skill (isNative: false, with a rating)", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "Elven", isNative: false, rating: 3 }
+    const skill = { id: uuid.v7(), name: "Elven", isNative: false, rating: 3 }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
@@ -27,7 +29,7 @@ describe.concurrent("LanguageSkillDataSchema", () => {
 
   it("validates an optional lingo field", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "Elven", isNative: false, rating: 3, lingo: "Tir Tairngire" }
+    const skill = { id: uuid.v7(), name: "Elven", isNative: false, rating: 3, lingo: "Tir Tairngire" }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
@@ -38,7 +40,7 @@ describe.concurrent("LanguageSkillDataSchema", () => {
 
   it("rejects a missing isNative flag", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "English", rating: 3 }
+    const skill = { id: uuid.v7(), name: "English", rating: 3 }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
@@ -60,7 +62,7 @@ describe.concurrent("LanguageSkillDataSchema", () => {
 
   it("rejects a non-numeric rating", () => {
     // Arrange
-    const skill = { id: crypto.randomUUID(), name: "Elven", isNative: false, rating: "3" }
+    const skill = { id: uuid.v7(), name: "Elven", isNative: false, rating: "3" }
 
     // Act
     const result = LanguageSkillDataSchema.safeParse(skill)
