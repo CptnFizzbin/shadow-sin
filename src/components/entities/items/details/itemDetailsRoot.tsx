@@ -11,6 +11,7 @@ import type { FC, PropsWithChildren, ReactNode } from "react"
 
 import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { Icons } from "#/utils/icons.ts"
 
@@ -142,7 +143,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
       {item.description && (
         <Stack sx={{ gap: 0.5 }}>
           <Label>Description</Label>
-          <Typography sx={{ color: "text.secondary" }}>{item.description}</Typography>
+          <MarkdownText color="text.secondary">{item.description}</MarkdownText>
         </Stack>
       )}
 

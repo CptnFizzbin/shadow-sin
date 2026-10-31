@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useKnowledgeSkillsAlerts } from "./useKnowledgeSkillsAlerts.ts"
@@ -15,13 +16,13 @@ describe("useKnowledgeSkillsAlerts", () => {
         runner.skills = {
           ...runner.skills,
           knowledgeSkills: [
-            { name: "Corporate Politics", rating: 6 },
-            { name: "Sprawl Gangs", rating: 6 },
+            { id: uuid.v7(), name: "Corporate Politics", rating: 6 },
+            { id: uuid.v7(), name: "Sprawl Gangs", rating: 6 },
           ],
           languageSkills: [
-            { name: "Japanese", isNative: false, rating: 5 },
-            { name: "Or'zet", isNative: false, rating: 5 },
-            { name: "Sperethiel", isNative: false, rating: 5 },
+            { id: uuid.v7(), name: "Japanese", isNative: false, rating: 5 },
+            { id: uuid.v7(), name: "Or'zet", isNative: false, rating: 5 },
+            { id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 5 },
           ],
         }
       },
@@ -43,8 +44,8 @@ describe("useKnowledgeSkillsAlerts", () => {
         runner.skills = {
           ...runner.skills,
           languageSkills: [
-            { name: "Japanese", isNative: true },
-            { name: "English", isNative: true },
+            { id: uuid.v7(), name: "Japanese", isNative: true },
+            { id: uuid.v7(), name: "English", isNative: true },
           ],
         }
       },

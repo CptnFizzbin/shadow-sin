@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+import type { UUID } from "#/utils/uuidUtils.ts"
+
 /**
  * A language a Runner speaks — one of the three Skill flavours from CONTEXT.md's **Skill**
  * glossary entry. `isNative: true` is a starting native language — free, never improved with
@@ -8,6 +10,8 @@ import { z } from "zod"
  * optional regional dialect/accent specialization.
  */
 export interface LanguageSkillData {
+  /** Stays the same when the language is renamed. */
+  id: UUID
   name: string
   isNative: boolean
   rating?: number
@@ -18,6 +22,7 @@ export interface LanguageSkillData {
  * Zod schema for validating LanguageSkillData.
  */
 export const LanguageSkillDataSchema = z.object({
+  id: z.uuid(),
   name: z.string().min(1, "Name is required"),
   isNative: z.boolean(),
   rating: z.number().int().min(1).optional(),

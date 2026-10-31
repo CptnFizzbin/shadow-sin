@@ -215,20 +215,24 @@ export const Hexen: RunnerData = {
     skillGroups: [],
     knowledgeSkills: [
       {
+        id: "468952ef-86cf-47c2-bc87-7fc42060d2ab",
         name: "Magical Theory",
         rating: 5,
       },
       {
+        id: "63aa36b7-539d-4959-9925-b864570d1f94",
         name: "Astral Space",
         rating: 4,
       },
     ],
     languageSkills: [
       {
+        id: "1420ef7d-7412-447c-903a-787addd9555b",
         name: "English",
         isNative: true,
       },
       {
+        id: "37697621-ac76-4b9c-927a-7bf20dca7fc0",
         name: "German",
         isNative: false,
         rating: 4,

@@ -1,9 +1,9 @@
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { CardElementDicePool } from "#/components/ui/cards/entityCard/elements/cardElementDicePool.tsx"
 import { CardElementStatusIcon } from "#/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
 import { formatDrainFormula } from "./spellDrainFormula.ts"
@@ -44,9 +44,7 @@ const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained })
 
       {spell.description && (
         <EntityCard.Layout.BodyRow>
-          <Typography variant="body2" color="text.secondary">
-            {spell.description}
-          </Typography>
+          <MarkdownText variant="body2" color="text.secondary">{spell.description}</MarkdownText>
         </EntityCard.Layout.BodyRow>
       )}
     </EntityCard>
@@ -59,8 +57,8 @@ SpellCardRoot.displayName = "SpellCard"
  * Category tier from ADR-0010, assembled directly from `EntityCard`'s elements plus `.DicePool`
  * (`CardElementDicePool`) — shared with `WeaponCard`'s attack pool (see the feature doc) and used
  * here for the casting pool (`SpellcastingDicePool`) and drain-resistance pool
- * (`DrainResistanceDicePool`), each of which still computes its own `groups` via the existing
- * dice-group hooks and just hands them to this element.
+ * (`DrainResistanceDicePool`), each of which reads its compiled pool from a dice pool selector
+ * and hands it to this element.
  */
 export const SpellCard = Object.assign(
   SpellCardRoot,

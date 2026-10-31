@@ -68,7 +68,7 @@ export const ImprovementLanguageSkillList: FC = () => {
     if (saved.isNative) return // Native languages can't be learned via karma
     const newEntry: Omit<LearnLanguageSkillEntry, "id"> = {
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: saved.name, isNative: false, rating: saved.rating ?? 0, lingo: saved.lingo },
+      skill: { id: saved.id, name: saved.name, isNative: false, rating: saved.rating ?? 0, lingo: saved.lingo },
     }
     improvementStore.add(newEntry)
   }
@@ -91,7 +91,7 @@ export const ImprovementLanguageSkillList: FC = () => {
 
               return (
                 <ListItem
-                  key={skill.name}
+                  key={skill.id}
                   disablePadding
                   divider={!isLast}
                   secondaryAction={(

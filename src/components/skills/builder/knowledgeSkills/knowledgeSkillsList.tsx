@@ -77,10 +77,10 @@ export const KnowledgeSkillsList: FC = () => {
 
           {knowledgeSkills.map((skill) => (
             <KnowledgeSkillsListItem
-              key={skill.name}
+              key={skill.id}
               skill={skill}
               onEdit={() => openKnowledgeSkillDialog(skill)}
-              onDelete={() => dispatch(Actions.skills.removeKnowledgeSkill(skill.name))}
+              onDelete={() => dispatch(Actions.skills.removeKnowledgeSkill(skill.id))}
             />
           ))}
         </Stack>
@@ -99,10 +99,10 @@ export const KnowledgeSkillsList: FC = () => {
 
           {languageSkills.map((skill) => (
             <LanguageSkillsListItem
-              key={skill.name}
+              key={skill.id}
               skill={skill}
               onEdit={() => openLanguageSkillDialog(skill)}
-              onDelete={() => dispatch(Actions.skills.removeLanguageSkill(skill.name))}
+              onDelete={() => dispatch(Actions.skills.removeLanguageSkill(skill.id))}
             />
           ))}
         </Stack>

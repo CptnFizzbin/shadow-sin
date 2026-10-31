@@ -8,12 +8,10 @@ import { useState } from "react"
 
 import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
-import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -22,7 +20,7 @@ import {
   selectWasRolled,
   useDiceRollerSelector,
 } from "#/services/dice/state/diceRoller.selector.ts"
-import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
@@ -41,23 +39,17 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const attrKey = weapon.attribute ?? skill.attr
   const affectedByEncumbrance = attrKey === AttributeKey.agility || attrKey === AttributeKey.reaction
 
-  const skillPool = useRunnerSelector(DicePoolSelectors.selectStandardTest, {
-    skill: skill.name,
-    attr: attrKey,
-  })
-
-  const encumbranceGroup = useEncumbranceDiceGroup()
-
   const modifierGroups = Object.entries(workflow.data.modifiers).map(([label, value]): DiceGroup => {
     return { name: label, size: value }
   })
 
-  const groups: DiceGroupList = [
-    skillPool.groups,
-    affectedByEncumbrance ? encumbranceGroup : null,
-    ...modifierGroups,
-  ]
-  const poolTotal = getPoolSize(groups.flat())
+  const attackPool = useRunnerSelector(CombatPoolSelectors.selectAttackTest, {
+    attr: attrKey,
+    skill: skill.name,
+    includeEncumbrance: affectedByEncumbrance,
+    extraGroups: modifierGroups,
+  })
+  const poolTotal = attackPool.size
 
   const [defenseHits, setDefenseHits] = useState(0)
 
@@ -73,7 +65,7 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <WeaponCard.DicePool name="Attack" groups={groups} />
+      <WeaponCard.DicePool pool={attackPool} />
 
       <Stack sx={{ alignItems: "center" }}>
         <DiceResult roller={diceRoller} iconSize={32} />

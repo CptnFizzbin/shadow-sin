@@ -1,10 +1,7 @@
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { SkillPoolSelectors } from "#/state/runner/dicePool/skillPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 
@@ -14,29 +11,12 @@ export const useActiveSkillDicePool = (props: {
   attrOverride?: AttributeKey
 }): DicePoolData => {
   const { skillKey, specialization, attrOverride } = props
-  const { attr: defaultAttr } = skillList[skillKey]
-  const attr = attrOverride ?? defaultAttr
 
-  let id = `skill.active.${skillKey}`
-  let name = skillKey.toString()
-  if (specialization) {
-    id += `.${specialization}`
-    name += ` (${specialization})`
-  }
-
-  const specMods = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.skillSpecializationMod })
-  const totalSpecMod = specialization
-    ? specMods
-        .filter((e) => e.target === skillKey && e.subTarget === specialization)
-        .reduce((sum, e) => sum + e.value, 0)
-    : 0
-
-  return createDicePool(id, name, [
-    useActiveSkillDiceGroup(skillKey),
-    useAttrDiceGroup(attr),
-    specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
-    useWoundDiceGroup(),
-  ])
+  return useRunnerSelector(SkillPoolSelectors.selectActiveSkillTest, {
+    skill: skillKey,
+    attr: attrOverride ?? skillList[skillKey].attr,
+    specialization,
+  })
 }
 
 export const useKnowledgeSkillDicePool = (props: {
@@ -45,20 +25,7 @@ export const useKnowledgeSkillDicePool = (props: {
   specialization?: string
 }): DicePoolData => {
   const { knowledge, rating, specialization } = props
-
-  let id = `skill.knowledge.${knowledge}`
-  let name = knowledge
-  if (specialization) {
-    id += `.${specialization}`
-    name += ` (${specialization})`
-  }
-
-  return createDicePool(id, name, [
-    { name: knowledge, size: rating },
-    useAttrDiceGroup(AttributeKey.logic),
-    specialization ? { name: specialization, size: 2 } : null,
-    useWoundDiceGroup(),
-  ])
+  return useRunnerSelector(SkillPoolSelectors.selectKnowledgeSkillTest, { knowledge, rating, specialization })
 }
 
 export const useLanguageSkillDicePool = (props: {
@@ -69,18 +36,5 @@ export const useLanguageSkillDicePool = (props: {
   lingo?: string
 }): DicePoolData => {
   const { language, isNative, rating, lingo } = props
-
-  let name = language
-  let id = `skill.language.${language}`
-  if (lingo) {
-    id += `.${lingo}`
-    name += ` (${lingo})`
-  }
-
-  return createDicePool(id, name, [
-    { name: language, size: isNative ? 0 : rating },
-    useAttrDiceGroup(AttributeKey.intuition),
-    lingo ? { name: lingo, size: 2 } : null,
-    useWoundDiceGroup(),
-  ])
+  return useRunnerSelector(SkillPoolSelectors.selectLanguageSkillTest, { language, isNative, rating, lingo })
 }

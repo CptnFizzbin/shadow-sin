@@ -8,6 +8,7 @@ import type { FC } from "react"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
@@ -73,9 +74,7 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
           </Grid>
 
           {spell.description && (
-            <Typography color="text.secondary">
-              {spell.description}
-            </Typography>
+            <MarkdownText color="text.secondary">{spell.description}</MarkdownText>
           )}
 
           <Divider />

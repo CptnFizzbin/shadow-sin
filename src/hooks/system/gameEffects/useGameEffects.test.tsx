@@ -92,6 +92,23 @@ describe("GameEffectSelectors.selectAll", () => {
     expect(effects).toEqual([])
   })
 
+  it("collects effects from gear with no equipped field", () => {
+    // Arrange
+    const [synapticBooster] = createItem({
+      name: "Synaptic Booster",
+      itemType: ItemType.implant,
+      effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
+    })
+    const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
+
+    // Act
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
+
+    // Assert
+    expect(effects).toHaveLength(1)
+    expect(effects[0]).toMatchObject({ type: GameEffectType.initiativeBonus, value: 1 })
+  })
+
   it("collects effects from spells", () => {
     // Arrange
     const sheet = runnerDataFactory({ afterBuild: (s) => {

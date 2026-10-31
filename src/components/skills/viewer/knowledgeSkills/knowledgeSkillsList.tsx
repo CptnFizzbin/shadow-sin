@@ -25,7 +25,7 @@ export const KnowledgeSkillsList: FC = () => {
       searchQuery={searchQuery}
       onSearchQueryChange={setSearchQuery}
       groups={[["Knowledge Skills", visibleSkills]]}
-      getKey={(skill) => skill.name}
+      getKey={(skill) => skill.id}
       renderItem={(skill) => <KnowledgeSkillsListItem skill={skill} />}
       emptyMessage={searchQuery ? "No knowledge skills found" : "No knowledge skills added"}
     />

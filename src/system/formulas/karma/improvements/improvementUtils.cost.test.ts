@@ -21,6 +21,7 @@ import { ImprovementType } from "#/system/model/karma/improvements/improvementTy
 import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 
 import { getImprovementCost } from "./improvementUtils.ts"
 
@@ -137,7 +138,7 @@ describe.concurrent("getImprovementCost — SR4A learn-with-rating", () => {
     const entry: LearnKnowledgeSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnKnowledgeSkill,
-      skill: { name: "Ancient History", rating: 3 },
+      skill: { id: uuid.v7(), name: "Ancient History", rating: 3 },
     }
 
     // Act
@@ -152,7 +153,7 @@ describe.concurrent("getImprovementCost — SR4A learn-with-rating", () => {
     const entry: LearnLanguageSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: "Sperethiel", isNative: false, rating: 3 },
+      skill: { id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 3 },
     }
 
     // Act

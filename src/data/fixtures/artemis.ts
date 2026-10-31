@@ -179,36 +179,44 @@ export const Artemis: RunnerData = {
     ],
     knowledgeSkills: [
       {
+        id: "0d804499-d3c2-448c-b805-afd8931b4254",
         name: "Drone Models",
         rating: 1,
       },
       {
+        id: "1550b415-3625-4a43-923a-b6e93ce309f6",
         name: "80/90s Pop Culture",
         rating: 1,
       },
       {
+        id: "1f9e7026-93c1-44fd-ad5b-333924d2bbb8",
         name: "Trideo Series",
         rating: 1,
       },
       {
+        id: "09a16868-b0ff-46f7-99b6-4bf8eff77d1b",
         name: "Security Systems",
         rating: 1,
       },
       {
+        id: "f6a23668-0d50-47bf-bc6b-5ffe0d323c03",
         name: "Virtual Nightclubs",
         rating: 1,
       },
       {
+        id: "ed7db22d-c65f-4c60-85bc-4779fad38e3b",
         name: "Tech Companies",
         rating: 1,
       },
     ],
     languageSkills: [
       {
+        id: "1eb0944e-3bb1-4bae-9027-1bcbb314f9cf",
         name: "English",
         isNative: true,
       },
       {
+        id: "793e3b97-69f0-4ba3-b7d2-c16c73cbb895",
         name: "Elven",
         isNative: false,
         rating: 3,

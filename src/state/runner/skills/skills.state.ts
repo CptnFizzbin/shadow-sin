@@ -39,19 +39,19 @@ export const skillsReducer = createReducer(initialState, (builder) => {
       state.skillGroups = state.skillGroups.filter((g) => g.name !== action.payload)
     })
     .addCase(setKnowledgeSkill, (state, action) => {
-      const index = state.knowledgeSkills.findIndex((s) => s.name === action.payload.name)
+      const index = state.knowledgeSkills.findIndex((s) => s.id === action.payload.id)
       if (index === -1) state.knowledgeSkills.push(action.payload)
       else state.knowledgeSkills[index] = action.payload
     })
     .addCase(removeKnowledgeSkill, (state, action) => {
-      state.knowledgeSkills = state.knowledgeSkills.filter((s) => s.name !== action.payload)
+      state.knowledgeSkills = state.knowledgeSkills.filter((s) => s.id !== action.payload)
     })
     .addCase(setLanguageSkill, (state, action) => {
-      const index = state.languageSkills.findIndex((s) => s.name === action.payload.name)
+      const index = state.languageSkills.findIndex((s) => s.id === action.payload.id)
       if (index === -1) state.languageSkills.push(action.payload)
       else state.languageSkills[index] = action.payload
     })
     .addCase(removeLanguageSkill, (state, action) => {
-      state.languageSkills = state.languageSkills.filter((s) => s.name !== action.payload)
+      state.languageSkills = state.languageSkills.filter((s) => s.id !== action.payload)
     })
 })

@@ -8,6 +8,7 @@ import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementSpecializationList } from "./improvementSpecializationList.tsx"
@@ -113,8 +114,8 @@ describe("ImprovementSpecializationList", () => {
   it("lists existing knowledge and language skills as specializable", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
-      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: uuid.v7(), name: "Ancient History", rating: 3 }]
+      sheet.skills.languageSkills = [{ id: uuid.v7(), name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -128,7 +129,7 @@ describe("ImprovementSpecializationList", () => {
   it("queuing a knowledge specialization shows the name as a chip and removes on toggle", async () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: uuid.v7(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -153,7 +154,7 @@ describe("ImprovementSpecializationList", () => {
   it("disables the row when the runner cannot afford the specialization cost", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: uuid.v7(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 1 // < 2k specialization cost
     })
 

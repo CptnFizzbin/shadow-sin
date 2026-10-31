@@ -1,193 +1,59 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useArmorDiceGroup } from "#/hooks/items/types/armor/useArmorDiceGroup.tsx"
-import {
-  useActiveSkillDiceGroup,
-  useAttrDiceGroup,
-  useEncumbranceDiceGroup,
-  useWoundDiceGroup,
-} from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 
-export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => {
-  return (
-    <DicePool
-      name={`Resist ${armor} (${type})`}
-      groups={[
-        useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
-        useArmorDiceGroup(armor),
-      ]}
-    />
-  )
-}
+export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectResistDamageTest, { damageType: type, armor })} />
+)
 
-export const ResistDirectManaSpellDicePool = () => {
-  return (
-    <DicePool
-      name="Resist Mana Spell"
-      groups={[
-        useAttrDiceGroup(AttributeKey.willpower),
-        useWoundDiceGroup(),
-      ]}
-    />
-  )
-}
+export const ResistDirectManaSpellDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectResistManaSpellTest)} />
+)
 
-export const ResistDirectPhysicalSpellDicePool = () => {
-  return (
-    <DicePool
-      name="Resist Physical Spell"
-      groups={[
-        useAttrDiceGroup(AttributeKey.body),
-        useWoundDiceGroup(),
-      ]}
-    />
-  )
-}
+export const ResistDirectPhysicalSpellDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectResistPhysicalSpellTest)} />
+)
 
-export const RangedDefenseDicePool = () => {
-  return (
-    <DicePool
-      name="Ranged Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const RangedDefenseDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectRangedDefenseTest)} />
+)
 
-export const RangedFullDefenseDicePool = () => {
-  return (
-    <DicePool
-      name="Ranged Full Defense"
-      includeWound
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const RangedFullDefenseDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectRangedFullDefenseTest)} />
+)
 
-export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
-  weaponSkill,
-}) => {
-  return (
-    <DicePool
-      name={`${weaponSkill} Parry`}
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(weaponSkill),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({ weaponSkill }) => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeParryTest, { skill: weaponSkill })} />
+)
 
-export const MeleeBlockDicePool = () => {
-  return (
-    <DicePool
-      name="Melee Block"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeBlockDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeBlockTest)} />
+)
 
-export const MeleeDodgeDicePool = () => {
-  return (
-    <DicePool
-      name="Melee Dodge"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeDodgeDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeDodgeTest)} />
+)
 
-export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
-  weaponSkill,
-}) => {
-  return (
-    <DicePool
-      name={`${weaponSkill} Full Parry`}
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(weaponSkill),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({ weaponSkill }) => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeFullParryTest, { skill: weaponSkill })} />
+)
 
-export const MeleeFullBlockDicePool = () => {
-  return (
-    <DicePool
-      name="Melee Full Block"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeFullBlockDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeFullBlockTest)} />
+)
 
-export const MeleeFullDodgeDicePool = () => {
-  return (
-    <DicePool
-      name="Melee Full Dodge"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
-    />
-  )
-}
+export const MeleeFullDodgeDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectMeleeFullDodgeTest)} />
+)
 
-export const PhysicalSpellDefenseDicePool = () => {
-  return (
-    <DicePool
-      name="Physical Spell Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.body),
-        useActiveSkillDiceGroup(SkillKey.counterspelling),
-        useWoundDiceGroup(),
-      ]}
-    />
-  )
-}
+export const PhysicalSpellDefenseDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectPhysicalSpellDefenseTest)} />
+)
 
-export const ManaSpellDefenseDicePool = () => {
-  return (
-    <DicePool
-      name="Mana Spell Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.willpower),
-        useActiveSkillDiceGroup(SkillKey.counterspelling),
-        useWoundDiceGroup(),
-      ]}
-    />
-  )
-}
+export const ManaSpellDefenseDicePool = () => (
+  <DicePool pool={useRunnerSelector(CombatPoolSelectors.selectManaSpellDefenseTest)} />
+)

@@ -7,15 +7,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { ContactPoolSelectors } from "#/state/runner/dicePool/contactPools.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 const hitLevels: [string, string][] = [
   ["0 hits", "Nothing relevant"],
@@ -31,26 +29,15 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
-  const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
-    // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
-    // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
-    // rows from colliding on the same React key.
-    { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
-    { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
-  ])
-
-  const playerPool = createDicePool("legwork.player", "Legwork Test", [
-    useAttrDiceGroup(AttributeKey.charisma),
-    useActiveSkillDiceGroup(SkillKey.etiquette),
-    { name: "Loyalty", size: contact.loyalty },
-  ])
+  const gmPool = useRunnerSelector(ContactPoolSelectors.selectLegworkGmTest, { connection: contact.connection })
+  const playerPool = useRunnerSelector(ContactPoolSelectors.selectLegworkPlayerTest, { loyalty: contact.loyalty })
 
   return (
     <DetailDialog ctrl={ctrl} title={`Legwork: ${contact.name}`}>
       <Stack sx={{ gap: 1.5 }}>
         <Stack sx={{ gap: 0.5 }}>
           <Label label="GM" variant="outlined" />
-          <DicePool name={gmPool.name} groups={gmPool.groups} />
+          <DicePool pool={gmPool} />
           <Typography color="text.secondary">
             Each hit is how much the contact knows.
           </Typography>
@@ -58,7 +45,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
 
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Player" variant="outlined" />
-          <DicePool name={playerPool.name} groups={playerPool.groups} />
+          <DicePool pool={playerPool} />
           <Typography color="text.secondary">
             Each hit is how much the contact will offer for free.
           </Typography>

@@ -17,24 +17,19 @@ import { useState } from "react"
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
-import {
-  useActiveSkillDiceGroup,
-  useEncumbranceDiceGroup,
-  useWoundDiceGroup,
-} from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
-import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
+import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 
@@ -62,11 +57,6 @@ const wizardSteps: { step: WizardStep, label: string }[] = [
   { step: "resist", label: "Resist Damage" },
 ]
 
-interface SkillDefenseEntry {
-  rating: number
-  diceGroup: DiceGroup
-}
-
 /** Drilled-down view of the Defense Calculator: a paginated wizard for one attack type. */
 export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attackType }) => {
   const skillOptions = defenseSkillOptionsByAttackType[attackType]
@@ -92,78 +82,49 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
-  const reaction = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
-  const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
-  const willpower = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.willpower })
-
   const dodgeRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.dodge })
-  const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
-
   const unarmedRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.unarmedCombat })
-  const unarmedGroup = useActiveSkillDiceGroup(SkillKey.unarmedCombat)
-
   const bladesRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.blades })
-  const bladesGroup = useActiveSkillDiceGroup(SkillKey.blades)
-
   const clubsRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.clubs })
-  const clubsGroup = useActiveSkillDiceGroup(SkillKey.clubs)
-
   const counterspellingRating = useRunnerSelector(SkillsSelectors.selectValue, { skillName: SkillKey.counterspelling })
-  const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling, { defaulting: false })
 
-  const skillDataByKey: Partial<Record<SkillKey, SkillDefenseEntry>> = {
-    [SkillKey.dodge]: { rating: dodgeRating, diceGroup: dodgeGroup },
-    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroup: unarmedGroup },
-    [SkillKey.blades]: { rating: bladesRating, diceGroup: bladesGroup },
-    [SkillKey.clubs]: { rating: clubsRating, diceGroup: clubsGroup },
-    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroup: counterspellingGroup },
+  const skillRatingByKey: Partial<Record<SkillKey, number>> = {
+    [SkillKey.dodge]: dodgeRating,
+    [SkillKey.unarmedCombat]: unarmedRating,
+    [SkillKey.blades]: bladesRating,
+    [SkillKey.clubs]: clubsRating,
+    [SkillKey.counterspelling]: counterspellingRating,
   }
 
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
-  const woundGroup = useWoundDiceGroup()
-  const encumbranceGroup = useEncumbranceDiceGroup()
-  const armorTotals = useEncumbrance()
 
   const visibleSkillOptions = skillOptions.filter((option) => {
     if (!option.skill) return true
     if (includeDefaultingSkills) return true
-    return (skillDataByKey[option.skill]?.rating ?? 0) > 0
+    return (skillRatingByKey[option.skill] ?? 0) > 0
   })
 
   const selectedOption = visibleSkillOptions.find((option) => option.key === selectedKey)
     ?? visibleSkillOptions[0]
     ?? skillOptions[0]
 
-  const selectedSkillEntry = selectedOption.skill ? skillDataByKey[selectedOption.skill] : undefined
-
   // Direct combat spells are resisted with Body/Willpower + Counterspelling — that single test
   // both defends against and resists damage from the spell. Indirect combat spells are dodged
   // like a physical attack (Reaction + Counterspelling), with a separate Body + half impact armor
   // test to resist the damage that gets through.
   const spellDamageAttr = spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower
-  const spellDamageAttrValue = spellAttribute === "physical" ? body : willpower
 
   const baseAttr = attackType === "spell"
     ? (spellType === "indirect" ? AttributeKey.reaction : spellDamageAttr)
     : AttributeKey.reaction
 
-  const attributeGroup: DiceGroup = {
-    name: AttributeLabels[baseAttr],
-    size: attackType === "spell" ? (spellType === "indirect" ? reaction : spellDamageAttrValue) : reaction,
-  }
+  const counterspellingOtherGroups: DiceGroup[] = attackType === "spell" && counterspellingEnabled && counterspellingSource === "other"
+    ? [{ id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating }]
+    : []
 
-  const spellSkillGroup: DiceGroup | null = attackType === "spell" && counterspellingEnabled
-    ? (counterspellingSource === "self"
-        ? counterspellingGroup
-        : { id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating })
-    : null
-
-  const skillGroupForTotal = attackType === "spell" ? spellSkillGroup : (selectedSkillEntry?.diceGroup ?? null)
-
-  // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
-  const doubledSkillGroup: DiceGroup | null = attackType !== "spell" && selectedOption.doubleSkill && selectedSkillEntry?.diceGroup
-    ? { ...selectedSkillEntry.diceGroup, id: `${selectedSkillEntry.diceGroup.id ?? selectedOption.key}-double` }
-    : null
+  const defenseSkill = attackType === "spell"
+    ? (counterspellingEnabled && counterspellingSource === "self" ? SkillKey.counterspelling : undefined)
+    : selectedOption.skill
 
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
@@ -199,14 +160,14 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     }
   })
 
-  const groups: DiceGroupList = [
-    attributeGroup,
-    skillGroupForTotal,
-    doubledSkillGroup,
-    woundGroup,
-    attackType !== "spell" ? encumbranceGroup : null,
-    ...modifierGroups,
-  ]
+  const defensePool = useRunnerSelector(CombatPoolSelectors.selectDefenseCalculatorTest, {
+    attr: baseAttr,
+    skill: defenseSkill,
+    // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
+    doubleSkill: attackType !== "spell" && !!selectedOption.doubleSkill,
+    includeEncumbrance: attackType !== "spell",
+    extraGroups: [...counterspellingOtherGroups, ...flattenDiceGroups(modifierGroups)],
+  })
 
   // Direct spells bypass armor entirely and reuse the defenseCalculator roll as the resist roll. Indirect
   // spells resist like a physical attack — Body + half impact armor (rounded down) — regardless
@@ -215,24 +176,18 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? (spellType === "indirect" ? AttributeKey.body : spellDamageAttr)
     : AttributeKey.body
 
-  const resistAttrValue = attackType === "spell"
-    ? (spellType === "indirect" ? body : spellDamageAttrValue)
-    : body
-
-  const armorValue = armorType === "ballistic" ? armorTotals.totalBallistic : armorTotals.totalImpact
-  const halfImpactArmor = Math.floor(armorTotals.totalImpact / 2)
-
   const isDirectSpell = attackType === "spell" && spellType === "direct"
 
-  const resistGroups: DiceGroupList = isDirectSpell
-    // Same test as the Defense roll — Body/Willpower + Counterspelling, including modifiers.
-    ? groups
-    : [
-        { name: AttributeLabels[resistAttr], size: resistAttrValue },
-        attackType === "spell"
-          ? { name: "Armor (Impact, half)", size: halfImpactArmor, color: "info.main" }
-          : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
-      ]
+  const armorResistPool = useRunnerSelector(CombatPoolSelectors.selectDefenseCalculatorResistTest, {
+    attr: resistAttr,
+    armor: attackType === "spell" || armorType === "impact" ? ArmorRatingType.impact : ArmorRatingType.ballistic,
+    halveArmor: attackType === "spell",
+  })
+
+  // Same test as the Defense roll — Body/Willpower + Counterspelling, including modifiers.
+  const resistPool = isDirectSpell
+    ? { ...defensePool, id: armorResistPool.id, label: armorResistPool.label }
+    : armorResistPool
 
   const currentStep = wizardSteps[stepIndex].step
   const isFirstStep = stepIndex === 0
@@ -341,7 +296,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                       <Stack>
                         {options.map((option) => {
                           const isSelected = option.key === selectedOption.key
-                          const rating = option.skill ? skillDataByKey[option.skill]?.rating ?? 0 : 0
+                          const rating = option.skill ? skillRatingByKey[option.skill] ?? 0 : 0
                           const defaultable = option.skill ? (skillList[option.skill].defaultable ?? true) : false
                           const isDefaulted = rating === 0 && defaultable
 
@@ -495,7 +450,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
       {currentStep === "total" && (
         unaware
           ? <Alert severity="warning">No defense is possible — you're unaware of the attack.</Alert>
-          : <DicePool name="Defense" groups={groups} />
+          : <DicePool pool={defensePool} />
       )}
 
       {currentStep === "resist" && (
@@ -526,7 +481,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             </Stack>
           )}
 
-          <DicePool name="Resist Damage" groups={resistGroups} />
+          <DicePool pool={resistPool} />
 
           <Divider />
 
