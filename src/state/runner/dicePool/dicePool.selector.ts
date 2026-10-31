@@ -85,10 +85,10 @@ export namespace DicePoolSelectors {
     SelectorOptions.attr,
     SelectorOptions.skill,
     (attrGroups, skillGroups, attr, skill): DicePoolData =>
-      createDicePool(
-        `standardTest.${attr}.${skill}`,
-        `${AttributeLabels[attr]} + ${skill}`,
-        [...attrGroups, ...skillGroups],
-      ),
+      createDicePool({
+        id: `standardTest.${attr}.${skill}`,
+        label: `${AttributeLabels[attr]} + ${skill}`,
+        groups: [...attrGroups, ...skillGroups],
+      }),
   )
 }

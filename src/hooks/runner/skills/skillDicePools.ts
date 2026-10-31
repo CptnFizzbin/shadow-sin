@@ -1,3 +1,4 @@
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
@@ -31,12 +32,20 @@ export const useActiveSkillDicePool = (props: {
         .reduce((sum, e) => sum + e.value, 0)
     : 0
 
-  return createDicePool(id, name, [
-    useActiveSkillDiceGroup(skillKey),
-    useAttrDiceGroup(attr),
-    specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
-    useWoundDiceGroup(),
-  ])
+  const skillGroup = useActiveSkillDiceGroup(skillKey)
+  const attrGroup = useAttrDiceGroup(attr)
+  const woundGroup = useWoundDiceGroup()
+
+  return createDicePool({
+    id,
+    label: name,
+    groups: flattenDiceGroups([
+      skillGroup,
+      attrGroup,
+      specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
+      woundGroup,
+    ]),
+  })
 }
 
 export const useKnowledgeSkillDicePool = (props: {
@@ -53,12 +62,19 @@ export const useKnowledgeSkillDicePool = (props: {
     name += ` (${specialization})`
   }
 
-  return createDicePool(id, name, [
-    { name: knowledge, size: rating },
-    useAttrDiceGroup(AttributeKey.logic),
-    specialization ? { name: specialization, size: 2 } : null,
-    useWoundDiceGroup(),
-  ])
+  const attrGroup = useAttrDiceGroup(AttributeKey.logic)
+  const woundGroup = useWoundDiceGroup()
+
+  return createDicePool({
+    id,
+    label: name,
+    groups: flattenDiceGroups([
+      { name: knowledge, size: rating },
+      attrGroup,
+      specialization ? { name: specialization, size: 2 } : null,
+      woundGroup,
+    ]),
+  })
 }
 
 export const useLanguageSkillDicePool = (props: {
@@ -77,10 +93,17 @@ export const useLanguageSkillDicePool = (props: {
     name += ` (${lingo})`
   }
 
-  return createDicePool(id, name, [
-    { name: language, size: isNative ? 0 : rating },
-    useAttrDiceGroup(AttributeKey.intuition),
-    lingo ? { name: lingo, size: 2 } : null,
-    useWoundDiceGroup(),
-  ])
+  const attrGroup = useAttrDiceGroup(AttributeKey.intuition)
+  const woundGroup = useWoundDiceGroup()
+
+  return createDicePool({
+    id,
+    label: name,
+    groups: flattenDiceGroups([
+      { name: language, size: isNative ? 0 : rating },
+      attrGroup,
+      lingo ? { name: lingo, size: 2 } : null,
+      woundGroup,
+    ]),
+  })
 }

@@ -20,8 +20,10 @@ export const DicePoolsStack: FC<{ dicePools: (false | DicePoolData)[] }> = ({ di
       .filter((item): item is DicePoolData => Boolean(item))
       .map((pool) => (
         <DicePool
-          key={pool.name}
-          {...pool}
+          key={pool.id}
+          name={pool.label}
+          groups={pool.groups}
+          includeWound={!pool.excludeWoundMod}
         />
       ))}
   </Stack>

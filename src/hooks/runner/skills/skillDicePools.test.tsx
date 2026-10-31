@@ -29,7 +29,7 @@ const TestProviders: FC<TestProvidersProps> = ({ runnerData, children }) => {
 
 const ActiveSkillDicePoolHarness: FC<{ skillKey: SkillKey }> = ({ skillKey }) => {
   const pool = useActiveSkillDicePool({ skillKey })
-  return <DicePool {...pool} />
+  return <DicePool name={pool.label} groups={pool.groups} includeWound={!pool.excludeWoundMod} />
 }
 
 function renderWithRunner(

@@ -31,26 +31,36 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
-  const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
-    // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
-    // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
-    // rows from colliding on the same React key.
-    { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
-    { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
-  ])
+  const gmPool = createDicePool({
+    id: "legwork.gm",
+    label: "Contact Knowledge Test",
+    groups: [
+      // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
+      // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
+      // rows from colliding on the same React key.
+      { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
+      { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
+    ],
+  })
 
-  const playerPool = createDicePool("legwork.player", "Legwork Test", [
-    useAttrDiceGroup(AttributeKey.charisma),
-    useActiveSkillDiceGroup(SkillKey.etiquette),
-    { name: "Loyalty", size: contact.loyalty },
-  ])
+  const charismaGroup = useAttrDiceGroup(AttributeKey.charisma)
+  const etiquetteGroup = useActiveSkillDiceGroup(SkillKey.etiquette)
+  const playerPool = createDicePool({
+    id: "legwork.player",
+    label: "Legwork Test",
+    groups: [
+      charismaGroup,
+      etiquetteGroup,
+      { name: "Loyalty", size: contact.loyalty },
+    ],
+  })
 
   return (
     <DetailDialog ctrl={ctrl} title={`Legwork: ${contact.name}`}>
       <Stack sx={{ gap: 1.5 }}>
         <Stack sx={{ gap: 0.5 }}>
           <Label label="GM" variant="outlined" />
-          <DicePool name={gmPool.name} groups={gmPool.groups} />
+          <DicePool name={gmPool.label} groups={gmPool.groups} includeWound={!gmPool.excludeWoundMod} />
           <Typography color="text.secondary">
             Each hit is how much the contact knows.
           </Typography>
@@ -58,7 +68,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
 
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Player" variant="outlined" />
-          <DicePool name={playerPool.name} groups={playerPool.groups} />
+          <DicePool name={playerPool.label} groups={playerPool.groups} includeWound={!playerPool.excludeWoundMod} />
           <Typography color="text.secondary">
             Each hit is how much the contact will offer for free.
           </Typography>
