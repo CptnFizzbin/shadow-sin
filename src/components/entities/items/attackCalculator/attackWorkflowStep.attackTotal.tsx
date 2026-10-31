@@ -24,7 +24,6 @@ import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selecto
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { useActiveAttackWeapon, useAttackWorkflow } from "./attackWorkflow.ts"
 
@@ -37,7 +36,6 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const skill = useRunnerSelector(SkillsSelectors.selectActiveSkill, { skillName: workflow.data.selectedSkill })
 
   const attrKey = weapon.attribute ?? skill.attr
-  const affectedByEncumbrance = attrKey === AttributeKey.agility || attrKey === AttributeKey.reaction
 
   const modifierGroups = Object.entries(workflow.data.modifiers).map(([label, value]): DiceGroup => {
     return { name: label, size: value }
@@ -46,7 +44,6 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const attackPool = useRunnerSelector(CombatPoolSelectors.selectAttackTest, {
     attr: attrKey,
     skill: skill.name,
-    includeEncumbrance: affectedByEncumbrance,
     extraGroups: modifierGroups,
   })
   const poolTotal = attackPool.size

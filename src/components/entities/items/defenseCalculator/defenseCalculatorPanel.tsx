@@ -165,7 +165,6 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     skill: defenseSkill,
     // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
     doubleSkill: attackType !== "spell" && !!selectedOption.doubleSkill,
-    includeEncumbrance: attackType !== "spell",
     extraGroups: [...counterspellingOtherGroups, ...flattenDiceGroups(modifierGroups)],
   })
 

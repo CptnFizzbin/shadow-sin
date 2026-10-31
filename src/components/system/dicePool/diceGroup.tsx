@@ -1,9 +1,16 @@
+import type { RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
+
 export type DiceGroupType = "attribute" | "skill" | "bonus" | "defaulting" | "penalty"
 
 export interface DiceGroup {
   id?: string
   name: string
   size: number
+  /**
+   * What `size` is made of, for display only — `size` already includes every modifier, so a dice
+   * pool never adds these again.
+   */
+  modifiers?: RatingModifier[]
   type?: DiceGroupType
   /** Explicit color override. Prefer `type` where the group fits one of the standard categories. */
   color?: string

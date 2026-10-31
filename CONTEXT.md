@@ -64,8 +64,21 @@ _Avoid_: object, game entity
 The strength or level of an Entity — e.g. Armor's protection, an Adept Power's level, a Spirit's
 Force, a Program's or Device's rating. Not every Entity has one (Spells don't). Cases with no
 meaningful rating — a Real SIN, a Real Licence, a native Language — are marked as such rather than
-given a placeholder rating.
-_Avoid_: confusing with **AI Rating**, an unrelated AI-metatype value
+given a placeholder rating. For an **Attribute** or **Skill**, the Rating is the number a test
+actually uses: its **Raw Value** plus its **Modifiers**.
+_Avoid_: value (say **Raw Value** or Rating); confusing with **AI Rating**, an unrelated
+AI-metatype value
+
+**Raw Value**:
+An Attribute's or Skill's number before any **Modifiers** apply — the points bought for it (for a
+Skill, the higher of its own and its skill group's).
+_Avoid_: base value, value
+
+**Modifier**:
+One named contribution to a **Rating**, such as a cyberware bonus or the **Encumbrance** penalty.
+A Rating always equals its Raw Value plus the sum of its Modifiers, so the app can show where every
+die came from.
+_Avoid_: bonus (Modifiers can be negative)
 
 ### Damage
 
@@ -91,7 +104,8 @@ and applies to non-biological subjects. Capacity depends on the kind of subject.
 **Wound Modifier**:
 A dice pool penalty from filled damage boxes: −1 die for every full interval of damage (3 boxes by
 default). **High Pain Tolerance** ignores the first few boxes; **Low Pain Tolerance** shortens the
-interval so penalties start sooner.
+interval so penalties start sooner. Applies to every Dice Pool except a **Resistance Test**. It
+penalizes the whole pool, so it's never a Modifier on a Rating.
 _Avoid_: wound penalty, damage penalty
 
 ### Reputation
@@ -177,6 +191,17 @@ A numeric stat (1–6 base, higher with metatype bonuses), grouped as **Physical
 Reaction, Strength), **Mental** (Charisma, Intuition, Logic, Willpower), or **Special** (Magic,
 Resonance, Edge, Essence).
 
+**Augmented Maximum**:
+The highest Rating an Attribute can reach with Modifiers, set by the Runner's Metatype. Modifiers
+that would push past it are cut back to it. **Encumbrance** applies after the cap, so it can still
+lower a capped Rating.
+
+**Encumbrance**:
+A penalty to the Agility and Reaction Ratings when worn armor is too heavy: −1 for every 2 points
+(or part of 2) that either armor rating exceeds Body × 2. It counts every Equipped piece of armor,
+even one whose protection is superseded by a better piece.
+_Avoid_: armor penalty
+
 **Edge**:
 A special attribute with two sides. The **Edge Rating** is the attribute itself — the size of the
 Edge Pool, and the number of bonus dice Edge adds to a roll. The **Edge Pool** is how many Edge
@@ -185,10 +210,10 @@ _Avoid_: luck points, hero points
 
 **Skill**:
 A rated capability tied to an attribute, in three flavours: **Active** (used in tests),
-**Knowledge** (background expertise), and **Language**. Active skills may have a
-**Specialization** (+2 dice in that narrow focus). Knowledge and Language skills are named by the
-Player rather than picked from a fixed list, and keep their identity when renamed — effects that
-target one still apply after a rename.
+**Knowledge** (background expertise), and **Language**. Active skills may have a **Specialization**
+(+2 dice in that narrow focus, shown as its own **Dice Group**). Knowledge and Language skills are
+named by the Player rather than picked from a fixed list, and keep their identity when renamed —
+effects that target one still apply after a rename.
 
 **Quality**:
 A positive or negative trait (e.g. High Pain Tolerance, Uneducated). Bought at creation; some are
@@ -415,12 +440,13 @@ The 1–6 strength of the scanning system in one License Check, chosen fresh by 
 ### Effects & Rules
 
 **GameEffect**:
-A mechanical modifier to a derived stat — an attribute bonus, a dice pool modifier, extra
+A mechanical change to a derived stat — an attribute bonus, a dice pool modifier, extra
 initiative passes, a pain tolerance change. Comes from Items (cyberware, weapons, armor),
 Qualities, sustained Spells, Complex Forms, Adept Powers, drugs, or the Runner's matrix connection
 mode (AR, hot-sim VR, cold-sim VR). Spirits, Sprites, and Agents are Entities but don't grant
 GameEffects; a connection mode is a state the Runner is in, not an Entity.
-_Avoid_: modifier, bonus (too generic)
+_Avoid_: modifier (a **Modifier** is one GameEffect's contribution to a specific Rating), bonus
+(too generic)
 
 **Granted Effects**:
 The GameEffects a single source carries as its own.
@@ -456,9 +482,25 @@ _Avoid_: optional rule
 ### Dice
 
 **Dice Pool**:
-The number of d6s rolled for a test: Attribute + Skill (or Matrix Attribute + Program), plus any
-GameEffects, minus the Wound Modifier. Every Dice Pool belongs to a **Pool Id**, which is what
-GameEffects target.
+The number of d6s rolled for a test, made of **Dice Groups**: usually an Attribute + a Skill (or a
+Matrix Attribute + a Program), plus the Wound Modifier unless the test is a **Resistance Test**.
+Every Dice Pool belongs to a **Pool Id**, which is what GameEffects target.
+
+**Dice Group**:
+One labelled part of a Dice Pool — an Attribute, a Skill, a Specialization, Defaulting, the Wound
+Modifier. An Attribute or Skill group is sized by its **Rating** and lists that Rating's
+Modifiers, which are already counted in its size and never added again.
+_Avoid_: pool component
+
+**Defaulting**:
+Rolling an Active Skill test without the Skill: the Skill contributes no dice, and a separate −1
+die Dice Group is added. Some Skills (e.g. Spellcasting, Arcana) can't be defaulted at all.
+
+**Resistance Test**:
+A test to resist something about to land on the Runner: damage (Body or Willpower + armor), a
+direct spell (Body or Willpower), or Drain. It never takes the Wound Modifier. Defense tests and
+spellcasting tests are not Resistance Tests and do take it.
+_Avoid_: defense test (a defense test avoids being hit; a Resistance Test reduces what lands)
 
 **Pool Id**:
 Which kind of test a Dice Pool is, independent of any particular Item. Pool Ids form a tree of
@@ -585,3 +627,7 @@ run.
   Program on a Node is **Running**, never "active".
 - **Available** (not stashed) and **Availability** (how hard an Item is to obtain) are unrelated.
 - **Rating** and **AI Rating** are unrelated.
+- "Value" meant both an Attribute's or Skill's points and the number a test uses. Resolved: say
+  **Raw Value** before Modifiers, **Rating** after.
+- "Modifier" meant both a GameEffect and the change it makes. Resolved: a **GameEffect** is the
+  rule a source carries; a **Modifier** is its contribution to one Rating.

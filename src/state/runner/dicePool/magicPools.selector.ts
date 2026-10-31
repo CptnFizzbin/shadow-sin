@@ -2,6 +2,7 @@ import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.tsx"
 import { injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
+import { DiceGroupSelectors } from "#/state/runner/diceGroup/diceGroup.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { spiritTypeMatchesSpecialization } from "#/system/formulas/magic/spiritSpecialization.ts"
@@ -10,10 +11,9 @@ import type { SpiritType } from "#/system/model/magic/spiritData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
-import { DicePoolSelectors } from "./dicePool.selector.ts"
 
-const selectMagicTest = injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.magic })
-const selectWillpowerTest = injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.willpower })
+const selectMagicTest = injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.magic })
+const selectWillpowerTest = injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.willpower })
 
 /** The `skill` Specialization's bonus, but only when that Specialization covers `spiritType`. */
 const selectSpiritSpecializationTest = (
@@ -22,14 +22,14 @@ const selectSpiritSpecializationTest = (
 ): DiceGroup[] => {
   const specialization = SkillsSelectors.selectSpecialization(state, { skillName: skill })
   const applies = !!specialization && spiritTypeMatchesSpecialization(spiritType, specialization)
-  return DicePoolSelectors.selectSpecializationTest(state, { skill, specialization: applies ? specialization : undefined })
+  return DiceGroupSelectors.selectSpecialization(state, { skill, specialization: applies ? specialization : undefined })
 }
 
 export namespace MagicPoolSelectors {
   /** The Spellcasting test: Magic + Spellcasting. */
   export const selectSpellcastingTest = createDicePoolSelector(
     selectMagicTest,
-    injectOption(DicePoolSelectors.selectSkillTest, { skill: SkillKey.spellcasting, isSpecialized: false, excludeDefaulting: false }),
+    injectOption(DiceGroupSelectors.selectSkill, { skill: SkillKey.spellcasting, excludeDefaulting: false }),
     (magicGroups, skillGroups): DicePoolConfig => ({
       id: "magic.spellcasting",
       label: "Spellcasting",
@@ -40,10 +40,12 @@ export namespace MagicPoolSelectors {
   /** The Drain Resistance test: Willpower + the tradition's drain `attr`. */
   export const selectDrainResistanceTest = createDicePoolSelector(
     selectWillpowerTest,
-    DicePoolSelectors.selectAttrTest,
+    DiceGroupSelectors.selectAttr,
     (willpowerGroups, drainAttrGroups): DicePoolConfig => ({
       id: "magic.drainResistance",
       label: "Drain Resistance",
+      // A Resistance Test never takes the Wound Modifier.
+      excludeWoundMod: true,
       groups: [
         ...willpowerGroups,
         // A Willpower-drain tradition rolls Willpower twice; renaming the second keeps the two
@@ -63,7 +65,7 @@ export namespace MagicPoolSelectors {
    */
   export const selectSummoningTest = createDicePoolSelector(
     selectMagicTest,
-    DicePoolSelectors.selectSkillTest,
+    DiceGroupSelectors.selectSkill,
     selectSpiritSpecializationTest,
     SelectorOptions.skill,
     (magicGroups, skillGroups, specializationGroups, skill): DicePoolConfig => ({

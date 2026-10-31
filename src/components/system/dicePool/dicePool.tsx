@@ -12,6 +12,7 @@ import { DiceTrayContext } from "#/components/system/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 
 import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
+import { DiceGroupModifierRow } from "./diceGroupModifierRow.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
@@ -138,18 +139,20 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
             const groupColor = getGroupColor(group)
 
             return (
-              <Stack
-                key={group.id ?? `${index}:${group.name}`}
-                direction="row"
-                sx={{ justifyContent: "space-between" }}
-              >
-                <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
-                >
-                  {group.size}
-                </Typography>
+              <Stack key={group.id ?? `${index}:${group.name}`}>
+                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                  <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
+                  >
+                    {group.size}
+                  </Typography>
+                </Stack>
+
+                {group.modifiers?.map((modifier, modifierIndex) => (
+                  <DiceGroupModifierRow key={`${modifierIndex}:${modifier.name}`} modifier={modifier} />
+                ))}
               </Stack>
             )
           })}

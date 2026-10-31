@@ -3,12 +3,17 @@ import { describe, expect, it } from "vitest"
 import { AttributeKey, AttrKey } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
 import { NodeType } from "#/system/model/matrix/nodeType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
 import { AttrSelectors } from "./attributes.selector.ts"
 
@@ -312,5 +317,118 @@ describe("AttrSelectors.selectValue — AI metatype", () => {
     // Act / Assert
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.response })).toBe(0)
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.signal })).toBe(0)
+  })
+})
+
+describe("AttrSelectors.selectRatingBreakdown", () => {
+  const ratingStateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
+
+  it("adds active attrMod GameEffects to the raw value, named after their source", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Muscle Toner",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
+    })
+    const runner = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 4
+      },
+    })
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 4, modifiers: [{ name: "Muscle Toner", value: 2 }], rating: 6 })
+  })
+
+  it("caps the rating at the metatype's augmented maximum", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Muscle Toner",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 6 }],
+    })
+    const runner = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 6
+      },
+    })
+    const augmentedMax = AttrSelectors.selectBounds(ratingStateFor(runner))[AttributeKey.agility]!.augMax!
+
+    // Act
+    const rating = AttrSelectors.selectRating(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(rating).toBe(augmentedMax)
+  })
+
+  it("ignores the Runner's GameEffects when another entity is in scope", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Muscle Toner",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
+    })
+    const runner = runnerDataFactory({ items: createItemMap([implant]) })
+    const otherEntity = { kind: EntityKind.item, attributes: { [AttributeKey.agility]: 3 } }
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(
+      { runner, entity: otherEntity, items: getItemCatalog(runner) },
+      { attr: AttributeKey.agility },
+    )
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 3, modifiers: [], rating: 3 })
+  })
+})
+
+describe("AttrSelectors.selectRatingBreakdown with Encumbrance", () => {
+  const ratingStateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
+  const heavyArmorRunner = () => {
+    const [armor] = createItem<ArmorData>({
+      name: "Heavy Armor",
+      itemType: ItemType.armor,
+      equipped: true,
+      ballistic: 10,
+      impact: 6,
+    })
+    return runnerDataFactory({
+      items: createItemMap([armor]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.body] = 3
+        s.attributes[AttributeKey.agility] = 5
+        s.attributes[AttributeKey.strength] = 4
+      },
+    })
+  }
+
+  it("applies the Encumbrance penalty to Agility", () => {
+    // Arrange
+    const runner = heavyArmorRunner()
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 5, modifiers: [{ name: "Encumbrance", value: -2 }], rating: 3 })
+  })
+
+  it("leaves attributes other than Agility and Reaction alone", () => {
+    // Arrange
+    const runner = heavyArmorRunner()
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.strength })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 4, modifiers: [], rating: 4 })
   })
 })

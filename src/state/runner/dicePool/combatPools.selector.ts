@@ -2,6 +2,7 @@ import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
+import { DiceGroupSelectors } from "#/state/runner/diceGroup/diceGroup.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { calculateArmorTotals } from "#/system/formulas/items/encumbranceUtils.ts"
@@ -10,14 +11,13 @@ import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
-import { DicePoolSelectors } from "./dicePool.selector.ts"
 
 const NO_GROUPS: DiceGroup[] = []
 
-const attrTestFor = (attr: AttributeKey) => injectOption(DicePoolSelectors.selectAttrTest, { attr })
+const attrTestFor = (attr: AttributeKey) => injectOption(DiceGroupSelectors.selectAttr, { attr })
 
 const skillTestFor = (skill: SkillKey) =>
-  injectOption(DicePoolSelectors.selectSkillTest, { skill, isSpecialized: false, excludeDefaulting: false })
+  injectOption(DiceGroupSelectors.selectSkill, { skill, excludeDefaulting: false })
 
 const selectReactionTest = attrTestFor(AttributeKey.reaction)
 const selectBodyTest = attrTestFor(AttributeKey.body)
@@ -28,7 +28,7 @@ const selectCounterspellingTest = skillTestFor(SkillKey.counterspelling)
 
 /** `skill`'s groups, or none when no skill is given. */
 const selectOptionalSkillTest = (state: EntityScope, { skill }: { skill?: SkillKey }): DiceGroup[] =>
-  skill ? DicePoolSelectors.selectSkillTest(state, { skill }) : NO_GROUPS
+  skill ? DiceGroupSelectors.selectSkill(state, { skill }) : NO_GROUPS
 
 /** The total ballistic/impact rating of the Runner's equipped armor, stacking armor modifiers. */
 const selectArmorTotals = createMemoizedSelector(
@@ -41,11 +41,13 @@ export namespace CombatPoolSelectors {
   export const selectResistDamageTest = createDicePoolSelector(
     selectBodyTest,
     selectWillpowerTest,
-    DicePoolSelectors.selectArmorTest,
+    DiceGroupSelectors.selectArmor,
     SelectorOptions.damageResistanceType,
     SelectorOptions.armor,
     (bodyGroups, willpowerGroups, armorGroups, damageType, armor): DicePoolConfig => ({
       id: `resist.damage.${armor}.${damageType}`,
+      // A Resistance Test never takes the Wound Modifier.
+      excludeWoundMod: true,
       label: `Resist ${armor} (${damageType})`,
       groups: [...(damageType === "P" ? bodyGroups : willpowerGroups), ...armorGroups],
     }),
@@ -56,6 +58,8 @@ export namespace CombatPoolSelectors {
     selectWillpowerTest,
     (willpowerGroups): DicePoolConfig => ({
       id: "resist.spell.mana",
+      // A Resistance Test never takes the Wound Modifier.
+      excludeWoundMod: true,
       label: "Resist Mana Spell",
       groups: willpowerGroups,
     }),
@@ -66,6 +70,8 @@ export namespace CombatPoolSelectors {
     selectBodyTest,
     (bodyGroups): DicePoolConfig => ({
       id: "resist.spell.physical",
+      // A Resistance Test never takes the Wound Modifier.
+      excludeWoundMod: true,
       label: "Resist Physical Spell",
       groups: bodyGroups,
     }),
@@ -74,11 +80,10 @@ export namespace CombatPoolSelectors {
   /** Defending against a ranged attack: Reaction. */
   export const selectRangedDefenseTest = createDicePoolSelector(
     selectReactionTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups): DicePoolConfig => ({
       id: "defense.ranged",
       label: "Ranged Defense",
-      groups: [...reactionGroups, ...encumbranceGroups],
+      groups: [...reactionGroups],
     }),
   )
 
@@ -86,11 +91,10 @@ export namespace CombatPoolSelectors {
   export const selectRangedFullDefenseTest = createDicePoolSelector(
     selectReactionTest,
     selectDodgeTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, dodgeGroups, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups, dodgeGroups): DicePoolConfig => ({
       id: "defense.ranged.full",
       label: "Ranged Full Defense",
-      groups: [...reactionGroups, ...dodgeGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...dodgeGroups],
     }),
   )
 
@@ -98,11 +102,10 @@ export namespace CombatPoolSelectors {
   export const selectMeleeBlockTest = createDicePoolSelector(
     selectReactionTest,
     selectUnarmedCombatTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, unarmedCombatGroups, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups, unarmedCombatGroups): DicePoolConfig => ({
       id: "defense.melee.block",
       label: "Melee Block",
-      groups: [...reactionGroups, ...unarmedCombatGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...unarmedCombatGroups],
     }),
   )
 
@@ -110,11 +113,10 @@ export namespace CombatPoolSelectors {
   export const selectMeleeDodgeTest = createDicePoolSelector(
     selectReactionTest,
     selectDodgeTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, dodgeGroups, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups, dodgeGroups): DicePoolConfig => ({
       id: "defense.melee.dodge",
       label: "Melee Dodge",
-      groups: [...reactionGroups, ...dodgeGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...dodgeGroups],
     }),
   )
 
@@ -123,11 +125,10 @@ export namespace CombatPoolSelectors {
     selectReactionTest,
     selectUnarmedCombatTest,
     selectDodgeTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, unarmedCombatGroups, dodgeGroups, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups, unarmedCombatGroups, dodgeGroups): DicePoolConfig => ({
       id: "defense.melee.fullBlock",
       label: "Melee Full Block",
-      groups: [...reactionGroups, ...unarmedCombatGroups, ...dodgeGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...unarmedCombatGroups, ...dodgeGroups],
     }),
   )
 
@@ -136,38 +137,35 @@ export namespace CombatPoolSelectors {
     selectReactionTest,
     selectDodgeTest,
     selectDodgeTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    (reactionGroups, dodgeGroups, dodgeGroups2, encumbranceGroups): DicePoolConfig => ({
+    (reactionGroups, dodgeGroups, dodgeGroups2): DicePoolConfig => ({
       id: "defense.melee.fullDodge",
       label: "Melee Full Dodge",
-      groups: [...reactionGroups, ...dodgeGroups, ...dodgeGroups2, ...encumbranceGroups],
+      groups: [...reactionGroups, ...dodgeGroups, ...dodgeGroups2],
     }),
   )
 
   /** Parrying with the weapon `skill`: Reaction + `skill`. */
   export const selectMeleeParryTest = createDicePoolSelector(
     selectReactionTest,
-    DicePoolSelectors.selectSkillTest,
-    DicePoolSelectors.selectEncumbranceTest,
+    DiceGroupSelectors.selectSkill,
     SelectorOptions.skill,
-    (reactionGroups, weaponSkillGroups, encumbranceGroups, skill): DicePoolConfig => ({
+    (reactionGroups, weaponSkillGroups, skill): DicePoolConfig => ({
       id: `defense.melee.parry.${skill}`,
       label: `${skill} Parry`,
-      groups: [...reactionGroups, ...weaponSkillGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...weaponSkillGroups],
     }),
   )
 
   /** Full-parrying with the weapon `skill`: Reaction + `skill` + Dodge. */
   export const selectMeleeFullParryTest = createDicePoolSelector(
     selectReactionTest,
-    DicePoolSelectors.selectSkillTest,
+    DiceGroupSelectors.selectSkill,
     selectDodgeTest,
-    DicePoolSelectors.selectEncumbranceTest,
     SelectorOptions.skill,
-    (reactionGroups, weaponSkillGroups, dodgeGroups, encumbranceGroups, skill): DicePoolConfig => ({
+    (reactionGroups, weaponSkillGroups, dodgeGroups, skill): DicePoolConfig => ({
       id: `defense.melee.fullParry.${skill}`,
       label: `${skill} Full Parry`,
-      groups: [...reactionGroups, ...weaponSkillGroups, ...dodgeGroups, ...encumbranceGroups],
+      groups: [...reactionGroups, ...weaponSkillGroups, ...dodgeGroups],
     }),
   )
 
@@ -194,42 +192,36 @@ export namespace CombatPoolSelectors {
   )
 
   /**
-   * The Attack test: `attr` + `skill`, any encumbrance penalty when `includeEncumbrance` is set,
-   * and the attack's situational `extraGroups`.
+   * The Attack test: `attr` + `skill` and the attack's situational `extraGroups`. Encumbrance
+   * reaches it through the Agility or Reaction Rating.
    */
   export const selectAttackTest = createDicePoolSelector(
-    DicePoolSelectors.selectAttrTest,
-    DicePoolSelectors.selectSkillTest,
-    DicePoolSelectors.selectEncumbranceTest,
-    SelectorOptions.includeEncumbrance,
+    DiceGroupSelectors.selectAttr,
+    DiceGroupSelectors.selectSkill,
     SelectorOptions.extraGroups,
-    (attrGroups, skillGroups, encumbranceGroups, includeEncumbrance, extraGroups): DicePoolConfig => ({
+    (attrGroups, skillGroups, extraGroups): DicePoolConfig => ({
       id: "attack",
       label: "Attack",
-      groups: [...attrGroups, ...skillGroups, ...(includeEncumbrance ? encumbranceGroups : []), ...extraGroups],
+      groups: [...attrGroups, ...skillGroups, ...extraGroups],
     }),
   )
 
   /**
    * The Defense Calculator's defense test: `attr` + `skill` (rolled twice when `doubleSkill` is
-   * set), any encumbrance penalty when `includeEncumbrance` is set, and the situational
-   * `extraGroups`.
+   * set) and the situational `extraGroups`. Encumbrance reaches it through the Reaction Rating.
    */
   export const selectDefenseCalculatorTest = createDicePoolSelector(
-    DicePoolSelectors.selectAttrTest,
+    DiceGroupSelectors.selectAttr,
     selectOptionalSkillTest,
-    DicePoolSelectors.selectEncumbranceTest,
     SelectorOptions.doubleSkill,
-    SelectorOptions.includeEncumbrance,
     SelectorOptions.extraGroups,
-    (attrGroups, skillGroups, encumbranceGroups, doubleSkill, includeEncumbrance, extraGroups): DicePoolConfig => ({
+    (attrGroups, skillGroups, doubleSkill, extraGroups): DicePoolConfig => ({
       id: "defense",
       label: "Defense",
       groups: [
         ...attrGroups,
         ...skillGroups,
         ...(doubleSkill ? skillGroups : []),
-        ...(includeEncumbrance ? encumbranceGroups : []),
         ...extraGroups,
       ],
     }),
@@ -240,7 +232,7 @@ export namespace CombatPoolSelectors {
    * halved (rounding down) when `halveArmor` is set.
    */
   export const selectDefenseCalculatorResistTest = createDicePoolSelector(
-    DicePoolSelectors.selectAttrTest,
+    DiceGroupSelectors.selectAttr,
     selectArmorTotals,
     SelectorOptions.armor,
     SelectorOptions.halveArmor,
@@ -249,6 +241,8 @@ export namespace CombatPoolSelectors {
 
       return {
         id: "defense.resist",
+        // A Resistance Test never takes the Wound Modifier.
+        excludeWoundMod: true,
         label: "Resist Damage",
         groups: [
           ...attrGroups,
