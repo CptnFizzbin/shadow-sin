@@ -10,11 +10,11 @@ import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -58,9 +58,11 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
     affectedByEncumbrance ? encumbranceGroup : null,
     ...modifierGroups,
   ]
-  const attackPool = createDicePool({
+  const attackPool = useDicePool({
     id: "attack",
     label: "Attack",
+    // skillPool.groups already carries the Wound group from selectStandardTest.
+    excludeWoundMod: true,
     groups: flattenDiceGroups(groups),
   })
   const poolTotal = attackPool.size

@@ -10,12 +10,9 @@ import { useContext, useState } from "react"
 
 import { DiceTrayContext } from "#/components/system/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
-import { useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 
 import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
-import { flattenDiceGroups } from "./diceGroup.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
-import { getPoolSize } from "./dicePoolData.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
   attribute: "primary.main",
@@ -36,14 +33,9 @@ export interface DicePoolProps {
 }
 
 export const DicePool: FC<DicePoolProps> = ({ pool }) => {
-  const { label: name, groups, excludeWoundMod = false } = pool
+  const { label: name, groups: diceGroups, size: total } = pool
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
-  const woundDiceGroup = useWoundDiceGroup()
-
-  const diceGroups = flattenDiceGroups([groups, !excludeWoundMod && woundDiceGroup])
-
-  const total = getPoolSize(diceGroups)
   const penalties = diceGroups.filter((group) => group.size < 0)
 
   return (

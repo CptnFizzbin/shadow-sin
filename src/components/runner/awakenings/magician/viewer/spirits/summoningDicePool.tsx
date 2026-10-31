@@ -2,8 +2,8 @@ import type { FC } from "react"
 
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
@@ -36,7 +36,6 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
 
   const magicGroup = useAttrDiceGroup(AttributeKey.magic)
   const skillGroup = useActiveSkillDiceGroup(skillKey)
-  const woundGroup = useWoundDiceGroup()
 
   const specialization = useRunnerSelector(SkillsSelectors.selectSpecialization, { skillName: skillKey })
 
@@ -54,10 +53,10 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
     ? { name: specialization, size: 2 + totalSpecMod }
     : null
 
-  const pool = createDicePool({
+  const pool = useDicePool({
     id: `magic.${skillKey}`,
     label: poolName,
-    groups: flattenDiceGroups([magicGroup, skillGroup, specGroup, woundGroup]),
+    groups: flattenDiceGroups([magicGroup, skillGroup, specGroup]),
   })
 
   return <DicePool pool={pool} />

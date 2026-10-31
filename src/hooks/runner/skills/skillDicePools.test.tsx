@@ -71,4 +71,18 @@ describe("useActiveSkillDicePool", () => {
     // Assert
     expect(view.queryByText(/Defaulting/)).toBeNull()
   })
+
+  it("applies the wound modifier exactly once when the Runner is wounded", () => {
+    // Arrange / Act
+    const view = renderWithRunner(
+      <ActiveSkillDicePoolHarness skillKey={SkillKey.dodge} />,
+      (sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 3 }]
+        sheet.damage.physical = 3
+      },
+    )
+
+    // Assert: one Wound group, shown twice (chip + ledger line).
+    expect(view.getAllByText("Wound")).toHaveLength(2)
+  })
 })

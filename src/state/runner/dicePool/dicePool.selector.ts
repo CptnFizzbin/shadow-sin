@@ -4,6 +4,7 @@ import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { filterByEffectType } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
@@ -82,13 +83,14 @@ export namespace DicePoolSelectors {
   export const selectStandardTest = createMemoizedSelector(
     selectAttrTest,
     selectSkillTest,
+    DamageSelectors.selectWoundMod,
     SelectorOptions.attr,
     SelectorOptions.skill,
-    (attrGroups, skillGroups, attr, skill): DicePoolData =>
+    (attrGroups, skillGroups, woundMod, attr, skill): DicePoolData =>
       createDicePool({
         id: `standardTest.${attr}.${skill}`,
         label: `${AttributeLabels[attr]} + ${skill}`,
         groups: [...attrGroups, ...skillGroups],
-      }),
+      }, woundMod),
   )
 }

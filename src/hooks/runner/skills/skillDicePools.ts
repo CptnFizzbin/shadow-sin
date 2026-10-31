@@ -1,7 +1,7 @@
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
@@ -34,16 +34,14 @@ export const useActiveSkillDicePool = (props: {
 
   const skillGroup = useActiveSkillDiceGroup(skillKey)
   const attrGroup = useAttrDiceGroup(attr)
-  const woundGroup = useWoundDiceGroup()
 
-  return createDicePool({
+  return useDicePool({
     id,
     label: name,
     groups: flattenDiceGroups([
       skillGroup,
       attrGroup,
       specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
-      woundGroup,
     ]),
   })
 }
@@ -63,16 +61,14 @@ export const useKnowledgeSkillDicePool = (props: {
   }
 
   const attrGroup = useAttrDiceGroup(AttributeKey.logic)
-  const woundGroup = useWoundDiceGroup()
 
-  return createDicePool({
+  return useDicePool({
     id,
     label: name,
     groups: flattenDiceGroups([
       { name: knowledge, size: rating },
       attrGroup,
       specialization ? { name: specialization, size: 2 } : null,
-      woundGroup,
     ]),
   })
 }
@@ -94,16 +90,14 @@ export const useLanguageSkillDicePool = (props: {
   }
 
   const attrGroup = useAttrDiceGroup(AttributeKey.intuition)
-  const woundGroup = useWoundDiceGroup()
 
-  return createDicePool({
+  return useDicePool({
     id,
     label: name,
     groups: flattenDiceGroups([
       { name: language, size: isNative ? 0 : rating },
       attrGroup,
       lingo ? { name: lingo, size: 2 } : null,
-      woundGroup,
     ]),
   })
 }

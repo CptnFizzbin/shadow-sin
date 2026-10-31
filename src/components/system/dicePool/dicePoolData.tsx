@@ -5,7 +5,7 @@ import { isDiceGroup } from "./diceGroup.tsx"
 export interface DicePoolConfig {
   id: string
   label: string
-  /** When `true`, the Runner's wound modifier is not applied when the pool is rendered. */
+  /** When `true`, the pool gets no Wound group even if the Runner is wounded. */
   excludeWoundMod?: boolean
   groups: DiceGroup[]
 }
@@ -14,11 +14,20 @@ export interface DicePoolData extends DicePoolConfig {
   size: number
 }
 
-export const createDicePool = (config: DicePoolConfig): DicePoolData => {
-  return { ...config, size: getPoolSize(config.groups) }
+/**
+ * Builds a dice pool from `config`, appending a Wound penalty group for `woundMod` (the Runner's
+ * current wound modifier, as a positive number of dice lost) unless `config.excludeWoundMod` is set.
+ * Components should prefer `useDicePool`, which supplies the Runner's wound modifier.
+ */
+export const createDicePool = (config: DicePoolConfig, woundMod: number): DicePoolData => {
+  const groups = config.excludeWoundMod || woundMod === 0
+    ? config.groups
+    : [...config.groups, { name: "Wound", size: -woundMod, type: "penalty" } satisfies DiceGroup]
+
+  return { ...config, groups, size: getPoolSize(groups) }
 }
 
-export const getPoolSize = (groups: DiceGroupList): number => {
+const getPoolSize = (groups: DiceGroupList): number => {
   const diceGroups = groups.filter(isDiceGroup)
 
   return Math.max(

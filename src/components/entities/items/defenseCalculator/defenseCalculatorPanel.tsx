@@ -19,15 +19,14 @@ import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import {
   useActiveSkillDiceGroup,
   useEncumbranceDiceGroup,
-  useWoundDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
@@ -122,7 +121,6 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   }
 
   const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
-  const woundGroup = useWoundDiceGroup()
   const encumbranceGroup = useEncumbranceDiceGroup()
   const armorTotals = useEncumbrance()
 
@@ -205,7 +203,6 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     attributeGroup,
     skillGroupForTotal,
     doubledSkillGroup,
-    woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
   ]
@@ -236,13 +233,13 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
           : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
       ]
 
-  const defensePool = createDicePool({
+  const defensePool = useDicePool({
     id: "defense",
     label: "Defense",
     groups: flattenDiceGroups(groups),
   })
 
-  const resistPool = createDicePool({
+  const resistPool = useDicePool({
     id: "defense.resist",
     label: "Resist Damage",
     groups: flattenDiceGroups(resistGroups),

@@ -5,7 +5,6 @@ import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
@@ -55,12 +54,6 @@ export function useActiveSkillDiceGroup(
     size: totalMod,
     type: "skill",
   }
-}
-
-export function useWoundDiceGroup(): DiceGroup | null {
-  const woundMod = useRunnerSelector(DamageSelectors.selectWoundMod)
-  if (woundMod === 0) return null
-  return { name: "Wound", size: woundMod * -1, type: "penalty" }
 }
 
 export function useEncumbranceDiceGroup(): DiceGroup | null {

@@ -13,7 +13,7 @@ describe("CardElementDicePool", () => {
       id: "test.casting",
       label: "Casting Pool",
       groups: [{ name: "Magic", size: 4, type: "attribute" }],
-    })
+    }, 0)
 
     // Act
     renderWithRunner(<CardElementDicePool pool={pool} />)

@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
+import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
@@ -31,7 +31,7 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
-  const gmPool = createDicePool({
+  const gmPool = useDicePool({
     id: "legwork.gm",
     label: "Contact Knowledge Test",
     groups: [
@@ -45,7 +45,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
 
   const charismaGroup = useAttrDiceGroup(AttributeKey.charisma)
   const etiquetteGroup = useActiveSkillDiceGroup(SkillKey.etiquette)
-  const playerPool = createDicePool({
+  const playerPool = useDicePool({
     id: "legwork.player",
     label: "Legwork Test",
     groups: [
