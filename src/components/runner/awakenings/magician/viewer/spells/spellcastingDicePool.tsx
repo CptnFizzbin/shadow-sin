@@ -1,23 +1,11 @@
 import type { FC } from "react"
 
-import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { MagicPoolSelectors } from "#/state/runner/dicePool/magicPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 import { SpellCard } from "./spellCard.tsx"
 
 export const SpellcastingDicePool: FC = () => {
-  const magicGroup = useAttrDiceGroup(AttributeKey.magic)
-  const spellcastingGroup = useActiveSkillDiceGroup(SkillKey.spellcasting)
-
-  const pool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
-    id: "magic.spellcasting",
-    label: "Spellcasting",
-    groups: flattenDiceGroups([magicGroup, spellcastingGroup]),
-  } })
-
+  const pool = useRunnerSelector(MagicPoolSelectors.selectSpellcastingTest)
   return <SpellCard.DicePool pool={pool} />
 }

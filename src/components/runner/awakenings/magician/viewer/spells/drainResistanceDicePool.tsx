@@ -1,12 +1,8 @@
 import type { FC } from "react"
 
-import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
-import {
-  useAttrDiceGroup,
-} from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { MagicPoolSelectors } from "#/state/runner/dicePool/magicPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { SpellCard } from "./spellCard.tsx"
 
@@ -15,20 +11,6 @@ interface DrainResistanceDicePoolProps {
 }
 
 export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
-  const willpowerGroup = useAttrDiceGroup(AttributeKey.willpower)
-  const drainAttrGroup = useAttrDiceGroup(drainAttribute)
-
-  // When drainAttribute is willpower, disambiguate group names to avoid duplicate React keys
-  const resolvedDrainAttrGroup =
-    drainAttrGroup.name === willpowerGroup.name
-      ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
-      : drainAttrGroup
-
-  const pool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
-    id: "magic.drainResistance",
-    label: "Drain Resistance",
-    groups: flattenDiceGroups([willpowerGroup, resolvedDrainAttrGroup]),
-  } })
-
+  const pool = useRunnerSelector(MagicPoolSelectors.selectDrainResistanceTest, { attr: drainAttribute })
   return <SpellCard.DicePool pool={pool} />
 }

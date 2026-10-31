@@ -10,13 +10,10 @@ import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { ContactPoolSelectors } from "#/state/runner/dicePool/contactPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 const hitLevels: [string, string][] = [
   ["0 hits", "Nothing relevant"],
@@ -32,29 +29,8 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
-  const gmPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
-    id: "legwork.gm",
-    label: "Contact Knowledge Test",
-    groups: [
-      // Rolled twice — the GM's Contact Knowledge Test is Connection x2, not Connection + Loyalty.
-      // Distinct `id`s (DicePool otherwise keys ledger rows by `id ?? name`) keep the two same-named
-      // rows from colliding on the same React key.
-      { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
-      { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
-    ],
-  } })
-
-  const charismaGroup = useAttrDiceGroup(AttributeKey.charisma)
-  const etiquetteGroup = useActiveSkillDiceGroup(SkillKey.etiquette)
-  const playerPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
-    id: "legwork.player",
-    label: "Legwork Test",
-    groups: [
-      charismaGroup,
-      etiquetteGroup,
-      { name: "Loyalty", size: contact.loyalty },
-    ],
-  } })
+  const gmPool = useRunnerSelector(ContactPoolSelectors.selectLegworkGmTest, { connection: contact.connection })
+  const playerPool = useRunnerSelector(ContactPoolSelectors.selectLegworkPlayerTest, { loyalty: contact.loyalty })
 
   return (
     <DetailDialog ctrl={ctrl} title={`Legwork: ${contact.name}`}>

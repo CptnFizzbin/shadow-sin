@@ -8,12 +8,10 @@ import { useState } from "react"
 
 import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
-import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -22,7 +20,7 @@ import {
   selectWasRolled,
   useDiceRollerSelector,
 } from "#/services/dice/state/diceRoller.selector.ts"
-import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
@@ -41,26 +39,16 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const attrKey = weapon.attribute ?? skill.attr
   const affectedByEncumbrance = attrKey === AttributeKey.agility || attrKey === AttributeKey.reaction
 
-  const attrGroups = useRunnerSelector(DicePoolSelectors.selectAttrTest, { attr: attrKey })
-  const skillGroups = useRunnerSelector(DicePoolSelectors.selectSkillTest, { skill: skill.name })
-
-  const encumbranceGroup = useEncumbranceDiceGroup()
-
   const modifierGroups = Object.entries(workflow.data.modifiers).map(([label, value]): DiceGroup => {
     return { name: label, size: value }
   })
 
-  const groups: DiceGroupList = [
-    attrGroups,
-    skillGroups,
-    affectedByEncumbrance ? encumbranceGroup : null,
-    ...modifierGroups,
-  ]
-  const attackPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
-    id: "attack",
-    label: "Attack",
-    groups: flattenDiceGroups(groups),
-  } })
+  const attackPool = useRunnerSelector(CombatPoolSelectors.selectAttackTest, {
+    attr: attrKey,
+    skill: skill.name,
+    includeEncumbrance: affectedByEncumbrance,
+    extraGroups: modifierGroups,
+  })
   const poolTotal = attackPool.size
 
   const [defenseHits, setDefenseHits] = useState(0)

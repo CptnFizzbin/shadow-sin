@@ -57,8 +57,8 @@ SpellCardRoot.displayName = "SpellCard"
  * Category tier from ADR-0010, assembled directly from `EntityCard`'s elements plus `.DicePool`
  * (`CardElementDicePool`) — shared with `WeaponCard`'s attack pool (see the feature doc) and used
  * here for the casting pool (`SpellcastingDicePool`) and drain-resistance pool
- * (`DrainResistanceDicePool`), each of which still computes its own `groups` via the existing
- * dice-group hooks and just hands them to this element.
+ * (`DrainResistanceDicePool`), each of which reads its compiled pool from a dice pool selector
+ * and hands it to this element.
  */
 export const SpellCard = Object.assign(
   SpellCardRoot,

@@ -95,12 +95,12 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
           {penalties.length > 0 && (
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5 }}>
-              {penalties.map((group) => {
+              {penalties.map((group, index) => {
                 const groupColor = getGroupColor(group)
 
                 return (
                   <Stack
-                    key={group.id ?? group.name}
+                    key={group.id ?? `${index}:${group.name}`}
                     direction="row"
                     sx={{
                       gap: 0.5,
@@ -134,12 +134,12 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
       <Collapse in={isOpen}>
         <Stack sx={{ gap: 0.5, paddingTop: 1 }} className="ledger">
-          {diceGroups.map((group) => {
+          {diceGroups.map((group, index) => {
             const groupColor = getGroupColor(group)
 
             return (
               <Stack
-                key={group.id ?? group.name}
+                key={group.id ?? `${index}:${group.name}`}
                 direction="row"
                 sx={{ justifyContent: "space-between" }}
               >
