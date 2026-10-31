@@ -25,7 +25,7 @@ export const LanguageSkillsList: FC = () => {
       searchQuery={searchQuery}
       onSearchQueryChange={setSearchQuery}
       groups={[["Languages", visibleSkills]]}
-      getKey={(skill) => skill.name}
+      getKey={(skill) => skill.id}
       renderItem={(skill) => <LanguageSkillListItem skill={skill} />}
       emptyMessage={searchQuery ? "No languages found" : "No language skills added"}
     />

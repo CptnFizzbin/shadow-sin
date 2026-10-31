@@ -11,6 +11,7 @@ import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.t
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import type { KnowledgeSkillData } from "#/system/model/skills/knowledgeSkillData.ts"
 import { SkillRatingMax } from "#/system/model/skills/skillUtils.ts"
+import { uuid } from "#/utils/uuidUtils.ts"
 
 interface KnowledgeSkillEditDialogProps extends ControlledDialogProps<KnowledgeSkillData> {
   skill?: KnowledgeSkillData
@@ -37,6 +38,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
       return
     }
     ctrl.close({
+      id: skill?.id ?? uuid.v7(),
       name: name.trim(),
       rating,
       specialization: specialization.trim() || undefined,
