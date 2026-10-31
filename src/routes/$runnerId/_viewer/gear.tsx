@@ -11,6 +11,7 @@ import { useAddItemDialogContext } from "#/components/entities/items/addItemDial
 import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { GearViewSection } from "#/components/entities/items/viewer/gearViewSection.tsx"
 import { NuyenSection } from "#/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
+import { useAvailabilityTestDialog } from "#/components/system/availabilityTest/availabilityTestDialog.tsx"
 import { useLicenseCheckDialog } from "#/components/system/licenseCheck/licenseCheckDialog.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
@@ -24,6 +25,7 @@ function RouteComponent() {
   const searchTerms = searchQuery.trim() ? searchQuery.trim().split(/\s+/) : []
   const isBuilder = !useEditorMode().isViewer
   const licenseCheckDialog = useLicenseCheckDialog()
+  const availabilityTestDialog = useAvailabilityTestDialog()
   const addItemDialog = useAddItemDialogContext()
 
   return (
@@ -69,9 +71,13 @@ function RouteComponent() {
       {!isBuilder && (
         <>
           <Divider />
+          <Button size="small" variant="outlined" onClick={() => availabilityTestDialog.open()}>
+            Availability Test
+          </Button>
           <Button size="small" variant="outlined" onClick={() => licenseCheckDialog.open()}>
             License Check
           </Button>
+          {availabilityTestDialog.outlet}
           {licenseCheckDialog.outlet}
         </>
       )}
