@@ -172,3 +172,54 @@ describe("DicePoolSelectors.selectStandardTest", () => {
     expect(pool.size).toBe(4 + 3 + 2)
   })
 })
+
+describe.concurrent("DicePoolSelectors.selectPool", () => {
+  const pool = {
+    id: "test.pool",
+    label: "Test Pool",
+    groups: [{ name: "AGI", size: 4, type: "attribute" as const }],
+  }
+
+  it("appends a single Wound penalty group when the Runner is wounded", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.damage.physical = 3
+    } })
+
+    // Act
+    const compiled = DicePoolSelectors.selectPool(stateFor(runner), { pool })
+
+    // Assert
+    expect(compiled.groups).toEqual([
+      { name: "AGI", size: 4, type: "attribute" },
+      { name: "Wound", size: -1, type: "penalty" },
+    ])
+    expect(compiled.size).toBe(3)
+  })
+
+  it("adds no Wound group when the Runner is unwounded", () => {
+    // Arrange
+    const runner = runnerDataFactory()
+
+    // Act
+    const compiled = DicePoolSelectors.selectPool(stateFor(runner), { pool })
+
+    // Assert
+    expect(compiled.groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+    expect(compiled.size).toBe(4)
+  })
+
+  it("adds no Wound group when excludeWoundMod is set", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.damage.physical = 3
+    } })
+
+    // Act
+    const compiled = DicePoolSelectors.selectPool(stateFor(runner), { pool: { ...pool, excludeWoundMod: true } })
+
+    // Assert
+    expect(compiled.groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+    expect(compiled.size).toBe(4)
+  })
+})

@@ -4,7 +4,8 @@ import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import {
   useAttrDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { SpellCard } from "./spellCard.tsx"
@@ -23,11 +24,11 @@ export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drai
       ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
       : drainAttrGroup
 
-  const pool = useDicePool({
+  const pool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "magic.drainResistance",
     label: "Drain Resistance",
     groups: flattenDiceGroups([willpowerGroup, resolvedDrainAttrGroup]),
-  })
+  } })
 
   return <SpellCard.DicePool pool={pool} />
 }

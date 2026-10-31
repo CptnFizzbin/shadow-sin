@@ -1,3 +1,4 @@
+import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.tsx"
 import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
@@ -32,6 +33,7 @@ export const SelectorOptions = {
   itemId: selectorOption<{ itemId: UUID }>("itemId"),
   itemType: selectorOption<{ itemType: ItemType }>("itemType"),
   licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
+  pool: selectorOption<{ pool: DicePoolConfig }>("pool"),
   repType: selectorOption<{ repType: ReputationStatType }>("repType"),
   skill: selectorOption<{ skill: SkillKey }>("skill"),
 

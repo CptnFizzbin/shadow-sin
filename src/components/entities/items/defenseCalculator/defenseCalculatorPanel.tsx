@@ -26,10 +26,10 @@ import {
   useActiveSkillDiceGroup,
   useEncumbranceDiceGroup,
 } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -233,17 +233,17 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
           : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
       ]
 
-  const defensePool = useDicePool({
+  const defensePool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "defense",
     label: "Defense",
     groups: flattenDiceGroups(groups),
-  })
+  } })
 
-  const resistPool = useDicePool({
+  const resistPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "defense.resist",
     label: "Resist Damage",
     groups: flattenDiceGroups(resistGroups),
-  })
+  } })
 
   const currentStep = wizardSteps[stepIndex].step
   const isFirstStep = stepIndex === 0

@@ -14,7 +14,6 @@ import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.t
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { useEncumbranceDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -42,10 +41,8 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const attrKey = weapon.attribute ?? skill.attr
   const affectedByEncumbrance = attrKey === AttributeKey.agility || attrKey === AttributeKey.reaction
 
-  const skillPool = useRunnerSelector(DicePoolSelectors.selectStandardTest, {
-    skill: skill.name,
-    attr: attrKey,
-  })
+  const attrGroups = useRunnerSelector(DicePoolSelectors.selectAttrTest, { attr: attrKey })
+  const skillGroups = useRunnerSelector(DicePoolSelectors.selectSkillTest, { skill: skill.name })
 
   const encumbranceGroup = useEncumbranceDiceGroup()
 
@@ -54,17 +51,16 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   })
 
   const groups: DiceGroupList = [
-    skillPool.groups,
+    attrGroups,
+    skillGroups,
     affectedByEncumbrance ? encumbranceGroup : null,
     ...modifierGroups,
   ]
-  const attackPool = useDicePool({
+  const attackPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "attack",
     label: "Attack",
-    // skillPool.groups already carries the Wound group from selectStandardTest.
-    excludeWoundMod: true,
     groups: flattenDiceGroups(groups),
-  })
+  } })
   const poolTotal = attackPool.size
 
   const [defenseHits, setDefenseHits] = useState(0)

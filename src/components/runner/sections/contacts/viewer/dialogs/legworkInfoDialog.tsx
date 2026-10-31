@@ -11,8 +11,9 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ContactData } from "#/system/model/contacts/contactData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
@@ -31,7 +32,7 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
-  const gmPool = useDicePool({
+  const gmPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "legwork.gm",
     label: "Contact Knowledge Test",
     groups: [
@@ -41,11 +42,11 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
       { id: "legwork.gm.connection.1", name: "Connection", size: contact.connection },
       { id: "legwork.gm.connection.2", name: "Connection", size: contact.connection },
     ],
-  })
+  } })
 
   const charismaGroup = useAttrDiceGroup(AttributeKey.charisma)
   const etiquetteGroup = useActiveSkillDiceGroup(SkillKey.etiquette)
-  const playerPool = useDicePool({
+  const playerPool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: "legwork.player",
     label: "Legwork Test",
     groups: [
@@ -53,7 +54,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
       etiquetteGroup,
       { name: "Loyalty", size: contact.loyalty },
     ],
-  })
+  } })
 
   return (
     <DetailDialog ctrl={ctrl} title={`Legwork: ${contact.name}`}>

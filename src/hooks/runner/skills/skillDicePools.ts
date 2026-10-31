@@ -1,8 +1,8 @@
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
@@ -35,7 +35,7 @@ export const useActiveSkillDicePool = (props: {
   const skillGroup = useActiveSkillDiceGroup(skillKey)
   const attrGroup = useAttrDiceGroup(attr)
 
-  return useDicePool({
+  return useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id,
     label: name,
     groups: flattenDiceGroups([
@@ -43,7 +43,7 @@ export const useActiveSkillDicePool = (props: {
       attrGroup,
       specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
     ]),
-  })
+  } })
 }
 
 export const useKnowledgeSkillDicePool = (props: {
@@ -62,7 +62,7 @@ export const useKnowledgeSkillDicePool = (props: {
 
   const attrGroup = useAttrDiceGroup(AttributeKey.logic)
 
-  return useDicePool({
+  return useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id,
     label: name,
     groups: flattenDiceGroups([
@@ -70,7 +70,7 @@ export const useKnowledgeSkillDicePool = (props: {
       attrGroup,
       specialization ? { name: specialization, size: 2 } : null,
     ]),
-  })
+  } })
 }
 
 export const useLanguageSkillDicePool = (props: {
@@ -91,7 +91,7 @@ export const useLanguageSkillDicePool = (props: {
 
   const attrGroup = useAttrDiceGroup(AttributeKey.intuition)
 
-  return useDicePool({
+  return useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id,
     label: name,
     groups: flattenDiceGroups([
@@ -99,5 +99,5 @@ export const useLanguageSkillDicePool = (props: {
       attrGroup,
       lingo ? { name: lingo, size: 2 } : null,
     ]),
-  })
+  } })
 }

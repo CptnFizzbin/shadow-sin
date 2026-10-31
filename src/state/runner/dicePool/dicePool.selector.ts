@@ -1,10 +1,8 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
+import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.tsx"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { filterByEffectType } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
@@ -13,6 +11,8 @@ import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 import { SRC } from "#/system/model/systemValues.ts"
+
+import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
 const selectSkillModTotal = createMemoizedSelector(
   GameEffectSelectors.selectAll,
@@ -78,19 +78,31 @@ export namespace DicePoolSelectors {
 
   /**
    * Assembles the full dice pool for a Standard Test rolling `attr` + `skill`: Base Attribute,
-   * Base Skill, and Skill mod(s), each queried live against active GameEffects.
+   * Base Skill, Skill mod(s), each queried live against active GameEffects, and the wound modifier.
    */
-  export const selectStandardTest = createMemoizedSelector(
+  export const selectStandardTest = createDicePoolSelector(
     selectAttrTest,
     selectSkillTest,
-    DamageSelectors.selectWoundMod,
     SelectorOptions.attr,
     SelectorOptions.skill,
-    (attrGroups, skillGroups, woundMod, attr, skill): DicePoolData =>
-      createDicePool({
-        id: `standardTest.${attr}.${skill}`,
-        label: `${AttributeLabels[attr]} + ${skill}`,
-        groups: [...attrGroups, ...skillGroups],
-      }, woundMod),
+    (attrGroups, skillGroups, attr, skill): DicePoolConfig => ({
+      id: `standardTest.${attr}.${skill}`,
+      label: `${AttributeLabels[attr]} + ${skill}`,
+      groups: [...attrGroups, ...skillGroups],
+    }),
+  )
+
+  /**
+   * Compiles a dice pool assembled outside the store (from hooks, props, or form state) into
+   * {@link DicePoolData}, applying the wound modifier like every other dice pool selector.
+   *
+   * @example
+   * const pool = useRunnerSelector(DicePoolSelectors.selectPool, {
+   *   pool: { id: "legwork.player", label: "Legwork Test", groups },
+   * })
+   */
+  export const selectPool = createDicePoolSelector(
+    SelectorOptions.pool,
+    (pool): DicePoolConfig => pool,
   )
 }

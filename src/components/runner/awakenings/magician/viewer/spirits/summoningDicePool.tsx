@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
-import { useDicePool } from "#/hooks/system/dicePool/useDicePool.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
+import { DicePoolSelectors } from "#/state/runner/dicePool/dicePool.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
@@ -53,11 +53,11 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
     ? { name: specialization, size: 2 + totalSpecMod }
     : null
 
-  const pool = useDicePool({
+  const pool = useRunnerSelector(DicePoolSelectors.selectPool, { pool: {
     id: `magic.${skillKey}`,
     label: poolName,
     groups: flattenDiceGroups([magicGroup, skillGroup, specGroup]),
-  })
+  } })
 
   return <DicePool pool={pool} />
 }
