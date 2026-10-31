@@ -22,16 +22,17 @@ type DicePoolSelectorOptions<TInputs extends SelectorArray> =
  *
  * This is the one place the wound modifier is applied: the compiled pool gets a single Wound
  * penalty group for the in-scope Entity's current wound modifier, unless the config sets
- * `excludeWoundMod`. Dice group selectors and hooks must not add one themselves.
+ * `excludeWoundMod` (as every Resistance Test does). Dice group selectors must not add one
+ * themselves.
  *
  * @example
- * const selectStandardTest = createDicePoolSelector(
- *   selectAttrTest,
- *   selectSkillTest,
- *   (attrGroups, skillGroups): DicePoolConfig => ({
- *     id: "standardTest",
- *     label: "Standard Test",
- *     groups: [...attrGroups, ...skillGroups],
+ * const selectSpellcastingTest = createDicePoolSelector(
+ *   injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.magic }),
+ *   injectOption(DiceGroupSelectors.selectSkill, { skill: SkillKey.spellcasting }),
+ *   (magicGroups, skillGroups): DicePoolConfig => ({
+ *     id: "magic.spellcasting",
+ *     label: "Spellcasting",
+ *     groups: [...magicGroups, ...skillGroups],
  *   }),
  * )
  */

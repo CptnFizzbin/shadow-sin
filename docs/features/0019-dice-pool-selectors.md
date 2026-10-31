@@ -33,9 +33,11 @@ The selectors form one chain, each layer reading only the one below it:
    never adds them again. Every group selector returns `DiceGroup[]`, empty when it adds nothing.
    The Specialization bonus and Defaulting stay their own groups.
 5. **Dice Pools** are built only from `DiceGroupSelectors` groups, each with one
-   `createDicePoolSelector` call. That helper adds the Wound Modifier unless the pool's config sets
-   `excludeWoundMod`, which every Resistance Test does (damage, direct spell, Drain), as does the
-   GM's legwork roll, since the Contact rolls it. Defense and spell tests keep it.
+   `createDicePoolSelector` call in a per-area namespace (`CombatPoolSelectors`,
+   `MagicPoolSelectors`, `SkillPoolSelectors`, `ContactPoolSelectors`). That helper adds the Wound
+   Modifier unless the pool's config sets `excludeWoundMod`, which every Resistance Test does
+   (damage, direct spell, Drain), as does the GM's legwork roll, since the Contact rolls it.
+   Defense and spell tests keep it.
 
 Other decisions:
 
@@ -45,9 +47,3 @@ Other decisions:
   `DicePoolFormulas.isDefaulting`, and `isEncumberedAttribute` / `calculateEncumbrancePenalty`
   hold the rule logic. Labels, group types, and pool ids/labels are presentation, so they stay in
   the Selector.
-
-## Open questions
-
-- `DicePoolSelectors.selectStandardTest` has no caller outside its tests; the Attack test uses
-  `CombatPoolSelectors.selectAttackTest`. Delete it, or make it the shared base for the Attack and
-  skill pools?
