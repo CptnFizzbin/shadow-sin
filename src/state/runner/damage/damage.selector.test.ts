@@ -105,6 +105,26 @@ describe("DamageSelectors.selectWoundInterval", () => {
     expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(2)
   })
 
+  it("counts a gear item's Low Pain Tolerance effect when it has no equipped field", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      items: {
+        [NullUuid]: {
+          kind: EntityKind.item, items: { parentId: null, childIds: [] },
+          id: NullUuid,
+          name: "Trauma Damper",
+          itemType: ItemType.other,
+          effects: [
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
+          ],
+        },
+      },
+    })
+
+    // Act / Assert
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(2)
+  })
+
   it("ignores a matching gear effect on an item that isn't equipped", () => {
     // Arrange
     const runner = runnerDataFactory({

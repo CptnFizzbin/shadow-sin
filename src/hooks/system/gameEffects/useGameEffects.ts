@@ -8,7 +8,7 @@ import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { filterByEffectType } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { filterByEffectType, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import type { EffectByType, GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
@@ -18,22 +18,22 @@ function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] 
   return item.effects ?? []
 }
 
-/** `items` is only pulled in for `ItemSelectors.selectEquipped` — see docs/adr/0014-selector-input-decomposition.md
+/** `items` is only pulled in for `ItemSelectors.selectAll` — see docs/adr/0014-selector-input-decomposition.md
  *  on why a multi-source selector intersects the wrapper shapes it needs instead of taking bare `RunnerData`. */
 export type GameEffectsState = { runner: RunnerData } & { items: ItemCatalog }
 
 const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   [
     QualitiesSelectors.selectAll,
-    ItemSelectors.selectEquipped,
+    ItemSelectors.selectAll,
     SpellsSelectors.selectAll,
     ComplexFormsSelectors.selectAll,
     PowersSelectors.selectAll,
   ],
-  (qualities, equippedGear, spells, complexForms, powers): GameEffectData[] => {
+  (qualities, items, spells, complexForms, powers): GameEffectData[] => {
     return [
       ...qualities,
-      ...equippedGear,
+      ...Object.values(items).filter(itemEffectsApply),
       ...spells,
       ...complexForms,
       ...powers,
