@@ -17,7 +17,9 @@ import { useState } from "react"
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
@@ -233,6 +235,18 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
           ? { name: "Armor (Impact, half)", size: halfImpactArmor, color: "info.main" }
           : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
       ]
+
+  const defensePool = createDicePool({
+    id: "defense",
+    label: "Defense",
+    groups: flattenDiceGroups(groups),
+  })
+
+  const resistPool = createDicePool({
+    id: "defense.resist",
+    label: "Resist Damage",
+    groups: flattenDiceGroups(resistGroups),
+  })
 
   const currentStep = wizardSteps[stepIndex].step
   const isFirstStep = stepIndex === 0
@@ -495,7 +509,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
       {currentStep === "total" && (
         unaware
           ? <Alert severity="warning">No defense is possible — you're unaware of the attack.</Alert>
-          : <DicePool name="Defense" groups={groups} />
+          : <DicePool pool={defensePool} />
       )}
 
       {currentStep === "resist" && (
@@ -526,7 +540,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             </Stack>
           )}
 
-          <DicePool name="Resist Damage" groups={resistGroups} />
+          <DicePool pool={resistPool} />
 
           <Divider />
 

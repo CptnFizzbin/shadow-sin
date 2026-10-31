@@ -19,12 +19,7 @@ export const DicePoolsStack: FC<{ dicePools: (false | DicePoolData)[] }> = ({ di
     {dicePools
       .filter((item): item is DicePoolData => Boolean(item))
       .map((pool) => (
-        <DicePool
-          key={pool.id}
-          name={pool.label}
-          groups={pool.groups}
-          includeWound={!pool.excludeWoundMod}
-        />
+        <DicePool key={pool.id} pool={pool} />
       ))}
   </Stack>
 )

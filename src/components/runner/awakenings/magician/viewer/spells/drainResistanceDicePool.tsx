@@ -1,5 +1,7 @@
 import type { FC } from "react"
 
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import {
   useAttrDiceGroup,
   useWoundDiceGroup,
@@ -23,10 +25,11 @@ export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drai
       ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
       : drainAttrGroup
 
-  return (
-    <SpellCard.DicePool
-      name="Drain Resistance"
-      groups={[willpowerGroup, resolvedDrainAttrGroup, woundGroup]}
-    />
-  )
+  const pool = createDicePool({
+    id: "magic.drainResistance",
+    label: "Drain Resistance",
+    groups: flattenDiceGroups([willpowerGroup, resolvedDrainAttrGroup, woundGroup]),
+  })
+
+  return <SpellCard.DicePool pool={pool} />
 }

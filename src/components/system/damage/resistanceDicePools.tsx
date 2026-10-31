@@ -1,6 +1,8 @@
 import type { FC } from "react"
 
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useArmorDiceGroup } from "#/hooks/items/types/armor/useArmorDiceGroup.tsx"
 import {
   useActiveSkillDiceGroup,
@@ -15,11 +17,14 @@ import { SkillKey } from "#/system/model/skills/skillKey.ts"
 export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => {
   return (
     <DicePool
-      name={`Resist ${armor} (${type})`}
-      groups={[
-        useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
-        useArmorDiceGroup(armor),
-      ]}
+      pool={createDicePool({
+        id: `resist.damage.${armor}.${type}`,
+        label: `Resist ${armor} (${type})`,
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
+          useArmorDiceGroup(armor),
+        ]),
+      })}
     />
   )
 }
@@ -27,11 +32,14 @@ export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType 
 export const ResistDirectManaSpellDicePool = () => {
   return (
     <DicePool
-      name="Resist Mana Spell"
-      groups={[
-        useAttrDiceGroup(AttributeKey.willpower),
-        useWoundDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "resist.spell.mana",
+        label: "Resist Mana Spell",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.willpower),
+          useWoundDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -39,11 +47,14 @@ export const ResistDirectManaSpellDicePool = () => {
 export const ResistDirectPhysicalSpellDicePool = () => {
   return (
     <DicePool
-      name="Resist Physical Spell"
-      groups={[
-        useAttrDiceGroup(AttributeKey.body),
-        useWoundDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "resist.spell.physical",
+        label: "Resist Physical Spell",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.body),
+          useWoundDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -51,12 +62,15 @@ export const ResistDirectPhysicalSpellDicePool = () => {
 export const RangedDefenseDicePool = () => {
   return (
     <DicePool
-      name="Ranged Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.ranged",
+        label: "Ranged Defense",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -64,13 +78,15 @@ export const RangedDefenseDicePool = () => {
 export const RangedFullDefenseDicePool = () => {
   return (
     <DicePool
-      name="Ranged Full Defense"
-      includeWound
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.ranged.full",
+        label: "Ranged Full Defense",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -80,13 +96,16 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 }) => {
   return (
     <DicePool
-      name={`${weaponSkill} Parry`}
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(weaponSkill),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: `defense.melee.parry.${weaponSkill}`,
+        label: `${weaponSkill} Parry`,
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(weaponSkill),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -94,13 +113,16 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 export const MeleeBlockDicePool = () => {
   return (
     <DicePool
-      name="Melee Block"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.melee.block",
+        label: "Melee Block",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(SkillKey.unarmedCombat),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -108,13 +130,16 @@ export const MeleeBlockDicePool = () => {
 export const MeleeDodgeDicePool = () => {
   return (
     <DicePool
-      name="Melee Dodge"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.melee.dodge",
+        label: "Melee Dodge",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(SkillKey.dodge),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -124,14 +149,17 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 }) => {
   return (
     <DicePool
-      name={`${weaponSkill} Full Parry`}
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(weaponSkill),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: `defense.melee.fullParry.${weaponSkill}`,
+        label: `${weaponSkill} Full Parry`,
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(weaponSkill),
+          useActiveSkillDiceGroup(SkillKey.dodge),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -139,14 +167,17 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 export const MeleeFullBlockDicePool = () => {
   return (
     <DicePool
-      name="Melee Full Block"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.melee.fullBlock",
+        label: "Melee Full Block",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(SkillKey.unarmedCombat),
+          useActiveSkillDiceGroup(SkillKey.dodge),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -154,14 +185,17 @@ export const MeleeFullBlockDicePool = () => {
 export const MeleeFullDodgeDicePool = () => {
   return (
     <DicePool
-      name="Melee Full Dodge"
-      groups={[
-        useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
-        useEncumbranceDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.melee.fullDodge",
+        label: "Melee Full Dodge",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.reaction),
+          useActiveSkillDiceGroup(SkillKey.dodge),
+          useActiveSkillDiceGroup(SkillKey.dodge),
+          useWoundDiceGroup(),
+          useEncumbranceDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -169,12 +203,15 @@ export const MeleeFullDodgeDicePool = () => {
 export const PhysicalSpellDefenseDicePool = () => {
   return (
     <DicePool
-      name="Physical Spell Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.body),
-        useActiveSkillDiceGroup(SkillKey.counterspelling),
-        useWoundDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.spell.physical",
+        label: "Physical Spell Defense",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.body),
+          useActiveSkillDiceGroup(SkillKey.counterspelling),
+          useWoundDiceGroup(),
+        ]),
+      })}
     />
   )
 }
@@ -182,12 +219,15 @@ export const PhysicalSpellDefenseDicePool = () => {
 export const ManaSpellDefenseDicePool = () => {
   return (
     <DicePool
-      name="Mana Spell Defense"
-      groups={[
-        useAttrDiceGroup(AttributeKey.willpower),
-        useActiveSkillDiceGroup(SkillKey.counterspelling),
-        useWoundDiceGroup(),
-      ]}
+      pool={createDicePool({
+        id: "defense.spell.mana",
+        label: "Mana Spell Defense",
+        groups: flattenDiceGroups([
+          useAttrDiceGroup(AttributeKey.willpower),
+          useActiveSkillDiceGroup(SkillKey.counterspelling),
+          useWoundDiceGroup(),
+        ]),
+      })}
     />
   )
 }

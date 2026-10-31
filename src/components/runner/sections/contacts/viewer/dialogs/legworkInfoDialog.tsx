@@ -60,7 +60,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
       <Stack sx={{ gap: 1.5 }}>
         <Stack sx={{ gap: 0.5 }}>
           <Label label="GM" variant="outlined" />
-          <DicePool name={gmPool.label} groups={gmPool.groups} includeWound={!gmPool.excludeWoundMod} />
+          <DicePool pool={gmPool} />
           <Typography color="text.secondary">
             Each hit is how much the contact knows.
           </Typography>
@@ -68,7 +68,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
 
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Player" variant="outlined" />
-          <DicePool name={playerPool.label} groups={playerPool.groups} includeWound={!playerPool.excludeWoundMod} />
+          <DicePool pool={playerPool} />
           <Typography color="text.secondary">
             Each hit is how much the contact will offer for free.
           </Typography>

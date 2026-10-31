@@ -9,7 +9,8 @@ import { useState } from "react"
 import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
@@ -57,7 +58,12 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
     affectedByEncumbrance ? encumbranceGroup : null,
     ...modifierGroups,
   ]
-  const poolTotal = getPoolSize(groups.flat())
+  const attackPool = createDicePool({
+    id: "attack",
+    label: "Attack",
+    groups: flattenDiceGroups(groups),
+  })
+  const poolTotal = attackPool.size
 
   const [defenseHits, setDefenseHits] = useState(0)
 
@@ -73,7 +79,7 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <WeaponCard.DicePool name="Attack" groups={groups} />
+      <WeaponCard.DicePool pool={attackPool} />
 
       <Stack sx={{ alignItems: "center" }}>
         <DiceResult roller={diceRoller} iconSize={32} />
