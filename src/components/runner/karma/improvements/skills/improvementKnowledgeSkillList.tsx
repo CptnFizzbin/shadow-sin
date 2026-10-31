@@ -92,7 +92,7 @@ export const ImprovementKnowledgeSkillList: FC = () => {
 
               return (
                 <ListItem
-                  key={skill.name}
+                  key={skill.id}
                   disablePadding
                   divider={!isLast}
                   secondaryAction={(

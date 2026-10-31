@@ -137,7 +137,7 @@ describe.concurrent("getImprovementCost — SR4A learn-with-rating", () => {
     const entry: LearnKnowledgeSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnKnowledgeSkill,
-      skill: { name: "Ancient History", rating: 3 },
+      skill: { id: crypto.randomUUID(), name: "Ancient History", rating: 3 },
     }
 
     // Act
@@ -152,7 +152,7 @@ describe.concurrent("getImprovementCost — SR4A learn-with-rating", () => {
     const entry: LearnLanguageSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: "Sperethiel", isNative: false, rating: 3 },
+      skill: { id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 3 },
     }
 
     // Act

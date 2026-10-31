@@ -41,6 +41,7 @@ import v20260913_01_zeroPixieInnateQualityCost from "./migrations/20260913_01_ze
 import v20260914_00_addExtendedTests from "./migrations/20260914_00_addExtendedTests.ts"
 import v20261025_00_splitContactSkills from "./migrations/20261025_00_splitContactSkills.ts"
 import v20261030_00_repairAgentStats from "./migrations/20261030_00_repairAgentStats.ts"
+import v20261031_00_addKnowledgeLanguageSkillIds from "./migrations/20261031_00_addKnowledgeLanguageSkillIds.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -85,6 +86,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20260914_00_addExtendedTests,
   v20261025_00_splitContactSkills,
   v20261030_00_repairAgentStats,
+  v20261031_00_addKnowledgeLanguageSkillIds,
 ]
 
 migrations.forEach((migration, index) => {

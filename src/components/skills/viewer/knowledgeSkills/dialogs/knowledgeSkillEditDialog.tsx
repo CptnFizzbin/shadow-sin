@@ -37,6 +37,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
       return
     }
     ctrl.close({
+      id: skill?.id ?? crypto.randomUUID(),
       name: name.trim(),
       rating,
       specialization: specialization.trim() || undefined,

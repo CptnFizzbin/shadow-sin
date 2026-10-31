@@ -71,7 +71,7 @@ describe.concurrent("getImprovementCost — learn entries", () => {
     const entry: LearnKnowledgeSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnKnowledgeSkill,
-      skill: { name: "Ancient History", rating: 1 },
+      skill: { id: crypto.randomUUID(), name: "Ancient History", rating: 1 },
     }
 
     // Act
@@ -86,7 +86,7 @@ describe.concurrent("getImprovementCost — learn entries", () => {
     const entry: LearnLanguageSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnLanguageSkill,
-      skill: { name: "Sperethiel", isNative: false, rating: 1 },
+      skill: { id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 1 },
     }
 
     // Act

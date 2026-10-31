@@ -113,8 +113,8 @@ describe("ImprovementSpecializationList", () => {
   it("lists existing knowledge and language skills as specializable", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
-      sheet.skills.languageSkills = [{ name: "Sperethiel", isNative: false, rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
+      sheet.skills.languageSkills = [{ id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -128,7 +128,7 @@ describe("ImprovementSpecializationList", () => {
   it("queuing a knowledge specialization shows the name as a chip and removes on toggle", async () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -153,7 +153,7 @@ describe("ImprovementSpecializationList", () => {
   it("disables the row when the runner cannot afford the specialization cost", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 1 // < 2k specialization cost
     })
 

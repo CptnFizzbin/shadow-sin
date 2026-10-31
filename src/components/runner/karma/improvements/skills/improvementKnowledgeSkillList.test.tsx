@@ -37,7 +37,7 @@ describe("ImprovementKnowledgeSkillList", () => {
   it("renders knowledge skills with Improve button", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 50
     })
 
@@ -51,7 +51,7 @@ describe("ImprovementKnowledgeSkillList", () => {
   it("shows Max chip and disables Improve button for skills at rating 6", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 6 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 6 }]
       sheet.karma.current = 50
     })
 
@@ -66,7 +66,7 @@ describe("ImprovementKnowledgeSkillList", () => {
   it("clicking Improve queues a knowledge skill increase (button becomes aria-pressed)", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 50
     })
     const improveButton = screen.getByRole("button", { name: /improve rating/i })
@@ -81,7 +81,7 @@ describe("ImprovementKnowledgeSkillList", () => {
   it("clicking Improve again dequeues the knowledge skill increase", () => {
     // Arrange
     renderList((sheet) => {
-      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.skills.knowledgeSkills = [{ id: crypto.randomUUID(), name: "Ancient History", rating: 3 }]
       sheet.karma.current = 50
     })
     const improveButton = screen.getByRole("button", { name: /improve rating/i })

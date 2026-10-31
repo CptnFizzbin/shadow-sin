@@ -15,13 +15,13 @@ describe("useKnowledgeSkillsAlerts", () => {
         runner.skills = {
           ...runner.skills,
           knowledgeSkills: [
-            { name: "Corporate Politics", rating: 6 },
-            { name: "Sprawl Gangs", rating: 6 },
+            { id: crypto.randomUUID(), name: "Corporate Politics", rating: 6 },
+            { id: crypto.randomUUID(), name: "Sprawl Gangs", rating: 6 },
           ],
           languageSkills: [
-            { name: "Japanese", isNative: false, rating: 5 },
-            { name: "Or'zet", isNative: false, rating: 5 },
-            { name: "Sperethiel", isNative: false, rating: 5 },
+            { id: crypto.randomUUID(), name: "Japanese", isNative: false, rating: 5 },
+            { id: crypto.randomUUID(), name: "Or'zet", isNative: false, rating: 5 },
+            { id: crypto.randomUUID(), name: "Sperethiel", isNative: false, rating: 5 },
           ],
         }
       },
@@ -43,8 +43,8 @@ describe("useKnowledgeSkillsAlerts", () => {
         runner.skills = {
           ...runner.skills,
           languageSkills: [
-            { name: "Japanese", isNative: true },
-            { name: "English", isNative: true },
+            { id: crypto.randomUUID(), name: "Japanese", isNative: true },
+            { id: crypto.randomUUID(), name: "English", isNative: true },
           ],
         }
       },

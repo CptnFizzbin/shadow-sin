@@ -47,10 +47,12 @@ export const useLanguageSkillForm = ({
       ratingSelect: nativeLanguageExists ? "1" : "native",
       ...skillDefaults,
     },
-    onSubmit: ({ value }) =>
+    onSubmit: ({ value }) => {
+      const id = skill?.id ?? crypto.randomUUID()
       onSubmit(value.ratingSelect === "native"
-        ? { name: value.name, isNative: true, lingo: value.lingo }
-        : { name: value.name, isNative: false, rating: Number(value.ratingSelect), lingo: value.lingo }),
+        ? { id, name: value.name, isNative: true, lingo: value.lingo }
+        : { id, name: value.name, isNative: false, rating: Number(value.ratingSelect), lingo: value.lingo })
+    },
   })
 }
 

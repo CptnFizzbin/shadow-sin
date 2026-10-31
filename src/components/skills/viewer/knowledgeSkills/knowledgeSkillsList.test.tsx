@@ -11,8 +11,8 @@ describe("KnowledgeSkillsList", () => {
     renderWithProviders(<KnowledgeSkillsList />, {
       runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.knowledgeSkills = [
-          { name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
-          { name: "Ancient History", rating: 4 },
+          { id: crypto.randomUUID(), name: "Seattle Street Rumors", rating: 3, specialization: "Redmond" },
+          { id: crypto.randomUUID(), name: "Ancient History", rating: 4 },
         ]
       } }),
     })
