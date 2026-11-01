@@ -1,13 +1,13 @@
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import Checkbox from "@mui/material/Checkbox"
-import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import FormLabel from "@mui/material/FormLabel"
-import Radio from "@mui/material/Radio"
-import RadioGroup from "@mui/material/RadioGroup"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
+import { Label } from "#/components/ui/text/label.tsx"
 
 import type { WeaponAttackModifier } from "./weaponAttackCalculatorData.ts"
 
@@ -20,7 +20,7 @@ interface AttackModifierChecklistProps {
 
 const formatSigned = (value: number) => `${value >= 0 ? "+" : ""}${value}`
 
-/** Checkbox (counter for per-unit rows, radio group for choice rows) list of situational attack modifiers. */
+/** Checkbox (counter for per-unit rows, button group for choice rows) list of situational attack modifiers. */
 export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modifiers, values, onChange }) => (
   <Stack>
     {modifiers.map((modifier) => {
@@ -70,24 +70,26 @@ export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modi
           const selectedIndex = Math.max(0, modifier.options.findIndex((option) => option.value === appliedValue))
 
           return (
-            <FormControl key={modifier.label}>
-              <FormLabel>{modifier.label}</FormLabel>
-              <RadioGroup
-                row
-                aria-label={modifier.label}
-                value={String(selectedIndex)}
-                onChange={(event) => onChange(modifier.label, modifier.options[Number(event.target.value)].value)}
-              >
+            <Stack key={modifier.label} sx={{ gap: 0.5, marginBottom: 1 }}>
+              <Label label={modifier.label} />
+              <ButtonGroup size="small" variant="outlined" fullWidth aria-label={modifier.label}>
                 {modifier.options.map((option, index) => (
-                  <FormControlLabel
+                  <Button
                     key={option.label}
-                    value={String(index)}
-                    control={<Radio />}
-                    label={`${option.label} (${formatSigned(option.value)})`}
-                  />
+                    variant={index === selectedIndex ? "contained" : "outlined"}
+                    aria-pressed={index === selectedIndex}
+                    onClick={() => onChange(modifier.label, option.value)}
+                  >
+                    <Box component="span">
+                      {option.label}
+                      {" "}
+                      {/* Own line, so all bands wrap the same way on narrow screens. */}
+                      <Box component="span" sx={{ display: "block" }}>({formatSigned(option.value)})</Box>
+                    </Box>
+                  </Button>
                 ))}
-              </RadioGroup>
-            </FormControl>
+              </ButtonGroup>
+            </Stack>
           )
         }
       }

@@ -51,7 +51,7 @@ describe("GmAttackCalculatorPanel", () => {
     setCounter("Combat Skill", 4)
 
     // Act
-    fireEvent.click(screen.getByLabelText(new RegExp(`^${rangeBand} \\(`)))
+    fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${rangeBand} \\(`) }))
 
     // Assert
     expect(poolTotal("Attack Test")).toBe(expectedTotal)
@@ -62,10 +62,10 @@ describe("GmAttackCalculatorPanel", () => {
     renderPanel()
 
     // Act
-    const shortRange = screen.getByLabelText(/^Short \(/)
+    const shortRange = screen.getByRole("button", { name: /^Short \(/ })
 
     // Assert
-    expect((shortRange as HTMLInputElement).checked).toBe(true)
+    expect(shortRange.getAttribute("aria-pressed")).toBe("true")
   })
 
   it("switches to the melee modifier table and clears ranged selections", () => {
