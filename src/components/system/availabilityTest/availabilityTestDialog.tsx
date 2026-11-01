@@ -7,17 +7,15 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/hooks/system/dicePool/useDiceGroup.ts"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import { SkillPoolSelectors } from "#/state/runner/dicePool/skillPools.selector.ts"
 import { TestTrackerActions } from "#/state/runner/extendedTests/extendedTests.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { AvailabilityFormulas } from "#/system/formulas/checks/availabilityFormulas.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { DurationUtils } from "#/utils/duration/durationUtils.ts"
 
 type AvailabilityTestDialogProps = ControlledDialogProps<void>
@@ -30,10 +28,7 @@ type AvailabilityTestDialogProps = ControlledDialogProps<void>
 const AvailabilityTestDialog: FC<AvailabilityTestDialogProps> = ({ ctrl }) => {
   const dispatch = useRunnerStoreDispatch()
 
-  const dicePool = createDicePool("availabilityTest", "Availability Test", [
-    useActiveSkillDiceGroup(SkillKey.negotiation),
-    useAttrDiceGroup(AttributeKey.charisma),
-  ])
+  const dicePool = useRunnerSelector(SkillPoolSelectors.selectAvailabilityTest)
 
   const form = useAppForm({
     defaultValues: { itemName: "", availability: 1, cost: 0 as number | undefined },
@@ -95,7 +90,7 @@ const AvailabilityTestDialog: FC<AvailabilityTestDialogProps> = ({ ctrl }) => {
               </form.AppField>
             </Stack>
 
-            <DicePool name={dicePool.name} groups={dicePool.groups} />
+            <DicePool pool={dicePool} />
 
             <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
               <Chip label={`Threshold: ${availability}`} size="small" variant="outlined" />
