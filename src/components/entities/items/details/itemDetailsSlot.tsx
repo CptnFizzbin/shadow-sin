@@ -8,6 +8,7 @@ import { ItemDetailsFooter } from "./itemDetails.Footer.tsx"
 import { ItemDetailsQuantity } from "./itemDetails.Quantity.tsx"
 import { ItemDetailsQuickAction } from "./itemDetails.QuickAction.tsx"
 import { ItemDetailsRating } from "./itemDetails.Rating.tsx"
+import { ItemDetailsSection } from "./itemDetails.Section.tsx"
 import { ItemDetailsSource } from "./itemDetails.Source.tsx"
 import { ItemDetailsStat } from "./itemDetails.Stat.tsx"
 import { ItemDetailsSubitem } from "./itemDetails.Subitem.tsx"
@@ -42,7 +43,7 @@ export type { ItemDetailsTypeProps } from "./itemDetails.Type.tsx"
  * `type` prop) by default, since every item carries them — these slots exist
  * only so a typed view can override that default rendering when it needs
  * to. `Rating` and `Content` have no such default; they're purely additive,
- * like `Stat`/`Subitem`/`DamageTrack`/`Footer`/`QuickAction`.
+ * like `Stat`/`Subitem`/`Section`/`DamageTrack`/`Footer`/`QuickAction`.
  */
 export const ItemDetailsSlot = {
   Title: ItemDetailsTitle,
@@ -54,6 +55,7 @@ export const ItemDetailsSlot = {
   Rating: ItemDetailsRating,
   Stat: ItemDetailsStat,
   Subitem: ItemDetailsSubitem,
+  Section: ItemDetailsSection,
   DamageTrack: ItemDetailsDamageTrack,
   Footer: ItemDetailsFooter,
   Content: ItemDetailsContent,
@@ -100,6 +102,10 @@ export class ItemDetailsSlotManager extends SlotManager {
 
   get subitems() {
     return this.filter(ItemDetailsSubitem)
+  }
+
+  get sections() {
+    return this.filter(ItemDetailsSection)
   }
 
   get damageTracks() {

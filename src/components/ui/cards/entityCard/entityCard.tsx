@@ -32,6 +32,8 @@ export type { TitleRightProps } from "#/components/ui/cards/entityCard/layout/ti
 
 /** An outline-style button pinned to the left edge of an `EntityCard`, spanning its full height. */
 export interface EntityCardLeftAction {
+  /** Accessible name of the button; defaults to "Action". */
+  label?: string
   icon: ReactNode
   onClick: () => void
 }
@@ -110,7 +112,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         {leftAction && (
           <Button
             variant="outlined"
-            aria-label="Action"
+            aria-label={leftAction.label ?? "Action"}
             onClick={handleLeftActionClick}
             sx={{
               minWidth: 42,
