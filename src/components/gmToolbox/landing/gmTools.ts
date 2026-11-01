@@ -1,12 +1,16 @@
 import type { AnyRoute } from "@tanstack/react-router"
 
+import { Route as AttackCalculatorRoute } from "#/routes/gm/attack-calculator.tsx"
 import { Route as ContactsRoute } from "#/routes/gm/contacts.tsx"
+import { Route as DefenseCalculatorRoute } from "#/routes/gm/defense-calculator.tsx"
 import { Route as EncounterBuilderRoute } from "#/routes/gm/encounter-builder.tsx"
 import { Route as InitiativeTrackerRoute } from "#/routes/gm/initiative-tracker.tsx"
 import { Route as NpcBuilderRoute } from "#/routes/gm/npc-builder.tsx"
 
 enum GmToolKey {
   initiativeTracker = "initiativeTracker",
+  attackCalculator = "attackCalculator",
+  defenseCalculator = "defenseCalculator",
   encounterBuilder = "encounterBuilder",
   npcBuilder = "npcBuilder",
   contacts = "contacts",
@@ -27,6 +31,20 @@ const gmTools: Readonly<Record<GmToolKey, GmToolInfo>> = {
     description: "Track turn order and initiative scores during combat.",
     route: InitiativeTrackerRoute,
     underConstruction: true,
+  },
+  [GmToolKey.attackCalculator]: {
+    id: GmToolKey.attackCalculator,
+    label: "Attack Calculator",
+    description: "Build an NPC's Attack Test pool with situational modifiers and resolve the damage.",
+    route: AttackCalculatorRoute,
+    underConstruction: false,
+  },
+  [GmToolKey.defenseCalculator]: {
+    id: GmToolKey.defenseCalculator,
+    label: "Defense Calculator",
+    description: "Build an NPC's Defense and Damage Resistance pools against melee, ranged, or spell attacks.",
+    route: DefenseCalculatorRoute,
+    underConstruction: false,
   },
   [GmToolKey.encounterBuilder]: {
     id: GmToolKey.encounterBuilder,
