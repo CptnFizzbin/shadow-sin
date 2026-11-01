@@ -4,7 +4,6 @@ import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Checkbox from "@mui/material/Checkbox"
 import Divider from "@mui/material/Divider"
-import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Grid from "@mui/material/Grid"
 import Radio from "@mui/material/Radio"
@@ -16,8 +15,7 @@ import { useState } from "react"
 
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
-import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -39,6 +37,8 @@ import {
   defenseSkillGroupOrder,
   defenseSkillOptionsByAttackType,
 } from "./defenseCalculatorData.ts"
+import { DefenseModifierList } from "./defenseModifierList.tsx"
+import { defenseModifierGroups, emptyDefenseModifierSelection } from "./defenseModifierSelection.ts"
 
 interface DefenseCalculatorPanelProps {
   attackType: DefenseAttackType
@@ -71,9 +71,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const [counterspellingSource, setCounterspellingSource] = useState<CounterspellingSource>("self")
   const [otherRating, setOtherRating] = useState(0)
   const [unaware, setUnaware] = useState(false)
-  const [toggleValues, setToggleValues] = useState<Record<string, boolean>>({})
-  const [stepperValues, setStepperValues] = useState<Record<string, number>>({})
-  const [choiceValues, setChoiceValues] = useState<Record<string, string>>({})
+  const [modifierSelection, setModifierSelection] = useState(emptyDefenseModifierSelection)
   const [armorType, setArmorType] = useState<ArmorType>("ballistic")
 
   const dispatch = useRunnerStoreDispatch()
@@ -126,47 +124,13 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? (counterspellingEnabled && counterspellingSource === "self" ? SkillKey.counterspelling : undefined)
     : selectedOption.skill
 
-  const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
-    if (modifier.kind === "toggle") {
-      if (!toggleValues[modifier.id]) return null
-      return {
-        id: modifier.id,
-        name: modifier.label,
-        size: modifier.value,
-        color: modifier.value >= 0 ? "success.main" : "error.main",
-      }
-    }
-
-    if (modifier.kind === "stepper") {
-      const enabled = toggleValues[modifier.id] ?? false
-      const count = stepperValues[modifier.id] ?? 0
-      if (!enabled || count === 0) return null
-      return {
-        id: modifier.id,
-        name: `${modifier.label} (${count})`,
-        size: modifier.perUnit * count,
-        color: "error.main",
-      }
-    }
-
-    const chosenKey = choiceValues[modifier.id] ?? modifier.options[0].key
-    const chosenOption = modifier.options.find((option) => option.key === chosenKey) ?? modifier.options[0]
-    if (chosenOption.value === 0) return null
-    return {
-      id: modifier.id,
-      name: `${modifier.label}: ${chosenOption.label}`,
-      size: chosenOption.value,
-      color: chosenOption.value >= 0 ? "success.main" : "error.main",
-    }
-  })
-
   const defensePool = useRunnerSelector(CombatPoolSelectors.selectDefenseCalculatorTest, {
     attr: baseAttr,
     skill: defenseSkill,
     // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
     doubleSkill: attackType !== "spell" && !!selectedOption.doubleSkill,
     includeEncumbrance: attackType !== "spell",
-    extraGroups: [...counterspellingOtherGroups, ...flattenDiceGroups(modifierGroups)],
+    extraGroups: [...counterspellingOtherGroups, ...defenseModifierGroups(modifiers, modifierSelection)],
   })
 
   // Direct spells bypass armor entirely and reuse the defenseCalculator roll as the resist roll. Indirect
@@ -359,91 +323,12 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             />
           )}
 
-          {modifiers.map((modifier) => {
-            if (modifier.kind === "toggle") {
-              return (
-                <FormControlLabel
-                  key={modifier.id}
-                  disabled={unaware}
-                  control={(
-                    <Checkbox
-                      checked={toggleValues[modifier.id] ?? false}
-                      onChange={(event) =>
-                        setToggleValues((prev) => ({ ...prev, [modifier.id]: event.target.checked }))}
-                      disabled={unaware}
-                    />
-                  )}
-                  label={`${modifier.label} (${modifier.value >= 0 ? "+" : ""}${modifier.value})`}
-                />
-              )
-            }
-
-            if (modifier.kind === "stepper") {
-              const enabled = toggleValues[modifier.id] ?? false
-
-              return (
-                <Stack key={modifier.id} sx={{ gap: 0.5 }}>
-                  <FormControlLabel
-                    disabled={unaware}
-                    control={(
-                      <Checkbox
-                        checked={enabled}
-                        onChange={(event) => {
-                          const checked = event.target.checked
-                          setToggleValues((prev) => ({ ...prev, [modifier.id]: checked }))
-                          if (checked && !stepperValues[modifier.id]) {
-                            setStepperValues((prev) => ({ ...prev, [modifier.id]: modifier.min }))
-                          }
-                        }}
-                        disabled={unaware}
-                      />
-                    )}
-                    label={modifier.label}
-                  />
-
-                  {enabled && (
-                    <Stack direction="row" sx={{ alignItems: "center", pl: 4 }}>
-                      <Typography variant="body2" sx={{ flex: 1 }}># of Attacks</Typography>
-                      <CounterInput
-                        value={stepperValues[modifier.id] ?? modifier.min}
-                        onChange={(value) => setStepperValues((prev) => ({
-                          ...prev,
-                          [modifier.id]: value ?? modifier.min,
-                        }))}
-                        min={modifier.min}
-                        max={modifier.max}
-                        disabled={unaware}
-                        size="small"
-                      />
-                    </Stack>
-                  )}
-                </Stack>
-              )
-            }
-
-            const chosenKey = choiceValues[modifier.id] ?? modifier.options[0].key
-
-            return (
-              <FormControl key={modifier.id} disabled={unaware}>
-                <Typography variant="body2" color="text.secondary">{modifier.label}</Typography>
-                <RadioGroup
-                  value={chosenKey}
-                  onChange={(event) =>
-                    setChoiceValues((prev) => ({ ...prev, [modifier.id]: event.target.value }))}
-                >
-                  {modifier.options.map((option) => (
-                    <FormControlLabel
-                      key={option.key}
-                      value={option.key}
-                      disabled={unaware}
-                      control={<Radio disabled={unaware} />}
-                      label={`${option.label}${option.value !== 0 ? ` (${option.value >= 0 ? "+" : ""}${option.value})` : ""}`}
-                    />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            )
-          })}
+          <DefenseModifierList
+            modifiers={modifiers}
+            selection={modifierSelection}
+            onChange={setModifierSelection}
+            disabled={unaware}
+          />
         </Stack>
       )}
 
