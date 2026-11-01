@@ -2,6 +2,7 @@ import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.t
 import { injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { SRC } from "#/system/model/systemValues.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
@@ -60,6 +61,17 @@ export namespace SkillPoolSelectors {
         ...attrGroups,
         ...(lingo ? [{ name: lingo, size: SRC.Skills.Specialization.Modifier }] : []),
       ],
+    }),
+  )
+
+  /** The Availability Test for acquiring an item: Negotiation + Charisma. */
+  export const selectAvailabilityTest = createDicePoolSelector(
+    injectOption(DicePoolSelectors.selectSkillTest, { skill: SkillKey.negotiation, isSpecialized: false, excludeDefaulting: false }),
+    injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.charisma }),
+    (skillGroups, attrGroups): DicePoolConfig => ({
+      id: "availabilityTest",
+      label: "Availability Test",
+      groups: [...skillGroups, ...attrGroups],
     }),
   )
 }
