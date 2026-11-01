@@ -39,6 +39,35 @@ describe("GmAttackCalculatorPanel", () => {
     expect(poolTotal("Attack Test")).toBe("6")
   })
 
+  it.each([
+    { rangeBand: "Short", expectedTotal: "9" },
+    { rangeBand: "Medium", expectedTotal: "8" },
+    { rangeBand: "Long", expectedTotal: "6" },
+    { rangeBand: "Extreme", expectedTotal: "3" },
+  ])("applies the $rangeBand range band", ({ rangeBand, expectedTotal }) => {
+    // Arrange
+    renderPanel()
+    setCounter("Attribute (usually Agility)", 5)
+    setCounter("Combat Skill", 4)
+
+    // Act
+    fireEvent.click(screen.getByLabelText(new RegExp(`^${rangeBand} \\(`)))
+
+    // Assert
+    expect(poolTotal("Attack Test")).toBe(expectedTotal)
+  })
+
+  it("defaults the range band to Short", () => {
+    // Arrange
+    renderPanel()
+
+    // Act
+    const shortRange = screen.getByLabelText(/^Short \(/)
+
+    // Assert
+    expect((shortRange as HTMLInputElement).checked).toBe(true)
+  })
+
   it("switches to the melee modifier table and clears ranged selections", () => {
     // Arrange
     renderPanel()

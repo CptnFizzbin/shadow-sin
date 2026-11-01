@@ -14,9 +14,21 @@ export interface WeaponAttackStepperModifier extends WeaponAttackModifierBase {
   max: number
 }
 
+export interface WeaponAttackChoiceOption {
+  label: string
+  value: number
+}
+
+export interface WeaponAttackChoiceModifier extends WeaponAttackModifierBase {
+  kind: "choice"
+  /** First option is the default; option values must be distinct so the selection can be read back. */
+  options: WeaponAttackChoiceOption[]
+}
+
 export type WeaponAttackModifier =
   | WeaponAttackToggleModifier
   | WeaponAttackStepperModifier
+  | WeaponAttackChoiceModifier
 
 /**
  * Situational rows from the Melee Modifier Table (Shadowrun 4e, p. ~159) that adjust the
@@ -88,12 +100,20 @@ export const meleeAttackModifiers: WeaponAttackModifier[] = [
 
 /**
  * Situational rows from the Ranged Combat Modifier Table (Shadowrun 4e) that adjust the
- * attacker's own dice pool. Recoil is left out — fire mode effects (recoil, burst fire DV bonus)
- * aren't implemented yet, per the Fire Mode step's own note. Range brackets, called shots, and
- * visibility modifiers are left out for the same reasons as the Melee Modifier Table above: this
- * app doesn't track the weapon/scene data they'd need, or they only affect the defender.
+ * attacker's own dice pool. The range band is picked by hand, since the app doesn't track the
+ * distance to the target.
  */
 export const rangedAttackModifiers: WeaponAttackModifier[] = [
+  {
+    label: "Range",
+    kind: "choice",
+    options: [
+      { label: "Short", value: 0 },
+      { label: "Medium", value: -1 },
+      { label: "Long", value: -3 },
+      { label: "Extreme", value: -6 },
+    ],
+  },
   {
     label: "Firing while running",
     kind: "toggle",

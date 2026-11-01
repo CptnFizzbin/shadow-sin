@@ -1,5 +1,9 @@
 import Checkbox from "@mui/material/Checkbox"
+import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
+import FormLabel from "@mui/material/FormLabel"
+import Radio from "@mui/material/Radio"
+import RadioGroup from "@mui/material/RadioGroup"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
@@ -14,7 +18,9 @@ interface AttackModifierChecklistProps {
   onChange: (label: string, appliedValue: number) => void
 }
 
-/** Checkbox (and counter, for per-unit rows) list of situational attack modifiers. */
+const formatSigned = (value: number) => `${value >= 0 ? "+" : ""}${value}`
+
+/** Checkbox (counter for per-unit rows, radio group for choice rows) list of situational attack modifiers. */
 export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modifiers, values, onChange }) => (
   <Stack>
     {modifiers.map((modifier) => {
@@ -31,7 +37,7 @@ export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modi
                   onChange={(event) => onChange(modifier.label, event.target.checked ? modifier.value : 0)}
                 />
               )}
-              label={`${modifier.label} (${modifier.value >= 0 ? "+" : ""}${modifier.value})`}
+              label={`${modifier.label} (${formatSigned(modifier.value)})`}
             />
           )
         case "stepper": {
@@ -47,7 +53,7 @@ export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modi
                     onChange={(event) => onChange(modifier.label, event.target.checked ? modifier.perUnit : 0)}
                   />
                 )}
-                label={`${modifier.label} (${modifier.perUnit >= 0 ? "+" : ""}${modifier.perUnit} per)`}
+                label={`${modifier.label} (${formatSigned(modifier.perUnit)} per)`}
               />
 
               <CounterInput
@@ -58,6 +64,30 @@ export const AttackModifierChecklist: FC<AttackModifierChecklistProps> = ({ modi
                 size="small"
               />
             </Stack>
+          )
+        }
+        case "choice": {
+          const selectedIndex = Math.max(0, modifier.options.findIndex((option) => option.value === appliedValue))
+
+          return (
+            <FormControl key={modifier.label}>
+              <FormLabel>{modifier.label}</FormLabel>
+              <RadioGroup
+                row
+                aria-label={modifier.label}
+                value={String(selectedIndex)}
+                onChange={(event) => onChange(modifier.label, modifier.options[Number(event.target.value)].value)}
+              >
+                {modifier.options.map((option, index) => (
+                  <FormControlLabel
+                    key={option.label}
+                    value={String(index)}
+                    control={<Radio />}
+                    label={`${option.label} (${formatSigned(option.value)})`}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
           )
         }
       }
