@@ -1,77 +1,54 @@
-import type { DicePoolConfig } from "#/components/system/dicePool/dicePoolData.tsx"
 import { injectOption } from "#/integrations/reselect/selectorUtils.ts"
-import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { SRC } from "#/system/model/systemValues.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
-import { DicePoolSelectors } from "./dicePool.selector.ts"
 
-/** Builds the dice pool id and label for a skill test, suffixed with its specialization if any. */
-const skillPoolIdentity = (idPrefix: string, name: string, specialization?: string) => ({
-  id: specialization ? `${idPrefix}.${name}.${specialization}` : `${idPrefix}.${name}`,
-  label: specialization ? `${name} (${specialization})` : name,
-})
-
+/** Skill test pools. Their labels are generic; the component showing one names the skill. */
 export namespace SkillPoolSelectors {
   /** An Active Skill test: the skill, `attr`, and the `specialization` bonus when one is given. */
-  export const selectActiveSkillTest = createDicePoolSelector(
-    DicePoolSelectors.selectSkillTest,
-    DicePoolSelectors.selectAttrTest,
-    DicePoolSelectors.selectSpecializationTest,
-    SelectorOptions.skill,
-    SelectorOptions.specialization,
-    (skillGroups, attrGroups, specializationGroups, skill, specialization): DicePoolConfig => ({
-      ...skillPoolIdentity("skill.active", skill, specialization),
-      groups: [...skillGroups, ...attrGroups, ...specializationGroups],
-    }),
-  )
+  export const selectActiveSkillTest = createDicePoolSelector({
+    id: "skill.active",
+    label: "Active Skill",
+    groups: [
+      SkillsSelectors.DiceGroups.selectSkill,
+      AttrSelectors.DiceGroups.selectAttr,
+      SkillsSelectors.DiceGroups.selectSpecialization,
+    ],
+  })
 
-  /** A Knowledge Skill test: the skill's `rating`, Logic, and the `specialization` bonus when one is given. */
-  export const selectKnowledgeSkillTest = createDicePoolSelector(
-    injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.logic }),
-    SelectorOptions.knowledge,
-    SelectorOptions.rating,
-    SelectorOptions.specialization,
-    (attrGroups, knowledge, rating, specialization): DicePoolConfig => ({
-      ...skillPoolIdentity("skill.knowledge", knowledge, specialization),
-      groups: [
-        { name: knowledge, size: rating },
-        ...attrGroups,
-        ...(specialization ? [{ name: specialization, size: SRC.Skills.Specialization.Modifier }] : []),
-      ],
-    }),
-  )
+  /** A Knowledge Skill test: the skill's `rating` and Specialization bonus, then Logic. */
+  export const selectKnowledgeSkillTest = createDicePoolSelector({
+    id: "skill.knowledge",
+    label: "Knowledge Skill",
+    groups: [
+      SkillsSelectors.DiceGroups.selectKnowledgeSkill,
+      injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.logic }),
+    ],
+  })
 
   /**
    * A Language Skill test: the skill's `rating` (none for a native language, which always succeeds
-   * automatically), Intuition, and the `lingo` bonus when one is given.
+   * automatically) and lingo bonus, then Intuition.
    */
-  export const selectLanguageSkillTest = createDicePoolSelector(
-    injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.intuition }),
-    SelectorOptions.language,
-    SelectorOptions.isNative,
-    SelectorOptions.rating,
-    SelectorOptions.lingo,
-    (attrGroups, language, isNative, rating, lingo): DicePoolConfig => ({
-      ...skillPoolIdentity("skill.language", language, lingo),
-      groups: [
-        { name: language, size: isNative ? 0 : rating },
-        ...attrGroups,
-        ...(lingo ? [{ name: lingo, size: SRC.Skills.Specialization.Modifier }] : []),
-      ],
-    }),
-  )
+  export const selectLanguageSkillTest = createDicePoolSelector({
+    id: "skill.language",
+    label: "Language Skill",
+    groups: [
+      SkillsSelectors.DiceGroups.selectLanguageSkill,
+      injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.intuition }),
+    ],
+  })
 
   /** The Availability Test for acquiring an item: Negotiation + Charisma. */
-  export const selectAvailabilityTest = createDicePoolSelector(
-    injectOption(DicePoolSelectors.selectSkillTest, { skill: SkillKey.negotiation, isSpecialized: false, excludeDefaulting: false }),
-    injectOption(DicePoolSelectors.selectAttrTest, { attr: AttributeKey.charisma }),
-    (skillGroups, attrGroups): DicePoolConfig => ({
-      id: "availabilityTest",
-      label: "Availability Test",
-      groups: [...skillGroups, ...attrGroups],
-    }),
-  )
+  export const selectAvailabilityTest = createDicePoolSelector({
+    id: "availabilityTest",
+    label: "Availability Test",
+    groups: [
+      injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.negotiation, excludeDefaulting: false }),
+      injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.charisma }),
+    ],
+  })
 }

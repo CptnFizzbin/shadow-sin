@@ -1,3 +1,4 @@
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 
 function effectiveRatings(armor: ArmorData): { ballistic: number, impact: number } {
@@ -43,6 +44,14 @@ export function calculateArmorBulk(equipped: ArmorData[]): { ballistic: number, 
     }),
     { ballistic: 0, impact: 0 },
   )
+}
+
+// The only attributes Encumbrance penalizes — see calculateEncumbrancePenalty below.
+const encumberedAttributes: readonly AttributeKey[] = [AttributeKey.agility, AttributeKey.reaction]
+
+/** Whether Encumbrance penalizes `attr`. */
+export function isEncumberedAttribute(attr: AttributeKey): boolean {
+  return encumberedAttributes.includes(attr)
 }
 
 // SR4A p.160: penalty is –1 to Agility and Reaction per 2 points (or fraction) either

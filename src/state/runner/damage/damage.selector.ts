@@ -1,3 +1,4 @@
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
@@ -160,5 +161,17 @@ export namespace DamageSelectors {
       DamageTrackKey.matrix,
       SelectorOptions.damageSystem,
     ),
+  }
+
+  // The `DiceGroups` member below shares this name, so it reads the number through an alias.
+  const selectWoundModValue = selectWoundMod
+
+  /** The Dice Groups damage contributes to a dice pool. See `createDicePoolSelector`. */
+  export namespace DiceGroups {
+    /** The Wound Modifier as a penalty, or none while uninjured. */
+    export const selectWoundMod = createMemoizedSelector(
+      selectWoundModValue,
+      (woundMod): DiceGroup[] => woundMod === 0 ? [] : [{ name: "Wound", size: -woundMod, type: "penalty" }],
+    )
   }
 }

@@ -1,11 +1,28 @@
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import { ratingDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { SourcedGameEffectSelectors } from "#/state/runner/gameEffects/gameEffects.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { DicePoolFormulas } from "#/system/formulas/dicePool/dicePoolFormulas.ts"
+import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
+import { RatingFormulas } from "#/system/formulas/ratings/ratingFormulas.ts"
 import { isEntityWithSkills } from "#/system/model/entities/traits/entityWithSkills.ts"
+import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
 import type { SkillInfo } from "#/system/model/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
+import { SRC } from "#/system/model/systemValues.ts"
+
+const NO_GROUPS: DiceGroup[] = []
+
+/** A flat Specialization (or lingo) bonus group, or none when no `specialization` is given. */
+const flatSpecializationGroups = (label: string, specialization: string | undefined): DiceGroup[] =>
+  specialization
+    ? [{ name: `${label}: ${specialization}`, size: SRC.Skills.Specialization.Modifier, type: "bonus" }]
+    : NO_GROUPS
 
 export namespace SkillsSelectors {
 
@@ -42,15 +59,67 @@ export namespace SkillsSelectors {
     },
   )
 
-  export const selectValue = createMemoizedSelector(
+  /** The rating for `skill` before any modifiers apply: the higher of its own rating and its skill group's. */
+  export const selectRawValue = createMemoizedSelector(
     selectActiveSkills,
     selectSkillGroups,
-    SelectorOptions.skillName,
-    (activeSkills, skillGroups, skillName) => {
-      const skillInfo = skillList[skillName]
-      const skillRating = activeSkills.find((s) => s.name === skillName)?.rating ?? 0
+    SelectorOptions.skill,
+    (activeSkills, skillGroups, skill): number => {
+      const skillInfo = skillList[skill]
+      const skillRating = activeSkills.find((s) => s.name === skill)?.rating ?? 0
       const groupRating = skillGroups.find((g) => g.name === skillInfo.group)?.rating ?? 0
       return Math.max(skillRating, groupRating, 0)
+    },
+  )
+
+  /** @deprecated - use {@link selectRawValue} (before modifiers) or {@link selectRating} (after) instead */
+  export const selectValue = (state: { entity: object }, { skillName }: { skillName: SkillKey }): number =>
+    selectRawValue(state, { skill: skillName })
+
+  const selectModifiers = createMemoizedSelector(
+    ViewerStateSelectors.selectEntity,
+    SourcedGameEffectSelectors.selectAll,
+    SelectorOptions.skill,
+    (entity, sourcedEffects, skill): RatingModifier[] =>
+      // GameEffects belong to the Runner, so they only modify the Runner's own skills.
+      isRunnerWithBiology(entity)
+        ? RatingFormulas.getModifiers({ sourcedEffects, type: GameEffectType.skillMod, target: skill })
+        : [],
+  )
+
+  /** The rating for `skill` with the raw value and named modifiers it was computed from. */
+  export const selectRatingBreakdown = createMemoizedSelector(
+    selectRawValue,
+    selectModifiers,
+    (rawValue, modifiers): RatingBreakdown => RatingFormulas.getSkillRating({ rawValue, modifiers }),
+  )
+
+  /** The rating for `skill` used in tests and dice pools: its raw value plus active `skillMod` modifiers. */
+  export const selectRating = createMemoizedSelector(
+    selectRatingBreakdown,
+    (breakdown) => breakdown.rating,
+  )
+
+  /**
+   * A Specialization's bonus for `skill` with the named `skillSpecializationMod` modifiers that
+   * add to it. Empty when no `specialization` is given.
+   */
+  export const selectSpecializationBreakdown = createMemoizedSelector(
+    ViewerStateSelectors.selectEntity,
+    SourcedGameEffectSelectors.selectAll,
+    SelectorOptions.skill,
+    SelectorOptions.specialization,
+    (entity, sourcedEffects, skill, specialization): RatingBreakdown | undefined => {
+      if (!specialization) return undefined
+      const modifiers = isRunnerWithBiology(entity)
+        ? RatingFormulas.getModifiers({
+            sourcedEffects,
+            type: GameEffectType.skillSpecializationMod,
+            target: skill,
+            subTarget: specialization,
+          })
+        : []
+      return RatingFormulas.getSkillRating({ rawValue: SRC.Skills.Specialization.Modifier, modifiers })
     },
   )
 
@@ -75,4 +144,72 @@ export namespace SkillsSelectors {
       }
     },
   )
+
+  /** The Dice Groups Skills contribute to a dice pool. See `createDicePoolSelector`. */
+  export namespace DiceGroups {
+    /**
+     * An Active Skill's Rating, plus a separate Defaulting penalty when the skill is untrained,
+     * defaultable, and `excludeDefaulting` isn't set. While defaulting, the skill's own group is
+     * listed only when Modifiers give it dice.
+     */
+    export const selectSkill = createMemoizedSelector(
+      selectRatingBreakdown,
+      SelectorOptions.skill,
+      SelectorOptions.excludeDefaulting,
+      (breakdown, skill, excludeDefaulting): DiceGroup[] => {
+        const isDefaulting = DicePoolFormulas.isDefaulting({
+          rawValue: breakdown.rawValue,
+          defaulting: !excludeDefaulting && (skillList[skill].defaultable ?? true),
+        })
+
+        const groups: DiceGroup[] = []
+        if (!isDefaulting || breakdown.modifiers.length > 0) {
+          groups.push(ratingDiceGroup({ name: skill, type: "skill" }, breakdown))
+        }
+        if (isDefaulting) {
+          groups.push({ name: `${skill} - Defaulting`, size: SRC.Skills.Defaulting.Modifier, type: "defaulting" })
+        }
+        return groups
+      },
+    )
+
+    /** A Specialization's bonus for `skill`, with its Modifiers, or none when no `specialization` is given. */
+    export const selectSpecialization = createMemoizedSelector(
+      selectSpecializationBreakdown,
+      SelectorOptions.specialization,
+      (breakdown, specialization): DiceGroup[] =>
+        specialization && breakdown
+          ? [ratingDiceGroup({ name: `Specialization: ${specialization}`, type: "bonus" }, breakdown)]
+          : NO_GROUPS,
+    )
+
+    /**
+     * A Knowledge Skill's `rating` plus its Specialization bonus when `specialization` is given.
+     * Knowledge Skills have no Modifiers yet, so the caller passes the rating in.
+     */
+    export const selectKnowledgeSkill = createMemoizedSelector(
+      SelectorOptions.knowledge,
+      SelectorOptions.rating,
+      SelectorOptions.specialization,
+      (knowledge, rating, specialization): DiceGroup[] => [
+        { name: knowledge, size: rating, type: "skill" },
+        ...flatSpecializationGroups("Specialization", specialization),
+      ],
+    )
+
+    /**
+     * A Language Skill's `rating` plus its lingo bonus when `lingo` is given. A native Language
+     * contributes no rating dice — it always succeeds automatically.
+     */
+    export const selectLanguageSkill = createMemoizedSelector(
+      SelectorOptions.language,
+      SelectorOptions.isNative,
+      SelectorOptions.rating,
+      SelectorOptions.lingo,
+      (language, isNative, rating, lingo): DiceGroup[] => [
+        { name: language, size: isNative ? 0 : rating, type: "skill" },
+        ...flatSpecializationGroups("Lingo", lingo),
+      ],
+    )
+  }
 }

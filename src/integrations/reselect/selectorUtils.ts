@@ -52,7 +52,7 @@ export function selectorOption<TOptions extends object>(key: keyof TOptions & st
  * assignable to the wider `(state, options) => TReturn` shape (TS allows a function to ignore
  * trailing parameters it's given), which would make every input look like it takes `TOptions`.
  */
-type ComboSelectorOptions<TInputs extends SelectorArray> =
+export type ComboSelectorOptions<TInputs extends SelectorArray> =
   GetParamsFromSelectors<TInputs> extends [infer TOptions]
     ? TOptions extends object
       ? TOptions

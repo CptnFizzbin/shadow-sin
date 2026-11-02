@@ -1,7 +1,9 @@
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { Selector as StandardSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, createSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { calculateArmorBulk } from "#/system/formulas/items/encumbranceUtils.ts"
 import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -118,6 +120,12 @@ export namespace ItemSelectors {
       }),
     ) satisfies ItemSelector<ArmorRating>
 
+    /** The summed printed ratings of all equipped armor, which drives Encumbrance. */
+    export const selectBulk = createMemoizedSelector(
+      selectEquipped,
+      calculateArmorBulk,
+    ) satisfies ItemSelector<ArmorRating>
+
     export const selectEffective = createMemoizedSelector(
       selectEquipped,
       (equipped): ArmorRating => ({
@@ -125,6 +133,15 @@ export namespace ItemSelectors {
         impact: Math.max(0, ...equipped.map((item) => item.impact)),
       }),
     ) satisfies ItemSelector<ArmorRating>
+    /** The Dice Groups worn armor contributes to a dice pool. See `createDicePoolSelector`. */
+    export namespace DiceGroups {
+      /** The best equipped armor's `armor` rating. */
+      export const selectArmor = createMemoizedSelector(
+        selectEffective,
+        SelectorOptions.armor,
+        (ratings, armor): DiceGroup[] => [{ name: `Armor (${armor})`, size: ratings[armor] ?? 0 }],
+      )
+    }
   }
 
   export namespace Implants {
