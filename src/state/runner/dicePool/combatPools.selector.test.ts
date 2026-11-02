@@ -80,7 +80,12 @@ describe.concurrent("CombatPoolSelectors defense tests", () => {
 
     // Assert
     expect(pool.groups).toEqual([
-      { name: "REA", size: 2, type: "attribute", modifiers: [{ name: "Encumbrance", value: -2 }] },
+      {
+        name: "REA",
+        size: 2,
+        type: "attribute",
+        breakdown: { rawValue: 4, modifiers: [{ name: "Encumbrance", value: -2 }], rating: 2 },
+      },
     ])
   })
 })

@@ -488,9 +488,15 @@ Every Dice Pool belongs to a **Pool Id**, which is what GameEffects target.
 
 **Dice Group**:
 One labelled part of a Dice Pool — an Attribute, a Skill, a Specialization, Defaulting, the Wound
-Modifier. An Attribute or Skill group is sized by its **Rating** and lists that Rating's
-Modifiers, which are already counted in its size and never added again.
+Modifier. An Attribute or Skill group is sized by its **Rating** and shows that Rating's
+**Breakdown**.
 _Avoid_: pool component
+
+**Breakdown**:
+How a Rating was reached — its Raw Value, then each Modifier — shown under a Dice Group as an
+indented list. It only explains the group's size, which already includes all of it, so nothing in
+a Breakdown is added to the pool again.
+_Avoid_: modifiers (on a Dice Group — Modifiers belong to the Rating, not the group)
 
 **Defaulting**:
 Rolling an Active Skill test without the Skill: the Skill contributes no dice, and a separate −1

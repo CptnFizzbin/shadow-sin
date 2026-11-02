@@ -12,7 +12,7 @@ import { DiceTrayContext } from "#/components/system/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 
 import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
-import { DiceGroupModifierRow } from "./diceGroupModifierRow.tsx"
+import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
@@ -150,9 +150,7 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
                   </Typography>
                 </Stack>
 
-                {group.modifiers?.map((modifier, modifierIndex) => (
-                  <DiceGroupModifierRow key={`${modifierIndex}:${modifier.name}`} modifier={modifier} />
-                ))}
+                {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}
               </Stack>
             )
           })}

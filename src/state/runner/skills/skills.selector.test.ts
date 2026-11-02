@@ -220,7 +220,7 @@ describe("SkillsSelectors.DiceGroups.selectSkill", () => {
       name: SkillKey.pistols,
       size: 5,
       type: "skill",
-      modifiers: [{ name: "Reflex Recorder", value: 2 }],
+      breakdown: { rawValue: 3, modifiers: [{ name: "Reflex Recorder", value: 2 }], rating: 5 },
     }])
   })
 })
@@ -254,7 +254,12 @@ describe("SkillsSelectors.DiceGroups.selectSpecialization", () => {
 
     // Assert
     expect(groups).toEqual([
-      { name: "Specialization: Revolvers", size: 3, type: "bonus", modifiers: [{ name: "Revolver Focus", value: 1 }] },
+      {
+        name: "Specialization: Revolvers",
+        size: 3,
+        type: "bonus",
+        breakdown: { rawValue: 2, modifiers: [{ name: "Revolver Focus", value: 1 }], rating: 3 },
+      },
     ])
   })
 
@@ -286,7 +291,12 @@ describe("SkillsSelectors.DiceGroups.selectSkill when defaulting", () => {
 
     // Assert
     expect(groups).toEqual([
-      { name: SkillKey.pistols, size: 1, type: "skill", modifiers: [{ name: "Skillwire", value: 1 }] },
+      {
+        name: SkillKey.pistols,
+        size: 1,
+        type: "skill",
+        breakdown: { rawValue: 0, modifiers: [{ name: "Skillwire", value: 1 }], rating: 1 },
+      },
       { name: `${SkillKey.pistols} - Defaulting`, size: -1, type: "defaulting" },
     ])
   })

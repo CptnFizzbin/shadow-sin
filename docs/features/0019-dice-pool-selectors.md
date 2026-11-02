@@ -33,8 +33,9 @@ The selectors form one chain, each layer reading only the one below it:
    `AttrSelectors.DiceGroups.selectAttr`, `SkillsSelectors.DiceGroups.selectSkill` /
    `selectSpecialization` / `selectKnowledgeSkill` / `selectLanguageSkill`,
    `ItemSelectors.Armor.DiceGroups.selectArmor`, and `DamageSelectors.DiceGroups.selectWoundMod`.
-   Attribute and Skill groups are sized by a Rating; a group's optional `modifiers` list what its
-   size is made of, for display only, so a pool never adds them again. Every group selector
+   Attribute and Skill groups are sized by a Rating and carry its `breakdown` (Raw Value and
+   Modifiers), which `DicePool` lists under the group as an indented list. It's for display only:
+   the size already includes it, so a pool never adds it again. Every group selector
    returns `DiceGroup[]`, empty when it adds nothing. The Specialization bonus and Defaulting stay
    their own groups.
 5. **Dice Pools** are declared with `createDicePoolSelector({ id, label, groups, excludeWoundMod })`

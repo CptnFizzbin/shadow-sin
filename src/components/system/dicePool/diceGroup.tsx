@@ -1,4 +1,4 @@
-import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
+import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 
 export type DiceGroupType = "attribute" | "skill" | "bonus" | "defaulting" | "penalty"
 
@@ -7,21 +7,20 @@ export interface DiceGroup {
   name: string
   size: number
   /**
-   * What `size` is made of, for display only — `size` already includes every modifier, so a dice
-   * pool never adds these again.
+   * How a Rating-sized group's `size` was reached — its Raw Value and Modifiers — for display only.
+   * `size` is already the Rating, so nothing here is added to the pool again.
    */
-  modifiers?: RatingModifier[]
+  breakdown?: RatingBreakdown
   type?: DiceGroupType
   /** Explicit color override. Prefer `type` where the group fits one of the standard categories. */
   color?: string
 }
 
-/** A group sized by `breakdown`'s Rating, listing its Modifiers when it has any. */
-export function ratingDiceGroup(
-  group: Omit<DiceGroup, "size" | "modifiers">,
-  { rating, modifiers }: RatingBreakdown,
-): DiceGroup {
-  return modifiers.length === 0 ? { ...group, size: rating } : { ...group, size: rating, modifiers }
+/** A group sized by `breakdown`'s Rating, carrying the breakdown when Modifiers changed the Raw Value. */
+export function ratingDiceGroup(group: Omit<DiceGroup, "size" | "breakdown">, breakdown: RatingBreakdown): DiceGroup {
+  return breakdown.modifiers.length === 0
+    ? { ...group, size: breakdown.rating }
+    : { ...group, size: breakdown.rating, breakdown }
 }
 
 export type DiceGroupList = (DiceGroupList | DiceGroup | null | boolean)[]

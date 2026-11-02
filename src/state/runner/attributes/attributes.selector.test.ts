@@ -473,7 +473,7 @@ describe("AttrSelectors.DiceGroups.selectAttr", () => {
       name: "AGI",
       size: 6,
       type: "attribute",
-      modifiers: [{ name: "Muscle Augmentation", value: 2 }],
+      breakdown: { rawValue: 4, modifiers: [{ name: "Muscle Augmentation", value: 2 }], rating: 6 },
     }])
   })
 
@@ -516,7 +516,7 @@ describe("AttrSelectors.DiceGroups.selectAttr with Encumbrance", () => {
       name: "REA",
       size: 2,
       type: "attribute",
-      modifiers: [{ name: "Encumbrance", value: -2 }],
+      breakdown: { rawValue: 4, modifiers: [{ name: "Encumbrance", value: -2 }], rating: 2 },
     }])
   })
 })
