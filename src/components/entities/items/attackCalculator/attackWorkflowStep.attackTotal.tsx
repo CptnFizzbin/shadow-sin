@@ -1,30 +1,13 @@
-import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
-import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard.tsx"
-import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
-import {
-  selectAllSettled,
-  selectHits,
-  selectIsCriticalGlitch,
-  selectIsGlitch,
-  selectWasRolled,
-  useDiceRollerSelector,
-} from "#/services/dice/state/diceRoller.selector.ts"
 import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
-import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
 
+import { AttackTestResolution } from "./attackTestResolution.tsx"
 import { useActiveAttackWeapon, useAttackWorkflow } from "./attackWorkflow.ts"
 
 /** Total step: rolls the Attack Test and resolves Net Hits / Total DV against defenseCalculator hits. */
@@ -46,78 +29,12 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
     skill: skill.name,
     extraGroups: modifierGroups,
   })
-  const poolTotal = attackPool.size
-
-  const [defenseHits, setDefenseHits] = useState(0)
-
-  const diceRoller = useDiceRoller(poolTotal)
-  const hasRolled = useDiceRollerSelector(diceRoller, selectWasRolled)
-  const rolledHits = useDiceRollerSelector(diceRoller, selectHits)
-  const isGlitch = useDiceRollerSelector(diceRoller, selectIsGlitch)
-  const isCriticalGlitch = useDiceRollerSelector(diceRoller, selectIsCriticalGlitch)
-  const isSettled = useDiceRollerSelector(diceRoller, selectAllSettled)
-
-  const netHits = hasRolled ? rolledHits - defenseHits : null
-  const totalDV = netHits === null ? null : (netHits > 0 ? applyNetHitsToDamage(weapon.dmg, netHits) : "Miss")
 
   return (
     <Stack sx={{ gap: 1.5 }}>
       <WeaponCard.DicePool pool={attackPool} />
 
-      <Stack sx={{ alignItems: "center" }}>
-        <DiceResult roller={diceRoller} iconSize={32} />
-
-        {isSettled && isCriticalGlitch && (
-          <Label label="CRITICAL GLITCH!" color="error.main" variant="contained" />
-        )}
-        {isSettled && !isCriticalGlitch && isGlitch && (
-          <Label label="Glitch!" color="error.main" variant="text" />
-        )}
-
-        <Button
-          variant="contained"
-          onClick={() => {
-            diceRoller.reset()
-            diceRoller.rollAll()
-          }}
-          fullWidth
-        >
-          {hasRolled ? "Reroll Attack Test" : "Roll Attack Test"}
-        </Button>
-      </Stack>
-
-      <Divider />
-
-      <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-        <Typography variant="caption" color="text.secondary">
-          Hits rolled on the defender's Defense Test
-        </Typography>
-        <CounterInput
-          label="Defense Hits"
-          value={defenseHits}
-          onChange={(newValue) => setDefenseHits(newValue ?? 0)}
-          min={0}
-          max={99}
-        />
-      </Stack>
-
-      <Grid container spacing={1} columns={2}>
-        <Grid size={1}>
-          <Label label="Net Hits" variant="outlined" />
-          <Typography
-            sx={{ textAlign: "center" }}
-            color={netHits !== null && netHits > 0 ? "success.main" : netHits !== null && netHits < 0 ? "error.main" : undefined}
-          >
-            {netHits ?? "—"}
-          </Typography>
-        </Grid>
-        <Grid size={1}>
-          <Label label="Total DV" variant="outlined" />
-          <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-            {totalDV ?? weapon.dmg}
-          </Typography>
-        </Grid>
-      </Grid>
+      <AttackTestResolution poolSize={attackPool.size} damageValue={weapon.dmg} />
     </Stack>
   )
 }

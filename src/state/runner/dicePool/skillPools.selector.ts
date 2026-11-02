@@ -2,6 +2,7 @@ import { injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
@@ -38,6 +39,16 @@ export namespace SkillPoolSelectors {
     groups: [
       SkillsSelectors.DiceGroups.selectLanguageSkill,
       injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.intuition }),
+    ],
+  })
+
+  /** The Availability Test for acquiring an item: Negotiation + Charisma. */
+  export const selectAvailabilityTest = createDicePoolSelector({
+    id: "availabilityTest",
+    label: "Availability Test",
+    groups: [
+      injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.negotiation, excludeDefaulting: false }),
+      injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.charisma }),
     ],
   })
 }

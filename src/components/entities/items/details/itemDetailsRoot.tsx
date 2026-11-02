@@ -172,6 +172,8 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
         </Stack>
       )}
 
+      {slots.sections}
+
       <Stack>
         <Label>{subitemsName}</Label>
         <Stack>
