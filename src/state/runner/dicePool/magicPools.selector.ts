@@ -35,7 +35,7 @@ const selectDrainAttrGroups = createMemoizedSelector(
 
 export namespace MagicPoolSelectors {
   /** The Spellcasting test: Magic + Spellcasting. */
-  export const selectSpellcastingTest = createDicePoolSelector<EntityScope>({
+  export const selectSpellcastingTest = createDicePoolSelector({
     id: "magic.spellcasting",
     label: "Spellcasting",
     groups: [
@@ -45,7 +45,7 @@ export namespace MagicPoolSelectors {
   })
 
   /** The Drain Resistance test: Willpower + the tradition's drain `attr`. */
-  export const selectDrainResistanceTest = createDicePoolSelector<EntityScope, { attr: AttributeKey }>({
+  export const selectDrainResistanceTest = createDicePoolSelector({
     id: "magic.drainResistance",
     label: "Drain Resistance",
     groups: [selectWillpowerGroups, selectDrainAttrGroups],
@@ -57,7 +57,7 @@ export namespace MagicPoolSelectors {
    * The Summoning or Binding test for `spiritType`: Magic + `skill`, plus the skill's
    * Specialization bonus when it covers that spirit type. The caller names it Summoning or Binding.
    */
-  export const selectSummoningTest = createDicePoolSelector<EntityScope, { skill: SkillKey, spiritType: SpiritType }>({
+  export const selectSummoningTest = createDicePoolSelector({
     id: "magic.summoning",
     label: "Summoning",
     groups: [selectMagicGroups, SkillsSelectors.DiceGroups.selectSkill, selectSpiritSpecializationGroups],

@@ -11,16 +11,16 @@ import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 const stateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
 
 const AGILITY_GROUPS: DiceGroup[] = [{ name: "AGI", size: 4, type: "attribute" }]
-const selectAgilityGroups = () => AGILITY_GROUPS
+const selectAgilityGroups = (_state: EntityScope) => AGILITY_GROUPS
 const selectNestedGroups = (_state: EntityScope, { bonus }: { bonus: number }) => [[{ name: "Bonus", size: bonus }], null]
 
-const selectTestPool = createDicePoolSelector<EntityScope>({
+const selectTestPool = createDicePoolSelector({
   id: "test.pool",
   label: "Test Pool",
   groups: [selectAgilityGroups],
 })
 
-const selectResistancePool = createDicePoolSelector<EntityScope>({
+const selectResistancePool = createDicePoolSelector({
   id: "test.resist",
   label: "Test Resistance",
   groups: [selectAgilityGroups],
@@ -77,7 +77,7 @@ describe.concurrent("createDicePoolSelector", () => {
 
   it("flattens nested group lists and passes options to every group selector", () => {
     // Arrange
-    const selectPool = createDicePoolSelector<EntityScope, { bonus: number }>({
+    const selectPool = createDicePoolSelector({
       id: "test.nested",
       label: "Test Nested",
       groups: [selectAgilityGroups, selectNestedGroups],

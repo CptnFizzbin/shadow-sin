@@ -1,6 +1,5 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
-import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
@@ -21,7 +20,7 @@ const selectLoyaltyGroups = createMemoizedSelector(
 
 export namespace ContactPoolSelectors {
   /** The GM's Contact Knowledge Test for legwork: the contact's `connection`, rolled twice. */
-  export const selectLegworkGmTest = createDicePoolSelector<EntityScope, { connection: number }>({
+  export const selectLegworkGmTest = createDicePoolSelector({
     id: "legwork.gm",
     label: "Contact Knowledge Test",
     groups: [selectConnectionGroups, selectConnectionGroups],
@@ -30,7 +29,7 @@ export namespace ContactPoolSelectors {
   })
 
   /** The player's Legwork Test: Charisma + Etiquette + the contact's `loyalty`. */
-  export const selectLegworkPlayerTest = createDicePoolSelector<EntityScope, { loyalty: number }>({
+  export const selectLegworkPlayerTest = createDicePoolSelector({
     id: "legwork.player",
     label: "Legwork Test",
     groups: [

@@ -58,10 +58,7 @@ const selectTotalArmorGroups = createMemoizedSelector(
  */
 export namespace CombatPoolSelectors {
   /** Resisting `damageType` damage (Physical with Body, Stun with Willpower) with `armor`. */
-  export const selectResistDamageTest = createDicePoolSelector<EntityScope, {
-    damageType: "P" | "S"
-    armor: ArmorRatingType
-  }>({
+  export const selectResistDamageTest = createDicePoolSelector({
     id: "resist.damage",
     label: "Resist Damage",
     groups: [selectDamageResistanceAttrGroups, ItemSelectors.Armor.DiceGroups.selectArmor],
@@ -70,7 +67,7 @@ export namespace CombatPoolSelectors {
   })
 
   /** Resisting a direct Mana spell: Willpower. */
-  export const selectResistManaSpellTest = createDicePoolSelector<EntityScope>({
+  export const selectResistManaSpellTest = createDicePoolSelector({
     id: "resist.spell.mana",
     label: "Resist Mana Spell",
     groups: [selectWillpowerGroups],
@@ -79,7 +76,7 @@ export namespace CombatPoolSelectors {
   })
 
   /** Resisting a direct Physical spell: Body. */
-  export const selectResistPhysicalSpellTest = createDicePoolSelector<EntityScope>({
+  export const selectResistPhysicalSpellTest = createDicePoolSelector({
     id: "resist.spell.physical",
     label: "Resist Physical Spell",
     groups: [selectBodyGroups],
@@ -88,70 +85,70 @@ export namespace CombatPoolSelectors {
   })
 
   /** Defending against a ranged attack: Reaction. */
-  export const selectRangedDefenseTest = createDicePoolSelector<EntityScope>({
+  export const selectRangedDefenseTest = createDicePoolSelector({
     id: "defense.ranged",
     label: "Ranged Defense",
     groups: [selectReactionGroups],
   })
 
   /** Full-defending against a ranged attack: Reaction + Dodge. */
-  export const selectRangedFullDefenseTest = createDicePoolSelector<EntityScope>({
+  export const selectRangedFullDefenseTest = createDicePoolSelector({
     id: "defense.ranged.full",
     label: "Ranged Full Defense",
     groups: [selectReactionGroups, selectDodgeGroups],
   })
 
   /** Blocking a melee attack: Reaction + Unarmed Combat. */
-  export const selectMeleeBlockTest = createDicePoolSelector<EntityScope>({
+  export const selectMeleeBlockTest = createDicePoolSelector({
     id: "defense.melee.block",
     label: "Melee Block",
     groups: [selectReactionGroups, selectUnarmedCombatGroups],
   })
 
   /** Dodging a melee attack: Reaction + Dodge. */
-  export const selectMeleeDodgeTest = createDicePoolSelector<EntityScope>({
+  export const selectMeleeDodgeTest = createDicePoolSelector({
     id: "defense.melee.dodge",
     label: "Melee Dodge",
     groups: [selectReactionGroups, selectDodgeGroups],
   })
 
   /** Full-blocking a melee attack: Reaction + Unarmed Combat + Dodge. */
-  export const selectMeleeFullBlockTest = createDicePoolSelector<EntityScope>({
+  export const selectMeleeFullBlockTest = createDicePoolSelector({
     id: "defense.melee.fullBlock",
     label: "Melee Full Block",
     groups: [selectReactionGroups, selectUnarmedCombatGroups, selectDodgeGroups],
   })
 
   /** Full-dodging a melee attack: Reaction + Dodge, rolled twice. */
-  export const selectMeleeFullDodgeTest = createDicePoolSelector<EntityScope>({
+  export const selectMeleeFullDodgeTest = createDicePoolSelector({
     id: "defense.melee.fullDodge",
     label: "Melee Full Dodge",
     groups: [selectReactionGroups, selectDodgeGroups, selectDodgeGroups],
   })
 
   /** Parrying with the weapon `skill`: Reaction + `skill`. */
-  export const selectMeleeParryTest = createDicePoolSelector<EntityScope, { skill: SkillKey }>({
+  export const selectMeleeParryTest = createDicePoolSelector({
     id: "defense.melee.parry",
     label: "Parry",
     groups: [selectReactionGroups, SkillsSelectors.DiceGroups.selectSkill],
   })
 
   /** Full-parrying with the weapon `skill`: Reaction + `skill` + Dodge. */
-  export const selectMeleeFullParryTest = createDicePoolSelector<EntityScope, { skill: SkillKey }>({
+  export const selectMeleeFullParryTest = createDicePoolSelector({
     id: "defense.melee.fullParry",
     label: "Full Parry",
     groups: [selectReactionGroups, SkillsSelectors.DiceGroups.selectSkill, selectDodgeGroups],
   })
 
   /** Defending against a Physical spell: Body + Counterspelling. */
-  export const selectPhysicalSpellDefenseTest = createDicePoolSelector<EntityScope>({
+  export const selectPhysicalSpellDefenseTest = createDicePoolSelector({
     id: "defense.spell.physical",
     label: "Physical Spell Defense",
     groups: [selectBodyGroups, selectCounterspellingGroups],
   })
 
   /** Defending against a Mana spell: Willpower + Counterspelling. */
-  export const selectManaSpellDefenseTest = createDicePoolSelector<EntityScope>({
+  export const selectManaSpellDefenseTest = createDicePoolSelector({
     id: "defense.spell.mana",
     label: "Mana Spell Defense",
     groups: [selectWillpowerGroups, selectCounterspellingGroups],
@@ -161,11 +158,7 @@ export namespace CombatPoolSelectors {
    * The Attack test: `attr` + `skill` and the attack's situational `extraGroups`. Encumbrance
    * reaches it through the Agility or Reaction Rating.
    */
-  export const selectAttackTest = createDicePoolSelector<EntityScope, {
-    attr: AttributeKey
-    skill: SkillKey
-    extraGroups: DiceGroup[]
-  }>({
+  export const selectAttackTest = createDicePoolSelector({
     id: "attack",
     label: "Attack",
     groups: [AttrSelectors.DiceGroups.selectAttr, SkillsSelectors.DiceGroups.selectSkill, SelectorOptions.extraGroups],
@@ -175,12 +168,7 @@ export namespace CombatPoolSelectors {
    * The Defense Calculator's defense test: `attr` + `skill` (rolled twice when `doubleSkill` is
    * set) and the situational `extraGroups`. Encumbrance reaches it through the Reaction Rating.
    */
-  export const selectDefenseCalculatorTest = createDicePoolSelector<EntityScope, {
-    attr: AttributeKey
-    skill?: SkillKey
-    doubleSkill?: boolean
-    extraGroups: DiceGroup[]
-  }>({
+  export const selectDefenseCalculatorTest = createDicePoolSelector({
     id: "defense",
     label: "Defense",
     groups: [AttrSelectors.DiceGroups.selectAttr, selectDefenseSkillGroups, SelectorOptions.extraGroups],
@@ -190,11 +178,7 @@ export namespace CombatPoolSelectors {
    * The Defense Calculator's damage resistance test: `attr` + the Runner's total `armor` rating,
    * halved (rounding down) when `halveArmor` is set.
    */
-  export const selectDefenseCalculatorResistTest = createDicePoolSelector<EntityScope, {
-    attr: AttributeKey
-    armor: ArmorRatingType
-    halveArmor?: boolean
-  }>({
+  export const selectDefenseCalculatorResistTest = createDicePoolSelector({
     id: "defense.resist",
     label: "Resist Damage",
     groups: [AttrSelectors.DiceGroups.selectAttr, selectTotalArmorGroups],
