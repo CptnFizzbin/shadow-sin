@@ -201,7 +201,7 @@ describe("DefenseCalculatorDialogContent", () => {
       goNext()
       goNext()
       const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-      expect(poolContainer.textContent).toContain("Counterspelling (Other)6")
+      expect(poolContainer.textContent).toContain("6Counterspelling (Other)")
     })
   })
 
@@ -349,7 +349,7 @@ describe("DefenseCalculatorDialogContent", () => {
       expect(screen.queryByText(/defense roll to resist damage/i)).toBeNull()
       const resistPool = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
       expect(resistPool.textContent).toContain("BOD")
-      expect(resistPool.textContent).toContain("Armor (Impact, half)3")
+      expect(resistPool.textContent).toContain("3Armor (Impact, half)")
     })
   })
 
@@ -375,10 +375,10 @@ describe("DefenseCalculatorDialogContent", () => {
       goNext()
 
       const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
-      expect(poolContainer.textContent).toContain("Armor (Ballistic)6")
+      expect(poolContainer.textContent).toContain("6Armor (Ballistic)")
 
       fireEvent.click(screen.getByRole("button", { name: /^impact$/i }))
-      expect(poolContainer.textContent).toContain("Armor (Impact)5")
+      expect(poolContainer.textContent).toContain("5Armor (Impact)")
     })
 
     it("does not apply armor for a spell attack", () => {

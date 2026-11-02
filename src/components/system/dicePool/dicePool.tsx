@@ -14,6 +14,7 @@ import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
 import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
+import { LedgerValue } from "./ledgerValue.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
   attribute: "primary.main",
@@ -139,15 +140,10 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
             const groupColor = getGroupColor(group)
 
             return (
-              <Stack key={group.id ?? `${index}:${group.name}`}>
-                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+              <Stack key={group.id ?? `${index}:${group.name}`} sx={{ gap: 0 }}>
+                <Stack direction="row" sx={{ gap: 1 }}>
+                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: groupColor }}>{group.size}</LedgerValue>
                   <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
-                  >
-                    {group.size}
-                  </Typography>
                 </Stack>
 
                 {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}
@@ -157,11 +153,9 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
           <Divider />
 
-          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+          <Stack direction="row" sx={{ gap: 1 }}>
+            <LedgerValue sx={{ fontWeight: "bold" }}>{total}</LedgerValue>
             <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
-            <Typography sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums" }}>
-              {total}
-            </Typography>
           </Stack>
         </Stack>
       </Collapse>

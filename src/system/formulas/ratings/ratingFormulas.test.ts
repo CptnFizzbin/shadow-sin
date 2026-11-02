@@ -70,7 +70,7 @@ describe.concurrent("RatingFormulas.getAttrRating", () => {
     // Assert
     expect(breakdown).toEqual({
       rawValue: 6,
-      modifiers: [{ name: "Muscle Toner", value: 5 }, { name: "Augmented maximum", value: -2 }],
+      modifiers: [{ name: "Muscle Toner", value: 5 }, { name: "Augmented maximum", value: -2, isCap: true }],
       rating: 9,
     })
   })
@@ -109,7 +109,7 @@ describe.concurrent("RatingFormulas.getAttrRating with penalties", () => {
       rawValue: 6,
       modifiers: [
         { name: "Muscle Toner", value: 5 },
-        { name: "Augmented maximum", value: -2 },
+        { name: "Augmented maximum", value: -2, isCap: true },
         { name: "Encumbrance", value: -1 },
       ],
       rating: 8,

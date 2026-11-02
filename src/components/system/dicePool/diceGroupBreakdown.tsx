@@ -4,30 +4,46 @@ import type { FC } from "react"
 
 import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 
+import { LedgerValue } from "./ledgerValue.tsx"
+
 interface DiceGroupBreakdownProps {
   breakdown: RatingBreakdown
 }
 
-const formatModifier = (value: number): string => value > 0 ? `+${value}` : String(value)
+interface BreakdownItem {
+  name: string
+  value: string
+}
 
 /**
- * A dice group's {@link RatingBreakdown} as an indented list under the group's row: its Raw Value,
- * then each Modifier. The group's size already includes all of them.
+ * The Raw Value, then each Modifier: signed, except the Augmented Maximum cap, which shows the
+ * total it caps to (`=7`).
  */
-export const DiceGroupBreakdown: FC<DiceGroupBreakdownProps> = ({ breakdown }) => {
-  const items = [
-    { name: "Raw Value", value: String(breakdown.rawValue) },
-    ...breakdown.modifiers.map((modifier) => ({ name: modifier.name, value: formatModifier(modifier.value) })),
+const toItems = ({ rawValue, modifiers }: RatingBreakdown): BreakdownItem[] => {
+  let runningTotal = rawValue
+  return [
+    { name: "Raw Value", value: String(rawValue) },
+    ...modifiers.map((modifier) => {
+      runningTotal += modifier.value
+      const value = modifier.isCap
+        ? `=${runningTotal}`
+        : modifier.value > 0 ? `+${modifier.value}` : String(modifier.value)
+      return { name: modifier.name, value }
+    }),
   ]
-
-  return (
-    <Stack component="ul" sx={{ margin: 0, paddingLeft: 1.5, listStyle: "none", color: "text.secondary" }}>
-      {items.map((item, index) => (
-        <Stack key={`${index}:${item.name}`} component="li" direction="row" sx={{ justifyContent: "space-between" }}>
-          <Typography variant="caption">{item.name}</Typography>
-          <Typography variant="caption" sx={{ fontVariantNumeric: "tabular-nums" }}>{item.value}</Typography>
-        </Stack>
-      ))}
-    </Stack>
-  )
 }
+
+/**
+ * A dice group's {@link RatingBreakdown} as a compact indented list under the group's row, values
+ * first. The group's size already includes all of it.
+ */
+export const DiceGroupBreakdown: FC<DiceGroupBreakdownProps> = ({ breakdown }) => (
+  <Stack component="ul" sx={{ gap: 0, margin: 0, paddingLeft: 2, listStyle: "none", color: "text.secondary" }}>
+    {toItems(breakdown).map((item, index) => (
+      <Stack key={`${index}:${item.name}`} component="li" direction="row" sx={{ gap: 1, lineHeight: 1.25 }}>
+        <LedgerValue variant="caption">{item.value}</LedgerValue>
+        <Typography variant="caption" sx={{ lineHeight: "inherit" }}>{item.name}</Typography>
+      </Stack>
+    ))}
+  </Stack>
+)

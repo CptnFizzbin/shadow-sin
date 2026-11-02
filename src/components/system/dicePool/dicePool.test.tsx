@@ -29,8 +29,41 @@ describe("DicePool", () => {
 
     // Assert
     const items = within(screen.getByRole("list")).getAllByRole("listitem")
-    expect(items.map((item) => item.textContent)).toEqual(["Raw Value4", "Muscle Toner+2"])
+    expect(items.map((item) => item.textContent)).toEqual(["4Raw Value", "+2Muscle Toner"])
     expect(screen.getAllByText("6").length).toBeGreaterThan(0)
     expect(screen.queryByText("8")).toBeNull()
+  })
+
+  it("shows an Augmented Maximum cap as the total it caps to", () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.agility",
+          label: "Agility Test",
+          groups: [{
+            name: "AGI",
+            size: 7,
+            type: "attribute",
+            breakdown: {
+              rawValue: 5,
+              modifiers: [
+                { name: "Synaptic Booster", value: 3 },
+                { name: "Augmented maximum", value: -1, isCap: true },
+              ],
+              rating: 7,
+            },
+          }],
+          size: 7,
+        }}
+      />,
+    )
+
+    // Act
+    fireEvent.click(screen.getByText("Agility Test"))
+
+    // Assert
+    const items = within(screen.getByRole("list")).getAllByRole("listitem")
+    expect(items.map((item) => item.textContent)).toEqual(["5Raw Value", "+3Synaptic Booster", "=7Augmented maximum"])
   })
 })

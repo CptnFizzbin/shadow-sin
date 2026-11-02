@@ -5,6 +5,8 @@ import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.t
 export interface RatingModifier {
   name: string
   value: number
+  /** Marks the Augmented Maximum cap: `value` is whatever brings the running total down to the cap. */
+  isCap?: boolean
 }
 
 /**
@@ -56,7 +58,7 @@ export const RatingFormulas = {
   }): RatingBreakdown => {
     const augmented = rawValue + sumModifiers(modifiers)
     const cap = augmentedMax === undefined ? augmented : Math.max(rawValue, augmentedMax)
-    const capModifiers = augmented > cap ? [{ name: "Augmented maximum", value: cap - augmented }] : []
+    const capModifiers = augmented > cap ? [{ name: "Augmented maximum", value: cap - augmented, isCap: true }] : []
     const allModifiers = [...modifiers, ...capModifiers, ...penalties]
 
     return {
