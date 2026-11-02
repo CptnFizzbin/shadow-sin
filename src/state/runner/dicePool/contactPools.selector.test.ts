@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
 import { ContactPoolSelectors } from "./contactPools.selector.ts"
 
@@ -13,7 +14,7 @@ describe.concurrent("ContactPoolSelectors.selectLegworkGmTest", () => {
 
     // Act
     const pool = ContactPoolSelectors.selectLegworkGmTest(
-      { runner, entity: runner },
+      { runner, entity: runner, items: getItemCatalog(runner) },
       { connection: 4 },
     )
 

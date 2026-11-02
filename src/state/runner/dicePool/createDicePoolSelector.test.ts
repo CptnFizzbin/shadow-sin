@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import type { EntityScope } from "#/state/entityScope.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -9,15 +10,22 @@ import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
 const stateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
 
-const selectTestPool = createDicePoolSelector(
-  selectorOption<{ excludeWoundMod: boolean }>("excludeWoundMod"),
-  (excludeWoundMod) => ({
-    id: "test.pool",
-    label: "Test Pool",
-    excludeWoundMod,
-    groups: [{ name: "AGI", size: 4, type: "attribute" as const }],
-  }),
-)
+const AGILITY_GROUPS: DiceGroup[] = [{ name: "AGI", size: 4, type: "attribute" }]
+const selectAgilityGroups = () => AGILITY_GROUPS
+const selectNestedGroups = (_state: EntityScope, { bonus }: { bonus: number }) => [[{ name: "Bonus", size: bonus }], null]
+
+const selectTestPool = createDicePoolSelector<EntityScope>({
+  id: "test.pool",
+  label: "Test Pool",
+  groups: [selectAgilityGroups],
+})
+
+const selectResistancePool = createDicePoolSelector<EntityScope>({
+  id: "test.resist",
+  label: "Test Resistance",
+  groups: [selectAgilityGroups],
+  excludeWoundMod: true,
+})
 
 describe.concurrent("createDicePoolSelector", () => {
   it("appends a single Wound penalty group when the Runner is wounded", () => {
@@ -27,14 +35,18 @@ describe.concurrent("createDicePoolSelector", () => {
     } })
 
     // Act
-    const pool = selectTestPool(stateFor(runner), { excludeWoundMod: false })
+    const pool = selectTestPool(stateFor(runner))
 
     // Assert
-    expect(pool.groups).toEqual([
-      { name: "AGI", size: 4, type: "attribute" },
-      { name: "Wound", size: -1, type: "penalty" },
-    ])
-    expect(pool.size).toBe(3)
+    expect(pool).toEqual({
+      id: "test.pool",
+      label: "Test Pool",
+      groups: [
+        { name: "AGI", size: 4, type: "attribute" },
+        { name: "Wound", size: -1, type: "penalty" },
+      ],
+      size: 3,
+    })
   })
 
   it("adds no Wound group when the Runner is unwounded", () => {
@@ -42,10 +54,10 @@ describe.concurrent("createDicePoolSelector", () => {
     const runner = runnerDataFactory()
 
     // Act
-    const pool = selectTestPool(stateFor(runner), { excludeWoundMod: false })
+    const pool = selectTestPool(stateFor(runner))
 
     // Assert
-    expect(pool.groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+    expect(pool.groups).toEqual(AGILITY_GROUPS)
     expect(pool.size).toBe(4)
   })
 
@@ -56,21 +68,37 @@ describe.concurrent("createDicePoolSelector", () => {
     } })
 
     // Act
-    const pool = selectTestPool(stateFor(runner), { excludeWoundMod: true })
+    const pool = selectResistancePool(stateFor(runner))
 
     // Assert
-    expect(pool.groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+    expect(pool.groups).toEqual(AGILITY_GROUPS)
     expect(pool.size).toBe(4)
   })
 
-  it("returns the same pool for repeated calls with the same state and options", () => {
+  it("flattens nested group lists and passes options to every group selector", () => {
     // Arrange
+    const selectPool = createDicePoolSelector<EntityScope, { bonus: number }>({
+      id: "test.nested",
+      label: "Test Nested",
+      groups: [selectAgilityGroups, selectNestedGroups],
+    })
     const runner = runnerDataFactory()
-    const options = { excludeWoundMod: false }
 
     // Act
-    const first = selectTestPool(stateFor(runner), options)
-    const second = selectTestPool(stateFor(runner), options)
+    const pool = selectPool(stateFor(runner), { bonus: 2 })
+
+    // Assert
+    expect(pool.groups).toEqual([...AGILITY_GROUPS, { name: "Bonus", size: 2 }])
+    expect(pool.size).toBe(6)
+  })
+
+  it("returns the same pool for repeated calls with the same state", () => {
+    // Arrange
+    const state = stateFor(runnerDataFactory())
+
+    // Act
+    const first = selectTestPool(state)
+    const second = selectTestPool(state)
 
     // Assert
     expect(second).toBe(first)

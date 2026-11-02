@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
@@ -270,5 +274,28 @@ describe.each([
 
     // Act / Assert
     expect(namespace.selectById(stateFor(catalog), { itemId: gearItem.id })).toBeUndefined()
+  })
+})
+
+/** Dice Group selectors read `{ runner, entity, items }` — what `useRunnerSelector` assembles from a `RunnerData`. */
+const diceGroupStateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
+
+describe("ItemSelectors.Armor.DiceGroups.selectArmor", () => {
+  it("returns the best equipped armor's rating", () => {
+    // Arrange
+    const [armor] = createItem<ArmorData>({
+      name: "Armor Jacket",
+      itemType: ItemType.armor,
+      equipped: true,
+      ballistic: 8,
+      impact: 6,
+    })
+    const runner = runnerDataFactory({ items: createItemMap([armor]) })
+
+    // Act
+    const groups = ItemSelectors.Armor.DiceGroups.selectArmor(diceGroupStateFor(runner), { armor: ArmorRatingType.impact })
+
+    // Assert
+    expect(groups).toEqual([{ name: `Armor (${ArmorRatingType.impact})`, size: 6 }])
   })
 })

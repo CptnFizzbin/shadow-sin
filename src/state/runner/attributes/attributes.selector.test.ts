@@ -432,3 +432,91 @@ describe("AttrSelectors.selectRatingBreakdown with Encumbrance", () => {
     expect(breakdown).toEqual({ rawValue: 4, modifiers: [], rating: 4 })
   })
 })
+
+/** Dice Group selectors read `{ runner, entity, items }` — what `useRunnerSelector` assembles from a `RunnerData`. */
+const diceGroupStateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
+
+describe("AttrSelectors.DiceGroups.selectAttr", () => {
+  it("returns just the base Attribute rating", () => {
+    // Arrange
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.attributes[AttributeKey.agility] = 4
+    } })
+
+    // Act
+    const groups = AttrSelectors.DiceGroups.selectAttr(diceGroupStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(groups).toEqual([{ name: "AGI", size: 4, type: "attribute" }])
+  })
+
+  it("includes active attrMod GameEffects in the size and lists them as modifiers", () => {
+    // Arrange
+    const [implant] = createItem({
+      name: "Muscle Augmentation",
+      itemType: ItemType.implant,
+      equipped: true,
+      effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
+    })
+    const runner = runnerDataFactory({
+      items: createItemMap([implant]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 4
+      },
+    })
+
+    // Act
+    const groups = AttrSelectors.DiceGroups.selectAttr(diceGroupStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(groups).toEqual([{
+      name: "AGI",
+      size: 6,
+      type: "attribute",
+      modifiers: [{ name: "Muscle Augmentation", value: 2 }],
+    }])
+  })
+
+  it("returns the same reference for equal options passed as a new object", () => {
+    // Arrange
+    const state = diceGroupStateFor(runnerDataFactory())
+
+    // Act
+    const first = AttrSelectors.DiceGroups.selectAttr(state, { attr: AttributeKey.charisma })
+    const second = AttrSelectors.DiceGroups.selectAttr(state, { attr: AttributeKey.charisma })
+
+    // Assert
+    expect(second).toBe(first)
+  })
+})
+
+describe("AttrSelectors.DiceGroups.selectAttr with Encumbrance", () => {
+  it("lists Encumbrance as a modifier on Reaction, already counted in its size", () => {
+    // Arrange
+    const [armor] = createItem<ArmorData>({
+      name: "Heavy Armor",
+      itemType: ItemType.armor,
+      equipped: true,
+      ballistic: 10,
+      impact: 6,
+    })
+    const runner = runnerDataFactory({
+      items: createItemMap([armor]),
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.body] = 3
+        s.attributes[AttributeKey.reaction] = 4
+      },
+    })
+
+    // Act
+    const groups = AttrSelectors.DiceGroups.selectAttr(diceGroupStateFor(runner), { attr: AttributeKey.reaction })
+
+    // Assert
+    expect(groups).toEqual([{
+      name: "REA",
+      size: 2,
+      type: "attribute",
+      modifiers: [{ name: "Encumbrance", value: -2 }],
+    }])
+  })
+})

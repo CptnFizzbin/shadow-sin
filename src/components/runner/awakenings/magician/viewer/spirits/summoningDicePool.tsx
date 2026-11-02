@@ -17,5 +17,5 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
     spiritType,
   })
 
-  return <DicePool pool={pool} />
+  return <DicePool pool={{ ...pool, label: isBound ? "Binding" : "Summoning" }} />
 }

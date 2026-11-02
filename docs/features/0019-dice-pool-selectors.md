@@ -5,7 +5,8 @@
 > **GitHub Issues / PRs:**
 > - #653 — one `createDicePoolSelector` call per pool; `DicePool` takes `DicePoolData`; the
 >   `use*DiceGroup` / `use*DicePool` hooks are gone.
-> - #650 — the Raw Value → Rating → Modifier layer, `DiceGroupSelectors`, and the Wound and
+> - #650 — the Raw Value → Rating → Modifier layer, the `DiceGroups` sub-namespaces, the
+>   `createDicePoolSelector({ id, label, groups })` form, and the Wound and
 >   Encumbrance rules below.
 
 Every dice pool is built by memoized, namespaced Selectors
@@ -28,16 +29,24 @@ The selectors form one chain, each layer reading only the one below it:
    and a cap that applies is listed as its own negative Modifier. Agility and Reaction also carry
    the Encumbrance penalty as a Modifier, applied after the cap. `rating` always equals `rawValue`
    plus the sum of `modifiers` (`RatingFormulas`).
-4. **Dice Groups** (`DiceGroupSelectors`) are sized by a Rating. A group's optional `modifiers`
-   list what its size is made of, for display only: the size already includes them, so a pool
-   never adds them again. Every group selector returns `DiceGroup[]`, empty when it adds nothing.
-   The Specialization bonus and Defaulting stay their own groups.
-5. **Dice Pools** are built only from `DiceGroupSelectors` groups, each with one
-   `createDicePoolSelector` call in a per-area namespace (`CombatPoolSelectors`,
-   `MagicPoolSelectors`, `SkillPoolSelectors`, `ContactPoolSelectors`). That helper adds the Wound
-   Modifier unless the pool's config sets `excludeWoundMod`, which every Resistance Test does
-   (damage, direct spell, Drain), as does the GM's legwork roll, since the Contact rolls it.
-   Defense and spell tests keep it.
+4. **Dice Groups** live in a `DiceGroups` sub-namespace of the domain they come from:
+   `AttrSelectors.DiceGroups.selectAttr`, `SkillsSelectors.DiceGroups.selectSkill` /
+   `selectSpecialization` / `selectKnowledgeSkill` / `selectLanguageSkill`,
+   `ItemSelectors.Armor.DiceGroups.selectArmor`, and `DamageSelectors.DiceGroups.selectWoundMod`.
+   Attribute and Skill groups are sized by a Rating; a group's optional `modifiers` list what its
+   size is made of, for display only, so a pool never adds them again. Every group selector
+   returns `DiceGroup[]`, empty when it adds nothing. The Specialization bonus and Defaulting stay
+   their own groups.
+5. **Dice Pools** are declared with `createDicePoolSelector({ id, label, groups, excludeWoundMod })`
+   in a per-area namespace (`CombatPoolSelectors`, `MagicPoolSelectors`, `SkillPoolSelectors`,
+   `ContactPoolSelectors`): `groups` is the ordered list of Dice Group selectors, and the result
+   is the pool's flattened groups and size. The helper appends
+   `DamageSelectors.DiceGroups.selectWoundMod` unless `excludeWoundMod` is set, which every
+   Resistance Test does (damage, direct spell, Drain), as does the GM's legwork roll, since the
+   Contact rolls it. Defense and spell tests keep it.
+6. **Pool ids and labels are fixed.** Where the label depends on the pool's options (the damage
+   type, the parrying skill, Summoning vs Binding, the skill and Specialization of a skill pool),
+   the component or hook showing the pool sets the label (and, for skill pools, the id).
 
 Other decisions:
 

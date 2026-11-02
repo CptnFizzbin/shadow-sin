@@ -1,3 +1,4 @@
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { Selector as StandardSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, createSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
@@ -132,6 +133,15 @@ export namespace ItemSelectors {
         impact: Math.max(0, ...equipped.map((item) => item.impact)),
       }),
     ) satisfies ItemSelector<ArmorRating>
+    /** The Dice Groups worn armor contributes to a dice pool. See `createDicePoolSelector`. */
+    export namespace DiceGroups {
+      /** The best equipped armor's `armor` rating. */
+      export const selectArmor = createMemoizedSelector(
+        selectEffective,
+        SelectorOptions.armor,
+        (ratings, armor): DiceGroup[] => [{ name: `Armor (${armor})`, size: ratings[armor] ?? 0 }],
+      )
+    }
   }
 
   export namespace Implants {

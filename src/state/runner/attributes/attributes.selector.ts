@@ -1,3 +1,5 @@
+import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import { ratingDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
@@ -17,7 +19,7 @@ import type {
   EntityAttributeCatalog,
 } from "#/system/model/attributes/attributeCatalog.ts"
 import type { EntityAttributeInfo } from "#/system/model/attributes/attributeInfo.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
@@ -242,4 +244,14 @@ export namespace AttrSelectors {
       .filter(({ max, value }) => max >= 1 && value >= 1)
       .some((info) => info.value >= info.max),
   )
+
+  /** The Dice Groups Attributes contribute to a dice pool. See `createDicePoolSelector`. */
+  export namespace DiceGroups {
+    /** An Attribute's Rating — including the Encumbrance penalty, for Agility and Reaction. */
+    export const selectAttr = createMemoizedSelector(
+      selectRatingBreakdown,
+      SelectorOptions.attr,
+      (breakdown, attr): DiceGroup[] => [ratingDiceGroup({ name: AttributeLabels[attr], type: "attribute" }, breakdown)],
+    )
+  }
 }

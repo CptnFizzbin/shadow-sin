@@ -1,57 +1,57 @@
-import type { Combiner, GetParamsFromSelectors, GetStateFromSelectors, SelectorArray } from "reselect"
 import { createSelector as createReselectSelector } from "reselect"
 
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import type { DicePoolConfig, DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
+import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
+import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
-type WoundModState = Parameters<typeof DamageSelectors.selectWoundMod>[0]
-
-type DicePoolSelectorOptions<TInputs extends SelectorArray> =
-  GetParamsFromSelectors<TInputs> extends [infer TOptions]
-    ? TOptions extends object
-      ? TOptions
-      : never
-    : never
+/** Describes a dice pool for {@link createDicePoolSelector} to build. */
+export interface DicePoolSelectorOptions<
+  TInput extends object,
+  TOptions extends object | never = never,
+> {
+  id: string
+  label: string
+  /** The Dice Group selectors whose groups make up the pool, in order. */
+  groups: Selector<TInput, DiceGroupList, TOptions>[]
+  /** When `true`, the pool gets no Wound group even if the Runner is wounded. */
+  excludeWoundMod?: boolean
+}
 
 /**
- * Builds a selector that compiles a {@link DicePoolConfig} into {@link DicePoolData}. Takes the
- * same arguments as `createMemoizedSelector`, except the combiner returns the pool's config.
- *
- * This is the one place the wound modifier is applied: the compiled pool gets a single Wound
- * penalty group for the in-scope Entity's current wound modifier, unless the config sets
- * `excludeWoundMod` (as every Resistance Test does). Dice group selectors must not add one
- * themselves.
+ * Builds a selector for a dice pool made of `groups`, followed by the Wound Modifier unless
+ * `excludeWoundMod` is set (as every Resistance Test does). This is the one place the Wound
+ * Modifier is added: Dice Group selectors must not add it themselves.
  *
  * @example
- * const selectSpellcastingTest = createDicePoolSelector(
- *   injectOption(DiceGroupSelectors.selectAttr, { attr: AttributeKey.magic }),
- *   injectOption(DiceGroupSelectors.selectSkill, { skill: SkillKey.spellcasting }),
- *   (magicGroups, skillGroups): DicePoolConfig => ({
- *     id: "magic.spellcasting",
- *     label: "Spellcasting",
- *     groups: [...magicGroups, ...skillGroups],
- *   }),
- * )
+ * const selectSpellcastingTest = createDicePoolSelector({
+ *   id: "magic.spellcasting",
+ *   label: "Spellcasting",
+ *   groups: [
+ *     injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.magic }),
+ *     injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.spellcasting }),
+ *   ],
+ * })
  */
-export function createDicePoolSelector<TInputs extends SelectorArray>(
-  ...args: [...TInputs, Combiner<TInputs, DicePoolConfig>]
-): Selector<GetStateFromSelectors<TInputs> & WoundModState, DicePoolData, DicePoolSelectorOptions<TInputs>> {
-  const selectConfig = createReselectSelector(...args)
+export function createDicePoolSelector<
+  TInput extends { runner: RunnerData, entity: object },
+  TOptions extends object | never = never,
+>(config: DicePoolSelectorOptions<TInput, TOptions>): Selector<TInput, DicePoolData, TOptions> {
+  const groupSelectors = [...config.groups]
 
-  // Same escape hatch as `createMemoizedSelector`: reselect's rest-tuple param shape is equivalent
-  // to our single-options-object `Selector` shape, but TypeScript can't prove it for generic
-  // `TInputs`.
+  if (!config.excludeWoundMod) {
+    groupSelectors.push(DamageSelectors.DiceGroups.selectWoundMod)
+  }
+
+  // @ts-expect-error - TS isn't able to resolve the nested types properly
   return createReselectSelector(
-    [selectConfig, DamageSelectors.selectWoundMod],
-    (config: DicePoolConfig, woundMod: number): DicePoolData => {
-      const groups: DiceGroup[] = config.excludeWoundMod || woundMod === 0
-        ? config.groups
-        : [...config.groups, { name: "Wound", size: -woundMod, type: "penalty" }]
-
+    groupSelectors,
+    (...resolvedGroups: DiceGroupList[]): DicePoolData => {
+      const groups = flattenDiceGroups(resolvedGroups)
       return { ...config, groups, size: getPoolSize(groups) }
     },
-  ) as any // eslint-disable-line @typescript-eslint/no-explicit-any -- see comment above
+  )
 }
