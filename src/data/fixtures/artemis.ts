@@ -3,6 +3,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
+import { standardLifestyle } from "#/system/model/finances/runnerLifestyle.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
@@ -77,11 +78,9 @@ export const Artemis: RunnerData = {
       "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4A data; gear, weapons and augments migrated from legacy modules.",
     ].join("\n"),
     personality: null,
-    lifestyle: {
-      quality: LifestyleType.Low,
-      monthsPaid: 3,
-    },
   },
+
+  lifestyle: standardLifestyle(LifestyleType.Low, { monthsPaid: 3 }),
 
   initiative: {
     passesCompleted: [],

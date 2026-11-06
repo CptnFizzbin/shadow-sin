@@ -19,6 +19,7 @@ import { matrixReducer } from "./gameState/matrix/matrix.state.ts"
 import { initiativeReducer } from "./initiative/initiative.state.ts"
 import { gearReducer } from "./items/items.state.ts"
 import { karmaReducer } from "./karma/karma.state.ts"
+import { lifestyleReducer } from "./lifestyle/lifestyle.state.ts"
 import { metaReducer } from "./meta/meta.state.ts"
 import { nuyenReducer } from "./nuyen/nuyen.state.ts"
 import { powersReducer } from "./powers/powers.state.ts"
@@ -89,6 +90,7 @@ const domainReducer = combineReducers({
   karma: karmaReducer,
   nuyen: nuyenReducer,
   profile: profileReducer,
+  lifestyle: lifestyleReducer,
   reputation: reputationReducer,
   biology: biologyReducer,
   contacts: contactsReducer,

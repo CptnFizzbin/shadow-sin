@@ -7,10 +7,9 @@ import type { FC } from "react"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { selectNetWorth } from "#/hooks/runner/finances/nuyen/useNetWorth.tsx"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 
 import { useEndOfMonthDialog } from "./endOfMonth/endOfMonthDialog.tsx"
@@ -26,11 +25,10 @@ export const FinancesSection: FC = () => {
   const loans = useRunnerSelector(NuyenSelectors.selectLoans)
   const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  const lifestyleQuality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
-  const lifestyleMonthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
-  const lifestyleUpkeep = Lifestyles[lifestyleQuality].upkeep
+  const lifestyleMonthsPaid = useRunnerSelector(LifestyleSelectors.selectMonthsPaid)
+  const lifestyleUpkeep = useRunnerSelector(LifestyleSelectors.selectUpkeep)
 
-  const monthlyNuyenCost = lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0
+  const monthlyNuyenCost = lifestyleUpkeep > 0 && lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0
   const monthlyInterest = loans
     .filter((l) => l.interestRate > 0)
     .reduce((sum, l) => sum + calculateMonthlyInterest(l), 0)

@@ -1,67 +1,36 @@
 import Button from "@mui/material/Button"
-import FormControl from "@mui/material/FormControl"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiInfinityLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { LifestyleFields } from "#/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
+
+import { usePrepayLifestyleDialog } from "./prepayLifestyleDialog.tsx"
 
 export const LifestyleSection: FC = () => {
-  const dispatch = useRunnerStoreDispatch()
+  const prepayLifestyleDialog = usePrepayLifestyleDialog()
 
-  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
-  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
-  const upkeep = Lifestyles[quality].upkeep
-  const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
+  const upkeep = useRunnerSelector(LifestyleSelectors.selectUpkeep)
+  const monthsPaid = useRunnerSelector(LifestyleSelectors.selectMonthsPaid)
 
-  const canPrepay = upkeep > 0 && currentNuyen >= upkeep
-
-  const handlePrepay = () => {
-    dispatch(Actions.nuyen.withdrawNuyen(upkeep))
-    dispatch(Actions.profile.setLifestyleMonthsPaid(monthsPaid + 1))
-  }
+  const isIncome = upkeep < 0
 
   return (
     <Stack>
       <Label label="Lifestyle" />
 
-      <Stack direction="row">
-        <FormControl fullWidth size="small">
-          <Select
-            value={quality}
-            onChange={(e) => dispatch(Actions.profile.setLifestyleQuality(e.target.value))}
-          >
-            {Object.values(LifestyleType).map((type) => (
-              <MenuItem
-                key={type}
-                value={type}
-                sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
-              >
-                <Typography>{type}</Typography>
-                <Typography variant="caption" color="secondary">
-                  <Nuyen amount={Lifestyles[type].upkeep} />/m
-                </Typography>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Stack>
+      <LifestyleFields />
 
       <Stack direction="row">
         <Stack sx={{ flexGrow: 1, alignItems: "center" }}>
-          <Label label="Monthly Upkeep" />
-          <Typography>
-            {upkeep > 0 ? <Nuyen amount={upkeep} /> : "Free"}
+          <Label label={isIncome ? "Monthly Income" : "Monthly Upkeep"} />
+          <Typography color={isIncome ? "success.main" : "text.primary"}>
+            {upkeep === 0 ? "Free" : <Nuyen amount={Math.abs(upkeep)} />}
           </Typography>
         </Stack>
 
@@ -76,15 +45,16 @@ export const LifestyleSection: FC = () => {
               size="small"
               variant="outlined"
               color="success"
-              disabled={!canPrepay}
-              onClick={handlePrepay}
+              onClick={() => prepayLifestyleDialog.open()}
               fullWidth
             >
-              Prepay Month
+              Prepay
             </Button>
           )}
         </Stack>
       </Stack>
+
+      {prepayLifestyleDialog.outlet}
     </Stack>
   )
 }

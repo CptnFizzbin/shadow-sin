@@ -1,6 +1,5 @@
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { Lifestyles } from "#/system/model/finances/lifestyleType.ts"
 
 export namespace ProfileSelectors {
   export const select = createMemoizedSelector(
@@ -23,25 +22,5 @@ export namespace ProfileSelectors {
     selectAlias,
     selectName,
     (alias, name) => alias || name,
-  )
-
-  export const selectLifestyle = createMemoizedSelector(
-    select,
-    (profile) => profile.lifestyle,
-  )
-
-  export const selectLifestyleQuality = createMemoizedSelector(
-    selectLifestyle,
-    (lifestyle) => lifestyle?.quality,
-  )
-
-  export const selectLifestyleMonthsPaid = createMemoizedSelector(
-    selectLifestyle,
-    (lifestyle) => lifestyle?.monthsPaid,
-  )
-
-  export const selectLifestyleInfo = createMemoizedSelector(
-    selectLifestyleQuality,
-    (quality) => quality ? Lifestyles[quality] : undefined,
   )
 }

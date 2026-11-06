@@ -1,64 +1,55 @@
-import FormControl from "@mui/material/FormControl"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { LifestyleFields } from "#/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
   const dispatch = useRunnerStoreDispatch()
 
-  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
-  const upkeep = Lifestyles[quality].upkeep
-  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
-
-  const totalCost = upkeep * monthsPaid
+  const upkeep = useRunnerSelector(LifestyleSelectors.selectUpkeep)
+  const monthsPaid = useRunnerSelector(LifestyleSelectors.selectMonthsPaid)
+  const totalCost = useRunnerSelector(LifestyleSelectors.selectPrepaidCost)
 
   return (
     <Stack>
-      <FormControl fullWidth size="small">
-        <InputLabel>Lifestyle</InputLabel>
-        <Select
-          value={quality}
-          label="Lifestyle"
-          onChange={(e) => dispatch(Actions.profile.setLifestyleQuality(e.target.value))}
-        >
-          {Object.values(LifestyleType).map((lifestyleType) => (
-            <MenuItem key={lifestyleType} value={lifestyleType}>
-              {lifestyleType}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <LifestyleFields />
 
-      <TextField
-        label="Months prepaid"
-        type="number"
-        size="small"
-        fullWidth
-        value={monthsPaid}
-        slotProps={{ htmlInput: { min: 1 } }}
-        onChange={(event) => {
-          const months = Math.max(1, parseInt(event.target.value, 10) || 1)
-          dispatch(Actions.profile.setLifestyleMonthsPaid(months))
-        }}
-      />
+      {upkeep > 0 && (
+        <>
+          <TextField
+            label="Months prepaid"
+            type="number"
+            size="small"
+            fullWidth
+            value={monthsPaid}
+            slotProps={{ htmlInput: { min: 1 } }}
+            onChange={(event) => {
+              const months = Math.max(1, parseInt(event.target.value, 10) || 1)
+              dispatch(Actions.lifestyle.setLifestyleMonthsPaid(months))
+            }}
+          />
 
-      <Typography color="text.secondary">
-        Monthly upkeep: <Nuyen amount={upkeep} />
-        {monthsPaid > 1 && (
-          <>× {monthsPaid} months = <Nuyen amount={totalCost} /></>
-        )}
-      </Typography>
+          <Typography color="text.secondary">
+            Monthly upkeep: <Nuyen amount={upkeep} />
+            {monthsPaid > 1 && (
+              <>× {monthsPaid} months = <Nuyen amount={totalCost} /></>
+            )}
+          </Typography>
+        </>
+      )}
+
+      {upkeep < 0 && (
+        <Typography color="text.secondary">
+          Monthly income: <Nuyen amount={-upkeep} />
+        </Typography>
+      )}
     </Stack>
   )
 }
