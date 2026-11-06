@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 
-import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { ProfileActions } from "./profile.actions.ts"
@@ -12,7 +11,6 @@ const makeProfile = (overrides: Partial<RunnerData["profile"]> = {}): RunnerData
   archetype: "Drone Rigger",
   description: null,
   personality: null,
-  lifestyle: { quality: LifestyleType.Middle, monthsPaid: 1 },
   ...overrides,
 })
 

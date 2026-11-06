@@ -150,7 +150,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     // profile/biology populated from flat fields
     expect(migrated.profile.alias).toBe("Blur")
     expect(migrated.profile.name).toBe("Long")
-    expect(migrated.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
+    expect(migrated.lifestyle).toEqual({ name: "Low", upkeep: 2_000, monthsPaid: 3 })
     expect(migrated.biology.metatype).toBe("Human")
     expect(migrated.biology.awakening).toBe("Mystic Adept")
     expect(migrated.biology.age).toBe(0)
@@ -211,7 +211,7 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     expect(runner.id).toBe("31e8a690-6082-4177-8512-c41911c3f1bb")
     expect(runner.profile.alias).toBe("Blur")
     expect(runner.profile.name).toBe("Long")
-    expect(runner.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
+    expect(runner.lifestyle).toEqual({ name: "Low", upkeep: 2_000, monthsPaid: 3 })
     expect(runner.biology.metatype).toBe("Human")
     expect(runner.biology.awakening).toBe("Mystic Adept")
 

@@ -5,6 +5,7 @@ import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
 import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
+import { standardLifestyle } from "#/system/model/finances/runnerLifestyle.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
@@ -14,7 +15,7 @@ function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
   return renderInBuilder(<StartingNuyenSection />, {
     runner: runnerDataFactory({
       afterBuild: (runner) => {
-        runner.profile = { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } }
+        runner.lifestyle = standardLifestyle(LifestyleType.Street)
       },
     }),
     builder: { ...builderStateFactory(), ...builderOverrides },

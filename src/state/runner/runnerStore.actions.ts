@@ -16,6 +16,7 @@ import * as matrixActions from "./gameState/matrix/matrix.actions.ts"
 import * as initiativeActions from "./initiative/initiative.actions.ts"
 import * as gearActions from "./items/items.actions.ts"
 import * as karmaActions from "./karma/karma.actions.ts"
+import * as lifestyleActions from "./lifestyle/lifestyle.actions.ts"
 import * as nuyenActions from "./nuyen/nuyen.actions.ts"
 import * as powersActions from "./powers/powers.actions.ts"
 import * as profileActions from "./profile/profile.actions.ts"
@@ -67,6 +68,7 @@ export const Actions = {
   item: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,
+  lifestyle: lifestyleActions,
   nuyen: nuyenActions,
   powers: powersActions,
   profile: profileActions,

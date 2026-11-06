@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
@@ -39,31 +38,5 @@ describe("ProfileSelectors.selectDisplayName", () => {
 
     // Act / Assert
     expect(ProfileSelectors.selectDisplayName(stateFor(runner))).toBe("Ghost")
-  })
-})
-
-describe("ProfileSelectors.selectLifestyleQuality/selectLifestyleMonthsPaid/selectLifestyleInfo", () => {
-  it("returns undefined for all three when no lifestyle is set", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.lifestyle = null
-    } })
-
-    // Act / Assert
-    expect(ProfileSelectors.selectLifestyleQuality(stateFor(runner))).toBeUndefined()
-    expect(ProfileSelectors.selectLifestyleMonthsPaid(stateFor(runner))).toBeUndefined()
-    expect(ProfileSelectors.selectLifestyleInfo(stateFor(runner))).toBeUndefined()
-  })
-
-  it("returns the denormalized lifestyle once one is set", () => {
-    // Arrange
-    const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.profile.lifestyle = { quality: LifestyleType.Middle, monthsPaid: 2 }
-    } })
-
-    // Act / Assert
-    expect(ProfileSelectors.selectLifestyleQuality(stateFor(runner))).toBe(LifestyleType.Middle)
-    expect(ProfileSelectors.selectLifestyleMonthsPaid(stateFor(runner))).toBe(2)
-    expect(ProfileSelectors.selectLifestyleInfo(stateFor(runner))).toBe(Lifestyles[LifestyleType.Middle])
   })
 })

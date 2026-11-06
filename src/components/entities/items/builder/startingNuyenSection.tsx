@@ -16,15 +16,17 @@ import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/services/dice/state/diceRoller.selector.ts"
 import { BuilderActions } from "#/state/builder/builderStore.actions.ts"
 import { BuilderStateSelectors } from "#/state/builder/builderStore.selectors.ts"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions as RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { useRunnerStateDispatch, useRunnerState } from "#/state/runnerState.ts"
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
+import { Lifestyles } from "#/system/model/finances/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
-  const lifestyle = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
+  const lifestyle = useRunnerSelector(LifestyleSelectors.selectStartingNuyenType)
+  const lifestyleName = useRunnerSelector(LifestyleSelectors.selectName)
+  const lifestyleLabel = lifestyleName === lifestyle ? lifestyle : `${lifestyleName} (as ${lifestyle})`
   const { numDice, mult } = Lifestyles[lifestyle].starting
 
   const totalNuyen = useGearTotalCost()
@@ -81,7 +83,7 @@ export const StartingNuyenSection: FC = () => {
           sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography variant="subtitle2">Starting Nuyen</Typography>
-          <Chip label={`Lifestyle: ${lifestyle}`} size="small" variant="outlined" />
+          <Chip label={`Lifestyle: ${lifestyleLabel}`} size="small" variant="outlined" />
         </Stack>
 
         <Stack

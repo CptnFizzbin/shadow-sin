@@ -14,8 +14,8 @@ import type {
   EntityWithQualities,
 } from "./entities/entityTraits.ts"
 import type { EntityWithSkills } from "./entities/traits/entityWithSkills.ts"
-import type { LifestyleType } from "./finances/lifestyleType.ts"
 import type { LoanData } from "./finances/loanData.ts"
+import type { RunnerLifestyle } from "./finances/runnerLifestyle.ts"
 import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
 import type { ComplexFormData } from "./magic/complexFormData.ts"
 import type { SpellData } from "./magic/spellData.ts"
@@ -82,12 +82,9 @@ export interface RunnerData extends RunnerTraits {
     archetype: null | string
     description: null | string
     personality: null | string
-
-    lifestyle: null | {
-      quality: LifestyleType
-      monthsPaid: number
-    }
   }
+
+  lifestyle: RunnerLifestyle
 
   karma: {
     total: number

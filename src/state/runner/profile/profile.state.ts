@@ -1,12 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import {
   ProfileActions,
-  setLifestyleMonthsPaid,
-  setLifestyleQuality,
   setProfileAlias,
   setProfileArchetype,
   setProfileDescription,
@@ -20,7 +17,6 @@ const initialState: RunnerData["profile"] = {
   archetype: null,
   description: null,
   personality: null,
-  lifestyle: null,
 }
 
 export const profileReducer = createReducer(initialState, (builder) => {
@@ -42,14 +38,5 @@ export const profileReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setProfilePersonality, (state, action) => {
       state.personality = action.payload
-    })
-    .addCase(setLifestyleQuality, (state, action) => {
-      state.lifestyle = { ...(state.lifestyle ?? { quality: action.payload, monthsPaid: 1 }), quality: action.payload }
-    })
-    .addCase(setLifestyleMonthsPaid, (state, action) => {
-      state.lifestyle = {
-        ...(state.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: action.payload }),
-        monthsPaid: action.payload,
-      }
     })
 })

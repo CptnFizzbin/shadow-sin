@@ -11,12 +11,11 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { useRunnerStateDispatch, useRunnerStateStore } from "#/state/runnerState.ts"
-import { Lifestyles, LifestyleType } from "#/system/model/finances/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
@@ -24,6 +23,7 @@ interface EndOfMonthLineItem {
   id: string
   label: string
   nuyenCost: number
+  nuyenIncome: number
   interestAmount: number
   loanId?: UUID
   isLifestyle: boolean
@@ -31,14 +31,41 @@ interface EndOfMonthLineItem {
 
 type Props = ControlledDialogProps<void>
 
+function lifestyleLineItem(name: string, upkeep: number, monthsPaid: number): EndOfMonthLineItem | null {
+  if (upkeep < 0) {
+    return {
+      id: "lifestyle",
+      label: `${name} lifestyle income`,
+      nuyenCost: 0,
+      nuyenIncome: -upkeep,
+      interestAmount: 0,
+      isLifestyle: true,
+    }
+  }
+
+  if (upkeep === 0) return null
+
+  const monthsRemainingAfter = monthsPaid - 1
+  return {
+    id: "lifestyle",
+    label: monthsPaid > 0
+      ? `${name} lifestyle (prepaid — ${monthsRemainingAfter} month${monthsRemainingAfter === 1 ? "" : "s"} remaining after)`
+      : `${name} lifestyle upkeep`,
+    nuyenCost: monthsPaid === 0 ? upkeep : 0,
+    nuyenIncome: 0,
+    interestAmount: 0,
+    isLifestyle: true,
+  }
+}
+
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const store = useRunnerStateStore()
   const dispatch = useRunnerStateDispatch()
 
   const loans = useRunnerSelector(NuyenSelectors.selectLoans)
-  const quality = useRunnerSelector(ProfileSelectors.selectLifestyleQuality) ?? LifestyleType.Street
-  const monthsPaid = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
-  const upkeep = Lifestyles[quality].upkeep
+  const lifestyleName = useRunnerSelector(LifestyleSelectors.selectName)
+  const monthsPaid = useRunnerSelector(LifestyleSelectors.selectMonthsPaid)
+  const upkeep = useRunnerSelector(LifestyleSelectors.selectUpkeep)
 
   const loanItems: EndOfMonthLineItem[] = loans
     .filter((loan) => loan.interestRate > 0)
@@ -46,23 +73,13 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
       id: loan.id,
       label: `${loan.lender} loan interest (${loan.interestRate}%/mo)`,
       nuyenCost: 0,
+      nuyenIncome: 0,
       interestAmount: calculateMonthlyInterest(loan),
       loanId: loan.id,
       isLifestyle: false,
     }))
 
-  const monthsRemainingAfter = monthsPaid - 1
-  const lifestyleItem: EndOfMonthLineItem | null = upkeep > 0
-    ? {
-        id: "lifestyle",
-        label: monthsPaid > 0
-          ? `${quality} lifestyle (prepaid — ${monthsRemainingAfter} month${monthsRemainingAfter === 1 ? "" : "s"} remaining after)`
-          : `${quality} lifestyle upkeep`,
-        nuyenCost: monthsPaid === 0 ? upkeep : 0,
-        interestAmount: 0,
-        isLifestyle: true,
-      }
-    : null
+  const lifestyleItem = lifestyleLineItem(lifestyleName, upkeep, monthsPaid)
 
   const allItems: EndOfMonthLineItem[] = [
     ...loanItems,
@@ -89,6 +106,10 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
     .filter((item) => checkedIds.has(item.id))
     .reduce((sum, item) => sum + item.nuyenCost, 0)
 
+  const totalNuyenIncome = allItems
+    .filter((item) => checkedIds.has(item.id))
+    .reduce((sum, item) => sum + item.nuyenIncome, 0)
+
   const totalInterest = loanItems
     .filter((item) => checkedIds.has(item.id))
     .reduce((sum, item) => sum + item.interestAmount, 0)
@@ -101,8 +122,10 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
     }
 
     if (lifestyleItem && checkedIds.has(lifestyleItem.id)) {
-      if (monthsPaid > 0) {
-        dispatch(Actions.profile.setLifestyleMonthsPaid(monthsPaid - 1))
+      if (lifestyleItem.nuyenIncome > 0) {
+        dispatch(Actions.nuyen.depositNuyen(lifestyleItem.nuyenIncome))
+      } else if (monthsPaid > 0) {
+        dispatch(Actions.lifestyle.setLifestyleMonthsPaid(monthsPaid - 1))
       } else {
         dispatch(Actions.nuyen.withdrawNuyen(upkeep))
       }
@@ -116,12 +139,11 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
 
     // Read fresh state directly from stores so the reset always matches current data
     const freshLoans = runner.nuyen.loans
-    const freshQuality = runner.profile.lifestyle?.quality ?? LifestyleType.Street
-    const freshUpkeep = Lifestyles[freshQuality].upkeep
+    const freshUpkeep = runner.lifestyle.upkeep
 
     setCheckedIds(new Set([
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),
-      ...(freshUpkeep > 0 ? ["lifestyle"] : []),
+      ...(freshUpkeep !== 0 ? ["lifestyle"] : []),
     ]))
   }
 
@@ -154,6 +176,11 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
                       +<Nuyen amount={item.interestAmount} />
                     </Typography>
                   )}
+                  {item.nuyenIncome > 0 && (
+                    <Typography variant="body2" color="success.main" noWrap>
+                      +<Nuyen amount={item.nuyenIncome} />
+                    </Typography>
+                  )}
                   {item.nuyenCost > 0 && (
                     <Typography variant="body2" color="error.main" noWrap>
                       -<Nuyen amount={item.nuyenCost} />
@@ -166,9 +193,15 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
             />
           ))}
 
-          {(totalNuyenCost > 0 || totalInterest > 0) && (
+          {(totalNuyenCost > 0 || totalNuyenIncome > 0 || totalInterest > 0) && (
             <>
               <Divider />
+              {totalNuyenIncome > 0 && (
+                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                  <Typography color="text.secondary">Nuyen income</Typography>
+                  <Typography color="success.main">+<Nuyen amount={totalNuyenIncome} /></Typography>
+                </Stack>
+              )}
               {totalNuyenCost > 0 && (
                 <Stack direction="row" sx={{ justifyContent: "space-between" }}>
                   <Typography color="text.secondary">Nuyen cost</Typography>

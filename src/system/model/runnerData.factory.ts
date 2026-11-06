@@ -7,6 +7,7 @@ import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { metatypes, MetatypeType } from "./biology/metatypeData.ts"
 import { EntityKind } from "./entities/entityKind.ts"
 import { LifestyleType } from "./finances/lifestyleType.ts"
+import { standardLifestyle } from "./finances/runnerLifestyle.ts"
 import type { ItemCatalog } from "./items/itemUtils.ts"
 import { awakenings, AwakeningType } from "./magic/awakeningType.ts"
 import type { RunnerData } from "./runnerData.ts"
@@ -32,11 +33,9 @@ export function runnerDataFactory(options?: {
       archetype: "",
       description: "",
       personality: "",
-      lifestyle: {
-        quality: LifestyleType.Middle,
-        monthsPaid: 1,
-      },
     },
+
+    lifestyle: standardLifestyle(LifestyleType.Middle),
 
     biology: {
       metatype: MetatypeType.Human,

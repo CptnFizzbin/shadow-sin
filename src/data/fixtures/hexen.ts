@@ -36,8 +36,9 @@ export const Hexen: RunnerData = {
     archetype: "Mage",
     description: "Hermetic mage specializing in combat and detection spells.",
     personality: null,
-    lifestyle: null,
   },
+
+  lifestyle: { name: "Street", upkeep: 0, monthsPaid: 1 },
 
   initiative: {
     passesCompleted: [],

@@ -23,7 +23,7 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useGearBuildPoints, useGearTotalCost } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/model/items/implantData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -162,13 +162,12 @@ const GearSectionNuyen: FC<{
 }> = ({ section }) => {
   const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
 
-  const lifestyleInfo = useRunnerSelector(ProfileSelectors.selectLifestyleInfo)
-  const lifestyleMonths = useRunnerSelector(ProfileSelectors.selectLifestyleMonthsPaid) ?? 1
+  const lifestyleCost = useRunnerSelector(LifestyleSelectors.selectPrepaidCost)
 
   if (section === SectionHeader.Lifestyle) {
     return (
       <Typography color="text.secondary">
-        <Nuyen amount={(lifestyleInfo?.upkeep ?? 0) * lifestyleMonths} />
+        <Nuyen amount={lifestyleCost} />
       </Typography>
     )
   }
