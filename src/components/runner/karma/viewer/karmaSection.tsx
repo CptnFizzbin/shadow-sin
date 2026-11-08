@@ -8,10 +8,12 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
+import { useKarmaLedgerDialog } from "./karmaLedgerDialog.tsx"
 import { KarmaValue } from "./karmaValue.tsx"
 
 export const KarmaSection: FC = () => {
   const manageKarmaDialog = useManageKarmaDialog()
+  const karmaLedgerDialog = useKarmaLedgerDialog()
   const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
   const totalKarma = useRunnerSelector(KarmaSelectors.selectTotal)
 
@@ -32,14 +34,21 @@ export const KarmaSection: FC = () => {
           </Stack>
         </Grid>
 
-        <Grid size={2}>
+        <Grid size={1}>
           <Button size="small" variant="outlined" onClick={() => manageKarmaDialog.open()} fullWidth>
             Manage Karma
+          </Button>
+        </Grid>
+
+        <Grid size={1}>
+          <Button size="small" variant="outlined" onClick={() => karmaLedgerDialog.open()} fullWidth>
+            Ledger
           </Button>
         </Grid>
       </Grid>
 
       {manageKarmaDialog.outlet}
+      {karmaLedgerDialog.outlet}
     </>
   )
 }

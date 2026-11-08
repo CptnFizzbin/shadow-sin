@@ -56,6 +56,17 @@ describe.concurrent("addKarma", () => {
     expect(state.log[1].amount).toBe(2)
   })
 
+  it("records the trimmed reason in the ledger description", () => {
+    // Arrange
+    const state = makeKarma()
+
+    // Act
+    const next = karmaReducer(state, addKarma(5, "  Run against Aztechnology  "))
+
+    // Assert
+    expect(next.log[0].description).toBe("Earned 5 karma: Run against Aztechnology")
+  })
+
   it("throws when amount is zero or negative", () => {
     // Arrange / Act / Assert
     expect(() => addKarma(0)).toThrow(/positive/i)
