@@ -51,4 +51,35 @@ describe("KarmaSection", () => {
     expect(await screen.findByText("6")).toBeDefined()
     expect(screen.getByText("21")).toBeDefined()
   })
+
+  it("records the earn reason and shows it in the karma ledger", async () => {
+    // Arrange
+    renderWithKarma(5, 20)
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /manage karma/i }))
+    const manageDialog = await screen.findByRole("dialog", { name: "Manage Karma" })
+    fireEvent.click(within(manageDialog).getByRole("button", { name: /earn karma/i }))
+    fireEvent.change(within(manageDialog).getByLabelText("Reason"), { target: { value: "Extraction run" } })
+    fireEvent.click(within(manageDialog).getByRole("button", { name: /^earn$/i }))
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: /karma/i })).toBeNull())
+    fireEvent.click(screen.getByRole("button", { name: /^ledger$/i }))
+
+    // Assert
+    const ledgerDialog = await screen.findByRole("dialog", { name: "Karma Ledger" })
+    expect(within(ledgerDialog).getByText("Earned 1 karma: Extraction run")).toBeDefined()
+    expect(within(ledgerDialog).getByText("+1")).toBeDefined()
+  })
+
+  it("shows an empty message when the karma ledger has no entries", async () => {
+    // Arrange
+    renderWithKarma(0, 0)
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /^ledger$/i }))
+
+    // Assert
+    const ledgerDialog = await screen.findByRole("dialog", { name: "Karma Ledger" })
+    expect(within(ledgerDialog).getByText("No karma changes recorded yet")).toBeDefined()
+  })
 })

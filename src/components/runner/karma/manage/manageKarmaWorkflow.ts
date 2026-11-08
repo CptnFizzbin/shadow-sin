@@ -26,7 +26,7 @@ export interface ManageKarmaWorkflowData {
   current: number
   /** Edit Karma's new total earned karma. */
   total: number
-  /** Edit Karma's optional reason, recorded on the ledger entry. */
+  /** Earn or Edit Karma's optional reason, recorded on the ledger entry. */
   reason: string
   /** The Spend Karma category drilled into, or `null` on its category list. */
   spendSection: SpendKarmaSectionKey | null

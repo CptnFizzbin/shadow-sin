@@ -57,7 +57,7 @@ export const ManageKarmaActions: FC<ManageKarmaActionsProps> = ({ ctrl }) => {
       return <Button color="secondary" onClick={close}>Close</Button>
 
     case ManageKarmaStep.Earn:
-      return renderConfirm("Earn", data.amount < 1, () => dispatch(Actions.karma.addKarma(data.amount)))
+      return renderConfirm("Earn", data.amount < 1, () => dispatch(Actions.karma.addKarma(data.amount, data.reason)))
 
     case ManageKarmaStep.Buy:
       return renderConfirm(

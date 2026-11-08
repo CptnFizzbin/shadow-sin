@@ -17,9 +17,12 @@ const requirePositiveAmount = (actionName: string, amount: number) => {
 
 const formatNuyenAmount = (nuyen: number) => `${nuyen.toLocaleString("en")}¥`
 
-export const addKarma = createAction("karma/addKarma", (amount: number) => {
+/** Awards `amount` karma, raising both current and total earned; `reason` is recorded on the ledger entry. */
+export const addKarma = createAction("karma/addKarma", (amount: number, reason?: string) => {
   requirePositiveAmount("addKarma", amount)
-  const entry = createLedgerEntry(amount, `Added ${amount} karma`, "addKarma")
+  const trimmedReason = reason?.trim()
+  const description = trimmedReason ? `Earned ${amount} karma: ${trimmedReason}` : `Earned ${amount} karma`
+  const entry = createLedgerEntry(amount, description, "addKarma")
   return { payload: { amount, entry } }
 })
 

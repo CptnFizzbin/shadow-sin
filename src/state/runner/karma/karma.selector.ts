@@ -12,6 +12,11 @@ export namespace KarmaSelectors {
     (karma) => karma.current,
   )
 
+  export const selectLog = createMemoizedSelector(
+    select,
+    (karma) => karma.log,
+  )
+
   export const selectTotal = createMemoizedSelector(
     select,
     (karma) => karma.total,
