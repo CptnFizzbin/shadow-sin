@@ -8,6 +8,7 @@ import { useState } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { NuyenInput } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { isNewLoan } from "#/state/runner/nuyen/nuyen.actions.ts"
@@ -42,7 +43,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
   const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
-  const [amount, setAmount] = useState<number>(loan?.amount ?? 0)
+  const [amount, setAmount] = useState<number | undefined>(loan?.amount)
   const [interestRate, setInterestRate] = useState<number>(loan?.interestRate ?? 0)
   const [notes, setNotes] = useState(loan?.notes ?? "")
   const [showPayoffConfirm, setShowPayoffConfirm] = useState(false)
@@ -53,7 +54,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
     const loanData: LoanData = {
       id: loan?.id ?? NullUuid,
       lender,
-      amount,
+      amount: amount ?? 0,
       interestRate,
       notes,
     }
@@ -78,7 +79,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
   const handleClosed = () => {
     const defaults = defaultLoanValues()
     setLender(loan?.lender ?? defaults.lender)
-    setAmount(loan?.amount ?? defaults.amount)
+    setAmount(loan?.amount)
     setInterestRate(loan?.interestRate ?? defaults.interestRate)
     setNotes(loan?.notes ?? defaults.notes ?? "")
     setShowPayoffConfirm(false)
@@ -101,14 +102,10 @@ const LoanDialog: FC<LoanDialogProps> = ({
             placeholder="e.g. Slicus (NPC)"
             required
           />
-          <TextField
-            label="Amount Outstanding (¥)"
-            size="small"
-            fullWidth
-            type="number"
+          <NuyenInput
+            label="Amount Outstanding"
             value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-            slotProps={{ htmlInput: { min: 0 } }}
+            onChange={setAmount}
           />
           <TextField
             label="Monthly Interest Rate (%)"
@@ -141,7 +138,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
                   )
                 : (
                     <Typography color="warning.main">
-                      Pay off {formatNuyen(amount)} to {lender}? This will deduct {formatNuyen(amount)} from
+                      Pay off {formatNuyen(amount ?? 0)} to {lender}? This will deduct {formatNuyen(amount ?? 0)} from
                       your nuyen and remove the loan.
                     </Typography>
                   )}
