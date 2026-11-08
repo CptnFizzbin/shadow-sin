@@ -114,27 +114,29 @@ describe.concurrent("removeExtendedTest", () => {
 describe.concurrent("setExtendedTestHits", () => {
   it("updates only the matching entry's currentHits", () => {
     // Arrange
-    const test = makeTest({ currentHits: 2 })
-    const state = [test]
+    const other = makeTest({ id: "00000000-0000-0000-0000-000000000001", currentHits: 2, attempts: 1 })
+    const target = makeTest({ id: "00000000-0000-0000-0000-000000000002", currentHits: 2, attempts: 1 })
+    const state = [other, target]
 
     // Act
-    const next = extendedTestsReducer(state, setExtendedTestHits({ id: test.id, hits: 5 }))
+    const next = extendedTestsReducer(state, setExtendedTestHits({ id: target.id, hits: 5 }))
 
     // Assert
-    expect(next[0].currentHits).toBe(5)
+    expect(next).toEqual([other, { ...target, currentHits: 5 }])
   })
 })
 
 describe.concurrent("setExtendedTestAttempts", () => {
   it("updates only the matching entry's attempts", () => {
     // Arrange
-    const test = makeTest({ attempts: 1 })
-    const state = [test]
+    const other = makeTest({ id: "00000000-0000-0000-0000-000000000001", currentHits: 3, attempts: 1 })
+    const target = makeTest({ id: "00000000-0000-0000-0000-000000000002", currentHits: 3, attempts: 1 })
+    const state = [other, target]
 
     // Act
-    const next = extendedTestsReducer(state, setExtendedTestAttempts({ id: test.id, attempts: 2 }))
+    const next = extendedTestsReducer(state, setExtendedTestAttempts({ id: target.id, attempts: 2 }))
 
     // Assert
-    expect(next[0].attempts).toBe(2)
+    expect(next).toEqual([other, { ...target, attempts: 2 }])
   })
 })

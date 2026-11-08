@@ -9,17 +9,18 @@ import { burnEdge, spendEdge } from "./edge.actions.ts"
 
 describe.concurrent("spendEdge", () => {
   it("clamps to the current edge, not a caller-supplied value", async () => {
-    // Arrange
+    // Arrange — current sits below the attribute, so clamping to the attribute
+    // instead of the current edge would yield 4
     const runner = runnerDataFactory({ afterBuild: (data) => {
-      data.attributes[AttributeKey.edge] = 3
-      data.edge.current = 3
+      data.attributes[AttributeKey.edge] = 4
+      data.edge.current = 2
     } })
 
     // Act: a thunk — resolved against `runner` to read edge.current for the clamp
     const next = await dispatchThunk(runner, spendEdge(10))
 
     // Assert
-    expect(next.edge.current).toBe(3)
+    expect(next.edge.current).toBe(2)
   })
 
   it("never drops current below 0", async () => {

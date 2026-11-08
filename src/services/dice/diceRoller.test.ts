@@ -273,9 +273,11 @@ describe("DiceRoller", () => {
       // Arrange — first roll returns 6 (explodes), second roll returns 3 (stops chain)
       const diceRoller = new DiceRoller()
 
+      // Every call after the first returns 3, including the rolling-animation
+      // interval's calls, so the chain can't explode a second time.
       vi.spyOn(diceRoller, "rollD6")
         .mockReturnValueOnce(6)
-        .mockReturnValueOnce(3)
+        .mockReturnValue(3)
 
       diceRoller.addDice(1)
 
@@ -284,8 +286,11 @@ describe("DiceRoller", () => {
       vi.runAllTimers()
       await rollPromise
 
-      // Assert — original die + 1 extra from explosion
-      expect(diceRoller.store.getState().dice.length).toBeGreaterThan(1)
+      // Assert — original die + exactly 1 extra from explosion, both settled
+      expect(diceRoller.store.getState().dice).toEqual([
+        { value: 6, isRolling: false },
+        { value: 3, isRolling: false },
+      ])
     })
 
     it("does NOT add an extra die when explodes is true but value is not 6", async () => {
@@ -461,28 +466,51 @@ describe("DiceRoller", () => {
 
       // Act
       const rollPromise = diceRoller.rollDie(0)
-      const settledPromise = diceRoller.settled()
+      let hasSettled = false
+      const settledPromise = diceRoller.settled().then((result) => {
+        hasSettled = true
+        return result
+      })
+      await Promise.resolve()
+      const hasSettledWhileRolling = hasSettled
 
       vi.runAllTimers()
       const settledResult = await settledPromise
       await rollPromise
 
       // Assert
+      expect(hasSettledWhileRolling).toBe(false)
+      expect(hasSettled).toBe(true)
       expect(settledResult).toBe(diceRoller)
     })
 
     it("resolves as soon as all dice stop rolling even with multiple dice", async () => {
       // Arrange
       const diceRoller = new DiceRoller()
-      vi.spyOn(Math, "random").mockReturnValue(0.5) // always 4
-      diceRoller.addDice(3)
+      // Timeout jitter is 100ms, so die 0 settles at 200ms and die 1 at 900ms
+      vi.spyOn(Math, "random").mockReturnValue(0.5)
+      diceRoller.addDice(2)
+      diceRoller.rollDie(0, { timeout: 300 })
+      diceRoller.rollDie(1, { timeout: 1_000 })
+      let hasSettled = false
+      const settledPromise = diceRoller.settled().then((result) => {
+        hasSettled = true
+        return result
+      })
 
       // Act
-      const rollPromise = diceRoller.rollAll()
-      vi.runAllTimers()
-      const result = await rollPromise
+      vi.advanceTimersByTime(500)
+      await Promise.resolve()
+      const hasSettledWithOneDieRolling = hasSettled
+      const diceAfterFirstSettles = diceRoller.store.getState().dice.map((die) => die.isRolling)
+
+      vi.advanceTimersByTime(400)
+      const result = await settledPromise
 
       // Assert
+      expect(diceAfterFirstSettles).toEqual([false, true])
+      expect(hasSettledWithOneDieRolling).toBe(false)
+      expect(hasSettled).toBe(true)
       expect(result).toBe(diceRoller)
       expect(diceRoller.store.getState().dice.every((die) => !die.isRolling)).toBe(true)
     })

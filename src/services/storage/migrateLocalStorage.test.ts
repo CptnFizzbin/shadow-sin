@@ -221,7 +221,14 @@ describe.concurrent("migrateOldLocalStorageFormat", () => {
       // Arrange
       const ls = makeStorage()
       const existingId = "existing-char"
-      ls.setItem("shadowsin:index", JSON.stringify([{ id: existingId, name: "Existing", lastModified: "2024-01-01T00:00:00.000Z" }]))
+      const existingEntry = { id: existingId, name: "Existing", lastModified: "2024-01-01T00:00:00.000Z" }
+      ls.setItem("shadowsin:index", JSON.stringify([existingEntry]))
+      // An old-format copy of the already-indexed character is migrated too, so the
+      // de-duplication path is exercised alongside the append.
+      ls.setItem(
+        `shadow-sin:json:characters/${existingId}.json`,
+        JSON.stringify({ value: { id: existingId, profile: { alias: "Renamed" } } }),
+      )
       const newId = "new-char"
       ls.setItem(
         `shadow-sin:json:characters/${newId}.json`,
@@ -232,10 +239,10 @@ describe.concurrent("migrateOldLocalStorageFormat", () => {
       migrateOldLocalStorageFormat(ls)
 
       // Assert
-      const index = JSON.parse(ls.getItem("shadowsin:index")!) as Array<{ id: string }>
+      const index = JSON.parse(ls.getItem("shadowsin:index")!) as Array<{ id: string, name: string, lastModified: string }>
       expect(index).toHaveLength(2)
-      expect(index.map((e) => e.id)).toContain(existingId)
-      expect(index.map((e) => e.id)).toContain(newId)
+      expect(index[0]).toEqual(existingEntry)
+      expect(index[1]).toMatchObject({ id: newId, name: "NewGuy" })
     })
 
     it("does not create an index when only builder state is migrated (no characters)", () => {

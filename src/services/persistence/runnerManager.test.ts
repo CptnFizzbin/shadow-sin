@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
@@ -129,6 +129,7 @@ describe.concurrent("RunnerManager.save (debounced)", () => {
     const first = { ...runner, profile: { ...runner.profile, alias: "first" } }
     const second = { ...runner, profile: { ...runner.profile, alias: "second" } }
     const third = { ...runner, profile: { ...runner.profile, alias: "third" } }
+    const setItemSpy = vi.spyOn(storage, "setItem")
 
     // Act: fire three saves synchronously before any timer fires
     const saves = Promise.all([
@@ -138,7 +139,11 @@ describe.concurrent("RunnerManager.save (debounced)", () => {
     ])
     await saves
 
-    // Assert — only the last alias reaches storage; bypass the cache with a fresh manager
+    // Assert — the runner key is written exactly once, with the last alias
+    const runnerWrites = setItemSpy.mock.calls.filter(([key]) => key === `characters/${runner.id}`)
+    expect(runnerWrites).toHaveLength(1)
+    expect(runnerWrites[0][1]).toMatchObject({ profile: { alias: "third" } })
+    // Bypass the cache with a fresh manager to confirm what storage holds
     const freshManager = new RunnerManager({ local: storage }, 0)
     const loaded = await freshManager.getRunner(runner.id)
     expect(loaded.profile.alias).toBe("third")

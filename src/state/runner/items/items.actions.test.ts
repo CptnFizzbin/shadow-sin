@@ -27,6 +27,8 @@ import {
 } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   kind: EntityKind.item, items: { parentId: null, childIds: [] },
   id: crypto.randomUUID() as UUID,
@@ -45,14 +47,20 @@ describe.concurrent("licenses.create", () => {
       name: "License: Ares Predator V",
       rating: 3,
     }
+    const staleId = crypto.randomUUID() as UUID
+    // A draft that still carries an id (e.g. copied from an existing licence) must not reuse it
+    const draftWithStaleId = { ...licenseDraft, id: staleId }
 
     // Act
-    const next = gearReducer({}, licenses.create(licenseDraft))
+    const next = gearReducer({}, licenses.create(draftWithStaleId))
 
     // Assert
-    const [stored] = Object.values(next)
+    const [[storedKey, stored]] = Object.entries(next)
+    expect(Object.keys(next)).toHaveLength(1)
     expect(stored).toMatchObject(licenseDraft)
-    expect(stored.id).toBeDefined()
+    expect(stored.id).toMatch(UUID_PATTERN)
+    expect(stored.id).not.toBe(staleId)
+    expect(storedKey).toBe(stored.id)
   })
 })
 
@@ -160,14 +168,19 @@ describe.each([
     it("adds the item under a freshly generated id", () => {
       // Arrange
       const draft = { itemType, name: "Test Item", items: { parentId: null, childIds: [] } }
+      const staleId = crypto.randomUUID() as UUID
+      const draftWithStaleId = { ...draft, id: staleId }
 
       // Act
-      const next = gearReducer({}, namespace.create(draft as never))
+      const next = gearReducer({}, namespace.create(draftWithStaleId as never))
 
       // Assert
-      const [stored] = Object.values(next)
+      const [[storedKey, stored]] = Object.entries(next)
+      expect(Object.keys(next)).toHaveLength(1)
       expect(stored).toMatchObject(draft)
-      expect(stored.id).toBeDefined()
+      expect(stored.id).toMatch(UUID_PATTERN)
+      expect(stored.id).not.toBe(staleId)
+      expect(storedKey).toBe(stored.id)
     })
   })
 
