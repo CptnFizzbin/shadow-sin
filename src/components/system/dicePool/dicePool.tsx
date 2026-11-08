@@ -16,6 +16,11 @@ import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 import { LedgerValue } from "./ledgerValue.tsx"
 
+const DIE_SIZE = 18
+const DIE_GAP = 0.5
+/** The most dice a single row of the pool overview holds before wrapping onto the next row. */
+const MAX_DICE_PER_ROW = 10
+
 const typeColors: Record<DiceGroupType, string> = {
   attribute: "primary.main",
   skill: "secondary.main",
@@ -54,11 +59,13 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
         padding: 1,
         flexBasis: 1,
         flexGrow: 1,
-        minWidth: 250,
+        // Capped at 100% so a pool squeezed into a narrow grid cell (e.g. Spellcasting beside Drain Resistance on a
+        // phone) shrinks with its cell instead of overflowing into its neighbour.
+        minWidth: "min(250px, 100%)",
       }}
     >
       <Stack direction="row" sx={{ alignItems: "center" }}>
-        <Typography sx={{ flexGrow: 1, fontWeight: "bold" }}>{name}</Typography>
+        <Typography noWrap title={name} sx={{ flexGrow: 1, minWidth: 0, fontWeight: "bold" }}>{name}</Typography>
 
         <Typography sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums" }}>
           {total}
@@ -78,6 +85,7 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
         <IconButton
           size="small"
           aria-label={`Roll ${name}`}
+          sx={{ flexShrink: 0 }}
           onClick={(event) => {
             event.stopPropagation()
             diceTrayApi?.setDice(total)
@@ -89,9 +97,17 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
       <Collapse in={!isOpen}>
         <Stack sx={{ paddingTop: 1 }} className="overview">
-          <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5, color: "text.secondary" }}>
+          <Stack
+            direction="row"
+            sx={(theme) => ({
+              flexFlow: "row wrap",
+              gap: DIE_GAP,
+              maxWidth: `calc(${MAX_DICE_PER_ROW * DIE_SIZE}px + ${theme.spacing((MAX_DICE_PER_ROW - 1) * DIE_GAP)})`,
+              color: "text.secondary",
+            })}
+          >
             {Array.from({ length: total }, (_, index) => (
-              <DieFace key={index} value={null} size={18} />
+              <DieFace key={index} value={null} size={DIE_SIZE} />
             ))}
           </Stack>
 
