@@ -66,4 +66,24 @@ describe("DicePool", () => {
     const items = within(screen.getByRole("list")).getAllByRole("listitem")
     expect(items.map((item) => item.textContent)).toEqual(["5Raw Value", "+3Synaptic Booster", "=7Augmented maximum"])
   })
+
+  it("draws one die per point in a 32-die pool's overview", () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.drainResistance",
+          label: "Drain Resistance",
+          groups: [{ name: "WIL", size: 16, type: "attribute" }, { name: "CHA", size: 16, type: "attribute" }],
+          size: 32,
+        }}
+      />,
+    )
+
+    // Act
+    const overviewDice = document.querySelectorAll(".overview > .MuiStack-root:first-of-type > svg")
+
+    // Assert
+    expect(overviewDice).toHaveLength(32)
+  })
 })
