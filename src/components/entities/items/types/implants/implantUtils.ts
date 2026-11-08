@@ -1,5 +1,5 @@
 import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantGrade } from "#/system/model/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
 
 export const BASE_ESSENCE = 6
 
@@ -31,4 +31,31 @@ export function getImplantEffectiveNuyenCost(item: ImplantData): number {
     ImplantGradeNuyenMultiplier[item.grade as ImplantGrade]
     ?? ImplantGradeNuyenMultiplier[ImplantGrade.standard]
   return nuyenCost * multiplier
+}
+
+/** Essence lost to a set of implants, split by implant type. */
+export interface EssenceUsage {
+  cyberware: number
+  bioware: number
+  /** Combined Essence loss: the larger of the two types in full, plus half of the smaller one. */
+  total: number
+}
+
+/**
+ * Returns the Essence lost to `implants`. Every implant counts, including implant accessories,
+ * using its grade-adjusted Essence cost.
+ */
+export function getEssenceUsage(implants: ImplantData[]): EssenceUsage {
+  const sumEssenceOf = (implantType: ImplantType) => implants
+    .filter((implant) => implant.implantType === implantType)
+    .reduce((sum, implant) => sum + getImplantEffectiveEssenceCost(implant), 0)
+
+  const cyberware = sumEssenceOf(ImplantType.cyberware)
+  const bioware = sumEssenceOf(ImplantType.bioware)
+
+  return {
+    cyberware,
+    bioware,
+    total: Math.max(cyberware, bioware) + (Math.min(cyberware, bioware) / 2),
+  }
 }

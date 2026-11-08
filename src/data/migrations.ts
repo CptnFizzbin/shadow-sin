@@ -43,6 +43,7 @@ import v20261025_00_splitContactSkills from "./migrations/20261025_00_splitConta
 import v20261030_00_repairAgentStats from "./migrations/20261030_00_repairAgentStats.ts"
 import v20261031_00_addKnowledgeLanguageSkillIds from "./migrations/20261031_00_addKnowledgeLanguageSkillIds.ts"
 import v20261106_00_moveLifestyleToRunner from "./migrations/20261106_00_moveLifestyleToRunner.ts"
+import v20261108_00_equipImplants from "./migrations/20261108_00_equipImplants.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -89,6 +90,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20261030_00_repairAgentStats,
   v20261031_00_addKnowledgeLanguageSkillIds,
   v20261106_00_moveLifestyleToRunner,
+  v20261108_00_equipImplants,
 ]
 
 migrations.forEach((migration, index) => {
