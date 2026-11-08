@@ -27,7 +27,7 @@ describe.concurrent("hasAptitudeFor", () => {
   it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
     // Arrange
     const sheet = runnerDataFactory({ afterBuild: (draft) => {
-      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      draft.qualities = [{ kind: EntityKind.quality, id: NullUuid, name: "aptitude (PISTOLS)", type: "positive" }]
     } })
 
     // Act + Assert
@@ -111,9 +111,16 @@ describe.concurrent("getActiveSkillCap", () => {
 
 describe.concurrent("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => {
   it("returns the SR4A defaults", () => {
-    expect(getSkillGroupCap()).toBe(BASE_SKILL_GROUP_CAP)
-    expect(getKnowledgeSkillCap()).toBe(BASE_KNOWLEDGE_SKILL_CAP)
-    expect(getLanguageSkillCap()).toBe(BASE_LANGUAGE_SKILL_CAP)
+    // Act
+    const caps = {
+      skillGroup: getSkillGroupCap(),
+      knowledgeSkill: getKnowledgeSkillCap(),
+      languageSkill: getLanguageSkillCap(),
+    }
+
+    // Assert
+    expect(caps).toEqual({ skillGroup: 6, knowledgeSkill: 6, languageSkill: 6 })
+    expect([BASE_SKILL_GROUP_CAP, BASE_KNOWLEDGE_SKILL_CAP, BASE_LANGUAGE_SKILL_CAP]).toEqual([6, 6, 6])
   })
 })
 
@@ -146,7 +153,7 @@ describe.concurrent("getAttributeCap", () => {
     } })
 
     // Act + Assert
-    expect(getAttributeCap(sheet, AttributeKey.magic)).toBeGreaterThan(0)
+    expect(getAttributeCap(sheet, AttributeKey.magic)).toBe(6)
   })
 
   it("returns 0 for Magic on a mundane (it isn't a usable cap)", () => {

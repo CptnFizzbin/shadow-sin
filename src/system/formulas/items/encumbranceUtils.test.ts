@@ -121,7 +121,18 @@ describe.concurrent("calculateEncumbrancePenalty", () => {
     expect(calculateEncumbrancePenalty(6, 4, 4)).toBe(0)
   })
 
-  it("penalizes based on whichever of ballistic or impact exceeds the threshold more", () => {
-    expect(calculateEncumbrancePenalty(11, 5, 4)).toBe(2)
+  it.each([
+    { totalBallistic: 11, totalImpact: 5, expected: 2 },
+    { totalBallistic: 11, totalImpact: 13, expected: 3 },
+    { totalBallistic: 13, totalImpact: 11, expected: 3 },
+  ])("penalizes based on whichever of ballistic ($totalBallistic) or impact ($totalImpact) exceeds the threshold more", ({ totalBallistic, totalImpact, expected }) => {
+    // Arrange
+    const body = 4
+
+    // Act
+    const penalty = calculateEncumbrancePenalty(totalBallistic, totalImpact, body)
+
+    // Assert
+    expect(penalty).toBe(expected)
   })
 })

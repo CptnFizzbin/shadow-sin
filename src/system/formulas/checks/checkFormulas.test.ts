@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest"
 
 import type { Duration } from "#/utils/duration/duration.ts"
-import { DurationUtils } from "#/utils/duration/durationUtils.ts"
 
 import { CheckFormulas } from "./checkFormulas.ts"
 
@@ -97,6 +96,7 @@ describe("CheckFormulas.getDuration", () => {
   })
 
   test("simplifies every period", () => {
+    // Arrange
     const interval = {
       initPasses: 100,
       combatRounds: 100,
@@ -108,14 +108,29 @@ describe("CheckFormulas.getDuration", () => {
       months: 100,
     } satisfies Duration
 
-    expect(CheckFormulas.getDuration({ interval, attempts: 1, simplify: true }))
-      .toEqual(DurationUtils.simplify(interval))
+    // Act
+    const once = CheckFormulas.getDuration({ interval, attempts: 1, simplify: true })
+    const twice = CheckFormulas.getDuration({ interval, attempts: 2, simplify: true })
 
-    const doubled = Object.fromEntries(
-      Object.entries(interval).map(([unit, value]) => [unit, value * 2]),
-    )
+    // Assert
+    expect(once).toEqual({
+      initPasses: 100,
+      seconds: 40,
+      minutes: 46,
+      hours: 5,
+      days: 6,
+      weeks: 2,
+      months: 128,
+    })
 
-    expect(CheckFormulas.getDuration({ interval, attempts: 2, simplify: true }))
-      .toEqual(DurationUtils.simplify(doubled))
+    expect(twice).toEqual({
+      initPasses: 200,
+      seconds: 20,
+      minutes: 33,
+      hours: 11,
+      days: 5,
+      weeks: 1,
+      months: 257,
+    })
   })
 })

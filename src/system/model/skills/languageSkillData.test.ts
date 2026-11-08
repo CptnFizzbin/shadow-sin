@@ -36,6 +36,18 @@ describe.concurrent("LanguageSkillDataSchema", () => {
 
     // Assert
     expect(result.success).toBe(true)
+    expect(result.data?.lingo).toBe("Tir Tairngire")
+  })
+
+  it("rejects a non-string lingo", () => {
+    // Arrange
+    const skill = { id: uuid.v7(), name: "Elven", isNative: false, rating: 3, lingo: 42 }
+
+    // Act
+    const result = LanguageSkillDataSchema.safeParse(skill)
+
+    // Assert
+    expect(result.success).toBe(false)
   })
 
   it("rejects a missing isNative flag", () => {

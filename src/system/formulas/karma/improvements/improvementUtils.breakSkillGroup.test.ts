@@ -85,6 +85,11 @@ describe.concurrent("applyImprovement — grouped active skill without the group
 
     // Assert — group is gone, constituent skills promoted, Banishing at new rating 4
     expect(next.skills.skillGroups.find((g) => g.name === SkillGroupKey.Conjuring)).toBeUndefined()
-    expect(next.skills.activeSkills.find((s) => s.name === SkillKey.banishing)?.rating).toBe(4)
+    expect(next.skills.activeSkills).toHaveLength(3)
+    expect(next.skills.activeSkills).toEqual(expect.arrayContaining([
+      { name: SkillKey.banishing, rating: 4 },
+      { name: SkillKey.binding, rating: 3 },
+      { name: SkillKey.summoning, rating: 3 },
+    ]))
   })
 })
