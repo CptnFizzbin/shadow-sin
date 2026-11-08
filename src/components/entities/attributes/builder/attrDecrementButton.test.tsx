@@ -40,29 +40,33 @@ describe("AttrDecrementButton", () => {
   })
 
   it("leaves Edge alone when it's already within the new Rating", () => {
-    // Arrange: Rating = ceil(avg(4, 4, 4, 4)) = 4; Edge sits well below that.
+    // Arrange: Rating drops from ceil(17 / 4) = 5 to ceil(16 / 4) = 4, landing exactly on Edge.
     const store = renderButton(AttributeKey.charisma, (data) => {
       data.biology.metatype = MetatypeType.AI
       data.biology.awakening = AwakeningType.None
-      data.attributes[AttributeKey.charisma] = 4
+      data.attributes[AttributeKey.charisma] = 5
       data.attributes[AttributeKey.intuition] = 4
       data.attributes[AttributeKey.logic] = 4
       data.attributes[AttributeKey.willpower] = 4
-      data.attributes[AttributeKey.edge] = 1
+      data.attributes[AttributeKey.edge] = 4
     })
 
     // Act
     fireEvent.click(screen.getByRole("button"))
 
     // Assert
-    expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(1)
+    expect(store.getState().runner.attributes[AttributeKey.charisma]).toBe(4)
+    expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(4)
   })
 
   it("doesn't touch Edge for a non-AI metatype", () => {
-    // Arrange
+    // Arrange: an AI-style Rating here would be ceil(4 / 4) = 1 after the decrement, far below Edge.
     const store = renderButton(AttributeKey.charisma, (data) => {
       data.biology.metatype = MetatypeType.Human
-      data.attributes[AttributeKey.charisma] = 4
+      data.attributes[AttributeKey.charisma] = 2
+      data.attributes[AttributeKey.intuition] = 1
+      data.attributes[AttributeKey.logic] = 1
+      data.attributes[AttributeKey.willpower] = 1
       data.attributes[AttributeKey.edge] = 6
     })
 
@@ -70,6 +74,7 @@ describe("AttrDecrementButton", () => {
     fireEvent.click(screen.getByRole("button"))
 
     // Assert
+    expect(store.getState().runner.attributes[AttributeKey.charisma]).toBe(1)
     expect(store.getState().runner.attributes[AttributeKey.edge]).toBe(6)
   })
 })

@@ -37,13 +37,21 @@ describe("ItemDialogSubitemsTab", () => {
   })
 
   it("renders no subitem cards when the item has none", () => {
-    // Arrange
-    renderWithRunner(<ItemDialogSubitemsTab itemId={parent.id} />, {
-      [parent.id]: parent,
+    // Arrange — the other item is in the catalog but attached to nothing, so it mustn't appear
+    const childlessParent: ItemData = { ...parent, items: { parentId: null, childIds: [] } }
+    const unattached: ItemData = { ...child, items: { parentId: null, childIds: [] } }
+
+    // Act
+    renderWithRunner(<ItemDialogSubitemsTab itemId={childlessParent.id} />, {
+      [childlessParent.id]: childlessParent,
+      [unattached.id]: unattached,
     })
 
     // Assert
     expect(screen.queryByText("Plate Insert")).toBeNull()
+    expect(screen.queryByText("Combat Vest")).toBeNull()
+    const addItemButton = screen.getByRole("button", { name: /add item/i })
+    expect(addItemButton.parentElement!.children).toHaveLength(1)
   })
 
   it("opens the Add Item workflow's type picker when Add Item is clicked", () => {

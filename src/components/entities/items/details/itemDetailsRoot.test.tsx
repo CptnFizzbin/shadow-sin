@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
@@ -52,17 +52,33 @@ describe("ItemDetailsRoot", () => {
     expect(screen.getByText(/BOD.*\+1/)).toBeDefined()
   })
 
-  it("renders equipped and stashed status", () => {
-    render(
-      <ItemDetailsRoot item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
-      { wrapper: ThemeWrapper },
-    )
+  it("renders equipped, stashed, and wireless-off status", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, equipped: true, stashed: true, wireless: { enabled: false } }
 
+    // Act
+    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
+
+    // Assert
     expect(screen.getByText("Equipped")).toBeDefined()
+    expect(screen.getByText("Stashed")).toBeDefined()
     expect(screen.getByText("Wireless Off")).toBeDefined()
   })
 
+  it("omits the equipped and stashed status when the item is neither", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, equipped: false, stashed: false }
+
+    // Act
+    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(screen.queryByText("Equipped")).toBeNull()
+    expect(screen.queryByText("Stashed")).toBeNull()
+  })
+
   it("composes stats, damage track, subitems, and footer slots", () => {
+    // Arrange
     const onDamageChange = vi.fn()
     const accessory: ItemData = {
       kind: EntityKind.item, items: { parentId: null, childIds: [] },
@@ -71,6 +87,7 @@ describe("ItemDetailsRoot", () => {
       itemType: ItemType.software,
     }
 
+    // Act
     render(
       <ItemDetailsRoot item={baseItem}>
         <ItemDetailsSlot.Stat label="Handling" value="3" />
@@ -82,9 +99,17 @@ describe("ItemDetailsRoot", () => {
       </ItemDetailsRoot>,
       { wrapper: ThemeWrapper },
     )
+    const damageTrack = screen.getByText("Damage").parentElement!
+    fireEvent.click(within(damageTrack).getByRole("button", { name: "Reset" }))
 
+    // Assert
     expect(screen.getByText("Handling")).toBeDefined()
     expect(screen.getByText("3")).toBeDefined()
+    const damageButtons = within(damageTrack).getAllByRole("button")
+    // One Reset button plus a cell per box of the 12-box track.
+    expect(damageButtons).toHaveLength(13)
+    expect(damageButtons.filter((button) => button.classList.contains("MuiButton-contained"))).toHaveLength(2)
+    expect(onDamageChange).toHaveBeenCalledExactlyOnceWith(0)
     expect(screen.getByText("Attachments")).toBeDefined()
     expect(screen.getByText("GPS Jammer")).toBeDefined()
     expect(screen.getByText("Custom footer content")).toBeDefined()
