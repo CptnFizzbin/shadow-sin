@@ -12,6 +12,9 @@ import {
 import { getDiceOffset } from "./diceUtils.ts"
 import { DieFace } from "./dieFace.tsx"
 
+/** The most dice a single row of a {@link DiceResult} holds before wrapping onto the next row. */
+export const MAX_DICE_PER_ROW = 10
+
 interface DiceResultProps {
   roller: DiceRoller
   highlightHits?: boolean
@@ -46,6 +49,10 @@ export const DiceResult: FC<DiceResultProps> = ({
       sx={{
         flexWrap: "wrap",
         gap: 0,
+        // Capping the width rather than chunking dice into rows lets a narrow parent wrap to fewer dice per row,
+        // so side-by-side pools shrink instead of overflowing into each other.
+        maxWidth: iconSize * MAX_DICE_PER_ROW,
+        minWidth: 0,
         color: diceDefaultColor,
         margin: "auto",
         justifyContent: "center",
