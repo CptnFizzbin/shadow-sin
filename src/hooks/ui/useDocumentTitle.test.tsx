@@ -35,9 +35,11 @@ describe("useDocumentTitle", () => {
     const { unmount } = render(<TitleSetter title="Artemis - ShadowSIN" />)
 
     // Act
+    const titleWhileMounted = document.title
     unmount()
 
     // Assert
+    expect(titleWhileMounted).toBe("Artemis - ShadowSIN")
     expect(document.title).toBe("ShadowSIN 4e")
   })
 })

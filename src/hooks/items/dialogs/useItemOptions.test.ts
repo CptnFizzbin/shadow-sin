@@ -312,12 +312,16 @@ describe.concurrent("initializeOptions", () => {
       expect(options.showCost).toBe(false)
     })
 
-    it("is true when forced without enabled=false", () => {
+    it("stays true unless forced and enabled=false are set together", () => {
       // Arrange & Act
-      const options = initializeOptions(newItem, false, { showCost: { forced: true } })
+      const forcedOnly = initializeOptions(newItem, false, { showCost: { forced: true } })
+      const disabledOnly = initializeOptions(newItem, false, { showCost: { enabled: false } })
+      const forcedOff = initializeOptions(newItem, false, { showCost: { forced: true, enabled: false } })
 
       // Assert
-      expect(options.showCost).toBe(true)
+      expect(forcedOnly.showCost).toBe(true)
+      expect(disabledOnly.showCost).toBe(true)
+      expect(forcedOff.showCost).toBe(false)
     })
   })
 
@@ -346,12 +350,16 @@ describe.concurrent("initializeOptions", () => {
       expect(options.showAvailability).toBe(false)
     })
 
-    it("is true when forced without enabled=false", () => {
+    it("stays true unless forced and enabled=false are set together", () => {
       // Arrange & Act
-      const options = initializeOptions(newItem, false, { showAvailability: { forced: true } })
+      const forcedOnly = initializeOptions(newItem, false, { showAvailability: { forced: true } })
+      const disabledOnly = initializeOptions(newItem, false, { showAvailability: { enabled: false } })
+      const forcedOff = initializeOptions(newItem, false, { showAvailability: { forced: true, enabled: false } })
 
       // Assert
-      expect(options.showAvailability).toBe(true)
+      expect(forcedOnly.showAvailability).toBe(true)
+      expect(disabledOnly.showAvailability).toBe(true)
+      expect(forcedOff.showAvailability).toBe(false)
     })
   })
 
@@ -380,12 +388,16 @@ describe.concurrent("initializeOptions", () => {
       expect(options.canBeStashed).toBe(false)
     })
 
-    it("is true when forced without enabled=false", () => {
+    it("stays true unless forced and enabled=false are set together", () => {
       // Arrange & Act
-      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true } })
+      const forcedOnly = initializeOptions(newItem, false, { canBeStashed: { forced: true } })
+      const disabledOnly = initializeOptions(newItem, false, { canBeStashed: { enabled: false } })
+      const forcedOff = initializeOptions(newItem, false, { canBeStashed: { forced: true, enabled: false } })
 
       // Assert
-      expect(options.canBeStashed).toBe(true)
+      expect(forcedOnly.canBeStashed).toBe(true)
+      expect(disabledOnly.canBeStashed).toBe(true)
+      expect(forcedOff.canBeStashed).toBe(false)
     })
   })
 })

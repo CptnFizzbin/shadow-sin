@@ -87,15 +87,20 @@ describe("useAddItemDialog", () => {
     })
   })
 
-  it("does nothing when the type picker is cancelled", () => {
+  it("does nothing when the type picker is cancelled", async () => {
     // Arrange
     const runnerStore = renderWithRunner(<AddItemDialogHarness />)
 
     // Act
     fireEvent.click(screen.getByText("Add Item"))
     clickInLastDialog(/cancel/i)
+    // The type dialog's result resolves across a promise tick, so let `open()` finish before
+    // checking that it neither opened a form dialog nor dispatched anything.
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
+    await new Promise((resolve) => setTimeout(resolve, 0))
 
     // Assert
+    expect(screen.queryByRole("dialog")).toBeNull()
     expect(Object.values(runnerStore.getState().items)).toHaveLength(0)
   })
 })
