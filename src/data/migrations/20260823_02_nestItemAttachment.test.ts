@@ -16,13 +16,14 @@ describe.concurrent("029_nestItemAttachment", () => {
 
   it("preserves an existing RunnerData items field", () => {
     // Arrange
-    const character = { items: { parentId: null, childIds: [] } }
+    const childId = crypto.randomUUID()
+    const character = { items: { parentId: null, childIds: [childId] } }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result.items).toEqual({ parentId: null, childIds: [] })
+    expect(result.items).toEqual({ parentId: null, childIds: [childId] })
   })
 
   it("nests an item's parentId/childIds under items", () => {

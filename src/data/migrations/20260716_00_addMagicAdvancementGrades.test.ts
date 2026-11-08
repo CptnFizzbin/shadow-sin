@@ -41,12 +41,12 @@ describe.concurrent("019_addMagicAdvancementGrades", () => {
 
   it("does not mutate the input object", () => {
     // Arrange
-    const character = { initiateGrade: 1, submersionGrade: 1 }
+    const character: { initiateGrade?: number, submersionGrade?: number } = { initiateGrade: 1 }
 
     // Act
     migration.up(character)
 
     // Assert
-    expect(character).toEqual({ initiateGrade: 1, submersionGrade: 1 })
+    expect(character).toEqual({ initiateGrade: 1 })
   })
 })

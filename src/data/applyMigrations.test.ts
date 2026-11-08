@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import { APP_VERSION } from "./appVersion.ts"
-import { applyMigrations } from "./applyMigrations.ts"
+import { applyMigrations, resolveRawRunnerSinVersion } from "./applyMigrations.ts"
 import { LATEST_MIGRATION_TIMESTAMP, migrations } from "./migrations.ts"
 
 describe.concurrent("applyMigrations", () => {
@@ -18,13 +18,14 @@ describe.concurrent("applyMigrations", () => {
   })
 
   it("defensively initialises optional collection fields when missing", () => {
-    // Arrange
-    const runner = {}
+    // Arrange — already at the newest migration, so no migration runs and only the defensive
+    // defaults can supply these fields
+    const runner = { _meta_: { sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null } }
 
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — fields documented in applyMigrations as defensive defaults
+    // Assert
     expect(result.spirits).toEqual([])
     expect(result.spells).toEqual([])
     expect(result.powers).toEqual([])
@@ -32,81 +33,64 @@ describe.concurrent("applyMigrations", () => {
     expect(result.sprites).toEqual([])
     expect(result.qualities).toEqual([])
     expect(result.contacts).toEqual([])
-    // Not asserted empty here — migration 20260809_00 (addMatrixNode) always backfills a
-    // blank flat `matrix` node first, so by the time 20260809_02 (addMatrixGameState) runs it
-    // always has prior matrix data to convert into knownNodes[0]. See
-    // 20260809_02_addMatrixGameState.test.ts for the "no prior matrix data" case, exercised by
-    // calling that migration's `up` in isolation.
-    expect(result.gameState.matrix.knownNodes).toHaveLength(1)
+    expect(result.tradition).toBeNull()
+    expect(result.items).toEqual({ parentId: null, childIds: [] })
+    expect(result.initiative).toEqual({ passesCompleted: [] })
+    expect(result.gameState).toEqual({ matrix: { knownNodes: [], activePrograms: [] } })
   })
 
   it("skips migrations already covered by _meta_.sinVersion", () => {
-    // Arrange — pre-mark migration 20251001_00 (addLoanIdAndInterestRate) as applied with a
-    // known stable loan id
-    const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
+    // Arrange — marked as migrated up to and including removeVersionField (2026-04-19), so a
+    // top-level `version` it would delete must survive, while later migrations still run
     const runner = {
-      _meta_: { sinVersion: "2025-10-01T00:00:00Z" },
-      nuyen: {
-        current: 100,
-        loans: [
-          { id: knownLoanId, lender: "Loan Shark", amount: 1000, interestRate: 5 },
-        ],
-      },
+      _meta_: { sinVersion: "2026-04-19T00:00:00Z" },
+      version: 3,
     }
 
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — the loan id is preserved (the migration was not re-run, otherwise a UUID
-    // would have been re-assigned only if missing)
-    expect(result.nuyen.loans[0].id).toBe(knownLoanId)
+    // Assert
+    expect(result).toHaveProperty("version", 3)
+    expect(result.kind).toBe("runner")
     expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("skips migrations already covered by the pre-split _meta_.appVersion", () => {
     // Arrange — a runner saved before the appVersion/sinVersion split still carries its
     // migration-tracking value under the old `appVersion` name
-    const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
-      _meta_: { appVersion: "2025-10-01T00:00:00Z" },
-      nuyen: {
-        current: 100,
-        loans: [
-          { id: knownLoanId, lender: "Loan Shark", amount: 1000, interestRate: 5 },
-        ],
-      },
+      _meta_: { appVersion: "2026-04-19T00:00:00Z" },
+      version: 3,
     }
 
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — the loan id is preserved (the migration was not re-run)
-    expect(result.nuyen.loans[0].id).toBe(knownLoanId)
+    // Assert
+    expect(result).toHaveProperty("version", 3)
+    expect(result.kind).toBe("runner")
     expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
   it("resolves a legacy _meta_.version of 32 directly to the matching migration's timestamp", () => {
-    // Arrange — 32 is the last version under the old sequential-integer scheme: the common case
-    // of a runner that's already fully migrated under it. When new migrations are added with
-    // timestamps newer than the 32nd migration, they will run and bump sinVersion to the newest
-    // registered migration's timestamp.
-    const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
+    // Arrange — the 32nd migration (dropIncompleteQualitySource) would drop this quality's
+    // page-less source, and the 33rd (addReputationLedger) adds a reputation ledger
     const runner = {
       _meta_: { version: 32 },
-      nuyen: {
-        current: 100,
-        loans: [
-          { id: knownLoanId, lender: "Loan Shark", amount: 1000, interestRate: 5 },
-        ],
-      },
+      version: 3,
+      qualities: [{ name: "Ambidextrous", source: { book: "SR4A" } }],
     }
 
     // Act
+    const resolvedSinVersion = resolveRawRunnerSinVersion(runner)
     const result = applyMigrations(runner)
 
-    // Assert — loan id preserved, sinVersion bumped to the latest migration timestamp when newer
-    // migrations run
-    expect(result.nuyen.loans[0].id).toBe(knownLoanId)
+    // Assert — migrations up to and including the 32nd were skipped, later ones ran
+    expect(resolvedSinVersion).toBe("2026-08-23T17:38:57Z")
+    expect(result).toHaveProperty("version", 3)
+    expect(result.qualities[0].source).toEqual({ book: "SR4A" })
+    expect(result.reputation.ledger).toEqual([])
     expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
 
@@ -117,6 +101,8 @@ describe.concurrent("applyMigrations", () => {
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
       _meta_: { version: 7 },
+      version: 3,
+      qualities: [{ name: "Ambidextrous", source: { book: "SR4A" } }],
       nuyen: {
         current: 100,
         loans: [
@@ -128,7 +114,10 @@ describe.concurrent("applyMigrations", () => {
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — addLoanIdAndInterestRate re-runs but is a no-op on a loan that already has an id
+    // Assert — early (removeVersionField) and late (dropIncompleteQualitySource) migrations both
+    // re-ran, and addLoanIdAndInterestRate's re-run kept the existing loan id
+    expect(result).not.toHaveProperty("version")
+    expect(result.qualities[0].source).toBeUndefined()
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
     expect(result._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
   })
@@ -169,19 +158,6 @@ describe.concurrent("applyMigrations", () => {
     expect("version" in result).toBe(false)
   })
 
-  it("runs migrations in ascending timestamp order", () => {
-    // Arrange — call sites depend on this ordering invariant
-    const sortedTimestamps = [...migrations]
-      .map((m) => new Date(m.timestamp).getTime())
-      .sort((a, b) => a - b)
-
-    // Act
-    const actualTimestamps = migrations.map((m) => new Date(m.timestamp).getTime())
-
-    // Assert
-    expect(actualTimestamps).toEqual(sortedTimestamps)
-  })
-
   it("does not mutate the input object", () => {
     // Arrange
     const runner = { spells: [{ name: "Fireball" }] }
@@ -192,5 +168,34 @@ describe.concurrent("applyMigrations", () => {
 
     // Assert
     expect(runner).toEqual(snapshot)
+  })
+})
+
+// Sequential: the spies observe calls to the shared migration registry, so a concurrent
+// applyMigrations call would pollute the recorded call order.
+describe("applyMigrations call order", () => {
+  it("runs migrations in ascending timestamp order", () => {
+    // Arrange
+    const spies = migrations.map((migration) => ({
+      timestamp: migration.timestamp,
+      spy: vi.spyOn(migration, "up"),
+    }))
+
+    // Act
+    let calls: { timestamp: string, callOrder: number | undefined }[]
+    try {
+      applyMigrations({})
+      calls = spies.map(({ timestamp, spy }) => ({ timestamp, callOrder: spy.mock.invocationCallOrder.at(0) }))
+    } finally {
+      for (const { spy } of spies) spy.mockRestore()
+    }
+
+    // Assert
+    const calledTimestamps = calls
+      .filter((call): call is { timestamp: string, callOrder: number } => call.callOrder !== undefined)
+      .sort((left, right) => left.callOrder - right.callOrder)
+      .map(({ timestamp }) => new Date(timestamp).getTime())
+    expect(calledTimestamps).toHaveLength(migrations.length)
+    expect(calledTimestamps).toEqual([...calledTimestamps].sort((left, right) => left - right))
   })
 })

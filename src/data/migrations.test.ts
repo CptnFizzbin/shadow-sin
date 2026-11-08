@@ -106,29 +106,26 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
     const yaml = runnerDataToYaml(migrated)
     const restored = yamlToRunnerData(yaml)
 
-    // Assert — scalar fields survive the round-trip
-    expect(restored.id).toBe(migrated.id)
-    expect(restored._meta_).toEqual(migrated._meta_)
-    expect(restored.nuyen).toEqual(migrated.nuyen)
-    expect(restored.spells).toEqual(migrated.spells)
+    // Assert
+    expect(restored).toEqual(migrated)
   })
 
   it("yaml-imported runner is already at the current version", async () => {
-    // Arrange — migrate then export/import
+    // Arrange — migrate, then clear appVersion: it is only restamped when a migration runs, so a
+    // surviving null shows that neither import nor reload re-ran any migration
     const { manager } = await makeMigratedRunnerManager()
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
-    const yaml = runnerDataToYaml(migrated)
-    const restored = yamlToRunnerData(yaml)
-
-    // Save the restored (already-migrated) runner into fresh storage
+    const exported = runnerDataToYaml({ ...migrated, _meta_: { ...migrated._meta_, appVersion: null } })
     const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
-    await freshStorage.setItem(`characters/${restored.id}`, toJsonValue(restored))
 
-    // Act — loading should not re-run any migrations
+    // Act
+    const restored = yamlToRunnerData(exported)
+    await freshStorage.setItem(`characters/${restored.id}`, toJsonValue(restored))
     const reloaded = await freshManager.getRunner(restored.id)
 
     // Assert
-    expect(reloaded._meta_.sinVersion).toBe(migrated._meta_.sinVersion)
+    expect(restored._meta_).toEqual({ sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null })
+    expect(reloaded._meta_).toEqual({ sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null })
   })
 
   it("normalises an old-format runner into the current RunnerData shape", async () => {

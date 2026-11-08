@@ -16,13 +16,16 @@ describe.concurrent("007_removeVersionField", () => {
 
   it("is a no-op when there is no version field", () => {
     // Arrange
-    const character = {}
+    const character: { version?: number, id: string, profile: { alias: string } } = {
+      id: "abc",
+      profile: { alias: "Blur" },
+    }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect("version" in result).toBe(false)
+    expect(result).toEqual({ id: "abc", profile: { alias: "Blur" } })
   })
 
   it("preserves unrelated top-level fields", () => {
