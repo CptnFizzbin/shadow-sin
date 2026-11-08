@@ -26,15 +26,32 @@ const bike: VehicleData = {
   sensor: 2,
 }
 
+const drone: VehicleData = {
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  id: "00000000-0000-0000-0000-000000000002",
+  name: "MCT Fly-Spy",
+  itemType: ItemType.vehicle,
+  vehicleCategory: VehicleCategory.drone,
+  vehicleType: "Micro",
+  handling: 4,
+  accel: "5/10",
+  pilot: 3,
+  speed: 10,
+  body: 0,
+  armor: 0,
+  sensor: 3,
+}
+
 describe("VehiclesList", () => {
   it("shows vehicles matching the category from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runner: runnerDataFactory({ items: { [bike.id]: bike } }),
+      runner: runnerDataFactory({ items: { [bike.id]: bike, [drone.id]: drone } }),
     })
 
     // Assert
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
+    expect(screen.queryByText("MCT Fly-Spy")).toBeNull()
     expect(screen.getByText("Handling: 5")).toBeDefined()
     expect(screen.getByText("Body: 4")).toBeDefined()
     expect(screen.getByText("Damage 0/10")).toBeDefined()

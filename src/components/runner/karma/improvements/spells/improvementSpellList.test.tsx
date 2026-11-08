@@ -65,6 +65,7 @@ describe("ImprovementSpellList", () => {
 
     // Assert
     expect(screen.getByText("Manabolt")).toBeTruthy()
+    expect(screen.getByText("Combat · Mana")).toBeTruthy()
   })
 
   it("exposes a Learn New Spell button", () => {

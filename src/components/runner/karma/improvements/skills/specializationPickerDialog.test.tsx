@@ -76,13 +76,18 @@ describe("SpecializationPickerDialog", () => {
     // Arrange
     renderDialogHarness({ skillLabel: "Pistols", fixedOptions: ["Revolvers"] })
 
-    // Act
     fireEvent.click(screen.getByRole("button", { name: "Open" }))
     await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
+    const saveButton = screen.getAllByRole("button", { name: /save/i }).at(-1) as HTMLButtonElement
+    const disabledBeforeChoosing = saveButton.disabled
+
+    // Act
+    fireEvent.mouseDown(screen.getByRole("combobox"))
+    fireEvent.click(await screen.findByRole("option", { name: "Revolvers" }))
 
     // Assert
-    const saveButton = screen.getAllByRole("button", { name: /save/i }).at(-1)!
-    expect((saveButton as HTMLButtonElement).disabled).toBe(true)
+    expect(disabledBeforeChoosing).toBe(true)
+    await waitFor(() => expect(saveButton.disabled).toBe(false))
   })
 
   it("returns the initial value via Save when one is pre-filled", async () => {

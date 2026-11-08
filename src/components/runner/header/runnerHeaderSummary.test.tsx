@@ -55,7 +55,7 @@ describe("RunnerHeaderSummary", () => {
     })
 
     // Assert
-    expect(screen.queryByText(/BOD/)).toBeDefined()
+    expect(screen.getByText("BOD").nextElementSibling?.textContent).toBe("4")
     expect(screen.queryByText(/MAG/)).toBeNull()
   })
 

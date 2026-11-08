@@ -59,7 +59,9 @@ describe("ImprovementLanguageSkillList", () => {
     // Act — nothing
 
     // Assert
-    expect(screen.getAllByText("Native").length).toBeGreaterThan(0)
+    // The row's secondary text also reads "Native", so look for the chip specifically.
+    const nativeChips = screen.getAllByText("Native").filter((element) => element.closest(".MuiChip-root"))
+    expect(nativeChips).toHaveLength(1)
     const improveButton = screen.getByRole("button", { name: /improve rating/i })
     expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })

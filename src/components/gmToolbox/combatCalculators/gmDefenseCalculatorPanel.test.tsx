@@ -32,11 +32,11 @@ describe("GmDefenseCalculatorPanel", () => {
     setCounter("Dodge", 3)
 
     // Act
-    setCounter("Wound Modifier", 2)
+    setCounter("Wound Modifier", 3)
     fireEvent.click(screen.getByLabelText(/you're running/i))
 
-    // Assert
-    expect(poolTotal("Defense Test")).toBe("7")
+    // Assert: 4 Reaction + 3 Dodge - 3 wound + 2 running
+    expect(poolTotal("Defense Test")).toBe("6")
   })
 
   it("adds the Full Defense dice when Full Defense is checked", () => {
