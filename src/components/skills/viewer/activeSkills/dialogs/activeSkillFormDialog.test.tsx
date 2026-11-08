@@ -17,20 +17,21 @@ function openSkillDropdown() {
 }
 
 describe("ActiveSkillFormDialog", () => {
-  it("lists unknown skills and excludes ones already known or disabled", () => {
+  it("lists skills not in disabledSkills and excludes every skill that is", () => {
     // Arrange
     const ctrl = new DialogCtrl<ActiveSkillData>()
     ctrl.open()
-    const disabledSkills = new Set<string>([SkillKey.pistols])
+    const disabledSkills = new Set<string>([SkillKey.pistols, SkillKey.longarms])
 
     // Act
     renderWithProviders(<ActiveSkillFormDialog ctrl={ctrl} disabledSkills={disabledSkills} />)
     openSkillDropdown()
 
-    // Assert: a skill not in disabledSkills is offered, the disabled one is not
+    // Assert
     const listbox = screen.getByRole("listbox")
     expect(within(listbox).queryByText(SkillKey.automatics)).not.toBeNull()
     expect(within(listbox).queryByText(SkillKey.pistols)).toBeNull()
+    expect(within(listbox).queryByText(SkillKey.longarms)).toBeNull()
   })
 
   it("increments an existing skill's rating via the counter's + button", () => {

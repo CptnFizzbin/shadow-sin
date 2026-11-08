@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import type { EntityData } from "#/system/model/entities/entityData.ts"
@@ -105,20 +105,24 @@ describe("EntityCard", () => {
   })
 
   it("renders Layout regions in canonical HeaderRow/BodyRow/FooterRow order regardless of JSX order", () => {
+    // Arrange / Act
     const { container } = render(
       <EntityCard entity={entity}>
-        <EntityCard.Layout.FooterRow>
-          <EntityCard.Source source={{ book: "SR4A", page: 427 }} />
-        </EntityCard.Layout.FooterRow>
-        <EntityCard.Layout.BodyRow>
-          <EntityCard.Rating value={4} />
-        </EntityCard.Layout.BodyRow>
+        <EntityCard.Layout.FooterRow>Footer content</EntityCard.Layout.FooterRow>
+        <EntityCard.Layout.BodyRow>Body content</EntityCard.Layout.BodyRow>
+        <EntityCard.Layout.HeaderRow>Header content</EntityCard.Layout.HeaderRow>
       </EntityCard>,
       { wrapper: ThemeWrapper },
     )
 
+    // Assert
     const text = container.textContent ?? ""
-    expect(text.indexOf("4")).toBeLessThan(text.indexOf("SR4A p.427"))
+    const headerIndex = text.indexOf("Header content")
+    const bodyIndex = text.indexOf("Body content")
+    const footerIndex = text.indexOf("Footer content")
+    expect(headerIndex).toBeGreaterThanOrEqual(0)
+    expect(headerIndex).toBeLessThan(bodyIndex)
+    expect(bodyIndex).toBeLessThan(footerIndex)
   })
 
   it("keeps Layout separate from the top-level content elements", () => {
@@ -165,14 +169,19 @@ describe("EntityCard", () => {
     expect(onOpen).not.toHaveBeenCalled()
   })
 
-  it("fires onEdit and closes the menu when the Edit item is clicked", () => {
+  it("fires onEdit and closes the menu when the Edit item is clicked", async () => {
+    // Arrange
     const onEdit = vi.fn()
     render(<EntityCard entity={entity} onEdit={onEdit} />, { wrapper: ThemeWrapper })
-
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    expect(screen.getByRole("menu")).toBeDefined()
+
+    // Act
     fireEvent.click(screen.getByText("Edit"))
 
+    // Assert
     expect(onEdit).toHaveBeenCalledOnce()
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull())
   })
 
   it("fires onRemove when the Remove item is clicked", () => {

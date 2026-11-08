@@ -7,6 +7,7 @@ import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BiologySection } from "./biologySection.tsx"
 
@@ -18,10 +19,15 @@ import { BiologySection } from "./biologySection.tsx"
 const metatypeCombobox = () => screen.getAllByRole("combobox")[0]
 const awakeningCombobox = () => screen.getAllByRole("combobox")[1]
 
-function renderWithBiology(metatype: MetatypeType, awakening: AwakeningType) {
+function renderWithBiology(
+  metatype: MetatypeType,
+  awakening: AwakeningType,
+  attributes?: Partial<RunnerData["attributes"]>,
+) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.biology.metatype = metatype
     data.biology.awakening = awakening
+    data.attributes = { ...data.attributes, ...attributes }
   } })
   const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
@@ -46,7 +52,11 @@ describe("BiologySection", () => {
 
   it("changing metatype updates the store and recalculates attributes", () => {
     // Arrange
-    const store = renderWithBiology(MetatypeType.Human, AwakeningType.Mundane)
+    const store = renderWithBiology(MetatypeType.Human, AwakeningType.Mundane, {
+      body: 3,
+      agility: 4,
+      strength: 2,
+    })
 
     // Act
     fireEvent.mouseDown(metatypeCombobox())
@@ -54,6 +64,12 @@ describe("BiologySection", () => {
 
     // Assert: state updated...
     expect(store.getState().runner.biology.metatype).toBe(MetatypeType.Troll)
+    // ...attributes reset to the Troll's metatype minimums...
+    expect(store.getState().runner.attributes).toMatchObject({
+      body: 5,
+      agility: 1,
+      strength: 5,
+    })
     // ...and the UI re-rendered off that same state.
     expect(metatypeCombobox().textContent).toContain("Troll")
   })

@@ -72,7 +72,7 @@ describe("MeleeDodgeDicePool", () => {
 })
 
 describe("MeleeFullDodgeDicePool", () => {
-  it("shows a single defaulting entry when dodge rating is 0, even though dodge is used twice", () => {
+  it("shows a separate defaulting entry for each use of dodge when dodge rating is 0", () => {
     // Arrange / Act
     const view = renderWithRunner(<MeleeFullDodgeDicePool />)
 

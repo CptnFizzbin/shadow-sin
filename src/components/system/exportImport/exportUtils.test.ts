@@ -50,9 +50,10 @@ describe.concurrent("gearToTree", () => {
     // Assert
     expect(result).toHaveLength(3)
     const names = result.map((node) => node.name)
-    expect(names).toContain("Sara McCabe")
-    expect(names).toContain("Jadzia Dax")
-    expect(names).toContain("Jane Smith")
+    expect(names).toEqual(expect.arrayContaining(["Sara McCabe", "Jadzia Dax", "Jane Smith"]))
+    for (const node of result) {
+      expect(node.children).toBeUndefined()
+    }
   })
 
   it("nests licenses under their parent SIN", () => {

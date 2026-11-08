@@ -9,6 +9,7 @@ import { LanguageSkillsList } from "./languageSkillsList.tsx"
 
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {
+    // Arrange / Act
     renderWithProviders(<LanguageSkillsList />, {
       runner: runnerDataFactory({ afterBuild: (runnerData) => {
         runnerData.skills.languageSkills = [
@@ -18,6 +19,7 @@ describe("LanguageSkillsList", () => {
       } }),
     })
 
+    // Assert
     expect(screen.getByText("Languages")).toBeTruthy()
     expect(screen.getByText("Sperethiel")).toBeTruthy()
     expect(screen.getByText("English")).toBeTruthy()
@@ -25,11 +27,16 @@ describe("LanguageSkillsList", () => {
     expect(screen.getAllByText("INT")).toHaveLength(2)
     expect(screen.queryByText("LOG")).toBeNull()
     expect(screen.getAllByText("5").length).toBeGreaterThanOrEqual(1)
+    // Only the native language shows the "N" rating badge and "Auto" dice pool.
+    expect(screen.getAllByText("N")).toHaveLength(1)
+    expect(screen.getAllByText("Auto")).toHaveLength(1)
   })
 
   it("renders an empty state when no language skills exist", () => {
+    // Arrange / Act
     renderWithProviders(<LanguageSkillsList />)
 
+    // Assert
     expect(screen.getByText("No language skills added")).toBeTruthy()
   })
 })

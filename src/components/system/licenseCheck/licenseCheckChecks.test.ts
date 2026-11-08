@@ -1,10 +1,11 @@
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
+import { ArrayUtils } from "#/utils/arrayUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { buildVerificationChecks } from "./licenseCheckChecks.ts"
@@ -107,23 +108,6 @@ describe.concurrent("buildVerificationChecks", () => {
     expect(checks).toEqual([{ itemId, kind: "unlicensed-gear" }])
   })
 
-  it("shuffles the combined checks rather than preserving lane order", () => {
-    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
-    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
-    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
-    const unlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
-    const gear = gearMap(sin, license, weapon, unlicensed)
-
-    const checks = buildVerificationChecks(gear, [weapon, unlicensed])
-
-    expect(checks).toHaveLength(3)
-    expect(checks).toEqual(expect.arrayContaining([
-      { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } },
-      { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
-      { itemId: itemId2, kind: "unlicensed-gear" },
-    ]))
-  })
-
   it("only presents the active SIN, and flags gear licensed through an inactive SIN as unlicensed", () => {
     const otherSinId = "00000000-0000-0000-0000-000000000005" as UUID
     const otherLicenseId = "00000000-0000-0000-0000-000000000006" as UUID
@@ -143,5 +127,32 @@ describe.concurrent("buildVerificationChecks", () => {
       { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } },
       { itemId: itemId2, kind: "unlicensed-gear" },
     ]))
+  })
+})
+
+describe("buildVerificationChecks shuffling", () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it("shuffles the combined checks rather than preserving lane order", () => {
+    // Arrange
+    const sin: SinData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: sinId, name: "John Smith", itemType: ItemType.sin, isReal: false, rating: 3 }
+    const license: LicenseData = { kind: EntityKind.item, id: licenseId, name: "License", itemType: ItemType.license, isReal: false, rating: 3, items: { parentId: sinId, childIds: [] } }
+    const weapon: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const unlicensed: ItemData = { kind: EntityKind.item, items: { parentId: null, childIds: [] }, id: itemId2, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const gear = gearMap(sin, license, weapon, unlicensed)
+    const sinCheck = { itemId: sinId, kind: "sin", credentialRating: { isReal: false, rating: 3 } }
+    const licensedCheck = { itemId, kind: "licensed-gear", credentialRating: { isReal: false, rating: 3 } }
+    const unlicensedCheck = { itemId: itemId2, kind: "unlicensed-gear" }
+    // A deterministic stand-in for the random shuffle, so the output order is observable.
+    const shuffleSpy = vi.spyOn(ArrayUtils, "shuffle").mockImplementation((items) => [...items].reverse())
+
+    // Act
+    const checks = buildVerificationChecks(gear, [weapon, unlicensed])
+
+    // Assert
+    expect(shuffleSpy).toHaveBeenLastCalledWith([sinCheck, licensedCheck, unlicensedCheck])
+    expect(checks).toEqual([unlicensedCheck, licensedCheck, sinCheck])
   })
 })
