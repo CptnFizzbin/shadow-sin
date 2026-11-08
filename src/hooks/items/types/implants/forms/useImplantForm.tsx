@@ -41,7 +41,7 @@ const defaultFormValues: ImplantData = {
   quantity: 0,
   rating: undefined as number | undefined,
   notes: "",
-  equipped: false,
+  equipped: true,
   stashed: false,
   fixed: false,
   wireless: {

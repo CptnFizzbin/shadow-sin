@@ -1,4 +1,4 @@
-import { getImplantEffectiveEssenceCost } from "#/components/entities/items/types/implants/implantUtils.ts"
+import { getEssenceUsage } from "#/components/entities/items/types/implants/implantUtils.ts"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
@@ -8,7 +8,6 @@ import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantType } from "#/system/model/items/implantData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
@@ -54,32 +53,15 @@ export const useEssenceInfo = () => {
   const essenceInfo = useRunnerSelector(AttrSelectors.selectInfo, { key: AttributeKey.essence })
   const implants = useGearByType<ImplantData>(ItemType.implant)
 
-  const implantEssence = implants
-    .filter((implant) => !implant.items.parentId) // implant accessories cost Capacity, not Essence
-    .map((implant) => ({
-      implantType: implant.implantType,
-      essenceCost: getImplantEffectiveEssenceCost(implant),
-    }))
-
-  const cyberwareEssence = implantEssence.filter((i) => i.implantType === ImplantType.cyberware)
-    .map((item) => item.essenceCost)
-    .reduce((sum, cost) => sum + cost, 0)
-
-  const biowareEssence = implantEssence.filter((i) => i.implantType === ImplantType.bioware)
-    .map((item) => item.essenceCost)
-    .reduce((sum, cost) => sum + cost, 0)
-
-  const essenceUsed =
-    cyberwareEssence >= biowareEssence
-      ? cyberwareEssence + (biowareEssence / 2)
-      : biowareEssence + (cyberwareEssence / 2)
+  const essenceUsage = getEssenceUsage(implants)
+  const essenceUsed = essenceUsage.total
 
   const essenceRemaining = essenceInfo.max - essenceUsed
 
   return {
     essenceUsed,
     essenceRemaining,
-    cyberwareEssence,
-    biowareEssence,
+    cyberwareEssence: essenceUsage.cyberware,
+    biowareEssence: essenceUsage.bioware,
   }
 }
