@@ -28,15 +28,22 @@ describe("InlineDamageTrack", () => {
     expect(cellStyle.height).toBe("32px")
   })
 
-  it("wraps onto additional rows past 10 boxes", () => {
+  it("keeps boxes past the 10th in the same wrapping row at a fixed, unshrinkable size", () => {
     // Arrange / Act
     render(<InlineDamageTrack max={14} current={0} onChange={vi.fn()} />, { wrapper: ThemeWrapper })
 
-    // Assert: flexWrap (not a fixed column count) is what lets a narrow container wrap this many
-    // fixed-size cells onto more rows
-    const row = screen.getAllByRole("button")[0].parentElement as HTMLElement
+    // Assert: jsdom can't lay out rows, so check the preconditions for wrapping instead — every
+    // box shares one wrapping row and none can shrink below its fixed size to squeeze onto one line
+    const buttons = screen.getAllByRole("button")
+    expect(buttons).toHaveLength(14)
+    const row = buttons[0].parentElement as HTMLElement
     expect(getComputedStyle(row).flexWrap).toBe("wrap")
-    expect(screen.getAllByRole("button")).toHaveLength(14)
+    for (const button of buttons.slice(10)) {
+      expect(button.parentElement).toBe(row)
+      const cellStyle = getComputedStyle(button)
+      expect(cellStyle.width).toBe("32px")
+      expect(cellStyle.flexShrink).toBe("0")
+    }
   })
 
   it("shows the wound modifier every woundInterval boxes, blank otherwise", () => {

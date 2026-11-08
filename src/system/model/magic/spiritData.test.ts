@@ -141,10 +141,24 @@ describe.concurrent("calculateSpiritInitiative", () => {
     }
   })
 
-  it("all spirits have 2 physical IP and 3 astral IP", () => {
-    const { physicalIp, astralIp } = calculateSpiritInitiative(5, SpiritType.guardian)
+  it.each(Object.values(SpiritType).filter((type) => type !== SpiritType.watcher))(
+    "gives %s spirits 2 physical IP and 3 astral IP",
+    (type) => {
+      // Act
+      const { physicalIp, astralIp } = calculateSpiritInitiative(5, type)
 
-    expect(physicalIp).toBe(2)
+      // Assert
+      expect(physicalIp).toBe(2)
+      expect(astralIp).toBe(3)
+    },
+  )
+
+  it("gives watcher spirits 3 physical IP and 3 astral IP", () => {
+    // Act
+    const { physicalIp, astralIp } = calculateSpiritInitiative(5, SpiritType.watcher)
+
+    // Assert
+    expect(physicalIp).toBe(3)
     expect(astralIp).toBe(3)
   })
 

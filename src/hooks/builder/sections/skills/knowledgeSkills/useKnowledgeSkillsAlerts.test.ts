@@ -34,7 +34,7 @@ describe("useKnowledgeSkillsAlerts", () => {
     })
 
     // Assert
-    expect(result.current.find((alert) => alert.title === "Invalid skill ratings")).toBeUndefined()
+    expect(result.current.filter((alert) => alert.severity === "error")).toEqual([])
   })
 
   it("still flags more than one native language", () => {

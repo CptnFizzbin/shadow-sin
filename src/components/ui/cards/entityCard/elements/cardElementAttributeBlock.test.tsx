@@ -50,12 +50,17 @@ describe("CardElementAttributeBlock", () => {
   it("omits zero-valued attributes within a group", () => {
     // Arrange / Act
     render(
-      <CardElementAttributeBlock values={values} groups={[[AttributeKey.charisma, AttributeKey.logic]]} />,
+      <CardElementAttributeBlock
+        values={values}
+        groups={[[AttributeKey.charisma, AttributeKey.intuition, AttributeKey.logic]]}
+      />,
       { wrapper: ThemeWrapper },
     )
 
     // Assert
+    expect(screen.getByText("INT").nextElementSibling?.textContent).toBe("3")
     expect(screen.queryByText("CHA")).toBeNull()
     expect(screen.queryByText("LOG")).toBeNull()
+    expect(screen.queryByText("0")).toBeNull()
   })
 })

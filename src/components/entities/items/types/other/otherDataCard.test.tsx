@@ -52,6 +52,7 @@ describe("OtherDataCard", () => {
 
     // Assert
     expect(screen.getByText("Survival Kit")).toBeDefined()
+    expect(screen.getByText("500¥")).toBeDefined()
   })
 
   it("renders attached items as nested subitems", () => {

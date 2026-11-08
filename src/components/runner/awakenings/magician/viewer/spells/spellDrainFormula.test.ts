@@ -177,7 +177,7 @@ describe.concurrent("computeDrainValue", () => {
 
     it("clamps the result to a minimum of 1", () => {
       // Arrange
-      const spell = makeFixedSpell(1)
+      const spell = makeFixedSpell(-2)
 
       // Act
       const value = computeDrainValue(6, spell)

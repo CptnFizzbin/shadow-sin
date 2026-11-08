@@ -267,9 +267,10 @@ describe("DamageSelectors.selectWoundModForTrack", () => {
   })
 
   it("subtracts the wound interval offset before dividing", () => {
-    // Arrange — interval 3, offset 1 (High Pain Tolerance), damage 4 → floor((4-1)/3) = 1
+    // Arrange — interval 3, offset 1 (High Pain Tolerance), damage 6 → floor((6-1)/3) = 1,
+    // whereas ignoring the offset would give floor(6/3) = 2
     const runner = runnerDataFactory({ afterBuild: (s) => {
-      s.damage.physical = 4
+      s.damage.physical = 6
       s.qualities = [
         {
           kind: EntityKind.quality,

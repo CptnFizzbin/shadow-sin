@@ -82,6 +82,11 @@ async function openCalculator() {
   return new WeaponAttackDialogPom(dialog)
 }
 
+/** Reads the Attack pool's dice total off the dialog's Attack Totals step. */
+function readAttackPoolTotal(dialog: WeaponAttackDialogPom) {
+  return Number(/Attack(\d+)/.exec(dialog.getPoolText().replace(/\s/g, ""))?.[1])
+}
+
 describe("WeaponAttackDialog", () => {
   it("opens directly on the clicked weapon's wizard, at the Skill step", async () => {
     // Arrange / Act
@@ -192,14 +197,18 @@ describe("WeaponAttackDialog", () => {
     const dialog = await openCalculator()
 
     dialog.goNext()
+    dialog.goNext()
+    const poolTotalBefore = readAttackPoolTotal(dialog)
+    dialog.goBack()
 
     // Act
     dialog.checkModifier("firing while running")
     dialog.goNext()
 
     // Assert
-    const poolContainerText = dialog.getPoolContainerText()
-    expect(poolContainerText).toContain("Firing while running")
+    expect(poolTotalBefore).toBe(5)
+    expect(readAttackPoolTotal(dialog)).toBe(3)
+    expect(dialog.getPoolContainerText()).toContain("Firing while running")
   })
 
   it("hides an untrained skill from the picker until Show Defaulting Skills is enabled", async () => {
@@ -245,14 +254,18 @@ describe("WeaponAttackDialog", () => {
     dialog.clickBackToWeapons()
     dialog.selectWeapon("combat knife")
     dialog.goNext()
+    dialog.goNext()
+    const poolTotalBefore = readAttackPoolTotal(dialog)
+    dialog.goBack()
 
     // Act
     dialog.checkModifier("superior position")
     dialog.goNext()
 
     // Assert
-    const poolContainerText = dialog.getPoolContainerText()
-    expect(poolContainerText).toContain("Superior position")
+    expect(poolTotalBefore).toBe(3)
+    expect(readAttackPoolTotal(dialog)).toBe(5)
+    expect(dialog.getPoolContainerText()).toContain("Superior position")
   })
 
   describe("rolling the Attack Test", () => {

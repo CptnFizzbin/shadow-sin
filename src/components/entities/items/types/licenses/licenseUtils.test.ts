@@ -37,7 +37,7 @@ describe.concurrent("isLicenseQuickBuyEligible", () => {
 
   it("is not eligible for a Forbidden item", () => {
     // Arrange
-    const item: ItemData = { ...baseItem, availability: { rating: 12, forbidden: true } }
+    const item: ItemData = { ...baseItem, availability: { rating: 12, restricted: true, forbidden: true } }
 
     // Act / Assert
     expect(isLicenseQuickBuyEligible(item)).toBe(false)
@@ -165,7 +165,7 @@ describe.concurrent("findLicenseableSiblings", () => {
 describe.concurrent("getLicenseCost", () => {
   it("is free for a real SIN's licence", () => {
     // Arrange / Act / Assert
-    expect(getLicenseCost(true, 0)).toBe(0)
+    expect(getLicenseCost(true, 4)).toBe(0)
   })
 
   it("scales with rating for a fake licence", () => {

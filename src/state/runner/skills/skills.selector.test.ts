@@ -65,17 +65,20 @@ describe("SkillsSelectors.selectLanguageSkills", () => {
 })
 
 describe("SkillsSelectors.selectValue", () => {
-  it("returns the max of the skill's own rating and its group's rating", () => {
+  it.each([
+    { skillRating: 2, groupRating: 4, expected: 4 },
+    { skillRating: 5, groupRating: 2, expected: 5 },
+  ])("returns the max of the skill's own rating ($skillRating) and its group's rating ($groupRating)", ({ skillRating, groupRating, expected }) => {
     // Arrange
     const runner = runnerDataFactory({
       afterBuild: (s) => {
-        s.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
-        s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: 4 }]
+        s.skills.activeSkills = [{ name: SkillKey.pistols, rating: skillRating }]
+        s.skills.skillGroups = [{ name: SkillGroupKey.Firearms, rating: groupRating }]
       },
     })
 
     // Act / Assert
-    expect(SkillsSelectors.selectValue(stateFor(runner), { skillName: SkillKey.pistols })).toBe(4)
+    expect(SkillsSelectors.selectValue(stateFor(runner), { skillName: SkillKey.pistols })).toBe(expected)
   })
 
   it("returns 0 when neither the skill nor its group is trained", () => {

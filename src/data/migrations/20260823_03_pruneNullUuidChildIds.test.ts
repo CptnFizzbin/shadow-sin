@@ -72,7 +72,7 @@ describe.concurrent("030_pruneNullUuidChildIds", () => {
     const character = {
       _data_: {
         items: {
-          i1: { items: { parentId: null, childIds: [] } },
+          i1: { items: { parentId: null } },
         },
       },
     }
@@ -81,6 +81,6 @@ describe.concurrent("030_pruneNullUuidChildIds", () => {
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.items?.i1.items?.childIds).toEqual([])
+    expect(result._data_?.items?.i1).toEqual({ items: { parentId: null } })
   })
 })

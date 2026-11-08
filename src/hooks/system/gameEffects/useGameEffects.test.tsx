@@ -201,7 +201,35 @@ describe("GameEffectSelectors.selectAll", () => {
             id: NullUuid,
             name: "Analytical Mind",
             type: "positive",
-            effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
+            effects: [
+              { type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 },
+              { type: GameEffectType.attrMod, target: AttributeKey.intuition, value: 2 },
+            ],
+          },
+        ]
+        s.spells = [
+          {
+            kind: EntityKind.spell,
+            id: NullUuid,
+            name: "Increase Reflexes",
+            type: SpellType.Physical,
+            range: SpellRange.Touch,
+            damage: SpellDamage.Stun,
+            category: SpellCategory.Health,
+            drain: { type: SpellDrainType.Force, value: 0 },
+            dealsDamage: false,
+            duration: SpellDuration.Sustained,
+            voluntaryTargetsOnly: false,
+            effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
+          },
+        ]
+        s.complexForms = [
+          {
+            kind: EntityKind.complexForm,
+            id: NullUuid,
+            name: "Resonance Spike",
+            rating: 3,
+            effects: [{ type: GameEffectType.attrMod, target: AttributeKey.resonance, value: 1 }],
           },
         ]
         s.powers = [
@@ -222,7 +250,15 @@ describe("GameEffectSelectors.selectAll", () => {
     const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
-    expect(effects).toHaveLength(3)
+    expect(effects).toHaveLength(6)
+    expect(effects).toEqual(expect.arrayContaining([
+      { type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 },
+      { type: GameEffectType.attrMod, target: AttributeKey.intuition, value: 2 },
+      { type: GameEffectType.initiativeBonus, value: 1 },
+      { type: GameEffectType.initiativeBonus, value: 2 },
+      { type: GameEffectType.attrMod, target: AttributeKey.resonance, value: 1 },
+      { type: GameEffectType.recoilReduction, value: 1 },
+    ]))
   })
 
   it("handles sources with no effects field gracefully", () => {

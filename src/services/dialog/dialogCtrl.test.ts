@@ -103,10 +103,22 @@ describe.concurrent("DialogCtrl", () => {
   })
 
   it("dispose() is a safe no-op when the dialog is already closed", () => {
+    // Arrange
     const baseline = isAnyOverlayOpen()
-    const ctrl = new DialogCtrl<void>()
+    // Another open dialog keeps the tracker above zero, so an erroneous
+    // decrement from the closed dialog would be observable.
+    const otherOpenCtrl = new DialogCtrl<void>()
+    otherOpenCtrl.open()
+    const closedCtrl = new DialogCtrl<void>()
+    closedCtrl.open()
+    closedCtrl.close()
 
-    ctrl.dispose()
+    // Act
+    closedCtrl.dispose()
+
+    // Assert
+    expect(isAnyOverlayOpen()).toBe(true)
+    otherOpenCtrl.close()
     expect(isAnyOverlayOpen()).toBe(baseline)
   })
 })

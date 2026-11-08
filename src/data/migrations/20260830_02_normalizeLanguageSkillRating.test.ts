@@ -38,13 +38,23 @@ describe.concurrent("normalizeLanguageSkillRating", () => {
 
   it("is idempotent — a skill already carrying isNative is left untouched", () => {
     // Arrange
-    const character = { skills: { languageSkills: [{ name: "Elven", isNative: false, rating: 3 }] } }
+    const character = {
+      skills: {
+        languageSkills: [
+          { name: "English", isNative: true, rating: 4 },
+          { name: "Elven", isNative: false, rating: "native" },
+        ],
+      },
+    }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result.skills?.languageSkills?.[0]).toEqual({ name: "Elven", isNative: false, rating: 3 })
+    expect(result.skills?.languageSkills).toEqual([
+      { name: "English", isNative: true, rating: 4 },
+      { name: "Elven", isNative: false, rating: "native" },
+    ])
   })
 
   it("preserves an optional lingo field untouched", () => {

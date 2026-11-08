@@ -28,13 +28,12 @@ describe.concurrent("009_addSpiritsArray", () => {
 
   it("does not mutate the input character", () => {
     // Arrange
-    const original = { spirits: [{ id: "s1" }] }
-    const snapshot = JSON.parse(JSON.stringify(original)) as typeof original
+    const original: { spirits?: unknown[] } = {}
 
     // Act
     migration.up(original)
 
     // Assert
-    expect(original).toEqual(snapshot)
+    expect(original).toEqual({})
   })
 })

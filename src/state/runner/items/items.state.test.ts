@@ -19,17 +19,20 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
 
 describe.concurrent("gearReducer", () => {
   it("add stores the item under a freshly generated id", () => {
-    // Arrange
+    // Arrange — the draft still carries an id, which add must replace rather than reuse
     const item = makeItem()
-    const { id: _discarded, ...itemWithoutId } = item
+    const { id: draftId, ...itemWithoutId } = item
 
     // Act
-    const next = gearReducer({}, addItem(itemWithoutId))
+    const next = gearReducer({}, addItem(item))
 
     // Assert
-    const [stored] = Object.values(next)
-    expect(stored).toMatchObject(itemWithoutId)
-    expect(stored.id).toBeDefined()
+    const storedIds = Object.keys(next)
+    expect(storedIds).toHaveLength(1)
+    const [storedId] = storedIds
+    expect(storedId).not.toBe(draftId)
+    expect(storedId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+    expect(next[storedId]).toEqual({ ...itemWithoutId, id: storedId })
   })
 
   it("set upserts the item by id", () => {
@@ -330,7 +333,7 @@ describe.concurrent("gearReducer", () => {
       expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
     })
 
-    it("addItem doesn't treat a brand-new stashed item as a transition needing restore later", () => {
+    it("addItem of an already-stashed item forces equipped off and records equipOnUnstash", () => {
       // Arrange — a new item created already stashed and (inconsistently) marked equipped
       const item = makeItem({ stashed: true, equipped: true })
       const { id: _discarded, ...itemWithoutId } = item

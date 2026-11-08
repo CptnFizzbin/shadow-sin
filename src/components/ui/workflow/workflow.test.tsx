@@ -38,6 +38,7 @@ const renderWorkflow = () =>
         </div>
         <workflow.Step step="review">
           <div>Review content</div>
+          <BackButton />
         </workflow.Step>
       </div>
     </workflow.Provider>,
@@ -84,13 +85,19 @@ describe("Workflow", () => {
     // Arrange
     renderWorkflow()
     fireEvent.click(screen.getByText("Go to details"))
-
-    // Act
     fireEvent.click(screen.getByText("Go to review"))
+    const reviewVisible = screen.queryByText("Review content") !== null
+
+    // Act — walk back through the recorded history one step at a time
+    fireEvent.click(screen.getByText("Back"))
+    const afterFirstBack = screen.queryByText("Details content") !== null
+    fireEvent.click(screen.getByText("Back"))
 
     // Assert
-    expect(screen.getByText("Review content")).toBeDefined()
+    expect(reviewVisible).toBe(true)
+    expect(afterFirstBack).toBe(true)
+    expect(screen.getByText("Intro content")).toBeDefined()
     expect(screen.queryByText("Details content")).toBeNull()
-    expect(screen.queryByText("Intro content")).toBeNull()
+    expect(screen.queryByText("Review content")).toBeNull()
   })
 })

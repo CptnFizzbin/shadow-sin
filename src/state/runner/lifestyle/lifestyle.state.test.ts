@@ -22,13 +22,15 @@ describe.concurrent("lifestyleReducer", () => {
 
   it("patchLifestyle overwrites only the given fields", () => {
     // Arrange
-    const runner = runnerDataFactory()
+    const runner = runnerDataFactory({ afterBuild: (data) => {
+      data.lifestyle = { name: "Custom", upkeep: 123, monthsPaid: 4, notes: "Safehouse" }
+    } })
 
     // Act
     const next = runnerRootReducer(runner, patchLifestyle({ name: "Trust Fund", upkeep: -5_000 }))
 
     // Assert
-    expect(next.lifestyle).toMatchObject({ name: "Trust Fund", upkeep: -5_000, monthsPaid: runner.lifestyle.monthsPaid })
+    expect(next.lifestyle).toEqual({ name: "Trust Fund", upkeep: -5_000, monthsPaid: 4, notes: "Safehouse" })
   })
 
   it("setLifestyleMonthsPaid never goes below zero", () => {

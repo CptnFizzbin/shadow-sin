@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
@@ -74,11 +74,23 @@ describe("DiceTrayEdgeControls", () => {
     // Arrange
     const { store, diceTrayApi } = renderWithEdge(4, 2)
 
-    // Act
     fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
     await waitFor(() => expect(store.getState().runner.edge.current).toBe(1))
+    // Let the edge dice finish rolling so the button is no longer disabled merely by isRolling.
+    await act(async () => {
+      await diceTrayApi.roller.settled()
+    })
 
-    // Assert: rollEdge() marked the dice tray as edgeSpent, so a second click is a no-op
+    // Act
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
+      await diceTrayApi.roller.settled()
+    })
+
+    // Assert
+    expect((screen.getByRole("button", { name: "Roll Edge" }) as HTMLButtonElement).disabled).toBe(true)
     expect(diceTrayApi.store.getState().edgeSpent).toBe(true)
+    expect(store.getState().runner.edge.current).toBe(1)
+    expect(screen.getByText("Edge (1/4)")).toBeDefined()
   })
 })

@@ -30,7 +30,8 @@ describe("FinancesBuilderSection", () => {
 
     // Assert
     expect(screen.getByRole("heading", { name: "Finances" })).toBeDefined()
-    expect(screen.getByLabelText("Adjust")).toBeDefined()
+    expect(screen.getByText("Nuyen").nextElementSibling?.textContent).toBe("1,500¥")
+    expect(screen.getByText("Current Nuyen").nextElementSibling?.textContent).toBe("1,500¥")
   })
 
   it("setting nuyen dispatches setNuyenAmount, updating the store", async () => {

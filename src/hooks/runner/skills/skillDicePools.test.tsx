@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/material/styles"
-import { render, within } from "@testing-library/react"
+import { render, renderHook, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { describe, expect, it } from "vitest"
 
@@ -73,16 +73,35 @@ describe("useActiveSkillDicePool", () => {
   })
 
   it("applies the wound modifier exactly once when the Runner is wounded", () => {
-    // Arrange / Act
+    // Arrange
+    const makeRunnerData = (physicalDamage: number) => {
+      const runnerData = runnerDataFactory()
+      runnerData.skills.activeSkills = [{ name: SkillKey.dodge, rating: 3 }]
+      runnerData.damage.physical = physicalDamage
+      return runnerData
+    }
+    const renderPool = (runnerData: RunnerData) => renderHook(
+      () => useActiveSkillDicePool({ skillKey: SkillKey.dodge }),
+      { wrapper: ({ children }) => <TestProviders runnerData={runnerData}>{children}</TestProviders> },
+    ).result.current
+
+    // Act
+    const unwoundedPool = renderPool(makeRunnerData(0))
+    const woundedPool = renderPool(makeRunnerData(6))
     const view = renderWithRunner(
       <ActiveSkillDicePoolHarness skillKey={SkillKey.dodge} />,
       (sheet) => {
         sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 3 }]
-        sheet.damage.physical = 3
+        sheet.damage.physical = 6
       },
     )
 
-    // Assert: one Wound group, shown twice (chip + ledger line).
+    // Assert: 6 boxes of Physical damage is a -2 Wound Modifier, applied as one group that
+    // shows twice in the rendered pool (chip + ledger line).
+    expect(woundedPool.groups.filter((group) => group.name === "Wound")).toEqual([
+      { name: "Wound", size: -2, type: "penalty" },
+    ])
+    expect(woundedPool.size).toBe(unwoundedPool.size - 2)
     expect(view.getAllByText("Wound")).toHaveLength(2)
   })
 })

@@ -5,7 +5,7 @@ import { WeaponType } from "#/system/model/items/weaponData.ts"
 import migration from "./20260417_00_setDefaultEquippedWeapons.ts"
 
 describe.concurrent("005_setDefaultEquippedWeapons", () => {
-  it("returns the character unchanged when there is no gear", () => {
+  it("initialises gear to an empty object when missing", () => {
     // Arrange
     const character = {}
 
@@ -13,7 +13,7 @@ describe.concurrent("005_setDefaultEquippedWeapons", () => {
     const result = migration.up(character)
 
     // Assert
-    expect(result.gear).toEqual({})
+    expect(result).toEqual({ gear: {} })
   })
 
   it("equips the first melee weapon when no melee weapons are equipped", () => {

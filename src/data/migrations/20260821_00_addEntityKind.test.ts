@@ -137,16 +137,20 @@ describe.concurrent("026_addEntityKind", () => {
   it("does not overwrite an already-stamped kind", () => {
     // Arrange
     const character = {
-      kind: "runner",
-      gear: { a1: { itemType: "armor", kind: "item" } },
+      kind: "legacyRunner",
+      gear: { a1: { itemType: "armor", kind: "legacyItem" } },
+      spirits: [{ kind: "legacySpirit" }],
+      powers: [{ kind: "legacyPower" }],
     }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result.kind).toBe("runner")
-    expect(result.gear?.a1.kind).toBe("item")
+    expect(result.kind).toBe("legacyRunner")
+    expect(result.gear?.a1.kind).toBe("legacyItem")
+    expect(result.spirits?.[0].kind).toBe("legacySpirit")
+    expect(result.powers?.[0].kind).toBe("legacyPower")
   })
 
   it("stamps kind across every subtree at once, including RunnerData itself", () => {

@@ -1,7 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react"
+import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -32,6 +33,16 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
 }
 
 const goNext = () => fireEvent.click(screen.getByRole("button", { name: /^next$/i }))
+
+/** The skill picker's group header with the given text, i.e. the one copy of it that isn't a selectable row. */
+function getGroupHeader(label: string): HTMLElement {
+  const headers = screen.getAllByText(label).filter((element) => element.closest("[role='button'], button") === null)
+  expect(headers).toHaveLength(1)
+  return headers[0]
+}
+
+/** The total shown beside the "Defense" pool's name on the Total step. */
+const getDefenseTotal = () => screen.getByText(/^Defense$/).nextElementSibling?.textContent
 
 describe("DefenseCalculatorDialogContent", () => {
   it("opens on the hub with a row per attack type", () => {
@@ -75,19 +86,31 @@ describe("DefenseCalculatorDialogContent", () => {
 
   describe("Defense Skill step", () => {
     it("groups melee options under Basic, Dodge, Parry, and Block headers", () => {
+      // Arrange
       renderDialog()
 
+      // Act
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
       // Untrained groups are hidden until this is on — flip it to see all four.
       fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
 
+      // Assert
       // "Basic" and "Dodge" each appear twice: once as the group header, once as
       // that group's lone row (which shares the header's name).
-      expect(screen.getAllByText("Basic").length).toBeGreaterThan(0)
-      expect(screen.getAllByText("Dodge").length).toBeGreaterThan(0)
-      expect(screen.getByText("Parry")).toBeTruthy()
-      expect(screen.getByText("Block")).toBeTruthy()
-      expect(screen.getByRole("button", { name: /^0 blades/i })).toBeTruthy()
+      expect(screen.getAllByText("Basic")).toHaveLength(2)
+      expect(screen.getAllByText("Dodge")).toHaveLength(2)
+      const headers = ["Basic", "Dodge", "Parry", "Block"].map(getGroupHeader)
+      headers.slice(1).forEach((header, index) => {
+        expect(headers[index].compareDocumentPosition(header) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      })
+
+      const [basicHeader, dodgeHeader, parryHeader, blockHeader] = headers
+      expect(within(basicHeader.parentElement!).getByRole("button", { name: /basic/i })).toBeTruthy()
+      expect(within(dodgeHeader.parentElement!).getByRole("button", { name: /full dodge/i })).toBeTruthy()
+      expect(within(parryHeader.parentElement!).getByRole("button", { name: /^0 blades/i })).toBeTruthy()
+      expect(within(parryHeader.parentElement!).getByRole("button", { name: /^0 clubs/i })).toBeTruthy()
+      expect(within(blockHeader.parentElement!).getByRole("button", { name: /unarmed combat/i })).toBeTruthy()
+      expect(within(blockHeader.parentElement!).queryByRole("button", { name: /blades/i })).toBeNull()
     })
 
     it("only shows Basic and Dodge headers for a ranged attack (no Parry/Block)", () => {
@@ -115,18 +138,24 @@ describe("DefenseCalculatorDialogContent", () => {
     })
 
     it("adds a trained skill's dice to the total once selected", () => {
+      // Arrange
       renderDialog((sheet) => {
+        sheet.attributes[AttributeKey.reaction] = 3
         sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 4 }]
       })
 
+      // Act
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
       // "Dodge" and "Full Dodge" both match /dodge/i — anchor to the plain row's accessible name.
       fireEvent.click(screen.getByRole("button", { name: /^\d+ dodge\b/i }))
       goNext()
       goNext()
 
+      // Assert
       const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-      expect(poolContainer.textContent).toContain(SkillKey.dodge)
+      expect(poolContainer.textContent).toContain(`4${SkillKey.dodge}`)
+      // Reaction 3 + Dodge 4
+      expect(getDefenseTotal()).toBe("7")
     })
 
     it("Full Dodge counts Dodge twice and notes the action-economy cost", () => {
@@ -229,15 +258,22 @@ describe("DefenseCalculatorDialogContent", () => {
     })
 
     it("applies a checked toggle modifier's value to the total", () => {
-      renderDialog()
+      // Arrange
+      renderDialog((sheet) => {
+        sheet.attributes[AttributeKey.reaction] = 5
+      })
 
+      // Act
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
       goNext()
       fireEvent.click(screen.getByRole("checkbox", { name: /you're prone/i }))
       goNext()
 
+      // Assert
       const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-      expect(poolContainer.textContent).toContain("You're prone")
+      expect(poolContainer.textContent).toContain("-2You're prone")
+      // Reaction 5, prone -2
+      expect(getDefenseTotal()).toBe("3")
     })
 
     it("reveals a # of Attacks counter only once the previous-defenses checkbox is checked", () => {
@@ -284,7 +320,7 @@ describe("DefenseCalculatorDialogContent", () => {
       expect((goodCover as HTMLInputElement).checked).toBe(true)
       expect((noCover as HTMLInputElement).checked).toBe(false)
 
-      expect(screen.getByRole("radio", { name: /normal attack/i })).toBeTruthy()
+      expect((screen.getByRole("radio", { name: /normal attack/i }) as HTMLInputElement).checked).toBe(true)
     })
 
     it("shows a warning and no total when unaware of the attack", () => {

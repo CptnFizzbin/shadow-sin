@@ -30,11 +30,15 @@ describe.concurrent("DiceTrayApi", () => {
     })
 
     it("clamps pool size to a minimum of 0", () => {
+      // Arrange
       const api = makeApi()
 
-      api.setDice(0)
+      // Act
+      api.setDice(-3)
 
+      // Assert
       expect(api.store.getState().poolSize).toBe(0)
+      expect(vi.mocked(api.roller.setPoolSize)).toHaveBeenCalledWith(0)
     })
   })
 

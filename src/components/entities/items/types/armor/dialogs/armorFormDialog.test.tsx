@@ -74,15 +74,21 @@ describe("ArmorFormDialog", () => {
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
+    const baseButton = within(dialog).getByRole("button", { name: /^base$/i })
+    const modifierButton = within(dialog).getByRole("button", { name: /^modifier$/i })
+    expect(baseButton.getAttribute("aria-pressed")).toBe("true")
+    expect(modifierButton.getAttribute("aria-pressed")).toBe("false")
 
     // Act
     fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
       target: { value: "Helmet" },
     })
-    fireEvent.click(within(dialog).getByRole("button", { name: /^modifier$/i }))
+    fireEvent.click(modifierButton)
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert
+    expect(baseButton.getAttribute("aria-pressed")).toBe("false")
+    expect(modifierButton.getAttribute("aria-pressed")).toBe("true")
     const savedItem = await ctrl.result()
     await waitFor(() => {
       expect(savedItem?.name).toBe("Helmet")

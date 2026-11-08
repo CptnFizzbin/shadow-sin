@@ -41,29 +41,57 @@ const withGear = (...items: ItemData[]): ItemCatalog =>
 
 describe.concurrent("ItemSelectors.selectEquipped", () => {
   it("returns only items with equipped === true", () => {
-    const catalog = withGear({ ...item, equipped: true })
+    // Arrange
+    const equippedItem = makeItem({ equipped: true })
+    const unequippedItem = makeItem({ equipped: false })
+    const catalog = withGear(unequippedItem, equippedItem)
 
-    expect(ItemSelectors.selectEquipped(stateFor(catalog))).toEqual([{ ...item, equipped: true }])
+    // Act
+    const equipped = ItemSelectors.selectEquipped(stateFor(catalog))
+
+    // Assert
+    expect(equipped).toEqual([equippedItem])
   })
 
   it("excludes items with equipped false or absent", () => {
-    const catalog = withGear(item)
+    // Arrange
+    const explicitlyUnequipped = makeItem({ equipped: false })
+    const equippedAbsent = makeItem()
+    const catalog = withGear(explicitlyUnequipped, equippedAbsent)
 
-    expect(ItemSelectors.selectEquipped(stateFor(catalog))).toEqual([])
+    // Act
+    const equipped = ItemSelectors.selectEquipped(stateFor(catalog))
+
+    // Assert
+    expect(equipped).toEqual([])
   })
 })
 
 describe.concurrent("ItemSelectors.selectStashed", () => {
   it("returns only stashed items", () => {
-    const catalog = withGear({ ...item, stashed: true })
+    // Arrange
+    const stashedItem = makeItem({ stashed: true })
+    const carriedItem = makeItem({ stashed: false })
+    const catalog = withGear(carriedItem, stashedItem)
 
-    expect(ItemSelectors.selectStashed(stateFor(catalog))).toEqual([{ ...item, stashed: true }])
+    // Act
+    const stashed = ItemSelectors.selectStashed(stateFor(catalog))
+
+    // Assert
+    expect(stashed).toEqual([stashedItem])
   })
 
   it("excludes items with stashed false or absent", () => {
-    const catalog = withGear(item)
+    // Arrange
+    const explicitlyCarried = makeItem({ stashed: false })
+    const stashedAbsent = makeItem()
+    const catalog = withGear(explicitlyCarried, stashedAbsent)
 
-    expect(ItemSelectors.selectStashed(stateFor(catalog))).toEqual([])
+    // Act
+    const stashed = ItemSelectors.selectStashed(stateFor(catalog))
+
+    // Assert
+    expect(stashed).toEqual([])
   })
 })
 
@@ -283,14 +311,29 @@ const diceGroupStateFor = (runner: RunnerData) => ({ runner, entity: runner, ite
 describe("ItemSelectors.Armor.DiceGroups.selectArmor", () => {
   it("returns the best equipped armor's rating", () => {
     // Arrange
-    const [armor] = createItem<ArmorData>({
+    const [lighterArmor] = createItem<ArmorData>({
+      name: "Armor Vest",
+      itemType: ItemType.armor,
+      equipped: true,
+      ballistic: 6,
+      impact: 4,
+    })
+    const [armorJacket] = createItem<ArmorData>({
       name: "Armor Jacket",
       itemType: ItemType.armor,
       equipped: true,
       ballistic: 8,
       impact: 6,
     })
-    const runner = runnerDataFactory({ items: createItemMap([armor]) })
+    // Unequipped armor must be ignored even when its rating is higher
+    const [unequippedArmor] = createItem<ArmorData>({
+      name: "Full Body Armor",
+      itemType: ItemType.armor,
+      equipped: false,
+      ballistic: 10,
+      impact: 9,
+    })
+    const runner = runnerDataFactory({ items: createItemMap([lighterArmor, armorJacket, unequippedArmor]) })
 
     // Act
     const groups = ItemSelectors.Armor.DiceGroups.selectArmor(diceGroupStateFor(runner), { armor: ArmorRatingType.impact })

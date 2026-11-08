@@ -1,7 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react"
+import { act, fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -40,14 +41,24 @@ describe("ManageKarmaStepSpend", () => {
 
     // Act — nothing
 
-    // Assert — at least Attributes and Skills categories are present
-    expect(screen.getByRole("button", { name: /attributes/i })).toBeTruthy()
-    expect(screen.getByRole("button", { name: /skill groups/i })).toBeTruthy()
+    // Assert — every category a Mundane runner can spend karma on, in order
+    const hubRows = within(screen.getByRole("list")).getAllByRole("button")
+    expect(hubRows.map((row) => row.textContent)).toEqual([
+      "Attributes",
+      "Skills",
+      "Skill Groups",
+      "Knowledge",
+      "Languages",
+      "Specialization",
+      "Qualities",
+    ])
   })
 
-  it("shows the Qualities category regardless of Awakening", () => {
+  it.each(Object.values(AwakeningType))("shows the Qualities category regardless of Awakening (%s)", (awakening) => {
     // Arrange
-    renderDialog()
+    renderDialog((sheet) => {
+      sheet.biology.awakening = awakening
+    })
 
     // Act — nothing
 
@@ -55,9 +66,11 @@ describe("ManageKarmaStepSpend", () => {
     expect(screen.getByRole("button", { name: /qualities/i })).toBeTruthy()
   })
 
-  it("shows the Specialization category regardless of Awakening", () => {
+  it.each(Object.values(AwakeningType))("shows the Specialization category regardless of Awakening (%s)", (awakening) => {
     // Arrange
-    renderDialog()
+    renderDialog((sheet) => {
+      sheet.biology.awakening = awakening
+    })
 
     // Act — nothing
 
@@ -177,19 +190,27 @@ describe("ManageKarmaStepSpend", () => {
   })
 
   it("Save button is disabled when queued improvements exceed available karma", () => {
-    // Arrange — Body 3 costs (3+1)*5 = 20k, but only 5 karma
-    renderDialog((sheet) => {
+    // Arrange — queue Body 3 -> 4 for (3+1)*5 = 20k while it's affordable, since the row itself
+    // refuses to queue an unaffordable improvement
+    const store = renderDialog((sheet) => {
       sheet.attributes[AttributeKey.body] = 3
-      sheet.karma.current = 5
+      sheet.karma.current = 50
     })
-
-    // Act — drill into Attributes, queue Body
     fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
     fireEvent.click(screen.getByRole("button", { name: /bod/i }))
+    const saveButton = screen.getByRole("button", { name: /save/i }) as HTMLButtonElement
+    const disabledWithinBudget = saveButton.disabled
+
+    // Act — the runner's karma drops below the queued cost
+    act(() => {
+      store.dispatch(RunnerActions.update((draft) => {
+        draft.karma.current = 5
+      }))
+    })
 
     // Assert
-    const saveButton = screen.getByRole("button", { name: /save/i })
-    expect((saveButton as HTMLButtonElement).disabled).toBe(true)
+    expect(disabledWithinBudget).toBe(false)
+    expect(saveButton.disabled).toBe(true)
   })
 
   it("shows a queued badge on the hub row after queueing an improvement", () => {

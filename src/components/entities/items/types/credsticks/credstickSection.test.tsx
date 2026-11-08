@@ -6,6 +6,7 @@ import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import { CredstickType } from "#/system/model/items/credstickData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { CredstickSection } from "./credstickSection.tsx"
@@ -46,7 +47,7 @@ describe("CredstickSection", () => {
 
   it("withdrawing a credstick removes it, once confirmed, and deposits its balance to nuyen", async () => {
     // Arrange
-    renderWithProviders(<CredstickSection />, {
+    const store = renderWithProviders(<CredstickSection />, {
       runner: runnerDataFactory({
         items: { [streetStick.id]: streetStick },
         afterBuild: (data) => {
@@ -60,9 +61,18 @@ describe("CredstickSection", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
     await screen.findByRole("dialog", { name: "Edit Credstick" })
     fireEvent.click(screen.getByRole("button", { name: /withdraw/i }))
-    fireEvent.click(await screen.findByRole("button", { name: /confirm withdrawal/i }))
+    const confirmButton = await screen.findByRole("button", { name: /confirm withdrawal/i })
+    const nuyenBeforeConfirm = store.getState().runner.nuyen.current
+    const itemBeforeConfirm = getItemCatalog(store.getState().runner)[streetStick.id]
+    fireEvent.click(confirmButton)
 
-    // Assert: the UI re-rendered off the updated store.
+    // Assert
+    expect(nuyenBeforeConfirm).toBe(100)
+    expect(itemBeforeConfirm).toBeDefined()
+    // The UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Street Cred")).toBeNull())
+    expect(getItemCatalog(store.getState().runner)[streetStick.id]).toBeUndefined()
+    // 100 on hand + the stick's 500 balance
+    expect(store.getState().runner.nuyen.current).toBe(600)
   })
 })

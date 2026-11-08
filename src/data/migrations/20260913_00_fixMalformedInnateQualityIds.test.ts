@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest"
 
 import migration from "./20260913_00_fixMalformedInnateQualityIds.ts"
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
 describe.concurrent("fixMalformedInnateQualityIds", () => {
   it("returns the character unchanged when there are no qualities", () => {
     // Arrange
@@ -44,8 +46,7 @@ describe.concurrent("fixMalformedInnateQualityIds", () => {
     const result = migration.up(character)
 
     // Assert
-    expect(result.qualities?.[0].id).toEqual(expect.any(String))
-    expect(result.qualities?.[0].id).not.toBe("not-a-uuid")
+    expect(result.qualities?.[0]).toEqual({ id: expect.stringMatching(UUID_PATTERN), name: "Homemade Quality" })
   })
 
   it("leaves an already-valid quality id untouched", () => {
@@ -62,14 +63,16 @@ describe.concurrent("fixMalformedInnateQualityIds", () => {
 
   it("assigns distinct fresh ids to multiple qualities with the same malformed id shape", () => {
     // Arrange
-    const character = { qualities: [{ id: "bad-id-1" }, { id: "bad-id-2" }] }
+    const character = { qualities: [{ id: "bad-id" }, { id: "bad-id" }] }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    const ids = result.qualities?.map((quality) => quality.id)
-    expect(ids?.[0]).not.toBe(ids?.[1])
+    const [firstId, secondId] = result.qualities?.map((quality) => quality.id) ?? []
+    expect(firstId).toMatch(UUID_PATTERN)
+    expect(secondId).toMatch(UUID_PATTERN)
+    expect(firstId).not.toBe(secondId)
   })
 
   it("is idempotent — running it again on already-fixed qualities is a no-op", () => {

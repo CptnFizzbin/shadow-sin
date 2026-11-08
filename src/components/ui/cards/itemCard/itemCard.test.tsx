@@ -69,9 +69,9 @@ describe("ItemCard", () => {
     render(<ItemCard item={baseItem} />, { wrapper: ThemeWrapper })
 
     // Assert
-    expect(screen.queryByLabelText("Equipped")).toBeNull()
-    expect(screen.queryByLabelText("Stashed")).toBeNull()
-    expect(screen.queryByLabelText("Fixed")).toBeNull()
+    for (const label of ["Equipped", "Stashed", "Integrated", "Wireless", "Wireless off", "Wireless removed"]) {
+      expect(screen.queryByLabelText(label)).toBeNull()
+    }
   })
 
   it("passes extra children through to EntityCard as additional Layout rows", () => {

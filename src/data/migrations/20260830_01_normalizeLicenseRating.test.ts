@@ -38,13 +38,23 @@ describe.concurrent("normalizeLicenseRating", () => {
 
   it("is idempotent — a Licence already carrying isReal is left untouched", () => {
     // Arrange
-    const character = { _data_: { items: { l1: { itemType: "license", isReal: false, rating: 3 } } } }
+    const character = {
+      _data_: {
+        items: {
+          real: { itemType: "license", isReal: true, rating: 4 },
+          fake: { itemType: "license", isReal: false, rating: "real" },
+        },
+      },
+    }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.items?.l1).toEqual({ itemType: "license", isReal: false, rating: 3 })
+    expect(result._data_?.items).toEqual({
+      real: { itemType: "license", isReal: true, rating: 4 },
+      fake: { itemType: "license", isReal: false, rating: "real" },
+    })
   })
 
   it("ignores non-Licence items even with a string rating", () => {

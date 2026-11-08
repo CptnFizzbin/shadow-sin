@@ -60,7 +60,8 @@ describe("SpiritDataCard", () => {
   })
 
   it("renders Force, Services, Initiative, and base powers", () => {
-    // Arrange / Act
+    // Arrange / Act: Force 4 Fire spirit — physical Init = 4 x 2 + 3 = 11 with 2 IP, astral
+    // Init = 4 x 2 = 8 with 3 IP.
     render(
       <SpiritDataCard spirit={namedFireSpirit} onEdit={noop} onRemove={noop} onDamageChange={noop} />,
       { wrapper: ThemeWrapper },
@@ -69,6 +70,8 @@ describe("SpiritDataCard", () => {
     // Assert
     expect(screen.getByText("Force: 4")).toBeDefined()
     expect(screen.getByText("Services: 1/4")).toBeDefined()
+    expect(screen.getByText("Init: 11 (2IP)")).toBeDefined()
+    expect(screen.getByText("Astral: 8 (3IP)")).toBeDefined()
     expect(screen.getByText("Astral Form")).toBeDefined()
   })
 
@@ -153,8 +156,11 @@ describe("SpiritDataCard", () => {
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
     expect(onEdit).toHaveBeenCalledOnce()
+    expect(onRemove).toHaveBeenCalledOnce()
   })
 })

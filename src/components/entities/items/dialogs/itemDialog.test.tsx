@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor, within } from "@testing-library/react"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import type { FC } from "react"
 import { useMemo } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
@@ -198,13 +198,16 @@ describe("ItemDialog", () => {
   })
 
   it("shows acquire and purchase buttons in editor mode", () => {
+    // Arrange & Act
     renderWithProviders(
       <ItemDialogWrapper title="Add Item" onSave={vi.fn()} />,
     )
 
+    // Assert
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
     expect(within(dialog).getByRole("button", { name: /acquire/i })).toBeDefined()
+    expect(within(dialog).getByRole("button", { name: /purchase/i })).toBeDefined()
     expect(within(dialog).queryByRole("button", { name: /save/i })).toBeNull()
   })
 
@@ -270,6 +273,11 @@ describe("ItemDialog", () => {
 
       // Assert — wait for onSave to have been called (it was, but threw), then verify no withdrawal
       await waitFor(() => expect(onSave).toHaveBeenCalledOnce())
+      // A withdrawal would only happen after the rejected save settles, so let the purchase
+      // handler run to completion before checking it never withdrew.
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0))
+      })
       expect(withdrawSpy).not.toHaveBeenCalled()
     })
 
@@ -514,10 +522,20 @@ describe("ItemDialog", () => {
     })
 
     it("does not show tabs in wizard mode, even once past the stats step", () => {
+      // Arrange — an existing item, which would otherwise get the Subitems tab
       renderInBuilder(
-        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
+        <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} wizard />,
       )
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+      expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
 
+      // Act
+      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+
+      // Assert
+      expect(within(dialog).queryByLabelText(/^name$/i)).toBeNull()
+      expect(screen.queryByRole("tab", { name: "Stats" })).toBeNull()
       expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
     })
 

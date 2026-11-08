@@ -60,18 +60,32 @@ describe("AnyItemCard", () => {
   })
 
   it("dispatches miscellaneous items to OtherDataCard", () => {
+    // Arrange
+    const itemId = "00000000-0000-0000-0000-000000000003"
+    const childId = "00000000-0000-0000-0000-000000000005"
     const item: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
-      id: "00000000-0000-0000-0000-000000000003",
+      kind: EntityKind.item, items: { parentId: null, childIds: [childId] },
+      id: itemId,
       name: "Survival Kit",
       itemType: ItemType.other,
     }
+    const child: ItemData = {
+      kind: EntityKind.item, items: { parentId: itemId, childIds: [] },
+      id: childId,
+      name: "Flashlight",
+      itemType: ItemType.other,
+    }
 
+    // Act
     renderWithProviders(<AnyItemCard item={item} />, {
-      runner: runnerDataFactory({ items: { [item.id]: item } }),
+      runner: runnerDataFactory({ items: { [item.id]: item, [child.id]: child } }),
     })
 
+    // Assert: OtherDataCard lists the item's children and always supplies its own Remove action,
+    // neither of which the plain ItemCard fallback renders.
     expect(screen.getByText("Survival Kit")).toBeDefined()
+    expect(screen.getByText("Flashlight")).toBeDefined()
+    expect(screen.getByRole("button", { name: "Actions menu" })).toBeDefined()
   })
 
   it("passes onOpen through to the rendered card", () => {

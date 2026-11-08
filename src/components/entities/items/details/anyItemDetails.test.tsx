@@ -1,5 +1,5 @@
-import { screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { fireEvent, screen } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
@@ -48,17 +48,25 @@ describe("AnyItemDetails", () => {
   })
 
   it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
+    // Arrange
     const item: ItemData = {
       kind: EntityKind.item, items: { parentId: null, childIds: [] },
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",
       itemType: ItemType.other,
     }
+    const onRemove = vi.fn()
 
-    renderWithProviders(<AnyItemDetails item={item} />, {
+    // Act
+    renderWithProviders(<AnyItemDetails item={item} onRemove={onRemove} />, {
       runner: runnerDataFactory({ items: { [item.id]: item } }),
     })
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
 
+    // Assert
     expect(screen.getByText("Fake SIN")).toBeDefined()
+    // Only the fallback calls onRemove directly; typed views manage removal internally.
+    expect(screen.getByRole("button", { name: "Edit" })).toBeDefined()
+    expect(onRemove).toHaveBeenCalledOnce()
   })
 })

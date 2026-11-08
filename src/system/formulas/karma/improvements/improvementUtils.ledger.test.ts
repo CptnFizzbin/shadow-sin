@@ -13,11 +13,8 @@ import { ImprovementType } from "#/system/model/karma/improvements/improvementTy
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { applyImprovements } from "./improvementUtils.ts"
-
-const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
 function makeRunnerStore(sheet: RunnerData) {
   const store = createRunnerStateStore({ mode: "viewer", runner: sheet })
@@ -154,28 +151,41 @@ describe.concurrent("applyImprovements — karma ledger writes", () => {
     expect(new Date(timestamp).toISOString()).toBe(timestamp)
   })
 
-  it("ignores the FAKE_ID constant — entries are generated with fresh UUIDs", () => {
+  it("gives each ledger entry a freshly generated UUID, distinct from its improvement's id", () => {
     // Arrange
     const sheet = runnerDataFactory({ afterBuild: (draft) => {
-      draft.karma.current = 50
+      draft.attributes[AttributeKey.body] = 3
+      draft.attributes[AttributeKey.agility] = 4
+      draft.karma.current = 100
     } })
     const { store, setState } = makeRunnerStore(sheet)
     const improvementStore = new ImprovementStore()
-    const entry: Omit<AttrIncreaseEntry, "id"> = {
+    const bodyEntry: Omit<AttrIncreaseEntry, "id"> = {
       type: ImprovementType.attrIncrease,
       attr: AttributeKey.body,
       baseRating: 3,
       newRating: 4,
     }
-    improvementStore.add(entry)
+    const agilityEntry: Omit<AttrIncreaseEntry, "id"> = {
+      type: ImprovementType.attrIncrease,
+      attr: AttributeKey.agility,
+      baseRating: 4,
+      newRating: 5,
+    }
+    const addedBody = improvementStore.add(bodyEntry)
+    const addedAgility = improvementStore.add(agilityEntry)
 
     // Act
     applyImprovements(improvementStore, { setState })
 
-    // Assert — ledger entry has its own id, distinct from FAKE_ID
-    expect(store.getState().runner.karma.log[0].id).not.toBe(FAKE_ID)
-    expect(store.getState().runner.karma.log[0].id).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-    )
+    // Assert
+    const ledgerIds = store.getState().runner.karma.log.map((entry) => entry.id)
+    expect(ledgerIds).toHaveLength(2)
+    for (const ledgerId of ledgerIds) {
+      expect(ledgerId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
+      expect(ledgerId).not.toBe(addedBody.id)
+      expect(ledgerId).not.toBe(addedAgility.id)
+    }
+    expect(ledgerIds[0]).not.toBe(ledgerIds[1])
   })
 })

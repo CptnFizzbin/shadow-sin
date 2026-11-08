@@ -174,7 +174,7 @@ describe.concurrent("ReputationSelectors.selectPublicAwareness", () => {
     expect(ReputationSelectors.selectPublicAwareness(stateFor(runner))).toBe(0)
   })
 
-  it("defaults the base modifier to 0 when unset", () => {
+  it("is 0 for a runner with no karma or ledger entries", () => {
     // Arrange
     const runner = runnerDataFactory()
 

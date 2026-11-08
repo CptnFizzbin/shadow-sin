@@ -213,16 +213,18 @@ describe("Counter", () => {
     })
 
     it("clamps to min when the typed value is below min", () => {
-      // Arrange
-      const { input, onChange } = renderCounterField(null, 2, 10)
-
-      // Act
+      // Arrange — controlled component, so the clamped value flows back in as the external value
+      const input = renderCounter(null, 2, 10)
       focus(input)
       change(input, "1")
+      // The unclamped draft stays visible while the user is still editing
+      expect(input.value).toBe("1")
+
+      // Act
       blur(input)
 
       // Assert
-      expect(onChange).toHaveBeenCalledWith(2)
+      expect(input.value).toBe("2")
     })
 
     it("clamps to max when the typed value is above max", () => {
@@ -265,16 +267,18 @@ describe("Counter", () => {
     })
 
     it("reverts the display to the external value after blur", () => {
-      // Arrange — controlled component; external value = 5
-      const input = renderCounter(5, 0, 10)
-
-      // Act
+      // Arrange — the mock onChange never updates the prop, so the external value stays 5
+      const { input, onChange } = renderCounterField(5, 0, 10)
       focus(input)
       change(input, "3")
+      expect(onChange).toHaveBeenCalledWith(3)
+      expect(input.value).toBe("3")
+
+      // Act
       blur(input)
 
-      // Assert — after blur the ControlledCounter updates to 3
-      expect(input.value).toBe("3")
+      // Assert
+      expect(input.value).toBe("5")
     })
   })
 

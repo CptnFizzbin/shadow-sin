@@ -38,13 +38,23 @@ describe.concurrent("normalizeSinRating", () => {
 
   it("is idempotent — a SIN already carrying isReal is left untouched", () => {
     // Arrange
-    const character = { _data_: { items: { s1: { itemType: "sin", isReal: false, rating: 4 } } } }
+    const character = {
+      _data_: {
+        items: {
+          real: { itemType: "sin", isReal: true, rating: 4 },
+          fake: { itemType: "sin", isReal: false, rating: "real" },
+        },
+      },
+    }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.items?.s1).toEqual({ itemType: "sin", isReal: false, rating: 4 })
+    expect(result._data_?.items).toEqual({
+      real: { itemType: "sin", isReal: true, rating: 4 },
+      fake: { itemType: "sin", isReal: false, rating: "real" },
+    })
   })
 
   it("ignores non-SIN items even with a string rating", () => {

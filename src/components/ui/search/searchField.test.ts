@@ -12,10 +12,18 @@ describe.concurrent("filterBySearch", () => {
 
   const getSearchTexts = (item: Item) => [item.name, ...item.tags]
 
-  it("supports AND matching when matchAll is true", () => {
-    const predicate = filterBySearch(getSearchTexts, ["arcane", "gear"])
+  it("requires every search term to match", () => {
+    // Arrange
+    const termsSplitAcrossRows = ["arcane", "combat"]
+    const termsWithinOneRow = ["ARCANE", "magic"]
 
-    expect(rows.filter(predicate)).toEqual([rows[0]])
+    // Act
+    const splitMatches = rows.filter(filterBySearch(getSearchTexts, termsSplitAcrossRows))
+    const withinOneRowMatches = rows.filter(filterBySearch(getSearchTexts, termsWithinOneRow))
+
+    // Assert
+    expect(splitMatches).toEqual([])
+    expect(withinOneRowMatches).toEqual([rows[0]])
   })
 
   it("returns false for every row when no search terms are provided", () => {

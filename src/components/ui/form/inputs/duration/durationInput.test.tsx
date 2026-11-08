@@ -102,7 +102,7 @@ describe("DurationField", () => {
 
     // Assert
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
-    expect(combobox.textContent).toContain("2 hours")
+    expect(combobox.textContent).toBe("2 hours")
   })
 
   it("opens pre-filled with the current value via the edit button when a non-standard Duration is already selected", () => {

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
+import { patchLifestyle } from "./lifestyle/lifestyle.actions.ts"
 import { setProfileAlias, setProfileName } from "./profile/profile.actions.ts"
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
 
@@ -45,7 +46,7 @@ describe.concurrent("runnerRootReducer name mirroring", () => {
     expect(next.name).toBe("Sarah Chen")
   })
 
-  it("keeps the alias in front of the legal name for unrelated actions", () => {
+  it("keeps the alias in front when the legal name changes", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (data) => {
       data.profile.alias = "Ghost"
@@ -55,6 +56,21 @@ describe.concurrent("runnerRootReducer name mirroring", () => {
 
     // Act
     const next = runnerRootReducer(runner, setProfileName("Sarah Chen-Wu"))
+
+    // Assert
+    expect(next.name).toBe("Ghost")
+  })
+
+  it("recomputes the name from the alias for unrelated actions", () => {
+    // Arrange — a stale root name proves the mirror is recomputed rather than carried over
+    const runner = runnerDataFactory({ afterBuild: (data) => {
+      data.profile.alias = "Ghost"
+      data.profile.name = "Sarah Chen"
+      data.name = "Stale Name"
+    } })
+
+    // Act
+    const next = runnerRootReducer(runner, patchLifestyle({ notes: "Safehouse" }))
 
     // Assert
     expect(next.name).toBe("Ghost")

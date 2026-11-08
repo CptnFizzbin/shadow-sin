@@ -35,13 +35,22 @@ describe("SpriteDataCard", () => {
 
   it("renders a Registered stat only when bound", () => {
     // Arrange / Act
+    const { unmount } = render(
+      <SpriteDataCard sprite={{ ...courierSprite, bound: true }} onEdit={noop} onRemove={noop} onDamageChange={noop} />,
+      { wrapper: ThemeWrapper },
+    )
+    const registeredWhenBound = screen.queryByText("Registered")
+    unmount()
+
     render(
       <SpriteDataCard sprite={{ ...courierSprite, bound: false }} onEdit={noop} onRemove={noop} onDamageChange={noop} />,
       { wrapper: ThemeWrapper },
     )
+    const registeredWhenUnbound = screen.queryByText("Registered")
 
     // Assert
-    expect(screen.queryByText("Registered")).toBeNull()
+    expect(registeredWhenBound).not.toBeNull()
+    expect(registeredWhenUnbound).toBeNull()
   })
 
   it("renders notes when present", () => {
@@ -90,9 +99,12 @@ describe("SpriteDataCard", () => {
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
+    expect(onEdit).toHaveBeenCalledOnce()
     expect(onRemove).toHaveBeenCalledOnce()
   })
 })
