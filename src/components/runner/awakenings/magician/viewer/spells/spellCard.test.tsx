@@ -11,6 +11,7 @@ import {
   SpellDrainType,
   SpellDuration,
   SpellRange,
+  SpellSustainTarget,
   SpellType,
 } from "#/system/model/magic/spellData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
@@ -30,6 +31,16 @@ const manabolt: SpellData = {
   duration: SpellDuration.Instantaneous,
   voluntaryTargetsOnly: false,
   description: "A mana-based attack spell.",
+}
+
+const increaseReflexes: SpellData = {
+  ...manabolt,
+  id: "00000000-0000-0000-0000-000000000002",
+  name: "Increase Reflexes",
+  category: SpellCategory.Health,
+  dealsDamage: false,
+  duration: SpellDuration.Sustained,
+  effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
 }
 
 describe("SpellCard", () => {
@@ -70,61 +81,63 @@ describe("SpellCard", () => {
     expect(onOpen).toHaveBeenCalledOnce()
   })
 
-  it("shows no Sustained status icon when the spell has no sustainable effects", () => {
+  it("shows no Sustain button for a spell that can't be sustained", () => {
     // Arrange / Act
     render(<SpellCard spell={manabolt} onOpen={vi.fn()} onToggleSustained={vi.fn()} />, { wrapper: ThemeWrapper })
 
     // Assert
-    expect(screen.queryByLabelText("Sustained")).toBeNull()
-    expect(screen.queryByLabelText("Not Sustained")).toBeNull()
+    expect(screen.queryByLabelText("Sustain")).toBeNull()
+    expect(screen.queryByLabelText("Stop Sustaining")).toBeNull()
   })
 
-  it("shows a Not Sustained status icon for a sustainable spell that isn't sustained", () => {
+  it("shows a Sustain button for a sustainable spell that isn't sustained", () => {
     // Arrange
-    const sustainable: SpellData = {
-      ...manabolt,
-      effects: [{ type: GameEffectType.dicePoolMod, value: -2 }],
-      sustained: false,
-    }
+    const sustainable: SpellData = { ...increaseReflexes, sustained: false }
 
     // Act
     render(<SpellCard spell={sustainable} onOpen={vi.fn()} onToggleSustained={vi.fn()} />, { wrapper: ThemeWrapper })
 
     // Assert
-    expect(screen.getByLabelText("Not Sustained")).toBeDefined()
+    expect(screen.getByLabelText("Sustain")).toBeDefined()
+    expect(screen.queryByLabelText("Sustained")).toBeNull()
   })
 
-  it("shows a Sustained status icon once the spell is sustained", () => {
+  it("shows a Stop Sustaining button, the Sustained status, and its target once the spell is sustained", () => {
     // Arrange
-    const sustained: SpellData = {
-      ...manabolt,
-      effects: [{ type: GameEffectType.dicePoolMod, value: -2 }],
-      sustained: true,
-    }
+    const sustained: SpellData = { ...increaseReflexes, sustained: true, sustainedOn: SpellSustainTarget.Other }
+
+    // Act
+    render(<SpellCard spell={sustained} onOpen={vi.fn()} onToggleSustained={vi.fn()} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(screen.getByLabelText("Stop Sustaining")).toBeDefined()
+    expect(screen.getByLabelText("Sustained")).toBeDefined()
+    expect(screen.getByText("Sustained on: Other")).toBeDefined()
+  })
+
+  it("omits the sustain target for a sustained spell without effects", () => {
+    // Arrange
+    const sustained: SpellData = { ...increaseReflexes, effects: [], sustained: true }
 
     // Act
     render(<SpellCard spell={sustained} onOpen={vi.fn()} onToggleSustained={vi.fn()} />, { wrapper: ThemeWrapper })
 
     // Assert
     expect(screen.getByLabelText("Sustained")).toBeDefined()
+    expect(screen.queryByText(/^Sustained on:/)).toBeNull()
   })
 
-  it("toggling the Sustained icon calls onToggleSustained without also opening the card", () => {
+  it("pressing the Sustain button calls onToggleSustained without also opening the card", () => {
     // Arrange
     const onToggleSustained = vi.fn()
     const onOpen = vi.fn()
-    const sustainable: SpellData = {
-      ...manabolt,
-      effects: [{ type: GameEffectType.dicePoolMod, value: -2 }],
-      sustained: false,
-    }
     render(
-      <SpellCard spell={sustainable} onOpen={onOpen} onToggleSustained={onToggleSustained} />,
+      <SpellCard spell={increaseReflexes} onOpen={onOpen} onToggleSustained={onToggleSustained} />,
       { wrapper: ThemeWrapper },
     )
 
     // Act
-    fireEvent.click(screen.getByLabelText("Not Sustained"))
+    fireEvent.click(screen.getByLabelText("Sustain"))
 
     // Assert
     expect(onToggleSustained).toHaveBeenCalledOnce()

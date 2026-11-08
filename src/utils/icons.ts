@@ -49,5 +49,7 @@ export const Icons = {
   spell: {
     sustained: RiLoopLeftFill,
     notSustained: RiLoopLeftLine,
+    startSustaining: RiPlayLine,
+    stopSustaining: RiStopLine,
   },
 }

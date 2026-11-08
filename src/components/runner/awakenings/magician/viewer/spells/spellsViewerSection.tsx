@@ -8,22 +8,37 @@ import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
+import { hasSpellEffects } from "#/system/formulas/magic/spellSustaining.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
+import { useSustainSpellDialog } from "./dialogs/sustainSpellDialog.tsx"
 import { SpellCard } from "./spellCard.tsx"
 import { useSpellCastDialog } from "./spellCastDialog.tsx"
 
 export const SpellsViewerSection: FC = () => {
   const spells = useRunnerSelector(SpellsSelectors.selectAll)
   const spellCastDialog = useSpellCastDialog()
+  const sustainSpellDialog = useSustainSpellDialog()
   const dispatch = useRunnerStoreDispatch()
 
   const handleOpenSpell = (spell: SpellData) => {
     spellCastDialog.open({ spell })
   }
 
-  const handleToggleSustained = (spell: SpellData) => {
-    dispatch(Actions.spells.toggleSpellSustained(spell.id))
+  const handleToggleSustained = async (spell: SpellData) => {
+    if (spell.sustained) {
+      dispatch(Actions.spells.stopSustainingSpell(spell.id))
+      return
+    }
+
+    // Only a Spell with effects needs a target: who it's on decides whether those effects apply to the Runner.
+    if (!hasSpellEffects(spell)) {
+      dispatch(Actions.spells.startSustainingSpell({ id: spell.id }))
+      return
+    }
+
+    const target = await sustainSpellDialog.open({ spell })
+    if (target) dispatch(Actions.spells.startSustainingSpell({ id: spell.id, target }))
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)
@@ -55,6 +70,7 @@ export const SpellsViewerSection: FC = () => {
       ))}
 
       {spellCastDialog.outlet}
+      {sustainSpellDialog.outlet}
     </Stack>
   )
 }

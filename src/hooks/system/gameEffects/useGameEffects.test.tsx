@@ -11,6 +11,7 @@ import {
   SpellDrainType,
   SpellDuration,
   SpellRange,
+  SpellSustainTarget,
   SpellType,
 } from "#/system/model/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -124,6 +125,7 @@ describe("GameEffectSelectors.selectAll", () => {
           drain: { type: SpellDrainType.Force, value: 0 },
           dealsDamage: false,
           duration: SpellDuration.Sustained,
+          sustained: true,
           voluntaryTargetsOnly: false,
           effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
         },
@@ -136,6 +138,39 @@ describe("GameEffectSelectors.selectAll", () => {
     // Assert
     expect(effects).toHaveLength(1)
     expect(effects[0]).toMatchObject({ type: GameEffectType.initiativeBonus, value: 2 })
+  })
+
+  it.each([
+    { case: "isn't sustained", sustained: false, sustainedOn: undefined },
+    { case: "is sustained on someone else", sustained: true, sustainedOn: SpellSustainTarget.Other },
+  ])("skips effects from a sustainable spell that $case", ({ sustained, sustainedOn }) => {
+    // Arrange
+    const sheet = runnerDataFactory({ afterBuild: (s) => {
+      s.spells = [
+        {
+          kind: EntityKind.spell,
+          id: NullUuid,
+          name: "Increase Reflexes",
+          type: SpellType.Physical,
+          range: SpellRange.Touch,
+          damage: SpellDamage.Stun,
+          category: SpellCategory.Health,
+          drain: { type: SpellDrainType.Force, value: 0 },
+          dealsDamage: false,
+          duration: SpellDuration.Sustained,
+          sustained,
+          sustainedOn,
+          voluntaryTargetsOnly: false,
+          effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
+        },
+      ]
+    } })
+
+    // Act
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
+
+    // Assert
+    expect(effects).toHaveLength(0)
   })
 
   it("collects effects from complex forms", () => {
@@ -219,6 +254,7 @@ describe("GameEffectSelectors.selectAll", () => {
             drain: { type: SpellDrainType.Force, value: 0 },
             dealsDamage: false,
             duration: SpellDuration.Sustained,
+            sustained: true,
             voluntaryTargetsOnly: false,
             effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
           },
@@ -346,6 +382,7 @@ describe("GameEffectSelectors.selectByType", () => {
             drain: { type: SpellDrainType.Force, value: 0 },
             dealsDamage: false,
             duration: SpellDuration.Sustained,
+            sustained: true,
             voluntaryTargetsOnly: false,
             effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
           },

@@ -44,6 +44,7 @@ import v20261030_00_repairAgentStats from "./migrations/20261030_00_repairAgentS
 import v20261031_00_addKnowledgeLanguageSkillIds from "./migrations/20261031_00_addKnowledgeLanguageSkillIds.ts"
 import v20261106_00_moveLifestyleToRunner from "./migrations/20261106_00_moveLifestyleToRunner.ts"
 import v20261108_00_equipImplants from "./migrations/20261108_00_equipImplants.ts"
+import v20261108_01_addSpellSustainTarget from "./migrations/20261108_01_addSpellSustainTarget.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -91,6 +92,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20261031_00_addKnowledgeLanguageSkillIds,
   v20261106_00_moveLifestyleToRunner,
   v20261108_00_equipImplants,
+  v20261108_01_addSpellSustainTarget,
 ]
 
 migrations.forEach((migration, index) => {

@@ -4,13 +4,17 @@ import { CardElementDicePool } from "#/components/ui/cards/entityCard/elements/c
 import { CardElementStatusIcon } from "#/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
+import { hasSpellEffects, isSustainable } from "#/system/formulas/magic/spellSustaining.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { SpellSustainTarget } from "#/system/model/magic/spellData.ts"
+import { Icons } from "#/utils/icons.ts"
 
 import { formatDrainFormula } from "./spellDrainFormula.ts"
 
 interface SpellCardProps {
   spell: SpellData
   onOpen: () => void
+  /** When provided on a sustainable Spell, adds a button to start or stop sustaining it. */
   onToggleSustained?: () => void
 }
 
@@ -18,19 +22,26 @@ interface SpellCardProps {
  * `SpellCard`'s own renderable frame — sits directly on `EntityCard`, with no intermediate
  * category tier: Spell has no subtypes the way Item does (Weapon, Armor, ...), so this is both
  * the category tier and the concrete typed card. Renders Type/Range/Duration/Drain/Damage via
- * `EntityCard.Stat` and a Sustained status icon.
+ * `EntityCard.Stat`, plus a Sustained status (and, for a Spell with effects, who it's sustained on)
+ * while the Spell is sustained.
  */
 const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained }) => {
-  const hasSustainableEffects = onToggleSustained && spell.effects && spell.effects.length > 0
+  const sustainAction = onToggleSustained && isSustainable(spell)
+    ? {
+        label: spell.sustained ? "Stop Sustaining" : "Sustain",
+        icon: spell.sustained ? <Icons.spell.stopSustaining /> : <Icons.spell.startSustaining />,
+        onClick: onToggleSustained,
+      }
+    : undefined
 
   return (
-    <EntityCard entity={spell} onOpen={onOpen}>
-      {hasSustainableEffects && (
-        <EntityCard.Layout.HeaderRow>
-          <CardElementStatusIcon
-            status={spell.sustained ? "sustained" : "not-sustained"}
-            onClick={onToggleSustained}
-          />
+    <EntityCard entity={spell} onOpen={onOpen} leftAction={sustainAction}>
+      {spell.sustained && isSustainable(spell) && (
+        <EntityCard.Layout.HeaderRow sx={{ alignItems: "center" }}>
+          <CardElementStatusIcon status="sustained" />
+          {hasSpellEffects(spell) && (
+            <EntityCard.Stat label="Sustained on" value={spell.sustainedOn ?? SpellSustainTarget.Self} />
+          )}
         </EntityCard.Layout.HeaderRow>
       )}
 
