@@ -2,7 +2,15 @@ import { createReducer } from "@reduxjs/toolkit"
 
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
-import { addSpell, removeSpell, saveSpell, toggleSpellSustained, updateSpell } from "./spells.actions.ts"
+import {
+  addSpell,
+  removeSpell,
+  saveSpell,
+  setSpellSustainTarget,
+  startSustainingSpell,
+  stopSustainingSpell,
+  updateSpell,
+} from "./spells.actions.ts"
 
 const initialState: SpellData[] = []
 
@@ -18,9 +26,19 @@ export const spellsReducer = createReducer(initialState, (builder) => {
     .addCase(removeSpell, (state, action) => {
       return state.filter((s) => s.id !== action.payload)
     })
-    .addCase(toggleSpellSustained, (state, action) => {
-      const target = state.find((s) => s.id === action.payload)
-      if (target) target.sustained = !target.sustained
+    .addCase(startSustainingSpell, (state, action) => {
+      const spell = state.find((s) => s.id === action.payload.id)
+      if (!spell) return
+      spell.sustained = true
+      if (action.payload.target) spell.sustainedOn = action.payload.target
+    })
+    .addCase(stopSustainingSpell, (state, action) => {
+      const spell = state.find((s) => s.id === action.payload)
+      if (spell) spell.sustained = false
+    })
+    .addCase(setSpellSustainTarget, (state, action) => {
+      const spell = state.find((s) => s.id === action.payload.id)
+      if (spell) spell.sustainedOn = action.payload.target
     })
     .addCase(saveSpell, (state, action) => {
       const index = state.findIndex((s) => s.id === action.payload.id)

@@ -10,10 +10,12 @@ import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { isSustainable } from "#/system/formulas/magic/spellSustaining.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
 import { SpellCastSection } from "./spellCastSection.tsx"
 import { formatDrainFormula } from "./spellDrainFormula.ts"
+import { SpellSustainSection } from "./spellSustainSection.tsx"
 
 interface SpellCastDialogProps extends ControlledDialogProps<void> {
   spell: SpellData
@@ -80,6 +82,13 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
           <Divider />
 
           <SpellCastSection key={spell.id} spell={spell} onClose={() => ctrl.close()} />
+
+          {isSustainable(spell) && (
+            <>
+              <Divider />
+              <SpellSustainSection spellId={spell.id} />
+            </>
+          )}
 
           <Button onClick={() => ctrl.close()} color="secondary" size="small">
             Close

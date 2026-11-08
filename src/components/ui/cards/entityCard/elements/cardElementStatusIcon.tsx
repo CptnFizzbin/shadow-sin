@@ -18,8 +18,7 @@ export type CardElementStatusIconStatus =
 export interface CardElementStatusIconProps {
   status: CardElementStatusIconStatus
   /**
-   * When provided, the icon becomes tappable (e.g. Spell's Sustained toggle) instead of a plain
-   * status display — clicks are stopped from bubbling to the card's own `onOpen`.
+   * When provided, the icon becomes tappable instead of a plain status display — clicks are stopped from bubbling to the card's own `onOpen`.
    */
   onClick?: () => void
 }
@@ -39,7 +38,7 @@ const statusIcon: Record<CardElementStatusIconStatus, { icon: IconComponent, lab
  * One entry in the top-right status icon cluster, parameterized by `status` rather than a raw
  * icon+label pair — callers pick from known statuses (Item's Equipped/Stashed/Fixed/Wireless,
  * Spell's Sustained/Not Sustained) instead of reinventing the icon/label mapping per consumer.
- * Purely a display by default; passing `onClick` makes it tappable (e.g. Spell's Sustained toggle).
+ * Purely a display by default; passing `onClick` makes it tappable.
  */
 export const CardElementStatusIcon: FC<CardElementStatusIconProps> = ({ status, onClick }) => {
   const { icon: Icon, label } = statusIcon[status]

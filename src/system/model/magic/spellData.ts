@@ -41,6 +41,12 @@ export enum SpellDrainType {
   Fixed = "Fixed",
 }
 
+/** Who a sustained Spell is cast on — only a Spell sustained on its caster grants them its Game Effects. */
+export enum SpellSustainTarget {
+  Self = "Self",
+  Other = "Other",
+}
+
 export interface SpellData {
   kind: EntityKind.spell
   id: string
@@ -61,6 +67,8 @@ export interface SpellData {
   source?: SourceData
   effects?: GameEffectData[]
   sustained?: boolean
+  /** Who the Spell is sustained on; absent means `Self`. */
+  sustainedOn?: SpellSustainTarget
 }
 
 export const SpellDataSchema = z.object({
@@ -83,4 +91,5 @@ export const SpellDataSchema = z.object({
   source: SourceDataSchema.optional(),
   effects: GameEffectDataSchema.array().optional(),
   sustained: z.boolean().optional(),
+  sustainedOn: z.enum(SpellSustainTarget).optional(),
 }) satisfies z.ZodType<SpellData>
