@@ -35,6 +35,12 @@ export interface ItemData extends EntityData, EntityWithItems {
     removed?: boolean
   }
 
+  /**
+   * Opts this item out of having a Matrix presence: it isn't a node and shows no Matrix stats.
+   * Absent or `false` means the item is a node.
+   */
+  matrixDisabled?: boolean
+
   /** State object to track data between states */
   _state?: {
     equipOnUnstash?: boolean

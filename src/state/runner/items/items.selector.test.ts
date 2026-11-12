@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ArmorRatingType } from "#/system/model/items/armorData.ts"
+import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -340,5 +341,119 @@ describe("ItemSelectors.Armor.DiceGroups.selectArmor", () => {
 
     // Assert
     expect(groups).toEqual([{ name: `Armor (${ArmorRatingType.impact})`, size: 6 }])
+  })
+})
+
+describe.concurrent("ItemSelectors.Matrix.selectStats", () => {
+  it("returns a Device's own Rating and Matrix attributes", () => {
+    // Arrange
+    const device: DeviceData = {
+      ...makeItem({ itemType: ItemType.device }),
+      itemType: ItemType.device,
+      deviceRating: 4,
+      response: 3,
+      system: 5,
+      firewall: 2,
+      signal: 6,
+    }
+    const catalog = withGear(device)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: device.id })
+
+    // Assert
+    expect(stats).toEqual({
+      values: { rating: 4, response: 3, system: 5, firewall: 2, signal: 6 },
+      defaulted: [],
+      online: true,
+    })
+  })
+
+  it("falls back to 1 for every stat an Item doesn't set", () => {
+    // Arrange
+    const weapon = makeItem({ rating: 6 })
+    const catalog = withGear(weapon)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: weapon.id })
+
+    // Assert
+    expect(stats).toEqual({
+      values: { rating: 1, response: 1, system: 1, firewall: 1, signal: 1 },
+      defaulted: ["rating", "response", "system", "firewall", "signal"],
+      online: true,
+    })
+  })
+
+  it("falls back to 1 only for a Device's unset or zero stats", () => {
+    // Arrange
+    const device: DeviceData = {
+      ...makeItem({ itemType: ItemType.device }),
+      itemType: ItemType.device,
+      deviceRating: 3,
+      response: 0,
+    }
+    const catalog = withGear(device)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: device.id })
+
+    // Assert
+    expect(stats?.values).toEqual({ rating: 3, response: 1, system: 1, firewall: 1, signal: 1 })
+    expect(stats?.defaulted).toEqual(["response", "system", "firewall", "signal"])
+  })
+
+  it("returns nothing for an Item that opted out of the Matrix", () => {
+    // Arrange
+    const weapon = makeItem({ matrixDisabled: true })
+    const catalog = withGear(weapon)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: weapon.id })
+
+    // Assert
+    expect(stats).toBeUndefined()
+  })
+
+  it("returns nothing for an attachment, which shares its parent's node", () => {
+    // Arrange
+    const [pistol, smartgunLink] = createItem<ItemData>(
+      { name: "Ares Predator V", itemType: ItemType.weapon },
+      [makeItem({ name: "Smartgun Link", itemType: ItemType.firearmAccessory })],
+    )
+    const catalog = withGear(pistol, smartgunLink)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: smartgunLink.id })
+
+    // Assert
+    expect(stats).toBeUndefined()
+  })
+
+  it.each([
+    ["off", { enabled: false }],
+    ["removed", { enabled: true, removed: true }],
+  ])("marks the node offline while wireless is %s", (_, wireless) => {
+    // Arrange
+    const weapon = makeItem({ wireless })
+    const catalog = withGear(weapon)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: weapon.id })
+
+    // Assert
+    expect(stats?.online).toBe(false)
+  })
+
+  it("keeps the node online while wireless is on", () => {
+    // Arrange
+    const weapon = makeItem({ wireless: { enabled: true } })
+    const catalog = withGear(weapon)
+
+    // Act
+    const stats = ItemSelectors.Matrix.selectStats(stateFor(catalog), { itemId: weapon.id })
+
+    // Assert
+    expect(stats?.online).toBe(true)
   })
 })

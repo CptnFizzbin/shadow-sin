@@ -50,6 +50,7 @@ export const SinDataSchema = z.object({
     enabled: z.boolean().optional(),
     removed: z.boolean().optional(),
   }).optional(),
+  matrixDisabled: z.boolean().optional(),
   _state: z.object({
     equipOnUnstash: z.boolean().optional(),
   }).optional(),

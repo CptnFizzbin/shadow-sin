@@ -5,10 +5,13 @@ import { useState } from "react"
 
 import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
+import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { Icons } from "#/utils/icons.ts"
 
 export const Route = createFileRoute("/test/items/details/all")({
@@ -67,60 +70,67 @@ const SUBITEM_B: ItemData = {
  */
 function ItemDetailsTestPage() {
   const [damage, setDamage] = useState(3)
+  // The Matrix section reads the item's node from the Runner store.
+  const [runnerStore] = useState(() => createRunnerStateStore({
+    mode: "viewer",
+    runner: runnerDataFactory({ items: { [TEST_ITEM.id]: TEST_ITEM } }),
+  }))
 
   return (
-    <ItemDetailsRoot
-      item={TEST_ITEM}
-      type="Test Type"
-      onEdit={() => alert("onEdit")}
-      onRemove={() => alert("onRemove")}
-    >
-      <ItemDetailsSlot.Title title="Overridden Title (via slot)" />
-      <ItemDetailsSlot.Type label="Overridden Type" subtype="With Subtype" />
-      <ItemDetailsSlot.Source source={{ book: "SR4A", page: 12 }} />
-      <ItemDetailsSlot.Availability value={{ rating: 8, restricted: true }} />
-      <ItemDetailsSlot.Quantity value={99} />
-      <ItemDetailsSlot.Cost value={10000} />
-      <ItemDetailsSlot.Rating value={6} />
+    <RunnerStoreProvider store={runnerStore}>
+      <ItemDetailsRoot
+        item={TEST_ITEM}
+        type="Test Type"
+        onEdit={() => alert("onEdit")}
+        onRemove={() => alert("onRemove")}
+      >
+        <ItemDetailsSlot.Title title="Overridden Title (via slot)" />
+        <ItemDetailsSlot.Type label="Overridden Type" subtype="With Subtype" />
+        <ItemDetailsSlot.Source source={{ book: "SR4A", page: 12 }} />
+        <ItemDetailsSlot.Availability value={{ rating: 8, restricted: true }} />
+        <ItemDetailsSlot.Quantity value={99} />
+        <ItemDetailsSlot.Cost value={10000} />
+        <ItemDetailsSlot.Rating value={6} />
 
-      <ItemDetailsSlot.Status icon={Icons.item.fixed} label="Fixed" />
+        <ItemDetailsSlot.Status icon={Icons.item.fixed} label="Fixed" />
 
-      <ItemDetailsSlot.Stat label="Damage" value="8P" type="damage" />
-      <ItemDetailsSlot.Stat label="Modifier" value="+2" type="modifier" />
-      <ItemDetailsSlot.Stat label="Warning" value="Illegal" type="warning" />
-      <ItemDetailsSlot.Stat label="Forbidden" value="Banned" type="forbidden" />
-      <ItemDetailsSlot.Stat label="Plain" value="No color" />
+        <ItemDetailsSlot.Stat label="Damage" value="8P" type="damage" />
+        <ItemDetailsSlot.Stat label="Modifier" value="+2" type="modifier" />
+        <ItemDetailsSlot.Stat label="Warning" value="Illegal" type="warning" />
+        <ItemDetailsSlot.Stat label="Forbidden" value="Banned" type="forbidden" />
+        <ItemDetailsSlot.Stat label="Plain" value="No color" />
 
-      <ItemDetailsSlot.DamageTrack label="Physical" max={10} current={damage} onChange={setDamage} />
-      <ItemDetailsSlot.DamageTrack label="Stun" max={10} current={damage} onChange={setDamage} />
-      <ItemDetailsSlot.DamageTrack label="Matrix" max={10} current={damage} onChange={setDamage} />
+        <ItemDetailsSlot.DamageTrack label="Physical" max={10} current={damage} onChange={setDamage} />
+        <ItemDetailsSlot.DamageTrack label="Stun" max={10} current={damage} onChange={setDamage} />
+        <ItemDetailsSlot.DamageTrack label="Matrix" max={10} current={damage} onChange={setDamage} />
 
-      <ItemDetailsSlot.Subitem item={SUBITEM_A} onOpen={() => alert("open Attached Widget")} />
-      <ItemDetailsSlot.Subitem item={SUBITEM_B} />
+        <ItemDetailsSlot.Subitem item={SUBITEM_A} onOpen={() => alert("open Attached Widget")} />
+        <ItemDetailsSlot.Subitem item={SUBITEM_B} />
 
-      <ItemDetailsSlot.QuickAction
-        label="Custom Action"
-        icon={<RiStarLine size={16} />}
-        onClick={() => alert("custom action")}
-      />
-      <ItemDetailsSlot.QuickAction
-        label="Disabled Action"
-        icon={<RiStarLine size={16} />}
-        onClick={() => {}}
-        disabled
-      />
+        <ItemDetailsSlot.QuickAction
+          label="Custom Action"
+          icon={<RiStarLine size={16} />}
+          onClick={() => alert("custom action")}
+        />
+        <ItemDetailsSlot.QuickAction
+          label="Disabled Action"
+          icon={<RiStarLine size={16} />}
+          onClick={() => {}}
+          disabled
+        />
 
-      <ItemDetailsSlot.Footer>
-        <RiFlashlightLine size={16} />
-        <Typography variant="body2">Footer slot content (e.g. a legacy card's carried-over inline action)</Typography>
-      </ItemDetailsSlot.Footer>
+        <ItemDetailsSlot.Footer>
+          <RiFlashlightLine size={16} />
+          <Typography variant="body2">Footer slot content (e.g. a legacy card's carried-over inline action)</Typography>
+        </ItemDetailsSlot.Footer>
 
-      <ItemDetailsSlot.Content>
-        <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>Content slot</Typography>
-        <Typography variant="body2">
-          Freeform block for content too large or irregular for a Stat block or Footer row.
-        </Typography>
-      </ItemDetailsSlot.Content>
-    </ItemDetailsRoot>
+        <ItemDetailsSlot.Content>
+          <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>Content slot</Typography>
+          <Typography variant="body2">
+            Freeform block for content too large or irregular for a Stat block or Footer row.
+          </Typography>
+        </ItemDetailsSlot.Content>
+      </ItemDetailsRoot>
+    </RunnerStoreProvider>
   )
 }

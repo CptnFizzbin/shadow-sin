@@ -39,6 +39,7 @@ const defaultFormValues = {
   items: { parentId: null, childIds: [] } as VehicleData["items"],
   effects: [] as VehicleData["effects"],
   stashed: false,
+  matrixDisabled: false,
 
   handling: 0,
   accel: "0/0" as string,
@@ -79,6 +80,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     items: values.items,
     effects: values.effects,
     stashed: values.stashed,
+    ...(values.matrixDisabled && { matrixDisabled: true }),
     handling: values.handling,
     accel: values.accel as VehicleData["accel"],
     pilot: values.pilot,
@@ -117,6 +119,7 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
     items: vehicle.items,
     effects: vehicle.effects ?? [],
     stashed: vehicle.stashed ?? false,
+    matrixDisabled: vehicle.matrixDisabled ?? false,
     handling: vehicle.handling,
     accel: vehicle.accel,
     pilot: vehicle.pilot,

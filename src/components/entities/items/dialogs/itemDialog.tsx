@@ -16,6 +16,7 @@ import { AvailabilityFieldGroup } from "#/components/entities/items/availability
 import { GearAttachmentFieldGroup } from "#/components/entities/items/forms/gearAttachmentFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/entities/items/forms/gearCostFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/entities/items/forms/gearDescriptionFieldGroup.tsx"
+import { GearMatrixFieldGroup } from "#/components/entities/items/forms/gearMatrixFieldGroup.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -263,7 +264,7 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
 
                       <Divider />
 
-                      <Stack direction="row" sx={{ alignItems: "center" }}>
+                      <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
                         {localOptions["equipable"] && (
                           <form.AppField name="equipped">
                             {(field) => <field.SwitchField label="Equipped" />}
@@ -275,6 +276,13 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                             {(field) => <field.SwitchField label="Stashed" />}
                           </form.AppField>
                         )}
+
+                        {/* Attachments share their parent's Matrix node, so have no presence of their own to toggle. */}
+                        <form.Subscribe selector={(state) => state.values.items?.parentId}>
+                          {(parentId) => !parentId && (
+                            <GearMatrixFieldGroup form={form} fields={itemFieldMap} />
+                          )}
+                        </form.Subscribe>
 
                         <IconButton
                           size="small"

@@ -36,6 +36,7 @@ export const itemDefaults: ItemData = {
   items: { parentId: null, childIds: [] },
   effects: [],
   stashed: false,
+  matrixDisabled: false,
 }
 
 export const itemFieldMap = createFieldMap(itemDefaults)
