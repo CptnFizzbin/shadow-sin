@@ -58,8 +58,10 @@ export const SelectField: FC<SelectFieldProps> = ({
   const noGroupSymbol = Symbol("ungrouped").toString()
   const optionsByGroup = Object.groupBy(options, (option) => option.group ?? noGroupSymbol)
 
+  // Ungrouped options (such as the blank "nothing selected" entry) render above the first group
+  // header — after the last group they would read as members of it.
   const groupKeys = sort(Object.keys(optionsByGroup)).by([
-    { asc: (key) => key === noGroupSymbol },
+    { asc: (key) => key !== noGroupSymbol },
     { asc: (key) => key },
   ])
 
