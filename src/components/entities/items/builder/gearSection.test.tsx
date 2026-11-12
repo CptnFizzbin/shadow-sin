@@ -2,11 +2,45 @@ import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { GearSection as GearItemSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { GearSection } from "./gearSection.tsx"
 
+const trodes: ItemData = {
+  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  id: "00000000-0000-0000-0000-000000000001",
+  name: "Trodes",
+  itemType: ItemType.other,
+}
+
 describe("GearSection", () => {
+  it("hides item sections that have no items but always shows Lifestyle", () => {
+    // Arrange / Act
+    renderInBuilder(<GearSection />, {
+      runner: runnerDataFactory({ items: { [trodes.id]: trodes } }),
+    })
+
+    // Assert
+    expect(screen.getByText("Misc")).toBeDefined()
+    expect(screen.getAllByText("Lifestyle").length).toBeGreaterThan(0)
+    expect(screen.queryByText("Weapons")).toBeNull()
+    expect(screen.queryByText("Armor")).toBeNull()
+  })
+
+  it("expands every section by default", () => {
+    // Arrange / Act
+    renderInBuilder(<GearSection />, {
+      runner: runnerDataFactory({ items: { [trodes.id]: trodes } }),
+    })
+
+    // Assert
+    expect(screen.getByText("Misc").closest("[aria-expanded]")?.getAttribute("aria-expanded")).toBe("true")
+  })
+
   it("shows a single standard Add Item button rather than one per gear type", () => {
     // Arrange / Act
     renderInBuilder(<GearSection />)

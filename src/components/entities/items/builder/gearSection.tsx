@@ -16,6 +16,7 @@ import { getImplantEffectiveNuyenCost } from "#/components/entities/items/types/
 import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
 import { ArmorSectionContent } from "#/components/entities/items/viewer/armorSectionContent.tsx"
 import { DevicesSectionContent } from "#/components/entities/items/viewer/devicesSectionContent.tsx"
+import { GearSection as GearItemSection, sectionGearTypes } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { MiscSectionContent } from "#/components/entities/items/viewer/miscSectionContent.tsx"
 import { VehiclesSectionContent } from "#/components/entities/items/viewer/vehiclesSectionContent.tsx"
 import { WeaponsSectionContent } from "#/components/entities/items/viewer/weaponsSectionContent.tsx"
@@ -37,19 +38,42 @@ import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
 import { SectionHeader } from "./sectionHeader.tsx"
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
+const itemSectionTypes: Record<Exclude<SectionHeader, SectionHeader.Lifestyle>, ItemType[]> = {
+  [SectionHeader.Cyberware]: sectionGearTypes[GearItemSection.Cyberware],
+  [SectionHeader.Weapons]: sectionGearTypes[GearItemSection.Weapons],
+  [SectionHeader.Armor]: sectionGearTypes[GearItemSection.Armor],
+  [SectionHeader.Vehicles]: sectionGearTypes[GearItemSection.Vehicles],
+  [SectionHeader.Devices]: sectionGearTypes[GearItemSection.Devices],
+  [SectionHeader.Licenses]: sectionGearTypes[GearItemSection.Licenses],
+  [SectionHeader.Misc]: sectionGearTypes[GearItemSection.Misc],
+}
+
 export const GearSection: FC = () => {
   const totalNuyen = useGearTotalCost()
   const buildPoints = useGearBuildPoints()
   const { invalidSections } = useGearAvailabilityIssues()
   const addItemDialog = useAddItemDialogContext()
 
-  const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
+  const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
+  const [collapsedSections, setCollapsedSections] = useState<ReadonlySet<SectionHeader>>(new Set())
 
   const onSectionChange = (section: SectionHeader) => {
     return (_: SyntheticEvent, isExpanded: boolean) => {
-      setActiveSection(isExpanded ? section : null)
+      setCollapsedSections((previous) => {
+        const next = new Set(previous)
+        if (isExpanded) next.delete(section)
+        else next.add(section)
+        return next
+      })
     }
   }
+
+  const visibleSections = Object.values(SectionHeader).filter((section) => {
+    // Lifestyle holds the runner's lifestyle settings rather than gear items, so it is always shown.
+    if (section === SectionHeader.Lifestyle) return true
+    const allowedTypes = itemSectionTypes[section]
+    return Object.values(allGearItems).some((item) => allowedTypes.includes(item.itemType as ItemType))
+  })
 
   return (
     <Stack>
@@ -86,10 +110,10 @@ export const GearSection: FC = () => {
         Add Item
       </Button>
 
-      {Object.values(SectionHeader).map((sectionName) => (
+      {visibleSections.map((sectionName) => (
         <Accordion
           key={sectionName}
-          expanded={activeSection === sectionName}
+          expanded={!collapsedSections.has(sectionName)}
           onChange={onSectionChange(sectionName)}
           disableGutters
           elevation={0}
