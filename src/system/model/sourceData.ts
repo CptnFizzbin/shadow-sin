@@ -43,6 +43,7 @@ const books = {
   US: { label: "Unfriendly Skies", group: bookGroups.suplimental },
   GH: { label: "Gun Heaven", group: bookGroups.suplimental },
   GH2: { label: "Gun Heaven 2", group: bookGroups.suplimental },
+  WAR: { label: "War!", group: bookGroups.suplimental },
 
   SR4: { label: "Shadowrun 4th", group: bookGroups.legacy },
 } as const
