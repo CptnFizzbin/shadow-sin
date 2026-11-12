@@ -4102,6 +4102,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^15.1.0":
+  version: 15.1.0
+  resolution: "commander@npm:15.1.0"
+  checksum: 10c0/dd1013291d3e8779c726313616fa23174abc962182d0894ac73017c55d8b1ffe4a72401d91a1173974050536576896dc5279db07d37f929dbad469a16a12c54e
+  languageName: node
+  linkType: hard
+
 "comment-parser@npm:^1.4.1":
   version: 1.4.8
   resolution: "comment-parser@npm:1.4.8"
@@ -7160,6 +7167,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.63.0":
+  version: 1.63.0
+  resolution: "playwright-core@npm:1.63.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/39c1ebae4029ca2e9371e00a5588d962038e24b6e0bdb7d0d27374dde04838f349b83ae0c8b3b648653d0935cba7fb9011f1201adaab9dd0db7801ad6c75e9aa
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.63.0":
+  version: 1.63.0
+  resolution: "playwright@npm:1.63.0"
+  dependencies:
+    playwright-core: "npm:1.63.0"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/d1fd048a89be27c9aba6757dc4f70eff4a5163b49f439ad691767be8b2a482327d0dd1928b4f73c8fe0d8b33aab2c9dc2670424ab60f112d9e98e91b94e3b090
+  languageName: node
+  linkType: hard
+
 "pluralize@npm:^8.0.0":
   version: 8.0.0
   resolution: "pluralize@npm:8.0.0"
@@ -7835,6 +7862,7 @@ __metadata:
     "@vitest/ui": "npm:^5.1.0"
     babel-plugin-react-compiler: "npm:^1.0.0"
     classnames: "npm:^2.5.1"
+    commander: "npm:^15.1.0"
     date-fns: "npm:^4.4.0"
     dotenv: "npm:^18.0.9"
     eslint: "npm:^9.0.0"
@@ -7851,6 +7879,7 @@ __metadata:
     jiti: "npm:^2.7.0"
     js-yaml: "npm:^5.5.0"
     npm-run-all2: "npm:^9.0.4"
+    playwright: "npm:1.63.0"
     pluralize: "npm:^8.0.0"
     react: "npm:^19.3.1"
     react-dom: "npm:^19.3.1"
