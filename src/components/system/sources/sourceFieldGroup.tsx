@@ -37,9 +37,9 @@ export const SourceFieldGroup = withFieldGroup({
               fullWidth
               sx={{ flexGrow: 1 }}
               options={[{ label: "", value: "" }, ...bookOptions]}
-              // The default "selectedMenu" variant scrolls the open menu to the selected book; the
-              // book list is long enough that users lose sight of the groups above it.
-              slotProps={{ select: { MenuProps: { variant: "menu" } } }}
+              // With no book picked, the selected option is the blank entry at the bottom of the list,
+              // so "selectedMenu" would open scrolled to the end — start at the top instead.
+              slotProps={{ select: { MenuProps: { variant: field.state.value ? "selectedMenu" : "menu" } } }}
             />
           )}
         </group.AppField>
