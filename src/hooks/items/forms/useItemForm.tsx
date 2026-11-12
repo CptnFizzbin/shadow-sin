@@ -35,6 +35,9 @@ export const itemDefaults: ItemData = {
   },
   items: { parentId: null, childIds: [] },
   effects: [],
+  // Present (as undefined) so the field map has an `equipped` path; a defined value would mark every
+  // edited item as equippable.
+  equipped: undefined,
   stashed: false,
   matrixDisabled: false,
 }

@@ -14,9 +14,9 @@ import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/entities/items/availability/availabilityFieldGroup.tsx"
 import { GearAttachmentFieldGroup } from "#/components/entities/items/forms/gearAttachmentFieldGroup.tsx"
+import { GearCarryStatusFieldGroup } from "#/components/entities/items/forms/gearCarryStatusFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/entities/items/forms/gearCostFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/entities/items/forms/gearDescriptionFieldGroup.tsx"
-import { GearMatrixFieldGroup } from "#/components/entities/items/forms/gearMatrixFieldGroup.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -251,43 +251,11 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                           )}
                         </form.AppField>
 
-                        {slots?.rating
-                          ? slots.rating()
-                          : localOptions["hasRating"] && (
-                            <form.AppField name="rating">
-                              {(field) => (
-                                <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
-                              )}
-                            </form.AppField>
-                          )}
-                      </Stack>
-
-                      <Divider />
-
-                      <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
-                        {localOptions["equipable"] && (
-                          <form.AppField name="equipped">
-                            {(field) => <field.SwitchField label="Equipped" />}
-                          </form.AppField>
-                        )}
-
-                        {localOptions["canBeStashed"] && (
-                          <form.AppField name="stashed">
-                            {(field) => <field.SwitchField label="Stashed" />}
-                          </form.AppField>
-                        )}
-
-                        {/* Attachments share their parent's Matrix node, so have no presence of their own to toggle. */}
-                        <form.Subscribe selector={(state) => state.values.items?.parentId}>
-                          {(parentId) => !parentId && (
-                            <GearMatrixFieldGroup form={form} fields={itemFieldMap} />
-                          )}
-                        </form.Subscribe>
-
                         <IconButton
                           size="small"
-                          sx={{ ml: "auto" }}
+                          sx={{ mt: 1 }}
                           onClick={() => itemOptionsDialog.open({
+                            form,
                             initialOptions: localOptions,
                             forced,
                             onChange: handleOptionsChange,
@@ -297,6 +265,27 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                           <RiSettings3Line size={18} />
                         </IconButton>
                       </Stack>
+
+                      {slots?.rating
+                        ? slots.rating()
+                        : localOptions["hasRating"] && (
+                          <form.AppField name="rating">
+                            {(field) => (
+                              <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                            )}
+                          </form.AppField>
+                        )}
+
+                      <Divider />
+
+                      {(localOptions["equipable"] || localOptions["canBeStashed"]) && (
+                        <GearCarryStatusFieldGroup
+                          form={form}
+                          fields={itemFieldMap}
+                          canEquip={localOptions["equipable"]}
+                          canStash={localOptions["canBeStashed"]}
+                        />
+                      )}
 
                       {localOptions["showCost"] && (
                         <GearCostFieldGroup
