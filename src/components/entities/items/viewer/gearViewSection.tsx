@@ -22,7 +22,7 @@ interface GearViewSectionProps {
 }
 
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
-  const [isManuallyOpen, setIsManuallyOpen] = useState(false)
+  const [isManuallyOpen, setIsManuallyOpen] = useState(true)
   const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
 
   const allowedTypes = sectionGearTypes[section]
@@ -32,9 +32,9 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
     ? searchGear(allGearItems, searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
     : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
 
-  if (isSearching && sectionItems.length === 0) return null
+  if (sectionItems.length === 0) return null
 
-  const isExpanded = isSearching ? sectionItems.length > 0 : isManuallyOpen
+  const isExpanded = isSearching || isManuallyOpen
 
   return (
     <Accordion
