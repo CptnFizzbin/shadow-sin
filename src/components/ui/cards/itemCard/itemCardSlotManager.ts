@@ -17,6 +17,10 @@ export class ItemCardSlotManager extends EntityCardSlotManager {
     return this.find(ItemCardElements.Cost)
   }
 
+  get footerStats() {
+    return this.filter(ItemCardElements.FooterStat)
+  }
+
   get quantity() {
     return this.find(ItemCardElements.Quantity)
   }

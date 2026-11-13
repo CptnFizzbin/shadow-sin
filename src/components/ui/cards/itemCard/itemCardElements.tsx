@@ -1,6 +1,7 @@
 import { CardElementAvailability } from "#/components/ui/cards/entityCard/elements/cardElementAvailability.tsx"
 import { CardElementCost } from "#/components/ui/cards/entityCard/elements/cardElementCost.tsx"
 import { CardElementDamageTrack } from "#/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
+import { CardElementFooterStat } from "#/components/ui/cards/entityCard/elements/cardElementFooterStat.tsx"
 import { CardElementQuantity } from "#/components/ui/cards/entityCard/elements/cardElementQuantity.tsx"
 import { CardElementStatusIcon } from "#/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
 import { CardElementSubType } from "#/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
@@ -23,6 +24,7 @@ export const ItemCardElements = {
   Action: EntityCardElements.Action,
   Availability: CardElementAvailability,
   Cost: CardElementCost,
+  FooterStat: CardElementFooterStat,
   Quantity: CardElementQuantity,
   DamageTrack: CardElementDamageTrack,
   Subitem: CardElementSubitem,

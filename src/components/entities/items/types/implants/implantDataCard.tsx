@@ -57,11 +57,10 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
       >
         {implant.implantType && <ItemCard.SubType label={typeLabel[implant.implantType] ?? implant.implantType} />}
 
-        <ItemCard.Stat
+        <ItemCard.FooterStat
           label="Ess"
           value={implant.essenceCost.toFixed(2)}
           effectiveValue={effectiveEssence.toFixed(2)}
-          type="modifier"
         />
 
         {implant.location && <ItemCard.Stat value={implant.location} type="rating" />}

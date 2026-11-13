@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+import { Fragment } from "react"
 
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
@@ -63,6 +64,12 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, .
       <EntityCard.Layout.FooterRight sx={{ justifyContent: "center", alignItems: "center" }}>
         <Stack direction="row" sx={{ flexGrow: 1, justifyContent: "flex-end", alignItems: "baseline" }}>
           <ItemCardElements.Availability value={item.availability} />
+          {slots.footerStats.map((footerStat, index) => (
+            <Fragment key={index}>
+              {footerStat}
+              {(index < slots.footerStats.length - 1 || item.cost !== undefined) && <span>•</span>}
+            </Fragment>
+          ))}
           <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />
         </Stack>
       </EntityCard.Layout.FooterRight>

@@ -30,7 +30,8 @@ export const AvailabilityFieldGroup = withFieldGroup({
               <ToggleButtonGroup
                 exclusive
                 size="small"
-                sx={{ height: 40, alignSelf: "center" }}
+                // Matches a small outlined field's height, so the group lines up with the counter beside it.
+                sx={{ height: 36, alignSelf: "flex-start" }}
               >
                 <ToggleButton
                   value="none"

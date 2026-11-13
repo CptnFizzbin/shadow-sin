@@ -590,15 +590,19 @@ describe("ItemDialog", () => {
       expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
     })
 
-    it("switches to the Subitems tab's Add Item button when clicked", () => {
+    it("switches to the Subitems tab's Add Item button when clicked, keeping the name above the tabs", () => {
+      // Arrange
       renderInBuilder(
         <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} />,
       )
 
+      // Act
       fireEvent.click(screen.getByRole("tab", { name: "Subitems" }))
 
+      // Assert
       expect(screen.getByRole("button", { name: /add item/i })).toBeDefined()
-      expect(screen.queryByLabelText(/^name$/i)).toBeNull()
+      expect(screen.getByLabelText(/^name$/i)).toBeDefined()
+      expect(screen.queryByLabelText(/^description$/i)).toBeNull()
     })
   })
 
