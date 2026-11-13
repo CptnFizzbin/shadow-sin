@@ -6,14 +6,13 @@
 > <!-- Added after running /to-prd. -->
 > - [#390 — Unified per-item action menu; Equip becomes universal](https://github.com/CptnFizzbin/shadow-sin/issues/390)
 >   — folded into this feature's action dialog
-> - [#392 — Multi-select bulk actions](https://github.com/CptnFizzbin/shadow-sin/issues/392)
 > - [#664 — Hide empty gear sections and expand all sections by default](https://github.com/CptnFizzbin/shadow-sin/pull/664)
 >   — shipped
 > - [#666 — Show every Item's Matrix presence on its details page](https://github.com/CptnFizzbin/shadow-sin/pull/666)
 >   — shipped
 
-An overhaul of how Players see and act on their Items, during play first and during building
-second. The Gear page is the Runner's complete inventory; the other runner tabs (Offense, Defense,
+An overhaul of how Players see and act on their Items during play; adding and editing Items is
+left for a later feature. The Gear page is the Runner's complete inventory; the other runner tabs (Offense, Defense,
 Vehicles, Drones, Licenses, Matrix) are prefiltered views of the Items the Runner has on hand.
 Every Item gets one consistent set of actions wherever its card appears, Items nest to any depth,
 and every Item is a Matrix node unless the Player turns that off.
@@ -26,15 +25,20 @@ Problems this addresses, as of the current Gear page:
   the details page, and the per-type form dialogs.
 - **The details page shows less than the card.** For example, a firearm's card shows AP, firing
   mode, RC, and ammo, but its details page shows only DV and Skill.
-- **Misc collects weapons.** Weapons entered as "other" Items land in Misc and never reach
-  Offense or the attack workflow.
 - **Space is wasted.** Card stats sit in inconsistent positions, and desktop renders one
   stretched column.
 
 ## Resolved Questions
 
-- **Priority:** play time first, then building. Phases that change how the Player acts on Items
-  mid-session come before the add/edit flows.
+- **Priority:** play time. Adding and editing Items is out of scope for this feature.
+- **Gear page tabs:** the Gear page gets tabs, laid out like the Skills page's Active / Knowledge
+  / Languages tabs: **Available** (the default) and **Stashed**.
+- **"Carried" stays** as the on-screen label for an Item that is Available but not Equipped, as in
+  the carry-status picker shipped in #666.
+- **Ordering:** within each Item type group, on the Gear page and in every view, Equipped Items
+  come first.
+- **Wide screens** lay cards out in multiple columns.
+- **Nested Items in views:** views keep showing nested Items as they do today.
 - **The Gear page is the complete inventory.** The other tabs are prefiltered views over the
   same Items, filtered to what is **Available**, not separate lists with their own card variants.
 - **Three Item states**, matching `CONTEXT.md`:
@@ -67,22 +71,7 @@ Problems this addresses, as of the current Gear page:
 
 ## Open Questions
 
-- [ ] **Middle state label:** the carry-status picker shipped in #666 reads Equipped / **Carried**
-      / Stashed. `CONTEXT.md`'s **Available** includes Equipped Items, so it can't label the
-      middle option. Keep "Carried" as on-screen wording for "Available but not Equipped", or add
-      it to `CONTEXT.md` as a term?
-- [ ] **View ordering:** within a prefiltered view, do Equipped Items sort first?
-- [ ] **Gear page filters:** should the Gear page open on Available Items, with Stashed ones one
-      tap away? Should the active filter live in the URL, so a view's "See all in Gear" link lands
-      on a matching filter?
-- [ ] **Desktop layout:** a multi-column card grid on wide screens, or stay mobile-first and only
-      avoid stretching?
-- [ ] **Misc weapons:** should a Player be able to reclassify existing "other" Items that are
-      really weapons, and should adding an Item ask for its type before anything else?
-- [ ] **Nested Items in views:** when a view's filter matches an Attachment but not its parent
-      (e.g. a Program on a Device on the Matrix tab), does the view show the Attachment on its
-      own, or its parent with the matching branch expanded?
-- [ ] **Bulk actions (#392):** which actions in the dialog also apply to a multi-selection?
+None remain; the design is ready for `/to-prd`.
 
 ## Constraints
 
@@ -108,18 +97,23 @@ Each phase is meant to be an independently shippable slice.
 
 1. **Action dialog and states.** The menu button and action dialog on every card, including
    Attack, Run, and Sell; Attachments following their parent's state.
-2. **Play-time Gear page.** Available/Stashed filtering, page-level tools (Availability Test,
-   License Check) moved into a toolbar.
+2. **Play-time Gear page.** Available and Stashed tabs, Equipped-first ordering within each type
+   group, multi-column cards on wide screens, and page-level tools (Availability Test, License
+   Check) moved into a toolbar.
 3. **Prefiltered views.** Offense, Defense, Vehicles, Drones, Licenses, and Matrix render the
-   shared cards over Available Items, with the Attack and Run quick actions.
-4. **Nesting UI.** Render and act on Attachment trees of any depth on cards and the details page.
+   shared cards over Available Items, Equipped first, with the Attack and Run quick actions.
+4. **Nesting UI.** Render and act on Attachment trees of any depth on Gear page cards and the
+   details page.
 5. **Details page.** Show everything the card shows and more, with the actions in one place.
 6. **Card density.** One consistent stat layout across Item types, plus a compact row variant for
    Items with few stats.
-7. **Build-time flows.** Type-first Add Item, then the compound edit dialog ADR-0009 deferred.
 
 ## Out of Scope
 
+- Adding and editing Items: type-first Add Item, reclassifying "other" Items that are really
+  weapons, and the compound edit dialog ADR-0009 deferred.
+- Multi-select bulk actions ([#392](https://github.com/CptnFizzbin/shadow-sin/issues/392)).
+- Changing how views show nested Items.
 - Containers, an Item whose contents keep their own state.
 - A nuyen transaction history or ledger for Sell.
 - Folding Known Nodes into the Item store (see `0018-matrix-entities.md`).
@@ -127,7 +121,7 @@ Each phase is meant to be an independently shippable slice.
 ## Related Features
 
 - [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — defines Stashed and the
-  per-item action menu (#390) and bulk actions (#392) this feature builds on
+  per-item action menu (#390) this feature builds on
 - [`docs/features/0018-matrix-entities.md`](./0018-matrix-entities.md) — the eventual home of an
   Item's Matrix presence, loaded Programs, and running Programs
 - [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md) — Stash/Equip bookkeeping
