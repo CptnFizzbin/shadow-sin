@@ -56,7 +56,8 @@ Problems this addresses, as of the current Gear page:
   Rating 1 node. The Item's edit form has a flag that disables its Matrix presence entirely.
   Attachments share their parent's node, and an Item with wireless off or removed is offline
   rather than node-less (shipped in #666).
-- **Sell** removes the Item and credits 50% of its cost to the Runner's Nuyen. Selling records no
+- **Sell** removes the Item and credits its sale price to the Runner's Nuyen. The sale price
+  defaults to 50% of the cost and the Player can change it before confirming. Selling records no
   transaction history.
 - **Selling Attachments:** the Sell action has a "Sell attachments" toggle, on by default. When it
   is on, the Item's whole Attachment tree is sold with it, each Attachment crediting 50% of its own
@@ -66,8 +67,6 @@ Problems this addresses, as of the current Gear page:
 
 ## Open Questions
 
-- [ ] **Sale price:** is 50% a fixed amount, or a default the Player can edit before confirming?
-      Does Sell need a confirmation step, as Delete has?
 - [ ] **Middle state label:** the carry-status picker shipped in #666 reads Equipped / **Carried**
       / Stashed. `CONTEXT.md`'s **Available** includes Equipped Items, so it can't label the
       middle option. Keep "Carried" as on-screen wording for "Available but not Equipped", or add
