@@ -2,7 +2,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".agents/scripts/**/*.ts"
+    ".agents/scripts/**/*.ts",
+    ".agents/cli/**/*.ts"
   ],
   "compilerOptions": {
     "target": "es2024",

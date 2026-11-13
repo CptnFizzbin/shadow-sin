@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import path from "node:path"
 
 /** Limits the Artifact publisher enforces on a multi-file page. */
-export const artifactLimits = {
+const artifactLimits = {
   maxFilesPerPublish: 255,
   maxTextFileBytes: 16 * 1024 * 1024,
   maxBinaryFileBytes: 15 * 1024 * 1024,
@@ -17,7 +17,7 @@ const textExtensions = new Set([".html", ".js", ".mjs", ".css", ".json", ".svg",
 const replacementCharacter = "�"
 
 /** Every file under `dir`, as `/`-separated paths relative to it, sorted. */
-export function listFiles(dir: string): string[] {
+function listFiles(dir: string): string[] {
   const files: string[] = []
 
   const walk = (current: string) => {
@@ -32,7 +32,7 @@ export function listFiles(dir: string): string[] {
   return files.sort()
 }
 
-export function isTextFile(filePath: string): boolean {
+function isTextFile(filePath: string): boolean {
   return textExtensions.has(path.extname(filePath).toLowerCase())
 }
 
@@ -42,7 +42,7 @@ export function isTextFile(filePath: string): boolean {
  * it marks a botched encoding, even where a library uses it on purpose (micromark's
  * `replacementCharacter` constant).
  */
-export function escapeReplacementCharacters(content: string, extension: string): string {
+function escapeReplacementCharacters(content: string, extension: string): string {
   if (!content.includes(replacementCharacter)) return content
 
   const escapes: Record<string, string> = {

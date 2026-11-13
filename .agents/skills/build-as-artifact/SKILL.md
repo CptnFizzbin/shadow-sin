@@ -26,7 +26,7 @@ Then publish with the Artifact tool, copying the arguments from `<out>.publish.j
 4. Checks Artifact limits (file count, per-file and total size) and fails on root-relative asset
    paths (`"/assets/…"`), which would 404 under the sub-path.
 5. Smoke-tests the build: serves it under a sub-path, loads it in headless Chromium, and fails on
-   page errors, failed requests, or an empty `#root`. Skipped if Playwright isn't installed.
+   page errors, failed requests, or an empty `#root`.
 6. Writes `<out>.publish.json` (next to the output folder, not inside it) with `file_path`,
    `root`, `files`, `description` and `label`.
 

@@ -109,9 +109,7 @@ if (options["no-smoke"]) {
 } else {
   step("Smoke-testing in headless Chromium from a sub-path")
   const result = await smokeTest(outDir)
-  if (result.skipped) {
-    console.log(`  skipped: ${result.skipped}`)
-  } else if (result.errors.length > 0) {
+  if (result.errors.length > 0) {
     fail(`Smoke test failed:\n  ${result.errors.join("\n  ")}`)
   } else {
     console.log(`  ok — landing page: "${result.landingText}"`)

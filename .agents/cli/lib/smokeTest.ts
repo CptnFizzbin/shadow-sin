@@ -1,8 +1,9 @@
 import { readFile } from "node:fs/promises"
-import type { AddressInfo } from "node:net"
 import { createServer } from "node:http"
-import { createRequire } from "node:module"
+import type { AddressInfo } from "node:net"
 import path from "node:path"
+
+import { chromium } from "playwright"
 
 const contentTypes: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -18,42 +19,16 @@ const contentTypes: Record<string, string> = {
 const subPath = "/artifact-smoke-test/"
 
 export interface SmokeTestResult {
-  skipped?: string
   errors: string[]
   /** Visible text of the landing page, so a caller can see the app actually rendered. */
   landingText?: string
 }
 
-interface PlaywrightBrowser {
-  newPage: (options: object) => Promise<PlaywrightPage>
-  close: () => Promise<void>
-}
-
-interface PlaywrightPage {
-  on: (event: string, listener: (payload: { message?: string, url?: () => string }) => void) => void
-  goto: (url: string) => Promise<unknown>
-  waitForFunction: (fn: () => boolean, arg?: unknown, options?: { timeout: number }) => Promise<unknown>
-  textContent: (selector: string) => Promise<string | null>
-}
-
-function loadPlaywright(): { chromium: { launch: () => Promise<PlaywrightBrowser> } } | undefined {
-  try {
-    // Playwright isn't a project dependency; `require` (unlike `import`) also finds a globally
-    // installed copy through NODE_PATH, which is how cloud sessions provide it.
-    return createRequire(import.meta.url)("playwright")
-  } catch {
-    return undefined
-  }
-}
-
 /**
  * Serves `dir` under a sub-path and loads it in headless Chromium, collecting page errors and
- * failed requests. Skips, rather than fails, when Playwright isn't installed.
+ * failed requests.
  */
 export async function smokeTest(dir: string): Promise<SmokeTestResult> {
-  const playwright = loadPlaywright()
-  if (!playwright) return { skipped: "Playwright isn't installed", errors: [] }
-
   const server = createServer(async (request, response) => {
     const requestPath = decodeURIComponent((request.url ?? "/").split("?")[0])
     const relativePath = requestPath.startsWith(subPath) ? requestPath.slice(subPath.length) : null
@@ -75,14 +50,14 @@ export async function smokeTest(dir: string): Promise<SmokeTestResult> {
 
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
   const { port } = server.address() as AddressInfo
-  const browser = await playwright.chromium.launch()
+  const browser = await chromium.launch()
   const errors: string[] = []
 
   try {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
     page.on("pageerror", (error) => errors.push(`page error: ${error.message}`))
     page.on("requestfailed", (request) => {
-      const url = request.url?.() ?? ""
+      const url = request.url()
       // Web fonts load from Google, which a sandboxed network may block; the app falls back fine.
       if (!url.includes("fonts.g")) errors.push(`request failed: ${url}`)
     })

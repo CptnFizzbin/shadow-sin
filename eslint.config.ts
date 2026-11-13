@@ -195,6 +195,7 @@ export default defineConfig([
       "./vitest.config.ts",
       "./eslint.config.ts",
       ".agents/scripts/**/*.ts",
+      ".agents/cli/**/*.ts",
     ],
     languageOptions: {
       globals: globals.node,
