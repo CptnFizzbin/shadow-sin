@@ -26,7 +26,17 @@ const weapon: WeaponData = {
 const runnerStoreWithWeapon = () =>
   runnerDataFactory({ items: { [weapon.id]: weapon } })
 
-const agent = makeAgent({ id: "00000000-0000-0000-0000-000000000004" })
+const commlink: ItemData = {
+  kind: EntityKind.item, items: { parentId: null, childIds: ["00000000-0000-0000-0000-000000000004"] },
+  id: "00000000-0000-0000-0000-000000000005",
+  name: "Hermes Ikon",
+  itemType: ItemType.device,
+}
+
+const agent = makeAgent({
+  id: "00000000-0000-0000-0000-000000000004",
+  items: { parentId: commlink.id, childIds: [] },
+})
 
 describe("AnyItemDetails", () => {
   it("dispatches weapons to WeaponItemDetails", () => {
@@ -39,7 +49,7 @@ describe("AnyItemDetails", () => {
 
   it("dispatches Agents (Program items with programType agent) to AgentItemDetails", () => {
     renderWithProviders(<AnyItemDetails item={agent} />, {
-      runner: runnerDataFactory({ items: { [agent.id]: agent } }),
+      runner: runnerDataFactory({ items: { [commlink.id]: commlink, [agent.id]: agent } }),
     })
 
     expect(screen.getByText("Griffin")).toBeDefined()

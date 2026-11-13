@@ -5,13 +5,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { GearMatrixFieldGroup } from "#/components/entities/items/forms/gearMatrixFieldGroup.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { ItemOptionKey } from "#/hooks/items/dialogs/useItemOptions.ts"
+import type { ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import { itemFieldMap } from "#/hooks/items/forms/useItemForm.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 
 interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
+  /** The item form, for options stored on the item itself (e.g. its Matrix presence). */
+  form: ItemForm
   initialOptions: Record<ItemOptionKey, boolean>
   forced: Record<string, boolean>
   onChange: (key: ItemOptionKey, value: boolean) => void
@@ -19,6 +24,7 @@ interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
 
 const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   ctrl,
+  form,
   initialOptions,
   forced,
   onChange,
@@ -145,6 +151,11 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
                 )}
               />
             )}
+
+            {/* Attachments share their parent's Matrix node, so have no presence of their own to toggle. */}
+            <form.Subscribe selector={(state) => state.values.items.parentId}>
+              {(parentId) => !parentId && <GearMatrixFieldGroup form={form} fields={itemFieldMap} />}
+            </form.Subscribe>
           </Stack>
         </Dialog.Content>
 

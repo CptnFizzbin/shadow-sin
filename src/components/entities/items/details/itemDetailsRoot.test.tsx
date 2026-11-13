@@ -1,10 +1,12 @@
-import { fireEvent, render, screen, within } from "@testing-library/react"
+import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
-import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
+import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "./itemDetailsSlot.tsx"
@@ -18,11 +20,11 @@ const baseItem: ItemData = {
 
 describe("ItemDetailsRoot", () => {
   it("renders the name and type", () => {
-    render(
+    renderWithRunner(
       <ItemDetailsRoot item={baseItem} type="Heavy Pistol">
         <ItemDetailsSlot.Stat label="DV" value="8P" type="damage" />
       </ItemDetailsRoot>,
-      { wrapper: ThemeWrapper },
+      createItemMap(baseItem),
     )
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
@@ -41,7 +43,7 @@ describe("ItemDetailsRoot", () => {
       effects: [{ type: "attribute", target: "BOD", value: 1 }],
     }
 
-    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
+    renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     expect(screen.getByText("A heavy pistol favored by street samurai.")).toBeDefined()
     expect(screen.getByText("Serial number filed off.")).toBeDefined()
@@ -57,7 +59,7 @@ describe("ItemDetailsRoot", () => {
     const item: ItemData = { ...baseItem, equipped: true, stashed: true, wireless: { enabled: false } }
 
     // Act
-    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
+    renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     // Assert
     expect(screen.getByText("Equipped")).toBeDefined()
@@ -70,7 +72,7 @@ describe("ItemDetailsRoot", () => {
     const item: ItemData = { ...baseItem, equipped: false, stashed: false }
 
     // Act
-    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
+    renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     // Assert
     expect(screen.queryByText("Equipped")).toBeNull()
@@ -88,7 +90,7 @@ describe("ItemDetailsRoot", () => {
     }
 
     // Act
-    render(
+    renderWithRunner(
       <ItemDetailsRoot item={baseItem}>
         <ItemDetailsSlot.Stat label="Handling" value="3" />
         <ItemDetailsSlot.DamageTrack label="Damage" max={12} current={2} onChange={onDamageChange} />
@@ -97,7 +99,7 @@ describe("ItemDetailsRoot", () => {
           <span>Custom footer content</span>
         </ItemDetailsSlot.Footer>
       </ItemDetailsRoot>,
-      { wrapper: ThemeWrapper },
+      createItemMap(baseItem),
     )
     const damageTrack = screen.getByText("Damage").parentElement!
     fireEvent.click(within(damageTrack).getByRole("button", { name: "Reset" }))
@@ -116,7 +118,7 @@ describe("ItemDetailsRoot", () => {
   })
 
   it("renders no Edit/Remove actions without onEdit or onRemove", () => {
-    render(<ItemDetailsRoot item={baseItem} />, { wrapper: ThemeWrapper })
+    renderWithRunner(<ItemDetailsRoot item={baseItem} />, createItemMap(baseItem))
 
     expect(screen.queryByRole("button", { name: "Edit" })).toBeNull()
     expect(screen.queryByRole("button", { name: "Remove" })).toBeNull()
@@ -125,12 +127,86 @@ describe("ItemDetailsRoot", () => {
   it("invokes onEdit and onRemove from persistent action buttons", () => {
     const onEdit = vi.fn()
     const onRemove = vi.fn()
-    render(<ItemDetailsRoot item={baseItem} onEdit={onEdit} onRemove={onRemove} />, { wrapper: ThemeWrapper })
+    renderWithRunner(<ItemDetailsRoot item={baseItem} onEdit={onEdit} onRemove={onRemove} />, createItemMap(baseItem))
 
     fireEvent.click(screen.getByRole("button", { name: "Edit" }))
     fireEvent.click(screen.getByRole("button", { name: "Remove" }))
 
     expect(onEdit).toHaveBeenCalledOnce()
     expect(onRemove).toHaveBeenCalledOnce()
+  })
+
+  describe("Matrix section", () => {
+    it("shows a default Rating 1 node for an item that sets no Matrix stats", () => {
+      // Arrange
+      const weapon: ItemData = { ...baseItem, itemType: ItemType.weapon }
+
+      // Act
+      renderWithRunner(<ItemDetailsRoot item={weapon} />, createItemMap(weapon))
+
+      // Assert
+      const matrixSection = screen.getByRole("region", { name: "Matrix" })
+      for (const label of ["Rating", "Response", "System", "Firewall", "Signal"]) {
+        expect(within(matrixSection).getByText(label).nextSibling?.textContent).toBe("1")
+      }
+      expect(within(matrixSection).getAllByText("default")).toHaveLength(5)
+      expect(within(matrixSection).queryByText("Offline")).toBeNull()
+    })
+
+    it("marks only the stats a device doesn't set as default", () => {
+      // Arrange
+      const device: DeviceData = { ...baseItem, itemType: ItemType.device, deviceRating: 4, response: 3 }
+
+      // Act
+      renderWithRunner(<ItemDetailsRoot item={device} />, createItemMap(device))
+
+      // Assert
+      const matrixSection = screen.getByRole("region", { name: "Matrix" })
+      expect(within(matrixSection).getByText("Rating").nextSibling?.textContent).toBe("4")
+      expect(within(matrixSection).getByText("Response").nextSibling?.textContent).toBe("3")
+      expect(within(matrixSection).getAllByText("default")).toHaveLength(3)
+    })
+
+    it("shows no Matrix section for an item that opted out", () => {
+      // Arrange
+      const weapon: ItemData = { ...baseItem, itemType: ItemType.weapon, matrixDisabled: true }
+
+      // Act
+      renderWithRunner(<ItemDetailsRoot item={weapon} />, createItemMap(weapon))
+
+      // Assert
+      expect(screen.queryByRole("region", { name: "Matrix" })).toBeNull()
+    })
+
+    it("marks the node offline while the item's wireless is off", () => {
+      // Arrange
+      const weapon: ItemData = { ...baseItem, itemType: ItemType.weapon, wireless: { enabled: false } }
+
+      // Act
+      renderWithRunner(<ItemDetailsRoot item={weapon} />, createItemMap(weapon))
+
+      // Assert
+      const matrixSection = screen.getByRole("region", { name: "Matrix" })
+      expect(within(matrixSection).getByText("Offline")).toBeDefined()
+    })
+
+    it("renders Matrix slot content inside the Matrix section", () => {
+      // Arrange
+      const device: DeviceData = { ...baseItem, itemType: ItemType.device }
+
+      // Act
+      renderWithRunner(
+        <ItemDetailsRoot item={device}>
+          <ItemDetailsSlot.Matrix>
+            <span>Programs go here</span>
+          </ItemDetailsSlot.Matrix>
+        </ItemDetailsRoot>,
+        createItemMap(device),
+      )
+
+      // Assert
+      const matrixSection = screen.getByRole("region", { name: "Matrix" })
+      expect(within(matrixSection).getByText("Programs go here")).toBeDefined()
+    })
   })
 })

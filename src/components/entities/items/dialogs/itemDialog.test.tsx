@@ -57,17 +57,18 @@ describe("ItemDialog", () => {
     expect(within(dialog).getByRole("button", { name: /save/i })).toBeDefined()
   })
 
-  it("shows the Stashed switch by default", () => {
+  it("shows the Carried and Stashed choices by default", () => {
     renderInBuilder(
       <ItemDialogWrapper title="Add Thing" onSave={vi.fn()} />,
     )
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
-    expect(within(dialog).getByLabelText("Stashed")).toBeDefined()
+    expect(within(dialog).getByRole("button", { name: "Carried", pressed: true })).toBeDefined()
+    expect(within(dialog).getByRole("button", { name: "Stashed" })).toBeDefined()
   })
 
-  it("submits stashed when the Stashed switch is toggled on", async () => {
+  it("submits stashed when Stashed is chosen", async () => {
     const onSave = vi.fn()
     renderInBuilder(
       <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} />,
@@ -75,7 +76,7 @@ describe("ItemDialog", () => {
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
-    fireEvent.click(within(dialog).getByLabelText("Stashed"))
+    fireEvent.click(within(dialog).getByRole("button", { name: "Stashed" }))
 
     fillNameAndClickSave("Stashed Gadget")
 
@@ -86,7 +87,7 @@ describe("ItemDialog", () => {
     })
   })
 
-  it("hides the Stashed switch when canBeStashed is force-disabled", () => {
+  it("hides the Stashed choice when canBeStashed is force-disabled", () => {
     renderInBuilder(
       <ItemDialogWrapper
         title="Add Thing"
@@ -97,7 +98,57 @@ describe("ItemDialog", () => {
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
-    expect(within(dialog).queryByLabelText("Stashed")).toBeNull()
+    expect(within(dialog).queryByRole("button", { name: "Stashed" })).toBeNull()
+  })
+
+  it("unstashes an item when Equipped is chosen", async () => {
+    // Arrange
+    const onSave = vi.fn()
+    const item: ItemData = {
+      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      id: crypto.randomUUID(),
+      itemType: ItemType.other,
+      name: "Holster",
+      equipped: false,
+      stashed: true,
+    }
+    renderInBuilder(<ItemDialogWrapper item={item} title="Edit Item" onSave={onSave} />)
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+
+    // Act
+    fireEvent.click(within(dialog).getByRole("button", { name: "Equipped" }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert
+    await waitFor(() => expect(onSave).toHaveBeenCalledOnce())
+    const submitted: ItemData = onSave.mock.calls[0][0]
+    expect(submitted.equipped).toBe(true)
+    expect(submitted.stashed).toBe(false)
+  })
+
+  it("opts the item out of the Matrix from the options dialog", async () => {
+    // Arrange
+    const onSave = vi.fn()
+    renderInBuilder(<ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} />)
+    const dialogs = screen.getAllByRole("dialog")
+    const mainDialog = dialogs[dialogs.length - 1]
+
+    // Act
+    fireEvent.click(within(mainDialog).getByRole("button", { name: /item options/i }))
+    const optionsDialog = screen.getByText("Item Options").closest("[role='dialog']") as HTMLElement
+    fireEvent.click(within(optionsDialog).getByRole("checkbox", { name: "Has Matrix presence" }))
+    fireEvent.keyDown(document.body, { key: "Escape" })
+    await waitFor(() => {
+      const nameField = within(mainDialog).getByLabelText(/^name$/i)
+      fireEvent.change(nameField, { target: { value: "Dumb Gadget" } })
+      fireEvent.click(within(mainDialog).getByRole("button", { name: /save/i, hidden: true }))
+    })
+
+    // Assert
+    await waitFor(() => expect(onSave).toHaveBeenCalledOnce())
+    const submitted: ItemData = onSave.mock.calls[0][0]
+    expect(submitted.matrixDisabled).toBe(true)
   })
 
   it("calls onSave with the item on save", async () => {
@@ -334,7 +385,7 @@ describe("ItemDialog", () => {
   describe("field-driven option visibility for existing items", () => {
     const existingItemId = crypto.randomUUID()
 
-    it("shows the equipped switch when the existing item has an equipped value", async () => {
+    it("shows the Equipped choice when the existing item has an equipped value", async () => {
       // Arrange
       const item: ItemData = {
         kind: EntityKind.item, items: { parentId: null, childIds: [] },
@@ -350,7 +401,7 @@ describe("ItemDialog", () => {
       )
 
       // Assert
-      expect(await screen.findByLabelText("Equipped")).toBeDefined()
+      expect(await screen.findByRole("button", { name: "Equipped" })).toBeDefined()
     })
 
     it("shows the rating counter when the existing item has a non-zero rating", async () => {
@@ -539,15 +590,19 @@ describe("ItemDialog", () => {
       expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
     })
 
-    it("switches to the Subitems tab's Add Item button when clicked", () => {
+    it("switches to the Subitems tab's Add Item button when clicked, keeping the name above the tabs", () => {
+      // Arrange
       renderInBuilder(
         <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} />,
       )
 
+      // Act
       fireEvent.click(screen.getByRole("tab", { name: "Subitems" }))
 
+      // Assert
       expect(screen.getByRole("button", { name: /add item/i })).toBeDefined()
-      expect(screen.queryByLabelText(/^name$/i)).toBeNull()
+      expect(screen.getByLabelText(/^name$/i)).toBeDefined()
+      expect(screen.queryByLabelText(/^description$/i)).toBeNull()
     })
   })
 

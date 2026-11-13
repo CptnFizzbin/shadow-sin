@@ -15,6 +15,7 @@ import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { Icons } from "#/utils/icons.ts"
 
+import { ItemDetailsMatrixSection } from "./itemDetailsMatrixSection.tsx"
 import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
 
 export interface ItemDetailsRootProps extends PropsWithChildren {
@@ -34,7 +35,8 @@ export interface ItemDetailsRootProps extends PropsWithChildren {
 /**
  * Generic ItemDetails body: renders every common `ItemData` field present on
  * the item (title, type, description, notes, cost, quantity, availability,
- * source, effects, equip/stash/wireless status) plus whichever
+ * source, effects, equip/stash/wireless status), its Matrix section when it
+ * has a Matrix presence, plus whichever
  * `ItemDetailsSlot.*` children are passed in for item-type-specific content.
  * `Title`/`Type`/`Source`/`Availability`/`Quantity`/`Cost` can be passed as
  * children to override the field auto-rendered from `item`/`type`; `Rating`
@@ -164,6 +166,8 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           {slots.damageTracks}
         </Stack>
       )}
+
+      <ItemDetailsMatrixSection itemId={item.id}>{slots.matrix}</ItemDetailsMatrixSection>
 
       {item.notes && (
         <Stack>

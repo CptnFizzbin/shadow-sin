@@ -58,8 +58,12 @@ const arcologyNode: KnownNode = {
   accessLevel: AccessLevel.user,
 }
 
-function renderDevice(knownNodes: KnownNode[] = [], activePrograms: ActiveProgram[] = []) {
-  const device = { ...commlink, items: { parentId: null, childIds: [browse.id, agent.id, trodes.id] } }
+function renderDevice(
+  knownNodes: KnownNode[] = [],
+  activePrograms: ActiveProgram[] = [],
+  overrides: Partial<DeviceData> = {},
+) {
+  const device = { ...commlink, ...overrides, items: { parentId: null, childIds: [browse.id, agent.id, trodes.id] } }
   const runner = runnerDataFactory({
     items: { [device.id]: device, [browse.id]: browse, [agent.id]: agent, [trodes.id]: trodes },
     afterBuild: (data) => {
@@ -96,6 +100,20 @@ describe("DeviceItemDetails", () => {
     expect(screen.getByText("Loaded")).toBeDefined()
     expect(screen.getByText("Running")).toBeDefined()
     expect(screen.getByText("Nothing running")).toBeDefined()
+  })
+
+  it("shows the device's own Matrix stats with its Programs inside the Matrix section", () => {
+    // Arrange / Act
+    renderDevice([], [], { deviceRating: 4, response: 3, system: 5, firewall: 2, signal: 6 })
+
+    // Assert
+    const matrixSection = screen.getByRole("region", { name: "Matrix" })
+    const stats = ["Rating", "Response", "System", "Firewall", "Signal"]
+      .map((label) => within(matrixSection).getByText(label).nextSibling?.textContent)
+    expect(stats).toEqual(["4", "3", "5", "2", "6"])
+    expect(within(matrixSection).queryByText("default")).toBeNull()
+    expect(within(matrixSection).getByText("Loaded")).toBeDefined()
+    expect(within(matrixSection).getByText("Browse")).toBeDefined()
   })
 
   it("lists loaded Programs and Agents apart from other attachments, on a Loaded tab on narrow viewports", () => {

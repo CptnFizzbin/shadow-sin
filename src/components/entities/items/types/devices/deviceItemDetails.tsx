@@ -64,14 +64,10 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
         {device.deviceRating !== undefined && (
           <ItemDetailsSlot.Stat label="Rating" value={device.deviceRating} type="rating" />
         )}
-        {device.response !== undefined && <ItemDetailsSlot.Stat label="Response" value={device.response} />}
-        {device.signal !== undefined && <ItemDetailsSlot.Stat label="Signal" value={device.signal} />}
-        {device.system !== undefined && <ItemDetailsSlot.Stat label="System" value={device.system} />}
-        {device.firewall !== undefined && <ItemDetailsSlot.Stat label="Firewall" value={device.firewall} />}
 
-        <ItemDetailsSlot.Section>
+        <ItemDetailsSlot.Matrix>
           <DeviceProgramsSection device={device} programs={programs} onOpenProgram={onOpenAttachment} />
-        </ItemDetailsSlot.Section>
+        </ItemDetailsSlot.Matrix>
 
         {subitems.map((item) => (
           <ItemDetailsSlot.Subitem

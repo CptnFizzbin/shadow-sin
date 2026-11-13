@@ -6,6 +6,7 @@ instructions; the description here is the skill's own frontmatter `description`.
 | Skill | Description |
 | --- | --- |
 | [`batch-grill-me`](./batch-grill-me/SKILL.md) | A relentless interview that asks every frontier question at once, round by round. |
+| [`build-as-artifact`](./build-as-artifact/SKILL.md) | Builds the ShadowSIN client as a static site and publishes it as a claude.ai Artifact, so the user can try a branch in their browser without running it locally. Use when the user asks for a build, preview, or playable copy of the app as an artifact. |
 | [`design-an-interface`](./design-an-interface/SKILL.md) | Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions "design it twice". |
 | [`domain-modeling`](./domain-modeling/SKILL.md) | Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model. |
 | [`fallow`](./fallow/SKILL.md) | Codebase intelligence for TypeScript and JavaScript — dead code, duplication, complexity, architecture boundaries, design-system drift, and more. Use when asked to audit PR risk, find unused code, detect duplicates, or run fallow. |

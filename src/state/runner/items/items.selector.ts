@@ -5,6 +5,8 @@ import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { calculateArmorBulk } from "#/system/formulas/items/encumbranceUtils.ts"
 import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
+import type { ItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
+import { getItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
@@ -182,6 +184,18 @@ export namespace ItemSelectors {
       SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.device),
     )
+  }
+
+  /** An Item's Matrix presence. Every caller reads it from here, whatever stores the node. */
+  export namespace Matrix {
+    /**
+     * The Matrix node of the Item at `itemId`: its own stats where set, the default otherwise.
+     * `undefined` when the Item doesn't exist, opted out, or shares its parent's node.
+     */
+    export const selectStats = createMemoizedSelector(
+      ItemSelectors.selectById,
+      (item) => (item ? getItemMatrixStats(item) : undefined),
+    ) satisfies ItemSelector<ItemMatrixStats | undefined, { itemId: UUID }>
   }
 
   export namespace FirearmAccessories {

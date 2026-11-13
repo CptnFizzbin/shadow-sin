@@ -15,6 +15,8 @@ export interface ItemDetailsStatProps {
   label?: string
   value: string | number
   type?: ItemDetailsStatType
+  /** Small muted note under the value, e.g. marking it as a default. */
+  caption?: string
 }
 
 const typeColor: Partial<Record<ItemDetailsStatType, (theme: Theme) => string>> = {
@@ -29,7 +31,7 @@ const typeColor: Partial<Record<ItemDetailsStatType, (theme: Theme) => string>> 
  * Labeled stat block for ItemDetails — full label and a large value, unlike
  * the condensed chip DataCard.Stat uses. `type` drives the value's color.
  */
-export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type }) => (
+export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type, caption }) => (
   <Stack
     sx={{
       gap: 0.25,
@@ -55,6 +57,11 @@ export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type }
     >
       {value}
     </Typography>
+    {caption && (
+      <Typography variant="caption" sx={{ color: "text.disabled", fontStyle: "italic", lineHeight: 1 }}>
+        {caption}
+      </Typography>
+    )}
   </Stack>
 )
 

@@ -3,6 +3,7 @@ import type { FC } from "react"
 import type { ItemDialogProps } from "#/components/entities/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/entities/items/types/implants/forms/implantFormFields.tsx"
+import { ImplantTypeFieldGroup } from "#/components/entities/items/types/implants/forms/implantTypeFieldGroup.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/entities/items/types/implants/implantUtils.ts"
 import { GearFormLicenseSection } from "#/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
 import { implantFieldMap, useImplantForm } from "#/hooks/items/types/implants/forms/useImplantForm.tsx"
@@ -43,6 +44,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
         hasEffects: { forced: true },
       }}
       slots={{
+        afterName: () => <ImplantTypeFieldGroup form={form} fields={implantFieldMap} />,
         itemFields: () => (
           <>
             <ImplantFormFields form={form} fields={implantFieldMap} />

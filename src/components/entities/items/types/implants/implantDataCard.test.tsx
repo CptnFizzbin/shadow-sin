@@ -73,10 +73,20 @@ describe("ImplantDataCard", () => {
     renderImplantCard(alphaImplant)
 
     // Assert: raw values struck through, effective (grade-multiplied) values highlighted
-    expect(screen.getByText("Ess: 2.00")).toBeDefined()
-    expect(screen.getByText("Ess: 1.60")).toBeDefined()
+    expect(screen.getByText("2.00")).toBeDefined()
+    expect(screen.getByText("1.60 Ess")).toBeDefined()
     expect(screen.getByText("5,000¥")).toBeDefined()
     expect(screen.getByText("10,000¥")).toBeDefined()
+  })
+
+  it("shows the Essence cost in the footer, separated from the nuyen cost", () => {
+    // Arrange / Act
+    renderImplantCard(standardImplant)
+
+    // Assert
+    const essence = screen.getByText("0.10 Ess")
+    const footer = essence.closest("div")!.parentElement!
+    expect(footer.textContent).toMatch(/0\.10 Ess•500¥$/)
   })
 
   it("renders the implant's type as its SubType, location, and grade", () => {
@@ -94,7 +104,7 @@ describe("ImplantDataCard", () => {
     renderImplantCard(standardImplant)
 
     // Assert
-    expect(screen.getAllByText("Ess: 0.10")).toHaveLength(1)
+    expect(screen.getAllByText("0.10 Ess")).toHaveLength(1)
     expect(screen.getAllByText("500¥")).toHaveLength(1)
     expect(screen.queryByText("Std")).toBeNull()
   })

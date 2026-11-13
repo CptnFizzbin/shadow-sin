@@ -12,13 +12,8 @@ import { implantFormOpts } from "#/hooks/items/types/implants/forms/useImplantFo
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/model/items/implantData.ts"
+import { ImplantGrade, ImplantLocation, isImplant } from "#/system/model/items/implantData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
-
-const implantTypeOptions = [
-  { label: "Cyberware", value: ImplantType.cyberware },
-  { label: "Bioware", value: ImplantType.bioware },
-]
 
 const implantGradeOptions = [
   {
@@ -83,29 +78,16 @@ export const ImplantFormFields = withFieldGroup({
 
     return (
       <Stack>
-        <Stack direction={{ xs: "column", md: "row" }}>
-          <group.AppField name="implantType">
-            {(field) => (
-              <field.SelectField
-                label="Type"
-                size="small"
-                fullWidth
-                options={implantTypeOptions}
-              />
-            )}
-          </group.AppField>
-
-          <group.AppField name="grade">
-            {(field) => (
-              <field.SelectField
-                label="Grade"
-                size="small"
-                fullWidth
-                options={implantGradeOptions}
-              />
-            )}
-          </group.AppField>
-        </Stack>
+        <group.AppField name="grade">
+          {(field) => (
+            <field.SelectField
+              label="Grade"
+              size="small"
+              fullWidth
+              options={implantGradeOptions}
+            />
+          )}
+        </group.AppField>
 
         <Grid container spacing={1} columns={{ xs: 1, sm: 2 }}>
           <Grid size={1}>
