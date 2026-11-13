@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import FormControlLabel from "@mui/material/FormControlLabel"
@@ -77,9 +78,12 @@ export interface ItemDialogProps {
   slots?: {
     /** Content rendered before the Name field (e.g. a category toggle). */
     preForm?: () => ReactNode
-    /** Content rendered directly below the Name field (e.g. an implant's type). */
+    /** Content rendered directly below the Name field, sharing its line with Rating (e.g. an implant's type). */
     afterName?: () => ReactNode
-    /** Replaces the default rating CounterField, rendered right of the Stats / Subitems tabs. */
+    /**
+     * Replaces the default rating CounterField, rendered right of `afterName` when given, otherwise
+     * right of the Stats / Subitems tabs.
+     */
     rating?: () => ReactNode
     attachmentFields?: () => ReactNode
     itemFields?: () => ReactNode
@@ -201,6 +205,27 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
     .filter((gear) => (parentItemFilter ? parentItemFilter(gear) : true))
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
+  const ratingField = slots?.rating
+    ? slots.rating()
+    : localOptions["hasRating"] && (
+      <form.AppField name="rating">
+        {(field) => (
+          <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+        )}
+      </form.AppField>
+    )
+
+  const subitemTabs = (
+    <Tabs
+      value={mainTab}
+      onChange={(_, value: ItemDialogMainTab) => setMainTab(value)}
+      sx={{ flexGrow: 1 }}
+    >
+      <Tab value="stats" label="Stats" sx={{ flexGrow: 1 }} />
+      <Tab value="subitems" label="Subitems" sx={{ flexGrow: 1 }} />
+    </Tabs>
+  )
+
   return (
     <>
       <ControlledDialog ctrl={ctrl} onClose={false} onClosed={onClosed}>
@@ -260,30 +285,23 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                   </Button>
                 </Stack>
 
-                {slots?.afterName?.()}
+                {slots?.afterName
+                  ? (
+                      <>
+                        <Stack direction="row" sx={{ alignItems: "flex-start" }}>
+                          <Box sx={{ flexGrow: 1 }}>{slots.afterName()}</Box>
+                          {ratingField}
+                        </Stack>
 
-                <Stack direction="row" sx={{ alignItems: "center" }}>
-                  {showSubitemsTab && (
-                    <Tabs
-                      value={mainTab}
-                      onChange={(_, value: ItemDialogMainTab) => setMainTab(value)}
-                      sx={{ flexGrow: 1 }}
-                    >
-                      <Tab value="stats" label="Stats" sx={{ flexGrow: 1 }} />
-                      <Tab value="subitems" label="Subitems" sx={{ flexGrow: 1 }} />
-                    </Tabs>
-                  )}
-
-                  {slots?.rating
-                    ? slots.rating()
-                    : localOptions["hasRating"] && (
-                      <form.AppField name="rating">
-                        {(field) => (
-                          <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
-                        )}
-                      </form.AppField>
+                        {showSubitemsTab && subitemTabs}
+                      </>
+                    )
+                  : (
+                      <Stack direction="row" sx={{ alignItems: "center" }}>
+                        {showSubitemsTab && subitemTabs}
+                        {ratingField}
+                      </Stack>
                     )}
-                </Stack>
               </>
             )}
 
