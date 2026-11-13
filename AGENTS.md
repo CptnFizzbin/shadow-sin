@@ -10,7 +10,7 @@ rather than relying on memory or older copies of this file.
 
 | For | Look at |
 |---|---|
-| Domain terms (Runner, Item vs Gear, Viewer/Builder/Editor, ...) | [`CONTEXT.md`](./CONTEXT.md) — use its terms consistently in code, comments, and docs |
+| Domain terms (Runner, Item vs Gear, Viewer/Builder/Editor, ...) | [`GLOSSARY.md`](./GLOSSARY.md) — use its terms consistently in code, comments, and docs |
 | How features, Issues, and ADRs relate | [`CONTRIBUTING.md`](./CONTRIBUTING.md) |
 | Where a file belongs in `src/` | `docs/features/0017-top-level-directory-restructuring.md` → "Container definitions" |
 | Why the code is shaped the way it is | `docs/adr/` — read the ADRs touching the area you're working in |
@@ -154,5 +154,5 @@ change resolves them.
 - **Issue tracker:** GitHub Issues on `CptnFizzbin/shadow-sin` — see `.agents/guidelines/issue-tracker.md`.
 - **Triage labels:** `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` — see
   `.agents/guidelines/triage-labels.md`.
-- **Domain docs:** single-context repo (`CONTEXT.md` and `docs/adr/` at the root) — see `.agents/guidelines/domain.md`.
+- **Domain docs:** single-context repo (`GLOSSARY.md` and `docs/adr/` at the root) — see `.agents/guidelines/domain.md`.
 - **Skills:** `.agents/skills/CLAUDE.md` indexes every skill in `.agents/skills/`.

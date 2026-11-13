@@ -26,8 +26,8 @@ Known hard limits that the implementation must respect.
 
 ## Domain Notes
 
-CONTEXT.md terms that apply to this feature, or new terms being introduced. If a new term is
-being introduced, add it to CONTEXT.md and reference it here.
+GLOSSARY.md terms that apply to this feature, or new terms being introduced. If a new term is
+being introduced, add it to GLOSSARY.md and reference it here.
 
 ## Rough Interface Sketches
 

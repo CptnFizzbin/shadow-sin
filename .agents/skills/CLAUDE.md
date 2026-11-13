@@ -16,6 +16,7 @@ instructions; the description here is the skill's own frontmatter `description`.
 | [`handoff`](./handoff/SKILL.md) | Compact the current conversation into a handoff document for another agent to pick up. |
 | [`implement`](./implement/SKILL.md) | Implement a piece of work based on a spec or set of tickets. |
 | [`prototype`](./prototype/SKILL.md) | Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. |
+| [`tdd`](./tdd/SKILL.md) | Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests. |
 | [`to-issues`](./to-issues/SKILL.md) | Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. Use when user wants to convert a plan into issues, create implementation tickets, or break down work into issues. |
 | [`to-prd`](./to-prd/SKILL.md) | Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context. |
 | [`to-questionnaire`](./to-questionnaire/SKILL.md) | Turn a decision you can't fully answer into a questionnaire for someone else to fill in. |

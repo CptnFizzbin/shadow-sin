@@ -1,7 +1,7 @@
 # Entity Card Composition — Tiered Elements, Renamed Dispatcher
 
 We're extending the card architecture beyond `Item` to the new `Entity` umbrella (Item, Quality,
-Spell, Adept Power, eventually Drug — see `CONTEXT.md`). This supersedes the slot mechanism from
+Spell, Adept Power, eventually Drug — see `GLOSSARY.md`). This supersedes the slot mechanism from
 ADR-0008 with a tiered compound-component structure, and renames the item-type dispatcher so it
 no longer competes for the same identifier as the components namespace.
 

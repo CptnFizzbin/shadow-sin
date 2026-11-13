@@ -45,7 +45,7 @@ docs/features/archive/  (Implemented)
 4. **Mark In Progress** — the first agent to open a PR for the feature updates the feature doc status to "In Progress"
 5. **Record hard decisions** — irreversible architectural choices get an ADR
 6. **Archive on completion** — when all PRD Issues are closed, move the feature doc to `docs/features/archive/`, set
-   status to "Implemented", and sweep `CONTEXT.md` for stale references to the feature
+   status to "Implemented", and sweep `GLOSSARY.md` for stale references to the feature
 
 ### Feature doc vs PRD
 
@@ -88,7 +88,7 @@ are:
 | GitHub Issues / PRs      | Links to all related Issues and PRs — added as they are created       |
 | Open Questions           | Unresolved design decisions — resolve them here, not in code comments |
 | Constraints              | Hard limits: game rules, data model, architectural patterns           |
-| Domain Notes             | CONTEXT.md terms in play, or new terms being introduced               |
+| Domain Notes             | GLOSSARY.md terms in play, or new terms being introduced               |
 | Rough Interface Sketches | Optional — high-level type shapes only, no implementation code        |
 | Out of Scope             | Explicit exclusions to prevent scope creep                            |
 | Related Features         | Links to overlapping or dependent feature docs / ADRs                 |
@@ -189,7 +189,7 @@ When archiving:
 1. Update the status line to "Implemented"
 2. Move the file to `docs/features/archive/`
 3. Close all related GitHub Issues
-4. Sweep `CONTEXT.md` for any references to the feature and update or remove them
+4. Sweep `GLOSSARY.md` for any references to the feature and update or remove them
 
 ---
 

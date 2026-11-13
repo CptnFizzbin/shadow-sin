@@ -11,7 +11,7 @@ import { ItemType } from "./itemType.ts"
 /**
  * Authorizes a Restricted item, attached to a SIN (`items.parentId`). `isReal: true` is a Real
  * Licence — free, unrestricted, never rolled — matching its SIN's reality; `isReal: false` is a
- * fake Licence carrying a forgery-quality `rating`. See CONTEXT.md's **Licence** glossary entry.
+ * fake Licence carrying a forgery-quality `rating`. See GLOSSARY.md's **Licence** glossary entry.
  */
 export interface LicenseData extends ItemData, Credential {
   itemType: ItemType.license

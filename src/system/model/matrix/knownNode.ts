@@ -5,7 +5,7 @@ import type { MatrixNodeData } from "./matrixNodeData.ts"
 import { MatrixNodeDataSchema } from "./matrixNodeData.ts"
 
 /**
- * A `MatrixNode` the Runner currently has some access to — see CONTEXT.md's **Known Node**
+ * A `MatrixNode` the Runner currently has some access to — see GLOSSARY.md's **Known Node**
  * glossary entry. Lives only inside `MatrixGameState.knownNodes`; there is no separate
  * "subscribed nodes" list — every Known Node other than the Active Node is one.
  */

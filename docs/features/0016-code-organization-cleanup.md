@@ -61,7 +61,7 @@ becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a ma
 ## Domain Notes
 
 No new domain terms. `pointBuy` names a source-tree domain after the existing **Build Points (BP)**
-glossary term (`CONTEXT.md`) — it doesn't introduce a new concept, just a home for BP-cost
+glossary term (`GLOSSARY.md`) — it doesn't introduce a new concept, just a home for BP-cost
 calculations that were previously scattered per-subject.
 
 ## Reorganization Plan

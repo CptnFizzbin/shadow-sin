@@ -31,13 +31,13 @@ Two independent axes determine whether a `GameEffect` applies:
 - **What it modifies** — `target: string | string[]`, unchanged in spirit from today, now
   supporting multiple values per effect. For `dicePoolMod`, `target` is one or more **Pool Id**s
   drawn from a static, hand-authored category tree (e.g. `skill.active.dataSearch`,
-  `combat.attack`) — see **Pool Id** in `CONTEXT.md`. Leaves for branches backed by an existing
+  `combat.attack`) — see **Pool Id** in `GLOSSARY.md`. Leaves for branches backed by an existing
   canonical list (active skills) are generated from that list; free-text branches (Knowledge
   Skills, Languages) generate leaves per-Runner from that Runner's own entries, plus a `_all_`
   wildcard leaf to target the whole branch at once.
 - **Which item instance(s) it reaches** — the new `scope` field, resolved at read time relative
   to the *granting* item's own position in the `ItemData.parentId`/`childIds` tree. See **Scope**
-  in `CONTEXT.md` for the full `relativeTo`/`relation`/`itemType` grammar.
+  in `GLOSSARY.md` for the full `relativeTo`/`relation`/`itemType` grammar.
 
 Resolution is centralized behind two selectors (replacing per-hook ad-hoc filtering):
 
@@ -91,7 +91,7 @@ Runner's real item tree.
 
 ## Domain Notes
 
-See `CONTEXT.md`: **GameEffect**, **Granted Effects**, **Applied Effects**, **Scope**, **Dice
+See `GLOSSARY.md`: **GameEffect**, **Granted Effects**, **Applied Effects**, **Scope**, **Dice
 Pool**, **Pool Id**, **Skill** (Knowledge/Language id addition), **Wound Modifier**.
 
 ## Rough Interface Sketches
