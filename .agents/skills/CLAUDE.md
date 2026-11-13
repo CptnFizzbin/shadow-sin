@@ -14,6 +14,7 @@ instructions; the description here is the skill's own frontmatter `description`.
 | [`grill-with-docs`](./grill-with-docs/SKILL.md) | A relentless interview to sharpen a plan or design, which also creates docs (ADRs and glossary) as it goes. |
 | [`grilling`](./grilling/SKILL.md) | Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any "grill" trigger phrases. |
 | [`handoff`](./handoff/SKILL.md) | Compact the current conversation into a handoff document for another agent to pick up. |
+| [`implement`](./implement/SKILL.md) | Implement a piece of work based on a spec or set of tickets. |
 | [`prototype`](./prototype/SKILL.md) | Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. |
 | [`to-issues`](./to-issues/SKILL.md) | Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. |
 | [`to-prd`](./to-prd/SKILL.md) | Turn the current conversation context into a PRD and publish it to the project issue tracker. |
