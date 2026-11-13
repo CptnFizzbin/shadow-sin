@@ -17,12 +17,13 @@ Then publish with the Artifact tool, copying the arguments from `<out>.publish.j
 ## What the script does
 
 1. Builds with `vite build --base ./` (relative asset paths, so the site works under the
-   Artifact's sub-path). Defaults to `--mode development` with `NODE_ENV=development`, which keeps
-   React's development build and readable errors.
+   Artifact's sub-path). Defaults to a production build with `VITE_SEED_FIXTURES=true`, so the
+   landing page offers the sample Runners (Artemis, Hexen) a dev server shows.
 2. Removes host-only files (`CNAME`, `robots.txt`).
 3. Rewrites literal U+FFFD characters as escapes. The publisher rejects any file containing one,
-   but micromark (via `react-markdown`) uses it on purpose for its `replacementCharacter`
-   constant. The escape is read back as the same character, so behaviour doesn't change.
+   but micromark (via `react-markdown`) uses it on purpose: CommonMark replaces invalid character
+   references with it, and the minifier inlines it as a literal. The escape is read back as the
+   same character, so behaviour doesn't change.
 4. Checks Artifact limits (file count, per-file and total size) and fails on root-relative asset
    paths (`"/assets/…"`), which would 404 under the sub-path.
 5. Smoke-tests the build: serves it under a sub-path, loads it in headless Chromium, and fails on
@@ -36,7 +37,8 @@ Options:
 | Option | Default | Notes |
 | --- | --- | --- |
 | `--out <dir>` | `dist/artifact` | Use the session scratchpad when there is one; the Artifact tool only reads sources under the working directory or the scratchpad. |
-| `--mode development\|production` | `development` | `production` gives a smaller, minified build. |
+| `--mode production\|development` | `production` | `development` keeps React's development build and readable errors, at a larger size. |
+| `--no-fixtures` | off | Don't seed the sample Runners. |
 | `--no-smoke` | off | Skip the browser smoke test. |
 
 ## Publish

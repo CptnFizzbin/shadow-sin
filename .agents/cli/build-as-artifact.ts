@@ -4,7 +4,7 @@
  * `.agents/skills/build-as-artifact/SKILL.md`.
  *
  * Usage:
- *   yarn tsx .agents/cli/build-as-artifact.ts [--out <dir>] [--mode development|production] [--no-smoke]
+ *   yarn tsx .agents/cli/build-as-artifact.ts [--out <dir>] [--mode production|development] [--no-fixtures] [--no-smoke]
  */
 
 import { execFileSync } from "node:child_process"
@@ -29,14 +29,15 @@ const repoRoot = path.resolve(import.meta.dirname, "../..")
 const { values: options } = parseArgs({
   options: {
     "out": { type: "string", default: path.join(repoRoot, "dist", "artifact") },
-    "mode": { type: "string", default: "development" },
+    "mode": { type: "string", default: "production" },
+    "no-fixtures": { type: "boolean", default: false },
     "no-smoke": { type: "boolean", default: false },
     "help": { type: "boolean", short: "h", default: false },
   },
 })
 
 if (options.help) {
-  console.log("Usage: yarn tsx .agents/cli/build-as-artifact.ts [--out <dir>] [--mode development|production] [--no-smoke]")
+  console.log("Usage: yarn tsx .agents/cli/build-as-artifact.ts [--out <dir>] [--mode production|development] [--no-fixtures] [--no-smoke]")
   process.exit(0)
 }
 
@@ -45,6 +46,7 @@ if (options.mode !== "development" && options.mode !== "production") {
   process.exit(1)
 }
 
+const seedFixtures = !options["no-fixtures"]
 const outDir = path.resolve(options.out)
 const manifestPath = `${outDir}.publish.json`
 
@@ -65,15 +67,21 @@ function fail(message: string): never {
   process.exit(1)
 }
 
-step(`Building (${options.mode}) into ${outDir}`)
+step(`Building (${options.mode}${seedFixtures ? ", with fixture Runners" : ""}) into ${outDir}`)
 execFileSync(
   path.join(repoRoot, "node_modules", ".bin", "vite"),
   ["build", "--mode", options.mode, "--base", "./", "--outDir", outDir, "--emptyOutDir", "--logLevel", "warn"],
   {
     cwd: repoRoot,
     stdio: "inherit",
-    // `--mode` alone only picks the .env files; NODE_ENV is what selects React's development build.
-    env: { ...process.env, NODE_ENV: options.mode },
+    env: {
+      ...process.env,
+      // `--mode` alone only picks the .env files; NODE_ENV is what selects React's development build.
+      NODE_ENV: options.mode,
+      // Seeds the sample Runners a dev server shows, which a production build otherwise leaves out.
+      // A variable already in the environment wins over the .env files.
+      VITE_SEED_FIXTURES: String(seedFixtures),
+    },
   },
 )
 
@@ -129,7 +137,8 @@ const previousManifest = existsSync(manifestPath)
 
 const manifest = createPublishManifest(outDir, files, {
   previous: previousManifest,
-  description: `${options.mode === "development" ? "Development" : "Production"} build of the ShadowSIN client from ${branch} @ ${commit}${dirty}.`,
+  description: `${options.mode === "development" ? "Development" : "Production"} build of the ShadowSIN client`
+    + `${seedFixtures ? " with sample Runners" : ""} from ${branch} @ ${commit}${dirty}.`,
   label: `${branch} @ ${commit}`.slice(0, 60),
 })
 writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
