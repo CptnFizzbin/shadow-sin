@@ -29,7 +29,7 @@ export enum AttrKey {
 
   /**
    * AI-only, computed. Unrelated to the generic `EntityData.rating?: number` used by
-   * Licenses/SINs/etc — same name, different concept (see CONTEXT.md's **Rating** entry). Never
+   * Licenses/SINs/etc — same name, different concept (see GLOSSARY.md's **Rating** entry). Never
    * stored on `RunnerData.attributes`; always derived by `AiAttrFormulas.getRating` from the AI's
    * own Mental attributes.
    */

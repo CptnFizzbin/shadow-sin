@@ -11,4 +11,4 @@ The acquire / purchase / save submit decision is centralised in the shared item 
 adding a type, copy the structure of an existing one (e.g. weapons: `useWeaponForm`, `WeaponFormFields`,
 `WeaponFormDialog`).
 
-Use **Item** for code identifiers and **Gear** only in UI copy — see `CONTEXT.md`.
+Use **Item** for code identifiers and **Gear** only in UI copy — see `GLOSSARY.md`.

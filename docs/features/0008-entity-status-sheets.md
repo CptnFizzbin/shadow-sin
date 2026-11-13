@@ -47,7 +47,7 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
 
 ## Domain Notes
 
-- **Entity** — the umbrella term for anything with a stat block; see `CONTEXT.md` for the
+- **Entity** — the umbrella term for anything with a stat block; see `GLOSSARY.md` for the
   current definition (broader than just Spirit/Sprite — this doc predates that). Spirit and
   Sprite are the two this doc is actually about; Vehicle (an Item) is an Entity too, tracked
   here only because it shares the StatusSheet need, not because it's a distinct category from

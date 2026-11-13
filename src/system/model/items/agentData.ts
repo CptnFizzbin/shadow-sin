@@ -11,7 +11,7 @@ import { ProgramType } from "./programData.ts"
 /**
  * An autonomous Program — an `Item`/`Program` subtype (`Entity → Item → Program → Agent`) that
  * carries its own `attributes` bag and Matrix damage track, rather than the single `rating` a
- * plain Program uses. See CONTEXT.md's **Agent** glossary entry.
+ * plain Program uses. See GLOSSARY.md's **Agent** glossary entry.
  */
 export interface AgentData extends ProgramData, EntityWithAttrs, EntityWithDamage {
   programType: ProgramType.agent

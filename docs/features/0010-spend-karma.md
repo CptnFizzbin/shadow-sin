@@ -106,7 +106,7 @@ Integration](#optional-rules-integration) below.
       `Banishing` no longer crashes because the character has no `Conjuring` group).
   - **DEFER to follow-up slices** — each needs its own domain surface or design pass:
       complex-form picker UI (technomancer-only), positive-quality (new), negative-quality
-      buy-off, focus bonding (`bondFocus` per CONTEXT.md), initiation grade, submersion
+      buy-off, focus bonding (`bondFocus` per GLOSSARY.md), initiation grade, submersion
       grade, long-term spirit binding, metamagic-driven karma spends (Quickening / Anchoring
       / Cannibalize).
 
@@ -150,9 +150,9 @@ Integration](#optional-rules-integration) below.
 
 ## Domain Notes
 
-- **Karma** — existing CONTEXT.md term. The currency this feature spends.
+- **Karma** — existing GLOSSARY.md term. The currency this feature spends.
 - **Improvement** — a single staged or applied change to the character sheet purchased with
-  Karma. New term being introduced by this feature; should be added to CONTEXT.md.
+  Karma. New term being introduced by this feature; should be added to GLOSSARY.md.
   Discriminated by `ImprovementType` (`attrIncrease`, `skillIncrease`, `skillGroupIncrease`,
   `skillSpecialization`, `learnActiveSkill`, `learnSkillGroup`, `learnKnowledgeSkill`,
   `learnLanguageSkill`, `learnSpell`, `learnComplexForm`).
@@ -162,7 +162,7 @@ Integration](#optional-rules-integration) below.
 - **Skill Group Breaking** — SR4A rule that splits a Skill Group into its constituent Active
   Skills when one of them is improved or specialised individually. Cross-references the
   existing `breakSkillGroup` helper.
-- The CONTEXT.md entries for **Focus / Bonding** already describe `bondFocus` as an
+- The GLOSSARY.md entries for **Focus / Bonding** already describe `bondFocus` as an
   `ImprovementEntry`. Bonding is not in `ImprovementType` yet — a future slice should add it
   here rather than inventing a parallel mechanism.
 

@@ -27,7 +27,7 @@ currently). Adept Power's `PowerCard` is still new work, not a migration.
   not Session State. Decision only — no migration written yet, no code changes made.
 - [x] Spirit/Sprite's condition monitor reuses `DamageTrack` outright — same pattern as
   `VehicleCard`: a locally-computed max (from Force, not stored) passed into `DamageTrack`,
-  rendered twice for Spirit (Physical, Stun) and once for Sprite (Matrix only, per `CONTEXT.md`'s
+  rendered twice for Spirit (Physical, Stun) and once for Sprite (Matrix only, per `GLOSSARY.md`'s
   Matrix Damage Track entry). No distinct `ConditionMonitor` element.
 - [x] **Elements live in one flat folder, not owned per-tier** — resolved in ADR-0010. The
   `DamageTrack` case above is exactly why: it's needed by `ItemCard` (Vehicle) and `SpiritCard`
@@ -73,10 +73,10 @@ currently). Adept Power's `PowerCard` is still new work, not a migration.
 
 ## Domain Notes
 
-Builds on **Entity**, **EntityCard**, **Rating** (all in `CONTEXT.md`) and ADR-0010.
+Builds on **Entity**, **EntityCard**, **Rating** (all in `GLOSSARY.md`) and ADR-0010.
 `EntityData` — the concrete interface underlying Entity — is implementation detail scoped to
 this doc and ADR-0010 rather than the glossary; see the Rough Interface Sketches below for its
-shape. New terms introduced by this doc, not yet in `CONTEXT.md` pending resolution above:
+shape. New terms introduced by this doc, not yet in `GLOSSARY.md` pending resolution above:
 
 - **SubType** — a secondary type label distinct from an Entity's main Type badge, currently
   reinvented per-type (Device, Vehicle, Implant, Credstick each derive their own "subtype"

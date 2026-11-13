@@ -2,7 +2,7 @@
 # Sync SessionStart hook for Claude Code on the web.
 #
 # Symlinks .agents/skills/ to .claude/skills/ so the repo's fallow-managed
-# skills (grill-me, to-issues, prototype, etc. — see skills-lock.json) are
+# skills (grill-me, to-tickets, prototype, etc. — see skills-lock.json) are
 # discoverable as regular Claude Code skills, without duplicating them on
 # disk. Runs synchronously (it's near-instant) so skills are available from
 # the very first turn of the session.
