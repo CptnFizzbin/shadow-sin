@@ -7,7 +7,7 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 Feature design lives in `docs/features/` — GitHub Issues are the *execution trigger*, not the
 design home. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md) for the full workflow.
 
-- **Feature Issues** — created by running `/to-prd` once a feature doc's design is settled. The
+- **Feature Issues** — created by running `/to-spec` once a feature doc's design is settled. The
   PRD is published as a GitHub Issue with `ready-for-agent` applied automatically. It contains
   user stories, implementation decisions, testing decisions, and a link back to the feature doc.
   A feature may produce multiple Issues (one per PR slice), each referencing the same feature doc.

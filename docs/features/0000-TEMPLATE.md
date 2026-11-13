@@ -3,7 +3,7 @@
 > **Status:** Draft | Ready to Implement | In Progress | Implemented (archived)
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. A feature may generate multiple Issues (one per PR slice). -->
+> <!-- Added after running /to-spec. A feature may generate multiple Issues (one per PR slice). -->
 > - #??? — scope of this issue/PR
 
 Brief description — what this feature is and why it matters to Players or the system.

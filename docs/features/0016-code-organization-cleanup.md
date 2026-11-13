@@ -3,7 +3,7 @@
 > **Status:** Draft
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. A feature may generate multiple Issues (one per PR slice). -->
+> <!-- Added after running /to-spec. A feature may generate multiple Issues (one per PR slice). -->
 > - #??? — scope of this issue/PR
 
 The `system/` / `stores/` / `hooks/` / `lib/` split documented in AGENTS.md ("Key directories") is
