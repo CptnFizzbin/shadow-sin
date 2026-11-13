@@ -18,6 +18,7 @@ rather than relying on memory or older copies of this file.
 | Available scripts | `package.json` → `scripts` |
 | UI primitive usage (dialogs, prototypes, ...) | `docs/ui/` |
 | Agent skills | `.agents/skills/CLAUDE.md` (index; skills are vendored and pinned in `skills-lock.json`) |
+| Driving a browser (clicks, screenshots) | `.agents/scripts/browser/README.md` (`yarn browser --help`) |
 | Existing code patterns | The code itself — find a sibling that does what you need (e.g. the weapons item type) and follow it |
 
 ## Commands
@@ -29,6 +30,7 @@ yarn dev      # dev server on :3000
 yarn test     # Vitest unit tests (run once)
 yarn fix      # auto-fix lint/format and type-check — must pass before a change is complete
 yarn fallow   # codebase health analysis (see "Fallow" below)
+yarn browser  # drive a headless Chromium against the dev server (see .agents/scripts/browser/README.md)
 ```
 
 ## Architecture principles
