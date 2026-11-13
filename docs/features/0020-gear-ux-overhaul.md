@@ -61,12 +61,11 @@ Problems this addresses, as of the current Gear page:
 - **Selling Attachments:** the Sell action has a "Sell attachments" toggle, on by default. When it
   is on, the Item's whole Attachment tree is sold with it, each Attachment crediting 50% of its own
   cost. Fixed Attachments are always sold with their parent, whatever the toggle says. When the
-  toggle is off, unfixed Attachments stay in the inventory, detached from the sold Item.
+  toggle is off, unfixed Attachments stay in the inventory as top-level Items, even when the sold
+  Item was itself an Attachment.
 
 ## Open Questions
 
-- [ ] **Detached Attachments:** when "Sell attachments" is off, do the unfixed Attachments become
-      top-level Items, or move up to the sold Item's own parent when it has one?
 - [ ] **Sale price:** is 50% a fixed amount, or a default the Player can edit before confirming?
       Does Sell need a confirmation step, as Delete has?
 - [ ] **Middle state label:** the carry-status picker shipped in #666 reads Equipped / **Carried**
