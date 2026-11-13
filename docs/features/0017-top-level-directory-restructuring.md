@@ -155,7 +155,7 @@ found while checking, worth flagging rather than papering over:
   `items/itemUtils.ts` (`ItemCatalog`/`AnyItemData` *types* + the `toItemCatalogTree` transform).
   Splitting these is a small, mechanical extraction (same discipline as 0016's own Slices), not a
   behavior change — but it's not a pure file move either, so it should be called out as its own
-  PRD Issue step rather than bundled silently into a bulk relocation. **Done** in the follow-up to
+  spec Issue step rather than bundled silently into a bulk relocation. **Done** in the follow-up to
   #614: `attributeCatalog.ts` kept its catalog types and factory; `attrValue`/`attrMin`/`attrMax`/
   `attrNaturalMax`/`attrAugmentedMax` moved to `formulas/attributes/attributeFormulas.ts`.
   `itemUtils.ts` kept its types, `itemIsType` guard, and the filtering `ItemUtils` namespace;
@@ -172,7 +172,7 @@ found while checking, worth flagging rather than papering over:
 
 Exhaustive per-file membership for every remaining domain isn't enumerated here — same discipline
 as the `components/` unification below: the rule and the representative examples are settled, the
-full file list is PRD-Issue-level detail.
+full file list is spec-Issue-level detail.
 
 ## `components/` domain unification
 
@@ -278,7 +278,7 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 - **Any change to `RunnerData`, migrations, or rule behavior.** Same discipline as 0016: this is
   strictly "move code to where it now claims to live."
 - **Renaming any exported type, component, hook, or store**, beyond what following folders to
-  their new names mechanically requires. File location changes only, unless a slice's own PRD
+  their new names mechanically requires. File location changes only, unless a slice's own spec
   Issue says otherwise (e.g. a `*Slice.ts` file becoming `*.state.ts` is a file rename, not an
   export rename).
 - **Renaming the persisted `RunnerData.gear` field.** GLOSSARY.md's Item entry explicitly calls

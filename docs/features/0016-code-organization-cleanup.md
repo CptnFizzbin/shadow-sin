@@ -36,7 +36,7 @@ becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a ma
       `pointBuy`, mirrored across all three layers: `system/builder/pointBuy/`,
       `stores/builder/pointBuy/`, `components/builder/pointBuy/`. See Slice 4.
 - [x] **One PR or several?** Resolved: several — one PR per slice below, per the repo's normal
-      feature-doc → PRD-Issue → PR lifecycle.
+      feature-doc → spec-Issue → PR lifecycle.
 
 ## Constraints
 
@@ -92,7 +92,7 @@ non-mechanical unit of work; Slice 5 stays optional/open per the Open Questions 
   it already claims to live" pass — Slice 4's new Selectors read existing `BuilderState` fields,
   they don't add any.
 - Renaming any domain type or constant — only file location changes; exported names stay the same
-  unless a slice's PRD says otherwise.
+  unless a slice's spec says otherwise.
 
 ## Related Features
 

@@ -1,6 +1,6 @@
 # Issue tracker: GitHub
 
-Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
+Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
 
 ## Relationship to feature docs
 
@@ -8,11 +8,11 @@ Feature design lives in `docs/features/` — GitHub Issues are the *execution tr
 design home. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md) for the full workflow.
 
 - **Feature Issues** — created by running `/to-spec` once a feature doc's design is settled. The
-  PRD is published as a GitHub Issue with `ready-for-agent` applied automatically. It contains
+  spec is published as a GitHub Issue with `ready-for-agent` applied automatically. It contains
   user stories, implementation decisions, testing decisions, and a link back to the feature doc.
   A feature may produce multiple Issues (one per PR slice), each referencing the same feature doc.
 
-- **Bug / task Issues** — no feature doc or PRD needed. Include a full description, steps to
+- **Bug / task Issues** — no feature doc or spec needed. Include a full description, steps to
   reproduce (for bugs), and acceptance criteria directly in the Issue.
 
 ## Conventions

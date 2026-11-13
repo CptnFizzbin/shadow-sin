@@ -26,7 +26,7 @@ change — see Constraints below.
 
 ## Open Questions
 
-All resolved as of `/to-prd` (see linked Issues above for the per-slice PRDs each resolution feeds
+All resolved as of `/to-spec` (see linked Issues above for the per-slice specs each resolution feeds
 into):
 
 - [x] **Exact `EntityKind` string values** — settled as the Rough Interface Sketch's union below:
@@ -55,7 +55,7 @@ Six independently-shippable slices; `kind` is the only foundational one (everyth
 per-`kind` selector dispatch depends on it existing first). Numbers below start at `026` (next
 available) but are illustrative — actual numbers depend on what else lands first.
 
-| # | Slice | Migration(s) | PRD ticket(s) |
+| # | Slice | Migration(s) | Spec ticket(s) |
 |---|-------|--------------|----------------|
 | 1 | `kind` discriminant | **One** migration (`026_addEntityKind.ts`) covering every `RunnerData` subtree (`gear`, `spirits`, `sprites`, `gameState.matrix.knownNodes`, `qualities`, `spells`, `complexForms`, `adeptPowers`) plus `RunnerData` itself — one coherent concern, not split per-collection | #530 |
 | 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | #531 (citation requirement waived, see Open Questions) |
