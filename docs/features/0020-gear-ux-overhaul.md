@@ -58,12 +58,15 @@ Problems this addresses, as of the current Gear page:
   rather than node-less (shipped in #666).
 - **Sell** removes the Item and credits 50% of its cost to the Runner's Nuyen. Selling records no
   transaction history.
+- **Selling Attachments:** the Sell action has a "Sell attachments" toggle, on by default. When it
+  is on, the Item's whole Attachment tree is sold with it, each Attachment crediting 50% of its own
+  cost. Fixed Attachments are always sold with their parent, whatever the toggle says. When the
+  toggle is off, unfixed Attachments stay in the inventory, detached from the sold Item.
 
 ## Open Questions
 
-- [ ] **Selling Attachments:** does selling an Item also sell its Attachments, crediting 50% of
-      each Attachment's cost? Fixed Attachments presumably go with their parent. Can an unfixed
-      Attachment be sold on its own?
+- [ ] **Detached Attachments:** when "Sell attachments" is off, do the unfixed Attachments become
+      top-level Items, or move up to the sold Item's own parent when it has one?
 - [ ] **Sale price:** is 50% a fixed amount, or a default the Player can edit before confirming?
       Does Sell need a confirmation step, as Delete has?
 - [ ] **Middle state label:** the carry-status picker shipped in #666 reads Equipped / **Carried**
