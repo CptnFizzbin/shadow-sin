@@ -125,6 +125,11 @@ export interface PublishManifest {
   file_path: string
   root: string
   files: { path: string }[]
+  /**
+   * Paths the previous build in the same folder had and this one doesn't. Chunk names change with
+   * every build, so when republishing to the same artifact, remove these with `null` entries.
+   */
+  stale: string[]
   description: string
   label: string
 }
@@ -132,12 +137,18 @@ export interface PublishManifest {
 export function createPublishManifest(
   outDir: string,
   files: BuildFile[],
-  { description, label }: { description: string, label: string },
+  { description, label, previous }: { description: string, label: string, previous?: PublishManifest },
 ): PublishManifest {
+  const supportingFiles = files.filter((file) => file.path !== "index.html").map((file) => ({ path: file.path }))
+  const current = new Set(supportingFiles.map((file) => file.path))
+  const previousPaths = [...(previous?.files.map((file) => file.path) ?? []), ...(previous?.stale ?? [])]
+
   return {
     file_path: path.join(outDir, "index.html"),
     root: outDir,
-    files: files.filter((file) => file.path !== "index.html").map((file) => ({ path: file.path })),
+    files: supportingFiles,
+    // Stale paths carry over until a build has them again, in case the last publish skipped them.
+    stale: [...new Set(previousPaths)].filter((stalePath) => !current.has(stalePath)).sort(),
     description,
     label,
   }

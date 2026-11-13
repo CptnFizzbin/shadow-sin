@@ -12,6 +12,7 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
 
+import type { PublishManifest } from "./lib/artifactBuild.ts"
 import {
   createPublishManifest,
   escapeReplacementCharactersInDir,
@@ -120,7 +121,14 @@ const branch = git(["rev-parse", "--abbrev-ref", "HEAD"])
 const commit = git(["rev-parse", "--short", "HEAD"])
 const dirty = git(["status", "--porcelain"]) ? " + uncommitted changes" : ""
 
+// The manifest sits beside `outDir`, so `--emptyOutDir` leaves the previous build's one in place to
+// compare against.
+const previousManifest = existsSync(manifestPath)
+  ? JSON.parse(readFileSync(manifestPath, "utf8")) as PublishManifest
+  : undefined
+
 const manifest = createPublishManifest(outDir, files, {
+  previous: previousManifest,
   description: `${options.mode === "development" ? "Development" : "Production"} build of the ShadowSIN client from ${branch} @ ${commit}${dirty}.`,
   label: `${branch} @ ${commit}`.slice(0, 60),
 })
@@ -128,4 +136,5 @@ writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
 
 step("Done")
 console.log(`  Publish manifest: ${manifestPath}`)
+if (manifest.stale.length > 0) console.log(`  ${manifest.stale.length} paths from the previous build are stale (see "stale")`)
 console.log("  Pass its file_path, root, files, description and label to the Artifact tool's publish call.")

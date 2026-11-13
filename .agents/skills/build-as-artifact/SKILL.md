@@ -28,7 +28,8 @@ Then publish with the Artifact tool, copying the arguments from `<out>.publish.j
 5. Smoke-tests the build: serves it under a sub-path, loads it in headless Chromium, and fails on
    page errors, failed requests, or an empty `#root`.
 6. Writes `<out>.publish.json` (next to the output folder, not inside it) with `file_path`,
-   `root`, `files`, `description` and `label`.
+   `root`, `files`, `description` and `label`, plus `stale`: paths the previous build into the same
+   `--out` had and this one doesn't.
 
 Options:
 
@@ -43,12 +44,18 @@ Options:
 The script can't call the Artifact tool, so publish yourself:
 
 1. Read `<out>.publish.json`.
-2. Call the Artifact tool's `publish` action with `file_path`, `root`, `files`, `description` and
-   `label` from the manifest, plus `icon: "dice"` on a first publish.
-3. To update an artifact you already published in this conversation, publish the same `file_path`
-   again; that keeps its URL. For one from an earlier conversation, pass its `url` and read it first.
-   Chunk filenames change with every build, so pass `null` for any old path that's no longer in
-   `files` if stale chunks matter.
+2. **First publish:** call the Artifact tool's `publish` action with `file_path`, `root`, `files`,
+   `description` and `label` from the manifest, plus `icon: "dice"`.
+3. **Updating an artifact already published in this conversation:** publish the same `file_path`
+   again to keep its URL. Chunk names change with every build, so also remove each `stale` path by
+   mapping it to `null` in `files` (object form: `{"assets/a.js": "assets/a.js", "assets/old.js": null}`).
+   A publish takes at most 255 `files` entries, *removals included*. If `files` plus `stale` is
+   over 255, publish the new `files` first, then publish again with only the `null` removals.
+   Leaving stale chunks in place is harmless (nothing references them), so skip the cleanup if
+   it's a bother; a version holds up to 511 files in all.
+4. **Artifact from an earlier conversation:** pass its `url` and read it first. The manifest's
+   `stale` list only knows about builds in this `--out` folder, so list the artifact's files
+   (`action: "list"`, `scope: "files"`) to find what to remove.
 
 ## Notes for the user
 
