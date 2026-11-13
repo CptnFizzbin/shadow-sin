@@ -4,7 +4,8 @@
     "src/index.{ts,tsx,js,jsx}",
     "src/main.{ts,tsx,js,jsx}",
     "testUtils/setup.ts",
-    ".github/scripts/**"
+    ".github/scripts/**",
+    ".agents/cli/*.ts"
   ],
   "ignoreDependencies": [
     "@emotion/react",
