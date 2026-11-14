@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./items.actions.ts"
+import { addItem, patchItem, removeItem, setItem, setState } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -195,156 +196,234 @@ describe.concurrent("gearReducer", () => {
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("setEquipped sets the equipped field", () => {
+  it("setState is a no-op when no item matches the id", () => {
     // Arrange
     const item = makeItem()
 
     // Act
-    const next = gearReducer({ [item.id]: item }, setEquipped({ id: item.id, equipped: true }))
-
-    // Assert
-    expect(next[item.id].equipped).toBe(true)
-  })
-
-  it("setEquipped is a no-op when no item matches the id", () => {
-    // Arrange
-    const item = makeItem()
-
-    // Act
-    const next = gearReducer(
-      { [item.id]: item },
-      setEquipped({ id: crypto.randomUUID() as UUID, equipped: true }),
-    )
+    const next = gearReducer({ [item.id]: item }, setState({ id: crypto.randomUUID() as UUID, state: ItemState.stashed }))
 
     // Assert
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("setStashed is a no-op when no item matches the id", () => {
+  it("setState moves the item into the given state", () => {
     // Arrange
-    const item = makeItem()
+    const item = makeItem({ state: ItemState.available })
 
     // Act
-    const next = gearReducer(
-      { [item.id]: item },
-      setStashed({ id: crypto.randomUUID() as UUID, stashed: true }),
-    )
+    const next = gearReducer({ [item.id]: item }, setState({ id: item.id, state: ItemState.equipped }))
 
     // Assert
-    expect(next).toEqual({ [item.id]: item })
+    expect(next[item.id].state).toBe(ItemState.equipped)
   })
 
-  describe("stashing forces equipped off and remembers it for restore", () => {
-    it("setStashed(true) on an equipped item sets stashed, clears equipped, and records equipOnUnstash", () => {
+  it("setState ignores a state the item's type doesn't allow", () => {
+    // Arrange
+    const sin = makeItem({ itemType: ItemType.sin, state: ItemState.available })
+
+    // Act
+    const next = gearReducer({ [sin.id]: sin }, setState({ id: sin.id, state: ItemState.equipped }))
+
+    // Assert
+    expect(next[sin.id].state).toBe(ItemState.available)
+  })
+
+  it("setItem falls back to the previous state when the saved one isn't allowed", () => {
+    // Arrange
+    const implant = makeItem({ itemType: ItemType.implant, state: ItemState.implanted })
+
+    // Act
+    const next = gearReducer({ [implant.id]: implant }, setItem({ ...implant, state: ItemState.equipped }))
+
+    // Assert
+    expect(next[implant.id].state).toBe(ItemState.implanted)
+  })
+
+  describe("state changes cascade to Attachments", () => {
+    const makeTree = (parentOverrides: Partial<ItemData>, childOverrides: Partial<ItemData>) => {
+      const parent = makeItem(parentOverrides)
+      const child = makeItem({ ...childOverrides, items: { parentId: parent.id, childIds: [] } })
+      parent.items = { parentId: null, childIds: [child.id] }
+      return { parent, child, catalog: { [parent.id]: parent, [child.id]: child } }
+    }
+
+    it("stashing a parent stashes its Attachments", () => {
       // Arrange
-      const item = makeItem({ equipped: true })
+      const { parent, child, catalog } = makeTree(
+        { state: ItemState.equipped },
+        { itemType: ItemType.firearmAccessory, state: ItemState.available },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.stashed }))
 
       // Assert
-      expect(next[item.id].stashed).toBe(true)
-      expect(next[item.id].equipped).toBe(false)
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+      expect(next[child.id].state).toBe(ItemState.stashed)
     })
 
-    it("setStashed(true) on a non-equipped item records equipOnUnstash as false", () => {
+    it("unstashing a parent makes its stashed Attachments Available", () => {
       // Arrange
-      const item = makeItem({ equipped: false })
+      const { parent, child, catalog } = makeTree(
+        { state: ItemState.stashed },
+        { itemType: ItemType.firearmAccessory, state: ItemState.stashed },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.available }))
 
       // Assert
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: false })
+      expect(next[parent.id].state).toBe(ItemState.available)
+      expect(next[child.id].state).toBe(ItemState.available)
     })
 
-    it("setStashed(false) restores equipped from equipOnUnstash", () => {
-      // Arrange — already stashed, with a recorded pre-stash equipped value
-      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: true } })
+    it("implanting a parent implants its implant Attachments", () => {
+      // Arrange
+      const { parent, child, catalog } = makeTree(
+        { itemType: ItemType.implant, state: ItemState.available },
+        { itemType: ItemType.implant, state: ItemState.available },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: false }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.implanted }))
 
       // Assert
-      expect(next[item.id].stashed).toBe(false)
-      expect(next[item.id].equipped).toBe(true)
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: undefined })
+      expect(next[child.id].state).toBe(ItemState.implanted)
     })
 
-    it("setStashed(false) restores equipped to false when it wasn't equipped before stashing", () => {
+    it("equipping a parent leaves Attachments without an Equipped state Available", () => {
       // Arrange
-      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: false } })
+      const { parent, child, catalog } = makeTree(
+        { state: ItemState.available },
+        { itemType: ItemType.firearmAccessory, state: ItemState.available },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: false }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.equipped }))
 
       // Assert
-      expect(next[item.id].equipped).toBe(false)
+      expect(next[child.id].state).toBe(ItemState.available)
     })
 
-    it("setStashed(true) is idempotent — re-stashing an already-stashed item doesn't re-capture equipOnUnstash", () => {
-      // Arrange — already stashed with equipOnUnstash recorded; equipped is (unusually) true again
-      const item = makeItem({ stashed: true, equipped: true, _state: { equipOnUnstash: false } })
+    it("equipping a parent leaves an independently stashed Attachment stashed", () => {
+      // Arrange
+      const { parent, child, catalog } = makeTree(
+        { itemType: ItemType.armor, state: ItemState.available },
+        { itemType: ItemType.other, state: ItemState.stashed },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
-
-      // Assert — no re-capture: equipped and equipOnUnstash both untouched
-      expect(next[item.id].equipped).toBe(true)
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: false })
-    })
-
-    it("setItem (the item edit form's save path) also enforces the invariant when stashed flips on", () => {
-      // Arrange
-      const item = makeItem({ equipped: true })
-
-      // Act — form save sets stashed directly, without going through setStashed
-      const next = gearReducer({ [item.id]: item }, setItem({ ...item, stashed: true }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.equipped }))
 
       // Assert
-      expect(next[item.id].equipped).toBe(false)
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+      expect(next[child.id].state).toBe(ItemState.stashed)
     })
 
-    it("setItem also restores equipped when stashed flips off", () => {
+    it("unequipping a parent makes its equipped Attachments Available", () => {
       // Arrange
-      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: true } })
+      const { parent, child, catalog } = makeTree(
+        { itemType: ItemType.armor, state: ItemState.equipped },
+        { itemType: ItemType.other, state: ItemState.equipped },
+      )
 
       // Act
-      const next = gearReducer({ [item.id]: item }, setItem({ ...item, stashed: false }))
+      const next = gearReducer(catalog, setState({ id: parent.id, state: ItemState.available }))
 
       // Assert
-      expect(next[item.id].equipped).toBe(true)
+      expect(next[child.id].state).toBe(ItemState.available)
     })
 
-    it("patchItem enforces the invariant when stashed flips on", () => {
+    it("cascades through every level of Attachments", () => {
       // Arrange
-      const item = makeItem({ equipped: true })
+      const { parent, child, catalog } = makeTree(
+        { itemType: ItemType.implant, state: ItemState.implanted },
+        { itemType: ItemType.implant, state: ItemState.implanted },
+      )
+      const grandchild = makeItem({
+        itemType: ItemType.implant,
+        state: ItemState.implanted,
+        items: { parentId: child.id, childIds: [] },
+      })
+      child.items = { ...child.items, childIds: [grandchild.id] }
 
       // Act
       const next = gearReducer(
-        { [item.id]: item },
-        patchItem({ itemId: item.id, data: { stashed: true } }),
+        { ...catalog, [grandchild.id]: grandchild },
+        setState({ id: parent.id, state: ItemState.stashed }),
       )
 
       // Assert
-      expect(next[item.id].equipped).toBe(false)
-      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+      expect(next[grandchild.id].state).toBe(ItemState.stashed)
     })
 
-    it("addItem of an already-stashed item forces equipped off and records equipOnUnstash", () => {
-      // Arrange — a new item created already stashed and (inconsistently) marked equipped
-      const item = makeItem({ stashed: true, equipped: true })
-      const { id: _discarded, ...itemWithoutId } = item
+    it("won't make an Attachment more active than its parent", () => {
+      // Arrange
+      const { child, catalog } = makeTree(
+        { itemType: ItemType.armor, state: ItemState.available },
+        { itemType: ItemType.other, state: ItemState.available },
+      )
 
       // Act
-      const next = gearReducer({}, addItem(itemWithoutId))
+      const next = gearReducer(catalog, setState({ id: child.id, state: ItemState.equipped }))
 
-      // Assert — still forces equipped off and records the pre-stash value, same as any other write
-      const [stored] = Object.values(next)
-      expect(stored.equipped).toBe(false)
-      expect(stored._state).toEqual({ equipOnUnstash: true })
+      // Assert
+      expect(next[child.id].state).toBe(ItemState.available)
+    })
+
+    it("won't unstash an Attachment of a stashed parent", () => {
+      // Arrange
+      const { child, catalog } = makeTree(
+        { state: ItemState.stashed },
+        { itemType: ItemType.firearmAccessory, state: ItemState.stashed },
+      )
+
+      // Act
+      const next = gearReducer(catalog, setState({ id: child.id, state: ItemState.available }))
+
+      // Assert
+      expect(next[child.id].state).toBe(ItemState.stashed)
+    })
+
+    it("lets an Attachment be stashed on its own while its parent stays active", () => {
+      // Arrange
+      const { parent, child, catalog } = makeTree(
+        { state: ItemState.equipped },
+        { itemType: ItemType.firearmAccessory, state: ItemState.available },
+      )
+
+      // Act
+      const next = gearReducer(catalog, setState({ id: child.id, state: ItemState.stashed }))
+
+      // Assert
+      expect(next[parent.id].state).toBe(ItemState.equipped)
+      expect(next[child.id].state).toBe(ItemState.stashed)
+    })
+
+    it("patchItem (a partial save) cascades a state change too", () => {
+      // Arrange
+      const { parent, child, catalog } = makeTree(
+        { state: ItemState.available },
+        { itemType: ItemType.firearmAccessory, state: ItemState.available },
+      )
+
+      // Act
+      const next = gearReducer(catalog, patchItem({ itemId: parent.id, data: { state: ItemState.stashed } }))
+
+      // Assert
+      expect(next[child.id].state).toBe(ItemState.stashed)
+    })
+
+    it("adding an Attachment to a stashed parent stashes it", () => {
+      // Arrange
+      const parent = makeItem({ state: ItemState.stashed })
+      const scope = makeItem({ itemType: ItemType.firearmAccessory, items: { parentId: parent.id, childIds: [] } })
+
+      // Act
+      const next = gearReducer({ [parent.id]: parent }, addItem(scope))
+
+      // Assert
+      const [storedId] = Object.keys(next).filter((id) => id !== parent.id)
+      expect(next[storedId].state).toBe(ItemState.stashed)
     })
   })
 })

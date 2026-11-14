@@ -5,6 +5,7 @@ import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
@@ -54,22 +55,43 @@ describe("ItemDetailsRoot", () => {
     expect(screen.getByText(/BOD.*\+1/)).toBeDefined()
   })
 
-  it("renders equipped, stashed, and wireless-off status", () => {
+  it("renders the Equipped and wireless-off status", () => {
     // Arrange
-    const item: ItemData = { ...baseItem, equipped: true, stashed: true, wireless: { enabled: false } }
+    const item: ItemData = { ...baseItem, state: ItemState.equipped, wireless: { enabled: false } }
 
     // Act
     renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     // Assert
     expect(screen.getByText("Equipped")).toBeDefined()
-    expect(screen.getByText("Stashed")).toBeDefined()
     expect(screen.getByText("Wireless Off")).toBeDefined()
   })
 
-  it("omits the equipped and stashed status when the item is neither", () => {
+  it("renders the Implanted status", () => {
     // Arrange
-    const item: ItemData = { ...baseItem, equipped: false, stashed: false }
+    const item: ItemData = { ...baseItem, itemType: ItemType.implant, state: ItemState.implanted }
+
+    // Act
+    renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
+
+    // Assert
+    expect(screen.getByText("Implanted")).toBeDefined()
+  })
+
+  it("renders the Stashed status", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, state: ItemState.stashed }
+
+    // Act
+    renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
+
+    // Assert
+    expect(screen.getByText("Stashed")).toBeDefined()
+  })
+
+  it("shows no state status when the item is Available", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, state: ItemState.available }
 
     // Act
     renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
@@ -77,6 +99,31 @@ describe("ItemDetailsRoot", () => {
     // Assert
     expect(screen.queryByText("Equipped")).toBeNull()
     expect(screen.queryByText("Stashed")).toBeNull()
+    expect(screen.queryByText("Available")).toBeNull()
+  })
+
+  it("offers the item's state actions alongside Edit", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, state: ItemState.equipped }
+
+    // Act
+    renderWithRunner(<ItemDetailsRoot item={item} onEdit={vi.fn()} />, createItemMap(item))
+
+    // Assert
+    expect(screen.getByRole("button", { name: "Unequip" })).toBeDefined()
+    expect(screen.getByRole("button", { name: "Stash" })).toBeDefined()
+  })
+
+  it("moves the item to the chosen state", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, state: ItemState.available }
+    const runnerStore = renderWithRunner(<ItemDetailsRoot item={item} onEdit={vi.fn()} />, createItemMap(item))
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Stash" }))
+
+    // Assert
+    expect(runnerStore.getState().items[item.id].state).toBe(ItemState.stashed)
   })
 
   it("composes stats, damage track, subitems, and footer slots", () => {

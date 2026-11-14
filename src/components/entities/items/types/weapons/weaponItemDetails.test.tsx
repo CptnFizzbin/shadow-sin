@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
@@ -20,7 +21,7 @@ const weapon: WeaponData = {
   weaponType: WeaponType.firearm,
   skill: SkillKey.pistols,
   dmg: "8P",
-  equipped: false,
+  state: ItemState.available,
 }
 
 describe("WeaponItemDetails", () => {

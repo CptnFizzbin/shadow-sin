@@ -2,9 +2,12 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { Fragment } from "react"
 
+import { ItemStateMenuActions } from "#/components/entities/items/state/itemStateMenuActions.tsx"
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 
 import { ItemCardElements } from "./itemCardElements.tsx"
 import { ItemCardSlotManager } from "./itemCardSlotManager.ts"
@@ -23,17 +26,23 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
 /**
  * `ItemCard`'s own renderable frame — sits on top of `EntityCard`, auto-rendering every
  * `ItemData` field `EntityCard` doesn't already cover (availability, cost, quantity,
- * equipped/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
+ * equipped/implanted/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
  * regions internally. A category-tier or typed card that needs another row uses
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
  * `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard` for its
- * tap-to-open behavior, menu-button actions, and left-edge action button.
+ * tap-to-open behavior, menu-button actions, and left-edge action button; whenever the card has an
+ * actions menu, it also lists the item's state actions (Equip, Stash, ...).
  */
 const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
+  const itemState = getItemState(item)
 
   return (
-    <EntityCard entity={item} {...props}>
+    <EntityCard
+      entity={item}
+      menuActions={(closeMenu) => <ItemStateMenuActions item={item} onDone={closeMenu} />}
+      {...props}
+    >
       <EntityCard.Layout.TitleRight>
         <ItemCardElements.Quantity value={item.quantity} />
       </EntityCard.Layout.TitleRight>
@@ -51,8 +60,9 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, .
       )}
 
       <EntityCard.Layout.TopRight>
-        {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
-        {item.stashed && <ItemCardElements.StatusIcon status="stashed" />}
+        {itemState === ItemState.equipped && <ItemCardElements.StatusIcon status="equipped" />}
+        {itemState === ItemState.implanted && <ItemCardElements.StatusIcon status="implanted" />}
+        {itemState === ItemState.stashed && <ItemCardElements.StatusIcon status="stashed" />}
         {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
         {item.wireless && (
           item.wireless.removed

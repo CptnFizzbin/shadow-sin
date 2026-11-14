@@ -7,6 +7,7 @@ import { Icons } from "#/utils/icons.ts"
 
 export type CardElementStatusIconStatus =
   | "equipped"
+  | "implanted"
   | "stashed"
   | "fixed"
   | "wireless-enabled"
@@ -25,6 +26,7 @@ export interface CardElementStatusIconProps {
 
 const statusIcon: Record<CardElementStatusIconStatus, { icon: IconComponent, label: string }> = {
   "equipped": { icon: Icons.item.equipped, label: "Equipped" },
+  "implanted": { icon: Icons.item.implanted, label: "Implanted" },
   "stashed": { icon: Icons.item.stashed, label: "Stashed" },
   "fixed": { icon: Icons.item.fixed, label: "Integrated" },
   "wireless-enabled": { icon: Icons.item.wireless.enabled, label: "Wireless" },
@@ -36,7 +38,7 @@ const statusIcon: Record<CardElementStatusIconStatus, { icon: IconComponent, lab
 
 /**
  * One entry in the top-right status icon cluster, parameterized by `status` rather than a raw
- * icon+label pair — callers pick from known statuses (Item's Equipped/Stashed/Fixed/Wireless,
+ * icon+label pair — callers pick from known statuses (Item's Equipped/Implanted/Stashed/Fixed/Wireless,
  * Spell's Sustained/Not Sustained) instead of reinventing the icon/label mapping per consumer.
  * Purely a display by default; passing `onClick` makes it tappable.
  */

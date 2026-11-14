@@ -6,6 +6,7 @@ import { GameEffectDataSchema } from "#/system/model/gameEffects/gameEffectData.
 import { SourceDataSchema } from "#/system/model/sourceData.ts"
 
 import type { ItemData } from "./itemData.ts"
+import { ItemStateSchema } from "./itemState.ts"
 import { ItemType } from "./itemType.ts"
 
 /**
@@ -43,17 +44,13 @@ export const SinDataSchema = z.object({
   }).optional(),
   licenseId: z.uuid().nullable().optional(),
   notes: z.string().optional(),
-  equipped: z.boolean().optional(),
-  stashed: z.boolean().optional(),
+  state: ItemStateSchema.optional(),
   fixed: z.boolean().optional(),
   wireless: z.object({
     enabled: z.boolean().optional(),
     removed: z.boolean().optional(),
   }).optional(),
   matrixDisabled: z.boolean().optional(),
-  _state: z.object({
-    equipOnUnstash: z.boolean().optional(),
-  }).optional(),
   items: z.object({
     parentId: z.uuid().nullable(),
     childIds: z.uuid().array(),

@@ -3,6 +3,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
 import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
@@ -38,7 +39,7 @@ const defaultFormValues = {
   },
   items: { parentId: null, childIds: [] } as VehicleData["items"],
   effects: [] as VehicleData["effects"],
-  stashed: false,
+  state: ItemState.available as ItemState,
   matrixDisabled: false,
 
   handling: 0,
@@ -79,7 +80,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     source: values.source,
     items: values.items,
     effects: values.effects,
-    stashed: values.stashed,
+    state: values.state,
     ...(values.matrixDisabled && { matrixDisabled: true }),
     handling: values.handling,
     accel: values.accel as VehicleData["accel"],
@@ -118,7 +119,7 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
     },
     items: vehicle.items,
     effects: vehicle.effects ?? [],
-    stashed: vehicle.stashed ?? false,
+    state: vehicle.state ?? ItemState.available,
     matrixDisabled: vehicle.matrixDisabled ?? false,
     handling: vehicle.handling,
     accel: vehicle.accel,

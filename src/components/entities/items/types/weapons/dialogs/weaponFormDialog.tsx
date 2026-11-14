@@ -34,7 +34,6 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon, weap
       ctrl={ctrl}
       wizard={wizard}
       options={{
-        equipable: { forced: true },
         hasRating: { enabled: true },
         multiple: { forced: true, enabled: false },
         isSubItem: parentId ? { forced: true } : undefined,

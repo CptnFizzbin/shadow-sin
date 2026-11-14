@@ -15,9 +15,9 @@ import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/entities/items/availability/availabilityFieldGroup.tsx"
 import { GearAttachmentFieldGroup } from "#/components/entities/items/forms/gearAttachmentFieldGroup.tsx"
-import { GearCarryStatusFieldGroup } from "#/components/entities/items/forms/gearCarryStatusFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/entities/items/forms/gearCostFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/entities/items/forms/gearDescriptionFieldGroup.tsx"
+import { GearStateFieldGroup } from "#/components/entities/items/forms/gearStateFieldGroup.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -32,6 +32,7 @@ import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { getActiveItemState, getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -89,8 +90,6 @@ export interface ItemDialogProps {
     itemFields?: () => ReactNode
   }
   options?: {
-    equipable?: ItemDialogOptionConfig
-    canBeStashed?: ItemDialogOptionConfig
     hasRating?: ItemDialogOptionConfig
     multiple?: ItemDialogOptionConfig
     isSubItem?: ItemDialogOptionConfig
@@ -145,23 +144,25 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
   // step's content on one page, matching ItemDialog's pre-wizard behavior exactly.
   const activeStep: ItemDialogWizardStep | "all" = wizard ? wizardStep : "all"
 
+  const itemType = form.state.values.itemType
+  // Effects only ever apply while an item is Equipped or Implanted, so a type with neither state
+  // can't usefully carry them.
+  const options = getActiveItemState(itemType)
+    ? optionsProp
+    : { ...optionsProp, hasEffects: { forced: true, enabled: false } }
+
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 
   const forced: Record<OptionKey, boolean> = {
-    equipable: resolveForced(optionsProp?.equipable),
-    canBeStashed: resolveForced(optionsProp?.canBeStashed),
     hasRating: resolveForced(optionsProp?.hasRating),
     multiple: resolveForced(optionsProp?.multiple),
     isSubItem: resolveForced(optionsProp?.isSubItem),
-    hasEffects: resolveForced(optionsProp?.hasEffects),
+    hasEffects: resolveForced(options?.hasEffects),
     showCost: resolveForced(optionsProp?.showCost),
     showAvailability: resolveForced(optionsProp?.showAvailability),
   }
 
-  const [localOptions, handleOptionsChange] = useItemOptions(form, optionsProp)
-  // An item whose type forces equipping off but which is equipped (an implant) can't be
-  // unequipped, so carry status has nothing to choose between.
-  const isEquipLocked = optionsProp?.equipable?.forced === true && optionsProp.equipable.enabled === false
+  const [localOptions, handleOptionsChange] = useItemOptions(form, options)
 
   const itemOptionsDialog = useItemOptionsDialog()
   const buyQuantityDialog = useBuyQuantityDialog()
@@ -315,18 +316,19 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                       <>
                         <Divider />
 
-                        {(localOptions["equipable"] || localOptions["canBeStashed"]) && (
-                          <form.Subscribe selector={(state) => state.values.equipped}>
-                            {(equipped) => !(isEquipLocked && equipped) && (
-                              <GearCarryStatusFieldGroup
+                        <form.Subscribe selector={(state) => state.values.items.parentId}>
+                          {(parentId) => {
+                            const parent = parentId ? allGear[parentId] : undefined
+                            return (
+                              <GearStateFieldGroup
                                 form={form}
                                 fields={itemFieldMap}
-                                canEquip={localOptions["equipable"]}
-                                canStash={localOptions["canBeStashed"]}
+                                itemType={itemType}
+                                parentState={parent ? getItemState(parent) : undefined}
                               />
-                            )}
-                          </form.Subscribe>
-                        )}
+                            )
+                          }}
+                        </form.Subscribe>
 
                         {localOptions["isSubItem"] && (
                           <Stack>
