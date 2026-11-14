@@ -16,6 +16,7 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     state[action.payload.id] = { ...action.payload }
     ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], false)
     ItemStateUtils.relinkItem(state, state[action.payload.id])
+    ItemStateUtils.syncAttachmentCarryState(state, action.payload.id)
   })
 
   addCase(setItem, (state, action) => {
@@ -23,6 +24,7 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     state[action.payload.id] = { ...action.payload }
     ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], wasStashed)
     ItemStateUtils.relinkItem(state, state[action.payload.id])
+    ItemStateUtils.syncAttachmentCarryState(state, action.payload.id)
   })
 
   addCase(ItemActions.patchItem, (state, action) => {
@@ -34,6 +36,7 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
       ...action.payload.data,
     }
     ItemStateUtils.reconcileEquippedForStash(state[action.payload.itemId], wasStashed)
+    ItemStateUtils.syncAttachmentCarryState(state, action.payload.itemId)
   })
 
   addCase(ItemActions.removeItem, (state, action) => {
@@ -49,6 +52,7 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     const item = state[action.payload.id]
     if (!item) return
     item.equipped = action.payload.equipped
+    ItemStateUtils.syncAttachmentCarryState(state, action.payload.id)
   })
 
   addCase(ItemActions.setStashed, (state, action) => {
@@ -57,6 +61,11 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     const wasStashed = item.stashed === true
     item.stashed = action.payload.stashed
     ItemStateUtils.reconcileEquippedForStash(item, wasStashed)
+    ItemStateUtils.syncAttachmentCarryState(state, action.payload.id)
+  })
+
+  addCase(ItemActions.sellItem, (state, action) => {
+    ItemStateUtils.sellItemById(state, action.payload.id, action.payload.sellAttachments)
   })
 
   addCase(RunnerActions.load, (_state, { payload }) => {

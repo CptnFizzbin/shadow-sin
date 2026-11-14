@@ -9,6 +9,13 @@ interface GuardState {
 }
 
 /**
+ * The guard entry a just-closed dialog is about to pop, if any. A dialog that opens before the pop
+ * lands takes over that entry instead of pushing its own: the pop would otherwise remove the new
+ * dialog's entry (the one on top) and read as the back button, closing it the moment it opened.
+ */
+let pendingPop: { guard: GuardState } | undefined
+
+/**
  * Pushes a history entry while the dialog is open so that pressing the
  * browser's back button closes it instead of navigating away. The entry is
  * popped again as soon as the dialog closes by any other means (backdrop,
@@ -43,6 +50,15 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
     if (guard.popTimer !== undefined) {
       clearTimeout(guard.popTimer)
       guard.popTimer = undefined
+      if (pendingPop?.guard === guard) pendingPop = undefined
+    }
+
+    if (!guard.pushed && pendingPop) {
+      clearTimeout(pendingPop.guard.popTimer)
+      pendingPop.guard.popTimer = undefined
+      pendingPop.guard.pushed = false
+      pendingPop = undefined
+      guard.pushed = true
     }
 
     if (!guard.pushed) {
@@ -70,8 +86,11 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
       // setup, which pushes its own entry before this pop's navigation has
       // actually happened — leaving an orphaned entry behind. Defer the pop
       // one tick so a same-tick setup (above) can cancel it instead.
+      const pop = { guard }
+      pendingPop = pop
       guard.popTimer = setTimeout(() => {
         guard.popTimer = undefined
+        if (pendingPop === pop) pendingPop = undefined
         if (guard.pushed) {
           guard.pushed = false
           router.history.back()

@@ -1,6 +1,7 @@
 import type { FC } from "react"
 import { use, useMemo } from "react"
 
+import { ItemActionsDialogProvider } from "#/components/entities/items/actions/itemActionsDialogProvider.tsx"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
@@ -48,7 +49,9 @@ export const RunnerBuilder: FC = () => {
     <RunnerStateProvider store={store}>
       <RunnerEntityProvider>
         <AddItemDialogProvider>
-          <RunnerBuilderContent />
+          <ItemActionsDialogProvider>
+            <RunnerBuilderContent />
+          </ItemActionsDialogProvider>
         </AddItemDialogProvider>
       </RunnerEntityProvider>
     </RunnerStateProvider>
