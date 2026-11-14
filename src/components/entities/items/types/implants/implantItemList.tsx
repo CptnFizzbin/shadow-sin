@@ -1,6 +1,7 @@
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
+import { useGearListView } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
@@ -19,6 +20,7 @@ export const ImplantItemList: FC = () => {
   const implants = useGearByType<ImplantData>(ItemType.implant)
   const rootImplants = implants.filter((implant) => !implant.items.parentId)
   const implantFormDialog = useImplantFormDialog()
+  const gearListView = useGearListView()
 
   const handleAddImplant = async (props?: UseImplantFormProps) => {
     const saved = await implantFormDialog.open(props)
@@ -27,8 +29,8 @@ export const ImplantItemList: FC = () => {
 
   return (
     <>
-      <Stack>
-        {rootImplants.map((implant) => (
+      <ItemCardGrid>
+        {gearListView(rootImplants).map((implant) => (
           <ImplantDataCard
             key={implant.id}
             implant={implant}
@@ -38,7 +40,7 @@ export const ImplantItemList: FC = () => {
             onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
           />
         ))}
-      </Stack>
+      </ItemCardGrid>
 
       {implantFormDialog.outlet}
     </>
