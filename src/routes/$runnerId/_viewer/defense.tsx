@@ -3,7 +3,8 @@ import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { DefenseCalculatorButton } from "#/components/entities/items/defenseCalculator/defenseCalculatorButton.tsx"
-import { EquippedArmorSection } from "#/components/entities/items/types/armor/equippedArmorSection.tsx"
+import { AvailableArmorSection } from "#/components/entities/items/types/armor/availableArmorSection.tsx"
+import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -72,7 +73,9 @@ function RouteComponent() {
       </Stack>
 
       <Grid size={2}>
-        <EquippedArmorSection />
+        <AvailableGearFilter>
+          <AvailableArmorSection />
+        </AvailableGearFilter>
       </Grid>
 
       <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
