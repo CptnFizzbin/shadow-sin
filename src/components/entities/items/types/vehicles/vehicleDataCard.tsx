@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -51,9 +52,7 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
           direction="column"
           sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
         >
-          {Object.values(attachments).map((attachment) => (
-            <ItemCard.Subitem key={attachment.id} name={attachment.name} />
-          ))}
+          <ItemAttachmentTree itemId={vehicle.id} />
         </ItemCard.Layout.BodyRow>
       )}
     </ItemCard>
