@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
+import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/licenses")({
@@ -12,7 +13,9 @@ function RouteComponent() {
   return (
     <Stack>
       <SectionHeader>SINs & Licenses</SectionHeader>
-      <SinsAndLicensesSection />
+      <AvailableGearFilter>
+        <SinsAndLicensesSection />
+      </AvailableGearFilter>
     </Stack>
   )
 }

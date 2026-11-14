@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { VehiclesList } from "#/components/entities/items/types/vehicles/vehiclesList.tsx"
+import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { VehicleCategory } from "#/system/model/items/vehicleData.ts"
 
@@ -14,7 +15,9 @@ function RouteComponent() {
     <Stack>
       <SectionHeader>Vehicles</SectionHeader>
 
-      <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
+      <AvailableGearFilter>
+        <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
+      </AvailableGearFilter>
     </Stack>
   )
 }

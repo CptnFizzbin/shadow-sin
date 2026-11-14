@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { KnownNodesList } from "#/components/system/matrix/knownNodesList.tsx"
 import { MatrixAgentsSection } from "#/components/system/matrix/matrixAgentsSection.tsx"
@@ -29,7 +30,9 @@ function RouteComponent() {
 
       <KnownNodesList />
 
-      <MatrixAgentsSection />
+      <AvailableGearFilter>
+        <MatrixAgentsSection />
+      </AvailableGearFilter>
 
       <DamageTrack
         label="Matrix"
@@ -40,7 +43,9 @@ function RouteComponent() {
         onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.matrix, value: newValue }))}
       />
 
-      <MatrixProgramsSection />
+      <AvailableGearFilter>
+        <MatrixProgramsSection />
+      </AvailableGearFilter>
     </Stack>
   )
 }
