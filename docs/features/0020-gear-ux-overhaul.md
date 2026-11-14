@@ -1,9 +1,14 @@
 # Gear UX Overhaul
 
-> **Status:** Draft
+> **Status:** In Progress
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. -->
+> - [#672 — 1/6 Item actions dialog](https://github.com/CptnFizzbin/shadow-sin/pull/672)
+> - [#673 — 2/6 Gear page Available and Stashed tabs](https://github.com/CptnFizzbin/shadow-sin/pull/673)
+> - [#674 — 3/6 Available gear on the other tabs](https://github.com/CptnFizzbin/shadow-sin/pull/674)
+> - [#675 — 4/6 Attachment trees](https://github.com/CptnFizzbin/shadow-sin/pull/675)
+> - [#676 — 5/6 Item details](https://github.com/CptnFizzbin/shadow-sin/pull/676)
+> - [#677 — 6/6 Compact cards](https://github.com/CptnFizzbin/shadow-sin/pull/677)
 > - [#390 — Unified per-item action menu; Equip becomes universal](https://github.com/CptnFizzbin/shadow-sin/issues/390)
 >   — folded into this feature's action dialog
 > - [#664 — Hide empty gear sections and expand all sections by default](https://github.com/CptnFizzbin/shadow-sin/pull/664)
