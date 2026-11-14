@@ -35,7 +35,7 @@ top-level container, not just `components/`.
 - **"items" vs "gear" in `system/` has no rule.** `system/gear/` holds typed sub-data
   (`weaponData.ts`, `armorData.ts`, ...); `system/items/` is a near-empty sibling holding only
   `itemUtils.ts` + `addItemSelection.ts`; `itemData.ts`/`itemType.ts` sit loose at `system/` root.
-  Three homes, no obvious rule for a new file — and CONTEXT.md already settled which name wins:
+  Three homes, no obvious rule for a new file — and GLOSSARY.md already settled which name wins:
   **Item** is the code identifier, **Gear** is UI-copy-only (route labels, "Add Gear"), and a
   rename of the remaining Gear-named code identifiers to Item-prefixed equivalents is already
   planned there. `system/gear/` is exactly that remaining Gear-named identifier.
@@ -155,7 +155,7 @@ found while checking, worth flagging rather than papering over:
   `items/itemUtils.ts` (`ItemCatalog`/`AnyItemData` *types* + the `toItemCatalogTree` transform).
   Splitting these is a small, mechanical extraction (same discipline as 0016's own Slices), not a
   behavior change — but it's not a pure file move either, so it should be called out as its own
-  PRD Issue step rather than bundled silently into a bulk relocation. **Done** in the follow-up to
+  spec Issue step rather than bundled silently into a bulk relocation. **Done** in the follow-up to
   #614: `attributeCatalog.ts` kept its catalog types and factory; `attrValue`/`attrMin`/`attrMax`/
   `attrNaturalMax`/`attrAugmentedMax` moved to `formulas/attributes/attributeFormulas.ts`.
   `itemUtils.ts` kept its types, `itemIsType` guard, and the filtering `ItemUtils` namespace;
@@ -172,7 +172,7 @@ found while checking, worth flagging rather than papering over:
 
 Exhaustive per-file membership for every remaining domain isn't enumerated here — same discipline
 as the `components/` unification below: the rule and the representative examples are settled, the
-full file list is PRD-Issue-level detail.
+full file list is spec-Issue-level detail.
 
 ## `components/` domain unification
 
@@ -188,7 +188,7 @@ Domains where Runner (`components/runner/<domain>/`) and Builder
 (`components/builder/sections/<domain>/`) already mirror each other by name unify into one
 `components/<domain>/` tree: `attributes`, `biology`, `contacts`, `finances`, `items` (absorbing
 `gearPage`, the existing `items/`, and `system/gear/`'s display-adjacent pieces — **item**, not
-gear, per CONTEXT.md's Item entry), `karma` (absorbing `improvements/`'s display, which is a
+gear, per GLOSSARY.md's Item entry), `karma` (absorbing `improvements/`'s display, which is a
 karma-spend mechanism, not its own domain — `ImprovementStore` itself peels off to
 `services/improvements/`, per the ad hoc table above), `profile`, `qualities`, `skills`.
 
@@ -234,7 +234,7 @@ ownership) is explicitly out of scope for this doc to touch.
 
 ## Domain Notes
 
-No new domain terms. This doc executes a rename CONTEXT.md's **Item** entry already calls for:
+No new domain terms. This doc executes a rename GLOSSARY.md's **Item** entry already calls for:
 Item is the code identifier, Gear is UI-copy-only, and "a rename of the remaining Gear-named code
 identifiers to `Item`-prefixed equivalents is planned." Folding `system/gear/` into `system/items/`
 and `components/gear/`-shaped folders into `components/items/` is that rename, scoped to
@@ -278,10 +278,10 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 - **Any change to `RunnerData`, migrations, or rule behavior.** Same discipline as 0016: this is
   strictly "move code to where it now claims to live."
 - **Renaming any exported type, component, hook, or store**, beyond what following folders to
-  their new names mechanically requires. File location changes only, unless a slice's own PRD
+  their new names mechanically requires. File location changes only, unless a slice's own spec
   Issue says otherwise (e.g. a `*Slice.ts` file becoming `*.state.ts` is a file rename, not an
   export rename).
-- **Renaming the persisted `RunnerData.gear` field.** CONTEXT.md's Item entry explicitly calls
+- **Renaming the persisted `RunnerData.gear` field.** GLOSSARY.md's Item entry explicitly calls
   this out as "a heavier, separate decision needing a migration ... not yet decided whether it's
   in scope" — unaffected by this doc regardless of what any slice renames a folder to.
 - **The card hierarchy's internal architecture** (ADR-0010's elements/tiers design) — nesting
@@ -291,7 +291,7 @@ directories — see Out of Scope for what it deliberately doesn't touch.
 
 ## Related Features
 
-- `CONTEXT.md`'s **Item** glossary entry — already calls for the Gear→Item code-identifier rename
+- `GLOSSARY.md`'s **Item** glossary entry — already calls for the Gear→Item code-identifier rename
   this doc's `items/` folders execute, and already carves the persisted `RunnerData.gear` field
   out of that rename's scope.
 - [`0016-code-organization-cleanup.md`](./0016-code-organization-cleanup.md) — the direct

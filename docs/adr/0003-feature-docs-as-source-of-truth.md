@@ -22,7 +22,7 @@ GitHub Issues.
 - **GitHub Issues as source of truth** — common default; works for small tasks but creates a
   split brain for complex features: design evolves in the issue thread while agents and
   reviewers need it in the codebase.
-- **Feature docs as source of truth** ✅ — design stays in the repo alongside CONTEXT.md and
+- **Feature docs as source of truth** ✅ — design stays in the repo alongside GLOSSARY.md and
   ADRs; agents can read it without GitHub API access; a feature spanning multiple PRs has one
   authoritative reference; implemented docs are archived rather than deleted, preserving design
   history.
@@ -37,4 +37,4 @@ GitHub Issues.
   - `Ready to Implement`: human manually runs `/to-prd` to generate the first PRD Issue
   - `In Progress`: set by the first agent that opens a PR for the feature
   - `Implemented`: feature doc moved to `docs/features/archive/` once all PRD Issues are closed
-- When archiving, sweep `CONTEXT.md` for stale references to the feature and update them
+- When archiving, sweep `GLOSSARY.md` for stale references to the feature and update them

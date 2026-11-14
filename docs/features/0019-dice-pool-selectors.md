@@ -12,7 +12,7 @@
 Every dice pool is built by memoized, namespaced Selectors
 ([ADR-0014](../adr/0014-selector-input-decomposition.md)) whose rule logic lives in pure Formulas
 ([ADR-0015](../adr/0015-formulas-for-rule-calculations.md)), so a pool shows exactly where each
-die came from. The terms below are defined in [`CONTEXT.md`](../../CONTEXT.md).
+die came from. The terms below are defined in [`GLOSSARY.md`](../../GLOSSARY.md).
 
 ## Decisions
 

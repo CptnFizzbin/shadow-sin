@@ -1,5 +1,5 @@
 /**
- * Discriminates every `EntityData`-conforming type, including `RunnerData`. See CONTEXT.md's
+ * Discriminates every `EntityData`-conforming type, including `RunnerData`. See GLOSSARY.md's
  * **Entity** glossary entry. `itemType`/`spiritType`/etc. remain each kind's own second-level
  * discriminant nested under `kind` — e.g. every Vehicle, Weapon, or Armor is `kind: "item"` with
  * `itemType` distinguishing them further.

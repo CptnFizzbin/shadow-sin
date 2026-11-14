@@ -95,7 +95,7 @@ wired up yet — still open for a follow-up slice.
 
 ## Domain Notes
 
-New/changed `CONTEXT.md` terms (full definitions there): **MatrixAttrs**, **Entity Matrix
+New/changed `GLOSSARY.md` terms (full definitions there): **MatrixAttrs**, **Entity Matrix
 Presence**, **MatrixNode**, **Node Type**, **Processor Limit**, **Subscription Limit**, **Access
 Level**, **Matrix Game State**, **Known Node**, **ActiveProgram**, **Clear Matrix Session**,
 **Agent** (revised — now an `Item`/`Program` subtype, not a standalone Entity).
@@ -157,7 +157,7 @@ interface RunnerData {
 interface AgentData extends ProgramData, EntityWithAttrs, EntityWithDamage {
   programType: ProgramType.agent // discriminant, alongside the plain-Program categories
   attributes: Partial<Record<AttributeKey, number>> // system/firewall; response/signal resolve from the hosting Node
-  damage: { matrix: number } // Matrix Damage Track, per CONTEXT.md
+  damage: { matrix: number } // Matrix Damage Track, per GLOSSARY.md
   // rating (inherited) is only the Skill side of its dice pool
 }
 ```

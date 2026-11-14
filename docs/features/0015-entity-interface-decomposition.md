@@ -26,7 +26,7 @@ change — see Constraints below.
 
 ## Open Questions
 
-All resolved as of `/to-prd` (see linked Issues above for the per-slice PRDs each resolution feeds
+All resolved as of `/to-spec` (see linked Issues above for the per-slice specs each resolution feeds
 into):
 
 - [x] **Exact `EntityKind` string values** — settled as the Rough Interface Sketch's union below:
@@ -55,7 +55,7 @@ Six independently-shippable slices; `kind` is the only foundational one (everyth
 per-`kind` selector dispatch depends on it existing first). Numbers below start at `026` (next
 available) but are illustrative — actual numbers depend on what else lands first.
 
-| # | Slice | Migration(s) | PRD ticket(s) |
+| # | Slice | Migration(s) | Spec ticket(s) |
 |---|-------|--------------|----------------|
 | 1 | `kind` discriminant | **One** migration (`026_addEntityKind.ts`) covering every `RunnerData` subtree (`gear`, `spirits`, `sprites`, `gameState.matrix.knownNodes`, `qualities`, `spells`, `complexForms`, `adeptPowers`) plus `RunnerData` itself — one coherent concern, not split per-collection | #530 |
 | 2 | Vehicle → `attributes` | One migration moving `handling`/`armor`/`body`/`pilot`/`sensor` into `attributes` (`accel`/`speed` stay put) | #531 (citation requirement waived, see Open Questions) |
@@ -89,9 +89,9 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   kind does — see the Rough Interface Sketch for why the line is drawn there. The
   `MatrixNode`-hosts-`Program` relationship is many-to-many (`docs/features/0014`'s
   `ActiveProgram`) and must never be forced through this single-`parentId` shape.
-- `parentId`/`childIds` keep their current names — `CONTEXT.md`'s existing note about a pending
+- `parentId`/`childIds` keep their current names — `GLOSSARY.md`'s existing note about a pending
   rename to `attachmentIds`/`attachedToId` is superseded by this decision and needs removing, not
-  just left stale, as part of this feature's `CONTEXT.md` edits.
+  just left stale, as part of this feature's `GLOSSARY.md` edits.
 - `RunnerData._data_` is a new, Runner-only, generalized internal-storage field — sibling to the
   existing `_meta_` (migration-version bookkeeping) and `ItemData._state` (transient tracking)
   underscore-wrapped fields, not a blanket addition to `EntityData`. `RunnerData.gear` moves into
@@ -102,7 +102,7 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) (Entity Matrix
   Presence avoids storing a value that could drift after Rating changes; the same reasoning
   applies to Spirit's `force`/`spiritType`-derived attributes).
-- `CONTEXT.md` is canonical — the **Entity** glossary revision (folding in Runner as a formal
+- `GLOSSARY.md` is canonical — the **Entity** glossary revision (folding in Runner as a formal
   Entity; replacing the inline kind-listing with a pointer at the `kind` discriminant) is part of
   this feature's scope, not incidental drift, and lands as an explicit edit before/alongside
   implementation.
@@ -127,30 +127,30 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
 
 ## Domain Notes
 
-- **Entity** (`CONTEXT.md`) — revised as part of this feature: Runner is added as a formal
+- **Entity** (`GLOSSARY.md`) — revised as part of this feature: Runner is added as a formal
   Entity (previously the glossary listed Entity's covered kinds explicitly and did not include
   Runner; several other glossary entries — e.g. **GameEffect** sources — describe Runner and
   Entity as distinct). The glossary entry stops enumerating covered kinds inline and instead
   points at the `kind` discriminant as the source of truth.
-- **Entity Matrix Presence** (`CONTEXT.md`) — revised: `EntityData.matrix?: true | MatrixStats`
+- **Entity Matrix Presence** (`GLOSSARY.md`) — revised: `EntityData.matrix?: true | MatrixStats`
   (the shape sketched in `docs/features/0014-matrix-interactions.md`) becomes a plain
   `matrix: boolean`, default `true`. Presence and "derive vs. stored" fallback collapse into one
   flag now that `attributes` is the single universal bag for every Entity kind — see Rough
   Interface Sketches below. The `MatrixStats` type is retired; "fully specced" (Commlink,
   MatrixNode) is now just "explicit values are already present in `attributes`."
 - **`EntityWithAttrs`**, **`EntityWithDamage`**, **`WithMatrixPresence`**, **`EntityWithItems`**,
-  **`kind`** — new terms, to be added to `CONTEXT.md`.
-- **Attachment** (`CONTEXT.md` Relationships section) — revised: drop the note about a pending
+  **`kind`** — new terms, to be added to `GLOSSARY.md`.
+- **Attachment** (`GLOSSARY.md` Relationships section) — revised: drop the note about a pending
   `attachmentIds`/`attachedToId` rename, superseded by keeping `parentId`/`childIds` as-is. Add
   that `RunnerData` also implements `EntityWithItems`, always with a degenerate empty value.
 - **`kind`** also resolves a need independent of selector ergonomics: polymorphic spellcaster
   resolution, where a Spell's caster may be a Runner or a Spirit and the resolving code can't
   assume which at compile time.
-- **Rating** (`CONTEXT.md`) — revised: drops "a few ratings use a special sentinel instead of a
+- **Rating** (`GLOSSARY.md`) — revised: drops "a few ratings use a special sentinel instead of a
   number for an unrated/default case." `rating` is always a plain `number` now; the previous
   sentinel cases each get their own explicit flag (`isReal` on SIN/Licence, `isNative` on Language)
   instead of overloading `rating` itself.
-- **`isReal`**, **`isNative`** — new terms, to be added to `CONTEXT.md`. `isReal` already existed
+- **`isReal`**, **`isNative`** — new terms, to be added to `GLOSSARY.md`. `isReal` already existed
   informally as a derived local variable in License Quick-Buy
   (`docs/features/0001-license-quick-buy.md`); this promotes it to a real stored field.
 
