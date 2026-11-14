@@ -5,36 +5,33 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 
-import { searchGear } from "#/hooks/items/gearHooks.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ItemType } from "#/system/model/items/itemType.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
-import { GearSection, sectionGearTypes } from "./gearSectionTypes.ts"
+import { GearListFilterContext } from "./gearListFilter.ts"
+import { GearSection, getSectionTopLevelItems } from "./gearSectionTypes.ts"
 import { GearViewSectionContent } from "./gearViewSectionContent.tsx"
 
 interface GearViewSectionProps {
   section: GearSection
-  searchTerms: string[]
+  /** Expands the section regardless of whether the Player collapsed it, e.g. while searching. */
+  forceExpanded?: boolean
 }
 
-export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
+export const GearViewSection: FC<GearViewSectionProps> = ({ section, forceExpanded = false }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(true)
   const allGearItems = useRunnerSelector(ItemSelectors.selectAll)
+  const filter = useContext(GearListFilterContext)
 
-  const allowedTypes = sectionGearTypes[section]
-  const isSearching = searchTerms.length > 0
-
-  const sectionItems = isSearching
-    ? searchGear(allGearItems, searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
-    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+  const topLevelItems = getSectionTopLevelItems(section, Object.values(allGearItems))
+  const sectionItems = filter ? topLevelItems.filter(filter.includes) : topLevelItems
 
   if (sectionItems.length === 0) return null
 
-  const isExpanded = isSearching || isManuallyOpen
+  const isExpanded = forceExpanded || isManuallyOpen
 
   return (
     <Accordion
@@ -42,7 +39,7 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
       elevation={0}
       expanded={isExpanded}
       onChange={(_, expanded) => {
-        if (!isSearching) setIsManuallyOpen(expanded)
+        if (!forceExpanded) setIsManuallyOpen(expanded)
       }}
       sx={{
         "border": "1px solid",
