@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
 
 import { AnyItemDetails } from "#/components/entities/items/details/anyItemDetails.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
@@ -30,6 +31,14 @@ function ItemDetailsRoute() {
   const item = useRunnerSelector(ItemSelectors.selectById, { itemId: itemId as UUID })
 
   const handleBack = () => router.history.back()
+
+  // Selling or deleting the Item from its actions dialog leaves nothing to show, so return to
+  // wherever the Player came from.
+  const [hadItem, setHadItem] = useState(!!item)
+  if (item && !hadItem) setHadItem(true)
+  useEffect(() => {
+    if (hadItem && !item) router.history.back()
+  }, [hadItem, item, router])
 
   return (
     <Stack sx={{ gap: 0 }}>

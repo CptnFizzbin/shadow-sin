@@ -1,10 +1,26 @@
-import type { FC, ReactElement, ReactNode } from "react"
-import { Children, isValidElement } from "react"
+import type { FC, PropsWithChildren, ReactElement, ReactNode } from "react"
+import { Children, cloneElement, Fragment, isValidElement } from "react"
 
 export function isElementType<TProps>(...elementTypes: FC<TProps>[]) {
   return (item: ReactNode): item is ReactElement<TProps> => {
     return elementTypes.some((type) => isValidElement(item) && item.type === type)
   }
+}
+
+type SlotChild = Exclude<ReactNode, boolean | null | undefined>
+
+/**
+ * Children as a flat list, with fragments opened up so a slot wrapped in `<>…</>` (e.g. a group of
+ * stats behind one condition) is still found. Keys are prefixed with their fragment's key so
+ * children of different fragments can't collide.
+ */
+function flattenChildren(children: ReactNode, keyPrefix = ""): SlotChild[] {
+  return Children.toArray(children).flatMap((child) => {
+    if (isValidElement<PropsWithChildren>(child) && child.type === Fragment) {
+      return flattenChildren(child.props.children, `${keyPrefix}${child.key ?? ""}`)
+    }
+    return keyPrefix && isValidElement(child) ? [cloneElement(child, { key: `${keyPrefix}${child.key}` })] : [child]
+  })
 }
 
 /** Assigns a stable id to each slot component so `find`/`filter` calls for the same type(s) can share a cache key. */
@@ -23,13 +39,13 @@ function cacheKey(elementTypes: FC<never>[]): string {
 }
 
 export class SlotManager {
-  private childArray: Array<Exclude<ReactNode, boolean | null | undefined>>
+  private childArray: SlotChild[]
   private findCache = new Map<string, ReactElement | undefined>()
   private filterCache = new Map<string, ReactElement[]>()
   private claimed = new Set<ReactNode>()
 
   constructor(public children?: ReactNode) {
-    this.childArray = Children.toArray(children)
+    this.childArray = flattenChildren(children)
   }
 
   has<TProps>(...elementTypes: FC<TProps>[]): boolean {

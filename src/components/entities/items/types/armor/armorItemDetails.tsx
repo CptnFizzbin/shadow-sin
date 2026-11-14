@@ -1,4 +1,3 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
@@ -26,8 +25,6 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
   const armorFormDialog = useArmorFormDialog()
   const addItemDialog = useAddItemDialogContext()
 
-  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...armor, equipped: !armor.equipped }))
-
   const removeArmor = () => {
     dispatch(Actions.item.removeItem({ id: armor.id, removeChildren: true }))
     onRemoved?.()
@@ -54,21 +51,6 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
           />
         ))}
 
-        {armor.equipped
-          ? (
-              <ItemDetailsSlot.QuickAction
-                label="Unequip"
-                icon={<RiCloseCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )
-          : (
-              <ItemDetailsSlot.QuickAction
-                label="Equip"
-                icon={<RiCheckboxCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )}
       </ItemDetailsRoot>
 
       {armorFormDialog.outlet}

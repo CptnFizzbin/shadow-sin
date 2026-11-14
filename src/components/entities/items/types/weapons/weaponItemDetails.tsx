@@ -1,4 +1,3 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
@@ -11,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
-import { isFirearmData } from "#/system/model/items/weaponData.ts"
+import { isFirearmData, isMeleeWeaponData } from "#/system/model/items/weaponData.ts"
 
 import { useWeaponFormDialog } from "./dialogs/weaponFormDialog.tsx"
 
@@ -32,8 +31,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const weaponFormDialog = useWeaponFormDialog()
   const addItemDialog = useAddItemDialogContext()
 
-  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...weapon, equipped: !weapon.equipped }))
-
   const removeWeapon = () => {
     dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
     onRemoved?.()
@@ -51,7 +48,9 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
       <ItemDetailsRoot item={weapon} onEdit={handleEdit} onRemove={removeWeapon} onAddSubitem={handleAddAccessory}>
         <ItemDetailsSlot.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap && <ItemDetailsSlot.Stat label="AP" value={weapon.ap} type="damage" />}
+        {weapon.dmgType && <ItemDetailsSlot.Stat label="Dmg Type" value={weapon.dmgType} />}
         <ItemDetailsSlot.Stat label="Skill" value={weapon.skill} type="rating" />
+        {weapon.attribute && <ItemDetailsSlot.Stat label="Attribute" value={weapon.attribute} />}
 
         {isFirearmData(weapon) && (
           <>
@@ -60,6 +59,23 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
             {weapon.firemodes && (
               <ItemDetailsSlot.Stat label="Modes" value={weapon.firemodes.join("/")} type="rating" />
             )}
+
+            <ItemDetailsSlot.Stat label="RC" value={weapon.recoil} />
+
+            {weapon.attachmentPoints && (
+              <ItemDetailsSlot.Stat label="Mounts" value={weapon.attachmentPoints.join("/")} />
+            )}
+
+            {weapon.ammo && (
+              <ItemDetailsSlot.Stat label="Ammo" value={`${weapon.ammo.remaining}/${weapon.ammo.size} (${weapon.ammo.type})`} />
+            )}
+          </>
+        )}
+
+        {isMeleeWeaponData(weapon) && (
+          <>
+            <ItemDetailsSlot.Stat label="Reach" value={weapon.reach} />
+            {weapon.meleeType && <ItemDetailsSlot.Stat label="Type" value={weapon.meleeType} />}
           </>
         )}
 
@@ -71,21 +87,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
           />
         ))}
 
-        {weapon.equipped
-          ? (
-              <ItemDetailsSlot.QuickAction
-                label="Unequip"
-                icon={<RiCloseCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )
-          : (
-              <ItemDetailsSlot.QuickAction
-                label="Equip"
-                icon={<RiCheckboxCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )}
       </ItemDetailsRoot>
 
       {weaponFormDialog.outlet}
