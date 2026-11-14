@@ -3,6 +3,7 @@ import { createReducer } from "@reduxjs/toolkit"
 import { ItemActions, setItem } from "#/state/runner/items/items.actions.ts"
 import { ItemStateUtils } from "#/state/runner/items/items.state.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
@@ -11,29 +12,29 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
   // `gearReducer` (`src/state/runner/items/items.state.ts`), and Immer freezes whatever a
   // produce call incorporates by reference into its output — so without the copy, whichever of
   // the two reducers runs second would be handed an already-frozen payload and throw the moment
-  // `reconcileEquippedForStash`/`relinkItem` tried to write to it.
+  // `reconcileState`/`relinkItem` tried to write to it.
   addCase(ItemActions.addItem, (state, action) => {
     state[action.payload.id] = { ...action.payload }
-    ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], false)
     ItemStateUtils.relinkItem(state, state[action.payload.id])
+    ItemStateUtils.reconcileState(state, action.payload.id, undefined)
   })
 
   addCase(setItem, (state, action) => {
-    const wasStashed = state[action.payload.id]?.stashed === true
+    const previousState = state[action.payload.id] ? getItemState(state[action.payload.id]) : undefined
     state[action.payload.id] = { ...action.payload }
-    ItemStateUtils.reconcileEquippedForStash(state[action.payload.id], wasStashed)
     ItemStateUtils.relinkItem(state, state[action.payload.id])
+    ItemStateUtils.reconcileState(state, action.payload.id, previousState)
   })
 
   addCase(ItemActions.patchItem, (state, action) => {
     const item = state[action.payload.itemId]
     if (!item) return
-    const wasStashed = item.stashed === true
+    const previousState = getItemState(item)
     state[action.payload.itemId] = {
       ...item,
       ...action.payload.data,
     }
-    ItemStateUtils.reconcileEquippedForStash(state[action.payload.itemId], wasStashed)
+    ItemStateUtils.reconcileState(state, action.payload.itemId, previousState)
   })
 
   addCase(ItemActions.removeItem, (state, action) => {
@@ -45,18 +46,12 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     }
   })
 
-  addCase(ItemActions.setEquipped, (state, action) => {
+  addCase(ItemActions.setState, (state, action) => {
     const item = state[action.payload.id]
     if (!item) return
-    item.equipped = action.payload.equipped
-  })
-
-  addCase(ItemActions.setStashed, (state, action) => {
-    const item = state[action.payload.id]
-    if (!item) return
-    const wasStashed = item.stashed === true
-    item.stashed = action.payload.stashed
-    ItemStateUtils.reconcileEquippedForStash(item, wasStashed)
+    const previousState = getItemState(item)
+    item.state = action.payload.state
+    ItemStateUtils.reconcileState(state, action.payload.id, previousState)
   })
 
   addCase(RunnerActions.load, (_state, { payload }) => {

@@ -4,6 +4,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -93,7 +94,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
           id: NullUuid,
           name: "Trauma Damper",
           itemType: ItemType.other,
-          equipped: true,
+          state: ItemState.equipped,
           effects: [
             { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
           ],
@@ -105,7 +106,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
     expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(2)
   })
 
-  it("counts a gear item's Low Pain Tolerance effect when it has no equipped field", () => {
+  it("ignores a gear item's Low Pain Tolerance effect when it has no stored state", () => {
     // Arrange
     const runner = runnerDataFactory({
       items: {
@@ -122,7 +123,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
     })
 
     // Act / Assert
-    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(2)
+    expect(DamageSelectors.selectWoundInterval(stateFor(runner), { track: DamageTrackKey.physical })).toBe(3)
   })
 
   it("ignores a matching gear effect on an item that isn't equipped", () => {
@@ -134,7 +135,7 @@ describe("DamageSelectors.selectWoundInterval", () => {
           id: NullUuid,
           name: "Trauma Damper",
           itemType: ItemType.other,
-          equipped: false,
+          state: ItemState.available,
           effects: [
             { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
           ],

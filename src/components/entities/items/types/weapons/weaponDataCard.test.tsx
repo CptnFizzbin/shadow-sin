@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/model/items/weaponData.ts"
 import { FirearmAttachmentPoint, MeleeWeaponType, WeaponType } from "#/system/model/items/weaponData.ts"
@@ -21,7 +22,7 @@ const weapon: WeaponData = {
   weaponType: WeaponType.firearm,
   skill: SkillKey.pistols,
   dmg: "8P",
-  equipped: false,
+  state: ItemState.available,
 }
 
 const firearm: FirearmData = {
@@ -120,7 +121,7 @@ describe("WeaponDataCard", () => {
 
   it("offers an Unequip action when equipped", () => {
     // Arrange
-    renderWeaponCard({ ...weapon, equipped: true })
+    renderWeaponCard({ ...weapon, state: ItemState.equipped })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
@@ -138,7 +139,7 @@ describe("WeaponDataCard", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
     // Assert
-    expect(runnerStore.getState().items[weapon.id].equipped).toBe(true)
+    expect(runnerStore.getState().items[weapon.id].state).toBe(ItemState.equipped)
   })
 
   it("offers a Remove action", () => {

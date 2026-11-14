@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
+import { isItemEquipped } from "#/system/formulas/items/itemStateRules.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { isWeaponData } from "#/system/model/items/weaponData.ts"
@@ -17,7 +18,7 @@ export const EquippedWeaponsSection: FC = () => {
   const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
 
   const equippedWeapons = allWeapons.filter(
-    (weapon) => !weapon.items.parentId && isWeaponData(weapon) && weapon.equipped,
+    (weapon) => !weapon.items.parentId && isWeaponData(weapon) && isItemEquipped(weapon),
   )
 
   if (equippedWeapons.length === 0) {

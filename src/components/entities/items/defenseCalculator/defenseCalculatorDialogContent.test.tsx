@@ -5,6 +5,7 @@ import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -361,7 +362,7 @@ describe("DefenseCalculatorDialogContent", () => {
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
-          equipped: true,
+          state: ItemState.equipped,
           ballistic: 8,
           impact: 6,
         }
@@ -397,7 +398,7 @@ describe("DefenseCalculatorDialogContent", () => {
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
-          equipped: true,
+          state: ItemState.equipped,
           ballistic: 8,
           impact: 6,
           damage: { ballistic: 2, impact: 1 },
@@ -424,7 +425,7 @@ describe("DefenseCalculatorDialogContent", () => {
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
-          equipped: true,
+          state: ItemState.equipped,
           ballistic: 8,
           impact: 6,
         }

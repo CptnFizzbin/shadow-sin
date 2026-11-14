@@ -7,6 +7,7 @@ import { calculateArmorBulk } from "#/system/formulas/items/encumbranceUtils.ts"
 import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 import type { ItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
 import { getItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
+import { isItemActive, isItemEquipped, isItemOnHand, isItemStashed } from "#/system/formulas/items/itemStateRules.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
@@ -39,19 +40,21 @@ export namespace ItemSelectors {
     },
   )
 
-  export const selectAvailable = createMemoizedSelector(
+  /** Every Item On Hand: Available, Equipped, or Implanted — anything but Stashed. */
+  export const selectOnHand = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    (items) => Object.values(items).filter((item) => !item.stashed),
+    (items) => Object.values(items).filter(isItemOnHand),
   )
 
-  export const selectEquipped = createMemoizedSelector(
+  /** Every active Item: Equipped or Implanted. */
+  export const selectActive = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    (items) => Object.values(items).filter((item) => item.equipped),
+    (items) => Object.values(items).filter(isItemActive),
   )
 
   export const selectStashed = createMemoizedSelector(
     ViewerStateSelectors.selectItems,
-    (items) => Object.values(items).filter((item) => item.stashed),
+    (items) => Object.values(items).filter(isItemStashed),
   )
 
   export const selectById = createMemoizedSelector(
@@ -111,7 +114,7 @@ export namespace ItemSelectors {
 
     export const selectEquipped = createMemoizedSelector(
       selectAll,
-      (armor) => armor.filter((item) => item.equipped),
+      (armor) => armor.filter(isItemEquipped),
     ) satisfies ItemSelector<ItemDataFor<ItemType.armor>[]>
 
     export const selectTotal = createMemoizedSelector(

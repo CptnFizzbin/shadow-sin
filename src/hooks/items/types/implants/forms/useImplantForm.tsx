@@ -5,6 +5,7 @@ import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/model/items/implantData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
@@ -41,8 +42,7 @@ const defaultFormValues: ImplantData = {
   quantity: 0,
   rating: undefined as number | undefined,
   notes: "",
-  equipped: true,
-  stashed: false,
+  state: ItemState.implanted,
   fixed: false,
   wireless: {
     enabled: false,

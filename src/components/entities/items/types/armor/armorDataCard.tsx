@@ -1,4 +1,3 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
@@ -19,7 +18,6 @@ export const ArmorDataCard: FC<ArmorDataCardProps> = ({ armor, onOpen, onEdit })
   const mods = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: armor.id })
   const hasMods = Object.keys(mods).length > 0
 
-  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...armor, equipped: !armor.equipped }))
   const removeArmor = () => dispatch(Actions.item.removeItem({ id: armor.id, removeChildren: true }))
 
   return (
@@ -37,22 +35,6 @@ export const ArmorDataCard: FC<ArmorDataCardProps> = ({ armor, onOpen, onEdit })
           ))}
         </ItemCard.Layout.BodyRow>
       )}
-
-      {armor.equipped
-        ? (
-            <ItemCard.Action
-              label="Unequip"
-              icon={<RiCloseCircleLine size={16} />}
-              onClick={toggleEquipped}
-            />
-          )
-        : (
-            <ItemCard.Action
-              label="Equip"
-              icon={<RiCheckboxCircleLine size={16} />}
-              onClick={toggleEquipped}
-            />
-          )}
     </ItemCard>
   )
 }

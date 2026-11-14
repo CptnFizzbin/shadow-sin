@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
@@ -133,10 +134,10 @@ describe("LicenseCheckSetupView — a Runner with multiple SINs and licensed gea
 
     // Assert
     const catalog = getItemCatalog(toRunnerData(store.getState()))
-    expect(catalog[grenadeId].stashed).toBe(true)
-    expect(catalog[rifleId].stashed).toBe(true)
-    expect(catalog[rocketId].stashed).toBe(true)
-    expect(catalog[pistolId].stashed).toBeFalsy()
+    expect(catalog[grenadeId].state).toBe(ItemState.stashed)
+    expect(catalog[rifleId].state).toBe(ItemState.stashed)
+    expect(catalog[rocketId].state).toBe(ItemState.stashed)
+    expect(catalog[pistolId].state).not.toBe(ItemState.stashed)
     expect(screen.queryByRole("group", { name: "Unlicensed Gear" })).toBeNull()
     expect(screen.queryByRole("group", { name: "Forbidden Gear" })).toBeNull()
     expect(screen.queryByRole("button", { name: /stash all unlicensed and forbidden/i })).toBeNull()

@@ -4,6 +4,7 @@ import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { AgentData } from "#/system/model/items/agentData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -38,7 +39,7 @@ const defaultFormValues: AgentData = {
   },
   items: { parentId: null, childIds: [] },
   effects: [],
-  stashed: false,
+  state: ItemState.available,
 }
 
 export const agentFieldMap = createFieldMap(defaultFormValues)

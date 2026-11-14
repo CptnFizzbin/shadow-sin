@@ -4,6 +4,7 @@ import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
@@ -33,7 +34,7 @@ const defaultFormValues: DeviceData = {
   },
   items: { parentId: null, childIds: [] },
   effects: [],
-  stashed: false,
+  state: ItemState.available,
   deviceType: "commlink",
   customDeviceType: "",
   deviceModel: "",

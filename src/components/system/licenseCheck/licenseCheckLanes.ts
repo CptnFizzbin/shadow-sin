@@ -1,4 +1,5 @@
 import { isItemLicensed } from "#/components/entities/items/types/licenses/licenseUtils.ts"
+import { isItemOnHand } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
@@ -23,7 +24,7 @@ const isSinOrLicense = (item: ItemData) => item.itemType === ItemType.sin || ite
  * SIN, otherwise the first unstashed SIN. `undefined` when the Runner has no unstashed SIN.
  */
 export function resolveActiveSinId(gear: Record<string, ItemData>, requestedSinId?: string): string | undefined {
-  const sins = Object.values(gear).filter(isSinData).filter((item) => !item.stashed)
+  const sins = Object.values(gear).filter(isSinData).filter(isItemOnHand)
   return (sins.find((sin) => sin.id === requestedSinId) ?? sins[0])?.id
 }
 
@@ -37,7 +38,7 @@ function buildSinLane(
   // Forbidden gear must never be offered a roll, even with a stray licenseId pointing at a real
   // Licence — guard structurally here rather than relying on `kind` alone.
   const licensedGear = allItems.filter((item) =>
-    !item.stashed && !isForbidden(item) && sinLicenses.some((license) => license.id === item.licenseId))
+    isItemOnHand(item) && !isForbidden(item) && sinLicenses.some((license) => license.id === item.licenseId))
 
   return {
     key: sin.id,
@@ -77,11 +78,11 @@ export function buildVerificationLanes(gear: Record<string, ItemData>, activeSin
   const activeLicenses = licenses.filter((license) =>
     license.items.parentId === null || license.items.parentId === resolvedActiveSinId)
 
-  const sins = allItems.filter(isSinData).filter((item) => !item.stashed)
+  const sins = allItems.filter(isSinData).filter(isItemOnHand)
   const lanes: VerificationLane[] = sins.map((sin) => buildSinLane(sin, licenses, allItems))
 
   const unlicensedItems = allItems.filter((item) =>
-    !item.stashed && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, activeLicenses))
+    isItemOnHand(item) && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, activeLicenses))
 
   if (unlicensedItems.length > 0) {
     lanes.push({
@@ -92,7 +93,7 @@ export function buildVerificationLanes(gear: Record<string, ItemData>, activeSin
   }
 
   const forbiddenItems = allItems.filter((item) =>
-    !item.stashed && !isSinOrLicense(item) && isForbidden(item))
+    isItemOnHand(item) && !isSinOrLicense(item) && isForbidden(item))
 
   if (forbiddenItems.length > 0) {
     lanes.push({

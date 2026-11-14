@@ -32,7 +32,6 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor, wizard,
       ctrl={ctrl}
       wizard={wizard}
       options={{
-        equipable: { forced: true },
         hasEffects: { forced: true },
         multiple: { forced: true, enabled: false },
         isSubItem: parentId ? { forced: true } : undefined,

@@ -10,6 +10,7 @@ import type { FC } from "react"
 
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { isItemEquipped } from "#/system/formulas/items/itemStateRules.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
@@ -30,7 +31,7 @@ export const AttackWorkflowStepSelectWeapon: FC = () => {
   const workflow = useAttackWorkflow()
 
   const weapons = useEntitySelector(ItemSelectors.selectByFilter, {
-    filter: (item) => !!(item.equipped && item.itemType === ItemType.weapon),
+    filter: (item) => isItemEquipped(item) && item.itemType === ItemType.weapon,
   }) as WeaponData[]
 
   const handleWeaponSelect = (weapon: WeaponData) => {

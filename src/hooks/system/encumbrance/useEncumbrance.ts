@@ -6,6 +6,7 @@ import {
   calculateArmorTotals,
   calculateEncumbrancePenalty,
 } from "#/system/formulas/items/encumbranceUtils.ts"
+import { isItemEquipped } from "#/system/formulas/items/itemStateRules.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -22,7 +23,7 @@ export function useEncumbrance(): EncumbranceInfo {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
   const body = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.body })
 
-  const equippedArmor = allArmor.filter((a) => a.equipped)
+  const equippedArmor = allArmor.filter(isItemEquipped)
   const { ballistic: totalBallistic, impact: totalImpact } = calculateArmorTotals(equippedArmor)
   const bulk = calculateArmorBulk(equippedArmor)
   const threshold = body * 2

@@ -1,4 +1,3 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
@@ -31,8 +30,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
   const weaponFormDialog = useWeaponFormDialog()
   const addItemDialog = useAddItemDialogContext()
-
-  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...weapon, equipped: !weapon.equipped }))
 
   const removeWeapon = () => {
     dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
@@ -70,22 +67,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
             onOpen={onOpenAttachment ? () => onOpenAttachment(accessory) : undefined}
           />
         ))}
-
-        {weapon.equipped
-          ? (
-              <ItemDetailsSlot.QuickAction
-                label="Unequip"
-                icon={<RiCloseCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )
-          : (
-              <ItemDetailsSlot.QuickAction
-                label="Equip"
-                icon={<RiCheckboxCircleLine size={16} />}
-                onClick={toggleEquipped}
-              />
-            )}
       </ItemDetailsRoot>
 
       {weaponFormDialog.outlet}

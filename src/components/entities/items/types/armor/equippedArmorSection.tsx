@@ -6,6 +6,7 @@ import type { FC } from "react"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
+import { isItemEquipped } from "#/system/formulas/items/itemStateRules.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 
@@ -13,7 +14,7 @@ import { ArmorDataCard } from "./armorDataCard.tsx"
 
 export const EquippedArmorSection: FC = () => {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
-  const equippedArmor = allArmor.filter((armor) => armor.equipped)
+  const equippedArmor = allArmor.filter(isItemEquipped)
   const { totalBallistic, totalImpact, threshold, penalty, isEncumbered } = useEncumbrance()
 
   if (equippedArmor.length === 0) {

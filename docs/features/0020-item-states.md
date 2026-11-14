@@ -1,6 +1,6 @@
 # Item States
 
-> **Status:** Draft
+> **Status:** In Progress
 >
 > **GitHub Issues / PRs:**
 > <!-- Added after running /to-prd. -->
@@ -135,13 +135,11 @@ earlier migration, so they become Implanted. The PR that ships the migration mus
 
 ## Domain Notes
 
-New or changed `CONTEXT.md` terms (to be added to `CONTEXT.md` alongside this doc's implementation):
+New or changed `CONTEXT.md` terms (now in `CONTEXT.md`):
 
 - **Item State** (new): the one state an Item is in: Equipped, Implanted, Available, or Stashed. Its type decides
   which are allowed.
 - **Implanted** (new): an implant installed in the Runner's body. Active, like Equipped.
-- **Active** (Item State): Equipped or Implanted, the states in which an Item's Game Effects apply. Not to be confused
-  with an Active Node.
 - **Available** (changed): now *only* the resting state, on hand but neither Equipped nor Implanted. It previously
   meant "not Stashed".
 - **On Hand** (new): not Stashed, meaning Available, Equipped, or Implanted. This is what Available used to mean;
@@ -159,7 +157,7 @@ type ItemState = "equipped" | "implanted" | "available" | "stashed"
 
 interface ItemData {
   // ...existing fields; `equipped`, `stashed`, `_state` removed
-  state: ItemState
+  state?: ItemState // absent means Available
 }
 
 // One table, keyed by ItemType, read by the reducer, the toggle, and the action menu

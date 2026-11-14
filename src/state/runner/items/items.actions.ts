@@ -6,6 +6,7 @@ import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemState } from "#/system/model/items/itemState.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
@@ -25,9 +26,11 @@ export const patchItem = createAction<{ itemId: UUID, data: Partial<ItemData> }>
 
 export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("gear/remove")
 
-export const setEquipped = createAction<{ id: UUID, equipped: boolean }>("gear/setEquipped")
-
-export const setStashed = createAction<{ id: UUID, stashed: boolean }>("gear/setStashed")
+/**
+ * Moves an Item into `state`. A state its type doesn't allow is ignored, an Attachment is capped at
+ * its parent's presence, and the change cascades to its own Attachments.
+ */
+export const setState = createAction<{ id: UUID, state: ItemState }>("gear/setState")
 
 /** Sets one damage track on an item that implements `EntityWithDamage` (e.g. Agent, Vehicle) — a no-op if the item doesn't have that track. */
 export const setDamage = createAction<{ itemId: UUID, track: DamageTrackKey, value: number }>("gear/setDamage")
@@ -85,8 +88,7 @@ export const ItemActions = {
   setItem,
   patchItem,
   removeItem,
-  setEquipped,
-  setStashed,
+  setState,
   setDamage,
 
   licenses,
