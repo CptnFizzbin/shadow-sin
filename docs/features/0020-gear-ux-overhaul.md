@@ -41,7 +41,7 @@ Problems this addresses, as of the current Gear page:
 - **Nested Items in views:** views keep showing nested Items as they do today.
 - **The Gear page is the complete inventory.** The other tabs are prefiltered views over the
   same Items, filtered to what is **Available**, not separate lists with their own card variants.
-- **Three Item states**, matching `CONTEXT.md`:
+- **Three Item states**, matching `GLOSSARY.md`:
   - **Stashed:** left at the safehouse.
   - **Available:** carried or nearby, Equipped or not.
   - **Equipped:** in use in combat; its stats and Modifiers apply.
@@ -87,7 +87,7 @@ None remain; the design is ready for `/to-prd`.
 ## Domain Notes
 
 - **Item**, **Attachment**, **Equipped**, **Stashed**, and **Available** are existing
-  `CONTEXT.md` terms and are used here with those meanings.
+  `GLOSSARY.md` terms and are used here with those meanings.
 - **Containers** (an Item holding other Items that keep their own state, e.g. a backpack) were
   discussed and deferred; no term is introduced for them.
 
