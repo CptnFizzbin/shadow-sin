@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs"
 import { readFile } from "node:fs/promises"
 import { createServer } from "node:http"
 import type { AddressInfo } from "node:net"
@@ -13,6 +14,22 @@ const contentTypes: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",
   ".png": "image/png",
+}
+
+/**
+ * A Chromium to launch in place of Playwright's own build, or `undefined` to use Playwright's.
+ */
+function fallbackChromiumPath(): string | undefined {
+  if (existsSync(chromium.executablePath())) return undefined
+
+  // Cloud sessions preinstall one Chromium build under PLAYWRIGHT_BROWSERS_PATH, with a stable
+  // `chromium` link to it. A dependency bump can move Playwright to a build that isn't there.
+  const browsersPath = process.env["PLAYWRIGHT_BROWSERS_PATH"]
+  const preinstalled = browsersPath ? path.join(browsersPath, "chromium") : undefined
+  if (!preinstalled || !existsSync(preinstalled)) return undefined
+
+  console.warn(`  Playwright's Chromium build isn't installed; using ${preinstalled} instead`)
+  return preinstalled
 }
 
 /** Mirrors the artifact host, which never serves a page from the domain root. */
@@ -50,7 +67,7 @@ export async function smokeTest(dir: string): Promise<SmokeTestResult> {
 
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
   const { port } = server.address() as AddressInfo
-  const browser = await chromium.launch()
+  const browser = await chromium.launch({ executablePath: fallbackChromiumPath() })
   const errors: string[] = []
 
   try {
