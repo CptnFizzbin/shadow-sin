@@ -58,6 +58,11 @@ export interface EntityCardProps extends PropsWithChildren {
    * Remove. Receives a callback that closes the menu.
    */
   menuActions?: (closeMenu: () => void) => ReactNode
+  /**
+   * Whether a card with nothing below its title may put its footer on the title's row, as a
+   * single compact line. Defaults to `true`.
+   */
+  allowCompact?: boolean
 }
 
 /** An Entity implementing `Credential` (a SIN/Licence) shows "Real" instead of its (absent)
@@ -75,10 +80,10 @@ function getRatingDisplay(entity: EntityData): string | number | undefined {
  * among `children` and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow
  * order, regardless of the order they were passed in; any other child is ignored. A card with no
  * header rows below its title, body rows, or extra footer rows renders its footer on the title's
- * row instead, as a single compact line. `onEdit`/`onRemove` surface as items in a menu opened by
- * a dedicated menu button on the card's right edge (or the button calls `onOpenActions` instead,
- * when given), and `leftAction` renders a matching outline-style button on the left edge — both
- * buttons span the card's full height.
+ * row instead, as a single compact line, unless `allowCompact` is `false`. `onEdit`/`onRemove`
+ * surface as items in a menu opened by a dedicated menu button on the card's right edge (or the
+ * button calls `onOpenActions` instead, when given), and `leftAction` renders a matching
+ * outline-style button on the left edge — both buttons span the card's full height.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -88,13 +93,15 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onOpenActions,
   leftAction,
   menuActions,
+  allowCompact = true,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
   const hasMenu = !onOpenActions && !!(onEdit || onRemove)
   const hasActions = !!onOpenActions || hasMenu
   // A card with nothing but its title line and footer fits both on a single row.
-  const isCompact = slots.layout.headerRows.length === 0
+  const isCompact = allowCompact
+    && slots.layout.headerRows.length === 0
     && slots.layout.bodyRows.length === 0
     && slots.layout.footerRows.length === 0
   const hasFooter = !!(

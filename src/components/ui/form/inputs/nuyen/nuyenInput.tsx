@@ -62,6 +62,7 @@ function computeNuyenEdit(
 /**
  * A controlled text field that accepts a `number | undefined` value and
  * displays it formatted with thousands separators and a ¥ suffix adornment.
+ * An empty field shows a `0` placeholder unless `placeholder` is given.
  *
  * Cursor tracking ensures the insertion point survives comma insertions and
  * removals so that mid-number edits feel natural.
@@ -147,6 +148,7 @@ export const NuyenInput: FC<NuyenInputProps> = ({ value, onChange, onBlur, ...pr
       fullWidth
       variant="outlined"
       size="small"
+      placeholder="0"
       {...props}
       inputRef={inputRef}
       type="text"

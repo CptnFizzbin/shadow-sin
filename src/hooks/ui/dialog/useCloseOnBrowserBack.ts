@@ -1,6 +1,8 @@
 import { useRouter } from "@tanstack/react-router"
 import { useEffect, useRef } from "react"
 
+import { dialogBackGuardState } from "./dialogBackGuard.ts"
+
 interface GuardState {
   /** Whether a guard entry is currently believed to be on top of history. */
   pushed: boolean
@@ -62,7 +64,7 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
     }
 
     if (!guard.pushed) {
-      router.history.push(router.history.location.href, { dialogBackGuard: true })
+      router.history.push(router.history.location.href, dialogBackGuardState)
       // TanStack's browser history batches the real pushState onto a
       // microtask (to smooth out rapid calls). Force it to land synchronously
       // so the entry actually exists in real browser history before anything

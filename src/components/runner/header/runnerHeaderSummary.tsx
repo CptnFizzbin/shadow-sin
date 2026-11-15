@@ -29,7 +29,15 @@ export const RunnerHeaderSummary: FC = () => {
     .filter((key) => attributes[key] && attributes[key] >= 1)
 
   return (
-    <Paper sx={{ borderBottom: "1px solid", borderColor: "divider" }}>
+    <Paper
+      sx={{
+        borderBottom: "1px solid",
+        borderColor: "divider",
+        position: "sticky",
+        top: 0,
+        zIndex: "appBar",
+      }}
+    >
       <Stack sx={{ padding: 1 }}>
         <Stack direction="row" sx={{ alignItems: "baseline", justifyContent: "space-between" }}>
           <Typography sx={{ fontSize: "large", fontWeight: "bold", whiteSpace: "nowrap" }}>

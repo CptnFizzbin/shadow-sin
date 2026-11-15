@@ -11,7 +11,7 @@ describe("CardElementAvailability", () => {
     render(<CardElementAvailability value={{ rating: 8, restricted: true }} />, { wrapper: ThemeWrapper })
 
     // Assert
-    expect(screen.getByText("Avail: 8R")).toBeDefined()
+    expect(screen.getByText("8R")).toBeDefined()
   })
 
   it("renders nothing when there is no availability", () => {
