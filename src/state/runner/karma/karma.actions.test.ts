@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { addKarma, adjustKarma, buyKarma, spendKarma } from "./karma.actions.ts"
+import { addKarma, adjustKarma, buyKarma, sellKarma, spendKarma } from "./karma.actions.ts"
 import { karmaReducer } from "./karma.state.ts"
 
 const makeKarma = (overrides: Partial<ReturnType<typeof karmaReducer>> = {}) => ({
@@ -124,6 +124,33 @@ describe.concurrent("buyKarma", () => {
   it("throws when amount is non-positive", () => {
     // Arrange / Act / Assert
     expect(() => buyKarma(0, 5000)).toThrow(/positive/i)
+  })
+})
+
+describe.concurrent("sellKarma", () => {
+  it("lowers current karma and logs a negative entry with the nuyen gained", () => {
+    // Arrange
+    const state = makeKarma({ current: 4, total: 10 })
+
+    // Act
+    const next = karmaReducer(state, sellKarma(3, 2500))
+
+    // Assert
+    expect(next.current).toBe(1)
+    expect(next.total).toBe(10)
+    expect(next.log[0]).toMatchObject({ amount: -3, source: "sellKarma" })
+    expect(next.log[0].description).toMatch(/7,500¥/)
+  })
+
+  it("throws when selling more karma than the Runner has", () => {
+    // Arrange
+    const state = makeKarma({ current: 2, total: 5 })
+
+    // Act
+    const oversell = () => karmaReducer(state, sellKarma(3, 2500))
+
+    // Assert
+    expect(oversell).toThrow(/insufficient karma/i)
   })
 })
 

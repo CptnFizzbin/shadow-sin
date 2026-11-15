@@ -10,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 import { ManageKarmaStep, useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
-import { useKarmaPurchase } from "./useKarmaPurchase.ts"
+import { useKarmaExchange } from "./useKarmaExchange.ts"
 
 interface ManageKarmaActionsProps {
   ctrl: DialogCtrl<void>
@@ -26,14 +26,14 @@ export const ManageKarmaActions: FC<ManageKarmaActionsProps> = ({ ctrl }) => {
   const workflow = useManageKarmaWorkflow()
   const { currentStep, data } = workflow
   const karma = useRunnerSelector(KarmaSelectors.select)
-  const purchase = useKarmaPurchase(data.amount)
+  const exchange = useKarmaExchange(currentStep === ManageKarmaStep.Buy ? "buy" : "sell", data.amount)
   const { saveImprovements } = useSpendKarmaSummary()
 
   const close = () => ctrl.close()
 
   const currentDelta = data.current - karma.current
   const totalDelta = data.total - karma.total
-  const canBuy = data.amount > 0 && purchase.isAffordable
+  const canExchange = data.amount > 0 && exchange.isAffordable
 
   const renderConfirm = (label: string, disabled: boolean, apply: () => void) => (
     <>
@@ -62,8 +62,8 @@ export const ManageKarmaActions: FC<ManageKarmaActionsProps> = ({ ctrl }) => {
     case ManageKarmaStep.Buy:
       return renderConfirm(
         "Buy",
-        !canBuy,
-        () => dispatch(Actions.karma.buyKarma(data.amount, purchase.nuyenPerKarma)),
+        !canExchange,
+        () => dispatch(Actions.karma.buyKarma(data.amount, exchange.nuyenPerKarma)),
       )
 
     case ManageKarmaStep.Spend:
@@ -75,6 +75,13 @@ export const ManageKarmaActions: FC<ManageKarmaActionsProps> = ({ ctrl }) => {
             close()
           }}
         />
+      )
+
+    case ManageKarmaStep.Sell:
+      return renderConfirm(
+        "Sell",
+        !canExchange,
+        () => dispatch(Actions.karma.sellKarma(data.amount, exchange.nuyenPerKarma)),
       )
 
     case ManageKarmaStep.Edit:

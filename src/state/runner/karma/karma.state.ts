@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit"
 
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
-import { addKarma, adjustKarma, buyKarma, spendKarma } from "./karma.actions.ts"
+import { addKarma, adjustKarma, buyKarma, sellKarma, spendKarma } from "./karma.actions.ts"
 
 const initialState: RunnerData["karma"] = {
   total: 0,
@@ -28,6 +28,12 @@ export const karmaReducer = createReducer(initialState, (builder) => {
     .addCase(buyKarma, (state, action) => {
       state.current += action.payload.amount
       state.log.push(action.payload.entry)
+    })
+    .addCase(sellKarma, (state, action) => {
+      const { amount, entry } = action.payload
+      if (amount > state.current) throw insufficientKarmaError(amount, state.current)
+      state.current -= amount
+      state.log.push(entry)
     })
     .addCase(adjustKarma, (state, action) => {
       const { currentDelta, totalDelta, entry } = action.payload
