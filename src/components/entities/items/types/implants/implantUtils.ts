@@ -59,3 +59,12 @@ export function getEssenceUsage(implants: ImplantData[]): EssenceUsage {
     total: Math.max(cyberware, bioware) + (Math.min(cyberware, bioware) / 2),
   }
 }
+
+/**
+ * Returns the whole points of Essence spent on `implants`: their combined Essence loss (see
+ * {@link getEssenceUsage}) rounded up. This is what reduces the Runner's Essence and Magic.
+ */
+export function getEssenceSpent(implants: ImplantData[]): number {
+  // Round off floating-point noise first, so e.g. 0.1 + 0.2 + 0.7 ceils to 1, not 2.
+  return Math.ceil(Number(getEssenceUsage(implants).total.toFixed(4)))
+}

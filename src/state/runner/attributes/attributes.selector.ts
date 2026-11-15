@@ -1,3 +1,4 @@
+import { BASE_ESSENCE, getEssenceSpent } from "#/components/entities/items/types/implants/implantUtils.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { ratingDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
@@ -24,6 +25,7 @@ import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import type { EntityBase, EntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
 import { isEntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import { isMatrixNode } from "#/system/model/matrix/matrixNodeData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
@@ -45,23 +47,40 @@ export namespace AttrSelectors {
     (attributes, key) => attributes[key] ?? 0,
   )
 
+  /** Whole points of Essence the Runner has spent on Implanted implants. */
+  export const selectEssenceSpent = createMemoizedSelector(
+    ItemSelectors.Implants.selectImplanted,
+    (implants) => getEssenceSpent(implants),
+  )
+
   /**
    * The value for `attr` before any modifiers apply, or `0` if unset or inapplicable. For most
    * entities this is the stored value; a Matrix node reads its matrix attributes, and an AI Runner
-   * derives its Matrix attributes.
+   * derives its Matrix attributes. A Runner's Essence and Magic are each reduced by the Essence
+   * spent on Implanted implants (see {@link selectEssenceSpent}).
    */
   export const selectRawValue = createMemoizedSelector(
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
     selectAllRaw,
+    selectEssenceSpent,
     SelectorOptions.attr,
-    (entity, attrs, attr): number => {
+    (entity, attrs, essenceSpent, attr): number => {
       if (isMatrixNode(entity)) {
         return entity.matrix[attr] ?? 0
       }
 
       if (isRunnerWithBiology(entity)) {
         const isAiMetatype = entity.biology.metatype === MetatypeType.AI
-        if (!isAiMetatype) return attrs[attr] ?? 0
+        if (!isAiMetatype) {
+          switch (attr) {
+            case AttributeKey.essence:
+              return Math.max(0, BASE_ESSENCE - essenceSpent)
+            case AttributeKey.magic:
+              return Math.max(0, (attrs[attr] ?? 0) - essenceSpent)
+            default:
+              return attrs[attr] ?? 0
+          }
+        }
         if (attr === AttributeKey.essence) return 0
 
         const activeNode = MatrixSelectors.selectActiveNode({ runner: entity as RunnerData })
@@ -93,7 +112,7 @@ export namespace AttrSelectors {
   )
 
   /** @deprecated - use {@link selectRawValue} (before modifiers) or {@link selectRating} (after) instead */
-  export const selectValue = (state: { entity: object }, { key }: { key: AttributeKey }): number =>
+  export const selectValue = (state: { entity: object, items: ItemCatalog }, { key }: { key: AttributeKey }): number =>
     selectRawValue(state, { attr: key })
 
   const selectModifiers = createMemoizedSelector(
@@ -165,8 +184,9 @@ export namespace AttrSelectors {
   export const selectAllInfo = createMemoizedSelector(
     selectBounds,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
+    ViewerStateSelectors.selectItems,
     BiologySelectors.selectMetatype,
-    (bounds, entity, metatypeName): Required<EntityAttributeCatalog> => {
+    (bounds, entity, items, metatypeName): Required<EntityAttributeCatalog> => {
       const allAttrs = Object.values(AttributeKey) as AttributeKey[]
 
       const attrCatalog = Object.fromEntries(
@@ -179,7 +199,7 @@ export namespace AttrSelectors {
           }
 
           const base = selectBase({ entity }, { key: attrKey })
-          const value = selectValue({ entity }, { key: attrKey })
+          const value = selectValue({ entity, items }, { key: attrKey })
 
           const catalogEntry = {
             ...baseBounds,

@@ -48,6 +48,11 @@ export function isItemEquipped(item: Pick<ItemData, "state">): boolean {
   return getItemState(item) === ItemState.equipped
 }
 
+/** Whether `item` is Implanted specifically (not Equipped). */
+export function isItemImplanted(item: Pick<ItemData, "state">): boolean {
+  return getItemState(item) === ItemState.implanted
+}
+
 /** The on-screen label for `state` on an Item of `itemType`. Programs and Software call Available "Loaded". */
 export function getItemStateLabel(itemType: ItemType, state: ItemState): string {
   switch (state) {

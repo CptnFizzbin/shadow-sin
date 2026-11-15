@@ -8,6 +8,7 @@ import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 
@@ -17,7 +18,7 @@ import { DamageSelectors } from "./damage.selector.ts"
  *  what `useRunnerSelector` assembles from a `RunnerData` alone (see `RunnerSelectorState` in
  *  `runnerStore.selectors.ts`); a `RunnerData` structurally satisfies both traits, so tests
  *  assemble it the same way. */
-const stateFor = (runner: RunnerData) => ({ runner, entity: runner })
+const stateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
 
 describe("DamageSelectors.selectDamage", () => {
   it("reads the current value off the given track", () => {
@@ -411,7 +412,7 @@ describe("DamageSelectors.selectMatrixMax", () => {
     const agent = makeAgent({ attributes: { system: 5 } })
 
     // Act
-    const max = DamageSelectors.selectMatrixMax({ entity: agent })
+    const max = DamageSelectors.selectMatrixMax({ entity: agent, items: {} })
 
     // Assert
     expect(max).toBe(11)
@@ -422,7 +423,7 @@ describe("DamageSelectors.selectMatrixMax", () => {
     const agent = makeAgent({ attributes: {} })
 
     // Act
-    const max = DamageSelectors.selectMatrixMax({ entity: agent })
+    const max = DamageSelectors.selectMatrixMax({ entity: agent, items: {} })
 
     // Assert
     expect(max).toBe(8)

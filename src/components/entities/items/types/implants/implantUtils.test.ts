@@ -6,7 +6,7 @@ import { createItem } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 
-import { getEssenceUsage } from "./implantUtils.ts"
+import { getEssenceSpent, getEssenceUsage } from "./implantUtils.ts"
 
 const makeImplant = (overrides: Partial<ImplantData>, attached: ImplantData[] = []): ImplantData[] =>
   createItem<ImplantData>({
@@ -77,5 +77,41 @@ describe.concurrent("getEssenceUsage", () => {
 
     // Assert
     expect(usage).toEqual({ cyberware: 1, bioware: 2, total: 2.5 })
+  })
+})
+
+describe.concurrent("getEssenceSpent", () => {
+  it("returns 0 without implants", () => {
+    // Act
+    const spent = getEssenceSpent([])
+
+    // Assert
+    expect(spent).toBe(0)
+  })
+
+  it("rounds a fractional Essence loss up to the next whole point", () => {
+    // Arrange
+    const implants = makeImplant({ essenceCost: 1.2 })
+
+    // Act
+    const spent = getEssenceSpent(implants)
+
+    // Assert
+    expect(spent).toBe(2)
+  })
+
+  it("doesn't round up floating-point noise in an exact total", () => {
+    // Arrange
+    const implants = [
+      ...makeImplant({ essenceCost: 0.1 }),
+      ...makeImplant({ essenceCost: 0.2 }),
+      ...makeImplant({ essenceCost: 0.7 }),
+    ]
+
+    // Act
+    const spent = getEssenceSpent(implants)
+
+    // Assert
+    expect(spent).toBe(1)
   })
 })
