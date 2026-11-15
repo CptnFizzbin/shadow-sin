@@ -22,7 +22,7 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
-  const attrs = useRunnerSelector(AttrSelectors.selectAll)
+  const attrs = useRunnerSelector(AttrSelectors.selectAllRatings)
   const attrInfos = useRunnerSelector(AttrSelectors.selectAllInfo)
 
   if (!showMaximums) {

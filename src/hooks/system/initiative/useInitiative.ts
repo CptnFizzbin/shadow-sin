@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
-import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { GameEffectSelectors } from "#/hooks/system/gameEffects/useGameEffects.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -14,12 +13,13 @@ interface InitiativeInfo {
 }
 
 export const useInitiative = (): InitiativeInfo => {
-  const reactionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.reaction })
-  const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
+  // Ratings, so attrMod GameEffects (e.g. an Adept's Improved Reflexes) count — Reaction's rating
+  // already carries the Encumbrance penalty.
+  const reactionAttr = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.reaction })
+  const intuitionAttr = useEntitySelector(AttrSelectors.selectRating, { attr: AttributeKey.intuition })
   const initiativeBonuses = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.initiativeBonus })
   const extraPassEffects = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.extraInitiativePasses })
   const extraDiceEffects = useRunnerSelector(GameEffectSelectors.selectByType, { gameEffectType: GameEffectType.extraInitiativeDice })
-  const { penalty: encumbrancePenalty } = useEncumbrance()
 
   return useMemo(() => {
     const initiativeBonus = initiativeBonuses.reduce((sum, e) => sum + e.value, 0)
@@ -27,8 +27,8 @@ export const useInitiative = (): InitiativeInfo => {
     const extraDice = extraDiceEffects.reduce((sum, e) => sum + e.value, 0)
 
     return {
-      dicePool: reactionAttr + intuitionAttr + initiativeBonus + extraDice - encumbrancePenalty,
+      dicePool: reactionAttr + intuitionAttr + initiativeBonus + extraDice,
       initiativePasses: 1 + extraInitiativePasses,
     }
-  }, [reactionAttr, intuitionAttr, initiativeBonuses, extraPassEffects, extraDiceEffects, encumbrancePenalty])
+  }, [reactionAttr, intuitionAttr, initiativeBonuses, extraPassEffects, extraDiceEffects])
 }

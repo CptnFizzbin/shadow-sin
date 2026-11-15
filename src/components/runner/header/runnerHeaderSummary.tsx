@@ -19,7 +19,7 @@ import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attribu
  */
 export const RunnerHeaderSummary: FC = () => {
   const displayName = useRunnerSelector(ProfileSelectors.selectDisplayName)
-  const attributes = useRunnerSelector(AttrSelectors.selectAll)
+  const attributes = useRunnerSelector(AttrSelectors.selectAllRatings)
   const physicalTrack = useRunnerSelector(DamageSelectors.track.physical)
   const stunTrack = useRunnerSelector(DamageSelectors.track.stun)
   const reputation = useRunnerSelector(ReputationSelectors.selectAll)
