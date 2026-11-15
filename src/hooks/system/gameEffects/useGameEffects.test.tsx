@@ -77,6 +77,26 @@ describe("GameEffectSelectors.selectAll", () => {
     expect(effects[0]).toMatchObject({ type: GameEffectType.initiativeBonus, value: 1 })
   })
 
+  it.each([
+    [ItemState.active, 1],
+    [ItemState.available, 0],
+  ])("collects a %s drug's effects %i time(s)", (state, expectedCount) => {
+    // Arrange
+    const [jazz] = createItem({
+      name: "Jazz",
+      itemType: ItemType.consumable,
+      state,
+      effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
+    })
+    const sheet = runnerDataFactory({ items: createItemMap([jazz]) })
+
+    // Act
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
+
+    // Assert
+    expect(effects).toHaveLength(expectedCount)
+  })
+
   it("ignores effects from unequipped gear", () => {
     // Arrange
     const [synapticBooster] = createItem({

@@ -36,6 +36,8 @@ const actionDisplay: Record<ItemAction, { label: string, icon: RemixiconComponen
   [ItemAction.extract]: { label: "Extract", icon: Icons.item.state.extract },
   [ItemAction.stash]: { label: "Stash", icon: RiArchive2Line },
   [ItemAction.unstash]: { label: "Unstash", icon: RiInboxUnarchiveLine },
+  [ItemAction.consume]: { label: "Consume", icon: Icons.item.state.consume },
+  [ItemAction.endEffect]: { label: "End Effect", icon: Icons.item.state.endEffect },
   [ItemAction.attack]: { label: "Attack", icon: Icons.item.attack },
   [ItemAction.run]: { label: "Run", icon: Icons.item.run },
   [ItemAction.edit]: { label: "Edit", icon: RiEditLine },

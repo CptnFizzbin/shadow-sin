@@ -2,6 +2,7 @@ import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
 import { ArmorItemDetails } from "#/components/entities/items/types/armor/armorItemDetails.tsx"
+import { DrugItemDetails } from "#/components/entities/items/types/consumables/drugItemDetails.tsx"
 import { CredstickItemDetails } from "#/components/entities/items/types/credsticks/credstickItemDetails.tsx"
 import { AgentItemDetails } from "#/components/entities/items/types/devices/agentItemDetails.tsx"
 import { DeviceItemDetails } from "#/components/entities/items/types/devices/deviceItemDetails.tsx"
@@ -16,6 +17,7 @@ import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { isAgentData } from "#/system/model/items/agentData.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { isDrugData } from "#/system/model/items/consumableData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
@@ -69,6 +71,9 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
     const saved = await itemFormDialog.open({ item, itemType: item.itemType })
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
+
+  // Consumables dispatch on their subtype rather than `itemType` alone.
+  if (isDrugData(item)) return <DrugItemDetails drug={item} onRemoved={onRemoved} />
 
   switch (item.itemType) {
     case ItemType.weapon:

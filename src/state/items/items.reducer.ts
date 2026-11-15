@@ -58,6 +58,10 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     ItemStateUtils.sellItemById(state, action.payload.id, action.payload.sellAttachments)
   })
 
+  addCase(ItemActions.consumeItem, (state, action) => {
+    ItemStateUtils.consumeItemById(state, action.payload.id)
+  })
+
   addCase(RunnerActions.load, (_state, { payload }) => {
     return getItemCatalog(payload)
   })

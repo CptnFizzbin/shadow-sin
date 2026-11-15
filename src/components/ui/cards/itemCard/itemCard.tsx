@@ -27,7 +27,7 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
 /**
  * `ItemCard`'s own renderable frame — sits on top of `EntityCard`, auto-rendering every
  * `ItemData` field `EntityCard` doesn't already cover (availability, cost, quantity,
- * equipped/implanted/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
+ * equipped/implanted/active/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
  * regions internally. A category-tier or typed card that needs another row uses
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
  * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
@@ -76,6 +76,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
       <EntityCard.Layout.TopRight>
         {itemState === ItemState.equipped && <ItemCardElements.StatusIcon status="equipped" />}
         {itemState === ItemState.implanted && <ItemCardElements.StatusIcon status="implanted" />}
+        {itemState === ItemState.active && <ItemCardElements.StatusIcon status="active" />}
         {itemState === ItemState.stashed && <ItemCardElements.StatusIcon status="stashed" />}
         {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
         {item.wireless && (

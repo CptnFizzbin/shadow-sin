@@ -1,5 +1,6 @@
 import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
 import { useArmorFormDialog } from "#/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
+import { useDrugFormDialog } from "#/components/entities/items/types/consumables/dialogs/drugFormDialog.tsx"
 import { useCredstickDialog } from "#/components/entities/items/types/credsticks/credstickDialog.tsx"
 import { useAgentFormDialog } from "#/components/entities/items/types/devices/dialogs/agentFormDialog.tsx"
 import { useDeviceFormDialog } from "#/components/entities/items/types/devices/dialogs/deviceFormDialog.tsx"
@@ -16,6 +17,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { isAgentData } from "#/system/model/items/agentData.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { isDrugData } from "#/system/model/items/consumableData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
@@ -45,6 +47,7 @@ export function useEditItemDialog() {
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
   const credstickDialog = useCredstickDialog()
+  const drugFormDialog = useDrugFormDialog()
   const itemFormDialog = useItemFormDialog()
 
   const openForm = (item: ItemData): Promise<ItemData | undefined> => {
@@ -71,6 +74,9 @@ export function useEditItemDialog() {
         const sin = item.items.parentId ? allItems[item.items.parentId] as SinData | undefined : undefined
         return licenseFormDialog.open({ sin, license: item as LicenseData })
       }
+      case ItemType.consumable:
+        if (isDrugData(item)) return drugFormDialog.open({ drug: item })
+        return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
       default:
         return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
     }
@@ -101,6 +107,7 @@ export function useEditItemDialog() {
         {sinFormDialog.outlet}
         {licenseFormDialog.outlet}
         {credstickDialog.outlet}
+        {drugFormDialog.outlet}
         {itemFormDialog.outlet}
       </>
     ),

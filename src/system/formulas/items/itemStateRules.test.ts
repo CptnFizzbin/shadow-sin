@@ -9,6 +9,7 @@ import {
   getItemState,
   getItemStateActions,
   getItemStateLabel,
+  hasUnitsToConsume,
   isItemActive,
   isItemOnHand,
   isItemStateWithinParent,
@@ -27,6 +28,7 @@ describe.concurrent("getAllowedItemStates", () => {
     [ItemType.weapon, [ItemState.equipped, ItemState.available, ItemState.stashed]],
     [ItemType.other, [ItemState.equipped, ItemState.available, ItemState.stashed]],
     [ItemType.implant, [ItemState.implanted, ItemState.available, ItemState.stashed]],
+    [ItemType.consumable, [ItemState.active, ItemState.available, ItemState.stashed]],
     [ItemType.program, [ItemState.available, ItemState.stashed]],
     [ItemType.vehicle, [ItemState.available, ItemState.stashed]],
     [ItemType.firearmAccessory, [ItemState.available, ItemState.stashed]],
@@ -37,10 +39,11 @@ describe.concurrent("getAllowedItemStates", () => {
 })
 
 describe.concurrent("getActiveItemState", () => {
-  it("is Equipped for armor, Implanted for an implant, and absent for a vehicle", () => {
+  it("is Equipped for armor, Implanted for an implant, Active for a Consumable, and absent for a vehicle", () => {
     // Arrange / Act / Assert
     expect(getActiveItemState(ItemType.armor)).toBe(ItemState.equipped)
     expect(getActiveItemState(ItemType.implant)).toBe(ItemState.implanted)
+    expect(getActiveItemState(ItemType.consumable)).toBe(ItemState.active)
     expect(getActiveItemState(ItemType.vehicle)).toBeUndefined()
   })
 })
@@ -49,6 +52,7 @@ describe.concurrent("isItemActive / isItemOnHand", () => {
   it.each([
     [ItemState.equipped, true, true],
     [ItemState.implanted, true, true],
+    [ItemState.active, true, true],
     [ItemState.available, false, true],
     [ItemState.stashed, false, false],
   ])("treats %s as active=%s, on hand=%s", (state, active, onHand) => {
@@ -64,6 +68,23 @@ describe.concurrent("getItemStateLabel", () => {
     expect(getItemStateLabel(ItemType.program, ItemState.available)).toBe("Loaded")
     expect(getItemStateLabel(ItemType.software, ItemState.available)).toBe("Loaded")
     expect(getItemStateLabel(ItemType.vehicle, ItemState.available)).toBe("Available")
+  })
+
+  it("calls a Consumable's active state Active", () => {
+    // Arrange / Act / Assert
+    expect(getItemStateLabel(ItemType.consumable, ItemState.active)).toBe("Active")
+  })
+})
+
+describe.concurrent("hasUnitsToConsume", () => {
+  it.each([
+    [undefined, true],
+    [3, true],
+    [1, true],
+    [0, false],
+  ])("treats quantity %s as having units to consume: %s", (quantity, expected) => {
+    // Arrange / Act / Assert
+    expect(hasUnitsToConsume({ quantity })).toBe(expected)
   })
 })
 
@@ -91,6 +112,24 @@ describe.concurrent("getItemStateActions", () => {
       .toEqual([ItemStateAction.unequip, ItemStateAction.stash])
     expect(getItemStateActions({ itemType: ItemType.implant, state: ItemState.implanted }))
       .toEqual([ItemStateAction.extract, ItemStateAction.stash])
+  })
+
+  it("offers Consume and Stash for an Available Consumable with units left", () => {
+    // Arrange / Act / Assert
+    expect(getItemStateActions({ itemType: ItemType.consumable, state: ItemState.available, quantity: 2 }))
+      .toEqual([ItemStateAction.consume, ItemStateAction.stash])
+  })
+
+  it("offers only Stash for an Available Consumable with no units left", () => {
+    // Arrange / Act / Assert
+    expect(getItemStateActions({ itemType: ItemType.consumable, state: ItemState.available, quantity: 0 }))
+      .toEqual([ItemStateAction.stash])
+  })
+
+  it("offers only End Effect for an Active Consumable", () => {
+    // Arrange / Act / Assert
+    expect(getItemStateActions({ itemType: ItemType.consumable, state: ItemState.active, quantity: 0 }))
+      .toEqual([ItemStateAction.endEffect])
   })
 
   it("offers only Unstash for a Stashed item", () => {

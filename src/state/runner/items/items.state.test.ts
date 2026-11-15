@@ -6,7 +6,7 @@ import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, sellItem, setItem, setState } from "./items.actions.ts"
+import { addItem, consumeItem, patchItem, removeItem, sellItem, setItem, setState } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -227,6 +227,77 @@ describe.concurrent("gearReducer", () => {
 
     // Assert
     expect(next[sin.id].state).toBe(ItemState.available)
+  })
+
+  describe("consumeItem", () => {
+    it("makes an Available Consumable Active and uses up one unit", () => {
+      // Arrange
+      const drug = makeItem({ itemType: ItemType.consumable, state: ItemState.available, quantity: 3 })
+
+      // Act
+      const next = gearReducer({ [drug.id]: drug }, consumeItem({ id: drug.id }))
+
+      // Assert
+      expect(next[drug.id].state).toBe(ItemState.active)
+      expect(next[drug.id].quantity).toBe(2)
+    })
+
+    it("treats a Consumable with no stored quantity as having one unit", () => {
+      // Arrange
+      const drug = makeItem({ itemType: ItemType.consumable })
+
+      // Act
+      const next = gearReducer({ [drug.id]: drug }, consumeItem({ id: drug.id }))
+
+      // Assert
+      expect(next[drug.id].state).toBe(ItemState.active)
+      expect(next[drug.id].quantity).toBe(0)
+    })
+
+    it("does nothing when the Consumable has no units left", () => {
+      // Arrange
+      const drug = makeItem({ itemType: ItemType.consumable, state: ItemState.available, quantity: 0 })
+
+      // Act
+      const next = gearReducer({ [drug.id]: drug }, consumeItem({ id: drug.id }))
+
+      // Assert
+      expect(next[drug.id]).toEqual(drug)
+    })
+
+    it.each([ItemState.active, ItemState.stashed])("does nothing when the Consumable is %s", (state) => {
+      // Arrange
+      const drug = makeItem({ itemType: ItemType.consumable, state, quantity: 2 })
+
+      // Act
+      const next = gearReducer({ [drug.id]: drug }, consumeItem({ id: drug.id }))
+
+      // Assert
+      expect(next[drug.id]).toEqual(drug)
+    })
+
+    it("does nothing to an Item that isn't a Consumable", () => {
+      // Arrange
+      const weapon = makeItem({ state: ItemState.available, quantity: 2 })
+
+      // Act
+      const next = gearReducer({ [weapon.id]: weapon }, consumeItem({ id: weapon.id }))
+
+      // Assert
+      expect(next[weapon.id]).toEqual(weapon)
+    })
+
+    it("ending the effect makes an Active Consumable Available without restoring the unit", () => {
+      // Arrange
+      const drug = makeItem({ itemType: ItemType.consumable, state: ItemState.active, quantity: 2 })
+
+      // Act
+      const next = gearReducer({ [drug.id]: drug }, setState({ id: drug.id, state: ItemState.available }))
+
+      // Assert
+      expect(next[drug.id].state).toBe(ItemState.available)
+      expect(next[drug.id].quantity).toBe(2)
+    })
   })
 
   it("setItem falls back to the previous state when the saved one isn't allowed", () => {

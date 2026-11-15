@@ -11,6 +11,8 @@ export enum ItemState {
   equipped = "equipped",
   /** Installed in the Runner's body — the Item's Game Effects apply. */
   implanted = "implanted",
+  /** Consumed and taking effect in the Runner's body — the Item's Game Effects apply. */
+  active = "active",
   /** On hand, but neither Equipped nor Implanted. */
   available = "available",
   /** Left behind (e.g. at the safehouse), not carried. */
@@ -21,6 +23,7 @@ export const ItemStateSchema = z.enum(ItemState) satisfies z.ZodType<ItemState>
 
 const equippable = [ItemState.equipped, ItemState.available, ItemState.stashed] as const
 const implantable = [ItemState.implanted, ItemState.available, ItemState.stashed] as const
+const consumable = [ItemState.active, ItemState.available, ItemState.stashed] as const
 const carryOnly = [ItemState.available, ItemState.stashed] as const
 
 /** The states each `ItemType` can be in, most active first. */
@@ -31,6 +34,7 @@ export const itemStatesByType: Record<ItemType, readonly ItemState[]> = {
   [ItemType.device]: equippable,
   [ItemType.other]: equippable,
   [ItemType.implant]: implantable,
+  [ItemType.consumable]: consumable,
   [ItemType.program]: carryOnly,
   [ItemType.software]: carryOnly,
   [ItemType.vehicle]: carryOnly,

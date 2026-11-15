@@ -20,7 +20,7 @@ remain open.
 | Adept Powers | Increased Reflexes |
 | Spells (sustained) | Increase Reflexes |
 | Qualities | High Pain Tolerance, Low Pain Tolerance |
-| Drugs / Compounds | _(not yet modelled)_ |
+| Drugs / Compounds | Jazz, Kamikaze — Drug Items, while Active |
 | Matrix connection mode | AR vs. Hot-sim VR vs. Cold-sim VR |
 | Others (potential) | Critter powers, mentor spirits |
 

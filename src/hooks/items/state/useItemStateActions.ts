@@ -31,9 +31,14 @@ const actionLabels: Record<ItemStateAction, string> = {
   [ItemStateAction.extract]: "Extract",
   [ItemStateAction.stash]: "Stash",
   [ItemStateAction.unstash]: "Unstash",
+  [ItemStateAction.consume]: "Consume",
+  [ItemStateAction.endEffect]: "End Effect",
 }
 
-/** The state actions (Equip, Unequip, Implant, Extract, Stash, Unstash) valid for `item` right now. */
+/**
+ * The state actions (Equip, Unequip, Implant, Extract, Consume, End Effect, Stash, Unstash) valid
+ * for `item` right now, most active first.
+ */
 export function useItemStateActions(item: ItemData): ItemStateActionOption[] {
   const dispatch = useRunnerStoreDispatch()
   const parent = useRunnerSelector(ItemSelectors.selectById, { itemId: item.items.parentId ?? NullUuid })
@@ -46,7 +51,11 @@ export function useItemStateActions(item: ItemData): ItemStateActionOption[] {
       label: actionLabels[action],
       icon: Icons.item.state[action],
       disabled: !isItemStateWithinParent(target, parentState),
-      onClick: () => dispatch(Actions.item.setState({ id: item.id, state: target })),
+      onClick: () => dispatch(
+        action === ItemStateAction.consume
+          ? Actions.item.consumeItem({ id: item.id })
+          : Actions.item.setState({ id: item.id, state: target }),
+      ),
     }
   })
 }

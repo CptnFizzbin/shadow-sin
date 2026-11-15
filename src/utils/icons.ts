@@ -1,6 +1,8 @@
 import {
   RiAddLine,
   RiArchive2Line,
+  RiCapsuleFill,
+  RiCapsuleLine,
   RiCheckboxCircleFill,
   RiCheckboxCircleLine,
   RiCloseCircleLine,
@@ -40,6 +42,7 @@ export const Icons = {
     equipped: RiCheckboxCircleFill,
     implanted: RiCpuLine,
     stashed: RiArchive2Line,
+    active: RiCapsuleFill,
     state: {
       equip: RiCheckboxCircleLine,
       unequip: RiCloseCircleLine,
@@ -47,6 +50,8 @@ export const Icons = {
       extract: RiCloseCircleLine,
       stash: RiInboxArchiveLine,
       unstash: RiInboxUnarchiveLine,
+      consume: RiCapsuleLine,
+      endEffect: RiStopLine,
     },
     fixed: RiPushpinFill,
     wireless: {

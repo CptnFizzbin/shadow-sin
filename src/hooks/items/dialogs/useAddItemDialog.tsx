@@ -2,6 +2,7 @@ import type { AddItemDialogOpenOptions } from "#/components/entities/items/addIt
 import { useAddItemTypeDialog } from "#/components/entities/items/dialogs/addItemTypeDialog.tsx"
 import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
 import { useArmorFormDialog } from "#/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
+import { useDrugFormDialog } from "#/components/entities/items/types/consumables/dialogs/drugFormDialog.tsx"
 import { useDeviceFormDialog } from "#/components/entities/items/types/devices/dialogs/deviceFormDialog.tsx"
 import { useImplantFormDialog } from "#/components/entities/items/types/implants/dialogs/implantFormDialog.tsx"
 import { useLicenseFormDialog } from "#/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
@@ -35,6 +36,7 @@ export function useAddItemDialog() {
   const deviceFormDialog = useDeviceFormDialog()
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
+  const drugFormDialog = useDrugFormDialog()
   const miscFormDialog = useItemFormDialog()
 
   const openTargetDialog = (selection: AddItemSelection, parentId?: UUID): Promise<ItemData | undefined> => {
@@ -58,6 +60,10 @@ export function useAddItemDialog() {
         ? licenseFormDialog.open({ wizard: true })
         : sinFormDialog.open({ wizard: true })
     }
+    if (selection.section === GearSection.Consumables && "consumableType" in selection) {
+      // Drug is the only Consumable subtype so far.
+      return drugFormDialog.open({ wizard: true, parentId })
+    }
     return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item", parentId })
   }
 
@@ -79,6 +85,7 @@ export function useAddItemDialog() {
       {deviceFormDialog.outlet}
       {sinFormDialog.outlet}
       {licenseFormDialog.outlet}
+      {drugFormDialog.outlet}
       {miscFormDialog.outlet}
     </>
   )

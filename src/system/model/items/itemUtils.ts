@@ -1,6 +1,7 @@
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import type { ArmorData } from "./armorData.ts"
+import type { DrugData } from "./consumableData.ts"
 import type { CredstickData } from "./credstickData.ts"
 import type { DeviceData } from "./deviceData.ts"
 import type { ImplantData } from "./implantData.ts"
@@ -35,6 +36,7 @@ export type AnyItemData =
   | SinData
   | CredstickData
   | ProgramData
+  | DrugData
 
 export type ItemDataFor<T extends ItemType> = Extract<AnyItemData, { itemType: T }>
 
