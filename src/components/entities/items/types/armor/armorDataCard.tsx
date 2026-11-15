@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -30,9 +31,7 @@ export const ArmorDataCard: FC<ArmorDataCardProps> = ({ armor, onOpen, onEdit })
           direction="column"
           sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
         >
-          {Object.values(mods).map((mod) => (
-            <ItemCard.Subitem key={mod.id} name={mod.name} />
-          ))}
+          <ItemAttachmentTree itemId={armor.id} />
         </ItemCard.Layout.BodyRow>
       )}
     </ItemCard>

@@ -10,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
-import { isFirearmData } from "#/system/model/items/weaponData.ts"
+import { isFirearmData, isMeleeWeaponData } from "#/system/model/items/weaponData.ts"
 
 import { useWeaponFormDialog } from "./dialogs/weaponFormDialog.tsx"
 
@@ -48,7 +48,9 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
       <ItemDetailsRoot item={weapon} onEdit={handleEdit} onRemove={removeWeapon} onAddSubitem={handleAddAccessory}>
         <ItemDetailsSlot.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap && <ItemDetailsSlot.Stat label="AP" value={weapon.ap} type="damage" />}
+        {weapon.dmgType && <ItemDetailsSlot.Stat label="Dmg Type" value={weapon.dmgType} />}
         <ItemDetailsSlot.Stat label="Skill" value={weapon.skill} type="rating" />
+        {weapon.attribute && <ItemDetailsSlot.Stat label="Attribute" value={weapon.attribute} />}
 
         {isFirearmData(weapon) && (
           <>
@@ -57,6 +59,23 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
             {weapon.firemodes && (
               <ItemDetailsSlot.Stat label="Modes" value={weapon.firemodes.join("/")} type="rating" />
             )}
+
+            <ItemDetailsSlot.Stat label="RC" value={weapon.recoil} />
+
+            {weapon.attachmentPoints && (
+              <ItemDetailsSlot.Stat label="Mounts" value={weapon.attachmentPoints.join("/")} />
+            )}
+
+            {weapon.ammo && (
+              <ItemDetailsSlot.Stat label="Ammo" value={`${weapon.ammo.remaining}/${weapon.ammo.size} (${weapon.ammo.type})`} />
+            )}
+          </>
+        )}
+
+        {isMeleeWeaponData(weapon) && (
+          <>
+            <ItemDetailsSlot.Stat label="Reach" value={weapon.reach} />
+            {weapon.meleeType && <ItemDetailsSlot.Stat label="Type" value={weapon.meleeType} />}
           </>
         )}
 

@@ -1,6 +1,6 @@
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
 import { useItemFormDialog } from "#/components/entities/items/dialogs/itemFormDialog.tsx"
 import { OtherDataCard } from "#/components/entities/items/types/other/otherDataCard.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
@@ -11,11 +11,14 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 
+import { useGearListView } from "./gearListFilter.ts"
+
 export const MiscSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const openItemDetails = useOpenItemDetails()
   const items = useGearByType<ItemData>(ItemType.other)
   const itemFormDialog = useItemFormDialog()
+  const gearListView = useGearListView()
 
   const rootItems = items.filter((item) => !item.items.parentId)
 
@@ -28,8 +31,8 @@ export const MiscSectionContent: FC = () => {
   }
 
   return (
-    <Stack>
-      {rootItems.map((item) => (
+    <ItemCardGrid>
+      {gearListView(rootItems).map((item) => (
         <OtherDataCard
           key={item.id}
           item={item}
@@ -39,6 +42,6 @@ export const MiscSectionContent: FC = () => {
       ))}
 
       {itemFormDialog.outlet}
-    </Stack>
+    </ItemCardGrid>
   )
 }

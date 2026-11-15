@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { Fragment } from "react"
 
+import { useItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
 import { ItemStateMenuActions } from "#/components/entities/items/state/itemStateMenuActions.tsx"
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
@@ -29,20 +30,26 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
  * equipped/implanted/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
  * regions internally. A category-tier or typed card that needs another row uses
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
- * `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard` for its
- * tap-to-open behavior, menu-button actions, and left-edge action button; whenever the card has an
- * actions menu, it also lists the item's state actions (Equip, Stash, ...).
+ * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
+ * `onEdit`, when given, as its Edit action); elsewhere `onEdit`/`onRemove` fill `EntityCard`'s own
+ * menu, alongside the item's state actions (Equip, Stash, ...). `onOpen`/`leftAction` pass
+ * straight through to `EntityCard`.
  */
-const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, ...props }) => {
+const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onRemove, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
+  const itemActionsDialog = useItemActionsDialogContext()
   const itemState = getItemState(item)
 
+  const menuProps = itemActionsDialog
+    ? { onOpenActions: () => itemActionsDialog.open({ item, onEdit }) }
+    : {
+        onEdit,
+        onRemove,
+        menuActions: (closeMenu: () => void) => <ItemStateMenuActions item={item} onDone={closeMenu} />,
+      }
+
   return (
-    <EntityCard
-      entity={item}
-      menuActions={(closeMenu) => <ItemStateMenuActions item={item} onDone={closeMenu} />}
-      {...props}
-    >
+    <EntityCard entity={item} {...props} {...menuProps}>
       <EntityCard.Layout.TitleRight>
         <ItemCardElements.Quantity value={item.quantity} />
       </EntityCard.Layout.TitleRight>

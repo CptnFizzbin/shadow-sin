@@ -1,6 +1,6 @@
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
 import { useWeaponFormDialog } from "#/components/entities/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { WeaponDataCard } from "#/components/entities/items/types/weapons/weaponDataCard.tsx"
 import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
@@ -13,11 +13,14 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 
+import { useGearListView } from "./gearListFilter.ts"
+
 export const WeaponsSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const openItemDetails = useOpenItemDetails()
   const weapons = useRunnerSelector(ItemSelectors.selectByType, { itemType: ItemType.weapon }) as ItemCatalog<WeaponData>
   const weaponFormDialog = useWeaponFormDialog()
+  const gearListView = useGearListView()
 
   const handleEditWeapon = async (weapon?: WeaponData) => {
     const saved = await weaponFormDialog.open({ weapon })
@@ -25,8 +28,8 @@ export const WeaponsSectionContent: FC = () => {
   }
 
   return (
-    <Stack>
-      {Object.values(weapons).map((item) => (
+    <ItemCardGrid>
+      {gearListView(Object.values(weapons)).map((item) => (
         <WeaponDataCard
           key={item.id}
           weapon={item}
@@ -36,6 +39,6 @@ export const WeaponsSectionContent: FC = () => {
       ))}
 
       {weaponFormDialog.outlet}
-    </Stack>
+    </ItemCardGrid>
   )
 }

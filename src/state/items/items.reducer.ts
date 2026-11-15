@@ -54,6 +54,10 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     ItemStateUtils.reconcileState(state, action.payload.id, previousState)
   })
 
+  addCase(ItemActions.sellItem, (state, action) => {
+    ItemStateUtils.sellItemById(state, action.payload.id, action.payload.sellAttachments)
+  })
+
   addCase(RunnerActions.load, (_state, { payload }) => {
     return getItemCatalog(payload)
   })

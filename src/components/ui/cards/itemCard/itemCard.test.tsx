@@ -115,4 +115,35 @@ describe("ItemCard", () => {
     // Arrange / Act / Assert
     expect(ItemCard.Layout).toBe(EntityCard.Layout)
   })
+
+  it("puts the cost on the name's row when the card has nothing else to show", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, name: "Micro-Recorder", cost: 100 }
+
+    // Act
+    render(<ItemCard item={item} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    const titleRow = screen.getByText("Micro-Recorder").closest("[data-card-row='header']")
+    expect(titleRow?.textContent).toContain("100")
+  })
+
+  it("keeps the cost in the footer when the card has a body", () => {
+    // Arrange
+    const item: ItemData = { ...baseItem, name: "Medkit", cost: 1000 }
+
+    // Act
+    render(
+      <ItemCard item={item}>
+        <ItemCard.Layout.BodyRow>
+          <ItemCardElements.Stat label="Rating" value={6} />
+        </ItemCard.Layout.BodyRow>
+      </ItemCard>,
+      { wrapper: ThemeWrapper },
+    )
+
+    // Assert
+    const titleRow = screen.getByText("Medkit").closest("[data-card-row='header']")
+    expect(titleRow?.textContent).not.toContain("1,000")
+  })
 })

@@ -119,4 +119,42 @@ describe("useCloseOnBrowserBack", () => {
     expect(history.location.pathname).toBe("/three")
     expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBeUndefined()
   })
+
+  it("a dialog opened as another closes keeps its own guard entry", async () => {
+    // Arrange — closing one dialog and opening the next in the same tick, as an action list does
+    // when a picked action opens its own dialog.
+    function ChainedDialogs() {
+      const [first, setFirst] = useState(true)
+      const [second, setSecond] = useState(false)
+      useCloseOnBrowserBack(first, () => setFirst(false))
+      useCloseOnBrowserBack(second, () => setSecond(false))
+      return (
+        <div>
+          <span>{second ? "second open" : "second closed"}</span>
+          <button
+            onClick={() => {
+              setFirst(false)
+              setSecond(true)
+            }}
+          >
+            next
+          </button>
+        </div>
+      )
+    }
+    const history = createMemoryHistory({ initialEntries: ["/"] })
+    const router = createRouter({ routeTree: createRootRoute({ component: ChainedDialogs }), history })
+    render(<RouterProvider router={router} />)
+    await act(async () => {})
+
+    // Act
+    await act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "next" }))
+    })
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
+
+    // Assert — the first dialog's pop didn't close the second, which owns the one guard entry.
+    expect(screen.getByText("second open")).toBeTruthy()
+    expect(history.length).toBe(2)
+  })
 })

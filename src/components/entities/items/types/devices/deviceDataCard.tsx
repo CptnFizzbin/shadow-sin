@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -40,13 +41,7 @@ export const DeviceDataCard: FC<DeviceDataCardProps> = ({ device, onOpen, onEdit
           direction="column"
           sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
         >
-          {Object.values(programs).map((program) => (
-            <ItemCard.Subitem
-              key={program.id}
-              name={program.name}
-              stats={program.rating !== undefined ? [{ label: "Rating", value: program.rating }] : []}
-            />
-          ))}
+          <ItemAttachmentTree itemId={device.id} />
         </ItemCard.Layout.BodyRow>
       )}
     </ItemCard>

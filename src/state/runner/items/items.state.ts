@@ -1,12 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import { planItemSale } from "#/system/formulas/items/itemSale.ts"
 import { getItemState, reconcileItemState } from "#/system/formulas/items/itemStateRules.ts"
 import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, setDamage, setItem, setState } from "./items.actions.ts"
+import { addItem, patchItem, removeItem, sellItem, setDamage, setItem, setState } from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
 
@@ -70,10 +71,25 @@ function removeItemTree(state: ItemCatalog, id: UUID) {
   removeItemById(state, id)
 }
 
+/** Sells `id` as planned by `planItemSale`: removes what's sold and detaches what stays behind. */
+function sellItemById(state: ItemCatalog, id: UUID, sellAttachments: boolean) {
+  const { soldIds, detachedIds } = planItemSale(state, id, sellAttachments)
+
+  for (const detachedId of detachedIds) {
+    const detached = state[detachedId]
+    detached.items = { ...detached.items, parentId: null }
+  }
+
+  for (const soldId of soldIds) {
+    removeItemById(state, soldId)
+  }
+}
+
 export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
+  sellItemById,
   /** Applies a write's Item State rules to one Item — see `reconcileItemState`. */
   reconcileState: reconcileItemState,
 }
@@ -120,6 +136,9 @@ export const gearReducer = createReducer(initialState, (builder) => {
       const previousState = getItemState(item)
       item.state = action.payload.state
       reconcileItemState(state, action.payload.id, previousState)
+    })
+    .addCase(sellItem, (state, action) => {
+      sellItemById(state, action.payload.id, action.payload.sellAttachments)
     })
     .addCase(setDamage, (state, action) => {
       const item = state[action.payload.itemId]

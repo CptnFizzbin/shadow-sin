@@ -32,6 +32,13 @@ export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("
  */
 export const setState = createAction<{ id: UUID, state: ItemState }>("gear/setState")
 
+/**
+ * Sells an Item for `salePrice` nuyen, crediting it to the Runner's Nuyen. Fixed Attachments are
+ * always sold with it; other Attachments are sold too when `sellAttachments` is set, and otherwise
+ * stay behind as top-level Items.
+ */
+export const sellItem = createAction<{ id: UUID, salePrice: number, sellAttachments: boolean }>("gear/sell")
+
 /** Sets one damage track on an item that implements `EntityWithDamage` (e.g. Agent, Vehicle) — a no-op if the item doesn't have that track. */
 export const setDamage = createAction<{ itemId: UUID, track: DamageTrackKey, value: number }>("gear/setDamage")
 
@@ -89,6 +96,7 @@ export const ItemActions = {
   patchItem,
   removeItem,
   setState,
+  sellItem,
   setDamage,
 
   licenses,

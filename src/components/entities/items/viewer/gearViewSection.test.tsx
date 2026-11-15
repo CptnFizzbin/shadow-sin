@@ -3,9 +3,11 @@ import { describe, expect, it } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
+import { GearListFilterContext } from "./gearListFilter.ts"
 import { GearSection } from "./gearSectionTypes.ts"
 import { GearViewSection } from "./gearViewSection.tsx"
 
@@ -19,7 +21,7 @@ const trodes: ItemData = {
 describe("GearViewSection", () => {
   it("renders nothing for a section with no items", () => {
     // Arrange / Act
-    renderWithRunner(<GearViewSection section={GearSection.Weapons} searchTerms={[]} />, { [trodes.id]: trodes })
+    renderWithRunner(<GearViewSection section={GearSection.Weapons} />, { [trodes.id]: trodes })
 
     // Assert
     expect(screen.queryByText(GearSection.Weapons)).toBeNull()
@@ -27,10 +29,23 @@ describe("GearViewSection", () => {
 
   it("is expanded by default when the section has items", () => {
     // Arrange / Act
-    renderWithRunner(<GearViewSection section={GearSection.Misc} searchTerms={[]} />, { [trodes.id]: trodes })
+    renderWithRunner(<GearViewSection section={GearSection.Misc} />, { [trodes.id]: trodes })
 
     // Assert
     expect(screen.getByText(GearSection.Misc)).toBeDefined()
     expect(screen.getByText(GearSection.Misc).closest("[aria-expanded]")?.getAttribute("aria-expanded")).toBe("true")
+  })
+
+  it("renders nothing when the gear list filter leaves the section empty", () => {
+    // Arrange / Act
+    renderWithRunner(
+      <GearListFilterContext.Provider value={{ includes: (item) => item.state === ItemState.stashed }}>
+        <GearViewSection section={GearSection.Misc} />
+      </GearListFilterContext.Provider>,
+      { [trodes.id]: trodes },
+    )
+
+    // Assert
+    expect(screen.queryByText(GearSection.Misc)).toBeNull()
   })
 })

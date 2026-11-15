@@ -1,6 +1,6 @@
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
 import { useVehicleFormDialog } from "#/components/entities/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { VehicleDataCard } from "#/components/entities/items/types/vehicles/vehicleDataCard.tsx"
 import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
@@ -13,11 +13,14 @@ import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
 import { isVehicleData } from "#/system/model/items/vehicleData.ts"
 
+import { useGearListView } from "./gearListFilter.ts"
+
 export const VehiclesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const openItemDetails = useOpenItemDetails()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
   const vehicleFormDialog = useVehicleFormDialog()
+  const gearListView = useGearListView()
 
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
@@ -30,8 +33,8 @@ export const VehiclesSectionContent: FC = () => {
   }
 
   return (
-    <Stack>
-      {vehicles.map((vehicle) => (
+    <ItemCardGrid>
+      {gearListView(vehicles).map((vehicle) => (
         <VehicleDataCard
           key={vehicle.id}
           vehicle={vehicle}
@@ -41,6 +44,6 @@ export const VehiclesSectionContent: FC = () => {
       ))}
 
       {vehicleFormDialog.outlet}
-    </Stack>
+    </ItemCardGrid>
   )
 }
