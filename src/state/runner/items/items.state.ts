@@ -1,13 +1,28 @@
 import { createReducer } from "@reduxjs/toolkit"
 
 import { planItemSale } from "#/system/formulas/items/itemSale.ts"
-import { getItemState, reconcileItemState } from "#/system/formulas/items/itemStateRules.ts"
+import {
+  getItemState,
+  getItemStateActions,
+  ItemStateAction,
+  reconcileItemState,
+} from "#/system/formulas/items/itemStateRules.ts"
 import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, sellItem, setDamage, setItem, setState } from "./items.actions.ts"
+import {
+  addItem,
+  consumeItem,
+  patchItem,
+  removeItem,
+  sellItem,
+  setDamage,
+  setItem,
+  setState,
+} from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
 
@@ -85,11 +100,31 @@ function sellItemById(state: ItemCatalog, id: UUID, sellAttachments: boolean) {
   }
 }
 
+/**
+ * Consumes one unit of `id`: makes it Active and lowers its `quantity` by one. A no-op unless the
+ * Item currently offers Consume (an Available Consumable with a unit left) and ends up Active.
+ */
+function consumeItemById(state: ItemCatalog, id: UUID) {
+  const item = state[id]
+  if (!item || !getItemStateActions(item).includes(ItemStateAction.consume)) return
+
+  const previousState = getItemState(item)
+  item.state = ItemState.active
+  reconcileItemState(state, id, previousState)
+
+  // An Attachment can't be more active than its parent, so reconciling may have refused Active —
+  // nothing was taken then, and no unit is spent.
+  if (getItemState(item) === ItemState.active) {
+    item.quantity = (item.quantity ?? 1) - 1
+  }
+}
+
 export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
   sellItemById,
+  consumeItemById,
   /** Applies a write's Item State rules to one Item — see `reconcileItemState`. */
   reconcileState: reconcileItemState,
 }
@@ -139,6 +174,9 @@ export const gearReducer = createReducer(initialState, (builder) => {
     })
     .addCase(sellItem, (state, action) => {
       sellItemById(state, action.payload.id, action.payload.sellAttachments)
+    })
+    .addCase(consumeItem, (state, action) => {
+      consumeItemById(state, action.payload.id)
     })
     .addCase(setDamage, (state, action) => {
       const item = state[action.payload.itemId]

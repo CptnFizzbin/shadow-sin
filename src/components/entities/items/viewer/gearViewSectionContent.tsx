@@ -4,6 +4,7 @@ import { ImplantItemList } from "#/components/entities/items/types/implants/impl
 import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
 
 import { ArmorSectionContent } from "./armorSectionContent.tsx"
+import { ConsumablesSectionContent } from "./consumablesSectionContent.tsx"
 import { DevicesSectionContent } from "./devicesSectionContent.tsx"
 import { GearSection } from "./gearSectionTypes.ts"
 import { MiscSectionContent } from "./miscSectionContent.tsx"
@@ -28,6 +29,8 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({ sectio
       return <VehiclesSectionContent />
     case GearSection.Devices:
       return <DevicesSectionContent />
+    case GearSection.Consumables:
+      return <ConsumablesSectionContent />
     default:
       return <MiscSectionContent />
   }

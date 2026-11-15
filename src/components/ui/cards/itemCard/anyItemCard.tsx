@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { ArmorDataCard } from "#/components/entities/items/types/armor/armorDataCard.tsx"
+import { DrugDataCard } from "#/components/entities/items/types/consumables/drugDataCard.tsx"
 import { CredstickDataCard } from "#/components/entities/items/types/credsticks/credstickDataCard.tsx"
 import { AgentDataCard } from "#/components/entities/items/types/devices/agentDataCard.tsx"
 import { DeviceDataCard } from "#/components/entities/items/types/devices/deviceDataCard.tsx"
@@ -13,6 +14,7 @@ import { VehicleDataCard } from "#/components/entities/items/types/vehicles/vehi
 import { WeaponDataCard } from "#/components/entities/items/types/weapons/weaponDataCard.tsx"
 import { isAgentData } from "#/system/model/items/agentData.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { isDrugData } from "#/system/model/items/consumableData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
@@ -76,6 +78,11 @@ export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemo
 
     case ItemType.vehicle:
       return <VehicleDataCard vehicle={item as VehicleData} onOpen={onOpen} onEdit={onEdit} />
+
+    case ItemType.consumable:
+      return isDrugData(item)
+        ? <DrugDataCard drug={item} onOpen={onOpen} onEdit={onEdit} />
+        : <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
 
     case ItemType.other:
       return <OtherDataCard item={item} onOpen={onOpen} onEdit={onEdit} />

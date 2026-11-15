@@ -138,6 +138,9 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
             {itemState === ItemState.implanted && (
               <ItemDetailsSlot.Status icon={Icons.item.implanted} label="Implanted" color="success" />
             )}
+            {itemState === ItemState.active && (
+              <ItemDetailsSlot.Status icon={Icons.item.active} label="Active" color="success" />
+            )}
             {itemState === ItemState.stashed && (
               <ItemDetailsSlot.Status icon={Icons.item.stashed} label="Stashed" />
             )}

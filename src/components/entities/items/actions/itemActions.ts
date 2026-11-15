@@ -19,6 +19,8 @@ export enum ItemAction {
   extract = "extract",
   stash = "stash",
   unstash = "unstash",
+  consume = "consume",
+  endEffect = "endEffect",
   attack = "attack",
   run = "run",
   edit = "edit",
@@ -45,6 +47,8 @@ const itemActionForStateAction: Record<ItemStateAction, ItemAction> = {
   [ItemStateAction.extract]: ItemAction.extract,
   [ItemStateAction.stash]: ItemAction.stash,
   [ItemStateAction.unstash]: ItemAction.unstash,
+  [ItemStateAction.consume]: ItemAction.consume,
+  [ItemStateAction.endEffect]: ItemAction.endEffect,
 }
 
 const stateActionForItemAction: Partial<Record<ItemAction, ItemStateAction>> = {
@@ -54,6 +58,8 @@ const stateActionForItemAction: Partial<Record<ItemAction, ItemStateAction>> = {
   [ItemAction.extract]: ItemStateAction.extract,
   [ItemAction.stash]: ItemStateAction.stash,
   [ItemAction.unstash]: ItemStateAction.unstash,
+  [ItemAction.consume]: ItemStateAction.consume,
+  [ItemAction.endEffect]: ItemStateAction.endEffect,
 }
 
 /** The actions an Item offers, in the order its actions dialog lists them. */
@@ -82,7 +88,7 @@ export function getItemActions(
   return actions
 }
 
-/** The on-screen label for an Item's state, e.g. Equipped, Implanted, Available, Loaded, or Stashed. */
+/** The on-screen label for an Item's state, e.g. Equipped, Implanted, Active, Available, Loaded, or Stashed. */
 export function getItemStateDisplayLabel(item: ItemData): string {
   return getItemStateLabel(item.itemType, getItemState(item))
 }

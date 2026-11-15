@@ -385,12 +385,12 @@ Licence on a SIN. Attachments can have attachments of their own.
 _Avoid_: child item, accessory (too weapon-specific), mod
 
 **Item State**:
-Where an Item is right now — exactly one of **Equipped**, **Implanted**, **Available**, or
-**Stashed**. The kind of Item decides which it can be in: weapons, armor, devices, and other gear
-can be Equipped; implants can be Implanted; programs, software, vehicles, credsticks, SINs,
-Licences, and weapon accessories can only be Available or Stashed. An Item's GameEffects apply only
-while it is Equipped or Implanted. Changing an Item's state changes its Attachments' too, and an
-Attachment is never further from use than its parent allows.
+Where an Item is right now — exactly one of **Equipped**, **Implanted**, **Active**, **Available**,
+or **Stashed**. The kind of Item decides which it can be in: weapons, armor, devices, and other gear
+can be Equipped; implants can be Implanted; Consumables can be Active; programs, software,
+vehicles, credsticks, SINs, Licences, and weapon accessories can only be Available or Stashed. An
+Item's GameEffects apply only while it is Equipped, Implanted, or Active. Changing an Item's state
+changes its Attachments' too, and an Attachment is never further from use than its parent allows.
 _Avoid_: carry status, condition
 
 **Equipped**:
@@ -400,19 +400,35 @@ An Item actively worn or wielded right now, as opposed to merely owned.
 An implant installed in the Runner's body. Removing it again is **Extracting** it.
 _Avoid_: equipped (for implants), installed
 
+**Active**:
+A Consumable that has been taken and is in effect right now. **Consuming** an Available Consumable
+uses up one unit of its quantity and makes it Active; **ending the effect** makes it Available
+again. An Active Consumable can't be Stashed.
+_Avoid_: equipped, in use
+
 **Available**:
-An Item the Runner has on hand but isn't using — neither Equipped nor Implanted. Un-stashing an
+An Item the Runner has on hand but isn't using — not Equipped, Implanted, or Active. Un-stashing an
 Item always makes it Available. For a Program or software, Available is shown as **Loaded**.
 _Avoid_: confusing with **Availability**, an unrelated Item term; carried
 
 **On Hand**:
-Any Item that isn't **Stashed** — Available, Equipped, or Implanted.
-_Avoid_: available (Available excludes Equipped and Implanted Items)
+Any Item that isn't **Stashed** — Available, Equipped, Implanted, or Active.
+_Avoid_: available (Available excludes Equipped, Implanted, and Active Items)
 
 **Stashed**:
 An Item left behind ("at the safehouse") rather than carried. Stashing an Item stashes its
 Attachments too. Stashed Items are greyed out and listed last.
 _Avoid_: unequipped (an Item can be on hand and unequipped, e.g. a spare pistol in a holster)
+
+**Consumable**:
+An Item that is used up, one unit at a time, to take effect — so far only **Drugs**. Its primary
+action is **Consume**, or **End Effect** while it is **Active**.
+_Avoid_: disposable, expendable
+
+**Drug**:
+A Consumable compound, described by its **Duration**, **Effects**, and **Crash** (what happens when
+it wears off). The mechanical changes it makes are its GameEffects.
+_Avoid_: compound (as an Item name), chem
 
 **Vehicle**:
 An Item with its own stat block (Pilot, Sensor, Armor, Body, damage track) that needs a

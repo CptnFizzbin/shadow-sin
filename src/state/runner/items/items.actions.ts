@@ -33,6 +33,13 @@ export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("
 export const setState = createAction<{ id: UUID, state: ItemState }>("gear/setState")
 
 /**
+ * Consumes one unit of a Consumable: it becomes Active, so its Game Effects apply, and its
+ * quantity drops by one. Ignored unless the Item is an Available Consumable with a unit left.
+ * End the effect with `setState` back to Available.
+ */
+export const consumeItem = createAction<{ id: UUID }>("gear/consume")
+
+/**
  * Sells an Item for `salePrice` nuyen, crediting it to the Runner's Nuyen. Fixed Attachments are
  * always sold with it; other Attachments are sold too when `sellAttachments` is set, and otherwise
  * stay behind as top-level Items.
@@ -96,6 +103,7 @@ export const ItemActions = {
   patchItem,
   removeItem,
   setState,
+  consumeItem,
   sellItem,
   setDamage,
 

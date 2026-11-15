@@ -18,17 +18,17 @@ function isItemStateAllowed(itemType: ItemType, state: ItemState): boolean {
   return getAllowedItemStates(itemType).includes(state)
 }
 
-/** Whether `state` is one in which an Item's Game Effects apply (Equipped or Implanted). */
+/** Whether `state` is one in which an Item's Game Effects apply (Equipped, Implanted, or Active). */
 function isActiveItemState(state: ItemState): boolean {
-  return state === ItemState.equipped || state === ItemState.implanted
+  return state === ItemState.equipped || state === ItemState.implanted || state === ItemState.active
 }
 
-/** The active state an Item of `itemType` can be in (Equipped or Implanted), if it has one. */
+/** The active state an Item of `itemType` can be in (Equipped, Implanted, or Active), if it has one. */
 export function getActiveItemState(itemType: ItemType): ItemState | undefined {
   return getAllowedItemStates(itemType).find(isActiveItemState)
 }
 
-/** Whether `item` is Equipped or Implanted — the only states in which its Game Effects apply. */
+/** Whether `item` is Equipped, Implanted, or Active — the only states in which its Game Effects apply. */
 export function isItemActive(item: Pick<ItemData, "state">): boolean {
   return isActiveItemState(getItemState(item))
 }
@@ -60,6 +60,8 @@ export function getItemStateLabel(itemType: ItemType, state: ItemState): string 
       return "Equipped"
     case ItemState.implanted:
       return "Implanted"
+    case ItemState.active:
+      return "Active"
     case ItemState.stashed:
       return "Stashed"
     case ItemState.available:
@@ -75,6 +77,10 @@ export enum ItemStateAction {
   extract = "extract",
   stash = "stash",
   unstash = "unstash",
+  /** Use up one unit of a Consumable, making it Active. */
+  consume = "consume",
+  /** End an Active Consumable's effects. */
+  endEffect = "endEffect",
 }
 
 /** The state each {@link ItemStateAction} moves an Item into. */
@@ -85,25 +91,45 @@ export const itemStateActionTargets: Record<ItemStateAction, ItemState> = {
   [ItemStateAction.extract]: ItemState.available,
   [ItemStateAction.stash]: ItemState.stashed,
   [ItemStateAction.unstash]: ItemState.available,
+  [ItemStateAction.consume]: ItemState.active,
+  [ItemStateAction.endEffect]: ItemState.available,
+}
+
+/** Whether `item` has a unit left to Consume. An Item with no stored quantity has one. */
+export function hasUnitsToConsume(item: Pick<ItemData, "quantity">): boolean {
+  return (item.quantity ?? 1) >= 1
+}
+
+/** The action that moves an Available Item of `itemType` into its active state, if it has one. */
+function getActivateAction(item: Pick<ItemData, "itemType" | "quantity">): ItemStateAction[] {
+  switch (getActiveItemState(item.itemType)) {
+    case ItemState.equipped:
+      return [ItemStateAction.equip]
+    case ItemState.implanted:
+      return [ItemStateAction.implant]
+    case ItemState.active:
+      return hasUnitsToConsume(item) ? [ItemStateAction.consume] : []
+    default:
+      return []
+  }
 }
 
 /**
- * The actions an Item's action menu offers, given its type and current state. A Stashed Item only
- * offers Unstash — the Player Unstashes before Equipping or Implanting it.
+ * The actions an Item's action menu offers, given its type, current state, and (for a Consumable)
+ * how many units it has left. A Stashed Item only offers Unstash — the Player Unstashes before
+ * Equipping, Implanting, or Consuming it. An Active Consumable only offers End Effect, since what's
+ * already been taken can't be put away.
  */
-export function getItemStateActions(item: Pick<ItemData, "itemType" | "state">): ItemStateAction[] {
+export function getItemStateActions(item: Pick<ItemData, "itemType" | "state" | "quantity">): ItemStateAction[] {
   switch (getItemState(item)) {
-    case ItemState.available: {
-      const activeState = getActiveItemState(item.itemType)
-      const activate = activeState === ItemState.equipped
-        ? [ItemStateAction.equip]
-        : activeState === ItemState.implanted ? [ItemStateAction.implant] : []
-      return [...activate, ItemStateAction.stash]
-    }
+    case ItemState.available:
+      return [...getActivateAction(item), ItemStateAction.stash]
     case ItemState.equipped:
       return [ItemStateAction.unequip, ItemStateAction.stash]
     case ItemState.implanted:
       return [ItemStateAction.extract, ItemStateAction.stash]
+    case ItemState.active:
+      return [ItemStateAction.endEffect]
     case ItemState.stashed:
       return [ItemStateAction.unstash]
   }

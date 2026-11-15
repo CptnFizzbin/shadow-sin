@@ -1,5 +1,6 @@
 import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 
+import type { ConsumableType } from "./consumableData.ts"
 import type { VehicleCategory } from "./vehicleData.ts"
 import type { WeaponType } from "./weaponData.ts"
 
@@ -14,6 +15,7 @@ export type AddItemSectionWithSubtype =
   | GearSection.Weapons
   | GearSection.Vehicles
   | GearSection.Licenses
+  | GearSection.Consumables
 
 /**
  * Resolved from the Add Item workflow's Select Type / Select Subtype steps —
@@ -24,10 +26,12 @@ export type AddItemSelection =
   | { section: GearSection.Weapons, weaponType: WeaponType }
   | { section: GearSection.Vehicles, vehicleCategory: VehicleCategory }
   | { section: GearSection.Licenses, licenseKind: LicenseKind }
+  | { section: GearSection.Consumables, consumableType: ConsumableType }
   | { section: Exclude<GearSection, AddItemSectionWithSubtype> }
 
 export function sectionHasSubtypeStep(section: GearSection): section is AddItemSectionWithSubtype {
   return section === GearSection.Weapons
     || section === GearSection.Vehicles
     || section === GearSection.Licenses
+    || section === GearSection.Consumables
 }

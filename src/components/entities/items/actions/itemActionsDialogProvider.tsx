@@ -39,11 +39,16 @@ export const ItemActionsDialogProvider: FC<PropsWithChildren> = ({ children }) =
       case ItemAction.implant:
       case ItemAction.extract:
       case ItemAction.stash:
-      case ItemAction.unstash: {
+      case ItemAction.unstash:
+      case ItemAction.endEffect: {
         const state = getItemActionTargetState(action)
         if (state) dispatch(Actions.item.setState({ id: item.id, state }))
         break
       }
+
+      case ItemAction.consume:
+        dispatch(Actions.item.consumeItem({ id: item.id }))
+        break
 
       case ItemAction.attack:
         // `getItemActions` only offers Attack for weapons.

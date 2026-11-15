@@ -3,6 +3,7 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import {
+  RiCapsuleLine,
   RiCarLine,
   RiCpuLine,
   RiIdCardLine,
@@ -23,6 +24,7 @@ const categoryIcons: Record<GearSection, IconComponent> = {
   [GearSection.Vehicles]: RiCarLine,
   [GearSection.Devices]: RiSmartphoneLine,
   [GearSection.Licenses]: RiIdCardLine,
+  [GearSection.Consumables]: RiCapsuleLine,
   [GearSection.Misc]: RiShapesLine,
 }
 

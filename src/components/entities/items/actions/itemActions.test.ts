@@ -49,6 +49,23 @@ describe.concurrent("getItemActions", () => {
     expect(actions).not.toContain(ItemAction.attack)
   })
 
+  it("offers Consume first for an Available Consumable, and only End Effect once it's Active", () => {
+    // Arrange
+    const availableDrug = makeItem({ itemType: ItemType.consumable, state: ItemState.available, quantity: 2 })
+    const activeDrug = makeItem({ itemType: ItemType.consumable, state: ItemState.active, quantity: 1 })
+
+    // Act
+    const availableActions = getItemActions(availableDrug, { isAttachment: false, isViewer: true })
+    const activeActions = getItemActions(activeDrug, { isAttachment: false, isViewer: true })
+
+    // Assert
+    expect(availableActions[0]).toBe(ItemAction.consume)
+    expect(availableActions).not.toContain(ItemAction.endEffect)
+    expect(activeActions[0]).toBe(ItemAction.endEffect)
+    expect(activeActions).not.toContain(ItemAction.consume)
+    expect(activeActions).not.toContain(ItemAction.stash)
+  })
+
   it("offers Unequip for an equipped Item and Extract for an implanted one", () => {
     // Arrange
     const weapon = makeItem({ state: ItemState.equipped })
@@ -145,6 +162,8 @@ describe.concurrent("getItemActionTargetState", () => {
     // Arrange / Act / Assert
     expect(getItemActionTargetState(ItemAction.implant)).toBe(ItemState.implanted)
     expect(getItemActionTargetState(ItemAction.unstash)).toBe(ItemState.available)
+    expect(getItemActionTargetState(ItemAction.consume)).toBe(ItemState.active)
+    expect(getItemActionTargetState(ItemAction.endEffect)).toBe(ItemState.available)
     expect(getItemActionTargetState(ItemAction.sell)).toBeUndefined()
   })
 })

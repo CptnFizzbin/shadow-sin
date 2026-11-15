@@ -15,6 +15,7 @@ import { useAddItemDialogContext } from "#/components/entities/items/addItemDial
 import { getImplantEffectiveNuyenCost } from "#/components/entities/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
 import { ArmorSectionContent } from "#/components/entities/items/viewer/armorSectionContent.tsx"
+import { ConsumablesSectionContent } from "#/components/entities/items/viewer/consumablesSectionContent.tsx"
 import { DevicesSectionContent } from "#/components/entities/items/viewer/devicesSectionContent.tsx"
 import { GearSection as GearItemSection, sectionGearTypes } from "#/components/entities/items/viewer/gearSectionTypes.ts"
 import { MiscSectionContent } from "#/components/entities/items/viewer/miscSectionContent.tsx"
@@ -45,6 +46,7 @@ const itemSectionTypes: Record<Exclude<SectionHeader, SectionHeader.Lifestyle>, 
   [SectionHeader.Vehicles]: sectionGearTypes[GearItemSection.Vehicles],
   [SectionHeader.Devices]: sectionGearTypes[GearItemSection.Devices],
   [SectionHeader.Licenses]: sectionGearTypes[GearItemSection.Licenses],
+  [SectionHeader.Consumables]: sectionGearTypes[GearItemSection.Consumables],
   [SectionHeader.Misc]: sectionGearTypes[GearItemSection.Misc],
 }
 
@@ -176,6 +178,7 @@ const GearSectionContent: FC<{
   if (section === SectionHeader.Armor) return <ArmorSectionContent />
   if (section === SectionHeader.Vehicles) return <VehiclesSectionContent />
   if (section === SectionHeader.Devices) return <DevicesSectionContent />
+  if (section === SectionHeader.Consumables) return <ConsumablesSectionContent />
   if (section === SectionHeader.Misc) return <MiscSectionContent />
   if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
@@ -234,6 +237,7 @@ const GearSectionNuyen: FC<{
     [SectionHeader.Armor]: ItemType.armor,
     [SectionHeader.Vehicles]: ItemType.vehicle,
     [SectionHeader.Devices]: ItemType.device,
+    [SectionHeader.Consumables]: ItemType.consumable,
     [SectionHeader.Misc]: ItemType.other,
   }
 
