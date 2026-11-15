@@ -24,10 +24,10 @@ function RouteComponent() {
       <SectionHeader>Skills</SectionHeader>
 
       <Paper sx={{ margin: -1, marginBottom: 0 }} variant="elevation">
-        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as SkillsTabValue)}>
-          <Tab value="active" label="Active" sx={{ flexGrow: 1 }} />
-          <Tab value="knowledge" label="Knowledge" sx={{ flexGrow: 1 }} />
-          <Tab value="languages" label="Languages" sx={{ flexGrow: 1 }} />
+        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as SkillsTabValue)} variant="fullWidth">
+          <Tab value="active" label="Active" />
+          <Tab value="knowledge" label="Knowledge" />
+          <Tab value="languages" label="Languages" />
         </Tabs>
       </Paper>
 

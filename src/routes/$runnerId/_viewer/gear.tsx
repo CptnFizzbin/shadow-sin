@@ -65,9 +65,9 @@ function RouteComponent() {
       <Divider />
 
       <Paper sx={{ margin: -1, marginBottom: 0 }} variant="elevation">
-        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as GearTabValue)}>
-          <Tab value="available" label={`Available (${countOnTab("available")})`} sx={{ flexGrow: 1 }} />
-          <Tab value="stashed" label={`Stashed (${countOnTab("stashed")})`} sx={{ flexGrow: 1 }} />
+        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as GearTabValue)} variant="fullWidth">
+          <Tab value="available" label={`Available (${countOnTab("available")})`} />
+          <Tab value="stashed" label={`Stashed (${countOnTab("stashed")})`} />
         </Tabs>
       </Paper>
 

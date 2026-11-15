@@ -1,12 +1,11 @@
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
-import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
-import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { NuyenInput } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
@@ -18,27 +17,26 @@ export const NuyenSection: FC = () => {
   const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)
   const dispatch = useRunnerStoreDispatch()
 
-  const [adjustAmount, setAdjustAmount] = useState<string>("")
+  const [adjustValue, setAdjustValue] = useState<number | undefined>()
 
-  const adjustValue = parseInt(adjustAmount, 10)
-  const isAdjustValid = !Number.isNaN(adjustValue) && adjustValue > 0
+  const isAdjustValid = adjustValue !== undefined && adjustValue > 0
 
   const handleDeposit = () => {
     if (!isAdjustValid) return
     dispatch(Actions.nuyen.depositNuyen(adjustValue))
-    setAdjustAmount("")
+    setAdjustValue(undefined)
   }
 
   const handleWithdraw = () => {
     if (!isAdjustValid) return
     dispatch(Actions.nuyen.withdrawNuyen(adjustValue))
-    setAdjustAmount("")
+    setAdjustValue(undefined)
   }
 
   const handleSet = () => {
     if (!isAdjustValid) return
     dispatch(Actions.nuyen.setNuyenAmount(adjustValue))
-    setAdjustAmount("")
+    setAdjustValue(undefined)
   }
 
   return (
@@ -54,19 +52,7 @@ export const NuyenSection: FC = () => {
 
       <Grid container columns={3} spacing={1}>
         <Grid size={3}>
-          <TextField
-            label="Adjust"
-            type="number"
-            value={adjustAmount}
-            onChange={(e) => setAdjustAmount(e.target.value)}
-            slotProps={{
-              htmlInput: { min: 0 },
-              input: {
-                startAdornment: <InputAdornment position="start">¥</InputAdornment>,
-              },
-            }}
-            fullWidth
-          />
+          <NuyenInput label="Adjust" value={adjustValue} onChange={setAdjustValue} />
         </Grid>
 
         <Grid size={1}>
