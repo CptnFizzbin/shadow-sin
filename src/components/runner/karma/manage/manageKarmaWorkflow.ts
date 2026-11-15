@@ -6,7 +6,6 @@ export enum ManageKarmaStep {
   Earn = "Earn",
   Buy = "Buy",
   Spend = "Spend",
-  Sell = "Sell",
   Edit = "Edit",
 }
 
@@ -15,12 +14,11 @@ export const ManageKarmaStepLabels: Record<ManageKarmaStep, string> = {
   [ManageKarmaStep.Earn]: "Earn Karma",
   [ManageKarmaStep.Buy]: "Buy Karma",
   [ManageKarmaStep.Spend]: "Spend Karma",
-  [ManageKarmaStep.Sell]: "Sell Karma",
   [ManageKarmaStep.Edit]: "Edit Karma",
 }
 
 export interface ManageKarmaWorkflowData {
-  /** Karma to earn, buy, or sell. */
+  /** Karma to earn or buy. */
   amount: number
   /** Edit Karma's new current karma. */
   current: number

@@ -11,9 +11,9 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 import { ManageKarmaActions } from "./manageKarmaActions.tsx"
 import { ManageKarmaMenu } from "./manageKarmaMenu.tsx"
+import { ManageKarmaStepBuy } from "./manageKarmaStep.buy.tsx"
 import { ManageKarmaStepEarn } from "./manageKarmaStep.earn.tsx"
 import { ManageKarmaStepEdit } from "./manageKarmaStep.edit.tsx"
-import { ManageKarmaStepExchange } from "./manageKarmaStep.exchange.tsx"
 import { ManageKarmaStepSpend } from "./manageKarmaStep.spend.tsx"
 import { ManageKarmaTitle } from "./manageKarmaTitle.tsx"
 import { createManageKarmaData, ManageKarmaStep, ManageKarmaWorkflow, useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
@@ -46,13 +46,10 @@ const ManageKarmaDialogContent: FC<ControlledDialogProps> = ({ ctrl }) => {
           <ManageKarmaStepEarn />
         </ManageKarmaWorkflow.Step>
         <ManageKarmaWorkflow.Step step={ManageKarmaStep.Buy}>
-          <ManageKarmaStepExchange direction="buy" />
+          <ManageKarmaStepBuy />
         </ManageKarmaWorkflow.Step>
         <ManageKarmaWorkflow.Step step={ManageKarmaStep.Spend}>
           <ManageKarmaStepSpend />
-        </ManageKarmaWorkflow.Step>
-        <ManageKarmaWorkflow.Step step={ManageKarmaStep.Sell}>
-          <ManageKarmaStepExchange direction="sell" />
         </ManageKarmaWorkflow.Step>
         <ManageKarmaWorkflow.Step step={ManageKarmaStep.Edit}>
           <ManageKarmaStepEdit />
@@ -68,7 +65,7 @@ const ManageKarmaDialogContent: FC<ControlledDialogProps> = ({ ctrl }) => {
 
 /**
  * Wizard for every change to a Runner's karma: opens on a menu of workflows (earn, buy, spend,
- * sell, edit), and each workflow can step back to that menu.
+ * edit), and each workflow can step back to that menu.
  */
 export const ManageKarmaDialog: FC<ControlledDialogProps> = ({ ctrl }) => {
   const karma = useRunnerSelector(KarmaSelectors.select)

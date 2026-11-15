@@ -8,7 +8,7 @@ import type { ImprovementEntry } from "./improvements/improvementEntry.ts"
  * - `addKarma` — positive entry for karma awarded by the GM
  * - `spendKarma` — negative entry written by `applyImprovements` (one per improvement)
  * - `buyKarma` — positive entry for karma bought with nuyen
- * - `sellKarma` — negative entry for karma sold for nuyen
+ * - `sellKarma` — negative entry for karma sold for nuyen; never written, but may appear in saved ledgers
  * - `adjustKarma` — entry for a manual correction outside the rules; its amount is the change to
  *   current karma, and may be zero when only the total earned changed
  * - `undo` — refund entry produced by post-Save undo (reserved for v2; unused in v1)

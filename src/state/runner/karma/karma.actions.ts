@@ -42,17 +42,6 @@ export const buyKarma = createAction("karma/buyKarma", (amount: number, nuyenPer
   return { payload: { amount, nuyenCost, entry } }
 })
 
-/**
- * Trades karma for nuyen: lowers current karma by `amount` and deposits `amount × nuyenPerKarma`
- * nuyen. Throws from the reducer when the Runner has less than `amount` current karma.
- */
-export const sellKarma = createAction("karma/sellKarma", (amount: number, nuyenPerKarma: number) => {
-  requirePositiveAmount("sellKarma", amount)
-  const nuyenGain = amount * nuyenPerKarma
-  const entry = createLedgerEntry(-amount, `Sold ${amount} karma for ${formatNuyenAmount(nuyenGain)}`, "sellKarma")
-  return { payload: { amount, nuyenGain, entry } }
-})
-
 /** A manual correction to a Runner's karma, outside the earn/spend rules. */
 export interface KarmaAdjustment {
   /** Signed change to current karma. */
