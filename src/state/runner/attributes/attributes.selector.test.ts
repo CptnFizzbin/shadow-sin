@@ -14,6 +14,7 @@ import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
 import { NodeType } from "#/system/model/matrix/nodeType.ts"
+import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -28,6 +29,16 @@ const stateFor = (runner: RunnerData) => ({
   runner: runner,
   entity: runner,
   items: getItemCatalog(runner),
+})
+
+const improvedReflexes = (reactionBonus: number): AdeptPowerData => ({
+  kind: EntityKind.adeptPower,
+  type: "adeptPower",
+  id: "00000000-0000-4000-8000-000000000001",
+  name: "Improved Reflexes",
+  rating: reactionBonus,
+  costPerRating: 1.5,
+  effects: [{ type: GameEffectType.attrMod, target: AttributeKey.reaction, value: reactionBonus }],
 })
 
 /** @deprecated - use {@link stateFor} instead */
@@ -416,6 +427,22 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
     expect(breakdown).toEqual({ rawValue: 4, modifiers: [{ name: "Muscle Toner", value: 2 }], rating: 6 })
   })
 
+  it("adds an Adept Power's attrMod GameEffects, named after the Power", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.reaction] = 3
+        s.powers = [improvedReflexes(1)]
+      },
+    })
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.reaction })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 3, modifiers: [{ name: "Improved Reflexes", value: 1 }], rating: 4 })
+  })
+
   it("caps the rating at the metatype's augmented maximum", () => {
     // Arrange
     const [implant] = createItem({
@@ -458,6 +485,42 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
 
     // Assert
     expect(breakdown).toEqual({ rawValue: 3, modifiers: [], rating: 3 })
+  })
+})
+
+describe("AttrSelectors.selectAllRatings", () => {
+  it("returns every attribute's rating, including Adept Power modifiers", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.reaction] = 3
+        s.attributes[AttributeKey.agility] = 4
+        s.powers = [improvedReflexes(2)]
+      },
+    })
+
+    // Act
+    const ratings = AttrSelectors.selectAllRatings(stateFor(runner))
+
+    // Assert
+    expect(ratings[AttributeKey.reaction]).toBe(5)
+    expect(ratings[AttributeKey.agility]).toBe(4)
+  })
+
+  it("returns the same reference for a freshly assembled scope over the same Runner", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.powers = [improvedReflexes(1)]
+      },
+    })
+
+    // Act
+    const first = AttrSelectors.selectAllRatings(stateFor(runner))
+    const second = AttrSelectors.selectAllRatings(stateFor(runner))
+
+    // Assert
+    expect(second).toBe(first)
   })
 })
 

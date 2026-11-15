@@ -164,6 +164,22 @@ export namespace AttrSelectors {
     (breakdown) => breakdown.rating,
   )
 
+  /**
+   * Every attribute's rating (see {@link selectRating}) — including modifiers from Qualities, Items,
+   * Spells, Complex Forms, and Powers such as Adept Powers — keyed by attribute.
+   */
+  export const selectAllRatings = createMemoizedSelector(
+    ViewerStateSelectors.selectRunner,
+    ViewerStateSelectors.selectEntity.withTrait(isEntityWithAttrs),
+    ViewerStateSelectors.selectItems,
+    (runner, entity, items): AttributeCatalog => {
+      const scope = { runner, entity, items }
+      return Object.fromEntries(
+        Object.values(AttributeKey).map((attr) => [attr, selectRating(scope, { attr })]),
+      )
+    },
+  )
+
   export const forAttr = (attr: AttributeKey) => ({
     selectBase: injectOption(selectBase, { key: attr }),
     /** @deprecated - use `selectRawValue` or `selectRating` instead */
