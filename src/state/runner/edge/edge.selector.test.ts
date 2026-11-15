@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
+import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
 import { EdgeSelectors } from "./edge.selector.ts"
 
-const stateFor = (runner: RunnerData) => ({ runner, entity: runner })
+const stateFor = (runner: RunnerData) => ({ runner, entity: runner, items: getItemCatalog(runner) })
 
 describe("EdgeSelectors.selectMax", () => {
   it("returns the runner's Edge attribute value", () => {

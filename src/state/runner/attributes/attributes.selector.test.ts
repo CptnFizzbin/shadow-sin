@@ -5,6 +5,8 @@ import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import type { ImplantData } from "#/system/model/items/implantData.ts"
+import { ImplantType } from "#/system/model/items/implantData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -25,6 +27,7 @@ import { AttrSelectors } from "./attributes.selector.ts"
 const stateFor = (runner: RunnerData) => ({
   runner: runner,
   entity: runner,
+  items: getItemCatalog(runner),
 })
 
 /** @deprecated - use {@link stateFor} instead */
@@ -318,6 +321,73 @@ describe("AttrSelectors.selectValue — AI metatype", () => {
     // Act / Assert
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.response })).toBe(0)
     expect(AttrSelectors.selectValue(stateFor(runner), { key: AttributeKey.signal })).toBe(0)
+  })
+})
+
+describe("AttrSelectors.selectRawValue — Essence spent on implants", () => {
+  const magicianWithImplants = (implants: Pick<ImplantData, "state" | "essenceCost">[]) => runnerDataFactory({
+    items: createItemMap(implants.flatMap((implant) => createItem<ImplantData>({
+      name: "Cybereyes",
+      itemType: ItemType.implant,
+      implantType: ImplantType.cyberware,
+      ...implant,
+    }))),
+    afterBuild: (s) => {
+      s.biology.awakening = AwakeningType.Magician
+      s.attributes[AttributeKey.essence] = 6
+      s.attributes[AttributeKey.magic] = 5
+    },
+  })
+
+  it("reduces Essence and Magic by the rounded-up Essence cost of Implanted implants", () => {
+    // Arrange
+    const runner = magicianWithImplants([{ state: ItemState.implanted, essenceCost: 1.2 }])
+
+    // Act
+    const essence = AttrSelectors.selectRawValue(stateFor(runner), { attr: AttributeKey.essence })
+    const magic = AttrSelectors.selectRawValue(stateFor(runner), { attr: AttributeKey.magic })
+
+    // Assert
+    expect(essence).toBe(4)
+    expect(magic).toBe(3)
+  })
+
+  it("ignores implants that aren't Implanted", () => {
+    // Arrange
+    const runner = magicianWithImplants([
+      { state: ItemState.available, essenceCost: 1 },
+      { state: ItemState.stashed, essenceCost: 1 },
+    ])
+
+    // Act
+    const essence = AttrSelectors.selectRawValue(stateFor(runner), { attr: AttributeKey.essence })
+    const magic = AttrSelectors.selectRawValue(stateFor(runner), { attr: AttributeKey.magic })
+
+    // Assert
+    expect(essence).toBe(6)
+    expect(magic).toBe(5)
+  })
+
+  it("never reduces Magic below 0", () => {
+    // Arrange
+    const runner = magicianWithImplants([{ state: ItemState.implanted, essenceCost: 5.5 }])
+
+    // Act
+    const magic = AttrSelectors.selectRawValue(stateFor(runner), { attr: AttributeKey.magic })
+
+    // Assert
+    expect(magic).toBe(0)
+  })
+
+  it("leaves the stored base values unchanged", () => {
+    // Arrange
+    const runner = magicianWithImplants([{ state: ItemState.implanted, essenceCost: 2 }])
+
+    // Act
+    const magicBase = AttrSelectors.selectBase(stateFor(runner), { key: AttributeKey.magic })
+
+    // Assert
+    expect(magicBase).toBe(5)
   })
 })
 

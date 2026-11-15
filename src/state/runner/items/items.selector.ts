@@ -7,7 +7,7 @@ import { calculateArmorBulk } from "#/system/formulas/items/encumbranceUtils.ts"
 import { toItemCatalogTree } from "#/system/formulas/items/itemCatalogTree.ts"
 import type { ItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
 import { getItemMatrixStats } from "#/system/formulas/items/itemMatrixStats.ts"
-import { isItemActive, isItemEquipped, isItemOnHand, isItemStashed } from "#/system/formulas/items/itemStateRules.ts"
+import { isItemActive, isItemEquipped, isItemImplanted, isItemOnHand, isItemStashed } from "#/system/formulas/items/itemStateRules.ts"
 import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
@@ -154,6 +154,12 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       SelectorOptions.itemId,
       (items, itemId) => itemOfType(items, itemId, ItemType.implant),
+    )
+
+    /** Every implant currently Implanted in the Runner's body. */
+    export const selectImplanted = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      (items) => Object.values(filterRecordByType(items, ItemType.implant)).filter(isItemImplanted),
     )
   }
 
