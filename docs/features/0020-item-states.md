@@ -135,7 +135,7 @@ earlier migration, so they become Implanted. The PR that ships the migration mus
 
 ## Domain Notes
 
-New or changed `CONTEXT.md` terms (now in `CONTEXT.md`):
+New or changed `GLOSSARY.md` terms (now in `GLOSSARY.md`):
 
 - **Item State** (new): the one state an Item is in: Equipped, Implanted, Available, or Stashed. Its type decides
   which are allowed.

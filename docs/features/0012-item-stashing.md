@@ -138,7 +138,7 @@ not follow that structure:
 
 ## Domain Notes
 
-**Stash** and **Equipped** are now defined in `CONTEXT.md` (added alongside this doc). Summary:
+**Stash** and **Equipped** are now defined in `GLOSSARY.md` (added alongside this doc). Summary:
 `Equipped` (`ItemData.equipped`) says a *present* item is actively worn/wielded; `Stash`
 (`ItemData.stashed`) says an item isn't with the Runner at all right now. The gear reducer forces
 `equipped` to `false` the moment `stashed` becomes `true`, remembering the prior value internally

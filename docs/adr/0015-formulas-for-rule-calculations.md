@@ -106,7 +106,7 @@ if it doesn't.
   signature and every call site are unaffected. For `selectWoundIntervalModifier` specifically,
   this means the *whole* combiner body moves, GameEffect walking included — see below.
 - The Selector/Formula split — a Selector *collects* what a calculation needs from state, a
-  Formula *decides* what the rule says — is defined by this ADR. `CONTEXT.md` stays free of
+  Formula *decides* what the rule says — is defined by this ADR. `GLOSSARY.md` stays free of
   code-structure terms, so neither is a glossary entry.
 - `GameEffect` accumulation (walking equipped items/Qualities for matching effects) and ledger
   summation move into `system/` as Formulas — `DamageFormulas.getWoundIntervalModifier({ qualities,

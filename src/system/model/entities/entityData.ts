@@ -13,11 +13,11 @@ export type EntityDamage<TTrack extends DamageTrackKey = DamageTrackKey> = { [tr
 
 /**
  * Base interface for anything with a stat block, ratings, or effects it can contribute — Item,
- * Quality, Spell, Adept Power, MatrixNode, etc. See CONTEXT.md's Entity glossary entry.
+ * Quality, Spell, Adept Power, MatrixNode, etc. See GLOSSARY.md's Entity glossary entry.
  *
  * `rating` is always a plain number. A category whose rating admits its own unrated/default case
  * (a Real SIN/Licence, a native Language skill) expresses that with its own explicit flag
- * (`isReal`, `isNative`) instead of a sentinel value here — see CONTEXT.md's **Rating** entry.
+ * (`isReal`, `isNative`) instead of a sentinel value here — see GLOSSARY.md's **Rating** entry.
  */
 export interface EntityData {
   kind: EntityKind

@@ -3,7 +3,7 @@ import { z } from "zod"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 /**
- * A language a Runner speaks — one of the three Skill flavours from CONTEXT.md's **Skill**
+ * A language a Runner speaks — one of the three Skill flavours from GLOSSARY.md's **Skill**
  * glossary entry. `isNative: true` is a starting native language — free, never improved with
  * Karma — while `isNative: false` carries a learned `rating`. Consumers branch on `isNative`;
  * `rating` is only meaningful (and only ever set) when `isNative` is `false`. `lingo` is an

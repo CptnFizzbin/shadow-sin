@@ -3,7 +3,7 @@
 > **Status:** Draft
 >
 > **GitHub Issues / PRs:**
-> <!-- Added after running /to-prd. A feature may generate multiple Issues (one per PR slice). -->
+> <!-- Added after running /to-spec. A feature may generate multiple Issues (one per PR slice). -->
 > - #??? — scope of this issue/PR
 
 The `system/` / `stores/` / `hooks/` / `lib/` split documented in AGENTS.md ("Key directories") is
@@ -36,7 +36,7 @@ becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a ma
       `pointBuy`, mirrored across all three layers: `system/builder/pointBuy/`,
       `stores/builder/pointBuy/`, `components/builder/pointBuy/`. See Slice 4.
 - [x] **One PR or several?** Resolved: several — one PR per slice below, per the repo's normal
-      feature-doc → PRD-Issue → PR lifecycle.
+      feature-doc → spec-Issue → PR lifecycle.
 
 ## Constraints
 
@@ -61,7 +61,7 @@ becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a ma
 ## Domain Notes
 
 No new domain terms. `pointBuy` names a source-tree domain after the existing **Build Points (BP)**
-glossary term (`CONTEXT.md`) — it doesn't introduce a new concept, just a home for BP-cost
+glossary term (`GLOSSARY.md`) — it doesn't introduce a new concept, just a home for BP-cost
 calculations that were previously scattered per-subject.
 
 ## Reorganization Plan
@@ -92,7 +92,7 @@ non-mechanical unit of work; Slice 5 stays optional/open per the Open Questions 
   it already claims to live" pass — Slice 4's new Selectors read existing `BuilderState` fields,
   they don't add any.
 - Renaming any domain type or constant — only file location changes; exported names stay the same
-  unless a slice's PRD says otherwise.
+  unless a slice's spec says otherwise.
 
 ## Related Features
 

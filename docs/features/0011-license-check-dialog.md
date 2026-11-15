@@ -135,11 +135,11 @@ Existing terms in play: **SIN**, **Licence**, **Availability**, **Restricted**, 
 but there only one side is rolled digitally — the opposing Hit count is entered manually, since
 the dice tray doesn't track an opposing character. License Check is a second consumer of the same
 concept: it rolls both sides digitally in one place, since both pools (credential rating,
-Verification System Rating) are values the app already tracks. `CONTEXT.md`'s `Opposed Test` entry
+Verification System Rating) are values the app already tracks. `GLOSSARY.md`'s `Opposed Test` entry
 was broadened to cover both call sites — this feature does not introduce a new term for its dice
 mechanic, it reuses the existing one.
 
-New terms this feature introduces to `CONTEXT.md`:
+New terms this feature introduces to `GLOSSARY.md`:
 
 - **License Check** — the simulated verification flow itself.
 - **Verification System Rating** — the 1–6 rating representing the scanning system's strength for
