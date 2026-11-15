@@ -49,7 +49,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
       }
 
   return (
-    <EntityCard entity={item} {...props} {...menuProps}>
+    <EntityCard entity={item} allowCompact={false} {...props} {...menuProps}>
       <EntityCard.Layout.TitleRight>
         <ItemCardElements.Quantity value={item.quantity} />
       </EntityCard.Layout.TitleRight>

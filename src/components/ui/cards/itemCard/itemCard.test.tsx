@@ -116,7 +116,7 @@ describe("ItemCard", () => {
     expect(ItemCard.Layout).toBe(EntityCard.Layout)
   })
 
-  it("puts the cost on the name's row when the card has nothing else to show", () => {
+  it("keeps the cost off the name's row even when the card has nothing else to show", () => {
     // Arrange
     const item: ItemData = { ...baseItem, name: "Micro-Recorder", cost: 100 }
 
@@ -125,7 +125,8 @@ describe("ItemCard", () => {
 
     // Assert
     const titleRow = screen.getByText("Micro-Recorder").closest("[data-card-row='header']")
-    expect(titleRow?.textContent).toContain("100")
+    expect(titleRow?.textContent).not.toContain("100")
+    expect(screen.getByText(/100/)).toBeTruthy()
   })
 
   it("keeps the cost in the footer when the card has a body", () => {

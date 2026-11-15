@@ -1,5 +1,6 @@
 import { createHashHistory, createRouter as createTanStackRouter } from "@tanstack/react-router"
 
+import { createDialogAwareScrollRestoration } from "./hooks/ui/dialog/dialogBackGuard.ts"
 import { getContext } from "./integrations/tanstackQuery/rootProvider.tsx"
 import { routeTree } from "./routeTree.gen.ts"
 
@@ -12,7 +13,9 @@ export function getRouter() {
 
     context: getContext(),
 
-    scrollRestoration: true,
+    // Opening and closing a dialog moves through history (see useCloseOnBrowserBack); restoring
+    // scroll for those moves would jump the page behind the dialog to the top.
+    scrollRestoration: createDialogAwareScrollRestoration(),
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
   })
