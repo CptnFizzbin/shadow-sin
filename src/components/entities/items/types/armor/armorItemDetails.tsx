@@ -50,7 +50,6 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
             onOpen={onOpenAttachment ? () => onOpenAttachment(mod) : undefined}
           />
         ))}
-
       </ItemDetailsRoot>
 
       {armorFormDialog.outlet}

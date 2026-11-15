@@ -4,6 +4,7 @@ import type { EntityWithItems } from "#/system/model/entities/entityTraits.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import type { AvailabilityInfo } from "./availabilityInfo.ts"
+import type { ItemState } from "./itemState.ts"
 import type { ItemType } from "./itemType.ts"
 
 /**
@@ -26,8 +27,8 @@ export interface ItemData extends EntityData, EntityWithItems {
   licenseId?: UUID | null
 
   notes?: string
-  equipped?: boolean
-  stashed?: boolean
+  /** Where the Item is right now; its type decides which states are allowed. Absent means Available. */
+  state?: ItemState
   fixed?: boolean
 
   wireless?: {
@@ -40,11 +41,6 @@ export interface ItemData extends EntityData, EntityWithItems {
    * Absent or `false` means the item is a node.
    */
   matrixDisabled?: boolean
-
-  /** State object to track data between states */
-  _state?: {
-    equipOnUnstash?: boolean
-  }
 }
 
 /**

@@ -10,6 +10,7 @@ import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { Icons } from "#/utils/icons.ts"
@@ -30,8 +31,7 @@ const TEST_ITEM: ItemData = {
   availability: { rating: 12, restricted: true },
   source: { book: "core", page: 425 },
   notes: "Multi-line notes render as pre-wrap:\nsecond line.\nthird line.",
-  equipped: true,
-  stashed: true,
+  state: ItemState.stashed,
   fixed: true,
   wireless: { enabled: false },
   effects: [
@@ -63,7 +63,7 @@ const SUBITEM_B: ItemData = {
  * `Availability`/`Quantity`/`Cost` all overriding their auto-rendered
  * default, a `Rating`, all six `Stat` colors, a `DamageTrack`, two
  * `Subitem`s, a `Footer`, a `Content` block, a custom `Status` chip
- * alongside the built-in equipped/stashed/wireless ones, and a custom
+ * alongside the built-in item state and wireless ones, and a custom
  * `QuickAction` alongside the built-in Edit/Remove — a single page to
  * visually check the whole slot system without hunting through real runner
  * data for an item that happens to use every slot.

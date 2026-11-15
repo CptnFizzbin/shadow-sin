@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { AnyItemCard } from "#/components/ui/cards/itemCard/anyItemCard.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -45,7 +46,7 @@ describe("ItemActionsDialogProvider", () => {
 
     // Assert
     const dialog = await screen.findByRole("dialog", { name: "Medkit" })
-    expect(dialog.textContent).toContain("Carried")
+    expect(dialog.textContent).toContain("Available")
     for (const label of ["Equip", "Stash", "Edit", "Sell", "Delete"]) {
       expect(screen.getByRole("button", { name: label })).toBeDefined()
     }
@@ -60,7 +61,7 @@ describe("ItemActionsDialogProvider", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Stash" }))
 
     // Assert
-    await waitFor(() => expect(getItemCatalog(store.getState().runner)[medkit.id].stashed).toBe(true))
+    await waitFor(() => expect(getItemCatalog(store.getState().runner)[medkit.id].state).toBe(ItemState.stashed))
   })
 
   it("Sell offers half the cost, credits it, and removes the Item", async () => {

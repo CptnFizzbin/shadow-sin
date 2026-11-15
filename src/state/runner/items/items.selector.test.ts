@@ -6,6 +6,7 @@ import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -40,39 +41,40 @@ const withGear = (...items: ItemData[]): ItemCatalog =>
     items: Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem])),
   }))
 
-describe.concurrent("ItemSelectors.selectEquipped", () => {
-  it("returns only items with equipped === true", () => {
+describe.concurrent("ItemSelectors.selectActive", () => {
+  it("returns Equipped and Implanted items", () => {
     // Arrange
-    const equippedItem = makeItem({ equipped: true })
-    const unequippedItem = makeItem({ equipped: false })
-    const catalog = withGear(unequippedItem, equippedItem)
+    const equippedItem = makeItem({ state: ItemState.equipped })
+    const implant = makeItem({ itemType: ItemType.implant, state: ItemState.implanted })
+    const availableItem = makeItem({ state: ItemState.available })
+    const catalog = withGear(availableItem, equippedItem, implant)
 
     // Act
-    const equipped = ItemSelectors.selectEquipped(stateFor(catalog))
+    const active = ItemSelectors.selectActive(stateFor(catalog))
 
     // Assert
-    expect(equipped).toEqual([equippedItem])
+    expect(active).toEqual([equippedItem, implant])
   })
 
-  it("excludes items with equipped false or absent", () => {
+  it("excludes Stashed items and items with no stored state", () => {
     // Arrange
-    const explicitlyUnequipped = makeItem({ equipped: false })
-    const equippedAbsent = makeItem()
-    const catalog = withGear(explicitlyUnequipped, equippedAbsent)
+    const stashedItem = makeItem({ state: ItemState.stashed })
+    const stateAbsent = makeItem()
+    const catalog = withGear(stashedItem, stateAbsent)
 
     // Act
-    const equipped = ItemSelectors.selectEquipped(stateFor(catalog))
+    const active = ItemSelectors.selectActive(stateFor(catalog))
 
     // Assert
-    expect(equipped).toEqual([])
+    expect(active).toEqual([])
   })
 })
 
 describe.concurrent("ItemSelectors.selectStashed", () => {
   it("returns only stashed items", () => {
     // Arrange
-    const stashedItem = makeItem({ stashed: true })
-    const carriedItem = makeItem({ stashed: false })
+    const stashedItem = makeItem({ state: ItemState.stashed })
+    const carriedItem = makeItem({ state: ItemState.available })
     const catalog = withGear(carriedItem, stashedItem)
 
     // Act
@@ -81,32 +83,30 @@ describe.concurrent("ItemSelectors.selectStashed", () => {
     // Assert
     expect(stashed).toEqual([stashedItem])
   })
-
-  it("excludes items with stashed false or absent", () => {
-    // Arrange
-    const explicitlyCarried = makeItem({ stashed: false })
-    const stashedAbsent = makeItem()
-    const catalog = withGear(explicitlyCarried, stashedAbsent)
-
-    // Act
-    const stashed = ItemSelectors.selectStashed(stateFor(catalog))
-
-    // Assert
-    expect(stashed).toEqual([])
-  })
 })
 
-describe.concurrent("ItemSelectors.selectAvailable", () => {
-  it("returns items that are not stashed", () => {
-    const catalog = withGear(item)
+describe.concurrent("ItemSelectors.selectOnHand", () => {
+  it("returns every item that is not stashed, active or not", () => {
+    // Arrange
+    const equippedItem = makeItem({ state: ItemState.equipped })
+    const catalog = withGear(item, equippedItem)
 
-    expect(ItemSelectors.selectAvailable(stateFor(catalog))).toEqual([item])
+    // Act
+    const onHand = ItemSelectors.selectOnHand(stateFor(catalog))
+
+    // Assert
+    expect(onHand).toEqual([item, equippedItem])
   })
 
   it("excludes stashed items", () => {
-    const catalog = withGear({ ...item, stashed: true })
+    // Arrange
+    const catalog = withGear({ ...item, state: ItemState.stashed })
 
-    expect(ItemSelectors.selectAvailable(stateFor(catalog))).toEqual([])
+    // Act
+    const onHand = ItemSelectors.selectOnHand(stateFor(catalog))
+
+    // Assert
+    expect(onHand).toEqual([])
   })
 })
 
@@ -315,14 +315,14 @@ describe("ItemSelectors.Armor.DiceGroups.selectArmor", () => {
     const [lighterArmor] = createItem<ArmorData>({
       name: "Armor Vest",
       itemType: ItemType.armor,
-      equipped: true,
+      state: ItemState.equipped,
       ballistic: 6,
       impact: 4,
     })
     const [armorJacket] = createItem<ArmorData>({
       name: "Armor Jacket",
       itemType: ItemType.armor,
-      equipped: true,
+      state: ItemState.equipped,
       ballistic: 8,
       impact: 6,
     })
@@ -330,7 +330,7 @@ describe("ItemSelectors.Armor.DiceGroups.selectArmor", () => {
     const [unequippedArmor] = createItem<ArmorData>({
       name: "Full Body Armor",
       itemType: ItemType.armor,
-      equipped: false,
+      state: ItemState.available,
       ballistic: 10,
       impact: 9,
     })

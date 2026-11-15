@@ -9,6 +9,13 @@ interface GearItem {
   weaponType?: string
   parentId?: string
   equipped?: boolean
+  state?: string
+}
+
+// A runner that already went through the later `replaceEquippedStashedWithState` migration (and is
+// re-running every migration) records an equipped weapon as `state: "equipped"` instead.
+function isEquipped(item: GearItem): boolean {
+  return item.equipped === true || item.state === "equipped"
 }
 
 const migration: CharacterMigration<{
@@ -27,7 +34,7 @@ const migration: CharacterMigration<{
       const rangedTypeStrings = rangedWeaponTypes.map(String)
 
       const anyMeleeEquipped = weapons.some(
-        (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && w.equipped,
+        (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && isEquipped(w),
       )
       if (!anyMeleeEquipped) {
         const firstMelee = weapons.find(
@@ -39,7 +46,7 @@ const migration: CharacterMigration<{
       }
 
       const anyRangedEquipped = weapons.some(
-        (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && w.equipped,
+        (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && isEquipped(w),
       )
       if (!anyRangedEquipped) {
         const firstRanged = weapons.find(

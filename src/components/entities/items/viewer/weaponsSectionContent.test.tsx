@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FirearmData } from "#/system/model/items/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/model/items/weaponData.ts"
@@ -24,7 +25,7 @@ const pistol: FirearmData = {
   ap: -1,
   skill: SkillKey.pistols,
   attribute: AttributeKey.agility,
-  equipped: false,
+  state: ItemState.available,
   recoil: 0,
   firemodes: ["SA"],
   attachmentPoints: [FirearmAttachmentPoint.Top],

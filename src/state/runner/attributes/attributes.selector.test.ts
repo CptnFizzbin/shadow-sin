@@ -6,6 +6,7 @@ import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
@@ -328,7 +329,7 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
     const [implant] = createItem({
       name: "Muscle Toner",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
     })
     const runner = runnerDataFactory({
@@ -350,7 +351,7 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
     const [implant] = createItem({
       name: "Muscle Toner",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 6 }],
     })
     const runner = runnerDataFactory({
@@ -373,7 +374,7 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
     const [implant] = createItem({
       name: "Muscle Toner",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
     })
     const runner = runnerDataFactory({ items: createItemMap([implant]) })
@@ -396,7 +397,7 @@ describe("AttrSelectors.selectRatingBreakdown with Encumbrance", () => {
     const [armor] = createItem<ArmorData>({
       name: "Heavy Armor",
       itemType: ItemType.armor,
-      equipped: true,
+      state: ItemState.equipped,
       ballistic: 10,
       impact: 6,
     })
@@ -455,7 +456,7 @@ describe("AttrSelectors.DiceGroups.selectAttr", () => {
     const [implant] = createItem({
       name: "Muscle Augmentation",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
     })
     const runner = runnerDataFactory({
@@ -496,7 +497,7 @@ describe("AttrSelectors.DiceGroups.selectAttr with Encumbrance", () => {
     const [armor] = createItem<ArmorData>({
       name: "Heavy Armor",
       itemType: ItemType.armor,
-      equipped: true,
+      state: ItemState.equipped,
       ballistic: 10,
       impact: 6,
     })

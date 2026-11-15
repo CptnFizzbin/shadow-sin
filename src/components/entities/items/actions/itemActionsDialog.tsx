@@ -22,15 +22,18 @@ import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { Icons } from "#/utils/icons.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
-import { getCarryStatusLabel, getItemActions, ItemAction } from "./itemActions.ts"
+import { getItemActions, getItemStateDisplayLabel, ItemAction } from "./itemActions.ts"
 
 const actionDisplay: Record<ItemAction, { label: string, icon: RemixiconComponentType }> = {
   [ItemAction.equip]: { label: "Equip", icon: RiCheckboxCircleLine },
   [ItemAction.unequip]: { label: "Unequip", icon: RiCloseCircleLine },
+  [ItemAction.implant]: { label: "Implant", icon: Icons.item.state.implant },
+  [ItemAction.extract]: { label: "Extract", icon: Icons.item.state.extract },
   [ItemAction.stash]: { label: "Stash", icon: RiArchive2Line },
   [ItemAction.unstash]: { label: "Unstash", icon: RiInboxUnarchiveLine },
   [ItemAction.attack]: { label: "Attack", icon: Icons.item.attack },
@@ -48,7 +51,11 @@ const ItemActionsDialog: FC<ItemActionsDialogProps> = ({ ctrl, item }) => {
   const { isViewer } = useEditorMode()
   const parent = useRunnerSelector(ItemSelectors.selectById, { itemId: item.items.parentId ?? NullUuid })
 
-  const actions = getItemActions(item, { isAttachment: !!parent, isViewer })
+  const actions = getItemActions(item, {
+    isAttachment: !!parent,
+    parentState: parent ? getItemState(parent) : undefined,
+    isViewer,
+  })
 
   return (
     <ControlledDialog ctrl={ctrl} maxWidth="xs">
@@ -56,7 +63,9 @@ const ItemActionsDialog: FC<ItemActionsDialogProps> = ({ ctrl, item }) => {
 
       <Dialog.Content>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {parent ? `Attached to ${parent.name} · ${getCarryStatusLabel(parent)}` : getCarryStatusLabel(item)}
+          {parent
+            ? `${getItemStateDisplayLabel(item)} · attached to ${parent.name} (${getItemStateDisplayLabel(parent)})`
+            : getItemStateDisplayLabel(item)}
         </Typography>
 
         <List aria-label="Item actions">

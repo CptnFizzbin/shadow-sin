@@ -4,6 +4,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import {
   SpellCategory,
@@ -63,7 +64,7 @@ describe("GameEffectSelectors.selectAll", () => {
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
@@ -81,7 +82,7 @@ describe("GameEffectSelectors.selectAll", () => {
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
       itemType: ItemType.implant,
-      equipped: false,
+      state: ItemState.available,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory({ items: createItemMap([synapticBooster]) })
@@ -93,7 +94,7 @@ describe("GameEffectSelectors.selectAll", () => {
     expect(effects).toEqual([])
   })
 
-  it("collects effects from gear with no equipped field", () => {
+  it("ignores effects from gear with no stored state, which is Available", () => {
     // Arrange
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
@@ -106,8 +107,24 @@ describe("GameEffectSelectors.selectAll", () => {
     const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
 
     // Assert
-    expect(effects).toHaveLength(1)
-    expect(effects[0]).toMatchObject({ type: GameEffectType.initiativeBonus, value: 1 })
+    expect(effects).toEqual([])
+  })
+
+  it("ignores effects from a type with no active state", () => {
+    // Arrange
+    const [autosoft] = createItem({
+      name: "Clearsight",
+      itemType: ItemType.program,
+      state: ItemState.available,
+      effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
+    })
+    const sheet = runnerDataFactory({ items: createItemMap([autosoft]) })
+
+    // Act
+    const effects = GameEffectSelectors.selectAll({ runner: sheet, items: getItemCatalog(sheet) })
+
+    // Assert
+    expect(effects).toEqual([])
   })
 
   it("collects effects from spells", () => {
@@ -224,7 +241,7 @@ describe("GameEffectSelectors.selectAll", () => {
     const [implant] = createItem({
       name: "Wired Reflexes",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory({
@@ -364,7 +381,7 @@ describe("GameEffectSelectors.selectByType", () => {
     const [implant] = createItem({
       name: "Wired Reflexes",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory({

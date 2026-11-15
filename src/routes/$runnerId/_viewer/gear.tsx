@@ -25,6 +25,7 @@ import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { searchGear } from "#/hooks/items/gearHooks.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { isItemStashed } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 
 type GearTabValue = "available" | "stashed"
@@ -33,7 +34,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
 })
 
-const isOnTab = (item: ItemData, tab: GearTabValue) => (tab === "stashed") === (item.stashed === true)
+const isOnTab = (item: ItemData, tab: GearTabValue) => (tab === "stashed") === isItemStashed(item)
 
 function RouteComponent() {
   const [activeTab, setActiveTab] = useState<GearTabValue>("available")

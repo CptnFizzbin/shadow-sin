@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
@@ -24,8 +25,8 @@ const makeWeapon = (id: string, name: string, overrides: Partial<WeaponData> = {
 })
 
 const holdout = makeWeapon("00000000-0000-0000-0000-000000000001", "Holdout Pistol")
-const predator = makeWeapon("00000000-0000-0000-0000-000000000002", "Ares Predator V", { equipped: true })
-const shotgun = makeWeapon("00000000-0000-0000-0000-000000000003", "Sawed-Off Shotgun", { stashed: true })
+const predator = makeWeapon("00000000-0000-0000-0000-000000000002", "Ares Predator V", { state: ItemState.equipped })
+const shotgun = makeWeapon("00000000-0000-0000-0000-000000000003", "Sawed-Off Shotgun", { state: ItemState.stashed })
 
 const renderSection = () => renderWithRunner(
   <AvailableGearFilter>

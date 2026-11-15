@@ -4,6 +4,7 @@ import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -63,7 +64,7 @@ describe.concurrent("CombatPoolSelectors defense tests", () => {
     const [armor] = createItem<ArmorData>({
       name: "Heavy Armor",
       itemType: ItemType.armor,
-      equipped: true,
+      state: ItemState.equipped,
       ballistic: 10,
       impact: 6,
     })

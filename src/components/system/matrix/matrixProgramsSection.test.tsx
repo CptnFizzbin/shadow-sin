@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
@@ -25,7 +26,7 @@ const stashedSpoof: ProgramData = {
   id: "00000000-0000-0000-0000-000000000002" as UUID,
   name: "Spoof",
   programType: ProgramType.spoof,
-  stashed: true,
+  state: ItemState.stashed,
 }
 
 describe("MatrixProgramsSection", () => {

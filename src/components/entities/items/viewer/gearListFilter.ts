@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react"
 
+import { isItemActive } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 
 /** Narrows the top-level Items a gear list shows, e.g. to the Gear page's current tab and search. */
@@ -10,9 +11,9 @@ export interface GearListFilter {
 /** The nearest gear list filter; lists outside one show every Item. */
 export const GearListFilterContext = createContext<GearListFilter | null>(null)
 
-/** Orders Items with Equipped ones first, keeping the original order otherwise. */
+/** Orders Items with Equipped or Implanted ones first, keeping the original order otherwise. */
 export function sortEquippedFirst<TItem extends ItemData>(items: TItem[]): TItem[] {
-  return [...items].sort((left, right) => Number(right.equipped === true) - Number(left.equipped === true))
+  return [...items].sort((left, right) => Number(isItemActive(right)) - Number(isItemActive(left)))
 }
 
 /**

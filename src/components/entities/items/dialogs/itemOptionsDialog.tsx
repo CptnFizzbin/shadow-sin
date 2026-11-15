@@ -64,29 +64,6 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
         <Dialog.Content>
           <Stack>
-            {!forced["equipable"] && (
-              <FormControlLabel
-                label="Equippable"
-                control={(
-                  <Checkbox
-                    checked={options["equipable"] ?? false}
-                    onChange={(e) => set("equipable", e.target.checked)}
-                  />
-                )}
-              />
-            )}
-
-            {!forced["canBeStashed"] && (
-              <FormControlLabel
-                label="Can be stashed"
-                control={(
-                  <Checkbox
-                    checked={options["canBeStashed"] ?? false}
-                    onChange={(e) => set("canBeStashed", e.target.checked)}
-                  />
-                )}
-              />
-            )}
 
             {!forced["hasRating"] && (
               <FormControlLabel

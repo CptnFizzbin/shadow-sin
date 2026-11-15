@@ -6,15 +6,17 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
-import { RiDeleteBinLine, RiEditLine, RiHandbagLine, RiMore2Line } from "@remixicon/react"
+import { RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
 import type { FC, PropsWithChildren, ReactNode } from "react"
 
-import { getCarryStatusLabel } from "#/components/entities/items/actions/itemActions.ts"
 import { useItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
+import { ItemStateQuickActions } from "#/components/entities/items/state/itemStateQuickActions.tsx"
 import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
+import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { Icons } from "#/utils/icons.ts"
 
 import { ItemDetailsMatrixSection } from "./itemDetailsMatrixSection.tsx"
@@ -23,7 +25,10 @@ import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
 export interface ItemDetailsRootProps extends PropsWithChildren {
   item: ItemData
   type?: ReactNode
-  /** When provided, adds a persistent "Edit" action that opens the item's edit dialog. */
+  /**
+   * When provided, adds a persistent "Edit" action that opens the item's edit dialog, alongside the
+   * item's state actions (Equip, Stash, ...).
+   */
   onEdit?: () => void
   /** When provided, adds a persistent "Remove" action. */
   onRemove?: () => void
@@ -37,7 +42,7 @@ export interface ItemDetailsRootProps extends PropsWithChildren {
 /**
  * Generic ItemDetails body: renders every common `ItemData` field present on
  * the item (title, type, description, notes, cost, quantity, availability,
- * source, effects, equip/stash/wireless status), its Matrix section when it
+ * source, effects, item state and wireless status), its Matrix section when it
  * has a Matrix presence, plus whichever
  * `ItemDetailsSlot.*` children are passed in for item-type-specific content.
  * `Title`/`Type`/`Source`/`Availability`/`Quantity`/`Cost` can be passed as
@@ -63,6 +68,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
   const itemActionsDialog = useItemActionsDialogContext()
 
   const effects = item.effects ?? []
+  const itemState = getItemState(item)
 
   return (
     <Stack sx={{ padding: 2 }}>
@@ -126,15 +132,15 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
 
           <Stack direction="row">
-            {item.stashed
-              ? <ItemDetailsSlot.Status icon={Icons.item.stashed} label={getCarryStatusLabel(item)} />
-              : (
-                  <ItemDetailsSlot.Status
-                    icon={item.equipped ? Icons.item.equipped : RiHandbagLine}
-                    label={getCarryStatusLabel(item)}
-                    color={item.equipped ? "success" : undefined}
-                  />
-                )}
+            {itemState === ItemState.equipped && (
+              <ItemDetailsSlot.Status icon={Icons.item.equipped} label="Equipped" color="success" />
+            )}
+            {itemState === ItemState.implanted && (
+              <ItemDetailsSlot.Status icon={Icons.item.implanted} label="Implanted" color="success" />
+            )}
+            {itemState === ItemState.stashed && (
+              <ItemDetailsSlot.Status icon={Icons.item.stashed} label="Stashed" />
+            )}
             {item.wireless && (() => {
               const { removed, enabled } = item.wireless
 
@@ -156,8 +162,9 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
         </Stack>
 
-        {slots.quickActions.length > 0 && (
+        {((onEdit && !itemActionsDialog) || slots.quickActions.length > 0) && (
           <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {onEdit && !itemActionsDialog && <ItemStateQuickActions item={item} />}
             {slots.quickActions}
           </Stack>
         )}

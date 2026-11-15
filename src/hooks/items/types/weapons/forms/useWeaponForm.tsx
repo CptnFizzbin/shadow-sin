@@ -4,6 +4,7 @@ import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData, MeleeWeaponType } from "#/system/model/items/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/model/items/weaponData.ts"
@@ -35,8 +36,7 @@ const defaultFormValues = {
   attribute: AttributeKey.agility as AttributeKey | "",
   cost: 0,
   description: "",
-  equipped: false,
-  stashed: false,
+  state: ItemState.available as ItemState,
   matrixDisabled: false,
   availability: {
     rating: 0,
@@ -94,8 +94,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     weaponType: values.weaponType,
     dmg: values.dmgType === "custom" ? values.dmg : String(values.dmgValue),
     dmgType: values.dmgType,
-    equipped: values.equipped,
-    stashed: values.stashed,
+    state: values.state,
     ...(values.matrixDisabled && { matrixDisabled: true }),
     ...(values.ap !== 0 && { ap: values.ap }),
     skill: values.skill as SkillKey,
@@ -154,8 +153,7 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
     attribute: weapon.attribute ?? (weapon.weaponType === WeaponType.firearm ? AttributeKey.agility : ""),
     cost: weapon.cost ?? 0,
     description: weapon.description ?? "",
-    equipped: weapon.equipped ?? false,
-    stashed: weapon.stashed ?? false,
+    state: weapon.state ?? ItemState.available,
     matrixDisabled: weapon.matrixDisabled ?? false,
     availability: {
       rating: weapon.availability?.rating ?? 0,

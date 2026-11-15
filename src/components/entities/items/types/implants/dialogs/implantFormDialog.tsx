@@ -37,7 +37,6 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
       title={title}
       getCost={(values) => getImplantEffectiveNuyenCost(values as ImplantData)}
       options={{
-        equipable: { forced: true, enabled: false },
         hasRating: { forced: true },
         multiple: { forced: true, enabled: false },
         isSubItem: { forced: true, enabled: false },

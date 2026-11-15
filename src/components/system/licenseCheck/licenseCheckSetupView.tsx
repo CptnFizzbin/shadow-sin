@@ -14,6 +14,7 @@ import { ItemActions } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { useRunnerStateDispatch } from "#/state/runnerState.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
@@ -41,7 +42,7 @@ export const LicenseCheckSetupView: FC = () => {
 
   const stashUnlicensedAndForbidden = () => {
     for (const check of stashableChecks) {
-      dispatch(ItemActions.setStashed({ id: check.itemId as UUID, stashed: true }))
+      dispatch(ItemActions.setState({ id: check.itemId as UUID, state: ItemState.stashed }))
     }
   }
 

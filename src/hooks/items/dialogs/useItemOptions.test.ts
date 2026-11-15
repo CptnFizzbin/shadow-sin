@@ -28,7 +28,6 @@ describe.concurrent("initializeOptions", () => {
       const options = initializeOptions(newItem, false)
 
       // Assert
-      expect(options.equipable).toBe(false)
       expect(options.hasRating).toBe(false)
       expect(options.multiple).toBe(false)
       expect(options.isSubItem).toBe(false)
@@ -55,14 +54,6 @@ describe.concurrent("initializeOptions", () => {
   })
 
   describe("force-enabled options (forced=true)", () => {
-    it("enables equipable when forced=true regardless of item values", () => {
-      // Arrange & Act
-      const options = initializeOptions(newItem, false, { equipable: { forced: true } })
-
-      // Assert
-      expect(options.equipable).toBe(true)
-    })
-
     it("enables hasRating when enabled=true", () => {
       // Arrange & Act
       const options = initializeOptions(newItem, false, { hasRating: { enabled: true } })
@@ -97,17 +88,6 @@ describe.concurrent("initializeOptions", () => {
   })
 
   describe("force-disabled options (forced=true, enabled=false)", () => {
-    it("keeps equipable disabled in edit mode when force-disabled", () => {
-      // Arrange
-      const item: ItemData = { ...baseItem, equipped: false }
-
-      // Act
-      const options = initializeOptions(item, true, { equipable: { forced: true, enabled: false } })
-
-      // Assert
-      expect(options.equipable).toBe(false)
-    })
-
     it("keeps hasRating disabled in edit mode when force-disabled", () => {
       // Arrange
       const item: ItemData = { ...baseItem, rating: 3 }
@@ -154,28 +134,6 @@ describe.concurrent("initializeOptions", () => {
   })
 
   describe("auto-enabling in edit mode from existing field values", () => {
-    it("enables equipable when editing an item that has an equipped value", () => {
-      // Arrange
-      const item: ItemData = { ...baseItem, equipped: false }
-
-      // Act
-      const options = initializeOptions(item, true)
-
-      // Assert
-      expect(options.equipable).toBe(true)
-    })
-
-    it("does NOT enable equipable in edit mode when equipped is undefined", () => {
-      // Arrange
-      const item: ItemData = { ...baseItem }
-
-      // Act
-      const options = initializeOptions(item, true)
-
-      // Assert
-      expect(options.equipable).toBe(false)
-    })
-
     it("enables hasRating when editing an item with a non-zero rating", () => {
       // Arrange
       const item: ItemData = { ...baseItem, rating: 3 }
@@ -268,7 +226,6 @@ describe.concurrent("initializeOptions", () => {
       // Arrange — new item has values pre-filled but should not auto-enable optional options
       const item: ItemData = {
         ...newItem,
-        equipped: true,
         rating: 3,
         quantity: 5,
         items: { ...newItem.items, parentId: crypto.randomUUID() },
@@ -279,7 +236,6 @@ describe.concurrent("initializeOptions", () => {
       const options = initializeOptions(item, false)
 
       // Assert
-      expect(options.equipable).toBe(false)
       expect(options.hasRating).toBe(false)
       expect(options.multiple).toBe(false)
       expect(options.isSubItem).toBe(false)
@@ -360,44 +316,6 @@ describe.concurrent("initializeOptions", () => {
       expect(forcedOnly.showAvailability).toBe(true)
       expect(disabledOnly.showAvailability).toBe(true)
       expect(forcedOff.showAvailability).toBe(false)
-    })
-  })
-
-  describe("canBeStashed", () => {
-    it("is true by default for new items", () => {
-      // Arrange & Act
-      const options = initializeOptions(newItem, false)
-
-      // Assert
-      expect(options.canBeStashed).toBe(true)
-    })
-
-    it("is true by default for existing items", () => {
-      // Arrange & Act
-      const options = initializeOptions(baseItem, true)
-
-      // Assert
-      expect(options.canBeStashed).toBe(true)
-    })
-
-    it("is false when force-disabled", () => {
-      // Arrange & Act
-      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true, enabled: false } })
-
-      // Assert
-      expect(options.canBeStashed).toBe(false)
-    })
-
-    it("stays true unless forced and enabled=false are set together", () => {
-      // Arrange & Act
-      const forcedOnly = initializeOptions(newItem, false, { canBeStashed: { forced: true } })
-      const disabledOnly = initializeOptions(newItem, false, { canBeStashed: { enabled: false } })
-      const forcedOff = initializeOptions(newItem, false, { canBeStashed: { forced: true, enabled: false } })
-
-      // Assert
-      expect(forcedOnly.canBeStashed).toBe(true)
-      expect(disabledOnly.canBeStashed).toBe(true)
-      expect(forcedOff.canBeStashed).toBe(false)
     })
   })
 })

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
@@ -38,7 +39,7 @@ describe("GearViewSection", () => {
   it("renders nothing when the gear list filter leaves the section empty", () => {
     // Arrange / Act
     renderWithRunner(
-      <GearListFilterContext.Provider value={{ includes: (item) => item.stashed === true }}>
+      <GearListFilterContext.Provider value={{ includes: (item) => item.state === ItemState.stashed }}>
         <GearViewSection section={GearSection.Misc} />
       </GearListFilterContext.Provider>,
       { [trodes.id]: trodes },

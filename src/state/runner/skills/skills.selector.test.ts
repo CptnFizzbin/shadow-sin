@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
@@ -126,7 +127,7 @@ describe("SkillsSelectors.selectRatingBreakdown", () => {
     const [implant] = createItem({
       name: "Skillwire",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.skillMod, target: SkillKey.pistols, value: 1 }],
     })
     const runner = runnerDataFactory({
@@ -205,7 +206,7 @@ describe("SkillsSelectors.DiceGroups.selectSkill", () => {
     const [implant] = createItem({
       name: "Reflex Recorder",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.skillMod, target: SkillKey.pistols, value: 2 }],
     })
     const runner = runnerDataFactory({
@@ -234,7 +235,7 @@ describe("SkillsSelectors.DiceGroups.selectSpecialization", () => {
     const [implant] = createItem({
       name: "Revolver Focus",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{
         type: GameEffectType.skillSpecializationMod,
         target: SkillKey.pistols,
@@ -284,7 +285,7 @@ describe("SkillsSelectors.DiceGroups.selectSkill when defaulting", () => {
     const [implant] = createItem({
       name: "Skillwire",
       itemType: ItemType.implant,
-      equipped: true,
+      state: ItemState.implanted,
       effects: [{ type: GameEffectType.skillMod, target: SkillKey.pistols, value: 1 }],
     })
     const runner = runnerDataFactory({ items: createItemMap([implant]) })

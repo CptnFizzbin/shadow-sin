@@ -6,6 +6,7 @@ import { defaultGearSubmitMeta } from "#/components/entities/items/gearSubmitMet
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -35,10 +36,7 @@ export const itemDefaults: ItemData = {
   },
   items: { parentId: null, childIds: [] },
   effects: [],
-  // Present (as undefined) so the field map has an `equipped` path; a defined value would mark every
-  // edited item as equippable.
-  equipped: undefined,
-  stashed: false,
+  state: ItemState.available,
   matrixDisabled: false,
 }
 

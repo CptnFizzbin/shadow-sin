@@ -3,6 +3,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import { ProgramType } from "#/system/model/items/programData.ts"
@@ -36,7 +37,7 @@ const defaultFormValues: ProgramData = {
   },
   items: { parentId: null, childIds: [] },
   effects: [],
-  stashed: false,
+  state: ItemState.available,
 }
 
 export const programFieldMap = createFieldMap(defaultFormValues)

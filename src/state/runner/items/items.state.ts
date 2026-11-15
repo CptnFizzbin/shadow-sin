@@ -1,21 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit"
 
 import { planItemSale } from "#/system/formulas/items/itemSale.ts"
+import { getItemState, reconcileItemState } from "#/system/formulas/items/itemStateRules.ts"
 import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import {
-  addItem,
-  patchItem,
-  removeItem,
-  sellItem,
-  setDamage,
-  setEquipped,
-  setItem,
-  setStashed,
-} from "./items.actions.ts"
+import { addItem, patchItem, removeItem, sellItem, setDamage, setItem, setState } from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
 
@@ -79,64 +71,6 @@ function removeItemTree(state: ItemCatalog, id: UUID) {
   removeItemById(state, id)
 }
 
-/**
- * Enforces the Stash/Equip invariant on every write, regardless of which action produced it (the
- * item edit form's flat fields via `setItem`/`patchItem`, or the dedicated `setStashed` action):
- * the moment `stashed` becomes `true`, `equipped` is forced to `false`, with its prior value
- * recorded in `_state.equipOnUnstash` so un-stashing restores it automatically. This keeps
- * `item.equipped` always trustworthy on its own — readers never need to also check `!item.stashed`.
- *
- * @param wasStashed - whether the item was already stashed before this write, so a same-value
- * write (still stashed, or never stashed) doesn't re-capture/re-restore `equipped`.
- */
-function reconcileEquippedForStash(item: ItemData, wasStashed: boolean): void {
-  const isNowStashed = item.stashed === true
-
-  if (isNowStashed && !wasStashed) {
-    item._state = { ...item._state, equipOnUnstash: item.equipped === true }
-    item.equipped = false
-  } else if (!isNowStashed && wasStashed) {
-    item.equipped = item._state?.equipOnUnstash === true
-    item._state = { ...item._state, equipOnUnstash: undefined }
-  }
-}
-
-/**
- * Makes every Attachment in the tree containing `id` share its root Item's Stashed and Equipped
- * state: Attachments inherit their parent's state, so stashing or equipping a weapon stashes or
- * equips its accessories with it.
- */
-function syncAttachmentCarryState(state: ItemCatalog, id: UUID) {
-  let root = state[id]
-  if (!root) return
-
-  const visited = new Set<UUID>([root.id])
-  while (root.items.parentId && state[root.items.parentId] && !visited.has(root.items.parentId)) {
-    root = state[root.items.parentId]
-    visited.add(root.id)
-  }
-
-  const pushDown = (parent: ItemData, seen: Set<UUID>) => {
-    for (const childId of parent.items.childIds) {
-      const child = state[childId]
-      if (!child || seen.has(childId)) continue
-      seen.add(childId)
-
-      if (child.stashed !== parent.stashed) child.stashed = parent.stashed
-      if (child.equipped !== parent.equipped) child.equipped = parent.equipped
-
-      const equipOnUnstash = parent._state?.equipOnUnstash
-      if (child._state?.equipOnUnstash !== equipOnUnstash) {
-        child._state = { ...child._state, equipOnUnstash }
-      }
-
-      pushDown(child, seen)
-    }
-  }
-
-  pushDown(root, new Set([root.id]))
-}
-
 /** Sells `id` as planned by `planItemSale`: removes what's sold and detaches what stays behind. */
 function sellItemById(state: ItemCatalog, id: UUID, sellAttachments: boolean) {
   const { soldIds, detachedIds } = planItemSale(state, id, sellAttachments)
@@ -155,9 +89,9 @@ export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
-  reconcileEquippedForStash,
-  syncAttachmentCarryState,
   sellItemById,
+  /** Applies a write's Item State rules to one Item — see `reconcileItemState`. */
+  reconcileState: reconcileItemState,
 }
 
 export const gearReducer = createReducer(initialState, (builder) => {
@@ -166,30 +100,27 @@ export const gearReducer = createReducer(initialState, (builder) => {
     // the normalized `items` catalog's `itemsRootReducer` (`src/state/items/items.reducer.ts`),
     // and Immer freezes whatever a produce call incorporates by reference into its output —
     // so without the copy, the second reducer to run would be handed an already-frozen payload
-    // and throw the moment `reconcileEquippedForStash`/`relinkItem` tried to write to it.
+    // and throw the moment `reconcileState`/`relinkItem` tried to write to it.
     .addCase(addItem, (state, action) => {
       state[action.payload.id] = { ...action.payload }
-      reconcileEquippedForStash(state[action.payload.id], false)
       relinkItem(state, state[action.payload.id])
-      syncAttachmentCarryState(state, action.payload.id)
+      reconcileItemState(state, action.payload.id, undefined)
     })
     .addCase(setItem, (state, action) => {
-      const wasStashed = state[action.payload.id]?.stashed === true
+      const previousState = state[action.payload.id] ? getItemState(state[action.payload.id]) : undefined
       state[action.payload.id] = { ...action.payload }
-      reconcileEquippedForStash(state[action.payload.id], wasStashed)
       relinkItem(state, state[action.payload.id])
-      syncAttachmentCarryState(state, action.payload.id)
+      reconcileItemState(state, action.payload.id, previousState)
     })
     .addCase(patchItem, (state, action) => {
       const item = state[action.payload.itemId]
       if (!item) return
-      const wasStashed = item.stashed === true
+      const previousState = getItemState(item)
       state[action.payload.itemId] = {
         ...item,
         ...action.payload.data,
       }
-      reconcileEquippedForStash(state[action.payload.itemId], wasStashed)
-      syncAttachmentCarryState(state, action.payload.itemId)
+      reconcileItemState(state, action.payload.itemId, previousState)
     })
     .addCase(removeItem, (state, action) => {
       const { id, removeChildren } = action.payload
@@ -199,19 +130,12 @@ export const gearReducer = createReducer(initialState, (builder) => {
         removeItemById(state, id)
       }
     })
-    .addCase(setEquipped, (state, action) => {
+    .addCase(setState, (state, action) => {
       const item = state[action.payload.id]
       if (!item) return
-      item.equipped = action.payload.equipped
-      syncAttachmentCarryState(state, action.payload.id)
-    })
-    .addCase(setStashed, (state, action) => {
-      const item = state[action.payload.id]
-      if (!item) return
-      const wasStashed = item.stashed === true
-      item.stashed = action.payload.stashed
-      reconcileEquippedForStash(item, wasStashed)
-      syncAttachmentCarryState(state, action.payload.id)
+      const previousState = getItemState(item)
+      item.state = action.payload.state
+      reconcileItemState(state, action.payload.id, previousState)
     })
     .addCase(sellItem, (state, action) => {
       sellItemById(state, action.payload.id, action.payload.sellAttachments)

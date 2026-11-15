@@ -1,4 +1,3 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
@@ -29,7 +28,6 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
   const hasAccessories = Object.keys(accessories).length > 0
 
-  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...weapon, equipped: !weapon.equipped }))
   const removeWeapon = () => dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
@@ -69,22 +67,6 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
           <ItemAttachmentTree itemId={weapon.id} />
         </WeaponCard.Layout.BodyRow>
       )}
-
-      {weapon.equipped
-        ? (
-            <WeaponCard.Action
-              label="Unequip"
-              icon={<RiCloseCircleLine size={16} />}
-              onClick={toggleEquipped}
-            />
-          )
-        : (
-            <WeaponCard.Action
-              label="Equip"
-              icon={<RiCheckboxCircleLine size={16} />}
-              onClick={toggleEquipped}
-            />
-          )}
     </WeaponCard>
   )
 }

@@ -86,7 +86,6 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
             onOpen={onOpenAttachment ? () => onOpenAttachment(accessory) : undefined}
           />
         ))}
-
       </ItemDetailsRoot>
 
       {weaponFormDialog.outlet}

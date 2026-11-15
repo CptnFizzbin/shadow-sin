@@ -4,6 +4,7 @@ import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { AgentData } from "#/system/model/items/agentData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -80,7 +81,7 @@ describe.concurrent("licenses.destroy", () => {
 describe.concurrent("licenses.setLicenseForItem", () => {
   it("patches only licenseId on the target item", () => {
     // Arrange
-    const item = makeItem({ equipped: true })
+    const item = makeItem({ state: ItemState.equipped })
     const licenseId = crypto.randomUUID() as UUID
 
     // Act
@@ -140,7 +141,7 @@ describe.concurrent("licenses.clearLicenseForItem", () => {
   it("doesn't touch other fields on the item", () => {
     // Arrange
     const licenseId = crypto.randomUUID() as UUID
-    const item = makeItem({ licenseId, equipped: true })
+    const item = makeItem({ licenseId, state: ItemState.equipped })
 
     // Act
     const next = gearReducer({ [item.id]: item }, licenses.clearLicenseForItem({ itemId: item.id }))

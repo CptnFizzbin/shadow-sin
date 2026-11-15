@@ -11,6 +11,7 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantGrade, ImplantLocation } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
@@ -270,7 +271,7 @@ export const Artemis: RunnerData = {
         attribute: AttributeKey.agility,
         skill: SkillKey.pistols,
         dmg: "4P",
-        equipped: true,
+        state: ItemState.equipped,
         recoil: 0,
         firemodes: ["SA", "BF", "FA"],
         ammo: {
@@ -338,14 +339,14 @@ export const Artemis: RunnerData = {
       createItem<ArmorData>({
         name: "Armored Jacket",
         itemType: ItemType.armor,
-        equipped: true,
+        state: ItemState.equipped,
         ballistic: 8,
         impact: 6,
       }),
       createItem<ArmorData>({
         name: "Form-Fitting Body Armor",
         itemType: ItemType.armor,
-        equipped: true,
+        state: ItemState.equipped,
         ballistic: 2,
         impact: 1,
         notes: "Worn under tailored outfits.",
@@ -353,6 +354,7 @@ export const Artemis: RunnerData = {
       createItem<ImplantData>({
         name: "Control Rig",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "cyberware",
         location: ImplantLocation.head,
         cost: 72000,
@@ -364,6 +366,7 @@ export const Artemis: RunnerData = {
         essenceCost: 0,
         name: "RCC Headwear",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "cyberware",
         location: ImplantLocation.head,
         cost: 2000,
@@ -373,6 +376,7 @@ export const Artemis: RunnerData = {
         essenceCost: 0,
         name: "Cybereyes",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "cyberware",
         grade: ImplantGrade.alpha,
         cost: 12000,
@@ -381,6 +385,7 @@ export const Artemis: RunnerData = {
       }, [
         createItem<ImplantData>({
           itemType: ItemType.implant,
+          state: ItemState.implanted,
           name: "Smartlink",
           cost: 4800,
           capacityCost: 3,
@@ -388,6 +393,7 @@ export const Artemis: RunnerData = {
         }),
         createItem<ImplantData>({
           itemType: ItemType.implant,
+          state: ItemState.implanted,
           name: "Imagelink",
           cost: 960,
           capacityCost: 0,
@@ -395,6 +401,7 @@ export const Artemis: RunnerData = {
         }),
         createItem<ImplantData>({
           itemType: ItemType.implant,
+          state: ItemState.implanted,
           name: "Low-Light Vision",
           cost: 900,
           capacityCost: 0,
@@ -402,6 +409,7 @@ export const Artemis: RunnerData = {
         }),
         createItem<ImplantData>({
           itemType: ItemType.implant,
+          state: ItemState.implanted,
           name: "Vision Enhancement",
           cost: 4800,
           capacityCost: 0,
@@ -409,6 +417,7 @@ export const Artemis: RunnerData = {
         }),
         createItem<ImplantData>({
           itemType: ItemType.implant,
+          state: ItemState.implanted,
           name: "Vision Magnification",
           cost: 2400,
           capacityCost: 0,
@@ -418,6 +427,7 @@ export const Artemis: RunnerData = {
       createItem<ImplantData>({
         name: "Cerebral Booster",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "bioware",
         grade: ImplantGrade.standard,
         essenceCost: 0.66,
@@ -435,6 +445,7 @@ export const Artemis: RunnerData = {
       createItem<ImplantData>({
         name: "Sleep Regulator",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "bioware",
         cost: 6000,
         essenceCost: 0.11,
@@ -444,6 +455,7 @@ export const Artemis: RunnerData = {
       createItem<ImplantData>({
         name: "Synaptic Booster",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "bioware",
         grade: ImplantGrade.standard,
         essenceCost: 0.66,
@@ -661,6 +673,7 @@ export const Artemis: RunnerData = {
       createItem<ImplantData>({
         name: "Move-by-Wire System",
         itemType: ItemType.implant,
+        state: ItemState.implanted,
         implantType: "cyberware",
         grade: ImplantGrade.standard,
         essenceCost: 3,

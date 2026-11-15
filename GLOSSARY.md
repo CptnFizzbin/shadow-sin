@@ -343,7 +343,7 @@ _Avoid_: app, software (software is the broader category; Program is the kind us
 
 **Loaded** (Program):
 A Program stored on a Matrix Entity. Putting it on a second device means moving it or making a new
-copy.
+copy. A Program that is **Available** is shown as Loaded; a **Stashed** one is Loaded nowhere.
 _Avoid_: installed
 
 **Running** (Program):
@@ -384,19 +384,35 @@ An Item mounted on, installed in, or otherwise belonging to another Item — a s
 Licence on a SIN. Attachments can have attachments of their own.
 _Avoid_: child item, accessory (too weapon-specific), mod
 
-**Equipped**:
-Whether an Item is actively worn or wielded right now, as opposed to merely owned. Never true of a
-**Stashed** Item.
+**Item State**:
+Where an Item is right now — exactly one of **Equipped**, **Implanted**, **Available**, or
+**Stashed**. The kind of Item decides which it can be in: weapons, armor, devices, and other gear
+can be Equipped; implants can be Implanted; programs, software, vehicles, credsticks, SINs,
+Licences, and weapon accessories can only be Available or Stashed. An Item's GameEffects apply only
+while it is Equipped or Implanted. Changing an Item's state changes its Attachments' too, and an
+Attachment is never further from use than its parent allows.
+_Avoid_: carry status, condition
 
-**Stashed**:
-Whether an Item has been left behind ("at the safehouse") rather than carried. Stashing an Item
-unequips it, and un-stashing restores whatever it was before; stashing an Item stashes its
-Attachments too. Stashed Items are greyed out and listed last.
-_Avoid_: unequipped (an Item can be carried and unequipped, e.g. a spare pistol in a holster)
+**Equipped**:
+An Item actively worn or wielded right now, as opposed to merely owned.
+
+**Implanted**:
+An implant installed in the Runner's body. Removing it again is **Extracting** it.
+_Avoid_: equipped (for implants), installed
 
 **Available**:
-Not **Stashed** — an Item the Runner has on hand, Equipped or not.
-_Avoid_: confusing with **Availability**, an unrelated Item term
+An Item the Runner has on hand but isn't using — neither Equipped nor Implanted. Un-stashing an
+Item always makes it Available. For a Program or software, Available is shown as **Loaded**.
+_Avoid_: confusing with **Availability**, an unrelated Item term; carried
+
+**On Hand**:
+Any Item that isn't **Stashed** — Available, Equipped, or Implanted.
+_Avoid_: available (Available excludes Equipped and Implanted Items)
+
+**Stashed**:
+An Item left behind ("at the safehouse") rather than carried. Stashing an Item stashes its
+Attachments too. Stashed Items are greyed out and listed last.
+_Avoid_: unequipped (an Item can be on hand and unequipped, e.g. a spare pistol in a holster)
 
 **Vehicle**:
 An Item with its own stat block (Pilot, Sensor, Armor, Body, damage track) that needs a
@@ -631,7 +647,9 @@ run.
   Matrix Entity you can connect to; a **Known Node** is one you don't own.
 - "Active" is used for the **Active Node**, activating a **Focus**, and **Active** Skills. A
   Program on a Node is **Running**, never "active".
-- **Available** (not stashed) and **Availability** (how hard an Item is to obtain) are unrelated.
+- **Available** (the Item State) and **Availability** (how hard an Item is to obtain) are unrelated.
+- "Available" meant any Item not Stashed. Resolved: that is **On Hand**; **Available** is only an
+  Item that is on hand but neither Equipped nor Implanted.
 - **Rating** and **AI Rating** are unrelated.
 - "Value" meant both an Attribute's or Skill's points and the number a test uses. Resolved: say
   **Raw Value** before Modifiers, **Rating** after.

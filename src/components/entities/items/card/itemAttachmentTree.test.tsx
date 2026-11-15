@@ -50,6 +50,6 @@ describe("ItemAttachmentTree", () => {
 
     // Assert
     const dialog = await screen.findByRole("dialog", { name: "Low-Light Vision" })
-    expect(dialog.textContent).toContain("Attached to Imaging Scope")
+    expect(dialog.textContent).toContain("attached to Imaging Scope")
   })
 })

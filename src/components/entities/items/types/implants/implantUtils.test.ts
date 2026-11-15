@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
 import { createItem } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 
 import { getEssenceUsage } from "./implantUtils.ts"
@@ -28,8 +29,8 @@ describe.concurrent("getEssenceUsage", () => {
   it("counts every cyberware implant whatever its equipped state", () => {
     // Arrange
     const implants = [
-      ...makeImplant({ equipped: true, essenceCost: 2 }),
-      ...makeImplant({ equipped: false, essenceCost: 0.5 }),
+      ...makeImplant({ state: ItemState.implanted, essenceCost: 2 }),
+      ...makeImplant({ state: ItemState.available, essenceCost: 0.5 }),
       ...makeImplant({ essenceCost: 0.2 }),
     ]
 

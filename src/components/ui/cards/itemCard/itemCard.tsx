@@ -3,9 +3,12 @@ import type { FC } from "react"
 import { Fragment } from "react"
 
 import { useItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
+import { ItemStateMenuActions } from "#/components/entities/items/state/itemStateMenuActions.tsx"
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 
 import { ItemCardElements } from "./itemCardElements.tsx"
 import { ItemCardSlotManager } from "./itemCardSlotManager.ts"
@@ -24,20 +27,26 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
 /**
  * `ItemCard`'s own renderable frame — sits on top of `EntityCard`, auto-rendering every
  * `ItemData` field `EntityCard` doesn't already cover (availability, cost, quantity,
- * equipped/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
+ * equipped/implanted/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
  * regions internally. A category-tier or typed card that needs another row uses
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
  * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
  * `onEdit`, when given, as its Edit action); elsewhere `onEdit`/`onRemove` fill `EntityCard`'s own
- * menu. `onOpen`/`leftAction` pass straight through to `EntityCard`.
+ * menu, alongside the item's state actions (Equip, Stash, ...). `onOpen`/`leftAction` pass
+ * straight through to `EntityCard`.
  */
 const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onRemove, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
   const itemActionsDialog = useItemActionsDialogContext()
+  const itemState = getItemState(item)
 
   const menuProps = itemActionsDialog
     ? { onOpenActions: () => itemActionsDialog.open({ item, onEdit }) }
-    : { onEdit, onRemove }
+    : {
+        onEdit,
+        onRemove,
+        menuActions: (closeMenu: () => void) => <ItemStateMenuActions item={item} onDone={closeMenu} />,
+      }
 
   return (
     <EntityCard entity={item} {...props} {...menuProps}>
@@ -58,8 +67,9 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
       )}
 
       <EntityCard.Layout.TopRight>
-        {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
-        {item.stashed && <ItemCardElements.StatusIcon status="stashed" />}
+        {itemState === ItemState.equipped && <ItemCardElements.StatusIcon status="equipped" />}
+        {itemState === ItemState.implanted && <ItemCardElements.StatusIcon status="implanted" />}
+        {itemState === ItemState.stashed && <ItemCardElements.StatusIcon status="stashed" />}
         {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
         {item.wireless && (
           item.wireless.removed

@@ -19,6 +19,7 @@ import { VehicleDataCard } from "#/components/entities/items/types/vehicles/vehi
 import { WeaponDataCard } from "#/components/entities/items/types/weapons/weaponDataCard.tsx"
 import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { getActiveItemState } from "#/system/formulas/items/itemStateRules.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
@@ -28,6 +29,7 @@ import type { DeviceData } from "#/system/model/items/deviceData.ts"
 import type { ImplantData } from "#/system/model/items/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
@@ -77,7 +79,7 @@ type CommonFieldToggles = {
   availability: boolean
   quantity: boolean
   cost: boolean
-  equipped: boolean
+  active: boolean
   stashed: boolean
   fixed: boolean
   wireless: boolean
@@ -100,7 +102,7 @@ const DEFAULT_COMMON_TOGGLES: CommonFieldToggles = {
   availability: true,
   quantity: true,
   cost: true,
-  equipped: true,
+  active: true,
   stashed: false,
   fixed: false,
   wireless: true,
@@ -120,7 +122,7 @@ const COMMON_TOGGLE_CONFIG: FieldToggleConfigEntry<CommonFieldToggles>[] = [
   { key: "availability", label: "Availability" },
   { key: "quantity", label: "Quantity" },
   { key: "cost", label: "Cost" },
-  { key: "equipped", label: "Equipped" },
+  { key: "active", label: "Equipped / Implanted" },
   { key: "stashed", label: "Stashed" },
   { key: "fixed", label: "Fixed" },
   { key: "wireless", label: "Wireless" },
@@ -198,8 +200,9 @@ function withCommonFields<TItem extends ItemData>(base: TItem, toggles: CommonFi
     availability: toggles.availability ? base.availability : undefined,
     quantity: toggles.quantity ? base.quantity : undefined,
     cost: toggles.cost ? base.cost : undefined,
-    equipped: toggles.equipped ? base.equipped : undefined,
-    stashed: toggles.stashed ? base.stashed : undefined,
+    state: toggles.stashed
+      ? ItemState.stashed
+      : (toggles.active ? getActiveItemState(base.itemType) : undefined) ?? ItemState.available,
     fixed: toggles.fixed ? base.fixed : undefined,
     wireless: toggles.wireless ? { enabled: toggles.wirelessEnabled, removed: toggles.wirelessRemoved } : undefined,
   }
@@ -233,8 +236,7 @@ const BASE_CREDSTICK: CredstickData = {
   cost: 100,
   quantity: 2,
   availability: { rating: 4, restricted: true },
-  equipped: true,
-  stashed: false,
+  state: ItemState.available,
   fixed: false,
   wireless: { enabled: true },
 }
@@ -249,8 +251,7 @@ const BASE_LICENSE: LicenseData = {
   source: { book: "SR4A", page: 297 },
   effects: [{ type: GameEffectType.dicePoolMod, target: "Negotiation", value: -1 }],
   quantity: 1,
-  equipped: false,
-  stashed: true,
+  state: ItemState.stashed,
   fixed: false,
   wireless: { enabled: false },
 }
@@ -265,8 +266,7 @@ const BASE_SIN: SinData = {
   source: { book: "SR4A", page: 297 },
   effects: [{ type: GameEffectType.dicePoolMod, target: "Con", value: 1 }],
   quantity: 1,
-  equipped: true,
-  stashed: false,
+  state: ItemState.available,
   fixed: false,
   wireless: { enabled: false },
 }
@@ -318,7 +318,7 @@ const DEMO_ARMOR: ArmorData = {
   cost: 1_000,
   quantity: 1,
   availability: { rating: 6 },
-  equipped: true,
+  state: ItemState.equipped,
 }
 
 const DEMO_ARMOR_MOD: ArmorData = {
@@ -347,7 +347,7 @@ const DEMO_DEVICE: DeviceData = {
   cost: 3_000,
   quantity: 1,
   availability: { rating: 8, restricted: true },
-  equipped: true,
+  state: ItemState.equipped,
 }
 
 const DEMO_PROGRAM: ProgramData = {
@@ -375,7 +375,7 @@ const DEMO_IMPLANT: ImplantData = {
   cost: 39_000,
   quantity: 1,
   availability: { rating: 8, restricted: true },
-  equipped: true,
+  state: ItemState.implanted,
 }
 
 const DEMO_IMPLANT_ACCESSORY: ImplantData = {
@@ -431,7 +431,7 @@ const DEMO_WEAPON: FirearmData = {
   cost: 500,
   quantity: 1,
   availability: { rating: 4, restricted: true },
-  equipped: true,
+  state: ItemState.equipped,
 }
 
 const DEMO_WEAPON_ACCESSORY: ItemData = {

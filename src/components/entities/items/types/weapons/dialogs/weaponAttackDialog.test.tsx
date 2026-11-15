@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { DiceRoller } from "#/services/dice/diceRoller.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FirearmData, MeleeWeaponData } from "#/system/model/items/weaponData.ts"
 import { WeaponType } from "#/system/model/items/weaponData.ts"
@@ -27,7 +28,7 @@ const pistol: FirearmData = {
   ap: -1,
   skill: SkillKey.pistols,
   attribute: AttributeKey.agility,
-  equipped: true,
+  state: ItemState.equipped,
   recoil: 0,
   firemodes: ["SA"],
   ammo: { size: 15, remaining: 15, type: "clip" },
@@ -42,7 +43,7 @@ const knife: MeleeWeaponData = {
   dmg: "5P",
   skill: SkillKey.blades,
   attribute: AttributeKey.agility,
-  equipped: true,
+  state: ItemState.equipped,
   reach: 0,
 }
 

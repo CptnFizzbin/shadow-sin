@@ -4,6 +4,7 @@ import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.
 import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
@@ -25,8 +26,7 @@ const defaultFormValues: ArmorData = {
   cost: 0,
   quantity: 1,
   description: "",
-  equipped: false,
-  stashed: false,
+  state: ItemState.available,
   availability: {
     rating: 0,
     restricted: false,

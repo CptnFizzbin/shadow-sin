@@ -71,6 +71,23 @@ describe.concurrent("005_setDefaultEquippedWeapons", () => {
     expect(result.gear?.r2.equipped).toBe(false)
   })
 
+  it("counts a weapon recorded as state: equipped as already equipped", () => {
+    // Arrange
+    const character = {
+      gear: {
+        r1: { id: "r1", itemType: "weapon", weaponType: WeaponType.firearm, state: "equipped" },
+        r2: { id: "r2", itemType: "weapon", weaponType: WeaponType.firearm, state: "available" },
+      },
+    }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result.gear?.r1).toEqual(character.gear.r1)
+    expect(result.gear?.r2).toEqual(character.gear.r2)
+  })
+
   it("ignores child weapons (those with a parentId)", () => {
     // Arrange — only the standalone weapon should be considered
     const character = {

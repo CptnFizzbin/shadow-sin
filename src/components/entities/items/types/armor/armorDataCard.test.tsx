@@ -7,6 +7,7 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
@@ -19,7 +20,7 @@ const jacket: ArmorData = {
   itemType: ItemType.armor,
   ballistic: 8,
   impact: 6,
-  equipped: false,
+  state: ItemState.available,
 }
 
 const helmet: ItemData = {
@@ -96,14 +97,14 @@ describe("ArmorDataCard", () => {
 
   it("offers an Unequip action when equipped, and dispatches the toggle", () => {
     // Arrange
-    const runnerStore = renderArmorCard({ ...jacket, equipped: true })
+    const runnerStore = renderArmorCard({ ...jacket, state: ItemState.equipped })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Unequip" }))
 
     // Assert
-    expect(runnerStore.getState().items[jacket.id].equipped).toBe(false)
+    expect(runnerStore.getState().items[jacket.id].state).toBe(ItemState.available)
   })
 
   it("removing the armor dispatches removeItem for it and its mods", async () => {

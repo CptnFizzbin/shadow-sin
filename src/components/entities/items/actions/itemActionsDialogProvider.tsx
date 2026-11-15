@@ -8,7 +8,7 @@ import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 
-import { ItemAction } from "./itemActions.ts"
+import { getItemActionTargetState, ItemAction } from "./itemActions.ts"
 import { useItemActionsDialog } from "./itemActionsDialog.tsx"
 import type { ItemActionsDialogOpenOptions } from "./itemActionsDialogContext.ts"
 import { ItemActionsDialogContext } from "./itemActionsDialogContext.ts"
@@ -36,13 +36,14 @@ export const ItemActionsDialogProvider: FC<PropsWithChildren> = ({ children }) =
     switch (action) {
       case ItemAction.equip:
       case ItemAction.unequip:
-        dispatch(Actions.item.setEquipped({ id: item.id, equipped: action === ItemAction.equip }))
-        break
-
+      case ItemAction.implant:
+      case ItemAction.extract:
       case ItemAction.stash:
-      case ItemAction.unstash:
-        dispatch(Actions.item.setStashed({ id: item.id, stashed: action === ItemAction.stash }))
+      case ItemAction.unstash: {
+        const state = getItemActionTargetState(action)
+        if (state) dispatch(Actions.item.setState({ id: item.id, state }))
         break
+      }
 
       case ItemAction.attack:
         // `getItemActions` only offers Attack for weapons.

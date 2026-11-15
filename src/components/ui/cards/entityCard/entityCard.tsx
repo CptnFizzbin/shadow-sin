@@ -53,6 +53,11 @@ export interface EntityCardProps extends PropsWithChildren {
   onOpenActions?: () => void
   /** Outline-style button pinned to the left edge of the card, spanning its full height. */
   leftAction?: EntityCardLeftAction
+  /**
+   * Extra entries for the actions menu, rendered only while it is open and listed before Edit and
+   * Remove. Receives a callback that closes the menu.
+   */
+  menuActions?: (closeMenu: () => void) => ReactNode
 }
 
 /** An Entity implementing `Credential` (a SIN/Licence) shows "Real" instead of its (absent)
@@ -82,6 +87,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onRemove,
   onOpenActions,
   leftAction,
+  menuActions,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
@@ -257,6 +263,8 @@ const EntityCardRoot: FC<EntityCardProps> = ({
             },
           }}
         >
+          {menuAnchorEl !== null && menuActions?.(handleCloseMenu)}
+
           {slots.actions}
 
           {onEdit && (

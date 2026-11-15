@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
@@ -47,7 +48,7 @@ describe("ItemCard", () => {
   it("renders equipped and wireless-off status icons from the item", () => {
     // Arrange / Act
     render(
-      <ItemCard item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
+      <ItemCard item={{ ...baseItem, state: ItemState.equipped, wireless: { enabled: false } }} />,
       { wrapper: ThemeWrapper },
     )
 
