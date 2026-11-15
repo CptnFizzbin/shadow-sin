@@ -21,6 +21,7 @@ import { gearReducer } from "./items/items.state.ts"
 import { karmaReducer } from "./karma/karma.state.ts"
 import { lifestyleReducer } from "./lifestyle/lifestyle.state.ts"
 import { metaReducer } from "./meta/meta.state.ts"
+import { notesReducer } from "./notes/notes.state.ts"
 import { nuyenReducer } from "./nuyen/nuyen.state.ts"
 import { powersReducer } from "./powers/powers.state.ts"
 import { profileReducer } from "./profile/profile.state.ts"
@@ -95,6 +96,7 @@ const domainReducer = combineReducers({
   biology: biologyReducer,
   contacts: contactsReducer,
   extendedTests: extendedTestsReducer,
+  notes: notesReducer,
   skills: skillsReducer,
   spells: spellsReducer,
   spirits: spiritsReducer,

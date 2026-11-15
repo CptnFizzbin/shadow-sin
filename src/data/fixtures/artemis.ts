@@ -226,6 +226,7 @@ export const Artemis: RunnerData = {
 
   contacts: [],
   extendedTests: [],
+  notes: "",
 
   initiateGrade: 0,
   submersionGrade: 0,
