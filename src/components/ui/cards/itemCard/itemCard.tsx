@@ -39,6 +39,13 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
   const slots = new ItemCardSlotManager(children)
   const itemActionsDialog = useItemActionsDialogContext()
   const itemState = getItemState(item)
+  const hasAvailability = !!item.availability && item.availability.rating !== 0
+
+  const footerParts = [
+    hasAvailability && <ItemCardElements.Availability value={item.availability} />,
+    ...slots.footerStats,
+    item.cost !== undefined && <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />,
+  ].filter(Boolean)
 
   const menuProps = itemActionsDialog
     ? { onOpenActions: () => itemActionsDialog.open({ item, onEdit }) }
@@ -80,14 +87,12 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
 
       <EntityCard.Layout.FooterRight sx={{ justifyContent: "center", alignItems: "center" }}>
         <Stack direction="row" sx={{ flexGrow: 1, justifyContent: "flex-end", alignItems: "baseline" }}>
-          <ItemCardElements.Availability value={item.availability} />
-          {slots.footerStats.map((footerStat, index) => (
+          {footerParts.map((footerPart, index) => (
             <Fragment key={index}>
-              {footerStat}
-              {(index < slots.footerStats.length - 1 || item.cost !== undefined) && <span>•</span>}
+              {index > 0 && <span>•</span>}
+              {footerPart}
             </Fragment>
           ))}
-          <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />
         </Stack>
       </EntityCard.Layout.FooterRight>
 

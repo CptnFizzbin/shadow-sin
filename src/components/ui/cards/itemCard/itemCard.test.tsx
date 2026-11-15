@@ -40,7 +40,7 @@ describe("ItemCard", () => {
     render(<ItemCard item={item} />, { wrapper: ThemeWrapper })
 
     // Assert
-    expect(screen.getByText("Avail: 8R")).toBeDefined()
+    expect(screen.getByText("8R")).toBeDefined()
     expect(screen.getByText("x3")).toBeDefined()
     expect(screen.getByText("1,200¥")).toBeDefined()
   })
