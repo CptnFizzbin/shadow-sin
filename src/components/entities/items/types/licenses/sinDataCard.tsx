@@ -1,12 +1,12 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 
 interface SinDataCardProps {
@@ -46,16 +46,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
             direction="column"
             sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
           >
-            {Object.values(licenses).map((item) => {
-              const license = item as LicenseData
-              return (
-                <ItemCard.Subitem
-                  key={license.id}
-                  name={license.name}
-                  stats={[{ label: "Rating", value: license.isReal ? "Real" : (license.rating ?? 0) }]}
-                />
-              )
-            })}
+            <ItemAttachmentTree itemId={sin.id} />
           </ItemCard.Layout.BodyRow>
         )}
       </ItemCard>

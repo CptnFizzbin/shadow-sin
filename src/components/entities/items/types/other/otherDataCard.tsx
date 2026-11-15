@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -27,9 +28,7 @@ export const OtherDataCard: FC<OtherDataCardProps> = ({ item, onOpen, onEdit }) 
           direction="column"
           sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
         >
-          {Object.values(subItems).map((subItem) => (
-            <ItemCard.Subitem key={subItem.id} name={subItem.name} />
-          ))}
+          <ItemAttachmentTree itemId={item.id} />
         </ItemCard.Layout.BodyRow>
       )}
     </ItemCard>
