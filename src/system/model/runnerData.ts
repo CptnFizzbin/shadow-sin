@@ -138,6 +138,8 @@ export interface RunnerData extends RunnerTraits {
   contacts: ContactData[]
   /** Long-term Extended Tests tracked on the Notes page — see `ExtendedTestEntry`. */
   extendedTests: ExtendedTestEntry[]
+  /** Free-form player notes shown on the Notes page. */
+  notes: string
   tradition: TraditionData | null
   spells: SpellData[]
   complexForms: ComplexFormData[]

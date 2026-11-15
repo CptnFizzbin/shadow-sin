@@ -87,6 +87,7 @@ export function runnerDataFactory(options?: {
     sprites: [],
     contacts: [],
     extendedTests: [],
+    notes: "",
 
     initiateGrade: 0,
     submersionGrade: 0,
