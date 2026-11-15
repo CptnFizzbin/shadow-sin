@@ -5,7 +5,7 @@ import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./items.actions.ts"
+import { addItem, patchItem, removeItem, sellItem, setEquipped, setItem, setStashed } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -346,5 +346,135 @@ describe.concurrent("gearReducer", () => {
       expect(stored.equipped).toBe(false)
       expect(stored._state).toEqual({ equipOnUnstash: true })
     })
+  })
+})
+
+/** Builds a parent Item with `childCount` Attachments, linked both ways. */
+const makeAttachmentTree = (parentOverrides: Partial<ItemData> = {}, childOverrides: Partial<ItemData>[] = [{}]) => {
+  const parentId = crypto.randomUUID() as UUID
+  const children = childOverrides.map((overrides) => makeItem({
+    name: "Smartgun System",
+    ...overrides,
+    items: { parentId, childIds: [] },
+  }))
+  const parent = makeItem({
+    ...parentOverrides,
+    id: parentId,
+    items: { parentId: null, childIds: children.map((child) => child.id) },
+  })
+  const catalog = Object.fromEntries([parent, ...children].map((item) => [item.id, item]))
+
+  return { parent, children, catalog }
+}
+
+describe.concurrent("gearReducer attachment carry state", () => {
+  it("equipping an Item equips its Attachments", () => {
+    // Arrange
+    const { parent, children: [child], catalog } = makeAttachmentTree({ equipped: false }, [{ equipped: false }])
+
+    // Act
+    const next = gearReducer(catalog, setEquipped({ id: parent.id, equipped: true }))
+
+    // Assert
+    expect(next[child.id].equipped).toBe(true)
+  })
+
+  it("stashing an Item stashes its Attachments and un-stashing restores their Equipped state", () => {
+    // Arrange
+    const { parent, children: [child], catalog } = makeAttachmentTree({ equipped: true }, [{ equipped: true }])
+
+    // Act
+    const stashed = gearReducer(catalog, setStashed({ id: parent.id, stashed: true }))
+    const unstashed = gearReducer(stashed, setStashed({ id: parent.id, stashed: false }))
+
+    // Assert
+    expect(stashed[child.id]).toMatchObject({ stashed: true, equipped: false })
+    expect(unstashed[child.id]).toMatchObject({ stashed: false, equipped: true })
+  })
+
+  it("an Attachment written with its own state takes its parent's instead", () => {
+    // Arrange
+    const { children: [child], catalog } = makeAttachmentTree({ equipped: true }, [{ equipped: true }])
+
+    // Act
+    const next = gearReducer(catalog, patchItem({ itemId: child.id, data: { stashed: true } }))
+
+    // Assert
+    expect(next[child.id]).toMatchObject({ stashed: undefined, equipped: true })
+  })
+
+  it("an Attachment added to an Item takes that Item's state", () => {
+    // Arrange
+    const parent = makeItem({ stashed: true, equipped: false })
+    const child = makeItem({ name: "Laser Sight", equipped: true, items: { parentId: parent.id, childIds: [] } })
+
+    // Act
+    const next = gearReducer({ [parent.id]: parent }, setItem(child))
+
+    // Assert
+    expect(next[child.id]).toMatchObject({ stashed: true, equipped: false })
+  })
+
+  it("state reaches Attachments of Attachments", () => {
+    // Arrange
+    const { parent, children: [child], catalog } = makeAttachmentTree({ equipped: false })
+    const grandchild = makeItem({ name: "Capacity Upgrade", items: { parentId: child.id, childIds: [] } })
+    catalog[child.id] = { ...child, items: { parentId: parent.id, childIds: [grandchild.id] } }
+    catalog[grandchild.id] = grandchild
+
+    // Act
+    const next = gearReducer(catalog, setEquipped({ id: parent.id, equipped: true }))
+
+    // Assert
+    expect(next[grandchild.id].equipped).toBe(true)
+  })
+})
+
+describe.concurrent("gearReducer sellItem", () => {
+  it("removes the Item and its Attachments when selling attachments", () => {
+    // Arrange
+    const { parent, children: [child], catalog } = makeAttachmentTree()
+
+    // Act
+    const next = gearReducer(catalog, sellItem({ id: parent.id, salePrice: 100, sellAttachments: true }))
+
+    // Assert
+    expect(next).toEqual({})
+    expect(next[child.id]).toBeUndefined()
+  })
+
+  it("keeps unfixed Attachments as top-level Items when not selling attachments", () => {
+    // Arrange
+    const { parent, children: [kept], catalog } = makeAttachmentTree({}, [{ name: "Laser Sight" }])
+
+    // Act
+    const next = gearReducer(catalog, sellItem({ id: parent.id, salePrice: 100, sellAttachments: false }))
+
+    // Assert
+    expect(next[parent.id]).toBeUndefined()
+    expect(next[kept.id].items.parentId).toBeNull()
+  })
+
+  it("always sells fixed Attachments with their parent", () => {
+    // Arrange
+    const { parent, children: [fixed], catalog } = makeAttachmentTree({}, [{ name: "Integral Smartlink", fixed: true }])
+
+    // Act
+    const next = gearReducer(catalog, sellItem({ id: parent.id, salePrice: 100, sellAttachments: false }))
+
+    // Assert
+    expect(next[fixed.id]).toBeUndefined()
+  })
+
+  it("selling an Attachment removes it from its parent's childIds", () => {
+    // Arrange
+    const { parent, children: [child], catalog } = makeAttachmentTree()
+
+    // Act
+    const next = gearReducer(catalog, sellItem({ id: child.id, salePrice: 50, sellAttachments: true }))
+
+    // Assert
+    expect(next[child.id]).toBeUndefined()
+    expect(next[parent.id].items.childIds).toEqual([])
   })
 })

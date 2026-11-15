@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useMemo } from "react"
 
+import { ItemActionsDialogProvider } from "#/components/entities/items/actions/itemActionsDialogProvider.tsx"
 import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
 import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
@@ -65,7 +66,9 @@ function RunnerRoute() {
       <RunnerEntityProvider>
         <DiceTrayProvider diceTrayApi={diceTrayApi}>
           <AddItemDialogProvider>
-            <Outlet />
+            <ItemActionsDialogProvider>
+              <Outlet />
+            </ItemActionsDialogProvider>
           </AddItemDialogProvider>
         </DiceTrayProvider>
       </RunnerEntityProvider>

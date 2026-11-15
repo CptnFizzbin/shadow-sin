@@ -2,6 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
 import { AnyItemCard } from "#/components/ui/cards/itemCard/anyItemCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
@@ -27,9 +28,13 @@ export const ItemDialogSubitemsTab: FC<ItemDialogSubitemsTabProps> = ({ itemId }
 
   return (
     <Stack sx={{ gap: 1 }}>
-      {Object.values(subitems).map((subitem) => (
-        <AnyItemCard key={subitem.id} item={subitem} />
-      ))}
+      {/* The parent's form is still open, so acting on an Attachment here would leave the form's
+          own copy of its Attachment list out of date. */}
+      <ItemActionsDialogContext.Provider value={null}>
+        {Object.values(subitems).map((subitem) => (
+          <AnyItemCard key={subitem.id} item={subitem} />
+        ))}
+      </ItemActionsDialogContext.Provider>
 
       <Button
         variant="outlined"

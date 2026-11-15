@@ -46,6 +46,11 @@ export interface EntityCardProps extends PropsWithChildren {
   onEdit?: () => void
   /** When provided, adds a "Remove" action to the actions menu (opened via the menu button). */
   onRemove?: () => void
+  /**
+   * When provided, the menu button calls this instead of opening the card's own actions menu, so
+   * a caller can show its actions somewhere else (e.g. a dialog).
+   */
+  onOpenActions?: () => void
   /** Outline-style button pinned to the left edge of the card, spanning its full height. */
   leftAction?: EntityCardLeftAction
 }
@@ -73,11 +78,13 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onOpen,
   onEdit,
   onRemove,
+  onOpenActions,
   leftAction,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
-  const hasActions = !!(onEdit || onRemove)
+  const hasMenu = !onOpenActions && !!(onEdit || onRemove)
+  const hasActions = !!onOpenActions || hasMenu
   const hasFooter = !!(
     slots.layout.footerRows.length >= 1
     || slots.layout.footerLeft.length >= 1
@@ -89,7 +96,8 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 
   const handleOpenMenu = (event: ReactMouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
-    setMenuAnchorEl(event.currentTarget)
+    if (onOpenActions) onOpenActions()
+    else setMenuAnchorEl(event.currentTarget)
   }
 
   const handleCloseMenu = () => setMenuAnchorEl(null)
@@ -216,7 +224,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         )}
       </Stack>
 
-      {hasActions && (
+      {hasMenu && (
         <Menu
           open={menuAnchorEl !== null}
           anchorEl={menuAnchorEl}

@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { Fragment } from "react"
 
+import { useItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import type { ItemData } from "#/system/model/items/itemData.ts"
@@ -26,14 +27,20 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
  * equipped/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
  * regions internally. A category-tier or typed card that needs another row uses
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
- * `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard` for its
- * tap-to-open behavior, menu-button actions, and left-edge action button.
+ * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
+ * `onEdit`, when given, as its Edit action); elsewhere `onEdit`/`onRemove` fill `EntityCard`'s own
+ * menu. `onOpen`/`leftAction` pass straight through to `EntityCard`.
  */
-const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, ...props }) => {
+const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onRemove, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
+  const itemActionsDialog = useItemActionsDialogContext()
+
+  const menuProps = itemActionsDialog
+    ? { onOpenActions: () => itemActionsDialog.open({ item, onEdit }) }
+    : { onEdit, onRemove }
 
   return (
-    <EntityCard entity={item} {...props}>
+    <EntityCard entity={item} {...props} {...menuProps}>
       <EntityCard.Layout.TitleRight>
         <ItemCardElements.Quantity value={item.quantity} />
       </EntityCard.Layout.TitleRight>
