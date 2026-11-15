@@ -2,7 +2,8 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { EquippedWeaponsSection } from "#/components/entities/items/types/weapons/equippedWeaponsSection.tsx"
+import { AvailableWeaponsSection } from "#/components/entities/items/types/weapons/availableWeaponsSection.tsx"
+import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
 import { SpellsViewerSection } from "#/components/runner/awakenings/magician/viewer/spells/spellsViewerSection.tsx"
 import { CombatActionsCheatSheetButton } from "#/components/system/combat/combatActionsCheatSheetButton.tsx"
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
@@ -29,7 +30,9 @@ function RouteComponent() {
 
       <InitiativeSection />
       <Divider />
-      <EquippedWeaponsSection />
+      <AvailableGearFilter>
+        <AvailableWeaponsSection />
+      </AvailableGearFilter>
 
       {canCastSpells && (
         <>
