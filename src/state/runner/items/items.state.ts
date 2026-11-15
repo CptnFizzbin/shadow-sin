@@ -1,11 +1,21 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import { planItemSale } from "#/system/formulas/items/itemSale.ts"
 import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, patchItem, removeItem, setDamage, setEquipped, setItem, setStashed } from "./items.actions.ts"
+import {
+  addItem,
+  patchItem,
+  removeItem,
+  sellItem,
+  setDamage,
+  setEquipped,
+  setItem,
+  setStashed,
+} from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
 
@@ -91,11 +101,63 @@ function reconcileEquippedForStash(item: ItemData, wasStashed: boolean): void {
   }
 }
 
+/**
+ * Makes every Attachment in the tree containing `id` share its root Item's Stashed and Equipped
+ * state: Attachments inherit their parent's state, so stashing or equipping a weapon stashes or
+ * equips its accessories with it.
+ */
+function syncAttachmentCarryState(state: ItemCatalog, id: UUID) {
+  let root = state[id]
+  if (!root) return
+
+  const visited = new Set<UUID>([root.id])
+  while (root.items.parentId && state[root.items.parentId] && !visited.has(root.items.parentId)) {
+    root = state[root.items.parentId]
+    visited.add(root.id)
+  }
+
+  const pushDown = (parent: ItemData, seen: Set<UUID>) => {
+    for (const childId of parent.items.childIds) {
+      const child = state[childId]
+      if (!child || seen.has(childId)) continue
+      seen.add(childId)
+
+      if (child.stashed !== parent.stashed) child.stashed = parent.stashed
+      if (child.equipped !== parent.equipped) child.equipped = parent.equipped
+
+      const equipOnUnstash = parent._state?.equipOnUnstash
+      if (child._state?.equipOnUnstash !== equipOnUnstash) {
+        child._state = { ...child._state, equipOnUnstash }
+      }
+
+      pushDown(child, seen)
+    }
+  }
+
+  pushDown(root, new Set([root.id]))
+}
+
+/** Sells `id` as planned by `planItemSale`: removes what's sold and detaches what stays behind. */
+function sellItemById(state: ItemCatalog, id: UUID, sellAttachments: boolean) {
+  const { soldIds, detachedIds } = planItemSale(state, id, sellAttachments)
+
+  for (const detachedId of detachedIds) {
+    const detached = state[detachedId]
+    detached.items = { ...detached.items, parentId: null }
+  }
+
+  for (const soldId of soldIds) {
+    removeItemById(state, soldId)
+  }
+}
+
 export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
   reconcileEquippedForStash,
+  syncAttachmentCarryState,
+  sellItemById,
 }
 
 export const gearReducer = createReducer(initialState, (builder) => {
@@ -109,12 +171,14 @@ export const gearReducer = createReducer(initialState, (builder) => {
       state[action.payload.id] = { ...action.payload }
       reconcileEquippedForStash(state[action.payload.id], false)
       relinkItem(state, state[action.payload.id])
+      syncAttachmentCarryState(state, action.payload.id)
     })
     .addCase(setItem, (state, action) => {
       const wasStashed = state[action.payload.id]?.stashed === true
       state[action.payload.id] = { ...action.payload }
       reconcileEquippedForStash(state[action.payload.id], wasStashed)
       relinkItem(state, state[action.payload.id])
+      syncAttachmentCarryState(state, action.payload.id)
     })
     .addCase(patchItem, (state, action) => {
       const item = state[action.payload.itemId]
@@ -125,6 +189,7 @@ export const gearReducer = createReducer(initialState, (builder) => {
         ...action.payload.data,
       }
       reconcileEquippedForStash(state[action.payload.itemId], wasStashed)
+      syncAttachmentCarryState(state, action.payload.itemId)
     })
     .addCase(removeItem, (state, action) => {
       const { id, removeChildren } = action.payload
@@ -138,6 +203,7 @@ export const gearReducer = createReducer(initialState, (builder) => {
       const item = state[action.payload.id]
       if (!item) return
       item.equipped = action.payload.equipped
+      syncAttachmentCarryState(state, action.payload.id)
     })
     .addCase(setStashed, (state, action) => {
       const item = state[action.payload.id]
@@ -145,6 +211,10 @@ export const gearReducer = createReducer(initialState, (builder) => {
       const wasStashed = item.stashed === true
       item.stashed = action.payload.stashed
       reconcileEquippedForStash(item, wasStashed)
+      syncAttachmentCarryState(state, action.payload.id)
+    })
+    .addCase(sellItem, (state, action) => {
+      sellItemById(state, action.payload.id, action.payload.sellAttachments)
     })
     .addCase(setDamage, (state, action) => {
       const item = state[action.payload.itemId]

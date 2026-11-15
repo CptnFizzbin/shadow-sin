@@ -6,9 +6,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
-import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
+import { RiDeleteBinLine, RiEditLine, RiHandbagLine, RiMore2Line } from "@remixicon/react"
 import type { FC, PropsWithChildren, ReactNode } from "react"
 
+import { getCarryStatusLabel } from "#/components/entities/items/actions/itemActions.ts"
+import { useItemActionsDialogContext } from "#/components/entities/items/actions/itemActionsDialogContext.ts"
 import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
@@ -41,7 +43,9 @@ export interface ItemDetailsRootProps extends PropsWithChildren {
  * `Title`/`Type`/`Source`/`Availability`/`Quantity`/`Cost` can be passed as
  * children to override the field auto-rendered from `item`/`type`; `Rating`
  * and `Content` are purely additive, with no default rendering of their own.
- * Typed details views (e.g. `WeaponItemDetails`) wrap this; the
+ * Inside an `ItemActionsDialogProvider`, `onEdit` becomes the Edit action of a single Actions
+ * button; elsewhere `onEdit`/`onRemove` render as buttons of their own. Typed details views (e.g.
+ * `WeaponItemDetails`) wrap this; the
  * `AnyItemDetails` dispatcher falls back to this directly for item types
  * without a typed details view.
  */
@@ -56,6 +60,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
   children,
 }) => {
   const slots = new ItemDetailsSlotManager(children)
+  const itemActionsDialog = useItemActionsDialogContext()
 
   const effects = item.effects ?? []
 
@@ -80,19 +85,32 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
 
           <Stack direction="row" sx={{ alignItems: "center" }}>
-            <ButtonGroup>
-              {onEdit && (
-                <ItemDetailsSlot.QuickAction label="Edit" icon={<RiEditLine size={16} />} onClick={onEdit} />
-              )}
+            {itemActionsDialog
+              ? (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<RiMore2Line size={16} />}
+                    onClick={() => itemActionsDialog.open({ item, onEdit })}
+                  >
+                    Actions
+                  </Button>
+                )
+              : (
+                  <ButtonGroup>
+                    {onEdit && (
+                      <ItemDetailsSlot.QuickAction label="Edit" icon={<RiEditLine size={16} />} onClick={onEdit} />
+                    )}
 
-              {onRemove && (
-                <ItemDetailsSlot.QuickAction
-                  label="Remove"
-                  icon={<RiDeleteBinLine size={16} />}
-                  onClick={onRemove}
-                />
-              )}
-            </ButtonGroup>
+                    {onRemove && (
+                      <ItemDetailsSlot.QuickAction
+                        label="Remove"
+                        icon={<RiDeleteBinLine size={16} />}
+                        onClick={onRemove}
+                      />
+                    )}
+                  </ButtonGroup>
+                )}
           </Stack>
         </Stack>
 
@@ -108,12 +126,15 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
 
           <Stack direction="row">
-            {item.equipped && (
-              <ItemDetailsSlot.Status icon={Icons.item.equipped} label="Equipped" color="success" />
-            )}
-            {item.stashed && (
-              <ItemDetailsSlot.Status icon={Icons.item.stashed} label="Stashed" />
-            )}
+            {item.stashed
+              ? <ItemDetailsSlot.Status icon={Icons.item.stashed} label={getCarryStatusLabel(item)} />
+              : (
+                  <ItemDetailsSlot.Status
+                    icon={item.equipped ? Icons.item.equipped : RiHandbagLine}
+                    label={getCarryStatusLabel(item)}
+                    color={item.equipped ? "success" : undefined}
+                  />
+                )}
             {item.wireless && (() => {
               const { removed, enabled } = item.wireless
 

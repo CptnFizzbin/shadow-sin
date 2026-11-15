@@ -316,8 +316,14 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                         <Divider />
 
                         {(localOptions["equipable"] || localOptions["canBeStashed"]) && (
-                          <form.Subscribe selector={(state) => state.values.equipped}>
-                            {(equipped) => !(isEquipLocked && equipped) && (
+                          <form.Subscribe
+                            selector={(state) => ({
+                              equipped: state.values.equipped,
+                              isAttached: !!state.values.items?.parentId,
+                            })}
+                          >
+                            {/* An Attachment follows its parent's state, so it has none of its own to pick. */}
+                            {({ equipped, isAttached }) => !isAttached && !(isEquipLocked && equipped) && (
                               <GearCarryStatusFieldGroup
                                 form={form}
                                 fields={itemFieldMap}

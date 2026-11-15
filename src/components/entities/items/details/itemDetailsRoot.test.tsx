@@ -54,29 +54,30 @@ describe("ItemDetailsRoot", () => {
     expect(screen.getByText(/BOD.*\+1/)).toBeDefined()
   })
 
-  it("renders equipped, stashed, and wireless-off status", () => {
+  it("renders wireless-off status", () => {
     // Arrange
-    const item: ItemData = { ...baseItem, equipped: true, stashed: true, wireless: { enabled: false } }
+    const item: ItemData = { ...baseItem, wireless: { enabled: false } }
 
     // Act
     renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     // Assert
-    expect(screen.getByText("Equipped")).toBeDefined()
-    expect(screen.getByText("Stashed")).toBeDefined()
     expect(screen.getByText("Wireless Off")).toBeDefined()
   })
 
-  it("omits the equipped and stashed status when the item is neither", () => {
+  it.each([
+    [{ equipped: true }, "Equipped"],
+    [{ stashed: true }, "Stashed"],
+    [{ equipped: false, stashed: false }, "Carried"],
+  ])("labels an item with %o as %s", (state, label) => {
     // Arrange
-    const item: ItemData = { ...baseItem, equipped: false, stashed: false }
+    const item: ItemData = { ...baseItem, ...state }
 
     // Act
     renderWithRunner(<ItemDetailsRoot item={item} />, createItemMap(item))
 
     // Assert
-    expect(screen.queryByText("Equipped")).toBeNull()
-    expect(screen.queryByText("Stashed")).toBeNull()
+    expect(screen.getByText(label)).toBeDefined()
   })
 
   it("composes stats, damage track, subitems, and footer slots", () => {

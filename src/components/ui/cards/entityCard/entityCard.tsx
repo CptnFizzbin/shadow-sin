@@ -46,6 +46,11 @@ export interface EntityCardProps extends PropsWithChildren {
   onEdit?: () => void
   /** When provided, adds a "Remove" action to the actions menu (opened via the menu button). */
   onRemove?: () => void
+  /**
+   * When provided, the menu button calls this instead of opening the card's own actions menu, so
+   * a caller can show its actions somewhere else (e.g. a dialog).
+   */
+  onOpenActions?: () => void
   /** Outline-style button pinned to the left edge of the card, spanning its full height. */
   leftAction?: EntityCardLeftAction
 }
@@ -63,21 +68,29 @@ function getRatingDisplay(entity: EntityData): string | number | undefined {
  * way `ItemCard` auto-renders every field common to `ItemData`, so category tiers only
  * need to supply their own type-specific content as `children`. Recognizes `Layout.*` regions
  * among `children` and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow
- * order, regardless of the order they were passed in; any other child is ignored. `onEdit`/
- * `onRemove` surface as items in a menu opened by a dedicated menu button on the card's right
- * edge (rather than a context menu or long-press gesture), and `leftAction` renders a matching
- * outline-style button on the left edge — both buttons span the card's full height.
+ * order, regardless of the order they were passed in; any other child is ignored. A card with no
+ * header rows below its title, body rows, or extra footer rows renders its footer on the title's
+ * row instead, as a single compact line. `onEdit`/`onRemove` surface as items in a menu opened by
+ * a dedicated menu button on the card's right edge (or the button calls `onOpenActions` instead,
+ * when given), and `leftAction` renders a matching outline-style button on the left edge — both
+ * buttons span the card's full height.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
   onOpen,
   onEdit,
   onRemove,
+  onOpenActions,
   leftAction,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
-  const hasActions = !!(onEdit || onRemove)
+  const hasMenu = !onOpenActions && !!(onEdit || onRemove)
+  const hasActions = !!onOpenActions || hasMenu
+  // A card with nothing but its title line and footer fits both on a single row.
+  const isCompact = slots.layout.headerRows.length === 0
+    && slots.layout.bodyRows.length === 0
+    && slots.layout.footerRows.length === 0
   const hasFooter = !!(
     slots.layout.footerRows.length >= 1
     || slots.layout.footerLeft.length >= 1
@@ -89,7 +102,8 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 
   const handleOpenMenu = (event: ReactMouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
-    setMenuAnchorEl(event.currentTarget)
+    if (onOpenActions) onOpenActions()
+    else setMenuAnchorEl(event.currentTarget)
   }
 
   const handleCloseMenu = () => setMenuAnchorEl(null)
@@ -150,7 +164,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
             }}
           >
-            <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
+            <EntityCardLayout.HeaderRow data-card-row="header" sx={{ justifyContent: "space-between" }}>
               <Stack direction="row" sx={{ alignItems: "center" }}>
                 <EntityCardElements.Title title={entity.name} />
 
@@ -158,6 +172,14 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               </Stack>
 
               <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center" }}>
+                {isCompact && (
+                  <>
+                    <EntityCardElements.Source source={entity.source} />
+                    {slots.layout.footerLeft}
+                    {slots.layout.footerRight}
+                  </>
+                )}
+
                 {slots.layout.topRight}
 
                 <EntityCardElements.Rating value={getRatingDisplay(entity)} />
@@ -173,7 +195,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
             </Stack>
           )}
 
-          {hasFooter && (
+          {hasFooter && !isCompact && (
             <Stack
               sx={{
                 paddingX: 1,
@@ -216,7 +238,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         )}
       </Stack>
 
-      {hasActions && (
+      {hasMenu && (
         <Menu
           open={menuAnchorEl !== null}
           anchorEl={menuAnchorEl}

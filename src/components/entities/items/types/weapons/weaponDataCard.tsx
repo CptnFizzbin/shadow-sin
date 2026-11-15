@@ -1,6 +1,7 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -65,9 +66,7 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
           direction="column"
           sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
         >
-          {Object.values(accessories).map((accessory) => (
-            <WeaponCard.Subitem key={accessory.id} name={accessory.name} />
-          ))}
+          <ItemAttachmentTree itemId={weapon.id} />
         </WeaponCard.Layout.BodyRow>
       )}
 

@@ -3,6 +3,8 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
+import { useGearListView } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { useGearFilter } from "#/hooks/items/gearHooks.ts"
 import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
@@ -23,6 +25,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   const dispatch = useRunnerStoreDispatch()
   const openItemDetails = useOpenItemDetails()
   const vehicleFormDialog = useVehicleFormDialog()
+  const gearListView = useGearListView()
 
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
@@ -41,16 +44,18 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
   return (
     <Stack>
-      {vehicles.map((vehicle) => (
-        <VehicleDataCard
-          key={vehicle.id}
-          vehicle={vehicle}
-          onOpen={openItemDetails
-            ? () => openItemDetails(vehicle.id)
-            : () => handleEditVehicle(vehicle)}
-          onEdit={openItemDetails ? () => handleEditVehicle(vehicle) : undefined}
-        />
-      ))}
+      <ItemCardGrid>
+        {gearListView(vehicles).map((vehicle) => (
+          <VehicleDataCard
+            key={vehicle.id}
+            vehicle={vehicle}
+            onOpen={openItemDetails
+              ? () => openItemDetails(vehicle.id)
+              : () => handleEditVehicle(vehicle)}
+            onEdit={openItemDetails ? () => handleEditVehicle(vehicle) : undefined}
+          />
+        ))}
+      </ItemCardGrid>
 
       <Button
         variant="outlined"

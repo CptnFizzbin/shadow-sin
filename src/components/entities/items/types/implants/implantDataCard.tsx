@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
@@ -74,9 +75,7 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
             direction="column"
             sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
           >
-            {Object.values(accessories).map((accessory) => (
-              <ItemCard.Subitem key={accessory.id} name={accessory.name} />
-            ))}
+            <ItemAttachmentTree itemId={implant.id} />
           </ItemCard.Layout.BodyRow>
         )}
       </ItemCard>

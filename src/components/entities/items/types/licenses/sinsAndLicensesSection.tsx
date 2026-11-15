@@ -1,5 +1,7 @@
 import type { FC } from "react"
 
+import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
+import { useGearListView } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import { useOpenItemDetails } from "#/hooks/items/useOpenItemDetails.ts"
@@ -20,6 +22,7 @@ export const SinsAndLicensesSection: FC = () => {
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
   const sinFormDialog = useSinFormDialog()
+  const gearListView = useGearListView()
 
   const saveItem = (item: SinData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
@@ -51,14 +54,16 @@ export const SinsAndLicensesSection: FC = () => {
 
   return (
     <>
-      {sins.map((sin) => (
-        <SinDataCard
-          key={sin.id}
-          sin={sin}
-          onOpen={openItemDetails ? () => openItemDetails(sin.id) : () => handleEditSin(sin)}
-          onEdit={openItemDetails ? () => handleEditSin(sin) : undefined}
-        />
-      ))}
+      <ItemCardGrid>
+        {gearListView(sins).map((sin) => (
+          <SinDataCard
+            key={sin.id}
+            sin={sin}
+            onOpen={openItemDetails ? () => openItemDetails(sin.id) : () => handleEditSin(sin)}
+            onEdit={openItemDetails ? () => handleEditSin(sin) : undefined}
+          />
+        ))}
+      </ItemCardGrid>
 
       {confirmDialog.outlet}
       {sinFormDialog.outlet}
