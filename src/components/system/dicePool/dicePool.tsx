@@ -15,6 +15,7 @@ import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
 import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 import { LedgerValue } from "./ledgerValue.tsx"
+import { describeOverride, OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
 
 const DIE_SIZE = 18
 const DIE_GAP = 0.5
@@ -35,9 +36,6 @@ function getGroupColor(group: DiceGroup): string {
   return group.size < 0 ? typeColors.penalty : typeColors.bonus
 }
 
-/** Struck through and dimmed: listed, but not counted toward the total. */
-const overriddenSx = { textDecoration: "line-through", color: "text.disabled" } as const
-
 export interface DicePoolProps {
   pool: DicePoolData
 }
@@ -46,7 +44,7 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
   const { label: name, groups: diceGroups, size: total } = pool
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
-  const penalties = diceGroups.filter((group) => group.size < 0 && !group.overridden)
+  const penalties = diceGroups.filter((group) => group.size < 0 && !group.overriddenBy)
 
   return (
     <ButtonBase
@@ -162,13 +160,14 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
               <Stack key={group.id ?? `${index}:${group.name}`} sx={{ gap: 0 }}>
                 <Stack
                   direction="row"
-                  title={group.overridden ? "Overridden — a larger bonus it doesn't stack with applies instead" : undefined}
-                  sx={{ gap: 1, ...(group.overridden && overriddenSx) }}
+                  title={group.overriddenBy ? describeOverride(group.overriddenBy) : undefined}
+                  sx={{ gap: 1, ...(group.overriddenBy && overriddenSx) }}
                 >
-                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overridden ? undefined : groupColor }}>
+                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overriddenBy ? undefined : groupColor }}>
                     {group.size}
                   </LedgerValue>
-                  <Typography variant="body2" sx={{ color: group.overridden ? undefined : groupColor }}>{group.name}</Typography>
+                  <Typography variant="body2" sx={{ color: group.overriddenBy ? undefined : groupColor }}>{group.name}</Typography>
+                  {group.overriddenBy && <OverriddenNote reason={group.overriddenBy} />}
                 </Stack>
 
                 {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}

@@ -145,7 +145,10 @@ describe.concurrent("stacking foci", () => {
 
     // Assert
     expect(combatPool.groups).toContainEqual(focusGroup("Wand", 4))
-    expect(combatPool.groups).toContainEqual({ ...focusGroup("Power Focus", 2), overridden: true })
+    expect(combatPool.groups).toContainEqual({
+      ...focusGroup("Power Focus", 2),
+      overriddenBy: { name: "Wand", value: 4, tag: focusEffectTag },
+    })
     expect(healthPool.groups).toContainEqual(focusGroup("Power Focus", 2))
     expect(combatPool.size - healthPool.size).toBe(2)
   })

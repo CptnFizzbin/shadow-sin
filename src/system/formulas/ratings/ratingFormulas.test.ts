@@ -62,7 +62,7 @@ describe.concurrent("RatingFormulas.getModifiers", () => {
 
     // Assert
     expect(modifiers).toEqual([
-      { name: "Jazz", value: 1, overridden: true },
+      { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 2, tag: "drug" } },
       { name: "Kamikaze", value: 2 },
       { name: "Wired Reflexes", value: 1 },
     ])
@@ -72,7 +72,10 @@ describe.concurrent("RatingFormulas.getModifiers", () => {
 describe.concurrent("RatingFormulas.getSkillRating with overridden modifiers", () => {
   it("leaves overridden modifiers out of the rating", () => {
     // Arrange
-    const modifiers = [{ name: "Jazz", value: 1, overridden: true }, { name: "Kamikaze", value: 2 }]
+    const modifiers = [
+      { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 2, tag: "drug" } },
+      { name: "Kamikaze", value: 2 },
+    ]
 
     // Act
     const breakdown = RatingFormulas.getSkillRating({ rawValue: 3, modifiers })

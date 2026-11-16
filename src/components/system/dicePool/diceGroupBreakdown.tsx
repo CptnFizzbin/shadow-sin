@@ -2,9 +2,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 
 import { LedgerValue } from "./ledgerValue.tsx"
+import { describeOverride, OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
 
 interface DiceGroupBreakdownProps {
   breakdown: RatingBreakdown
@@ -13,7 +15,7 @@ interface DiceGroupBreakdownProps {
 interface BreakdownItem {
   name: string
   value: string
-  overridden?: boolean
+  overriddenBy?: OverrideReason
 }
 
 /**
@@ -25,11 +27,11 @@ const toItems = ({ rawValue, modifiers }: RatingBreakdown): BreakdownItem[] => {
   return [
     { name: "Raw Value", value: String(rawValue) },
     ...modifiers.map((modifier) => {
-      if (!modifier.overridden) runningTotal += modifier.value
+      if (!modifier.overriddenBy) runningTotal += modifier.value
       const value = modifier.isCap
         ? `=${runningTotal}`
         : modifier.value > 0 ? `+${modifier.value}` : String(modifier.value)
-      return { name: modifier.name, value, overridden: modifier.overridden }
+      return { name: modifier.name, value, overriddenBy: modifier.overriddenBy }
     }),
   ]
 }
@@ -45,15 +47,12 @@ export const DiceGroupBreakdown: FC<DiceGroupBreakdownProps> = ({ breakdown }) =
         key={`${index}:${item.name}`}
         component="li"
         direction="row"
-        title={item.overridden ? "Overridden — a larger bonus it doesn't stack with applies instead" : undefined}
-        sx={{
-          gap: 1,
-          lineHeight: 1.25,
-          ...(item.overridden && { textDecoration: "line-through", color: "text.disabled" }),
-        }}
+        title={item.overriddenBy ? describeOverride(item.overriddenBy) : undefined}
+        sx={{ gap: 1, lineHeight: 1.25, ...(item.overriddenBy && overriddenSx) }}
       >
         <LedgerValue variant="caption">{item.value}</LedgerValue>
         <Typography variant="caption" sx={{ lineHeight: "inherit" }}>{item.name}</Typography>
+        {item.overriddenBy && <OverriddenNote reason={item.overriddenBy} />}
       </Stack>
     ))}
   </Stack>

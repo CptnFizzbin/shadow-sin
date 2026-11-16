@@ -1,7 +1,7 @@
 import type { GetStateFromSelectors } from "reselect"
 import { createSelector as createReselectSelector } from "reselect"
 
-import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
@@ -34,7 +34,7 @@ export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
 /**
  * Builds a selector for a dice pool made of `groups`, followed by the Wound Modifier unless
  * `excludeWoundMod` is set (as every Resistance Test does). Of the groups sharing a stacking tag,
- * only the largest counts; the others are kept, marked `overridden`. This is the one place the Wound
+ * only the largest counts; the others are kept, with `overriddenBy` saying why. This is the one place the Wound
  * Modifier is added: Dice Group selectors must not add it themselves.
  *
  * The pool selector's state and options are inferred from `groups`: it takes every field any
@@ -69,7 +69,12 @@ export function createDicePoolSelector<TGroups extends DiceGroupSelector[]>(
         getTags: (group) => group.tags,
         getValue: (group) => group.size,
       })
-      const groups = flatGroups.map((group) => overridden.has(group) ? { ...group, overridden: true } : group)
+      const groups = flatGroups.map((group): DiceGroup => {
+        const override = overridden.get(group)
+        return override
+          ? { ...group, overriddenBy: { name: override.by.name, value: override.by.size, tag: override.tag } }
+          : group
+      })
       return { ...config, groups, size: getPoolSize(groups) }
     },
   )

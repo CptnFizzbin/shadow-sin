@@ -6,7 +6,7 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DicePool } from "./dicePool.tsx"
 
 describe("DicePool", () => {
-  it("strikes through overridden groups and modifiers", () => {
+  it("strikes through overridden groups and modifiers, saying what overrides them", () => {
     // Arrange
     renderWithRunner(
       <DicePool
@@ -18,10 +18,17 @@ describe("DicePool", () => {
               name: "REA",
               size: 3,
               type: "attribute",
-              breakdown: { rawValue: 2, modifiers: [{ name: "Jazz", value: 1, overridden: true }, { name: "Kamikaze", value: 1 }], rating: 3 },
+              breakdown: {
+                rawValue: 2,
+                modifiers: [
+                  { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 1, tag: "drug" } },
+                  { name: "Kamikaze", value: 1 },
+                ],
+                rating: 3,
+              },
             },
             { name: "Wand", size: 4, type: "bonus" },
-            { name: "Power Focus", size: 2, type: "bonus", overridden: true },
+            { name: "Power Focus", size: 2, type: "bonus", overriddenBy: { name: "Wand", value: 4, tag: "focus" } },
           ],
           size: 7,
         }}
@@ -36,6 +43,9 @@ describe("DicePool", () => {
     expect(struckThrough("Power Focus")).toContain("line-through")
     expect(struckThrough("Jazz")).toContain("line-through")
     expect(screen.getByText("Wand").closest("[title]")).toBeNull()
+    expect(screen.getByText("Power Focus").closest("[title]")?.getAttribute("title"))
+      .toBe("Overridden by Wand (4): effects tagged \"focus\" don't stack, and only the highest applies.")
+    expect(screen.getByText("Jazz").closest("[title]")?.textContent).toContain("Overridden by Kamikaze (1)")
   })
 
   it("lists a group's breakdown as an indented list without adding it to the total", () => {
