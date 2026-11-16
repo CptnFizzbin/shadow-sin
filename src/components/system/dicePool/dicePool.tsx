@@ -35,6 +35,9 @@ function getGroupColor(group: DiceGroup): string {
   return group.size < 0 ? typeColors.penalty : typeColors.bonus
 }
 
+/** Struck through and dimmed: listed, but not counted toward the total. */
+const overriddenSx = { textDecoration: "line-through", color: "text.disabled" } as const
+
 export interface DicePoolProps {
   pool: DicePoolData
 }
@@ -43,7 +46,7 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
   const { label: name, groups: diceGroups, size: total } = pool
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
-  const penalties = diceGroups.filter((group) => group.size < 0)
+  const penalties = diceGroups.filter((group) => group.size < 0 && !group.overridden)
 
   return (
     <ButtonBase
@@ -157,9 +160,15 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
             return (
               <Stack key={group.id ?? `${index}:${group.name}`} sx={{ gap: 0 }}>
-                <Stack direction="row" sx={{ gap: 1 }}>
-                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: groupColor }}>{group.size}</LedgerValue>
-                  <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
+                <Stack
+                  direction="row"
+                  title={group.overridden ? "Overridden — a larger bonus it doesn't stack with applies instead" : undefined}
+                  sx={{ gap: 1, ...(group.overridden && overriddenSx) }}
+                >
+                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overridden ? undefined : groupColor }}>
+                    {group.size}
+                  </LedgerValue>
+                  <Typography variant="body2" sx={{ color: group.overridden ? undefined : groupColor }}>{group.name}</Typography>
                 </Stack>
 
                 {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}

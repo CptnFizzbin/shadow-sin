@@ -133,7 +133,7 @@ describe.concurrent("focus bonuses in dice pools", () => {
 })
 
 describe.concurrent("stacking foci", () => {
-  it("keep only the larger of a Power Focus and a Spellcasting Focus on the same pool", () => {
+  it("count only the larger of a Power Focus and a Spellcasting Focus on the same pool, listing the other as overridden", () => {
     // Arrange
     const power = makeFocus({ name: "Power Focus", focusType: FocusType.Power, force: 2 })
     const wand = makeFocus({ name: "Wand", focusType: FocusType.Spellcasting, force: 4, spellCategory: SpellCategory.Combat })
@@ -145,8 +145,9 @@ describe.concurrent("stacking foci", () => {
 
     // Assert
     expect(combatPool.groups).toContainEqual(focusGroup("Wand", 4))
-    expect(combatPool.groups).not.toContainEqual(focusGroup("Power Focus", 2))
+    expect(combatPool.groups).toContainEqual({ ...focusGroup("Power Focus", 2), overridden: true })
     expect(healthPool.groups).toContainEqual(focusGroup("Power Focus", 2))
+    expect(combatPool.size - healthPool.size).toBe(2)
   })
 })
 

@@ -7,7 +7,7 @@ import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ComboSelectorOptions, Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
-import { keepHighestPerTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 
 /**
  * A selector for one or more Dice Groups — `(state)` or `(state, options)`. Its parameters stay
@@ -34,7 +34,7 @@ export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
 /**
  * Builds a selector for a dice pool made of `groups`, followed by the Wound Modifier unless
  * `excludeWoundMod` is set (as every Resistance Test does). Of the groups sharing a stacking tag,
- * only the largest is kept. This is the one place the Wound
+ * only the largest counts; the others are kept, marked `overridden`. This is the one place the Wound
  * Modifier is added: Dice Group selectors must not add it themselves.
  *
  * The pool selector's state and options are inferred from `groups`: it takes every field any
@@ -62,11 +62,14 @@ export function createDicePoolSelector<TGroups extends DiceGroupSelector[]>(
   return createReselectSelector(
     groupSelectors,
     (...resolvedGroups: DiceGroupList[]): DicePoolData => {
-      // Groups from effects sharing a stacking tag (e.g. two foci) don't stack: only the largest counts.
-      const groups = keepHighestPerTag(flattenDiceGroups(resolvedGroups), {
+      // Groups from effects sharing a stacking tag (e.g. two foci) don't stack: only the largest counts,
+      // and the rest stay listed as overridden so the Player can see why they don't.
+      const flatGroups = flattenDiceGroups(resolvedGroups)
+      const overridden = findOverriddenByTag(flatGroups, {
         getTags: (group) => group.tags,
         getValue: (group) => group.size,
       })
+      const groups = flatGroups.map((group) => overridden.has(group) ? { ...group, overridden: true } : group)
       return { ...config, groups, size: getPoolSize(groups) }
     },
   )

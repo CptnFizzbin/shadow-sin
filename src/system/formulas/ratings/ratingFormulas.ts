@@ -1,4 +1,4 @@
-import { keepHighestPerTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 
@@ -8,11 +8,13 @@ export interface RatingModifier {
   value: number
   /** Marks the Augmented Maximum cap: `value` is whatever brings the running total down to the cap. */
   isCap?: boolean
+  /** Listed for reference, but not counted, because a larger modifier sharing one of its stacking tags applies instead. */
+  overridden?: boolean
 }
 
 /**
  * A rating with the raw value and modifiers it was computed from. `rating` always equals
- * `rawValue` plus the sum of `modifiers`.
+ * `rawValue` plus the sum of the `modifiers` that aren't overridden.
  */
 export interface RatingBreakdown {
   rawValue: number
@@ -27,27 +29,34 @@ export interface SourcedGameEffect {
 }
 
 const sumModifiers = (modifiers: RatingModifier[]): number =>
-  modifiers.reduce((sum, modifier) => sum + modifier.value, 0)
+  modifiers.reduce((sum, modifier) => modifier.overridden ? sum : sum + modifier.value, 0)
 
 export const RatingFormulas = {
   /**
    * The modifiers in `sourcedEffects` of `type` that target `target` (and `subTarget`, when
    * given), each named after the source it comes from. Of the effects sharing a stacking tag,
-   * only the highest counts.
+   * only the highest counts; the others are marked `overridden`.
    */
   getModifiers: ({ sourcedEffects, type, target, subTarget }: {
     sourcedEffects: SourcedGameEffect[]
     type: GameEffectType
     target: string
     subTarget?: string
-  }): RatingModifier[] =>
-    keepHighestPerTag(
-      sourcedEffects.filter(({ effect }) => effect.type === type
-        && effect.target === target
-        && (subTarget === undefined || effect.subTarget === subTarget)),
-      { getTags: ({ effect }) => effect.tags, getValue: ({ effect }) => effect.value },
-    )
-      .map(({ sourceName, effect }) => ({ name: sourceName, value: effect.value })),
+  }): RatingModifier[] => {
+    const matching = sourcedEffects.filter(({ effect }) => effect.type === type
+      && effect.target === target
+      && (subTarget === undefined || effect.subTarget === subTarget))
+    const overridden = findOverriddenByTag(matching, {
+      getTags: ({ effect }) => effect.tags,
+      getValue: ({ effect }) => effect.value,
+    })
+
+    return matching.map((sourcedEffect) => ({
+      name: sourcedEffect.sourceName,
+      value: sourcedEffect.effect.value,
+      ...(overridden.has(sourcedEffect) ? { overridden: true } : {}),
+    }))
+  },
 
   /**
    * An Attribute's rating: `rawValue` plus `modifiers`, capped at `augmentedMax` when one is given,

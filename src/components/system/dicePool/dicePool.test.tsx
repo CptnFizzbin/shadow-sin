@@ -6,6 +6,38 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DicePool } from "./dicePool.tsx"
 
 describe("DicePool", () => {
+  it("strikes through overridden groups and modifiers", () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.spellcasting",
+          label: "Spellcasting",
+          groups: [
+            {
+              name: "REA",
+              size: 3,
+              type: "attribute",
+              breakdown: { rawValue: 2, modifiers: [{ name: "Jazz", value: 1, overridden: true }, { name: "Kamikaze", value: 1 }], rating: 3 },
+            },
+            { name: "Wand", size: 4, type: "bonus" },
+            { name: "Power Focus", size: 2, type: "bonus", overridden: true },
+          ],
+          size: 7,
+        }}
+      />,
+    )
+
+    // Act
+    fireEvent.click(screen.getByText("Spellcasting"))
+
+    // Assert
+    const struckThrough = (text: string) => getComputedStyle(screen.getByText(text).closest("[title]")!).textDecoration
+    expect(struckThrough("Power Focus")).toContain("line-through")
+    expect(struckThrough("Jazz")).toContain("line-through")
+    expect(screen.getByText("Wand").closest("[title]")).toBeNull()
+  })
+
   it("lists a group's breakdown as an indented list without adding it to the total", () => {
     // Arrange
     renderWithRunner(
