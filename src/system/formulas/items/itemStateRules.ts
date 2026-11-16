@@ -18,6 +18,22 @@ function isItemStateAllowed(itemType: ItemType, state: ItemState): boolean {
   return getAllowedItemStates(itemType).includes(state)
 }
 
+/**
+ * The fields of an Item the state rules read. `bonded` only matters for a Focus, which can't be
+ * put in an active state until it's Bonded.
+ */
+type ItemStateSubject = Pick<ItemData, "itemType" | "state" | "quantity"> & { bonded?: boolean }
+
+/** Whether `item` is a Focus that hasn't been Bonded yet. Every Magical Item is a Focus. */
+export function isUnbondedFocus(item: Pick<ItemStateSubject, "itemType" | "bonded">): boolean {
+  return item.itemType === ItemType.magical && !item.bonded
+}
+
+/** Whether `item` can be in `state`: its type allows it, and an unbonded Focus is never active. */
+function canItemTakeState(item: Pick<ItemStateSubject, "itemType" | "bonded">, state: ItemState): boolean {
+  return isItemStateAllowed(item.itemType, state) && !(isActiveItemState(state) && isUnbondedFocus(item))
+}
+
 /** Whether `state` is one in which an Item's Game Effects apply (Equipped, Implanted, or Active). */
 function isActiveItemState(state: ItemState): boolean {
   return state === ItemState.equipped || state === ItemState.implanted || state === ItemState.active
@@ -101,7 +117,8 @@ export function hasUnitsToConsume(item: Pick<ItemData, "quantity">): boolean {
 }
 
 /** The action that moves an Available Item of `itemType` into its active state, if it has one. */
-function getActivateAction(item: Pick<ItemData, "itemType" | "quantity">): ItemStateAction[] {
+function getActivateAction(item: ItemStateSubject): ItemStateAction[] {
+  if (isUnbondedFocus(item)) return []
   switch (getActiveItemState(item.itemType)) {
     case ItemState.equipped:
       return [ItemStateAction.equip]
@@ -118,9 +135,9 @@ function getActivateAction(item: Pick<ItemData, "itemType" | "quantity">): ItemS
  * The actions an Item's action menu offers, given its type, current state, and (for a Consumable)
  * how many units it has left. A Stashed Item only offers Unstash — the Player Unstashes before
  * Equipping, Implanting, or Consuming it. An Active Consumable only offers End Effect, since what's
- * already been taken can't be put away.
+ * already been taken can't be put away. An unbonded Focus isn't offered Equip.
  */
-export function getItemStateActions(item: Pick<ItemData, "itemType" | "state" | "quantity">): ItemStateAction[] {
+export function getItemStateActions(item: ItemStateSubject): ItemStateAction[] {
   switch (getItemState(item)) {
     case ItemState.available:
       return [...getActivateAction(item), ItemStateAction.stash]
@@ -174,7 +191,7 @@ function cascadeChildState(child: ItemData, parentBefore: ItemState, parentAfter
   if (parentBefore === ItemState.stashed && childState === ItemState.stashed) {
     next = ItemState.available
   }
-  if (isActiveItemState(parentAfter) && next === ItemState.available && isItemStateAllowed(child.itemType, parentAfter)) {
+  if (isActiveItemState(parentAfter) && next === ItemState.available && canItemTakeState(child, parentAfter)) {
     next = parentAfter
   }
   if (isActiveItemState(parentBefore) && !isActiveItemState(parentAfter) && next === parentBefore) {
@@ -213,8 +230,8 @@ export function reconcileItemState(catalog: ItemCatalog, itemId: ItemData["id"],
   if (!item) return
 
   let state = getItemState(item)
-  if (!isItemStateAllowed(item.itemType, state)) {
-    state = previousState !== undefined && isItemStateAllowed(item.itemType, previousState)
+  if (!canItemTakeState(item, state)) {
+    state = previousState !== undefined && canItemTakeState(item, previousState)
       ? previousState
       : ItemState.available
   }

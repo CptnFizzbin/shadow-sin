@@ -8,6 +8,7 @@ import type { ImplantData } from "./implantData.ts"
 import type { ItemData } from "./itemData.ts"
 import type { ItemType } from "./itemType.ts"
 import type { LicenseData } from "./licenseData.ts"
+import type { FocusData } from "./magicalData.ts"
 import type { ProgramData } from "./programData.ts"
 import type { SinData } from "./sinData.ts"
 import type { SoftwareData } from "./softwareData.ts"
@@ -37,6 +38,7 @@ export type AnyItemData =
   | CredstickData
   | ProgramData
   | DrugData
+  | FocusData
 
 export type ItemDataFor<T extends ItemType> = Extract<AnyItemData, { itemType: T }>
 

@@ -249,19 +249,23 @@ from Magic.
 A Technomancer's equivalent of a spell — a matrix effect compiled from Resonance.
 
 **Focus**:
-A magical item a Runner can own, **Bond**, and **Activate**. Owning a focus does nothing by itself;
-it must be bonded before it can be activated, and only activated foci add effects or sustain
-spells. Subtypes: Power, Spellcasting, Summoning, Banishing, Centering, Sustaining, and Weapon.
+A **Magical** Item a Runner can own, **Bond**, and **Activate**. Owning a focus does nothing by
+itself; it must be bonded before it can be activated, and only activated foci add effects or
+sustain spells. Each type is tied to something when made: Spellcasting, Counterspelling, and
+Sustaining foci to a spell category; Summoning, Banishing, and Binding foci to a spirit type; a
+Weapon focus to the weapon it is attached to; a Power focus to nothing. Each adds its Force in dice
+to the matching tests — a Power focus to every test that rolls Magic — except a Sustaining focus,
+which only holds a spell.
 _Avoid_: fetish, magical tool
 
 **Bond** / **Bonding**:
-A one-time Karma cost that permanently links a Focus to a Runner, and a prerequisite for
-activating it. The Karma is lost for good if the focus is later lost, destroyed, or unbonded.
+A one-time Karma cost — the focus's Force times a multiplier set by its type — that permanently
+links a Focus to a Runner, and a prerequisite for activating it. The Karma is lost for good if the focus is later lost, destroyed, or unbonded.
 _Avoid_: activate, attune (a bonded focus can still be inactive)
 
 **Activate** / **Activation**:
 Switching a bonded Focus on or off during play. Free and reversible, unlike Bonding. An activated
-focus is the focus's form of **Equipped**.
+focus is the focus's form of **Equipped**, and is shown as Equipped on screen.
 _Avoid_: bond
 
 **Bonded Foci Limit**:
@@ -387,10 +391,11 @@ _Avoid_: child item, accessory (too weapon-specific), mod
 **Item State**:
 Where an Item is right now — exactly one of **Equipped**, **Implanted**, **Active**, **Available**,
 or **Stashed**. The kind of Item decides which it can be in: weapons, armor, devices, and other gear
-can be Equipped; implants can be Implanted; Consumables can be Active; programs, software,
-vehicles, credsticks, SINs, Licences, and weapon accessories can only be Available or Stashed. An
-Item's GameEffects apply only while it is Equipped, Implanted, or Active. Changing an Item's state
-changes its Attachments' too, and an Attachment is never further from use than its parent allows.
+can be Equipped, as can Foci once they're Bonded; implants can be Implanted; Consumables can be
+Active; programs, software, vehicles, credsticks, SINs, Licences, and weapon accessories can only be
+Available or Stashed. An Item's GameEffects apply only while it is Equipped, Implanted, or Active.
+Changing an Item's state changes its Attachments' too, and an Attachment is never further from use
+than its parent allows.
 _Avoid_: carry status, condition
 
 **Equipped**:
@@ -424,6 +429,10 @@ _Avoid_: unequipped (an Item can be on hand and unequipped, e.g. a spare pistol 
 An Item that is used up, one unit at a time, to take effect — so far only **Drugs**. Its primary
 action is **Consume**, or **End Effect** while it is **Active**.
 _Avoid_: disposable, expendable
+
+**Magical**:
+The category of Items with a magical nature — so far only **Foci**.
+_Avoid_: arcane gear, magic items
 
 **Drug**:
 A Consumable compound, described by its **Duration**, **Effects**, and **Crash** (what happens when

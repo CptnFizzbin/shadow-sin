@@ -5,7 +5,7 @@ import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { DamageFormulas } from "#/system/formulas/damage/damageFormulas.ts"
-import { itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { isEntityWithDamage, isEntityWithQualities } from "#/system/model/entities/entityTraits.ts"
@@ -41,7 +41,7 @@ export namespace DamageSelectors {
 
       for (const item of Object.values(getItemCatalog(runner))) {
         if (!itemEffectsApply(item)) continue
-        for (const effect of item.effects ?? []) {
+        for (const effect of getItemGameEffects(item)) {
           if (
             effect.type === GameEffectType.lowPainTolerance
             && (effect.target === track || effect.target === "all")
@@ -80,7 +80,7 @@ export namespace DamageSelectors {
 
       for (const item of Object.values(getItemCatalog(runner))) {
         if (!itemEffectsApply(item)) continue
-        for (const effect of item.effects ?? []) {
+        for (const effect of getItemGameEffects(item)) {
           if (
             effect.type === GameEffectType.highPainTolerance
             && (effect.target === track || effect.target === "all")

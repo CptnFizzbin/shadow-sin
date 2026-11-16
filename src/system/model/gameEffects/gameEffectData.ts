@@ -56,11 +56,13 @@ export interface RecoilReductionEffect extends GameEffectData {
 }
 
 /**
- * Generic modifier for a named dice pool.
+ * Generic modifier for a named dice pool (see `DicePoolId`). With a `subTarget`, it only applies
+ * when the pool is rolled for that spell category, spirit type, or weapon.
  */
 export interface DicePoolModEffect extends GameEffectData {
   type: GameEffectType.dicePoolMod
   target: string
+  subTarget?: string
 }
 
 /**
@@ -127,6 +129,7 @@ const RecoilReductionSchema = z.object({
 const DicePoolModSchema = z.object({
   type: z.literal(GameEffectType.dicePoolMod),
   target: z.string(),
+  subTarget: z.string().optional(),
   value: z.number(),
 })
 

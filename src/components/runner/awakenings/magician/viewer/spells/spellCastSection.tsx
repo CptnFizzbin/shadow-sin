@@ -110,7 +110,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>
-            <SpellcastingDicePool />
+            <SpellcastingDicePool spellCategory={spell.category} />
           </Grid>
           <Grid size={1}>
             <DrainResistanceDicePool drainAttribute={drainAttribute} />

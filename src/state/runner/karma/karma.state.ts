@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import { bondFocus } from "#/state/runner/items/items.actions.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { addKarma, adjustKarma, buyKarma, sellKarma, spendKarma } from "./karma.actions.ts"
@@ -33,6 +34,12 @@ export const karmaReducer = createReducer(initialState, (builder) => {
       const { amount, entry } = action.payload
       if (amount > state.current) throw insufficientKarmaError(amount, state.current)
       state.current -= amount
+      state.log.push(entry)
+    })
+    .addCase(bondFocus, (state, action) => {
+      const { karmaCost, entry } = action.payload
+      if (karmaCost > state.current) throw insufficientKarmaError(karmaCost, state.current)
+      state.current -= karmaCost
       state.log.push(entry)
     })
     .addCase(adjustKarma, (state, action) => {

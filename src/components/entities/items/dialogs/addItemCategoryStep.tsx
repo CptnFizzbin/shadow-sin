@@ -7,6 +7,7 @@ import {
   RiCarLine,
   RiCpuLine,
   RiIdCardLine,
+  RiMagicLine,
   RiShapesLine,
   RiShieldLine,
   RiSmartphoneLine,
@@ -25,6 +26,7 @@ const categoryIcons: Record<GearSection, IconComponent> = {
   [GearSection.Devices]: RiSmartphoneLine,
   [GearSection.Licenses]: RiIdCardLine,
   [GearSection.Consumables]: RiCapsuleLine,
+  [GearSection.Magical]: RiMagicLine,
   [GearSection.Misc]: RiShapesLine,
 }
 

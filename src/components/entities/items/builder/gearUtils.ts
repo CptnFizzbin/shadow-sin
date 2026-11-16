@@ -32,13 +32,14 @@ export const useGearAvailabilityIssues = () => {
   let totalInvalidCount = 0
 
   const genericSectionKeys: Partial<
-    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "consumable" | "misc">
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "consumable" | "magical" | "misc">
   > = {
     [SectionHeader.Weapons]: "weapons",
     [SectionHeader.Armor]: "armor",
     [SectionHeader.Vehicles]: "vehicles",
     [SectionHeader.Devices]: "devices",
     [SectionHeader.Consumables]: "consumable",
+    [SectionHeader.Magical]: "magical",
     [SectionHeader.Misc]: "misc",
   }
 

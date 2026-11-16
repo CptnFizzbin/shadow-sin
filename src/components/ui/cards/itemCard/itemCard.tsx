@@ -9,6 +9,7 @@ import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 
 import { ItemCardElements } from "./itemCardElements.tsx"
 import { ItemCardSlotManager } from "./itemCardSlotManager.ts"
@@ -78,6 +79,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
         {itemState === ItemState.implanted && <ItemCardElements.StatusIcon status="implanted" />}
         {itemState === ItemState.active && <ItemCardElements.StatusIcon status="active" />}
         {itemState === ItemState.stashed && <ItemCardElements.StatusIcon status="stashed" />}
+        {isFocusData(item) && item.bonded && <ItemCardElements.StatusIcon status="bonded" />}
         {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
         {item.wireless && (
           item.wireless.removed

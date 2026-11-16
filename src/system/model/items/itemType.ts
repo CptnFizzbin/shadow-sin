@@ -12,5 +12,6 @@ export enum ItemType {
   credstick = "credstick",
   program = "program",
   consumable = "consumable",
+  magical = "magical",
   other = "other",
 }

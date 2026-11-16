@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
+import { getFocusBondingCost } from "#/system/formulas/magic/focusRules.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
@@ -8,11 +9,13 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemState } from "#/system/model/items/itemState.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import type { SoftwareData } from "#/system/model/items/softwareData.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
 import type { FirearmAccessoryData, WeaponData } from "#/system/model/items/weaponData.ts"
+import type { KarmaLedgerEntry } from "#/system/model/karma/karmaLedgerEntry.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -38,6 +41,29 @@ export const setState = createAction<{ id: UUID, state: ItemState }>("gear/setSt
  * End the effect with `setState` back to Available.
  */
 export const consumeItem = createAction<{ id: UUID }>("gear/consume")
+
+/**
+ * Bonds a Focus to the Runner for `karmaCost` Karma, recorded on the karma ledger as `entry`. Once
+ * Bonded, the Focus can be Equipped and Stashed freely. Ignored unless the Item is an unbonded
+ * Focus; throws from the karma reducer when the Runner has less than `karmaCost` current Karma.
+ */
+export const bondFocus = createAction("gear/bondFocus", (focus: Pick<FocusData, "id" | "name" | "focusType" | "force">) => {
+  const karmaCost = getFocusBondingCost(focus)
+  const entry: KarmaLedgerEntry = {
+    id: crypto.randomUUID() as UUID,
+    timestamp: new Date().toISOString(),
+    amount: -karmaCost,
+    description: `Bonded ${focus.name} (${focus.focusType} Focus, Force ${focus.force})`,
+    source: "bondFocus",
+  }
+  return { payload: { id: focus.id, karmaCost, entry } }
+})
+
+/**
+ * Breaks a Focus's bond. The Karma spent Bonding it is lost, and an Equipped Focus becomes
+ * Available, since an unbonded Focus can't be Equipped.
+ */
+export const unbondFocus = createAction<{ id: UUID }>("gear/unbondFocus")
 
 /**
  * Sells an Item for `salePrice` nuyen, crediting it to the Runner's Nuyen. Fixed Attachments are
@@ -104,6 +130,8 @@ export const ItemActions = {
   removeItem,
   setState,
   consumeItem,
+  bondFocus,
+  unbondFocus,
   sellItem,
   setDamage,
 

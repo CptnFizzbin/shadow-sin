@@ -3,8 +3,10 @@ import type { FC, PropsWithChildren } from "react"
 import { useWeaponAttackDialog } from "#/components/entities/items/types/weapons/dialogs/weaponAttackDialog.tsx"
 import { useRunProgramDialog } from "#/components/system/matrix/dialogs/runProgramDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { useFocusBonding } from "#/hooks/items/types/magical/useFocusBonding.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { WeaponData } from "#/system/model/items/weaponData.ts"
 
@@ -28,6 +30,7 @@ export const ItemActionsDialogProvider: FC<PropsWithChildren> = ({ children }) =
   const weaponAttackDialog = useWeaponAttackDialog()
   const runProgramDialog = useRunProgramDialog()
   const confirmDialog = useConfirmDialog()
+  const focusBonding = useFocusBonding()
 
   const open = async ({ item, onEdit, onRemoved }: ItemActionsDialogOpenOptions) => {
     const action = await itemActionsDialog.open({ item })
@@ -48,6 +51,15 @@ export const ItemActionsDialogProvider: FC<PropsWithChildren> = ({ children }) =
 
       case ItemAction.consume:
         dispatch(Actions.item.consumeItem({ id: item.id }))
+        break
+
+      case ItemAction.bond:
+        // `getItemActions` only offers Bond and Unbond for foci.
+        if (isFocusData(item)) await focusBonding.bond(item)
+        break
+
+      case ItemAction.unbond:
+        if (isFocusData(item)) await focusBonding.unbond(item)
         break
 
       case ItemAction.attack:
@@ -93,6 +105,7 @@ export const ItemActionsDialogProvider: FC<PropsWithChildren> = ({ children }) =
       {weaponAttackDialog.outlet}
       {runProgramDialog.outlet}
       {confirmDialog.outlet}
+      {focusBonding.outlet}
     </ItemActionsDialogContext.Provider>
   )
 }

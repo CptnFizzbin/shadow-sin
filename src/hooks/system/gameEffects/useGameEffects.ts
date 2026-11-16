@@ -8,7 +8,7 @@ import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { filterByEffectType, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { filterByEffectType, getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import { spellEffectsApply } from "#/system/formulas/magic/spellSustaining.ts"
 import type { EffectByType, GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
@@ -34,7 +34,7 @@ const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   (qualities, items, spells, complexForms, powers): GameEffectData[] => {
     return [
       ...qualities,
-      ...Object.values(items).filter(itemEffectsApply),
+      ...Object.values(items).filter(itemEffectsApply).map((item) => ({ effects: getItemGameEffects(item) })),
       ...spells.filter(spellEffectsApply),
       ...complexForms,
       ...powers,

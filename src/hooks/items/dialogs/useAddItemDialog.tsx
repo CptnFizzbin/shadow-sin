@@ -7,6 +7,7 @@ import { useDeviceFormDialog } from "#/components/entities/items/types/devices/d
 import { useImplantFormDialog } from "#/components/entities/items/types/implants/dialogs/implantFormDialog.tsx"
 import { useLicenseFormDialog } from "#/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/entities/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { useFocusFormDialog } from "#/components/entities/items/types/magical/dialogs/focusFormDialog.tsx"
 import { useVehicleFormDialog } from "#/components/entities/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/entities/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
@@ -37,6 +38,7 @@ export function useAddItemDialog() {
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
   const drugFormDialog = useDrugFormDialog()
+  const focusFormDialog = useFocusFormDialog()
   const miscFormDialog = useItemFormDialog()
 
   const openTargetDialog = (selection: AddItemSelection, parentId?: UUID): Promise<ItemData | undefined> => {
@@ -64,6 +66,10 @@ export function useAddItemDialog() {
       // Drug is the only Consumable subtype so far.
       return drugFormDialog.open({ wizard: true, parentId })
     }
+    if (selection.section === GearSection.Magical && "magicalType" in selection) {
+      // Focus is the only Magical subtype so far.
+      return focusFormDialog.open({ wizard: true, parentId })
+    }
     return miscFormDialog.open({ wizard: true, itemType: ItemType.other, label: "Item", parentId })
   }
 
@@ -86,6 +92,7 @@ export function useAddItemDialog() {
       {sinFormDialog.outlet}
       {licenseFormDialog.outlet}
       {drugFormDialog.outlet}
+      {focusFormDialog.outlet}
       {miscFormDialog.outlet}
     </>
   )

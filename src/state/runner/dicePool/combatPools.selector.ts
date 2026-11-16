@@ -2,13 +2,17 @@ import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { calculateArmorTotals } from "#/system/formulas/items/encumbranceUtils.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import { ArmorRatingType } from "#/system/model/items/armorData.ts"
+import { SpellCategory } from "#/system/model/magic/spellData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
@@ -24,7 +28,21 @@ const selectBodyGroups = attrGroupsFor(AttributeKey.body)
 const selectWillpowerGroups = attrGroupsFor(AttributeKey.willpower)
 const selectDodgeGroups = skillGroupsFor(SkillKey.dodge)
 const selectUnarmedCombatGroups = skillGroupsFor(SkillKey.unarmedCombat)
-const selectCounterspellingGroups = skillGroupsFor(SkillKey.counterspelling)
+/** Counterspelling against a combat spell, plus bonuses (e.g. from a Counterspelling Focus) against combat spells. */
+const selectCounterspellingGroups = createMemoizedSelector(
+  skillGroupsFor(SkillKey.counterspelling),
+  injectOption(DicePoolModSelectors.selectGroups, {
+    poolId: DicePoolId.counterspelling,
+    poolSubTarget: SpellCategory.Combat,
+  }),
+  (skillGroups, modGroups): DiceGroup[] => [...skillGroups, ...modGroups],
+)
+
+/** Bonus dice (e.g. from a Weapon Focus) for attacking with the weapon `weaponId`. */
+const selectWeaponAttackModGroups = (state: EntityScope, { weaponId }: { weaponId?: UUID }): DiceGroup[] =>
+  weaponId
+    ? DicePoolModSelectors.selectGroups(state, { poolId: DicePoolId.attack, poolSubTarget: weaponId })
+    : NO_GROUPS
 
 /** Body for Physical damage, Willpower for Stun. */
 const selectDamageResistanceAttrGroups = (state: EntityScope, { damageType }: { damageType: "P" | "S" }): DiceGroup[] =>
@@ -155,13 +173,19 @@ export namespace CombatPoolSelectors {
   })
 
   /**
-   * The Attack test: `attr` + `skill` and the attack's situational `extraGroups`. Encumbrance
-   * reaches it through the Agility or Reaction Rating.
+   * The Attack test: `attr` + `skill`, bonuses (e.g. from a Weapon Focus) for attacking with the
+   * weapon `weaponId`, and the attack's situational `extraGroups`. Encumbrance reaches it through
+   * the Agility or Reaction Rating.
    */
   export const selectAttackTest = createDicePoolSelector({
     id: "attack",
     label: "Attack",
-    groups: [AttrSelectors.DiceGroups.selectAttr, SkillsSelectors.DiceGroups.selectSkill, SelectorOptions.extraGroups],
+    groups: [
+      AttrSelectors.DiceGroups.selectAttr,
+      SkillsSelectors.DiceGroups.selectSkill,
+      selectWeaponAttackModGroups,
+      SelectorOptions.extraGroups,
+    ],
   })
 
   /**

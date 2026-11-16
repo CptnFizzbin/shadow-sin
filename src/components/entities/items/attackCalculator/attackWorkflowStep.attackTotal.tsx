@@ -27,6 +27,7 @@ export const AttackWorkflowStepAttackTotal: FC = () => {
   const attackPool = useRunnerSelector(CombatPoolSelectors.selectAttackTest, {
     attr: attrKey,
     skill: skill.name,
+    weaponId: weapon.id,
     extraGroups: modifierGroups,
   })
 

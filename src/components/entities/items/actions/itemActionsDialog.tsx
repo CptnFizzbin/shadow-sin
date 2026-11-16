@@ -38,6 +38,8 @@ const actionDisplay: Record<ItemAction, { label: string, icon: RemixiconComponen
   [ItemAction.unstash]: { label: "Unstash", icon: RiInboxUnarchiveLine },
   [ItemAction.consume]: { label: "Consume", icon: Icons.item.state.consume },
   [ItemAction.endEffect]: { label: "End Effect", icon: Icons.item.state.endEffect },
+  [ItemAction.bond]: { label: "Bond", icon: Icons.item.bond },
+  [ItemAction.unbond]: { label: "Unbond", icon: Icons.item.unbond },
   [ItemAction.attack]: { label: "Attack", icon: Icons.item.attack },
   [ItemAction.run]: { label: "Run", icon: Icons.item.run },
   [ItemAction.edit]: { label: "Edit", icon: RiEditLine },

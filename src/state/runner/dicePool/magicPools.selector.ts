@@ -2,15 +2,23 @@ import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { spiritTypeMatchesSpecialization } from "#/system/formulas/magic/spiritSpecialization.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
+import type { SpellCategory } from "#/system/model/magic/spellData.ts"
 import type { SpiritType } from "#/system/model/magic/spiritData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
-const selectMagicGroups = injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.magic })
+/** Magic, plus the bonus dice (e.g. from a Power Focus) every test that rolls Magic gets. */
+const selectMagicGroups = createMemoizedSelector(
+  injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.magic }),
+  injectOption(DicePoolModSelectors.selectGroups, { poolId: DicePoolId.magicTests }),
+  (magicGroups, magicTestGroups): DiceGroup[] => [...magicGroups, ...magicTestGroups],
+)
 const selectWillpowerGroups = injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.willpower })
 
 /** The `skill` Specialization's bonus, but only when that Specialization covers `spiritType`. */
@@ -23,6 +31,23 @@ const selectSpiritSpecializationGroups = (
   return SkillsSelectors.DiceGroups.selectSpecialization(state, { skill, specialization: applies ? specialization : undefined })
 }
 
+/** Bonus dice (e.g. from a Spellcasting Focus) for casting a spell of `spellCategory`. */
+const selectSpellcastingModGroups = (
+  state: EntityScope,
+  { spellCategory }: { spellCategory?: SpellCategory },
+): DiceGroup[] =>
+  DicePoolModSelectors.selectGroups(state, { poolId: DicePoolId.spellcasting, poolSubTarget: spellCategory })
+
+/** Bonus dice (e.g. from a Summoning or Binding Focus) for summoning or binding with `skill` against `spiritType`. */
+const selectSpiritModGroups = (
+  state: EntityScope,
+  { skill, spiritType }: { skill: SkillKey, spiritType: SpiritType },
+): DiceGroup[] =>
+  DicePoolModSelectors.selectGroups(state, {
+    poolId: skill === SkillKey.binding ? DicePoolId.binding : DicePoolId.summoning,
+    poolSubTarget: spiritType,
+  })
+
 /** The tradition's drain `attr`, renamed when it's Willpower so its row isn't confused with the first Willpower. */
 const selectDrainAttrGroups = createMemoizedSelector(
   AttrSelectors.DiceGroups.selectAttr,
@@ -34,13 +59,14 @@ const selectDrainAttrGroups = createMemoizedSelector(
 )
 
 export namespace MagicPoolSelectors {
-  /** The Spellcasting test: Magic + Spellcasting. */
+  /** The Spellcasting test: Magic + Spellcasting, plus bonuses for casting a spell of `spellCategory`. */
   export const selectSpellcastingTest = createDicePoolSelector({
     id: "magic.spellcasting",
     label: "Spellcasting",
     groups: [
       selectMagicGroups,
       injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.spellcasting, excludeDefaulting: false }),
+      selectSpellcastingModGroups,
     ],
   })
 
@@ -55,11 +81,12 @@ export namespace MagicPoolSelectors {
 
   /**
    * The Summoning or Binding test for `spiritType`: Magic + `skill`, plus the skill's
-   * Specialization bonus when it covers that spirit type. The caller names it Summoning or Binding.
+   * Specialization bonus when it covers that spirit type and any bonuses (e.g. from a focus) against
+   * it. The caller names it Summoning or Binding.
    */
   export const selectSummoningTest = createDicePoolSelector({
     id: "magic.summoning",
     label: "Summoning",
-    groups: [selectMagicGroups, SkillsSelectors.DiceGroups.selectSkill, selectSpiritSpecializationGroups],
+    groups: [selectMagicGroups, SkillsSelectors.DiceGroups.selectSkill, selectSpiritSpecializationGroups, selectSpiritModGroups],
   })
 }

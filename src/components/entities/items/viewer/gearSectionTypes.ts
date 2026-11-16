@@ -9,6 +9,7 @@ export enum GearSection {
   Devices = "Devices",
   Licenses = "SINs & Licenses",
   Consumables = "Consumables",
+  Magical = "Magical",
   Misc = "Misc",
 }
 
@@ -20,6 +21,7 @@ export const sectionGearTypes: Record<GearSection, ItemType[]> = {
   [GearSection.Devices]: [ItemType.device, ItemType.program, ItemType.software],
   [GearSection.Licenses]: [ItemType.sin, ItemType.license],
   [GearSection.Consumables]: [ItemType.consumable],
+  [GearSection.Magical]: [ItemType.magical],
   [GearSection.Misc]: [ItemType.other],
 }
 

@@ -32,7 +32,7 @@ import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { getActiveItemState, getItemState } from "#/system/formulas/items/itemStateRules.ts"
+import { getActiveItemState, getItemState, isUnbondedFocus } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { NullUuid } from "#/utils/uuidUtils.ts"
 
@@ -316,15 +316,16 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                       <>
                         <Divider />
 
-                        <form.Subscribe selector={(state) => state.values.items.parentId}>
-                          {(parentId) => {
-                            const parent = parentId ? allGear[parentId] : undefined
+                        <form.Subscribe selector={(state) => state.values}>
+                          {(values) => {
+                            const parent = values.items.parentId ? allGear[values.items.parentId] : undefined
                             return (
                               <GearStateFieldGroup
                                 form={form}
                                 fields={itemFieldMap}
                                 itemType={itemType}
                                 parentState={parent ? getItemState(parent) : undefined}
+                                activeBlockedReason={isUnbondedFocus(values) ? "Bond the focus before equipping it" : undefined}
                               />
                             )
                           }}

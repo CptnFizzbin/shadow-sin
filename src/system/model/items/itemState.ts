@@ -35,6 +35,7 @@ export const itemStatesByType: Record<ItemType, readonly ItemState[]> = {
   [ItemType.other]: equippable,
   [ItemType.implant]: implantable,
   [ItemType.consumable]: consumable,
+  [ItemType.magical]: equippable,
   [ItemType.program]: carryOnly,
   [ItemType.software]: carryOnly,
   [ItemType.vehicle]: carryOnly,

@@ -11,10 +11,12 @@ import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import {
   addItem,
+  bondFocus,
   consumeItem,
   patchItem,
   removeItem,
@@ -22,6 +24,7 @@ import {
   setDamage,
   setItem,
   setState,
+  unbondFocus,
 } from "./items.actions.ts"
 
 const initialState: ItemCatalog = {}
@@ -119,12 +122,30 @@ function consumeItemById(state: ItemCatalog, id: UUID) {
   }
 }
 
+/** Marks `id` Bonded. A no-op unless it's an unbonded Focus. */
+function bondFocusById(state: ItemCatalog, id: UUID) {
+  const item = state[id]
+  if (!item || !isFocusData(item) || item.bonded) return
+  item.bonded = true
+}
+
+/** Breaks `id`'s bond, dropping it out of any active state an unbonded Focus can't be in. */
+function unbondFocusById(state: ItemCatalog, id: UUID) {
+  const item = state[id]
+  if (!item || !isFocusData(item) || !item.bonded) return
+  const previousState = getItemState(item)
+  item.bonded = false
+  reconcileItemState(state, id, previousState)
+}
+
 export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
   sellItemById,
   consumeItemById,
+  bondFocusById,
+  unbondFocusById,
   /** Applies a write's Item State rules to one Item — see `reconcileItemState`. */
   reconcileState: reconcileItemState,
 }
@@ -177,6 +198,12 @@ export const gearReducer = createReducer(initialState, (builder) => {
     })
     .addCase(consumeItem, (state, action) => {
       consumeItemById(state, action.payload.id)
+    })
+    .addCase(bondFocus, (state, action) => {
+      bondFocusById(state, action.payload.id)
+    })
+    .addCase(unbondFocus, (state, action) => {
+      unbondFocusById(state, action.payload.id)
     })
     .addCase(setDamage, (state, action) => {
       const item = state[action.payload.itemId]

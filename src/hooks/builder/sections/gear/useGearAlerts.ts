@@ -5,6 +5,7 @@ import { useGearAvailabilityIssues } from "#/components/entities/items/builder/g
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { useGearBuildPoints } from "#/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useFociAlerts } from "#/hooks/items/types/magical/useFociAlerts.ts"
 import { useEncumbrance } from "#/hooks/system/encumbrance/useEncumbrance.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -14,8 +15,9 @@ export const useGearAlerts = (): AlertInfo[] => {
   const { isOverBudget } = useGearBuildPoints()
   const { isEncumbered, penalty, totalBallistic, totalImpact, threshold } = useEncumbrance()
   const editorMode = useEditorMode()
+  const fociAlerts = useFociAlerts()
 
-  const alerts: AlertInfo[] = []
+  const alerts: AlertInfo[] = [...fociAlerts]
 
   if (isOverBudget && editorMode.isBuilder) {
     alerts.push({
