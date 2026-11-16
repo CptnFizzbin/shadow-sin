@@ -1,4 +1,5 @@
-import { FocusType } from "#/system/model/magic/focusData.ts"
+import type { FocusType } from "#/system/model/magic/focusData.ts"
+import { focusBondingKarmaMultiplier } from "#/system/model/magic/focusData.ts"
 import type { QualityData } from "#/system/model/qualities/qualityData.ts"
 
 export const ImprovementsConfig = {
@@ -87,26 +88,7 @@ export const ImprovementsConfig = {
     },
     foci: {
       karmaCost: {
-        bond: (type: FocusType, force: number) => {
-          switch (type) {
-            case FocusType.Spellcasting:
-              return force * 4
-            case FocusType.Counterspelling:
-              return force * 3
-            case FocusType.Sustaining:
-              return force * 2
-            case FocusType.Summoning:
-              return force * 4
-            case FocusType.Banishing:
-              return force * 3
-            case FocusType.Binding:
-              return force * 3
-            case FocusType.Weapon:
-              return force * 3
-            case FocusType.Power:
-              return force * 8
-          }
-        },
+        bond: (type: FocusType, force: number) => force * focusBondingKarmaMultiplier[type],
       },
     },
     initiaition: {

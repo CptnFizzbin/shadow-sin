@@ -1,3 +1,4 @@
+import Autocomplete from "@mui/material/Autocomplete"
 import FormControl from "@mui/material/FormControl"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
@@ -11,12 +12,16 @@ import type { FC } from "react"
 import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { GameEffectTypeOptions } from "#/system/model/gameEffects/gameEffectTypeOptions.ts"
+import { focusEffectTag } from "#/system/model/magic/focusData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 
 import { getDefaultTarget, getTargetOptions } from "./gameEffectUtils.ts"
 
 const CUSTOM_SENTINEL = "__custom__"
+
+/** Stacking tags the app's own effects use, offered as suggestions; any other tag can be typed. */
+const knownEffectTags = [focusEffectTag]
 
 function isCustomSpec(skillName: SkillKey, specialization: string): boolean {
   const info = skillList[skillName]
@@ -199,6 +204,26 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
             slotProps={{ htmlInput: { step: 1 } }}
           />
         </Stack>
+
+        <Autocomplete
+          multiple
+          freeSolo
+          size="small"
+          options={knownEffectTags}
+          value={effect.tags ?? []}
+          onChange={(_, tags) => {
+            const cleanTags = [...new Set(tags.map((tag) => tag.trim()).filter(Boolean))]
+            onChange({ ...effect, tags: cleanTags.length > 0 ? cleanTags : undefined })
+          }}
+          renderInput={(params) => (
+            <MuiTextField
+              {...params}
+              label="Tags"
+              placeholder="e.g. focus"
+              helperText="Effects that share a tag don't stack: only the highest applies."
+            />
+          )}
+        />
       </Stack>
     </Stack>
   )

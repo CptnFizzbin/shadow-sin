@@ -1,3 +1,4 @@
+import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 
 export type DiceGroupType = "attribute" | "skill" | "bonus" | "defaulting" | "penalty"
@@ -14,6 +15,13 @@ export interface DiceGroup {
   type?: DiceGroupType
   /** Explicit color override. Prefer `type` where the group fits one of the standard categories. */
   color?: string
+  /**
+   * The stacking tags of the Game Effect the group comes from. Groups sharing a tag don't stack:
+   * only the largest counts, and the rest carry `overriddenBy`.
+   */
+  tags?: string[]
+  /** When set, the group is listed for reference but not counted, because this larger one applies instead. */
+  overriddenBy?: OverrideReason
 }
 
 /** A group sized by `breakdown`'s Rating, carrying the breakdown when Modifiers changed the Raw Value. */

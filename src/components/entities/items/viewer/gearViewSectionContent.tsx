@@ -7,6 +7,7 @@ import { ArmorSectionContent } from "./armorSectionContent.tsx"
 import { ConsumablesSectionContent } from "./consumablesSectionContent.tsx"
 import { DevicesSectionContent } from "./devicesSectionContent.tsx"
 import { GearSection } from "./gearSectionTypes.ts"
+import { MagicalSectionContent } from "./magicalSectionContent.tsx"
 import { MiscSectionContent } from "./miscSectionContent.tsx"
 import { VehiclesSectionContent } from "./vehiclesSectionContent.tsx"
 import { WeaponsSectionContent } from "./weaponsSectionContent.tsx"
@@ -31,6 +32,8 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({ sectio
       return <DevicesSectionContent />
     case GearSection.Consumables:
       return <ConsumablesSectionContent />
+    case GearSection.Magical:
+      return <MagicalSectionContent />
     default:
       return <MiscSectionContent />
   }

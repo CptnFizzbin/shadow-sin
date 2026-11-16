@@ -8,7 +8,8 @@ import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { filterByEffectType, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { keepHighestPerTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import { filterByEffectType, getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import { spellEffectsApply } from "#/system/formulas/magic/spellSustaining.ts"
 import type { EffectByType, GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
@@ -34,7 +35,7 @@ const selectAll: Selector<GameEffectsState, GameEffectData[]> = createSelector(
   (qualities, items, spells, complexForms, powers): GameEffectData[] => {
     return [
       ...qualities,
-      ...Object.values(items).filter(itemEffectsApply),
+      ...Object.values(items).filter(itemEffectsApply).map((item) => ({ effects: getItemGameEffects(item) })),
       ...spells.filter(spellEffectsApply),
       ...complexForms,
       ...powers,
@@ -62,6 +63,11 @@ export const GameEffectSelectors = {
   selectByType: createMemoizedSelector(
     selectAll,
     SelectorOptions.gameEffectType,
-    (allEffects, gameEffectType) => allEffects.filter(filterByEffectType(gameEffectType)),
+    // Effects sharing a stacking tag only compete when they modify the same target.
+    (allEffects, gameEffectType) => keepHighestPerTag(allEffects.filter(filterByEffectType(gameEffectType)), {
+      getTags: (effect) => effect.tags,
+      getValue: (effect) => effect.value,
+      getGroupKey: (effect) => JSON.stringify([effect.target, effect.subTarget]),
+    }),
   ) as GameEffectsByTypeSelector,
 }

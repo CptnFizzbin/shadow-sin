@@ -2,6 +2,7 @@ import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
+import type { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
@@ -45,6 +46,8 @@ export const SelectorOptions = {
   licenseId: selectorOption<{ licenseId: UUID }>("licenseId"),
   lingo: selectorOption<{ lingo?: string }>("lingo"),
   loyalty: selectorOption<{ loyalty: number }>("loyalty"),
+  poolId: selectorOption<{ poolId: DicePoolId }>("poolId"),
+  poolSubTarget: selectorOption<{ poolSubTarget?: string }>("poolSubTarget"),
   rating: selectorOption<{ rating: number }>("rating"),
   repType: selectorOption<{ repType: ReputationStatType }>("repType"),
   skill: selectorOption<{ skill: SkillKey }>("skill"),

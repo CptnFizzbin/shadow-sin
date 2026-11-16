@@ -18,6 +18,7 @@ import { ArmorSectionContent } from "#/components/entities/items/viewer/armorSec
 import { ConsumablesSectionContent } from "#/components/entities/items/viewer/consumablesSectionContent.tsx"
 import { DevicesSectionContent } from "#/components/entities/items/viewer/devicesSectionContent.tsx"
 import { GearSection as GearItemSection, sectionGearTypes } from "#/components/entities/items/viewer/gearSectionTypes.ts"
+import { MagicalSectionContent } from "#/components/entities/items/viewer/magicalSectionContent.tsx"
 import { MiscSectionContent } from "#/components/entities/items/viewer/miscSectionContent.tsx"
 import { VehiclesSectionContent } from "#/components/entities/items/viewer/vehiclesSectionContent.tsx"
 import { WeaponsSectionContent } from "#/components/entities/items/viewer/weaponsSectionContent.tsx"
@@ -47,6 +48,7 @@ const itemSectionTypes: Record<Exclude<SectionHeader, SectionHeader.Lifestyle>, 
   [SectionHeader.Devices]: sectionGearTypes[GearItemSection.Devices],
   [SectionHeader.Licenses]: sectionGearTypes[GearItemSection.Licenses],
   [SectionHeader.Consumables]: sectionGearTypes[GearItemSection.Consumables],
+  [SectionHeader.Magical]: sectionGearTypes[GearItemSection.Magical],
   [SectionHeader.Misc]: sectionGearTypes[GearItemSection.Misc],
 }
 
@@ -179,6 +181,7 @@ const GearSectionContent: FC<{
   if (section === SectionHeader.Vehicles) return <VehiclesSectionContent />
   if (section === SectionHeader.Devices) return <DevicesSectionContent />
   if (section === SectionHeader.Consumables) return <ConsumablesSectionContent />
+  if (section === SectionHeader.Magical) return <MagicalSectionContent />
   if (section === SectionHeader.Misc) return <MiscSectionContent />
   if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
@@ -238,6 +241,7 @@ const GearSectionNuyen: FC<{
     [SectionHeader.Vehicles]: ItemType.vehicle,
     [SectionHeader.Devices]: ItemType.device,
     [SectionHeader.Consumables]: ItemType.consumable,
+    [SectionHeader.Magical]: ItemType.magical,
     [SectionHeader.Misc]: ItemType.other,
   }
 

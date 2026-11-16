@@ -10,6 +10,7 @@ import {
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import type { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 
 /** Something a Player can do with an Item from its actions dialog. */
 export enum ItemAction {
@@ -21,6 +22,8 @@ export enum ItemAction {
   unstash = "unstash",
   consume = "consume",
   endEffect = "endEffect",
+  bond = "bond",
+  unbond = "unbond",
   attack = "attack",
   run = "run",
   edit = "edit",
@@ -70,6 +73,12 @@ export function getItemActions(
   const actions: ItemAction[] = getItemStateActions(item)
     .filter((stateAction) => isItemStateWithinParent(itemStateActionTargets[stateAction], parentState))
     .map((stateAction) => itemActionForStateAction[stateAction])
+
+  // A Focus has to be Bonded before it can be Equipped, so Bond takes Equip's place at the front.
+  if (isFocusData(item)) {
+    if (item.bonded) actions.push(ItemAction.unbond)
+    else actions.unshift(ItemAction.bond)
+  }
 
   if (isViewer && isItemOnHand(item)) {
     if (item.itemType === ItemType.weapon) actions.push(ItemAction.attack)

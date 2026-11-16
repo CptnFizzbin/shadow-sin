@@ -44,6 +44,45 @@ describe.concurrent("RatingFormulas.getModifiers", () => {
     // Assert
     expect(modifiers).toEqual([{ name: "Focus", value: 1 }])
   })
+
+  it("marks all but the highest of the effects sharing a stacking tag as overridden", () => {
+    // Arrange
+    const sourcedEffects = [
+      { sourceName: "Jazz", effect: { type: GameEffectType.attrMod, target: AttributeKey.reaction, value: 1, tags: ["drug"] } },
+      { sourceName: "Kamikaze", effect: { type: GameEffectType.attrMod, target: AttributeKey.reaction, value: 2, tags: ["drug"] } },
+      { sourceName: "Wired Reflexes", effect: { type: GameEffectType.attrMod, target: AttributeKey.reaction, value: 1 } },
+    ]
+
+    // Act
+    const modifiers = RatingFormulas.getModifiers({
+      sourcedEffects,
+      type: GameEffectType.attrMod,
+      target: AttributeKey.reaction,
+    })
+
+    // Assert
+    expect(modifiers).toEqual([
+      { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 2, tag: "drug" } },
+      { name: "Kamikaze", value: 2 },
+      { name: "Wired Reflexes", value: 1 },
+    ])
+  })
+})
+
+describe.concurrent("RatingFormulas.getSkillRating with overridden modifiers", () => {
+  it("leaves overridden modifiers out of the rating", () => {
+    // Arrange
+    const modifiers = [
+      { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 2, tag: "drug" } },
+      { name: "Kamikaze", value: 2 },
+    ]
+
+    // Act
+    const breakdown = RatingFormulas.getSkillRating({ rawValue: 3, modifiers })
+
+    // Assert
+    expect(breakdown.rating).toBe(5)
+  })
 })
 
 describe.concurrent("RatingFormulas.getAttrRating", () => {

@@ -9,6 +9,7 @@ import { ProgramDataCard } from "#/components/entities/items/types/devices/progr
 import { ImplantDataCard } from "#/components/entities/items/types/implants/implantDataCard.tsx"
 import { LicenseDataCard } from "#/components/entities/items/types/licenses/licenseDataCard.tsx"
 import { SinDataCard } from "#/components/entities/items/types/licenses/sinDataCard.tsx"
+import { FocusDataCard } from "#/components/entities/items/types/magical/focusDataCard.tsx"
 import { OtherDataCard } from "#/components/entities/items/types/other/otherDataCard.tsx"
 import { VehicleDataCard } from "#/components/entities/items/types/vehicles/vehicleDataCard.tsx"
 import { WeaponDataCard } from "#/components/entities/items/types/weapons/weaponDataCard.tsx"
@@ -21,6 +22,7 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
@@ -82,6 +84,11 @@ export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemo
     case ItemType.consumable:
       return isDrugData(item)
         ? <DrugDataCard drug={item} onOpen={onOpen} onEdit={onEdit} />
+        : <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
+
+    case ItemType.magical:
+      return isFocusData(item)
+        ? <FocusDataCard focus={item} onOpen={onOpen} onEdit={onEdit} />
         : <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
 
     case ItemType.other:

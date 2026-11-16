@@ -11,6 +11,7 @@ import type { ImprovementEntry } from "./improvements/improvementEntry.ts"
  * - `sellKarma` — negative entry for karma sold for nuyen
  * - `adjustKarma` — entry for a manual correction outside the rules; its amount is the change to
  *   current karma, and may be zero when only the total earned changed
+ * - `bondFocus` — negative entry for the karma spent Bonding a Focus
  * - `undo` — refund entry produced by post-Save undo (reserved for v2; unused in v1)
  */
 export type KarmaLedgerSource =
@@ -19,6 +20,7 @@ export type KarmaLedgerSource =
   | "buyKarma"
   | "sellKarma"
   | "adjustKarma"
+  | "bondFocus"
   | "undo"
 
 /**

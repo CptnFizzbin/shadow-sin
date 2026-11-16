@@ -8,6 +8,7 @@ import { useProgramFormDialog } from "#/components/entities/items/types/devices/
 import { useImplantFormDialog } from "#/components/entities/items/types/implants/dialogs/implantFormDialog.tsx"
 import { useLicenseFormDialog } from "#/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/entities/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { useFocusFormDialog } from "#/components/entities/items/types/magical/dialogs/focusFormDialog.tsx"
 import { useVehicleFormDialog } from "#/components/entities/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/entities/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
@@ -24,6 +25,7 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
@@ -48,6 +50,7 @@ export function useEditItemDialog() {
   const licenseFormDialog = useLicenseFormDialog()
   const credstickDialog = useCredstickDialog()
   const drugFormDialog = useDrugFormDialog()
+  const focusFormDialog = useFocusFormDialog()
   const itemFormDialog = useItemFormDialog()
 
   const openForm = (item: ItemData): Promise<ItemData | undefined> => {
@@ -76,6 +79,9 @@ export function useEditItemDialog() {
       }
       case ItemType.consumable:
         if (isDrugData(item)) return drugFormDialog.open({ drug: item })
+        return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
+      case ItemType.magical:
+        if (isFocusData(item)) return focusFormDialog.open({ focus: item })
         return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
       default:
         return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
@@ -108,6 +114,7 @@ export function useEditItemDialog() {
         {licenseFormDialog.outlet}
         {credstickDialog.outlet}
         {drugFormDialog.outlet}
+        {focusFormDialog.outlet}
         {itemFormDialog.outlet}
       </>
     ),

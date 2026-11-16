@@ -132,6 +132,15 @@ describe.concurrent("getItemStateActions", () => {
       .toEqual([ItemStateAction.endEffect])
   })
 
+  it.each([
+    [false, [ItemStateAction.stash]],
+    [true, [ItemStateAction.equip, ItemStateAction.stash]],
+  ])("offers Equip to an Available Focus only once it's Bonded (bonded=%s)", (bonded, expected) => {
+    // Arrange / Act / Assert
+    expect(getItemStateActions({ itemType: ItemType.magical, state: ItemState.available, bonded }))
+      .toEqual(expected)
+  })
+
   it("offers only Unstash for a Stashed item", () => {
     // Arrange / Act / Assert
     expect(getItemStateActions({ itemType: ItemType.weapon, state: ItemState.stashed }))

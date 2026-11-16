@@ -15,9 +15,9 @@ export interface DicePoolData extends DicePoolConfig {
   size: number
 }
 
-/** Total dice in `groups`, never fewer than one. */
+/** Total dice in `groups`, leaving out overridden ones, never fewer than one. */
 export const getPoolSize = (groups: DiceGroupList): number => {
-  const diceGroups = groups.filter(isDiceGroup)
+  const diceGroups = groups.filter(isDiceGroup).filter((group) => !group.overriddenBy)
 
   return Math.max(
     1,

@@ -15,6 +15,8 @@ import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
 import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 import { LedgerValue } from "./ledgerValue.tsx"
+import { OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
+import { OverrideTooltip } from "./overrideTooltip.tsx"
 
 const DIE_SIZE = 18
 const DIE_GAP = 0.5
@@ -43,7 +45,7 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
   const { label: name, groups: diceGroups, size: total } = pool
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
-  const penalties = diceGroups.filter((group) => group.size < 0)
+  const penalties = diceGroups.filter((group) => group.size < 0 && !group.overriddenBy)
 
   return (
     <ButtonBase
@@ -157,10 +159,15 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
             return (
               <Stack key={group.id ?? `${index}:${group.name}`} sx={{ gap: 0 }}>
-                <Stack direction="row" sx={{ gap: 1 }}>
-                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: groupColor }}>{group.size}</LedgerValue>
-                  <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
-                </Stack>
+                <OverrideTooltip reason={group.overriddenBy}>
+                  <Stack direction="row" sx={{ gap: 1, ...(group.overriddenBy && overriddenSx) }}>
+                    <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overriddenBy ? undefined : groupColor }}>
+                      {group.size}
+                    </LedgerValue>
+                    <Typography variant="body2" sx={{ color: group.overriddenBy ? undefined : groupColor }}>{group.name}</Typography>
+                    {group.overriddenBy && <OverriddenNote reason={group.overriddenBy} />}
+                  </Stack>
+                </OverrideTooltip>
 
                 {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}
               </Stack>

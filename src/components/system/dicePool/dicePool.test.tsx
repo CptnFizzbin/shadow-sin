@@ -6,6 +6,71 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DicePool } from "./dicePool.tsx"
 
 describe("DicePool", () => {
+  it("strikes through overridden groups and modifiers, saying what overrides them", () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.spellcasting",
+          label: "Spellcasting",
+          groups: [
+            {
+              name: "REA",
+              size: 3,
+              type: "attribute",
+              breakdown: {
+                rawValue: 2,
+                modifiers: [
+                  { name: "Jazz", value: 1, overriddenBy: { name: "Kamikaze", value: 1, tag: "drug" } },
+                  { name: "Kamikaze", value: 1 },
+                ],
+                rating: 3,
+              },
+            },
+            { name: "Wand", size: 4, type: "bonus" },
+            { name: "Power Focus", size: 2, type: "bonus", overriddenBy: { name: "Wand", value: 4, tag: "focus" } },
+          ],
+          size: 7,
+        }}
+      />,
+    )
+
+    // Act
+    fireEvent.click(screen.getByText("Spellcasting"))
+
+    // Assert
+    const decorationOfRow = (text: string) => getComputedStyle(screen.getByText(text).parentElement!).textDecoration
+    expect(decorationOfRow("Power Focus")).toContain("line-through")
+    expect(decorationOfRow("Jazz")).toContain("line-through")
+    expect(decorationOfRow("Wand")).not.toContain("line-through")
+  })
+
+  it("explains an overridden group in a tooltip when it's tapped, without collapsing the pool", async () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.spellcasting",
+          label: "Spellcasting",
+          groups: [
+            { name: "Wand", size: 4, type: "bonus" },
+            { name: "Power Focus", size: 2, type: "bonus", overriddenBy: { name: "Wand", value: 4, tag: "focus" } },
+          ],
+          size: 4,
+        }}
+      />,
+    )
+    fireEvent.click(screen.getByText("Spellcasting"))
+
+    // Act
+    fireEvent.click(screen.getByText("Power Focus"))
+
+    // Assert
+    expect((await screen.findByRole("tooltip")).textContent)
+      .toBe("Overridden by Wand (4): effects tagged \"focus\" don't stack, and only the highest applies.")
+    expect(screen.getByText("Spellcasting").closest("[aria-expanded]")?.getAttribute("aria-expanded")).toBe("true")
+  })
+
   it("lists a group's breakdown as an indented list without adding it to the total", () => {
     // Arrange
     renderWithRunner(

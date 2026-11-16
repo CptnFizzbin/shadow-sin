@@ -20,9 +20,11 @@ import { GearViewSection } from "#/components/entities/items/viewer/gearViewSect
 import { NuyenSection } from "#/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
 import { useAvailabilityTestDialog } from "#/components/system/availabilityTest/availabilityTestDialog.tsx"
 import { useLicenseCheckDialog } from "#/components/system/licenseCheck/licenseCheckDialog.tsx"
+import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { searchGear } from "#/hooks/items/gearHooks.ts"
+import { useFociAlerts } from "#/hooks/items/types/magical/useFociAlerts.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { isItemStashed } from "#/system/formulas/items/itemStateRules.ts"
@@ -46,6 +48,7 @@ function RouteComponent() {
   const availabilityTestDialog = useAvailabilityTestDialog()
   const addItemDialog = useAddItemDialogContext()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
+  const fociAlerts = useFociAlerts()
 
   const matchingIds = new Set(searchGear(allGear, searchTerms).map((item) => item.id))
   const filter: GearListFilter = {
@@ -59,6 +62,8 @@ function RouteComponent() {
   return (
     <Stack>
       <SectionHeader>Gear</SectionHeader>
+
+      <AlertsList alerts={fociAlerts} />
 
       <NuyenSection />
 

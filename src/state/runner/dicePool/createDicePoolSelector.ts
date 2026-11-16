@@ -1,12 +1,13 @@
 import type { GetStateFromSelectors } from "reselect"
 import { createSelector as createReselectSelector } from "reselect"
 
-import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ComboSelectorOptions, Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 
 /**
  * A selector for one or more Dice Groups — `(state)` or `(state, options)`. Its parameters stay
@@ -32,7 +33,8 @@ export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
 
 /**
  * Builds a selector for a dice pool made of `groups`, followed by the Wound Modifier unless
- * `excludeWoundMod` is set (as every Resistance Test does). This is the one place the Wound
+ * `excludeWoundMod` is set (as every Resistance Test does). Of the groups sharing a stacking tag,
+ * only the largest counts; the others are kept, with `overriddenBy` saying why. This is the one place the Wound
  * Modifier is added: Dice Group selectors must not add it themselves.
  *
  * The pool selector's state and options are inferred from `groups`: it takes every field any
@@ -60,7 +62,19 @@ export function createDicePoolSelector<TGroups extends DiceGroupSelector[]>(
   return createReselectSelector(
     groupSelectors,
     (...resolvedGroups: DiceGroupList[]): DicePoolData => {
-      const groups = flattenDiceGroups(resolvedGroups)
+      // Groups from effects sharing a stacking tag (e.g. two foci) don't stack: only the largest counts,
+      // and the rest stay listed as overridden so the Player can see why they don't.
+      const flatGroups = flattenDiceGroups(resolvedGroups)
+      const overridden = findOverriddenByTag(flatGroups, {
+        getTags: (group) => group.tags,
+        getValue: (group) => group.size,
+      })
+      const groups = flatGroups.map((group): DiceGroup => {
+        const override = overridden.get(group)
+        return override
+          ? { ...group, overriddenBy: { name: override.by.name, value: override.by.size, tag: override.tag } }
+          : group
+      })
       return { ...config, groups, size: getPoolSize(groups) }
     },
   )

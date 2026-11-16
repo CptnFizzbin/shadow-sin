@@ -9,6 +9,7 @@ export type CardElementStatusIconStatus =
   | "equipped"
   | "implanted"
   | "active"
+  | "bonded"
   | "stashed"
   | "fixed"
   | "wireless-enabled"
@@ -29,6 +30,7 @@ const statusIcon: Record<CardElementStatusIconStatus, { icon: IconComponent, lab
   "equipped": { icon: Icons.item.equipped, label: "Equipped" },
   "implanted": { icon: Icons.item.implanted, label: "Implanted" },
   "active": { icon: Icons.item.active, label: "Active" },
+  "bonded": { icon: Icons.item.bond, label: "Bonded" },
   "stashed": { icon: Icons.item.stashed, label: "Stashed" },
   "fixed": { icon: Icons.item.fixed, label: "Integrated" },
   "wireless-enabled": { icon: Icons.item.wireless.enabled, label: "Wireless" },

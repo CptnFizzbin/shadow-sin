@@ -6,6 +6,7 @@ import Tooltip from "@mui/material/Tooltip"
 import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import {
+  getActiveItemState,
   getAllowedItemStates,
   getItemStateLabel,
   isItemStateWithinParent,
@@ -16,15 +17,17 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 /**
  * A toggle with one button per Item State the item's type allows (e.g. [Equipped | Available |
  * Stashed], or [Loaded | Stashed] for a Program), writing the item's `state`. When the item is an
- * Attachment, states more present than its parent (`parentState`) are disabled.
+ * Attachment, states more present than its parent (`parentState`) are disabled. When
+ * `activeBlockedReason` is given, the item's active state is disabled too, with that reason shown.
  */
 export const GearStateFieldGroup = withFieldGroup({
   ...itemFormOpts,
   props: {
     itemType: ItemType.other as ItemType,
     parentState: undefined as ItemState | undefined,
+    activeBlockedReason: undefined as string | undefined,
   },
-  render: ({ group, itemType, parentState }) => {
+  render: ({ group, itemType, parentState, activeBlockedReason }) => {
     return (
       <group.Field name="state">
         {(stateField) => (
@@ -41,10 +44,13 @@ export const GearStateFieldGroup = withFieldGroup({
             {getAllowedItemStates(itemType).map((state) => {
               const label = getItemStateLabel(itemType, state)
               const blockedByParent = !isItemStateWithinParent(state, parentState)
+              const blockedReason = activeBlockedReason && state === getActiveItemState(itemType)
+                ? activeBlockedReason
+                : blockedByParent ? "Can't be more active than the item it's attached to" : undefined
 
-              return blockedByParent
+              return blockedReason
                 ? (
-                    <Tooltip key={state} title="Can't be more active than the item it's attached to">
+                    <Tooltip key={state} title={blockedReason}>
                       {/* A disabled button fires no events, so the tooltip needs a wrapper to anchor to. */}
                       <Box component="span" sx={{ display: "flex", flex: 1 }}>
                         <ToggleButton value={state} disabled sx={{ flex: 1 }}>{label}</ToggleButton>

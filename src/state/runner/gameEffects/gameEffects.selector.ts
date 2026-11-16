@@ -4,7 +4,7 @@ import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import type { SourcedGameEffect } from "#/system/formulas/ratings/ratingFormulas.ts"
 import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 
@@ -27,7 +27,15 @@ export namespace SourcedGameEffectSelectors {
     selectComplexForms,
     PowersSelectors.selectAll,
     (qualities, items, spells, complexForms, powers): SourcedGameEffect[] =>
-      [...qualities, ...Object.values(items).filter(itemEffectsApply), ...spells, ...complexForms, ...powers]
+      [
+        ...qualities,
+        ...Object.values(items)
+          .filter(itemEffectsApply)
+          .map((item) => ({ name: item.name, effects: getItemGameEffects(item) })),
+        ...spells,
+        ...complexForms,
+        ...powers,
+      ]
         .flatMap((source: { name: string, effects?: GameEffectData[] }) =>
           (source.effects ?? []).map((effect) => ({ sourceName: source.name, effect }))),
   )

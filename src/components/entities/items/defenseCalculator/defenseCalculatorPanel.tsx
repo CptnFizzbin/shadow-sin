@@ -21,13 +21,16 @@ import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.t
 import { Label } from "#/components/ui/text/label.tsx"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
+import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
+import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import { ArmorRatingType } from "#/system/model/items/armorData.ts"
+import { SpellCategory } from "#/system/model/magic/spellData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
 
@@ -120,6 +123,15 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? [{ id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating }]
     : []
 
+  // The Defense Calculator's spells are always combat spells, so only foci for that category help.
+  const counterspellingModGroups = useRunnerSelector(DicePoolModSelectors.selectGroups, {
+    poolId: DicePoolId.counterspelling,
+    poolSubTarget: SpellCategory.Combat,
+  })
+  const counterspellingSelfGroups = attackType === "spell" && counterspellingEnabled && counterspellingSource === "self"
+    ? counterspellingModGroups
+    : []
+
   const defenseSkill = attackType === "spell"
     ? (counterspellingEnabled && counterspellingSource === "self" ? SkillKey.counterspelling : undefined)
     : selectedOption.skill
@@ -129,7 +141,11 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     skill: defenseSkill,
     // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
     doubleSkill: attackType !== "spell" && !!selectedOption.doubleSkill,
-    extraGroups: [...counterspellingOtherGroups, ...defenseModifierGroups(modifiers, modifierSelection)],
+    extraGroups: [
+      ...counterspellingSelfGroups,
+      ...counterspellingOtherGroups,
+      ...defenseModifierGroups(modifiers, modifierSelection),
+    ],
   })
 
   // Direct spells bypass armor entirely and reuse the defenseCalculator roll as the resist roll. Indirect

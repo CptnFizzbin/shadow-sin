@@ -5,10 +5,12 @@ import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { DamageFormulas } from "#/system/formulas/damage/damageFormulas.ts"
-import { itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { keepHighestPerTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import { getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { isEntityWithDamage, isEntityWithQualities } from "#/system/model/entities/entityTraits.ts"
+import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -20,39 +22,34 @@ interface DamageTrackInfo {
   woundIntervalOffset: number
 }
 
+/**
+ * The total of the `type` pain tolerance effects on `track` (or on every track) from the Runner's
+ * `qualities` and Items whose effects apply. Of the effects sharing a stacking tag, only the
+ * highest counts.
+ */
+function sumPainToleranceEffects(
+  runner: RunnerData,
+  qualities: { effects?: GameEffectData[] }[],
+  type: GameEffectType.lowPainTolerance | GameEffectType.highPainTolerance,
+  track: DamageTrackKey,
+): number {
+  const itemEffects = Object.values(getItemCatalog(runner)).filter(itemEffectsApply).flatMap(getItemGameEffects)
+  const effects = [...qualities.flatMap((quality) => quality.effects ?? []), ...itemEffects]
+    .filter((effect) => effect.type === type && (effect.target === track || effect.target === "all"))
+
+  return keepHighestPerTag(effects, {
+    getTags: (effect) => effect.tags,
+    getValue: (effect) => effect.value,
+  }).reduce((sum, effect) => sum + effect.value, 0)
+}
+
 export namespace DamageSelectors {
   export const selectWoundIntervalModifier = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     SelectorOptions.damageTrack,
-    (runner: RunnerData, entity, track) => {
-      let modifier = 0
-
-      for (const quality of entity.qualities) {
-        for (const effect of quality.effects ?? []) {
-          if (
-            effect.type === GameEffectType.lowPainTolerance
-            && (effect.target === track || effect.target === "all")
-          ) {
-            modifier += effect.value
-          }
-        }
-      }
-
-      for (const item of Object.values(getItemCatalog(runner))) {
-        if (!itemEffectsApply(item)) continue
-        for (const effect of item.effects ?? []) {
-          if (
-            effect.type === GameEffectType.lowPainTolerance
-            && (effect.target === track || effect.target === "all")
-          ) {
-            modifier += effect.value
-          }
-        }
-      }
-
-      return modifier
-    },
+    (runner: RunnerData, entity, track) =>
+      sumPainToleranceEffects(runner, entity.qualities, GameEffectType.lowPainTolerance, track),
   )
 
   export const selectWoundInterval = createMemoizedSelector(
@@ -64,34 +61,8 @@ export namespace DamageSelectors {
     ViewerStateSelectors.selectRunner,
     ViewerStateSelectors.selectEntity.withTrait(isEntityWithQualities),
     SelectorOptions.damageTrack,
-    (runner: RunnerData, entity, track) => {
-      let offset = 0
-
-      for (const quality of entity.qualities) {
-        for (const effect of quality.effects ?? []) {
-          if (
-            effect.type === GameEffectType.highPainTolerance
-            && (effect.target === track || effect.target === "all")
-          ) {
-            offset += effect.value
-          }
-        }
-      }
-
-      for (const item of Object.values(getItemCatalog(runner))) {
-        if (!itemEffectsApply(item)) continue
-        for (const effect of item.effects ?? []) {
-          if (
-            effect.type === GameEffectType.highPainTolerance
-            && (effect.target === track || effect.target === "all")
-          ) {
-            offset += effect.value
-          }
-        }
-      }
-
-      return offset
-    },
+    (runner: RunnerData, entity, track) =>
+      sumPainToleranceEffects(runner, entity.qualities, GameEffectType.highPainTolerance, track),
   )
 
   export const selectWoundModForTrack: Selector<

@@ -4,6 +4,9 @@ import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { MagicalType } from "#/system/model/items/magicalData.ts"
+import { FocusType } from "#/system/model/magic/focusData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { getItemActions, getItemActionTargetState, getItemStateDisplayLabel, ItemAction } from "./itemActions.ts"
@@ -64,6 +67,30 @@ describe.concurrent("getItemActions", () => {
     expect(activeActions[0]).toBe(ItemAction.endEffect)
     expect(activeActions).not.toContain(ItemAction.consume)
     expect(activeActions).not.toContain(ItemAction.stash)
+  })
+
+  it("offers Bond first for an unbonded Focus, and Equip and Unbond once it's Bonded", () => {
+    // Arrange
+    const unbonded: FocusData = {
+      ...makeItem({ state: ItemState.available }),
+      itemType: ItemType.magical,
+      magicalType: MagicalType.focus,
+      focusType: FocusType.Power,
+      force: 1,
+    }
+    const bonded: FocusData = { ...unbonded, bonded: true }
+
+    // Act
+    const unbondedActions = getItemActions(unbonded, { isAttachment: false, isViewer: true })
+    const bondedActions = getItemActions(bonded, { isAttachment: false, isViewer: true })
+
+    // Assert
+    expect(unbondedActions[0]).toBe(ItemAction.bond)
+    expect(unbondedActions).not.toContain(ItemAction.equip)
+    expect(unbondedActions).not.toContain(ItemAction.unbond)
+    expect(bondedActions[0]).toBe(ItemAction.equip)
+    expect(bondedActions).toContain(ItemAction.unbond)
+    expect(bondedActions).not.toContain(ItemAction.bond)
   })
 
   it("offers Unequip for an equipped Item and Extract for an implanted one", () => {

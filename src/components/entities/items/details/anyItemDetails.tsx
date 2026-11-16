@@ -10,6 +10,7 @@ import { ProgramItemDetails } from "#/components/entities/items/types/devices/pr
 import { ImplantItemDetails } from "#/components/entities/items/types/implants/implantItemDetails.tsx"
 import { LicenseItemDetails } from "#/components/entities/items/types/licenses/licenseItemDetails.tsx"
 import { SinItemDetails } from "#/components/entities/items/types/licenses/sinItemDetails.tsx"
+import { FocusItemDetails } from "#/components/entities/items/types/magical/focusItemDetails.tsx"
 import { VehicleItemDetails } from "#/components/entities/items/types/vehicles/vehicleItemDetails.tsx"
 import { WeaponItemDetails } from "#/components/entities/items/types/weapons/weaponItemDetails.tsx"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
@@ -24,6 +25,7 @@ import type { ImplantData } from "#/system/model/items/implantData.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { ProgramData } from "#/system/model/items/programData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 import type { VehicleData } from "#/system/model/items/vehicleData.ts"
@@ -74,6 +76,7 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
 
   // Consumables dispatch on their subtype rather than `itemType` alone.
   if (isDrugData(item)) return <DrugItemDetails drug={item} onRemoved={onRemoved} />
+  if (isFocusData(item)) return <FocusItemDetails focus={item} onRemoved={onRemoved} />
 
   switch (item.itemType) {
     case ItemType.weapon:
