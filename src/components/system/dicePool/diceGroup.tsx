@@ -14,6 +14,11 @@ export interface DiceGroup {
   type?: DiceGroupType
   /** Explicit color override. Prefer `type` where the group fits one of the standard categories. */
   color?: string
+  /**
+   * The stacking tags of the Game Effect the group comes from. Groups sharing a tag don't stack: a
+   * pool keeps only the largest of them.
+   */
+  tags?: string[]
 }
 
 /** A group sized by `breakdown`'s Rating, carrying the breakdown when Modifiers changed the Raw Value. */

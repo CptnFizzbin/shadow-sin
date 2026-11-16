@@ -70,6 +70,7 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
           skillKey={skillKey}
           attr={selectedAttr}
           variant={variant}
+          plainPoolSize={skillDicePool.size}
         />
       ))}
     </Stack>

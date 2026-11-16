@@ -10,7 +10,7 @@ import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FocusData } from "#/system/model/items/magicalData.ts"
 import { MagicalType } from "#/system/model/items/magicalData.ts"
-import { FocusType } from "#/system/model/magic/focusData.ts"
+import { focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
 import { SpellCategory } from "#/system/model/magic/spellData.ts"
 import { SpiritType } from "#/system/model/magic/spiritData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
@@ -41,7 +41,7 @@ const stateWith = (...items: ItemData[]) => {
   return { runner, entity: runner, items: getItemCatalog(runner) }
 }
 
-const focusGroup = (name: string, size: number) => ({ name, size, type: "bonus" })
+const focusGroup = (name: string, size: number) => ({ name, size, type: "bonus", tags: [focusEffectTag] })
 
 describe.concurrent("focus bonuses in dice pools", () => {
   it("add a Spellcasting Focus's Force when casting a spell of its category only", () => {
@@ -129,6 +129,24 @@ describe.concurrent("focus bonuses in dice pools", () => {
     // Assert
     expect(withLinkedWeapon.groups).toContainEqual(focusGroup("Sword Focus", 3))
     expect(withOtherWeapon.groups).not.toContainEqual(focusGroup("Sword Focus", 3))
+  })
+})
+
+describe.concurrent("stacking foci", () => {
+  it("keep only the larger of a Power Focus and a Spellcasting Focus on the same pool", () => {
+    // Arrange
+    const power = makeFocus({ name: "Power Focus", focusType: FocusType.Power, force: 2 })
+    const wand = makeFocus({ name: "Wand", focusType: FocusType.Spellcasting, force: 4, spellCategory: SpellCategory.Combat })
+    const state = stateWith(power, wand)
+
+    // Act
+    const combatPool = MagicPoolSelectors.selectSpellcastingTest(state, { spellCategory: SpellCategory.Combat })
+    const healthPool = MagicPoolSelectors.selectSpellcastingTest(state, { spellCategory: SpellCategory.Health })
+
+    // Assert
+    expect(combatPool.groups).toContainEqual(focusGroup("Wand", 4))
+    expect(combatPool.groups).not.toContainEqual(focusGroup("Power Focus", 2))
+    expect(healthPool.groups).toContainEqual(focusGroup("Power Focus", 2))
   })
 })
 

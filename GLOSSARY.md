@@ -506,6 +506,12 @@ can also be narrowed to one kind of Item. Effects from Qualities, Spells, Comple
 always start from the Runner.
 _Avoid_: target (reserved for which dice pool an effect modifies — see **Pool Id**)
 
+**Stacking Tag**:
+A label on a GameEffect, such as "focus", saying which effects don't stack. When effects that share
+a tag would modify the same Rating or Dice Pool, only the highest applies. Every Focus's effects
+share the "focus" tag, so a Power Focus and a Spellcasting Focus never both add to one test.
+_Avoid_: category, group
+
 **Source**:
 The rulebook and page where a rule or item is defined (e.g. SR4A p.42).
 

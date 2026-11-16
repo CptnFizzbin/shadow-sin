@@ -1,3 +1,4 @@
+import { keepHighestPerTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 
@@ -31,7 +32,8 @@ const sumModifiers = (modifiers: RatingModifier[]): number =>
 export const RatingFormulas = {
   /**
    * The modifiers in `sourcedEffects` of `type` that target `target` (and `subTarget`, when
-   * given), each named after the source it comes from.
+   * given), each named after the source it comes from. Of the effects sharing a stacking tag,
+   * only the highest counts.
    */
   getModifiers: ({ sourcedEffects, type, target, subTarget }: {
     sourcedEffects: SourcedGameEffect[]
@@ -39,10 +41,12 @@ export const RatingFormulas = {
     target: string
     subTarget?: string
   }): RatingModifier[] =>
-    sourcedEffects
-      .filter(({ effect }) => effect.type === type
+    keepHighestPerTag(
+      sourcedEffects.filter(({ effect }) => effect.type === type
         && effect.target === target
-        && (subTarget === undefined || effect.subTarget === subTarget))
+        && (subTarget === undefined || effect.subTarget === subTarget)),
+      { getTags: ({ effect }) => effect.tags, getValue: ({ effect }) => effect.value },
+    )
       .map(({ sourceName, effect }) => ({ name: sourceName, value: effect.value })),
 
   /**

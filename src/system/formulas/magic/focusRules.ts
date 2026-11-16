@@ -4,7 +4,7 @@ import type { DicePoolModEffect } from "#/system/model/gameEffects/gameEffectDat
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { focusBondingKarmaMultiplier, FocusType } from "#/system/model/magic/focusData.ts"
+import { focusBondingKarmaMultiplier, focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
 
 /** The Karma it costs to Bond `focus`: its Force times its type's multiplier. */
 export function getFocusBondingCost(focus: Pick<FocusData, "focusType" | "force">): number {
@@ -20,13 +20,15 @@ const poolMod = (target: DicePoolId, value: number, subTarget?: string): DicePoo
   type: GameEffectType.dicePoolMod,
   target,
   value,
+  tags: [focusEffectTag],
   ...(subTarget === undefined ? {} : { subTarget }),
 })
 
 /**
  * The Game Effects `focus` grants while it applies: +Force dice to the tests its type covers,
  * narrowed to its linked spell category, spirit type, or (for a Weapon Focus) the weapon it is
- * attached to. A Focus missing the link its type needs, and a Sustaining Focus, grant none.
+ * attached to. They share the focus stacking tag, so only the highest focus bonus on a test
+ * applies. A Focus missing the link its type needs, and a Sustaining Focus, grant none.
  */
 export function getFocusGameEffects(focus: FocusData): DicePoolModEffect[] {
   const { force, spellCategory, spiritType } = focus

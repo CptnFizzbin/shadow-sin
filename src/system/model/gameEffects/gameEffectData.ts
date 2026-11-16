@@ -14,6 +14,11 @@ export interface GameEffectData {
   target?: string
   subTarget?: string
   value: number
+  /**
+   * Stacking tags, e.g. `["focus"]`. Effects that share a tag don't stack: when several would
+   * modify the same rating or dice pool, only the highest of them applies.
+   */
+  tags?: string[]
 }
 
 /**
@@ -118,12 +123,14 @@ const InitiativeBonusSchema = z.object({
   type: z.literal(GameEffectType.initiativeBonus),
   target: z.string().optional(),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const RecoilReductionSchema = z.object({
   type: z.literal(GameEffectType.recoilReduction),
   target: z.string().optional(),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const DicePoolModSchema = z.object({
@@ -131,18 +138,21 @@ const DicePoolModSchema = z.object({
   target: z.string(),
   subTarget: z.string().optional(),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const AttrModSchema = z.object({
   type: z.literal(GameEffectType.attrMod),
   target: z.enum(AttributeKey),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const SkillModSchema = z.object({
   type: z.literal(GameEffectType.skillMod),
   target: z.enum(SkillKey),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const SkillSpecializationModSchema = z.object({
@@ -150,28 +160,33 @@ const SkillSpecializationModSchema = z.object({
   target: z.enum(SkillKey),
   subTarget: z.string(),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const ExtraInitiativePassesSchema = z.object({
   type: z.literal(GameEffectType.extraInitiativePasses),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const ExtraInitiativeDiceSchema = z.object({
   type: z.literal(GameEffectType.extraInitiativeDice),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const HighPainToleranceSchema = z.object({
   type: z.literal(GameEffectType.highPainTolerance),
   target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 const LowPainToleranceSchema = z.object({
   type: z.literal(GameEffectType.lowPainTolerance),
   target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
   value: z.number(),
+  tags: z.array(z.string()).optional(),
 })
 
 /**

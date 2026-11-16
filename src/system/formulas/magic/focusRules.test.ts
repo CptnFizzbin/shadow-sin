@@ -7,7 +7,7 @@ import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { FocusData } from "#/system/model/items/magicalData.ts"
 import { MagicalType } from "#/system/model/items/magicalData.ts"
-import { FocusType } from "#/system/model/magic/focusData.ts"
+import { focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
 import { SpellCategory } from "#/system/model/magic/spellData.ts"
 import { SpiritType } from "#/system/model/magic/spiritData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
@@ -80,7 +80,7 @@ describe.concurrent("getFocusGameEffects", () => {
 
     // Assert
     expect(effects).toEqual([
-      { type: GameEffectType.dicePoolMod, target: poolId, subTarget: SpellCategory.Illusion, value: 4 },
+      { type: GameEffectType.dicePoolMod, tags: [focusEffectTag], target: poolId, subTarget: SpellCategory.Illusion, value: 4 },
     ])
   })
 
@@ -97,7 +97,7 @@ describe.concurrent("getFocusGameEffects", () => {
 
     // Assert
     expect(effects).toEqual([
-      { type: GameEffectType.dicePoolMod, target: poolId, subTarget: SpiritType.fire, value: 2 },
+      { type: GameEffectType.dicePoolMod, tags: [focusEffectTag], target: poolId, subTarget: SpiritType.fire, value: 2 },
     ])
   })
 
@@ -111,7 +111,7 @@ describe.concurrent("getFocusGameEffects", () => {
 
     // Assert
     expect(effects).toEqual([
-      { type: GameEffectType.dicePoolMod, target: DicePoolId.attack, subTarget: weaponId, value: 3 },
+      { type: GameEffectType.dicePoolMod, tags: [focusEffectTag], target: DicePoolId.attack, subTarget: weaponId, value: 3 },
     ])
   })
 
@@ -123,7 +123,7 @@ describe.concurrent("getFocusGameEffects", () => {
     const effects = getFocusGameEffects(focus)
 
     // Assert
-    expect(effects).toEqual([{ type: GameEffectType.dicePoolMod, target: DicePoolId.magicTests, value: 2 }])
+    expect(effects).toEqual([{ type: GameEffectType.dicePoolMod, tags: [focusEffectTag], target: DicePoolId.magicTests, value: 2 }])
   })
 
   it.each([

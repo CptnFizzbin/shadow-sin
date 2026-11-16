@@ -32,6 +32,12 @@ export const focusLinkByType: Record<FocusType, FocusLink> = {
   [FocusType.Power]: FocusLink.none,
 }
 
+/**
+ * The stacking tag every Focus's Game Effects carry, so that when several foci (say a Power Focus
+ * and a Spellcasting Focus) would add to the same test, only the highest bonus applies.
+ */
+export const focusEffectTag = "focus"
+
 /** Karma per point of Force it costs to Bond a Focus of each type. */
 export const focusBondingKarmaMultiplier: Record<FocusType, number> = {
   [FocusType.Spellcasting]: 4,

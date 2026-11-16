@@ -30,7 +30,12 @@ export namespace DicePoolModSelectors {
         .filter(({ effect }) => effect.type === GameEffectType.dicePoolMod
           && effect.target === poolId
           && (effect.subTarget === undefined || effect.subTarget === poolSubTarget))
-        .map(({ sourceName, effect }): DiceGroup => ({ name: sourceName, size: effect.value, type: "bonus" }))
+        .map(({ sourceName, effect }): DiceGroup => ({
+          name: sourceName,
+          size: effect.value,
+          type: "bonus",
+          ...(effect.tags?.length ? { tags: effect.tags } : {}),
+        }))
 
       return groups.length > 0 ? groups : NO_GROUPS
     },
