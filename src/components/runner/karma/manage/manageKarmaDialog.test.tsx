@@ -1,7 +1,8 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { GameTableService } from "#/services/gameTable/gameTableService.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -25,12 +26,12 @@ const setCounter = (label: RegExp, value: number) => {
 }
 
 describe("ManageKarmaDialog", () => {
-  it("opens on a menu of every karma workflow", () => {
+  it("opens on a menu of the enabled karma workflows", () => {
     // Arrange / Act
     renderDialog()
 
     // Assert
-    for (const label of [/earn karma/i, /buy karma/i, /spend karma/i, /sell karma/i, /edit karma/i]) {
+    for (const label of [/earn karma/i, /buy karma/i, /spend karma/i, /edit karma/i]) {
       expect(screen.getByRole("button", { name: label })).toBeTruthy()
     }
   })
@@ -44,7 +45,15 @@ describe("ManageKarmaDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /back to options/i }))
 
     // Assert
-    expect(screen.getByRole("button", { name: /sell karma/i })).toBeTruthy()
+    expect(screen.getByRole("button", { name: /earn karma/i })).toBeTruthy()
+  })
+
+  it("hides Sell Karma while the Table's karma selling feature is off", () => {
+    // Arrange / Act
+    renderDialog()
+
+    // Assert
+    expect(screen.queryByRole("button", { name: /sell karma/i })).toBeNull()
   })
 
   it("buys karma with nuyen at the Table's rate without raising total earned", async () => {
@@ -74,32 +83,42 @@ describe("ManageKarmaDialog", () => {
     expect(screen.getByText(/not enough nuyen/i)).toBeTruthy()
   })
 
-  it("sells karma for nuyen at the Table's rate", async () => {
-    // Arrange
-    const { store } = renderDialog({ karma: 10, total: 20, nuyen: 100 })
-    fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
+  describe("with the Table's karma selling feature on", () => {
+    beforeEach(() => {
+      GameTableService.features.karmaSelling = true
+    })
 
-    // Act
-    setCounter(/karma/i, 3)
-    fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
+    afterEach(() => {
+      GameTableService.features.karmaSelling = false
+    })
 
-    // Assert
-    await waitFor(() => expect(store.getState().runner.karma.current).toBe(7))
-    expect(store.getState().runner.karma.total).toBe(20)
-    expect(store.getState().runner.nuyen.current).toBe(7600)
-  })
+    it("sells karma for nuyen at the Table's rate", async () => {
+      // Arrange
+      const { store } = renderDialog({ karma: 10, total: 20, nuyen: 100 })
+      fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
 
-  it("sells karma for nuyen even while the Runner's nuyen is negative", async () => {
-    // Arrange
-    const { store } = renderDialog({ karma: 10, nuyen: -14535 })
-    fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
+      // Act
+      setCounter(/karma/i, 3)
+      fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
 
-    // Act
-    fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
+      // Assert
+      await waitFor(() => expect(store.getState().runner.karma.current).toBe(7))
+      expect(store.getState().runner.karma.total).toBe(20)
+      expect(store.getState().runner.nuyen.current).toBe(7600)
+    })
 
-    // Assert
-    await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(-12035))
-    expect(store.getState().runner.karma.current).toBe(9)
+    it("sells karma for nuyen even while the Runner's nuyen is negative", async () => {
+      // Arrange
+      const { store } = renderDialog({ karma: 10, nuyen: -14535 })
+      fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
+
+      // Act
+      fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
+
+      // Assert
+      await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(-12035))
+      expect(store.getState().runner.karma.current).toBe(9)
+    })
   })
 
   it("edits current and total karma directly and logs the adjustment", async () => {

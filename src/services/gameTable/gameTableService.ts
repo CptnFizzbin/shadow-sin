@@ -6,13 +6,22 @@ export interface KarmaExchangeRates {
   sellNuyenPerKarma: number
 }
 
+/** Optional features a Table can switch on or off for every Runner at it. */
+export interface GameTableFeatures {
+  /** Runners can trade karma for nuyen at `KarmaExchangeRates.sellNuyenPerKarma`. */
+  karmaSelling: boolean
+}
+
 /**
  * Settings a GM chooses once for every Runner at their Table. Its values are app-wide defaults
  * until Tables exist (see `docs/features/0003-gm-table.md`).
  */
-export const GameTableService: { karmaExchangeRates: KarmaExchangeRates } = {
+export const GameTableService: { karmaExchangeRates: KarmaExchangeRates, features: GameTableFeatures } = {
   karmaExchangeRates: {
     buyNuyenPerKarma: 5000,
     sellNuyenPerKarma: 2500,
+  },
+  features: {
+    karmaSelling: false,
   },
 }
