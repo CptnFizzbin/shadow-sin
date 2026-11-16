@@ -8,6 +8,7 @@ import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
 import { SourcedGameEffectSelectors } from "./gameEffects.selector.ts"
 
 const NO_GROUPS: DiceGroup[] = []
+const NO_SUB_TARGETS: string[] = []
 
 export namespace DicePoolModSelectors {
   /**
@@ -32,6 +33,25 @@ export namespace DicePoolModSelectors {
         .map(({ sourceName, effect }): DiceGroup => ({ name: sourceName, size: effect.value, type: "bonus" }))
 
       return groups.length > 0 ? groups : NO_GROUPS
+    },
+  )
+
+  /**
+   * Every `subTarget` (spell category, spirit type, or weapon id) an active `dicePoolMod` GameEffect
+   * narrows `poolId` to — the variants of that pool some bonus applies to — sorted.
+   */
+  export const selectSubTargets = createMemoizedSelector(
+    ViewerStateSelectors.selectEntity,
+    SourcedGameEffectSelectors.selectAll,
+    SelectorOptions.poolId,
+    (entity, sourcedEffects, poolId): string[] => {
+      if (!isRunnerWithBiology(entity)) return NO_SUB_TARGETS
+
+      const subTargets = new Set(sourcedEffects
+        .filter(({ effect }) => effect.type === GameEffectType.dicePoolMod && effect.target === poolId)
+        .flatMap(({ effect }) => effect.subTarget === undefined ? [] : [effect.subTarget]))
+
+      return subTargets.size > 0 ? [...subTargets].sort() : NO_SUB_TARGETS
     },
   )
 }

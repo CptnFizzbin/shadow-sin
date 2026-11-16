@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest"
 
+import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
@@ -18,6 +20,7 @@ import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { CombatPoolSelectors } from "./combatPools.selector.ts"
 import { MagicPoolSelectors } from "./magicPools.selector.ts"
+import { SkillPoolSelectors } from "./skillPools.selector.ts"
 
 const makeFocus = (overrides: Partial<FocusData> = {}): FocusData => ({
   kind: EntityKind.item,
@@ -126,5 +129,55 @@ describe.concurrent("focus bonuses in dice pools", () => {
     // Assert
     expect(withLinkedWeapon.groups).toContainEqual(focusGroup("Sword Focus", 3))
     expect(withOtherWeapon.groups).not.toContainEqual(focusGroup("Sword Focus", 3))
+  })
+})
+
+describe.concurrent("focus bonuses in skill test pools", () => {
+  it("add a Power Focus to a skill test rolled with Magic, but not with another attribute", () => {
+    // Arrange
+    const focus = makeFocus({ name: "Power Focus", focusType: FocusType.Power, force: 2 })
+    const state = stateWith(focus)
+
+    // Act
+    const withMagic = SkillPoolSelectors.selectActiveSkillTest(state, { skill: SkillKey.spellcasting, attr: AttributeKey.magic })
+    const withLogic = SkillPoolSelectors.selectActiveSkillTest(state, { skill: SkillKey.spellcasting, attr: AttributeKey.logic })
+
+    // Assert
+    expect(withMagic.groups).toContainEqual(focusGroup("Power Focus", 2))
+    expect(withLogic.groups).not.toContainEqual(focusGroup("Power Focus", 2))
+  })
+
+  it("add a Spellcasting Focus only to the skill test rolled for its spell category", () => {
+    // Arrange
+    const focus = makeFocus({ name: "Combat Focus", focusType: FocusType.Spellcasting, force: 3, spellCategory: SpellCategory.Combat })
+    const state = stateWith(focus)
+    const spellcasting = { skill: SkillKey.spellcasting, attr: AttributeKey.magic }
+
+    // Act
+    const plain = SkillPoolSelectors.selectActiveSkillTest(state, spellcasting)
+    const forCombat = SkillPoolSelectors.selectActiveSkillTest(state, {
+      ...spellcasting,
+      modPoolId: DicePoolId.spellcasting,
+      poolSubTarget: SpellCategory.Combat,
+    })
+
+    // Assert
+    expect(plain.groups).not.toContainEqual(focusGroup("Combat Focus", 3))
+    expect(forCombat.groups).toContainEqual(focusGroup("Combat Focus", 3))
+  })
+
+  it("list each spell category or spirit type an active focus narrows a pool to", () => {
+    // Arrange
+    const state = stateWith(
+      makeFocus({ focusType: FocusType.Summoning, spiritType: SpiritType.water }),
+      makeFocus({ focusType: FocusType.Summoning, spiritType: SpiritType.fire }),
+      makeFocus({ focusType: FocusType.Summoning, spiritType: SpiritType.earth, bonded: false }),
+    )
+
+    // Act
+    const subTargets = DicePoolModSelectors.selectSubTargets(state, { poolId: DicePoolId.summoning })
+
+    // Assert
+    expect(subTargets).toEqual([SpiritType.fire, SpiritType.water])
   })
 })

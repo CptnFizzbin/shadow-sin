@@ -8,12 +8,14 @@ import { useState } from "react"
 
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import { DicePoolsStack, useViewSkillDialog } from "#/components/skills/viewer/viewSkillDialog.tsx"
-import { useActiveSkillDicePool } from "#/hooks/runner/skills/skillDicePools.ts"
+import { useActiveSkillDicePool, useActiveSkillPoolVariants } from "#/hooks/runner/skills/skillDicePools.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AiAttributes, AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
+
+import { ActiveSkillVariantDicePool } from "./activeSkillVariantDicePool.tsx"
 
 interface ActiveSkillsListItemProps {
   skillKey: SkillKey
@@ -35,6 +37,7 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
 
   const skillDicePool = useActiveSkillDicePool({ skillKey, attrOverride: selectedAttr })
   const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
+  const poolVariants = useActiveSkillPoolVariants(skillKey)
 
   return (
     <Stack spacing={1}>
@@ -59,6 +62,16 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
           specialization ? specializationDicePool : false,
         ]}
       />
+
+      {/* Each bonus variant gets its own row, since its label names what it's narrowed to. */}
+      {poolVariants.map((variant) => (
+        <ActiveSkillVariantDicePool
+          key={`${variant.modPoolId}.${variant.poolSubTarget}`}
+          skillKey={skillKey}
+          attr={selectedAttr}
+          variant={variant}
+        />
+      ))}
     </Stack>
   )
 }
