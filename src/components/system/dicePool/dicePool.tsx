@@ -15,7 +15,8 @@ import type { DiceGroup, DiceGroupType } from "./diceGroup.tsx"
 import { DiceGroupBreakdown } from "./diceGroupBreakdown.tsx"
 import type { DicePoolData } from "./dicePoolData.tsx"
 import { LedgerValue } from "./ledgerValue.tsx"
-import { describeOverride, OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
+import { OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
+import { OverrideTooltip } from "./overrideTooltip.tsx"
 
 const DIE_SIZE = 18
 const DIE_GAP = 0.5
@@ -158,17 +159,15 @@ export const DicePool: FC<DicePoolProps> = ({ pool }) => {
 
             return (
               <Stack key={group.id ?? `${index}:${group.name}`} sx={{ gap: 0 }}>
-                <Stack
-                  direction="row"
-                  title={group.overriddenBy ? describeOverride(group.overriddenBy) : undefined}
-                  sx={{ gap: 1, ...(group.overriddenBy && overriddenSx) }}
-                >
-                  <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overriddenBy ? undefined : groupColor }}>
-                    {group.size}
-                  </LedgerValue>
-                  <Typography variant="body2" sx={{ color: group.overriddenBy ? undefined : groupColor }}>{group.name}</Typography>
-                  {group.overriddenBy && <OverriddenNote reason={group.overriddenBy} />}
-                </Stack>
+                <OverrideTooltip reason={group.overriddenBy}>
+                  <Stack direction="row" sx={{ gap: 1, ...(group.overriddenBy && overriddenSx) }}>
+                    <LedgerValue variant="body2" sx={{ fontWeight: "bold", color: group.overriddenBy ? undefined : groupColor }}>
+                      {group.size}
+                    </LedgerValue>
+                    <Typography variant="body2" sx={{ color: group.overriddenBy ? undefined : groupColor }}>{group.name}</Typography>
+                    {group.overriddenBy && <OverriddenNote reason={group.overriddenBy} />}
+                  </Stack>
+                </OverrideTooltip>
 
                 {group.breakdown && <DiceGroupBreakdown breakdown={group.breakdown} />}
               </Stack>

@@ -39,13 +39,36 @@ describe("DicePool", () => {
     fireEvent.click(screen.getByText("Spellcasting"))
 
     // Assert
-    const struckThrough = (text: string) => getComputedStyle(screen.getByText(text).closest("[title]")!).textDecoration
-    expect(struckThrough("Power Focus")).toContain("line-through")
-    expect(struckThrough("Jazz")).toContain("line-through")
-    expect(screen.getByText("Wand").closest("[title]")).toBeNull()
-    expect(screen.getByText("Power Focus").closest("[title]")?.getAttribute("title"))
+    const decorationOfRow = (text: string) => getComputedStyle(screen.getByText(text).parentElement!).textDecoration
+    expect(decorationOfRow("Power Focus")).toContain("line-through")
+    expect(decorationOfRow("Jazz")).toContain("line-through")
+    expect(decorationOfRow("Wand")).not.toContain("line-through")
+  })
+
+  it("explains an overridden group in a tooltip when it's tapped, without collapsing the pool", async () => {
+    // Arrange
+    renderWithRunner(
+      <DicePool
+        pool={{
+          id: "test.spellcasting",
+          label: "Spellcasting",
+          groups: [
+            { name: "Wand", size: 4, type: "bonus" },
+            { name: "Power Focus", size: 2, type: "bonus", overriddenBy: { name: "Wand", value: 4, tag: "focus" } },
+          ],
+          size: 4,
+        }}
+      />,
+    )
+    fireEvent.click(screen.getByText("Spellcasting"))
+
+    // Act
+    fireEvent.click(screen.getByText("Power Focus"))
+
+    // Assert
+    expect((await screen.findByRole("tooltip")).textContent)
       .toBe("Overridden by Wand (4): effects tagged \"focus\" don't stack, and only the highest applies.")
-    expect(screen.getByText("Jazz").closest("[title]")?.textContent).toContain("Overridden by Kamikaze (1)")
+    expect(screen.getByText("Spellcasting").closest("[aria-expanded]")?.getAttribute("aria-expanded")).toBe("true")
   })
 
   it("lists a group's breakdown as an indented list without adding it to the total", () => {

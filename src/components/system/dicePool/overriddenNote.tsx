@@ -13,7 +13,7 @@ export const overriddenSx = { textDecoration: "line-through", color: "text.disab
 
 /**
  * The override reason for screen readers, placed inside the struck-through row. Sighted Players get
- * the same text from the row's `title`.
+ * the same text from its `OverrideTooltip`.
  */
 export const OverriddenNote: FC<{ reason: OverrideReason }> = ({ reason }) => (
   <Box

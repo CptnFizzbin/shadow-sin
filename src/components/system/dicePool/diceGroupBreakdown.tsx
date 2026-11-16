@@ -6,7 +6,8 @@ import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStac
 import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
 
 import { LedgerValue } from "./ledgerValue.tsx"
-import { describeOverride, OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
+import { OverriddenNote, overriddenSx } from "./overriddenNote.tsx"
+import { OverrideTooltip } from "./overrideTooltip.tsx"
 
 interface DiceGroupBreakdownProps {
   breakdown: RatingBreakdown
@@ -43,17 +44,13 @@ const toItems = ({ rawValue, modifiers }: RatingBreakdown): BreakdownItem[] => {
 export const DiceGroupBreakdown: FC<DiceGroupBreakdownProps> = ({ breakdown }) => (
   <Stack component="ul" sx={{ gap: 0, margin: 0, paddingLeft: 2, listStyle: "none", color: "text.secondary" }}>
     {toItems(breakdown).map((item, index) => (
-      <Stack
-        key={`${index}:${item.name}`}
-        component="li"
-        direction="row"
-        title={item.overriddenBy ? describeOverride(item.overriddenBy) : undefined}
-        sx={{ gap: 1, lineHeight: 1.25, ...(item.overriddenBy && overriddenSx) }}
-      >
-        <LedgerValue variant="caption">{item.value}</LedgerValue>
-        <Typography variant="caption" sx={{ lineHeight: "inherit" }}>{item.name}</Typography>
-        {item.overriddenBy && <OverriddenNote reason={item.overriddenBy} />}
-      </Stack>
+      <OverrideTooltip key={`${index}:${item.name}`} reason={item.overriddenBy}>
+        <Stack component="li" direction="row" sx={{ gap: 1, lineHeight: 1.25, ...(item.overriddenBy && overriddenSx) }}>
+          <LedgerValue variant="caption">{item.value}</LedgerValue>
+          <Typography variant="caption" sx={{ lineHeight: "inherit" }}>{item.name}</Typography>
+          {item.overriddenBy && <OverriddenNote reason={item.overriddenBy} />}
+        </Stack>
+      </OverrideTooltip>
     ))}
   </Stack>
 )
