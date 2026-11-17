@@ -3,6 +3,7 @@ import { createMemoizedSelector, injectOption } from "#/integrations/reselect/se
 import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
+import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { spiritTypeMatchesSpecialization } from "#/system/formulas/magic/spiritSpecialization.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
@@ -11,6 +12,7 @@ import type { SpellCategory } from "#/system/model/magic/spellData.ts"
 import type { SpiritType } from "#/system/model/magic/spiritData.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
+import { aidDiceGroups } from "./aidDiceGroups.ts"
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
 /** Magic, plus the bonus dice (e.g. from a Power Focus) every test that rolls Magic gets. */
@@ -55,6 +57,13 @@ const selectSpiritModGroups = (
     poolSubTarget: spiritType,
   })
 
+/** Dice from `aid` (e.g. a spirit's aid power), with Teamwork limited by the caster's Spellcasting Rating. */
+const selectSpellcastingAidGroups = createMemoizedSelector(
+  SelectorOptions.aid,
+  injectOption(SkillsSelectors.selectRating, { skill: SkillKey.spellcasting }),
+  aidDiceGroups,
+)
+
 /** The tradition's drain `attr`, renamed when it's Willpower so its row isn't confused with the first Willpower. */
 const selectDrainAttrGroups = createMemoizedSelector(
   AttrSelectors.DiceGroups.selectAttr,
@@ -68,7 +77,7 @@ const selectDrainAttrGroups = createMemoizedSelector(
 export namespace MagicPoolSelectors {
   /**
    * The Spellcasting test: Magic + Spellcasting, plus the Specialization and other bonuses (e.g. a
-   * focus) for casting a spell of `spellCategory`.
+   * focus) for casting a spell of `spellCategory`, and any `aid` from assistants or spirits.
    */
   export const selectSpellcastingTest = createDicePoolSelector({
     id: "magic.spellcasting",
@@ -78,6 +87,7 @@ export namespace MagicPoolSelectors {
       injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.spellcasting, excludeDefaulting: false }),
       selectSpellcastingSpecializationGroups,
       selectSpellcastingModGroups,
+      selectSpellcastingAidGroups,
     ],
   })
 

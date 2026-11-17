@@ -1,13 +1,15 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { injectOption } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
+import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
 
+import { aidDiceGroups } from "./aidDiceGroups.ts"
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
 const NO_GROUPS: DiceGroup[] = []
@@ -25,12 +27,27 @@ const selectSkillPoolModGroups = (
 ): DiceGroup[] =>
   modPoolId ? DicePoolModSelectors.selectGroups(state, { poolId: modPoolId, poolSubTarget }) : NO_GROUPS
 
+/** Dice from `aid`, with Teamwork limited by the leader's `skill` Rating. */
+const selectActiveSkillAidGroups = createMemoizedSelector(
+  SelectorOptions.aid,
+  SkillsSelectors.selectRating,
+  aidDiceGroups,
+)
+
+/** Dice from `aid`, with Teamwork limited by the leader's Knowledge Skill `rating`. */
+const selectKnowledgeSkillAidGroups = createMemoizedSelector(
+  SelectorOptions.aid,
+  SelectorOptions.rating,
+  aidDiceGroups,
+)
+
 /** Skill test pools. Their labels are generic; the component showing one names the skill. */
 export namespace SkillPoolSelectors {
   /**
    * An Active Skill test: the skill, `attr`, the `specialization` bonus when one is given, bonuses
    * every Magic test gets when `attr` is Magic, and — when `modPoolId` is given — the bonuses for
-   * rolling it as that test narrowed to `poolSubTarget` (e.g. Spellcasting for Combat spells).
+   * rolling it as that test narrowed to `poolSubTarget` (e.g. Spellcasting for Combat spells) —
+   * and any `aid` from assistants or spirits.
    */
   export const selectActiveSkillTest = createDicePoolSelector({
     id: "skill.active",
@@ -41,16 +58,18 @@ export namespace SkillPoolSelectors {
       selectMagicTestModGroups,
       SkillsSelectors.DiceGroups.selectSpecialization,
       selectSkillPoolModGroups,
+      selectActiveSkillAidGroups,
     ],
   })
 
-  /** A Knowledge Skill test: the skill's `rating` and Specialization bonus, then Logic. */
+  /** A Knowledge Skill test: the skill's `rating` and Specialization bonus, then Logic, and any `aid`. */
   export const selectKnowledgeSkillTest = createDicePoolSelector({
     id: "skill.knowledge",
     label: "Knowledge Skill",
     groups: [
       SkillsSelectors.DiceGroups.selectKnowledgeSkill,
       injectOption(AttrSelectors.DiceGroups.selectAttr, { attr: AttributeKey.logic }),
+      selectKnowledgeSkillAidGroups,
     ],
   })
 

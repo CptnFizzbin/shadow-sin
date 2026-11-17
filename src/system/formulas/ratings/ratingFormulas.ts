@@ -87,6 +87,17 @@ export const RatingFormulas = {
     }
   },
 
+  /**
+   * A Program's rating: `rawValue`, capped at `systemLimit` (the System rating of the device
+   * running it) when one is given. A cap that applies is listed as its own negative modifier.
+   */
+  getProgramRating: ({ rawValue, systemLimit }: { rawValue: number, systemLimit?: number }): RatingBreakdown => {
+    const modifiers = systemLimit !== undefined && rawValue > systemLimit
+      ? [{ name: "System limit", value: systemLimit - rawValue, isCap: true }]
+      : []
+    return { rawValue, modifiers, rating: rawValue + sumModifiers(modifiers) }
+  },
+
   /** A Skill's (or a Specialization's) rating: `rawValue` plus `modifiers`. */
   getSkillRating: ({ rawValue, modifiers }: { rawValue: number, modifiers: RatingModifier[] }): RatingBreakdown => ({
     rawValue,

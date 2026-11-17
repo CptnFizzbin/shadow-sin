@@ -7,6 +7,8 @@ export interface DicePoolConfig {
   label: string
   /** When `true`, the pool gets no Wound group even if the Runner is wounded. */
   excludeWoundMod?: boolean
+  /** When `true`, the pool gets no Sustaining group even if the Runner is sustaining spells. */
+  excludeSustainingPenalty?: boolean
   groups: DiceGroup[]
 }
 

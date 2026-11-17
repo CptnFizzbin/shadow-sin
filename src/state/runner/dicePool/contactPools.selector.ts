@@ -24,8 +24,9 @@ export namespace ContactPoolSelectors {
     id: "legwork.gm",
     label: "Contact Knowledge Test",
     groups: [selectConnectionGroups, selectConnectionGroups],
-    // The Contact rolls this, so the Runner's Wound Modifier doesn't apply.
+    // The Contact rolls this, so the Runner's Wound Modifier and Sustaining penalty don't apply.
     excludeWoundMod: true,
+    excludeSustainingPenalty: true,
   })
 
   /** The player's Legwork Test: Charisma + Etiquette + the contact's `loyalty`. */
