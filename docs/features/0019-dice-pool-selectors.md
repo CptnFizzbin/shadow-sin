@@ -46,8 +46,8 @@ The selectors form one chain, each layer reading only the one below it:
    Resistance Test does (damage, direct spell, Drain), as does the GM's legwork roll, since the
    Contact rolls it — defense and spell tests keep it; and
    `SpellsSelectors.DiceGroups.selectSustainingPenalty` (−2 per spell the Runner sustains) unless
-   `excludeSustainingPenalty` is set, which only a pool someone else rolls (the GM's legwork roll)
-   does.
+   `excludeSustainingPenalty` is set, which damage resistance tests do, as does a pool someone
+   else rolls (the GM's legwork roll).
 6. **Pool ids and labels are fixed.** Where the label depends on the pool's options (the damage
    type, the parrying skill, Summoning vs Binding, the skill and Specialization of a skill pool),
    the component or hook showing the pool sets the label (and, for skill pools, the id).
