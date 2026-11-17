@@ -31,6 +31,13 @@ const selectSpiritSpecializationGroups = (
   return SkillsSelectors.DiceGroups.selectSpecialization(state, { skill, specialization: applies ? specialization : undefined })
 }
 
+/** The Spellcasting Specialization's bonus, when it covers `spellCategory` (e.g. "Combat Spells"). */
+const selectSpellcastingSpecializationGroups = (
+  state: EntityScope,
+  { spellCategory }: { spellCategory?: SpellCategory },
+): DiceGroup[] =>
+  SkillsSelectors.DiceGroups.selectSpecializationCovering(state, { skill: SkillKey.spellcasting, poolSubTarget: spellCategory })
+
 /** Bonus dice (e.g. from a Spellcasting Focus) for casting a spell of `spellCategory`. */
 const selectSpellcastingModGroups = (
   state: EntityScope,
@@ -59,13 +66,17 @@ const selectDrainAttrGroups = createMemoizedSelector(
 )
 
 export namespace MagicPoolSelectors {
-  /** The Spellcasting test: Magic + Spellcasting, plus bonuses for casting a spell of `spellCategory`. */
+  /**
+   * The Spellcasting test: Magic + Spellcasting, plus the Specialization and other bonuses (e.g. a
+   * focus) for casting a spell of `spellCategory`.
+   */
   export const selectSpellcastingTest = createDicePoolSelector({
     id: "magic.spellcasting",
     label: "Spellcasting",
     groups: [
       selectMagicGroups,
       injectOption(SkillsSelectors.DiceGroups.selectSkill, { skill: SkillKey.spellcasting, excludeDefaulting: false }),
+      selectSpellcastingSpecializationGroups,
       selectSpellcastingModGroups,
     ],
   })

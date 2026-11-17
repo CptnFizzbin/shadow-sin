@@ -28,14 +28,21 @@ const selectBodyGroups = attrGroupsFor(AttributeKey.body)
 const selectWillpowerGroups = attrGroupsFor(AttributeKey.willpower)
 const selectDodgeGroups = skillGroupsFor(SkillKey.dodge)
 const selectUnarmedCombatGroups = skillGroupsFor(SkillKey.unarmedCombat)
-/** Counterspelling against a combat spell, plus bonuses (e.g. from a Counterspelling Focus) against combat spells. */
+/**
+ * Counterspelling against a combat spell, plus the Specialization and other bonuses (e.g. from a
+ * Counterspelling Focus) that cover combat spells.
+ */
 const selectCounterspellingGroups = createMemoizedSelector(
   skillGroupsFor(SkillKey.counterspelling),
+  injectOption(SkillsSelectors.DiceGroups.selectSpecializationCovering, {
+    skill: SkillKey.counterspelling,
+    poolSubTarget: SpellCategory.Combat,
+  }),
   injectOption(DicePoolModSelectors.selectGroups, {
     poolId: DicePoolId.counterspelling,
     poolSubTarget: SpellCategory.Combat,
   }),
-  (skillGroups, modGroups): DiceGroup[] => [...skillGroups, ...modGroups],
+  (skillGroups, specializationGroups, modGroups): DiceGroup[] => [...skillGroups, ...specializationGroups, ...modGroups],
 )
 
 /** Bonus dice (e.g. from a Weapon Focus) for attacking with the weapon `weaponId`. */
