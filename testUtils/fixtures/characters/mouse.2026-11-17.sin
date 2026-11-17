@@ -1,0 +1,631 @@
+kind: runner
+id: 01a1df51-914a-7069-998a-81618d6aae7c
+name: Mouse
+_meta_:
+  sinVersion: '2026-11-15T18:06:00Z'
+  appVersion: '2026-11-15T18:14:23Z'
+  lastExportDate: '2026-11-17T04:42:50.410Z'
+items:
+  parentId: null
+  childIds: []
+attributes:
+  body: 1
+  agility: 3
+  reaction: 7
+  strength: 1
+  charisma: 6
+  intuition: 2
+  logic: 2
+  willpower: 7
+  edge: 5
+  essence: 6
+  magic: 6
+  resonance: 0
+qualities:
+  - kind: quality
+    id: 364b1c68-15fa-45ef-8c4c-621498a05d72
+    name: Vanish
+    type: negative
+    bpValue: 0
+    source:
+      book: RC
+      page: 85
+  - kind: quality
+    id: 38d53d59-5237-4a50-9f34-29aebb478218
+    name: Uneducated
+    type: negative
+    bpValue: 0
+    source:
+      book: SR4A
+      page: 119
+  - kind: quality
+    id: 29a32673-e53d-4ee7-bf55-50648e6e4e1d
+    name: Severe Iron Allergy
+    type: negative
+    description: >-
+      Contact with iron and steel results in actual physical damage. The character receives 1 box of damage for every
+      minute he touches or remains exposed to the allergen. Apply a –4 dice pool modifier to all tests made while a
+      character experiences the symptoms.
+
+
+      Increase the Damage Value of weapons made from this substance by +4 when used against the character.
+    effects: []
+    bpValue: 20
+    source:
+      book: SR4A
+      page: 94
+  - kind: quality
+    id: 20a84f08-7533-4173-a355-90d07d03ca1a
+    name: Criminal Sinner
+    type: negative
+    description: >-
+      Criminal record: Multiple accounts of 2nd degree murder, breaking and entering, manslaughter, trespassing,
+      unsanctioned corporate espionage, and unlicensed spellcasting  
+    effects: []
+    bpValue: 10
+    source:
+      book: SR4A
+      page: 95
+  - kind: quality
+    id: 2bae28ad-0b59-4b64-b4b4-dbb1c97c26f5
+    name: 'Mild Addiction: Cram'
+    type: negative
+    description: ''
+    effects: []
+    bpValue: 5
+    source:
+      book: SR4A
+      page: 93
+karma:
+  total: 81
+  current: 4
+  log:
+    - id: 0d371e7f-71d1-4963-93ef-8f8e3c90f42f
+      timestamp: '2026-11-15T14:11:40.477Z'
+      amount: 75
+      description: 'Earned 75 karma: Catch up'
+      source: addKarma
+    - id: a007cac7-ae97-475d-a312-130a42f22c2a
+      timestamp: '2026-11-15T14:30:15.432Z'
+      amount: -30
+      description: Raised CHA 5 → 6
+      source: spendKarma
+      improvement:
+        type: attrIncrease
+        attr: charisma
+        baseRating: 5
+        newRating: 6
+        id: 912838fe-9b29-4058-b2d5-959f2b1eefa4
+    - id: 1788de3e-bb76-459d-8cf2-4faf070c0e7e
+      timestamp: '2026-11-15T14:31:33.322Z'
+      amount: -12
+      description: Raised Spellcasting 5 → 6
+      source: spendKarma
+      improvement:
+        type: skillIncrease
+        skillType: ActiveSkill
+        skill: Spellcasting
+        baseRating: 5
+        newRating: 6
+        id: c1537734-34de-4b38-90ba-1883cedbefc3
+    - id: 7dfb764d-8ff6-48a1-9bb2-8a87176d9356
+      timestamp: '2026-11-15T14:31:33.322Z'
+      amount: -8
+      description: Learned skill Medicine at rating 2
+      source: spendKarma
+      improvement:
+        type: learnActiveSkill
+        skill:
+          name: Medicine
+          rating: 2
+        id: e53d04b3-214e-478a-b40e-ec104379eb2d
+    - id: d836719a-84e5-40d2-a22e-eadd48ecea8c
+      timestamp: '2026-11-15T14:32:18.443Z'
+      amount: -10
+      description: Raised Dodge 4 → 5
+      source: spendKarma
+      improvement:
+        type: skillIncrease
+        skillType: ActiveSkill
+        skill: Dodge
+        baseRating: 4
+        newRating: 5
+        id: 0fbed0e6-bed8-4874-9205-7634a0f487fc
+    - id: 2ca87adf-4462-497f-82a4-6f884796f637
+      timestamp: '2026-11-15T15:21:14.013Z'
+      amount: -5
+      description: Learned spell Control Actions
+      source: spendKarma
+      improvement:
+        type: learnSpell
+        spell:
+          kind: spell
+          id: 00000000-0000-0000-0000-000000000000
+          name: Control Actions
+          type: Mana
+          range: LoS
+          damage: Physical
+          category: Combat
+          drain:
+            type: Force
+            value: 0
+          dealsDamage: false
+          duration: Sustained
+          threshold: ''
+          voluntaryTargetsOnly: false
+          description: "\x1C e caster of this spell controls the physical actions of a target like a puppeteer pulling strings. \x1C e victim’s consciousness is una\x1D ected, but the\ncaster controls the victim’s body. \x1C e target uses any skills or abilities at\nthe caster’s orders, but these tests su\x1D er a dice pool modi\x1F er equal to the\ntarget’s Willpower because of the victim’s resistance to the caster’s commands. Controlling a target character requires the caster to spend a Simple\nAction; when not directly controlled, the victim may act as normal.\nControl Actions only a\x1D ects a single target, Mob Control a\x1D ects\nany living targets within the area of e\x1D ect. Victims of a Mob Control\nmay be manipulated individually (with separate Simple Actions) or\nissued the same command as a group (with a single Simple Action)."
+          effects: []
+          source:
+            book: SR4A
+            page: 210
+        id: ba0f517f-9895-4e33-84a9-fa20a6b7075d
+    - id: fed0c88b-330b-47f3-babf-caafdbef2d38
+      timestamp: '2026-11-15T15:21:14.013Z'
+      amount: -5
+      description: Learned spell Magic Fingers
+      source: spendKarma
+      improvement:
+        type: learnSpell
+        spell:
+          kind: spell
+          id: 00000000-0000-0000-0000-000000000000
+          name: Magic Fingers
+          type: Physical
+          range: LoS
+          damage: Physical
+          category: Manipulation
+          drain:
+            type: Force
+            value: 1
+          dealsDamage: false
+          duration: Sustained
+          threshold: ''
+          voluntaryTargetsOnly: false
+          description: Mage hand. -2 penality when using skills via the hand. Hits are the hand's str and agi stats
+          effects: []
+          source:
+            book: SR4A
+            page: 211
+        id: 4d885d32-143f-48dd-819d-40ee5407289c
+    - id: 6ae78bdd-3197-4197-82af-86739a404142
+      timestamp: '2026-11-15T15:22:03.548Z'
+      amount: -5
+      description: Learned spell Turn to Goo
+      source: spendKarma
+      improvement:
+        type: learnSpell
+        spell:
+          kind: spell
+          id: 00000000-0000-0000-0000-000000000000
+          name: Turn to Goo
+          type: Physical
+          range: LoS
+          damage: Physical
+          category: Manipulation
+          drain:
+            type: Force
+            value: 2
+          dealsDamage: false
+          duration: Sustained
+          threshold: ''
+          voluntaryTargetsOnly: false
+          description: ''
+          effects: []
+          source:
+            book: SR4A
+            page: 211
+        id: c51546f9-d758-4256-84f0-ac0dac4668d9
+    - id: 2dc39547-89bd-4271-bce2-1ed8a57a8b04
+      timestamp: '2026-11-15T18:27:47.264Z'
+      amount: 6
+      description: 'Earned 6 karma: Mission complete, blackbox'
+      source: addKarma
+    - id: 3367b0f9-5434-4f94-9aca-8e9517a9a8b3
+      timestamp: '2026-11-15T18:30:04.485Z'
+      amount: 4
+      description: Bought 4 karma for 20,000¥
+      source: buyKarma
+    - id: d4848c63-582c-407d-ad4e-5076efa55e75
+      timestamp: '2026-11-16T12:50:12.064Z'
+      amount: 10
+      description: Bought 10 karma for 50,000¥
+      source: buyKarma
+    - id: 15c55bd0-50ef-4ac3-994c-567c651d03ec
+      timestamp: '2026-11-17T04:33:46.281Z'
+      amount: -16
+      description: Bonded Spellcasting Focus (Spellcasting Focus, Force 4)
+      source: bondFocus
+nuyen:
+  current: 22450
+  loans:
+    - id: e3f228d1-0637-4497-ba5f-d9f8bff30a51
+      lender: Rosa McCabe
+      amount: 50000
+      interestRate: 15
+      notes: ''
+profile:
+  alias: Mouse
+  name: Ceiwyn Mclain
+  archetype: Mage
+  description: ''
+  personality: ''
+lifestyle:
+  monthsPaid: 6
+  name: Low
+  upkeep: 2000
+reputation:
+  ledger:
+    - id: 70f50b7a-651a-465c-bd18-77161a12458a
+      stat: notoriety
+      timestamp: '2026-11-15T18:28:26.916Z'
+      amount: 2
+      description: Known criminal
+      source: manual
+biology:
+  metatype: Pixie
+  awakening: Magician
+  gender: null
+  age: null
+  weight: null
+  height: null
+contacts:
+  - id: 5da2e738-1ede-4553-b4d7-3fbd40076ac5
+    name: Rosa McCabe
+    connection: 4
+    loyalty: 3
+    notes: Talismonger
+    skills: []
+    favours: []
+  - id: 09d4ab4c-8f09-4878-b3b3-0a49577e5d46
+    name: Julie
+    connection: 5
+    loyalty: 2
+    notes: Fence
+    skills: []
+    favours: []
+extendedTests: []
+notes: ''
+skills:
+  activeSkills:
+    - name: Spellcasting
+      rating: 6
+      specialization: Combat Spells
+    - name: Counterspelling
+      rating: 5
+    - name: Dodge
+      rating: 5
+    - name: Medicine
+      rating: 2
+  skillGroups:
+    - name: Stealth
+      rating: 4
+    - name: Influence
+      rating: 2
+    - name: Close Combat
+      rating: 3
+    - name: Outdoors
+      rating: 1
+  knowledgeSkills:
+    - id: 01a1df8a-3252-718c-8384-21a7b9a3a9f6
+      name: Firearms
+      rating: 3
+    - id: 01a1df8a-ac8c-770c-a27d-b6dd2523fedd
+      name: Biology
+      rating: 5
+      specialization: Metahuman
+    - id: 01a1df8b-43d7-7093-b316-c032222ed01e
+      name: Law Enforcement
+      rating: 2
+  languageSkills:
+    - id: 01a1df8a-052e-7551-9dea-fb2a952f08b5
+      name: English
+      isNative: true
+      lingo: Irish
+spells:
+  - kind: spell
+    id: bfab2969-a7ef-40d3-93b3-94be0f94ed55
+    name: Manabolt
+    type: Mana
+    range: LoS
+    damage: Physical
+    category: Combat
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: true
+    duration: Instantaneous
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: Deals physical damage resisted by willpower. Only effects living and magical targets.
+    effects: []
+    source:
+      book: SR4A
+      page: 204
+  - kind: spell
+    id: b284d22c-b0ac-4207-acf7-bf4669847393
+    name: Powerbolt
+    type: Physical
+    range: LoS
+    damage: Physical
+    category: Combat
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: true
+    duration: Instantaneous
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: Deals physical damage, resisted by body.
+    effects: []
+    source:
+      book: SR4A
+      page: 205
+  - kind: spell
+    id: 00000000-0000-0000-0000-000000000000
+    name: Control Actions
+    type: Mana
+    range: LoS
+    damage: Physical
+    category: Combat
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: false
+    duration: Sustained
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: "\x1C e caster of this spell controls the physical actions of a target like a puppeteer pulling strings. \x1C e victim’s consciousness is una\x1D ected, but the\ncaster controls the victim’s body. \x1C e target uses any skills or abilities at\nthe caster’s orders, but these tests su\x1D er a dice pool modi\x1F er equal to the\ntarget’s Willpower because of the victim’s resistance to the caster’s commands. Controlling a target character requires the caster to spend a Simple\nAction; when not directly controlled, the victim may act as normal.\nControl Actions only a\x1D ects a single target, Mob Control a\x1D ects\nany living targets within the area of e\x1D ect. Victims of a Mob Control\nmay be manipulated individually (with separate Simple Actions) or\nissued the same command as a group (with a single Simple Action)."
+    effects: []
+    source:
+      book: SR4A
+      page: 210
+  - kind: spell
+    id: 00000000-0000-0000-0000-000000000000
+    name: Magic Fingers
+    type: Physical
+    range: LoS
+    damage: Physical
+    category: Manipulation
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: false
+    duration: Sustained
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: Mage hand. -2 penality when using skills via the hand. Hits are the hand's str and agi stats
+    effects: []
+    source:
+      book: SR4A
+      page: 211
+  - kind: spell
+    id: 00000000-0000-0000-0000-000000000000
+    name: Turn to Goo
+    type: Physical
+    range: LoS
+    damage: Physical
+    category: Manipulation
+    drain:
+      type: Force
+      value: 2
+    dealsDamage: false
+    duration: Sustained
+    threshold: ''
+    voluntaryTargetsOnly: false
+    description: ''
+    effects: []
+    source:
+      book: SR4A
+      page: 211
+spirits: []
+complexForms: []
+sprites: []
+powers: []
+tradition:
+  name: Black Magic
+  spiritTypes:
+    combat: fire
+    detection: water
+    health: earth
+    illusion: wind
+    manipulation: man
+  drainAttribute: charisma
+  concept: ''
+edge:
+  current: 2
+damage:
+  physical: 5
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+initiative:
+  passesCompleted: []
+initiateGrade: 0
+submersionGrade: 0
+_data_:
+  featureFlags: {}
+gear:
+  - kind: item
+    id: 0abf1fb3-a34d-42e9-b7c4-97a850b9ca23
+    itemType: other
+    name: Contact Lens
+    cost: 75
+    quantity: 1
+    rating: 1
+    description: Image Link
+    availability:
+      rating: 6
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 333
+    effects: []
+    state: equipped
+    matrixDisabled: false
+  - kind: item
+    id: a3308624-65a3-4dea-96c0-b89d6e14216e
+    itemType: device
+    name: Commlink
+    cost: 1400
+    quantity: 1
+    description: ''
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 328
+    effects: []
+    state: equipped
+    deviceType: commlink
+    customDeviceType: ''
+    deviceModel: Renraku Sensei
+    deviceOS: Redcap Nix
+    deviceRating: 1
+    response: 2
+    signal: 4
+    system: 1
+    firewall: 2
+    dataProcessing: 0
+    programSlots: 0
+  - kind: item
+    id: d6d80e8a-f73e-4b42-92be-30354f8bac6d
+    itemType: armor
+    name: Leather Jacket
+    ballistic: 2
+    impact: 2
+    isModifier: false
+    cost: 500
+    quantity: 1
+    description: ''
+    state: equipped
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: SR4A
+      page: 327
+    effects: []
+  - kind: item
+    id: d66006c5-1b48-4975-9c62-640a329b398a
+    itemType: sin
+    name: Ceiwyn Mclain
+    cost: 0
+    quantity: 1
+    description: Criminal SIN
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: ''
+      page: 0
+    effects: []
+    state: available
+    matrixDisabled: false
+    isReal: true
+  - kind: item
+    id: c22d53b8-1ee9-43b7-8f29-4e6081f21408
+    itemType: sin
+    name: Ruby Collier
+    cost: 4000
+    quantity: 1
+    rating: 4
+    description: ''
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: ''
+      page: 0
+    effects: []
+    state: available
+    matrixDisabled: false
+    isReal: false
+    children:
+      - kind: item
+        id: 890f1cf9-913f-4181-9f5f-164c29d8db9b
+        itemType: license
+        name: Spellcasting
+        cost: 400
+        quantity: 1
+        rating: 4
+        description: ''
+        availability:
+          rating: 0
+          restricted: false
+          forbidden: false
+        effects: []
+        state: available
+        matrixDisabled: false
+        isReal: false
+  - kind: item
+    id: 28aa33ff-5967-418c-b0b2-40dd3d272039
+    itemType: other
+    name: Leather Gloves
+    cost: 50
+    quantity: 1
+    rating: 1
+    description: ''
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: ''
+      page: 0
+    effects: []
+    state: equipped
+    matrixDisabled: false
+  - kind: item
+    id: e8d29664-93da-4731-b1a1-d4320e164fcd
+    itemType: consumable
+    consumableType: drug
+    name: Cram
+    duration: (12 - Body) hours
+    crash: 6S (unresisted)
+    effectDescription: +1 Reaction, +1 Init pass
+    cost: 10
+    quantity: 9
+    description: ''
+    state: available
+    availability:
+      rating: 0
+      restricted: false
+      forbidden: false
+    source:
+      book: ''
+      page: 0
+    effects:
+      - type: attrMod
+        target: reaction
+        value: 1
+      - type: extraInitiativePasses
+        value: 1
+  - kind: item
+    id: 11ecdda2-1d95-45ae-ac39-a57aa595011e
+    itemType: magical
+    magicalType: focus
+    focusType: Spellcasting
+    force: 4
+    spellCategory: Combat
+    bonded: true
+    name: Spellcasting Focus
+    cost: 60000
+    quantity: 1
+    description: ''
+    state: equipped
+    availability:
+      rating: 16
+      restricted: true
+      forbidden: false
+    source:
+      book: SR4A
+      page: 199

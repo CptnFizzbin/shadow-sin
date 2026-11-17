@@ -6,6 +6,7 @@ import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx
 import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { loadMouse } from "#testUtils/fixtures/characters/mouse.ts"
 
 import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
 
@@ -24,7 +25,36 @@ function renderPistols() {
   render(<ActiveSkillsListItem skillKey={SkillKey.pistols} rating={4} />, { wrapper: Wrapper })
 }
 
+function renderMouseSpellcasting() {
+  const store = createRunnerStateStore({ mode: "viewer", runner: loadMouse() })
+
+  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
+  )
+
+  render(<ActiveSkillsListItem skillKey={SkillKey.spellcasting} rating={6} />, { wrapper: Wrapper })
+}
+
 describe("ActiveSkillsListItem", () => {
+  it("shows Mouse's Combat Spells pool once, with both the Specialization and the Combat Spellcasting Focus", () => {
+    // Arrange
+    renderMouseSpellcasting()
+
+    // Act
+    fireEvent.click(screen.getByText(SkillKey.spellcasting))
+    const dialog = within(screen.getByRole("dialog"))
+
+    // Assert
+    const poolTitles = dialog.getAllByTitle(/^Spellcasting/)
+    expect(poolTitles.map((title) => title.textContent)).toEqual(["Spellcasting", "Spellcasting (Combat Spells)"])
+
+    const combatPool = within(poolTitles[1].closest("[aria-expanded]") as HTMLElement)
+    expect(combatPool.getByText("Specialization: Combat Spells")).toBeDefined()
+    expect(combatPool.getByText("Spellcasting Focus")).toBeDefined()
+    // MAG 6 + Spellcasting 6 + Specialization 2 + Focus 4, less 1 for Mouse's wounds.
+    expect(combatPool.getAllByText("17").length).toBeGreaterThan(0)
+  })
+
   it("opens a dialog whose dice pool reacts to changing the attribute selection", () => {
     // Arrange
     renderPistols()

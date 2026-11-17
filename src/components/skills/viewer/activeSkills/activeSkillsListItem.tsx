@@ -8,9 +8,11 @@ import { useState } from "react"
 
 import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
 import { DicePoolsStack, useViewSkillDialog } from "#/components/skills/viewer/viewSkillDialog.tsx"
+import type { SkillPoolVariant } from "#/hooks/runner/skills/skillDicePools.ts"
 import { useActiveSkillDicePool, useActiveSkillPoolVariants } from "#/hooks/runner/skills/skillDicePools.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import { specializationCoversPoolSubTarget } from "#/system/formulas/magic/poolSubTargetSpecialization.ts"
 import { AiAttributes, AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { skillList } from "#/system/model/skills/skillList.ts"
@@ -38,6 +40,11 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
   const skillDicePool = useActiveSkillDicePool({ skillKey, attrOverride: selectedAttr })
   const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
   const poolVariants = useActiveSkillPoolVariants(skillKey)
+  // A Specialization that covers a variant (e.g. "Combat Spells" for a Combat Spellcasting Focus)
+  // is shown in that variant's pool instead of a pool of its own, so the same test isn't listed twice.
+  const specializationCovers = (variant: SkillPoolVariant) =>
+    specializationCoversPoolSubTarget(specialization, variant.poolSubTarget)
+  const showSpecializationPool = !!specialization && !poolVariants.some(specializationCovers)
 
   return (
     <Stack spacing={1}>
@@ -59,7 +66,7 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
       <DicePoolsStack
         dicePools={[
           skillDicePool,
-          specialization ? specializationDicePool : false,
+          showSpecializationPool && specializationDicePool,
         ]}
       />
 
@@ -70,6 +77,7 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
           skillKey={skillKey}
           attr={selectedAttr}
           variant={variant}
+          specialization={specializationCovers(variant) ? specialization : undefined}
           plainPoolSize={skillDicePool.size}
         />
       ))}

@@ -6,6 +6,7 @@ import { SourcedGameEffectSelectors } from "#/state/runner/gameEffects/gameEffec
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { DicePoolFormulas } from "#/system/formulas/dicePool/dicePoolFormulas.ts"
+import { specializationCoversPoolSubTarget } from "#/system/formulas/magic/poolSubTargetSpecialization.ts"
 import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
 import { RatingFormulas } from "#/system/formulas/ratings/ratingFormulas.ts"
 import { isEntityWithSkills } from "#/system/model/entities/traits/entityWithSkills.ts"
@@ -182,6 +183,19 @@ export namespace SkillsSelectors {
           ? [ratingDiceGroup({ name: `Specialization: ${specialization}`, type: "bonus" }, breakdown)]
           : NO_GROUPS,
     )
+
+    /**
+     * The `skill` Specialization's bonus, but only when the Runner's Specialization covers
+     * `poolSubTarget` — the spell category or spirit type the test is rolled for.
+     */
+    export const selectSpecializationCovering = (
+      state: Parameters<typeof selectSpecialization>[0],
+      { skill, poolSubTarget }: { skill: SkillKey, poolSubTarget?: string },
+    ): DiceGroup[] => {
+      const specialization = SkillsSelectors.selectSpecialization(state, { skillName: skill })
+      const covers = specializationCoversPoolSubTarget(specialization, poolSubTarget)
+      return selectSpecialization(state, { skill, specialization: covers ? specialization : undefined })
+    }
 
     /**
      * A Knowledge Skill's `rating` plus its Specialization bonus when `specialization` is given.

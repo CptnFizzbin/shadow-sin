@@ -48,7 +48,8 @@ export const useActiveSkillDicePool = (props: {
     modPoolId: variant?.modPoolId,
     poolSubTarget: variant?.poolSubTarget,
   })
-  return nameSkillPool(pool, skillKey, variant?.label ?? specialization)
+  // A Specialization names the pool even alongside a variant, since it's the one that covers it.
+  return nameSkillPool(pool, skillKey, specialization ?? variant?.label)
 }
 
 const isSpiritType = (value: string): value is SpiritType => Object.values<string>(SpiritType).includes(value)

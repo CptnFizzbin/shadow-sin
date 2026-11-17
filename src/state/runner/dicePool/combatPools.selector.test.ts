@@ -9,6 +9,8 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { loadMouse } from "#testUtils/fixtures/characters/mouse.ts"
 
 import { CombatPoolSelectors } from "./combatPools.selector.ts"
 
@@ -88,5 +90,47 @@ describe.concurrent("CombatPoolSelectors defense tests", () => {
         breakdown: { rawValue: 4, modifiers: [{ name: "Encumbrance", value: -2 }], rating: 2 },
       },
     ])
+  })
+})
+
+describe.concurrent("CombatPoolSelectors combat spell defense", () => {
+  const mouseWithCounterspellingSpecialization = (specialization: string) => {
+    const mouse = loadMouse()
+    const runner = {
+      ...mouse,
+      skills: {
+        ...mouse.skills,
+        activeSkills: mouse.skills.activeSkills.map((skill) =>
+          skill.name === SkillKey.counterspelling ? { ...skill, specialization } : skill),
+      },
+    }
+    return { runner, entity: runner, items: getItemCatalog(runner) }
+  }
+
+  it("adds a Counterspelling Specialization covering Combat spells", () => {
+    // Arrange
+    const state = mouseWithCounterspellingSpecialization("Combat Spells")
+
+    // Act
+    const pool = CombatPoolSelectors.selectManaSpellDefenseTest(state)
+
+    // Assert
+    expect(pool.groups.map(({ name, size }) => [name, size])).toEqual([
+      ["WIL", 7],
+      ["Counterspelling", 5],
+      ["Specialization: Combat Spells", 2],
+      ["Wound", -1],
+    ])
+  })
+
+  it("leaves out a Counterspelling Specialization for another spell category", () => {
+    // Arrange
+    const state = mouseWithCounterspellingSpecialization("Health Spells")
+
+    // Act
+    const pool = CombatPoolSelectors.selectManaSpellDefenseTest(state)
+
+    // Assert
+    expect(pool.groups.map(({ name }) => name)).toEqual(["WIL", "Counterspelling", "Wound"])
   })
 })
