@@ -297,7 +297,8 @@ _Avoid_: hardware stats, device stats
 The matrix side of anything that can act as a matrix node — a commlink, a drone, a smartgun, a
 **Known Node**, an **Agent**. It has Matrix Attributes, a **Node Type**, the Programs **Loaded** on
 it, and the Programs **Running** on it. A device's physical accessories belong to the device, not
-to its Matrix Entity.
+to its Matrix Entity. Most gear has one by default; **Magical** gear, such as a Focus, doesn't unless
+the Player opts it in.
 _Avoid_: persona (a Runner's own matrix self, not a device's)
 
 **Node**:

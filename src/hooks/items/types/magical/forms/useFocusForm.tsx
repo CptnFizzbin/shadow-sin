@@ -28,6 +28,8 @@ const defaultFormValues: FocusData = {
   spellCategory: undefined,
   spiritType: undefined,
   bonded: false,
+  // Magical gear has no Matrix presence unless the Player opts in.
+  matrixDisabled: true,
   name: "",
   cost: 0,
   quantity: 1,

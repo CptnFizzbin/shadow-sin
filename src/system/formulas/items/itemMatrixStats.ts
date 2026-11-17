@@ -36,12 +36,25 @@ function isOnline(item: ItemData): boolean {
   return !item.wireless.removed && (item.wireless.enabled ?? false)
 }
 
+/** Item types with no Matrix presence unless an Item opts in (`matrixDisabled: false`). */
+const offlineByDefaultItemTypes: readonly ItemType[] = [ItemType.magical]
+
 /**
- * The Matrix node `item` presents, or `undefined` when it has none: it opted out
- * (`matrixDisabled`), or it's attached to another Item, whose node it shares.
+ * Whether `item` has a Matrix presence: whatever its `matrixDisabled` says, or, when that's unset,
+ * its type's default — Magical gear (such as a Focus) has none, every other Item does.
+ */
+function hasMatrixPresence(item: Pick<ItemData, "itemType" | "matrixDisabled">): boolean {
+  return item.matrixDisabled === undefined
+    ? !offlineByDefaultItemTypes.includes(item.itemType)
+    : !item.matrixDisabled
+}
+
+/**
+ * The Matrix node `item` presents, or `undefined` when it has none: it has no Matrix presence
+ * (see {@link hasMatrixPresence}), or it's attached to another Item, whose node it shares.
  */
 export function getItemMatrixStats(item: ItemData): ItemMatrixStats | undefined {
-  if (item.matrixDisabled) return undefined
+  if (!hasMatrixPresence(item)) return undefined
   if (item.items.parentId !== null) return undefined
 
   const explicit = explicitMatrixStats(item)

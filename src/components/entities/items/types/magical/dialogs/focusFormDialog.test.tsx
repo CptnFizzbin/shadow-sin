@@ -17,7 +17,7 @@ const pickOption = (dialog: HTMLElement, comboboxIndex: number, option: string) 
 }
 
 describe("FocusFormDialog", () => {
-  it("submits a Focus with the picked type and the spirit type it's tied to", async () => {
+  it("submits a Focus with the picked type, the spirit type it's tied to, and no Matrix presence", async () => {
     // Arrange
     const ctrl = new DialogCtrl<FocusData>()
     ctrl.open()
@@ -41,6 +41,7 @@ describe("FocusFormDialog", () => {
         spiritType: SpiritType.fire,
         force: 1,
         bonded: false,
+        matrixDisabled: true,
       })
     })
   })
