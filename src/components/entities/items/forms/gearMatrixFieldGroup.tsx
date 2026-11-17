@@ -4,7 +4,10 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
-/** Checkbox for whether the item has a Matrix presence. Checked by default; unchecking sets `matrixDisabled`. */
+/**
+ * Checkbox for whether the item has a Matrix presence: checked unless `matrixDisabled` is set, and
+ * writing `matrixDisabled` either way.
+ */
 export const GearMatrixFieldGroup = withFieldGroup({
   ...itemFormOpts,
   render: ({ group }) => {

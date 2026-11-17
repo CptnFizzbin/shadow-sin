@@ -37,8 +37,9 @@ export interface ItemData extends EntityData, EntityWithItems {
   }
 
   /**
-   * Opts this item out of having a Matrix presence: it isn't a node and shows no Matrix stats.
-   * Absent or `false` means the item is a node.
+   * Whether this item opts out of having a Matrix presence: when `true` it isn't a node and shows
+   * no Matrix stats; when `false` it is one. Absent means its type's default — Magical gear has no
+   * Matrix presence, every other item does.
    */
   matrixDisabled?: boolean
 }
