@@ -8,6 +8,13 @@ export const SystemValues = {
       Modifier: 2,
     },
   },
+
+  Magic: {
+    Sustaining: {
+      /** The dice pool modifier for each spell the caster is sustaining. */
+      ModifierPerSpell: -2,
+    },
+  },
 }
 
 export const SRC = SystemValues

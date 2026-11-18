@@ -40,17 +40,27 @@ The selectors form one chain, each layer reading only the one below it:
    their own groups.
 5. **Dice Pools** are declared with `createDicePoolSelector({ id, label, groups, excludeWoundMod })`
    in a per-area namespace (`CombatPoolSelectors`, `MagicPoolSelectors`, `SkillPoolSelectors`,
-   `ContactPoolSelectors`): `groups` is the ordered list of Dice Group selectors, and the result
-   is the pool's flattened groups and size. The helper appends
+   `ContactPoolSelectors`, `MatrixPoolSelectors`): `groups` is the ordered list of Dice Group selectors, and the result
+   is the pool's flattened groups and size. The helper appends the global modifiers:
    `DamageSelectors.DiceGroups.selectWoundMod` unless `excludeWoundMod` is set, which every
    Resistance Test does (damage, direct spell, Drain), as does the GM's legwork roll, since the
-   Contact rolls it. Defense and spell tests keep it.
+   Contact rolls it — defense and spell tests keep it; and
+   `SpellsSelectors.DiceGroups.selectSustainingPenalty` (−2 per spell the Runner sustains) unless
+   `excludeSustainingPenalty` is set, which damage resistance tests do, as does a pool someone
+   else rolls (the GM's legwork roll).
 6. **Pool ids and labels are fixed.** Where the label depends on the pool's options (the damage
    type, the parrying skill, Summoning vs Binding, the skill and Specialization of a skill pool),
    the component or hook showing the pool sets the label (and, for skill pools, the id).
 
 Other decisions:
 
+- **Aid dice** come in through an `aid` option (`AidSource[]`: Teamwork hits or a spirit's Force)
+  on the pools that accept help — Active and Knowledge Skill tests, Spellcasting, and the Matrix
+  Program test. Each source is its own bonus group; Teamwork dice beyond the leader's skill Rating
+  are taken back by a "Teamwork limit" penalty group (`AidDiceFormulas`, `aidDiceGroups`).
+- **Program Ratings** (`MatrixPoolSelectors.selectProgramTest`: Skill + Program) are capped at the
+  System rating of the entity in scope when it has one, listed as a "System limit" Modifier.
+  Programs have no GameEffect Modifiers yet.
 - Knowledge and Language Skills carry no Modifiers yet, so their group selectors take the rating
   as an option.
 - **A Selector collects, a Formula decides.** `RatingFormulas` (Modifiers, Ratings, the cap),

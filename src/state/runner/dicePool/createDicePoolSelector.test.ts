@@ -2,6 +2,16 @@ import { describe, expect, it } from "vitest"
 
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { EntityScope } from "#/state/entityScope.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { SpellData } from "#/system/model/magic/spellData.ts"
+import {
+  SpellCategory,
+  SpellDamage,
+  SpellDrainType,
+  SpellDuration,
+  SpellRange,
+  SpellType,
+} from "#/system/model/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -25,6 +35,56 @@ const selectResistancePool = createDicePoolSelector({
   label: "Test Resistance",
   groups: [selectAgilityGroups],
   excludeWoundMod: true,
+})
+
+const sustainedSpell = (id: string): SpellData => ({
+  kind: EntityKind.spell,
+  id,
+  name: "Armor",
+  type: SpellType.Physical,
+  range: SpellRange.LoS,
+  damage: SpellDamage.Physical,
+  category: SpellCategory.Manipulation,
+  drain: { type: SpellDrainType.Force, value: 2 },
+  dealsDamage: false,
+  duration: SpellDuration.Sustained,
+  voluntaryTargetsOnly: false,
+  sustained: true,
+})
+
+const sustainingRunner = () => runnerDataFactory({ afterBuild: (s) => {
+  s.spells = [sustainedSpell(crypto.randomUUID()), sustainedSpell(crypto.randomUUID())]
+} })
+
+describe.concurrent("createDicePoolSelector sustaining penalty", () => {
+  it("appends a Sustaining penalty for the spells the Runner sustains", () => {
+    // Arrange
+    const runner = sustainingRunner()
+
+    // Act
+    const pool = selectTestPool(stateFor(runner))
+
+    // Assert
+    expect(pool.groups).toEqual([...AGILITY_GROUPS, { name: "Sustaining", size: -4, type: "penalty" }])
+    expect(pool.size).toBe(1)
+  })
+
+  it("adds no Sustaining group when the config sets excludeSustainingPenalty", () => {
+    // Arrange
+    const selectPool = createDicePoolSelector({
+      id: "test.other",
+      label: "Test Rolled By Another",
+      groups: [selectAgilityGroups],
+      excludeSustainingPenalty: true,
+    })
+    const runner = sustainingRunner()
+
+    // Act
+    const pool = selectPool(stateFor(runner))
+
+    // Assert
+    expect(pool.groups).toEqual(AGILITY_GROUPS)
+  })
 })
 
 describe.concurrent("createDicePoolSelector", () => {

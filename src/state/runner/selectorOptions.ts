@@ -1,6 +1,7 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { AidSource } from "#/system/model/dicePool/aidSource.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import type { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
@@ -27,6 +28,7 @@ import type { UUID } from "#/utils/uuidUtils.ts"
  * called `key`, just on different `TOptions` shapes.
  */
 export const SelectorOptions = {
+  aid: selectorOption<{ aid?: AidSource[] }>("aid"),
   armor: selectorOption<{ armor: ArmorRatingType }>("armor"),
   attr: selectorOption<{ attr: AttributeKey }>("attr"),
   connection: selectorOption<{ connection: number }>("connection"),

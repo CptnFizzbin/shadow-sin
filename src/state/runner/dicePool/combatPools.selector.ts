@@ -87,8 +87,10 @@ export namespace CombatPoolSelectors {
     id: "resist.damage",
     label: "Resist Damage",
     groups: [selectDamageResistanceAttrGroups, ItemSelectors.Armor.DiceGroups.selectArmor],
-    // A Resistance Test never takes the Wound Modifier.
+    // A Resistance Test never takes the Wound Modifier, and resisting damage never takes the
+    // Sustaining penalty.
     excludeWoundMod: true,
+    excludeSustainingPenalty: true,
   })
 
   /** Resisting a direct Mana spell: Willpower. */
@@ -213,7 +215,9 @@ export namespace CombatPoolSelectors {
     id: "defense.resist",
     label: "Resist Damage",
     groups: [AttrSelectors.DiceGroups.selectAttr, selectTotalArmorGroups],
-    // A Resistance Test never takes the Wound Modifier.
+    // A Resistance Test never takes the Wound Modifier, and resisting damage never takes the
+    // Sustaining penalty.
     excludeWoundMod: true,
+    excludeSustainingPenalty: true,
   })
 }

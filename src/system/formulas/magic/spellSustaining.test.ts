@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { SpellDuration, SpellSustainTarget } from "#/system/model/magic/spellData.ts"
 
-import { hasSpellEffects, isSustainable, spellEffectsApply } from "./spellSustaining.ts"
+import { hasSpellEffects, isSustainable, spellEffectsApply, sustainingPenalty } from "./spellSustaining.ts"
 
 describe.concurrent("isSustainable", () => {
   it("is true for a Sustained-duration spell", () => {
@@ -107,5 +107,36 @@ describe.concurrent("spellEffectsApply", () => {
 
     // Assert
     expect(result).toBe(true)
+  })
+})
+
+describe.concurrent("sustainingPenalty", () => {
+  it("is -2 for each sustained spell, whoever it is sustained on", () => {
+    // Arrange
+    const spells = [
+      { duration: SpellDuration.Sustained, sustained: true },
+      { duration: SpellDuration.Sustained, sustained: true, sustainedOn: SpellSustainTarget.Other },
+    ]
+
+    // Act
+    const penalty = sustainingPenalty(spells)
+
+    // Assert
+    expect(penalty).toBe(-4)
+  })
+
+  it("ignores spells that aren't being sustained", () => {
+    // Arrange
+    const spells = [
+      { duration: SpellDuration.Sustained, sustained: false },
+      { duration: SpellDuration.Sustained },
+      { duration: SpellDuration.Instantaneous, sustained: true },
+    ]
+
+    // Act
+    const penalty = sustainingPenalty(spells)
+
+    // Assert
+    expect(penalty).toBe(0)
   })
 })

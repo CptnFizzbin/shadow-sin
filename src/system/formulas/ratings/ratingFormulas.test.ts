@@ -155,3 +155,42 @@ describe.concurrent("RatingFormulas.getAttrRating with penalties", () => {
     })
   })
 })
+
+describe.concurrent("RatingFormulas.getProgramRating", () => {
+  it("caps the rating at the System limit, listing the cap as a modifier", () => {
+    // Arrange
+    const input = { rawValue: 5, systemLimit: 3 }
+
+    // Act
+    const breakdown = RatingFormulas.getProgramRating(input)
+
+    // Assert
+    expect(breakdown).toEqual({
+      rawValue: 5,
+      modifiers: [{ name: "System limit", value: -2, isCap: true }],
+      rating: 3,
+    })
+  })
+
+  it("leaves a rating within the System limit unchanged", () => {
+    // Arrange
+    const input = { rawValue: 3, systemLimit: 4 }
+
+    // Act
+    const breakdown = RatingFormulas.getProgramRating(input)
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 3, modifiers: [], rating: 3 })
+  })
+
+  it("applies no cap when no System limit is given", () => {
+    // Arrange
+    const input = { rawValue: 6 }
+
+    // Act
+    const breakdown = RatingFormulas.getProgramRating(input)
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 6, modifiers: [], rating: 6 })
+  })
+})

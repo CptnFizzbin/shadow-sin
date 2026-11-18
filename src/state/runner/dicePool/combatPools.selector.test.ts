@@ -1,11 +1,20 @@
 import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
 import { ArmorRatingType } from "#/system/model/items/armorData.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
+import {
+  SpellCategory,
+  SpellDamage,
+  SpellDrainType,
+  SpellDuration,
+  SpellRange,
+  SpellType,
+} from "#/system/model/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
@@ -21,6 +30,25 @@ const woundedRunner = () => runnerDataFactory({ afterBuild: (s) => {
 } })
 
 const wound = { name: "Wound", size: -1, type: "penalty" }
+
+const sustainingRunner = () => runnerDataFactory({ afterBuild: (s) => {
+  s.spells = [{
+    kind: EntityKind.spell,
+    id: crypto.randomUUID(),
+    name: "Armor",
+    type: SpellType.Physical,
+    range: SpellRange.LoS,
+    damage: SpellDamage.Physical,
+    category: SpellCategory.Manipulation,
+    drain: { type: SpellDrainType.Force, value: 2 },
+    dealsDamage: false,
+    duration: SpellDuration.Sustained,
+    voluntaryTargetsOnly: false,
+    sustained: true,
+  }]
+} })
+
+const sustaining = { name: "Sustaining", size: -2, type: "penalty" }
 
 describe.concurrent("CombatPoolSelectors Resistance Tests", () => {
   it("leaves the Wound Modifier out of damage resistance", () => {
@@ -46,6 +74,47 @@ describe.concurrent("CombatPoolSelectors Resistance Tests", () => {
 
     // Assert
     expect(pool.groups).not.toContainEqual(wound)
+  })
+})
+
+describe.concurrent("CombatPoolSelectors damage resistance and the Sustaining penalty", () => {
+  it("leaves the Sustaining penalty out of damage resistance", () => {
+    // Arrange
+    const runner = sustainingRunner()
+
+    // Act
+    const pool = CombatPoolSelectors.selectResistDamageTest(
+      stateFor(runner),
+      { damageType: "P", armor: ArmorRatingType.ballistic },
+    )
+
+    // Assert
+    expect(pool.groups).not.toContainEqual(sustaining)
+  })
+
+  it("leaves the Sustaining penalty out of the Defense Calculator's damage resistance", () => {
+    // Arrange
+    const runner = sustainingRunner()
+
+    // Act
+    const pool = CombatPoolSelectors.selectDefenseCalculatorResistTest(
+      stateFor(runner),
+      { attr: AttributeKey.body, armor: ArmorRatingType.ballistic },
+    )
+
+    // Assert
+    expect(pool.groups).not.toContainEqual(sustaining)
+  })
+
+  it("includes the Sustaining penalty in a defense test", () => {
+    // Arrange
+    const runner = sustainingRunner()
+
+    // Act
+    const pool = CombatPoolSelectors.selectRangedDefenseTest(stateFor(runner))
+
+    // Assert
+    expect(pool.groups).toContainEqual(sustaining)
   })
 })
 

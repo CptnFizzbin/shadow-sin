@@ -7,6 +7,7 @@ import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ComboSelectorOptions, Selector } from "#/integrations/reselect/selectorUtils.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
+import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
 import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
 
 /**
@@ -16,7 +17,8 @@ import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStac
  */
 type DiceGroupSelector = (state: any, ...params: any[]) => DiceGroupList // eslint-disable-line @typescript-eslint/no-explicit-any -- see comment above
 
-type WoundModState = Parameters<typeof DamageSelectors.DiceGroups.selectWoundMod>[0]
+type GlobalModState = Parameters<typeof DamageSelectors.DiceGroups.selectWoundMod>[0]
+  & Parameters<typeof SpellsSelectors.DiceGroups.selectSustainingPenalty>[0]
 
 /** Describes a dice pool for {@link createDicePoolSelector} to build. */
 export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
@@ -29,13 +31,17 @@ export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
   groups: [...TGroups]
   /** When `true`, the pool gets no Wound group even if the Runner is wounded. */
   excludeWoundMod?: boolean
+  /** When `true`, the pool gets no Sustaining group even if the Runner is sustaining spells. */
+  excludeSustainingPenalty?: boolean
 }
 
 /**
- * Builds a selector for a dice pool made of `groups`, followed by the Wound Modifier unless
- * `excludeWoundMod` is set (as every Resistance Test does). Of the groups sharing a stacking tag,
- * only the largest counts; the others are kept, with `overriddenBy` saying why. This is the one place the Wound
- * Modifier is added: Dice Group selectors must not add it themselves.
+ * Builds a selector for a dice pool made of `groups`, followed by the global modifiers: the Wound
+ * Modifier unless `excludeWoundMod` is set (as every Resistance Test does), and the Sustaining
+ * penalty unless `excludeSustainingPenalty` is set (as a pool someone else rolls does). Of the
+ * groups sharing a stacking tag, only the largest counts; the others are kept, with `overriddenBy`
+ * saying why. This is the one place the global modifiers are added: Dice Group selectors must not
+ * add them themselves.
  *
  * The pool selector's state and options are inferred from `groups`: it takes every field any
  * group selector reads.
@@ -52,11 +58,14 @@ export interface DicePoolSelectorOptions<TGroups extends DiceGroupSelector[]> {
  */
 export function createDicePoolSelector<TGroups extends DiceGroupSelector[]>(
   config: DicePoolSelectorOptions<TGroups>,
-): Selector<GetStateFromSelectors<TGroups> & WoundModState, DicePoolData, ComboSelectorOptions<TGroups>> {
+): Selector<GetStateFromSelectors<TGroups> & GlobalModState, DicePoolData, ComboSelectorOptions<TGroups>> {
   const groupSelectors: DiceGroupSelector[] = [...config.groups]
 
   if (!config.excludeWoundMod) {
     groupSelectors.push(DamageSelectors.DiceGroups.selectWoundMod)
+  }
+  if (!config.excludeSustainingPenalty) {
+    groupSelectors.push(SpellsSelectors.DiceGroups.selectSustainingPenalty)
   }
 
   return createReselectSelector(
