@@ -54,6 +54,7 @@ export const SelectorOptions = {
   repType: selectorOption<{ repType: ReputationStatType }>("repType"),
   skill: selectorOption<{ skill: SkillKey }>("skill"),
   specialization: selectorOption<{ specialization?: string }>("specialization"),
+  spellId: selectorOption<{ spellId: string }>("spellId"),
   spiritType: selectorOption<{ spiritType: SpiritType }>("spiritType"),
 
   /** @deprecated - use {@link SelectorOptions.skill} instead */

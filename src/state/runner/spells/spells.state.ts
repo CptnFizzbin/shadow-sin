@@ -31,10 +31,13 @@ export const spellsReducer = createReducer(initialState, (builder) => {
       if (!spell) return
       spell.sustained = true
       if (action.payload.target) spell.sustainedOn = action.payload.target
+      spell.sustainedBy = action.payload.sustainedBy ?? null
     })
     .addCase(stopSustainingSpell, (state, action) => {
       const spell = state.find((s) => s.id === action.payload)
-      if (spell) spell.sustained = false
+      if (!spell) return
+      spell.sustained = false
+      spell.sustainedBy = null
     })
     .addCase(setSpellSustainTarget, (state, action) => {
       const spell = state.find((s) => s.id === action.payload.id)

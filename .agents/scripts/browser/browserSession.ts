@@ -16,6 +16,13 @@ const sessionFile = join(stateDir, "session.json")
 export const consoleLogFile = join(stateDir, "console.log")
 const serverLogFile = join(stateDir, "server.log")
 
+/**
+ * Chromium binaries to fall back on when the build matching the installed `playwright` isn't
+ * downloaded: `AGENT_BROWSER_EXECUTABLE` if set, then the one Claude Code cloud sessions preinstall.
+ */
+const fallbackExecutables = [process.env.AGENT_BROWSER_EXECUTABLE, "/opt/pw-browsers/chromium"]
+  .filter((path): path is string => !!path)
+
 /** Options the background browser is started with. */
 export interface StartOptions {
   headed: boolean
@@ -144,6 +151,24 @@ export const stopSession = async (): Promise<boolean> => {
   return true
 }
 
+type LaunchOptions = NonNullable<Parameters<typeof chromium.launchPersistentContext>[1]>
+
+/**
+ * Launches Playwright's own Chromium build, or the first existing {@link fallbackExecutables} when
+ * that build isn't installed.
+ */
+const launchContext = async (profileDir: string, launchOptions: LaunchOptions): Promise<BrowserContext> => {
+  try {
+    return await chromium.launchPersistentContext(profileDir, launchOptions)
+  } catch (error) {
+    // A cloud session's preinstalled Chromium can lag the pinned `playwright` version, whose own build
+    // then isn't downloaded; any version-close Chromium drives the app fine.
+    const fallback = fallbackExecutables.find((path) => existsSync(path))
+    if (!fallback || !String(error).includes("Executable doesn't exist")) throw error
+    return chromium.launchPersistentContext(profileDir, { ...launchOptions, executablePath: fallback })
+  }
+}
+
 /**
  * Runs the browser in the foreground until it receives SIGTERM/SIGINT. This is the body of the
  * detached process that `startSession` spawns; it owns the browser so it outlives each CLI command.
@@ -155,7 +180,7 @@ export const serveSession = async (options: StartOptions): Promise<void> => {
 
   // A persistent context is the browser's default context, which is the one a CDP client sees
   // first — so every command lands in the same context (and the same localStorage) as this one.
-  const context = await chromium.launchPersistentContext(profileDir, {
+  const context = await launchContext(profileDir, {
     ...(options.device ? resolveDevice(options.device) : { viewport: { width: 1440, height: 900 } }),
     headless: !options.headed,
     args: [`--remote-debugging-port=${port}`],

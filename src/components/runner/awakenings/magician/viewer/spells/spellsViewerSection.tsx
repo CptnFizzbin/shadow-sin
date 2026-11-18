@@ -4,11 +4,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { hasSpellEffects } from "#/system/formulas/magic/spellSustaining.ts"
+import { getAvailableSustainingFoci } from "#/system/formulas/magic/focusRules.ts"
+import { getSustainingFocus, hasSpellEffects } from "#/system/formulas/magic/spellSustaining.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
 import { useSustainSpellDialog } from "./dialogs/sustainSpellDialog.tsx"
@@ -17,6 +19,7 @@ import { useSpellCastDialog } from "./spellCastDialog.tsx"
 
 export const SpellsViewerSection: FC = () => {
   const spells = useRunnerSelector(SpellsSelectors.selectAll)
+  const foci = useRunnerSelector(ItemSelectors.Foci.selectAll)
   const spellCastDialog = useSpellCastDialog()
   const sustainSpellDialog = useSustainSpellDialog()
   const dispatch = useRunnerStoreDispatch()
@@ -31,14 +34,16 @@ export const SpellsViewerSection: FC = () => {
       return
     }
 
-    // Only a Spell with effects needs a target: who it's on decides whether those effects apply to the Runner.
-    if (!hasSpellEffects(spell)) {
+    // Only ask when there's a choice: a target for a Spell with effects (who it's on decides whether those effects
+    // apply to the Runner), or a free Sustaining Focus to hold it.
+    const sustainingFoci = getAvailableSustainingFoci(foci, spells, spell)
+    if (!hasSpellEffects(spell) && sustainingFoci.length === 0) {
       dispatch(Actions.spells.startSustainingSpell({ id: spell.id }))
       return
     }
 
-    const target = await sustainSpellDialog.open({ spell })
-    if (target) dispatch(Actions.spells.startSustainingSpell({ id: spell.id, target }))
+    const choice = await sustainSpellDialog.open({ spell, sustainingFoci })
+    if (choice) dispatch(Actions.spells.startSustainingSpell({ id: spell.id, ...choice }))
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)
@@ -64,6 +69,7 @@ export const SpellsViewerSection: FC = () => {
               spell={spell}
               onOpen={() => handleOpenSpell(spell)}
               onToggleSustained={() => handleToggleSustained(spell)}
+              sustainingFocusName={spell.sustained ? getSustainingFocus(spell, foci)?.name : undefined}
             />
           ))}
         </Stack>

@@ -3,6 +3,11 @@ import { describe, expect, it } from "vitest"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import type { EntityScope } from "#/state/entityScope.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { MagicalType } from "#/system/model/items/magicalData.ts"
+import { FocusType } from "#/system/model/magic/focusData.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 import {
   SpellCategory,
@@ -15,6 +20,7 @@ import {
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 
@@ -67,6 +73,37 @@ describe.concurrent("createDicePoolSelector sustaining penalty", () => {
     // Assert
     expect(pool.groups).toEqual([...AGILITY_GROUPS, { name: "Sustaining", size: -4, type: "penalty" }])
     expect(pool.size).toBe(1)
+  })
+
+  it("leaves out a spell held by a Bonded Sustaining Focus", () => {
+    // Arrange
+    const focusId = crypto.randomUUID() as UUID
+    const focus: FocusData = {
+      kind: EntityKind.item,
+      id: focusId,
+      name: "Sustaining Focus",
+      itemType: ItemType.magical,
+      magicalType: MagicalType.focus,
+      focusType: FocusType.Sustaining,
+      force: 3,
+      spellCategory: SpellCategory.Manipulation,
+      bonded: true,
+      state: ItemState.available,
+      items: { parentId: null, childIds: [] },
+    }
+    const runner = runnerDataFactory({ afterBuild: (s) => {
+      s.spells = [
+        { ...sustainedSpell(crypto.randomUUID()), sustainedBy: focusId },
+        sustainedSpell(crypto.randomUUID()),
+      ]
+      s._data_.items[focusId] = focus
+    } })
+
+    // Act
+    const pool = selectTestPool(stateFor(runner))
+
+    // Assert
+    expect(pool.groups).toEqual([...AGILITY_GROUPS, { name: "Sustaining", size: -2, type: "penalty" }])
   })
 
   it("adds no Sustaining group when the config sets excludeSustainingPenalty", () => {

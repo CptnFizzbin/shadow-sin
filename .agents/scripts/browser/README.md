@@ -12,8 +12,9 @@ localStorage (where Runners live), and history all persist until `stop`.
 Dependencies (`playwright`, `commander`) are dev dependencies, so `yarn install` covers them. Playwright needs a
 Chromium build matching its version:
 
-- **Claude Code cloud sessions** ship one preinstalled (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`) — nothing to do.
-  The `playwright` version in `package.json` is pinned to match it; don't bump it without checking.
+- **Claude Code cloud sessions** ship one preinstalled under `/opt/pw-browsers`. When it isn't the exact build the
+  pinned `playwright` expects, `start` falls back to `/opt/pw-browsers/chromium` — nothing to do.
+- **Any other Chromium**: set `AGENT_BROWSER_EXECUTABLE` to its path to use it when Playwright's own build is missing.
 - **Locally**, run `yarn playwright install chromium` once.
 
 ## Typical session
