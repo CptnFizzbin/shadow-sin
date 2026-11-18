@@ -2,7 +2,13 @@ import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { MagicalType } from "#/system/model/items/magicalData.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
+import { FocusType } from "#/system/model/magic/focusData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -257,6 +263,18 @@ export const Hexen: RunnerData = {
 
   _data_: {
     featureFlags: {},
-    items: {},
+    items: createItemMap(
+      createItem<FocusData>({
+        name: "Illusion Sustaining Focus",
+        itemType: ItemType.magical,
+        magicalType: MagicalType.focus,
+        focusType: FocusType.Sustaining,
+        force: 3,
+        spellCategory: SpellCategory.Illusion,
+        bonded: true,
+        state: ItemState.equipped,
+        notes: "A jade ring that holds an Illusion spell so Hexen doesn't have to.",
+      }),
+    ),
   },
 }
