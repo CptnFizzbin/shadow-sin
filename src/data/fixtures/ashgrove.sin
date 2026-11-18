@@ -203,6 +203,66 @@ spells:
     voluntaryTargetsOnly: true
     description: Renders the subject invisible to normal vision and technological sensors.
     sustainedBy: null
+  - kind: spell
+    id: e4449010-b71e-4033-a0a1-79790cefbfc3
+    name: Mind Probe
+    category: Detection
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Reads the subject's surface thoughts, and with enough hits their memories and subconscious.
+    sustainedBy: null
+  - kind: spell
+    id: ecb286dd-1ffb-4dfd-82b4-028f4cfcd13c
+    name: Increase Reflexes
+    category: Health
+    type: Physical
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Heightens the subject's reflexes, granting extra Initiative Passes.
+    sustainedBy: null
+  - kind: spell
+    id: 94a0380d-9b1e-4b73-861a-706593d3aff7
+    name: Physical Mask
+    category: Illusion
+    type: Physical
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Cloaks the subject in an illusory appearance of the caster's choosing, fooling both eyes and cameras.
+    sustainedBy: null
+  - kind: spell
+    id: d341f475-6cf8-45e6-a078-58ed626ccb21
+    name: Levitate
+    category: Manipulation
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Lifts the subject into the air and lets the caster move them through it.
+    sustainedBy: null
 spirits: []
 powers: []
 complexForms: []
