@@ -22,3 +22,9 @@ characters.
 - **Earlier migrations may see either field name** — when a migration renames a field, update earlier migrations to
   handle both (`draft.oldField ?? draft.newField`) so partially migrated runners stay correct.
 - **Add a matching `*.test.ts`** for every new migration, documenting the before/after shapes.
+
+## Fixture Runners
+
+`fixtures/*.sin` are the sample Runners seeded on the landing page in dev (and with `VITE_SEED_FIXTURES`); every
+`.sin` file there is picked up automatically by `fixtures/fixtureRunners.ts`. After adding a migration, run
+`yarn fixtures:update` to rewrite them at the latest schema — `fixtureRunners.test.ts` fails until you do.

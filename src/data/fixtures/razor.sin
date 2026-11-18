@@ -1,0 +1,406 @@
+kind: runner
+id: 01a1eed2-3f2d-70b3-9673-a4adf06fa8f3
+name: Razor
+_meta_:
+  sinVersion: '2026-11-15T18:06:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Razor
+  name: Dmitri Kovač
+  archetype: Street Samurai
+  description: Ex-Lone Star tactical officer turned hired gun. More chrome than meat, and proud of it.
+  personality: null
+lifestyle:
+  monthsPaid: 1
+  name: Middle
+  upkeep: 5000
+biology:
+  metatype: Ork
+  awakening: Mundane
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 91edd628-8994-499d-9c59-82bed5dc59b8
+    name: Guts
+    type: positive
+    bpValue: 5
+  - kind: quality
+    id: dc3e3df4-f6b7-41f8-9d33-af0473979748
+    name: High Pain Tolerance
+    type: positive
+    bpValue: 5
+    rating: 2
+    effects:
+      - type: highPainTolerance
+        target: all
+        value: 2
+  - kind: quality
+    id: 147a1ffd-2803-4f3c-aaa7-c4def43aa9db
+    name: Code of Honor (Never harm a child)
+    type: negative
+    bpValue: 5
+attributes:
+  body: 6
+  agility: 5
+  reaction: 4
+  strength: 5
+  charisma: 2
+  intuition: 4
+  logic: 2
+  willpower: 3
+  edge: 3
+  essence: 6
+  magic: 0
+  resonance: 0
+edge:
+  current: 3
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Automatics
+      rating: 5
+      specialization: Assault Rifles
+    - name: Pistols
+      rating: 4
+    - name: Blades
+      rating: 4
+      specialization: Swords
+    - name: Unarmed Combat
+      rating: 3
+    - name: Dodge
+      rating: 3
+    - name: Perception
+      rating: 3
+    - name: Intimidation
+      rating: 3
+    - name: Pilot Ground Craft
+      rating: 2
+  skillGroups:
+    - name: Athletics
+      rating: 2
+  knowledgeSkills:
+    - id: 862eaf83-f1f4-440d-ae73-91e317500a57
+      name: Lone Star Procedures
+      rating: 4
+    - id: cf42b0c0-5dc9-4edd-8e68-96e0b6496203
+      name: Gangs
+      rating: 3
+    - id: 89f1770c-62b1-49e3-9821-ca6a59b8fbc2
+      name: Military Hardware
+      rating: 3
+  languageSkills:
+    - id: eba142cb-0179-490b-b2d3-2a3dcb63d78b
+      name: English
+      isNative: true
+    - id: 6b9dbc4e-e3a8-435b-9d8a-bd698248e550
+      name: Or'zet
+      isNative: false
+      rating: 2
+    - id: 8feaf608-57d3-40d2-9b1d-3b17c83e2dd0
+      name: Russian
+      isNative: false
+      rating: 3
+initiative:
+  passesCompleted: []
+tradition: null
+spells: []
+spirits: []
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: 16b59757-98ad-4a93-b7d7-0c8faf48fb02
+    name: Big Henry
+    role: Arms Dealer
+    connection: 3
+    loyalty: 3
+    skills:
+      - id: 476f72dc-2821-43aa-bbcc-34bd22521e13
+        name: Weapons
+        type: knowledge
+      - id: 1b72785a-442b-4b35-bb8e-f93b34ec0cc4
+        name: Black Market
+        type: knowledge
+  - id: 3fb9df89-1de0-4410-b299-a5db8109889a
+    name: Sgt. Tamsin Reyes
+    role: Lone Star Sergeant
+    connection: 3
+    loyalty: 2
+    skills:
+      - id: 75eadbed-881d-4e2f-8d60-7f2b2c877f5c
+        name: Police Procedures
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 4200
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: implant
+    state: implanted
+    name: Wired Reflexes
+    implantType: cyberware
+    grade: alpha
+    rating: 2
+    essenceCost: 2.4
+    location: torso
+    cost: 64000
+    effects:
+      - type: attrMod
+        target: reaction
+        value: 2
+      - type: extraInitiativePasses
+        value: 2
+    id: cf0c20cf-6e1a-4301-8e4a-9bc727b4e676
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Cybereyes
+    implantType: cyberware
+    grade: standard
+    rating: 3
+    essenceCost: 0.4
+    location: eyes
+    capacity: 12
+    cost: 5000
+    id: 6e58e3f1-86a2-40f6-a677-44aac417880f
+    kind: item
+    children:
+      - itemType: implant
+        state: implanted
+        name: Smartlink
+        capacityCost: 3
+        essenceCost: 0
+        cost: 2500
+        id: e37d3efb-bff3-4bad-b165-442f60cd62bc
+        kind: item
+      - itemType: implant
+        state: implanted
+        name: Flare Compensation
+        capacityCost: 1
+        essenceCost: 0
+        cost: 250
+        id: 7152d93e-cd37-4830-b643-08a6c8ec94f4
+        kind: item
+      - itemType: implant
+        state: implanted
+        name: Low-Light Vision
+        capacityCost: 2
+        essenceCost: 0
+        cost: 500
+        id: 732b698e-c843-4604-9537-637be4b41225
+        kind: item
+      - itemType: implant
+        state: implanted
+        name: Thermographic Vision
+        capacityCost: 2
+        essenceCost: 0
+        cost: 500
+        id: e69df152-ae3c-4b2c-bb58-2377cc301869
+        kind: item
+  - itemType: implant
+    state: implanted
+    name: Dermal Plating
+    implantType: cyberware
+    grade: standard
+    rating: 2
+    essenceCost: 1
+    location: torso
+    cost: 6000
+    notes: +2 Ballistic / +2 Impact armor.
+    id: d6fb5ea1-74e4-445a-a226-65798e7142c9
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Cyberarm (Obvious)
+    implantType: cyberware
+    grade: standard
+    essenceCost: 1
+    location: right arm
+    capacity: 15
+    cost: 15000
+    id: 4d54ab8b-86ce-49c0-a234-0d2f20a0fca1
+    kind: item
+    children:
+      - itemType: implant
+        state: implanted
+        name: Cyber Spur
+        capacityCost: 3
+        essenceCost: 0
+        cost: 7000
+        notes: Retractable blade; STR/2+3P.
+        id: bb9bfb7a-6956-45a1-9180-3534eba8abf9
+        kind: item
+      - itemType: implant
+        state: implanted
+        name: Cyber Holster
+        capacityCost: 5
+        essenceCost: 0
+        cost: 2000
+        id: c9086277-31e4-43ba-bf93-e7c22988548e
+        kind: item
+  - name: Danny Kovacs
+    itemType: sin
+    isReal: false
+    rating: 4
+    cost: 4000
+    id: 0e71e44f-744e-46e3-b12a-3103b4f000f8
+    kind: item
+    children:
+      - name: Firearms License
+        itemType: license
+        isReal: false
+        rating: 4
+        id: bc5c5bcc-9278-45e5-a8d1-7a81eaacb91e
+        kind: item
+  - name: Renraku Sensei
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 3
+    response: 3
+    signal: 3
+    system: 3
+    firewall: 3
+    cost: 3000
+    id: e98ebe0b-4895-4654-949d-4ed011b4b9cb
+    kind: item
+  - name: Ares Alpha
+    itemType: weapon
+    weaponType: firearm
+    firearmType: assault rifle
+    skill: Automatics
+    attribute: agility
+    dmg: 6P
+    ap: -1
+    firemodes:
+      - SA
+      - BF
+      - FA
+    recoil: 2
+    ammo:
+      size: 42
+      remaining: 42
+      type: clip
+    state: equipped
+    cost: 2000
+    availability:
+      rating: 12
+      forbidden: true
+    id: 11b57573-1d12-4165-8ff5-62d6e3900fdf
+    kind: item
+    children:
+      - name: Smartgun System (Internal)
+        itemType: firearmAccessory
+        fixed: true
+        mountPoints:
+          - Internal
+        parentSlot: Internal
+        id: d1e4a258-1f78-4746-beb9-b8936724e97a
+        kind: item
+      - name: Gas-Vent 2
+        itemType: firearmAccessory
+        fixed: true
+        enabled: true
+        mountPoints:
+          - Barrel
+        parentSlot: Barrel
+        effects:
+          - type: recoilReduction
+            value: 2
+        id: 8554b4a4-58bc-47b3-8bab-7630d6794917
+        kind: item
+  - name: Ares Predator IV
+    itemType: weapon
+    weaponType: firearm
+    firearmType: heavy pistol
+    skill: Pistols
+    attribute: agility
+    dmg: 5P
+    ap: -1
+    firemodes:
+      - SA
+    recoil: 0
+    ammo:
+      size: 15
+      remaining: 15
+      type: clip
+    state: equipped
+    cost: 350
+    licenseId: bc5c5bcc-9278-45e5-a8d1-7a81eaacb91e
+    availability:
+      rating: 4
+      restricted: true
+    id: 8aad43f1-425a-4e68-87ab-78d9d3f6ad10
+    kind: item
+    children:
+      - name: Smartgun System (Internal)
+        itemType: firearmAccessory
+        fixed: true
+        mountPoints:
+          - Internal
+        parentSlot: Internal
+        id: 88ae37b6-b47f-4eb8-95f8-122c40bebe6c
+        kind: item
+  - name: Katana
+    itemType: weapon
+    weaponType: melee
+    meleeType: blade
+    skill: Blades
+    attribute: agility
+    dmg: (STR/2+3)P
+    ap: -1
+    reach: 1
+    state: equipped
+    cost: 1000
+    availability:
+      rating: 4
+      restricted: true
+    id: e28b199e-e04e-4cbe-92c7-fa3f063ae4cc
+    kind: item
+  - name: Armor Jacket
+    itemType: armor
+    state: equipped
+    ballistic: 8
+    impact: 6
+    cost: 900
+    id: 430e13fd-58a5-42a0-b56d-30db667e0f16
+    kind: item
+  - name: Helmet
+    itemType: armor
+    state: equipped
+    ballistic: 1
+    impact: 1
+    cost: 100
+    id: 7cc2d065-8f13-424c-8ee5-cc4f0a01b89b
+    kind: item
+  - name: Medkit (Rating 3)
+    itemType: other
+    rating: 3
+    cost: 300
+    id: dec17a79-fc89-4d0b-8cc0-c84f9ec86f11
+    kind: item

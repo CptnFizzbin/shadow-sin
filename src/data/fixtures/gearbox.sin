@@ -1,0 +1,367 @@
+kind: runner
+id: 01a1eed2-3f2f-73aa-b7cf-a96a165371e2
+name: Gearbox
+_meta_:
+  sinVersion: '2026-11-15T18:06:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Gearbox
+  name: Ruth "Ruthie" Abernathy
+  archetype: Rigger
+  description: Garage-born drone jockey who names every drone and mourns every one she loses.
+  personality: null
+lifestyle:
+  monthsPaid: 1
+  name: Low
+  upkeep: 2000
+biology:
+  metatype: Dwarf
+  awakening: Mundane
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 8b676967-13ed-4f56-924a-7002c31b75e6
+    name: Aptitude (Pilot Ground Craft)
+    type: positive
+    bpValue: 10
+  - kind: quality
+    id: 1d585430-2500-476f-ac7f-a2d424ade7ae
+    name: Gremlins
+    type: negative
+    bpValue: 5
+    rating: 1
+attributes:
+  body: 3
+  agility: 3
+  reaction: 4
+  strength: 3
+  charisma: 2
+  intuition: 4
+  logic: 5
+  willpower: 4
+  edge: 3
+  essence: 6
+  magic: 0
+  resonance: 0
+edge:
+  current: 3
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Pilot Ground Craft
+      rating: 6
+      specialization: Wheeled
+    - name: Pilot Aircraft
+      rating: 4
+    - name: Gunnery
+      rating: 5
+    - name: Electronic Warfare
+      rating: 4
+    - name: Perception
+      rating: 3
+    - name: Pistols
+      rating: 2
+  skillGroups:
+    - name: Mechanic
+      rating: 4
+    - name: Electronics
+      rating: 2
+  knowledgeSkills:
+    - id: c1e5c58b-b3d5-4f8e-950d-b1a32333cb60
+      name: Drone Models
+      rating: 5
+    - id: 512ca300-2214-45d2-ae48-65b4a7f52cbc
+      name: Smuggling Routes
+      rating: 3
+    - id: e0a618ce-0bbb-430b-a672-1d2aab8abac3
+      name: Combat Biking
+      rating: 2
+  languageSkills:
+    - id: 0cf92590-6d71-45fa-84f8-4cbf50fe79f3
+      name: English
+      isNative: true
+initiative:
+  passesCompleted: []
+tradition: null
+spells: []
+spirits: []
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: 91b85f3c-0f78-4b97-b1ba-f4a262b824f6
+    name: Sparky
+    role: Drone Parts Dealer
+    connection: 2
+    loyalty: 3
+    skills:
+      - id: a161f928-03a3-48d1-bfd8-67e213d7a73c
+        name: Drones
+        type: knowledge
+      - id: 5e1467ce-62c6-4be3-900f-f5f974a6d5ba
+        name: Salvage
+        type: knowledge
+  - id: 21b7c24b-63de-47ca-9939-a5331ee5bcea
+    name: Lupe Ortega
+    role: Smuggler
+    connection: 3
+    loyalty: 2
+    skills:
+      - id: c0d19cbf-5eea-41d7-90e9-7499e3d27356
+        name: Smuggling Routes
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 1450
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: implant
+    state: implanted
+    name: Control Rig
+    implantType: cyberware
+    grade: standard
+    rating: 2
+    essenceCost: 3
+    location: head
+    cost: 40000
+    id: fa42f72c-47a0-454a-b409-d1a9dfd223cf
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Datajack
+    implantType: cyberware
+    grade: standard
+    essenceCost: 0.1
+    location: head
+    cost: 500
+    id: e92eedf0-b054-484d-8db2-b0f75c343d04
+    kind: item
+  - name: Proteus Poseidon
+    itemType: device
+    deviceType: other
+    customDeviceType: RCC
+    state: equipped
+    deviceRating: 5
+    response: 5
+    signal: 5
+    system: 5
+    firewall: 5
+    cost: 13000
+    id: 92092775-1cb9-4f93-92a6-a41aff97dcf9
+    kind: item
+    children:
+      - name: Maneuver Autosoft
+        itemType: software
+        rating: 3
+        cost: 1500
+        id: 4d5e003a-9d4e-48de-b4cc-db4804832608
+        kind: item
+      - name: Clearsight Autosoft
+        itemType: software
+        rating: 3
+        cost: 1500
+        id: 7f984423-1368-4e87-aa2f-529aa08195b2
+        kind: item
+      - name: Electronic Warfare Autosoft
+        itemType: software
+        rating: 3
+        cost: 1500
+        id: 0068ed35-43e2-42cf-a064-3e6023f8a5e3
+        kind: item
+  - itemType: vehicle
+    vehicleCategory: drone
+    damage:
+      physical: 0
+    name: Beetle
+    model: MCT Fly-Spy
+    vehicleType: micro-drone
+    handling: 1
+    accel: 5/15
+    speed: 50
+    pilot: 3
+    body: 1
+    armor: 0
+    sensor: 3
+    cost: 2000
+    id: cc02dd66-e2de-444f-8aab-e59ae406f002
+    kind: item
+  - itemType: vehicle
+    vehicleCategory: drone
+    damage:
+      physical: 0
+    name: Rex
+    model: GM-Nissan Doberman
+    vehicleType: medium drone
+    handling: 0
+    accel: 5/25
+    speed: 75
+    pilot: 3
+    body: 3
+    armor: 6
+    sensor: 3
+    cost: 5000
+    availability:
+      rating: 8
+      restricted: true
+    id: 25d1cef5-ad66-4061-8d4f-e315dca73efd
+    kind: item
+    children:
+      - name: Targeting (Machine Guns) Autosoft
+        itemType: software
+        rating: 3
+        cost: 1500
+        id: 300640d8-53fb-4205-8ed0-fdb9c68a2df1
+        kind: item
+      - name: Ingram White Knight
+        itemType: weapon
+        weaponType: firearm
+        firearmType: light machine gun
+        skill: Gunnery
+        attribute: agility
+        dmg: 6P
+        ap: -1
+        firemodes:
+          - BF
+          - FA
+        recoil: 5
+        ammo:
+          size: 100
+          remaining: 100
+          type: belt
+        cost: 2000
+        availability:
+          rating: 12
+          forbidden: true
+        id: d26dce25-cb55-40fb-9223-5c0300cd867d
+        kind: item
+  - itemType: vehicle
+    vehicleCategory: drone
+    damage:
+      physical: 3
+    name: Lynx
+    model: Steel Lynx Combat Drone
+    vehicleType: large drone
+    handling: 0
+    accel: 10/25
+    speed: 100
+    pilot: 3
+    body: 3
+    armor: 9
+    sensor: 3
+    cost: 25000
+    availability:
+      rating: 10
+      forbidden: true
+    id: 20be682b-ecbf-46c8-ba3f-850b5561b35b
+    kind: item
+  - itemType: vehicle
+    vehicleCategory: drone
+    damage:
+      physical: 0
+    name: Skylark
+    model: Lockheed Optic-X
+    vehicleType: small drone
+    handling: 1
+    accel: 15/40
+    speed: 200
+    pilot: 3
+    body: 2
+    armor: 2
+    sensor: 3
+    cost: 15000
+    id: 3f2905a9-d902-4fd7-931b-131a005eeaf3
+    kind: item
+  - name: The Brick
+    itemType: vehicle
+    vehicleCategory: vehicle
+    model: GMC Bulldog Step-Van
+    vehicleType: van
+    handling: 0
+    accel: 10/25
+    speed: 100
+    pilot: 3
+    body: 16
+    armor: 6
+    sensor: 2
+    seats: 6
+    damage:
+      physical: 0
+    cost: 35000
+    id: 1ae61b8b-d3a5-44a1-b247-5fa71ed3c724
+    kind: item
+  - name: Ruth Abernathy
+    itemType: sin
+    isReal: false
+    rating: 3
+    cost: 3000
+    id: 7c49a798-d18d-427e-91f8-f60cbd1d61e9
+    kind: item
+  - name: Novatech Airware
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 4
+    response: 4
+    signal: 4
+    system: 4
+    firewall: 4
+    cost: 4000
+    id: 2e106b7a-3e8c-4865-afce-66aa6856d409
+    kind: item
+  - name: Armor Clothing
+    itemType: armor
+    state: equipped
+    ballistic: 4
+    impact: 0
+    cost: 500
+    id: 3196e8f1-2476-427a-afd3-b5b474170758
+    kind: item
+  - name: Ruger Super Warhawk
+    itemType: weapon
+    weaponType: firearm
+    firearmType: heavy pistol
+    skill: Pistols
+    attribute: agility
+    dmg: 6P
+    ap: -1
+    firemodes:
+      - SA
+    recoil: 0
+    ammo:
+      size: 6
+      remaining: 6
+      type: cylinder
+    state: equipped
+    cost: 350
+    id: 47cc54dc-4e27-406a-aa53-301c443aca8a
+    kind: item
+  - name: Toolkit (Ground Vehicles)
+    itemType: other
+    cost: 500
+    id: 1ad1ef90-c553-4445-92e3-162a59c31f76
+    kind: item

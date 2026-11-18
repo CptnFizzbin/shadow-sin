@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { Artemis } from "#/data/fixtures/artemis.ts"
+import { loadFixtureRunner } from "#/data/fixtures/fixtureRunners.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
@@ -270,13 +270,15 @@ describe.concurrent("gearFromTree", () => {
 })
 
 describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
+  const razor = loadFixtureRunner("razor")
+
   it("round-trips a simple runner sheet", () => {
     const gear = createItemMap(
       createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
     const original = {
-      ...Artemis,
-      _data_: { ...Artemis._data_, items: gear },
+      ...razor,
+      _data_: { ...razor._data_, items: gear },
     }
 
     const yaml = runnerDataToYaml(original)
@@ -294,7 +296,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     const gear = createItemMap(
       createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, isReal: false, rating: 6 }),
     )
-    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
+    const original = { ...razor, _data_: { ...razor._data_, items: gear } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
@@ -309,7 +311,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
         createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, isReal: false, rating: 4 }),
       ]),
     )
-    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
+    const original = { ...razor, _data_: { ...razor._data_, items: gear } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
@@ -326,7 +328,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   })
 
   it("round-trips a runner with no gear", () => {
-    const original = { ...Artemis, _data_: { ...Artemis._data_, items: {} } }
+    const original = { ...razor, _data_: { ...razor._data_, items: {} } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
@@ -335,18 +337,18 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   })
 
   it("preserves all scalar fields through a round-trip", () => {
-    const yaml = runnerDataToYaml(Artemis)
+    const yaml = runnerDataToYaml(razor)
     const restored = yamlToRunnerData(yaml)
 
-    expect(restored.id).toBe(Artemis.id)
-    expect(restored.karma).toEqual(Artemis.karma)
-    expect(restored.nuyen).toEqual(Artemis.nuyen)
-    expect(restored.attributes).toEqual(Artemis.attributes)
-    expect(restored.skills).toEqual(Artemis.skills)
-    expect(restored.qualities).toEqual(Artemis.qualities)
-    expect(restored.contacts).toEqual(Artemis.contacts)
-    expect(restored.spells).toEqual(Artemis.spells)
-    expect(restored.powers).toEqual(Artemis.powers)
+    expect(restored.id).toBe(razor.id)
+    expect(restored.karma).toEqual(razor.karma)
+    expect(restored.nuyen).toEqual(razor.nuyen)
+    expect(restored.attributes).toEqual(razor.attributes)
+    expect(restored.skills).toEqual(razor.skills)
+    expect(restored.qualities).toEqual(razor.qualities)
+    expect(restored.contacts).toEqual(razor.contacts)
+    expect(restored.spells).toEqual(razor.spells)
+    expect(restored.powers).toEqual(razor.powers)
   })
 
   it("preserves parent/child IDs exactly through a round-trip", () => {
@@ -355,7 +357,7 @@ describe.concurrent("yamlToRunnerData / runnerDataToYaml round-trip", () => {
       [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, isReal: false, rating: 4 })],
     )
     const gear = createItemMap([sinItem, ...licenses])
-    const original = { ...Artemis, _data_: { ...Artemis._data_, items: gear } }
+    const original = { ...razor, _data_: { ...razor._data_, items: gear } }
 
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)

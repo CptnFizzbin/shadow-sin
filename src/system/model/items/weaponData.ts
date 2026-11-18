@@ -6,6 +6,8 @@ import { ItemType } from "./itemType.ts"
 import type { FirearmTypeKey } from "./weapons/firearms/firearmTypeKey.ts"
 
 export enum FirearmAttachmentPoint {
+  // Referenced only by stored Runner data (e.g. built-in smartgun systems in the fixture `.sin` files).
+  // fallow-ignore-next-line unused-enum-member
   Internal = "Internal",
   Top = "Top",
   Under = "Under",

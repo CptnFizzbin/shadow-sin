@@ -26,7 +26,8 @@
     "eslint:lint": "yarn eslint",
     "eslint:fix": "yarn eslint:lint --fix",
     "fallow": "fallow",
-    "browser": "tsx .agents/scripts/browser/browser.ts"
+    "browser": "tsx .agents/scripts/browser/browser.ts",
+    "fixtures:update": "tsx .agents/cli/update-fixtures.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

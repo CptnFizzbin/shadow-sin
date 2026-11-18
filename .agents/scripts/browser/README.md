@@ -22,8 +22,8 @@ Chromium build matching its version:
 yarn dev &                                   # the app on :3000
 yarn browser start /                         # paths resolve against http://localhost:3000
 yarn browser snapshot                        # ARIA tree — find names/roles to target
-yarn browser click 'role=button[name="Artemis Elf · Rigger"]'
-yarn browser fill 'role=textbox[name="Name"]' "Hexen"
+yarn browser click 'role=button[name="Gearbox Dwarf · Rigger"]'
+yarn browser fill 'role=textbox[name="Name"]' "Ashgrove"
 yarn browser press Enter
 yarn browser screenshot screenshots/desktop.png
 yarn browser screenshot screenshots/pixel8.png --device "Pixel 8"

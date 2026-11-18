@@ -18,7 +18,7 @@ Then publish with the Artifact tool, copying the arguments from `<out>.publish.j
 
 1. Builds with `vite build --base ./` (relative asset paths, so the site works under the
    Artifact's sub-path). Defaults to a production build with `VITE_SEED_FIXTURES=true`, so the
-   landing page offers the sample Runners (Artemis, Hexen) a dev server shows.
+   landing page offers the sample Runners (`src/data/fixtures/*.sin`) a dev server shows.
 2. Removes host-only files (`CNAME`, `robots.txt`).
 3. Rewrites literal U+FFFD characters as escapes. The publisher rejects any file containing one,
    but micromark (via `react-markdown`) uses it on purpose: CommonMark replaces invalid character

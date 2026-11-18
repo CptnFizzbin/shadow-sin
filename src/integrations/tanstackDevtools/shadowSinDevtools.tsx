@@ -4,8 +4,7 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { Artemis } from "#/data/fixtures/artemis.ts"
-import { Hexen } from "#/data/fixtures/hexen.ts"
+import { loadFixtureRunners } from "#/data/fixtures/fixtureRunners.ts"
 import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
 
 function ShadowSinDevtoolsPanel() {
@@ -25,7 +24,7 @@ function ShadowSinDevtoolsPanel() {
   }
 
   async function reloadFixtureRunners() {
-    const fixtureRunners = [Artemis, Hexen]
+    const fixtureRunners = loadFixtureRunners()
     for (const runner of fixtureRunners) {
       await runnerManager.saveRunner(runner)
     }

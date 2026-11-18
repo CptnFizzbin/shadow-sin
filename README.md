@@ -113,6 +113,9 @@ yarn test:unit:ui   # Vitest with browser UI
 yarn fix            # Auto-fix all lint and formatting issues ✅ run this before committing
 yarn lint           # Check lint without fixing
 yarn tsc            # TypeScript type-check (no emit)
+
+yarn fixtures:update          # Migrate the dev fixture Runners (src/data/fixtures/*.sin) in place
+yarn fixtures:update --check  # Exit non-zero if any fixture is out of date
 ```
 
 > **Before opening a PR:** run `yarn fix` to ensure formatting, linting, and types are clean.
