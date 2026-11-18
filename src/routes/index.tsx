@@ -6,8 +6,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { LandingModeSwitch } from "#/components/gmToolbox/landing/landingModeSwitch.tsx"
 import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
 import { ImportRunnerButton } from "#/components/system/exportImport/importRunnerButton.tsx"
-import { Artemis } from "#/data/fixtures/artemis.ts"
-import { Hexen } from "#/data/fixtures/hexen.ts"
+import { loadFixtureRunners } from "#/data/fixtures/fixtureRunners.ts"
 import { env } from "#/env.ts"
 import { RunnerManager } from "#/services/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
@@ -17,7 +16,7 @@ const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage
 
 export const Route = createFileRoute("/")({
   loader: () => {
-    const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? [Artemis, Hexen] : []
+    const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? loadFixtureRunners() : []
     return loaderManager.ensureRunners(fixtures)
   },
   component: IndexRoute,

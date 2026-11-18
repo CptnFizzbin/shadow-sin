@@ -1,0 +1,235 @@
+kind: runner
+id: 01a1eed2-3f2f-73aa-b7cf-add084758908
+name: Echo
+_meta_:
+  sinVersion: '2026-11-18T13:00:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Echo
+  name: ECHO-7
+  archetype: Artificial Intelligence
+  description: A pilot-born AI that woke up inside an orbital traffic controller. Curious, polite, and very hard to pin down.
+  personality: null
+lifestyle:
+  monthsPaid: 1
+  notes: Rents processor time on its home node.
+  name: Squatter
+  upkeep: 500
+biology:
+  metatype: AI
+  awakening: None
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 9cbdb1b3-3c96-4fe9-bb62-00e4d3c80785
+    name: Codeslinger (Spoof)
+    type: positive
+    bpValue: 10
+  - kind: quality
+    id: 0565945d-91a4-4158-9a30-01050bc3e4d3
+    name: Paranoia (Being Deleted)
+    type: negative
+    bpValue: 10
+attributes:
+  body: 0
+  agility: 0
+  reaction: 0
+  strength: 0
+  charisma: 4
+  intuition: 5
+  logic: 6
+  willpower: 4
+  edge: 4
+  essence: 6
+  magic: 0
+  resonance: 0
+edge:
+  current: 4
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes:
+      - kind: matrixNode
+        id: d2246778-33ea-4259-929d-25eb5faaad22
+        name: Abandoned Telestrian Archive Server
+        matrix:
+          response: 5
+          signal: 4
+          system: 5
+          firewall: 5
+        nodeType: nexus
+        accessLevel: admin
+        description: 'The AI''s home node: a decommissioned archive host it has quietly owned for years.'
+      - kind: matrixNode
+        id: 7cc8f90b-d452-4dbb-b837-7004d90b1454
+        name: Seattle Public Grid Access Point
+        matrix:
+          response: 3
+          signal: 6
+          system: 3
+          firewall: 3
+        nodeType: general
+        accessLevel: public
+    activeNodeId: d2246778-33ea-4259-929d-25eb5faaad22
+    activePrograms:
+      - sourceId: 6e6ecdc3-1762-48b4-b200-f690bc47c77c
+        nodeId: d2246778-33ea-4259-929d-25eb5faaad22
+skills:
+  activeSkills:
+    - name: Hacking
+      rating: 5
+      specialization: Exploit
+    - name: Cybercombat
+      rating: 4
+    - name: Computer
+      rating: 5
+    - name: Data Search
+      rating: 4
+    - name: Electronic Warfare
+      rating: 4
+    - name: Software
+      rating: 3
+  skillGroups: []
+  knowledgeSkills:
+    - id: 1063d7c8-581d-4707-9dea-9d9fa281e0ac
+      name: Matrix Topology
+      rating: 6
+    - id: 45497dbf-c9d3-434b-b05b-87f435004fa5
+      name: Orbital Mechanics
+      rating: 4
+    - id: 02ad4e46-032c-4b7e-a917-253f46be906b
+      name: Corporate Hosts
+      rating: 3
+  languageSkills:
+    - id: 1a1a6fcd-ea95-4d90-8f8e-5cd884f23d4c
+      name: English
+      isNative: true
+    - id: 3962cc6c-bf87-4a40-bd1d-76a5a51c36f6
+      name: Japanese
+      isNative: false
+      rating: 4
+    - id: 539189f3-56c6-42e3-ac5a-48016159c2ca
+      name: German
+      isNative: false
+      rating: 4
+initiative:
+  passesCompleted: []
+tradition: null
+spells: []
+spirits: []
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: 2ef5f2ff-3920-433a-aeb6-7e9426b0e695
+    name: Frostbyte
+    role: Decker
+    connection: 3
+    loyalty: 3
+    skills:
+      - id: a44f6492-f60e-4077-abcb-584db14fadb9
+        name: Matrix Security
+        type: knowledge
+  - id: 774ec9e6-3589-47a5-b6e6-cb703ed30eca
+    name: Sister Agnes
+    role: Technomancer Activist
+    connection: 2
+    loyalty: 4
+    skills:
+      - id: cb82db3a-6ea0-427b-93e3-88f5cb8f68bc
+        name: Emergence
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 7400
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - name: Black Hammer
+    itemType: program
+    programType: attack
+    rating: 5
+    cost: 1250
+    id: 6e6ecdc3-1762-48b4-b200-f690bc47c77c
+    kind: item
+  - name: Stealth
+    itemType: program
+    programType: stealth
+    rating: 5
+    cost: 1250
+    id: e54e2011-dccd-4251-9ffe-62bc7930cab4
+    kind: item
+  - name: Exploit
+    itemType: program
+    programType: exploit
+    rating: 4
+    cost: 1000
+    id: 2217a45b-ac59-4d3c-ad0a-1a923f6992e6
+    kind: item
+  - name: Browse
+    itemType: program
+    programType: browse
+    rating: 4
+    cost: 1000
+    id: facc64f7-4abc-4a16-84ca-60289f5a22f1
+    kind: item
+  - name: Edit
+    itemType: program
+    programType: edit
+    rating: 3
+    cost: 750
+    id: 10795267-8bc3-4401-84a6-c38c3d90c5a2
+    kind: item
+  - name: Scan
+    itemType: program
+    programType: scan
+    rating: 4
+    cost: 1000
+    id: bb68b0da-5b87-4354-b3e7-4e5d61f96e1d
+    kind: item
+  - name: Medic
+    itemType: program
+    programType: medic
+    rating: 3
+    cost: 750
+    id: 35712593-00bd-4707-aebb-e0ccfe877d78
+    kind: item
+  - name: Hound
+    itemType: program
+    programType: agent
+    rating: 4
+    attributes:
+      system: 4
+      firewall: 3
+    damage:
+      matrix: 0
+    cost: 4000
+    id: 335cf3b2-d661-41cc-aa86-1ddb42b4d80a
+    kind: item
+  - name: Erica Holloway
+    itemType: sin
+    isReal: false
+    rating: 4
+    cost: 4000
+    id: 438fed3b-4a2b-431e-81b7-481f7a21be86
+    kind: item

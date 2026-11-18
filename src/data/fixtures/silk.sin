@@ -1,0 +1,302 @@
+kind: runner
+id: 01a1eed2-3f2c-77e2-8353-8501dfb3dbf8
+name: Silk
+_meta_:
+  sinVersion: '2026-11-18T13:00:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Silk
+  name: Vivienne Okafor-Laurent
+  archetype: Face
+  description: >-
+    Corporate-raised negotiator who walked away from Horizon PR. Talks first, rarely shoots, and has the bioware to make
+    every word land.
+  personality: null
+lifestyle:
+  monthsPaid: 2
+  name: High
+  upkeep: 10000
+biology:
+  metatype: Elf
+  awakening: Mundane
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 2366e9d8-b55f-4340-91c2-0a6bf2628c00
+    name: First Impression
+    type: positive
+    bpValue: 5
+  - kind: quality
+    id: 6203f777-f4f7-4645-af1a-03cc5f7b81ec
+    name: Lucky
+    type: positive
+    bpValue: 20
+  - kind: quality
+    id: 873f841b-a9ae-4358-98ed-97229c3b283e
+    name: Day Job (Event Planner)
+    type: negative
+    bpValue: 5
+attributes:
+  body: 3
+  agility: 3
+  reaction: 3
+  strength: 2
+  charisma: 6
+  intuition: 4
+  logic: 4
+  willpower: 4
+  edge: 5
+  essence: 6
+  magic: 0
+  resonance: 0
+edge:
+  current: 5
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Pistols
+      rating: 3
+    - name: Perception
+      rating: 3
+    - name: Disguise
+      rating: 2
+    - name: Dodge
+      rating: 2
+  skillGroups:
+    - name: Influence
+      rating: 5
+  knowledgeSkills:
+    - id: ec3929ac-0068-4a7b-b7fb-13866a24a890
+      name: Corporate Politics
+      rating: 4
+    - id: bd930a67-bbdf-43fe-9066-edf4a578f428
+      name: Seattle Society
+      rating: 3
+    - id: a667b6ec-cf72-40dd-acdd-c37da93de081
+      name: Fashion
+      rating: 3
+    - id: 860f8fab-d076-403b-91e7-3194466c543c
+      name: Psychology
+      rating: 3
+  languageSkills:
+    - id: c23b0b80-7707-4759-b698-565a3dc0364b
+      name: English
+      isNative: true
+    - id: c4014834-aad8-416b-9b10-10fd65327cc6
+      name: French
+      isNative: false
+      rating: 4
+    - id: 34b55a89-defa-4304-9a20-5e9cd47375b9
+      name: Sperethiel
+      isNative: false
+      rating: 3
+    - id: 56978daf-17c9-4ea0-98c3-2eb72fc03144
+      name: Japanese
+      isNative: false
+      rating: 2
+initiative:
+  passesCompleted: []
+tradition: null
+spells: []
+spirits: []
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: c7597580-3f56-40d2-8c94-bf8523eb24e9
+    name: Marcus Thane
+    role: Fixer
+    connection: 4
+    loyalty: 3
+    skills:
+      - id: f9990dfc-4c6e-4827-bf01-114b8bb58195
+        name: Shadow Jobs
+        type: knowledge
+      - id: 4288c2ea-4069-4f39-b6fd-acb777ff260c
+        name: Seattle Underworld
+        type: knowledge
+  - id: f42e1f23-7431-437d-afff-a1e6499c4550
+    name: Dr. Ines Halvorsen
+    role: Bodyshop Clinic
+    connection: 3
+    loyalty: 2
+    skills:
+      - id: 81cbcc50-f6c2-4863-be27-c8a51b65f311
+        name: Bioware
+        type: knowledge
+  - id: ec0d143c-9574-4444-af14-95b27878c1b5
+    name: Celeste Moreau
+    role: Horizon PR Executive
+    connection: 5
+    loyalty: 1
+    skills:
+      - id: 53fb35f6-de55-4287-9346-3a1930bf2d0b
+        name: Corporate Rumors
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 18250
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: implant
+    state: implanted
+    name: Tailored Pheromones
+    implantType: bioware
+    grade: alpha
+    rating: 2
+    essenceCost: 0.64
+    location: torso
+    cost: 36000
+    notes: +2 dice to Charisma-linked social tests.
+    id: ad1bf57d-2304-4050-a331-1aa520eede4b
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Cerebral Booster
+    implantType: bioware
+    grade: standard
+    rating: 1
+    essenceCost: 0.2
+    location: head
+    cost: 15000
+    effects:
+      - type: attrMod
+        target: logic
+        value: 1
+    id: f151acd8-e9d9-488b-a431-2142d0bcc88c
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Mnemonic Enhancer
+    implantType: bioware
+    grade: standard
+    rating: 2
+    essenceCost: 0.2
+    location: head
+    cost: 10000
+    id: 2201ea07-0128-446f-939f-8b9484e692eb
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Sleep Regulator
+    implantType: bioware
+    grade: standard
+    essenceCost: 0.1
+    location: head
+    cost: 6000
+    id: fcabb8bb-2e96-4738-9c72-0629c1fc35a1
+    kind: item
+  - itemType: implant
+    state: implanted
+    name: Orthoskin
+    implantType: bioware
+    grade: standard
+    rating: 1
+    essenceCost: 0.25
+    location: torso
+    cost: 5000
+    id: 74fc068a-c91d-403d-9905-d2276121f721
+    kind: item
+  - name: Vivienne Laurent
+    itemType: sin
+    isReal: false
+    rating: 5
+    cost: 5000
+    id: 9f991c64-4be1-424c-a26a-fe98691d85e7
+    kind: item
+    children:
+      - name: Concealed Carry Permit
+        itemType: license
+        isReal: false
+        rating: 4
+        id: 43eb309a-5d63-42a6-8e36-1e0c3647e80d
+        kind: item
+  - name: Simone Achterberg
+    itemType: sin
+    isReal: false
+    rating: 3
+    cost: 3000
+    id: faeb29fe-e009-4c89-a1d5-631fd99a67c5
+    kind: item
+  - name: Transys Avalon
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 6
+    response: 6
+    signal: 6
+    system: 6
+    firewall: 6
+    cost: 6000
+    id: acbc7693-1bbc-44cc-b3ad-967c34dd4f5c
+    kind: item
+  - name: Colt Manhunter
+    itemType: weapon
+    weaponType: firearm
+    firearmType: heavy pistol
+    skill: Pistols
+    attribute: agility
+    dmg: 5P
+    ap: -1
+    firemodes:
+      - SA
+    recoil: 0
+    ammo:
+      size: 15
+      remaining: 15
+      type: clip
+    state: equipped
+    cost: 350
+    licenseId: 43eb309a-5d63-42a6-8e36-1e0c3647e80d
+    availability:
+      rating: 5
+      restricted: true
+    id: b4930dd0-c98a-4e37-80a2-4d5fca05972d
+    kind: item
+    children:
+      - name: Smartgun System (Internal)
+        itemType: firearmAccessory
+        fixed: true
+        mountPoints:
+          - Internal
+        parentSlot: Internal
+        id: 7bb30a7f-b902-4f6d-a0cb-86faed53f244
+        kind: item
+  - name: Actioneer Business Clothes
+    itemType: armor
+    state: equipped
+    ballistic: 5
+    impact: 3
+    cost: 1500
+    id: 338b3654-b91e-457c-8b4e-ea603852d622
+    kind: item
+  - name: Tag Eraser
+    itemType: other
+    cost: 150
+    id: f63921fc-b5a0-4a8b-a73a-42e59d346217
+    kind: item

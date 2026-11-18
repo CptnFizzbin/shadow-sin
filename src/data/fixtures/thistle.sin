@@ -1,0 +1,283 @@
+kind: runner
+id: 01a1eed2-3f2f-73aa-b7cf-b111e4ab8c4a
+name: Thistle
+_meta_:
+  sinVersion: '2026-11-18T13:00:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Thistle
+  name: Thistledown-under-the-Willow
+  archetype: Mystic Adept
+  description: A Pixie who left the Tir in search of excitement and found the shadows instead. Small, fast, and mischievous.
+  personality: null
+lifestyle:
+  monthsPaid: 2
+  notes: A dollhouse-sized loft above a teahouse.
+  name: Low
+  upkeep: 2000
+biology:
+  metatype: Pixie
+  awakening: Mystic Adept
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 364b1c68-15fa-45ef-8c4c-621498a05d72
+    name: Vanish
+    type: negative
+    bpValue: 0
+    source:
+      book: RC
+      page: 85
+  - kind: quality
+    id: 38d53d59-5237-4a50-9f34-29aebb478218
+    name: Uneducated
+    type: negative
+    bpValue: 0
+    source:
+      book: SR4A
+      page: 119
+  - kind: quality
+    id: 6806cf7c-0df9-4941-9267-da4900fa8523
+    name: Ambidextrous
+    type: positive
+    bpValue: 5
+  - kind: quality
+    id: 4ebfabd3-8d94-488c-8fdf-2b62611fa030
+    name: Distinctive Style (Glowing wings)
+    type: negative
+    bpValue: 5
+attributes:
+  body: 1
+  agility: 6
+  reaction: 5
+  strength: 1
+  charisma: 6
+  intuition: 5
+  logic: 3
+  willpower: 4
+  edge: 4
+  essence: 6
+  magic: 5
+  resonance: 0
+edge:
+  current: 4
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Spellcasting
+      rating: 4
+      specialization: Illusion Spells
+    - name: Counterspelling
+      rating: 2
+    - name: Assensing
+      rating: 3
+    - name: Dodge
+      rating: 4
+    - name: Perception
+      rating: 4
+    - name: Palming
+      rating: 3
+    - name: Con
+      rating: 4
+  skillGroups:
+    - name: Stealth
+      rating: 4
+  knowledgeSkills:
+    - id: 16ba3e43-52be-4a4b-aacb-6a6af363c66e
+      name: Faerie Lore
+      rating: 5
+    - id: f0bdcea5-3f62-4268-8517-a5059c423ab2
+      name: Tir Tairngire Politics
+      rating: 2
+    - id: ca19bc77-daa7-4976-a0bd-c00b6d8f1ecf
+      name: Pranks
+      rating: 4
+  languageSkills:
+    - id: b1d8ab20-4740-4eb8-925e-2a71b01ed2d7
+      name: Sperethiel
+      isNative: true
+    - id: 632f989b-c6c7-4d8b-a175-d6e7de083fe5
+      name: English
+      isNative: false
+      rating: 3
+initiative:
+  passesCompleted: []
+tradition:
+  name: Wicca
+  drainAttribute: charisma
+  spiritTypes:
+    combat: fire
+    detection: water
+    health: plant
+    illusion: wind
+    manipulation: earth
+spells:
+  - kind: spell
+    id: 0181eae4-33ff-4d0b-8aae-c4129f444c28
+    name: Confusion
+    category: Illusion
+    type: Mana
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Floods the target with conflicting sensory input, imposing a penalty on all tests.
+    sustainedBy: null
+  - kind: spell
+    id: 1f7f5669-c638-4c03-9e0d-2d4e07af939d
+    name: Improved Invisibility
+    category: Illusion
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Renders the subject invisible to normal vision and technological sensors.
+    sustainedBy: null
+  - kind: spell
+    id: 11b9a792-c908-40c8-aecf-fe4f3c552373
+    name: Levitate
+    category: Manipulation
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Lifts the subject into the air and moves it at the caster's direction.
+    sustainedBy: null
+spirits: []
+powers:
+  - kind: adeptPower
+    type: adeptPower
+    id: b3e9a7ba-7e13-483d-8cf3-4c44f7ff7e59
+    name: Combat Sense
+    rating: 2
+    costPerRating: 0.5
+    effects: []
+    description: +1 die per rating to defense tests and Surprise tests.
+  - kind: adeptPower
+    type: adeptPower
+    id: d3669081-78ee-4b7d-aeee-4158d5bb72c4
+    name: Improved Reflexes
+    rating: 1
+    costPerRating: 1.5
+    effects:
+      - type: attrMod
+        target: reaction
+        value: 1
+      - type: extraInitiativePasses
+        value: 1
+complexForms: []
+sprites: []
+contacts:
+  - id: e2cbf85d-9ebe-4d77-9b83-7cfd50e6d933
+    name: Barnaby Quill
+    role: Teahouse Owner
+    connection: 1
+    loyalty: 4
+    skills: []
+  - id: ac7774cf-57f4-4eb6-ba32-998bcc057fb8
+    name: Nim
+    role: Information Broker
+    connection: 3
+    loyalty: 2
+    skills:
+      - id: 53006cee-427c-4dcc-8b9b-1871783e2877
+        name: Rumors
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 3300
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Spellcasting Focus (Illusion)
+    focusType: Spellcasting
+    force: 2
+    spellCategory: Illusion
+    cost: 30000
+    availability:
+      rating: 8
+      restricted: true
+    notes: A silver acorn pendant.
+    id: 8940108f-1a1a-4129-80f5-5029c9ac12ec
+    kind: item
+  - name: Micro-Commlink (Erika Elite)
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 3
+    response: 3
+    signal: 3
+    system: 3
+    firewall: 3
+    cost: 3000
+    id: 189e0fa8-5d9b-4773-8c2c-08ab9b7ce631
+    kind: item
+  - name: Pixie-tailored Armor Vest
+    itemType: armor
+    state: equipped
+    ballistic: 4
+    impact: 3
+    cost: 1200
+    id: 91248e8f-62a2-4f5b-a167-fd0499dd7982
+    kind: item
+  - name: Needle Dagger
+    itemType: weapon
+    weaponType: melee
+    meleeType: blade
+    skill: Blades
+    attribute: agility
+    dmg: (STR/2+1)P
+    reach: 0
+    state: equipped
+    cost: 80
+    id: a3eb5268-8e19-4845-8d95-db904c8b8b43
+    kind: item
+  - name: Thistle Willow
+    itemType: sin
+    isReal: false
+    rating: 2
+    cost: 2000
+    id: c957989b-4631-458f-b776-e068246cc67c
+    kind: item

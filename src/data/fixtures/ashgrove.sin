@@ -1,0 +1,383 @@
+kind: runner
+id: 01a1eed2-3f2e-75c6-8fac-ff53fc65a494
+name: Ashgrove
+_meta_:
+  sinVersion: '2026-11-18T13:00:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Ashgrove
+  name: Professor Edmund Ashgrove
+  archetype: Hermetic Mage
+  description: MIT&T thaumaturgy lecturer who supplements tenure with very well-paid fieldwork. Carries more foci than sense.
+  personality: null
+lifestyle:
+  monthsPaid: 6
+  name: Middle
+  upkeep: 5000
+biology:
+  metatype: Human
+  awakening: Magician
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: c998a2c5-5029-4252-8c5f-6f729f6aa704
+    name: Focused Concentration
+    type: positive
+    bpValue: 10
+    rating: 1
+  - kind: quality
+    id: c872d73c-4cc9-4905-bb64-ff75793b284d
+    name: Absent-Minded
+    type: negative
+    bpValue: 5
+attributes:
+  body: 3
+  agility: 3
+  reaction: 3
+  strength: 2
+  charisma: 3
+  intuition: 4
+  logic: 6
+  willpower: 5
+  edge: 3
+  essence: 6
+  magic: 6
+  resonance: 0
+edge:
+  current: 3
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Spellcasting
+      rating: 6
+      specialization: Combat Spells
+    - name: Counterspelling
+      rating: 4
+    - name: Ritual Spellcasting
+      rating: 3
+    - name: Summoning
+      rating: 3
+    - name: Binding
+      rating: 2
+    - name: Assensing
+      rating: 4
+    - name: Arcana
+      rating: 4
+    - name: Blades
+      rating: 2
+    - name: Perception
+      rating: 3
+  skillGroups: []
+  knowledgeSkills:
+    - id: 64688ca8-79aa-4f48-be94-a963e0a48ec1
+      name: Magical Theory
+      rating: 6
+    - id: 3bc15981-6b27-4551-a48a-f3dd05ea8a4e
+      name: Magical Groups
+      rating: 4
+    - id: 31b55a7e-35c8-468e-98ca-416e4e005b1d
+      name: Parabiology
+      rating: 3
+  languageSkills:
+    - id: f1b1571f-fabe-43db-8c31-d02773ef7e68
+      name: English
+      isNative: true
+    - id: 31d68f4c-c5d9-44e5-bae5-5790fa153d65
+      name: Latin
+      isNative: false
+      rating: 4
+    - id: 3baf243a-d2ed-4311-ab88-5ecb0bdeafd5
+      name: German
+      isNative: false
+      rating: 2
+initiative:
+  passesCompleted: []
+tradition:
+  name: Hermetic
+  drainAttribute: logic
+  spiritTypes:
+    combat: fire
+    detection: wind
+    health: man
+    illusion: water
+    manipulation: earth
+spells:
+  - kind: spell
+    id: 18f7a5fd-b046-452f-baff-53e104abe917
+    name: Manabolt
+    category: Combat
+    type: Mana
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: true
+    duration: Instantaneous
+    voluntaryTargetsOnly: false
+    description: A direct mana attack against the target's life force. Only affects living or magical beings.
+    sustainedBy: null
+  - kind: spell
+    id: 384fd078-12a5-4b59-87ea-651127f45261
+    name: Stunball
+    category: Combat
+    type: Mana
+    range: LoS (A)
+    damage: Stun
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: true
+    duration: Instantaneous
+    voluntaryTargetsOnly: false
+    description: An area-effect mana blast that deals Stun damage to everyone in the radius.
+    sustainedBy: null
+  - kind: spell
+    id: dbba6f91-1f29-4fc7-9256-0fb02b246e21
+    name: Detect Enemies
+    category: Detection
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Detects living beings within range that intend harm to the subject.
+    sustainedBy: null
+  - kind: spell
+    id: fcd8ef23-48d9-4554-b2d5-24d756b117ca
+    name: Heal
+    category: Health
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -4
+    dealsDamage: false
+    duration: Permanent
+    voluntaryTargetsOnly: true
+    description: Heals Physical damage; each net hit removes one box.
+    sustainedBy: null
+  - kind: spell
+    id: e0f91ff9-b6f1-417d-a1b3-2a33f150fd40
+    name: Armor
+    category: Manipulation
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -2
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Wraps the subject in a glowing field that adds Ballistic and Impact armor.
+    sustainedBy: null
+  - kind: spell
+    id: d60b0ea3-9d10-48a4-8827-48a8154a6098
+    name: Improved Invisibility
+    category: Illusion
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Renders the subject invisible to normal vision and technological sensors.
+    sustainedBy: null
+spirits: []
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: dd03aa1e-950a-4359-b9f8-2c68d8a79410
+    name: Hermes Ingraham
+    role: Talismonger
+    connection: 3
+    loyalty: 3
+    skills:
+      - id: 193b61e5-5e2e-40ca-a9af-a043f590a3b4
+        name: Magical Goods
+        type: knowledge
+      - id: 95f65133-815a-4f93-a17d-18a20e4b4fc5
+        name: Foci
+        type: knowledge
+  - id: 12d93e61-f523-437e-a45b-a327d21e2c4c
+    name: Dean Patricia Wu
+    role: MIT&T Faculty
+    connection: 4
+    loyalty: 2
+    skills:
+      - id: 322bc45d-6f42-4ec9-a128-7ce263e41290
+        name: Academic Politics
+        type: knowledge
+extendedTests: []
+notes: ''
+initiateGrade: 1
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 9800
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Power Focus (Signet Ring)
+    focusType: Power
+    force: 2
+    cost: 50000
+    availability:
+      rating: 12
+      restricted: true
+    id: 2400a3f0-55e8-457a-8c50-354859f004f0
+    kind: item
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Spellcasting Focus (Combat)
+    focusType: Spellcasting
+    force: 3
+    spellCategory: Combat
+    cost: 45000
+    availability:
+      rating: 12
+      restricted: true
+    id: b048c781-d009-4be3-bfb7-8c8895648baa
+    kind: item
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Counterspelling Focus (Combat)
+    focusType: Counterspelling
+    force: 2
+    spellCategory: Combat
+    cost: 20000
+    availability:
+      rating: 8
+      restricted: true
+    id: 7bbd8e81-1247-4609-9b8d-10fa545aa3fe
+    kind: item
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Sustaining Focus (Manipulation)
+    focusType: Sustaining
+    force: 3
+    spellCategory: Manipulation
+    cost: 30000
+    availability:
+      rating: 9
+      restricted: true
+    id: 1113a404-34ec-4533-8ca7-5e17d56a57a6
+    kind: item
+  - itemType: magical
+    magicalType: focus
+    state: stashed
+    bonded: false
+    name: Summoning Focus (Fire)
+    focusType: Summoning
+    force: 2
+    spiritType: fire
+    cost: 20000
+    availability:
+      rating: 8
+      restricted: true
+    notes: Bought at auction; not yet bonded.
+    id: 10641793-6346-4574-bc37-8176d101138f
+    kind: item
+  - name: Sword Cane
+    itemType: weapon
+    weaponType: melee
+    meleeType: blade
+    skill: Blades
+    attribute: agility
+    dmg: (STR/2+2)P
+    reach: 1
+    state: equipped
+    cost: 500
+    availability:
+      rating: 5
+      restricted: true
+    id: 473ac7d6-7930-4d69-b0ba-63969888b17c
+    kind: item
+    children:
+      - itemType: magical
+        magicalType: focus
+        state: equipped
+        bonded: true
+        name: Weapon Focus
+        focusType: Weapon
+        force: 2
+        cost: 20000
+        availability:
+          rating: 8
+          restricted: true
+        id: 5fd56e37-66f2-4b8d-9d7c-c8bf44baf4b9
+        kind: item
+  - name: Edmund Ashgrove
+    itemType: sin
+    isReal: false
+    rating: 6
+    cost: 6000
+    id: a1678eab-40de-451f-ac0b-054644993075
+    kind: item
+  - name: Sony Emperor
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 4
+    response: 4
+    signal: 4
+    system: 4
+    firewall: 4
+    cost: 4000
+    id: 8b0f6c62-801c-4e93-af22-21190a29e9dc
+    kind: item
+  - name: Armor Vest
+    itemType: armor
+    state: equipped
+    ballistic: 6
+    impact: 4
+    cost: 600
+    notes: Worn under a tweed jacket.
+    id: 000df2c7-651b-4721-83dd-9cafb7c52c53
+    kind: item
+  - name: Magical Lodge Materials (Force 4)
+    itemType: other
+    rating: 4
+    cost: 2000
+    id: 4deb5b3d-8ef4-4edf-9d48-e8fab770c4f9
+    kind: item

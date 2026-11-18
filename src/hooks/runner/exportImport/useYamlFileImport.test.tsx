@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { contactsDataPacket, dataPacketToYaml } from "#/components/system/exportImport/dataPacketUtils.ts"
 import { runnerDataToYaml } from "#/components/system/exportImport/exportUtils.ts"
-import { Artemis } from "#/data/fixtures/artemis.ts"
+import { loadFixtureRunner } from "#/data/fixtures/fixtureRunners.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"
@@ -60,7 +60,7 @@ function fireChange(
 describe("useYamlFileImport", () => {
   it("parses YAML and calls onParsed with the resulting runner", async () => {
     // Arrange
-    const yaml = runnerDataToYaml(Artemis)
+    const yaml = runnerDataToYaml(loadFixtureRunner("razor"))
     const { result, onParsed, onError } = makeHookWithMocks()
     const event = makeChangeEvent(yaml)
 
@@ -72,12 +72,12 @@ describe("useYamlFileImport", () => {
       expect(onParsed).toHaveBeenCalledTimes(1)
     })
     expect(onError).not.toHaveBeenCalled()
-    expect((onParsed.mock.calls[0] as [RunnerData])[0].id).toBe(Artemis.id)
+    expect((onParsed.mock.calls[0] as [RunnerData])[0].id).toBe(loadFixtureRunner("razor").id)
   })
 
   it("clears the input value so the same file can be re-selected", async () => {
     // Arrange
-    const yaml = runnerDataToYaml(Artemis)
+    const yaml = runnerDataToYaml(loadFixtureRunner("razor"))
     const { result, onParsed } = makeHookWithMocks()
     const event = makeChangeEvent(yaml)
 

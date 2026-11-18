@@ -1,0 +1,323 @@
+kind: runner
+id: 01a1eed2-3f2e-75c6-8fad-0332fec01fc0
+name: Mossback
+_meta_:
+  sinVersion: '2026-11-18T13:00:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Mossback
+  name: Hollis Greywater
+  archetype: Shaman
+  description: Salish-Shidhe shaman of Bear who prefers to let the spirits do the talking — and the fighting.
+  personality: null
+lifestyle:
+  monthsPaid: 2
+  name: Low
+  upkeep: 2000
+biology:
+  metatype: Dwarf
+  awakening: Magician
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 304ef5c6-5ae9-48af-aedc-fbfe4e1afbbd
+    name: Mentor Spirit (Bear)
+    type: positive
+    bpValue: 5
+    description: +2 dice to Health spells and healing; may go berserk when hurt.
+  - kind: quality
+    id: cb55a098-686b-438c-8a52-29e680a874ac
+    name: Spirit Affinity (Beasts)
+    type: positive
+    bpValue: 10
+  - kind: quality
+    id: 5a084179-95e5-4ddd-a58d-d54dd5c6338a
+    name: Allergy (Pollen, Mild)
+    type: negative
+    bpValue: 5
+attributes:
+  body: 4
+  agility: 2
+  reaction: 3
+  strength: 4
+  charisma: 5
+  intuition: 4
+  logic: 3
+  willpower: 6
+  edge: 3
+  essence: 6
+  magic: 6
+  resonance: 0
+edge:
+  current: 3
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Summoning
+      rating: 6
+      specialization: Spirits of Beasts
+    - name: Binding
+      rating: 5
+    - name: Banishing
+      rating: 4
+    - name: Spellcasting
+      rating: 3
+    - name: Assensing
+      rating: 3
+    - name: Astral Combat
+      rating: 3
+    - name: Survival
+      rating: 3
+    - name: Tracking
+      rating: 2
+  skillGroups: []
+  knowledgeSkills:
+    - id: c6634862-1ff9-4874-93a4-d59c9644a3c0
+      name: Spirit Lore
+      rating: 5
+    - id: 5a3d6dea-64d1-43b9-b9a8-4686d2d44be1
+      name: Salish Folklore
+      rating: 4
+    - id: f02f1866-b182-459c-bcf0-c6017b1d0a4a
+      name: Herbalism
+      rating: 3
+  languageSkills:
+    - id: 012959b7-9e6a-4f32-ae47-a1302352084b
+      name: English
+      isNative: true
+    - id: ddf57517-8813-4589-8bcd-9b49ff98e311
+      name: Salish
+      isNative: false
+      rating: 4
+initiative:
+  passesCompleted: []
+tradition:
+  name: Shamanic
+  drainAttribute: charisma
+  concept: 'Mentor Spirit: Bear'
+  spiritTypes:
+    combat: beast
+    detection: wind
+    health: earth
+    illusion: water
+    manipulation: man
+spells:
+  - kind: spell
+    id: 0142e88c-1470-45f6-9faa-8ab5fa9d61d4
+    name: Heal
+    category: Health
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -4
+    dealsDamage: false
+    duration: Permanent
+    voluntaryTargetsOnly: true
+    description: Heals Physical damage; each net hit removes one box.
+    sustainedBy: null
+  - kind: spell
+    id: 9a2e3e00-b011-4391-aeeb-4a8d262bcb78
+    name: Confusion
+    category: Illusion
+    type: Mana
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Floods the target with conflicting sensory input, imposing a penalty on all tests.
+    sustainedBy: null
+  - kind: spell
+    id: 132e0f5b-e8b4-497e-873d-cc902ac53e61
+    name: Detect Enemies
+    category: Detection
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Detects living beings within range that intend harm to the subject.
+    sustainedBy: null
+spirits:
+  - kind: spirit
+    id: 7a33618a-e5b1-4f26-8d80-ce868e2b8b84
+    name: Old Grizzle
+    spiritType: beast
+    force: 5
+    services:
+      max: 4
+      used: 1
+    bound: true
+    optionalPowers:
+      - Fear
+    damage:
+      physical: 0
+      stun: 0
+    notes: Mossback's first bound spirit; protective of the team.
+  - kind: spirit
+    id: 6f83a0bf-68fd-450b-a501-1480d71e5df3
+    name: Whisper
+    spiritType: wind
+    force: 4
+    services:
+      max: 2
+      used: 0
+    bound: true
+    optionalPowers:
+      - Search
+    damage:
+      physical: 0
+      stun: 0
+  - kind: spirit
+    id: b03b4ec3-4706-4119-b5af-95c10d1cf91c
+    name: The Neighbor
+    spiritType: man
+    force: 6
+    services:
+      max: 1
+      used: 0
+    bound: false
+    optionalPowers:
+      - Innate Spell (Heal)
+    damage:
+      physical: 0
+      stun: 0
+    notes: Summoned for tonight's run only.
+  - kind: spirit
+    id: 9665afbd-933a-41bc-99c3-d9a9cc0ce9d7
+    name: Watcher
+    spiritType: watcher
+    force: 1
+    services:
+      max: 3
+      used: 1
+    bound: false
+    optionalPowers: []
+    damage:
+      physical: 0
+      stun: 0
+    notes: Watching the safehouse.
+powers: []
+complexForms: []
+sprites: []
+contacts:
+  - id: 4ab7242c-7263-4478-b126-48fbf74ab871
+    name: Grandmother Rain
+    role: Tribal Elder
+    connection: 3
+    loyalty: 4
+    skills:
+      - id: a8ea72de-3b6d-4826-87a1-312a8b0bff0d
+        name: Salish Politics
+        type: knowledge
+  - id: 4b31b75d-4405-4891-a955-b6d99ececdd4
+    name: Javier Ruiz
+    role: Fixer
+    connection: 3
+    loyalty: 2
+    skills: []
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 3100
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Summoning Focus (Beasts)
+    focusType: Summoning
+    force: 3
+    spiritType: beast
+    cost: 30000
+    availability:
+      rating: 9
+      restricted: true
+    id: 490a4fe3-d9ca-4f96-9393-f11aa6075964
+    kind: item
+  - itemType: magical
+    magicalType: focus
+    state: equipped
+    bonded: true
+    name: Binding Focus (Beasts)
+    focusType: Binding
+    force: 2
+    spiritType: beast
+    cost: 20000
+    availability:
+      rating: 6
+      restricted: true
+    id: 795b8d93-30d7-41b3-824e-69d4b725debd
+    kind: item
+  - name: Spirit Binding Reagents (40 drams)
+    itemType: other
+    quantity: 40
+    cost: 4000
+    id: c81031b0-4546-4ccc-9f02-58969cece11d
+    kind: item
+  - name: Hollis Grey
+    itemType: sin
+    isReal: false
+    rating: 3
+    cost: 3000
+    id: cfe8b454-c27d-4594-bfff-3415db492cf5
+    kind: item
+  - name: Meta Link
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 1
+    response: 1
+    signal: 1
+    system: 1
+    firewall: 1
+    cost: 1000
+    id: b709ea1d-ea6d-4fc2-b79d-85512e822529
+    kind: item
+  - name: Lined Coat
+    itemType: armor
+    state: equipped
+    ballistic: 6
+    impact: 4
+    cost: 700
+    id: 593811a4-1f28-4f73-9ff0-77698830cfa5
+    kind: item
+  - name: Survival Kit
+    itemType: other
+    cost: 200
+    id: d4f04e6f-d5e0-4759-8213-7d4294862e09
+    kind: item
