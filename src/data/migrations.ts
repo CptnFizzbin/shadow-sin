@@ -47,6 +47,7 @@ import v20261108_00_equipImplants from "./migrations/20261108_00_equipImplants.t
 import v20261108_01_addSpellSustainTarget from "./migrations/20261108_01_addSpellSustainTarget.ts"
 import v20261114_00_replaceEquippedStashedWithState from "./migrations/20261114_00_replaceEquippedStashedWithState.ts"
 import v20261115_00_addNotes from "./migrations/20261115_00_addNotes.ts"
+import v20261118_00_addSpellSustainedBy from "./migrations/20261118_00_addSpellSustainedBy.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -97,6 +98,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20261108_01_addSpellSustainTarget,
   v20261114_00_replaceEquippedStashedWithState,
   v20261115_00_addNotes,
+  v20261118_00_addSpellSustainedBy,
 ]
 
 migrations.forEach((migration, index) => {

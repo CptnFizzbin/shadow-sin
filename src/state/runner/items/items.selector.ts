@@ -12,6 +12,8 @@ import type { ArmorRating } from "#/system/model/items/armorData.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { ItemCatalog, ItemDataFor } from "#/system/model/items/itemUtils.ts"
 import { filterRecordByType, itemIsType } from "#/system/model/items/itemUtils.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { isFocusData } from "#/system/model/items/magicalData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
 export namespace ItemSelectors {
@@ -161,6 +163,14 @@ export namespace ItemSelectors {
       ViewerStateSelectors.selectItems,
       (items) => Object.values(filterRecordByType(items, ItemType.implant)).filter(isItemImplanted),
     )
+  }
+
+  export namespace Foci {
+    /** Every Focus the Runner owns, whatever its state. */
+    export const selectAll = createMemoizedSelector(
+      ViewerStateSelectors.selectItems,
+      (items) => Object.values(filterRecordByType(items, ItemType.magical)).filter(isFocusData),
+    ) satisfies ItemSelector<FocusData[]>
   }
 
   export namespace Software {

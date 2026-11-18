@@ -13,7 +13,7 @@ describe.concurrent("ContactPoolSelectors.selectLegworkGmTest", () => {
 
     // Act
     const pool = ContactPoolSelectors.selectLegworkGmTest(
-      { runner, entity: runner },
+      { runner, entity: runner, items: {} },
       { connection: 4 },
     )
 

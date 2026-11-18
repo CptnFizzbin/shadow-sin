@@ -6,6 +6,11 @@ import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx
 import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { MagicalType } from "#/system/model/items/magicalData.ts"
+import { FocusType } from "#/system/model/magic/focusData.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 import {
   SpellCategory,
@@ -17,6 +22,7 @@ import {
   SpellType,
 } from "#/system/model/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { SpellSustainSection } from "./spellSustainSection.tsx"
 
@@ -36,9 +42,24 @@ const increaseReflexes: SpellData = {
   sustained: false,
 }
 
-function renderWithSpell(spell: SpellData) {
+const sustainingFocus: FocusData = {
+  kind: EntityKind.item,
+  id: "00000000-0000-0000-0000-0000000000f1" as UUID,
+  name: "Health Sustaining Focus",
+  itemType: ItemType.magical,
+  magicalType: MagicalType.focus,
+  focusType: FocusType.Sustaining,
+  force: 3,
+  spellCategory: SpellCategory.Health,
+  bonded: true,
+  state: ItemState.available,
+  items: { parentId: null, childIds: [] },
+}
+
+function renderWithSpell(spell: SpellData, sustainingFocusId?: string | null) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.spells = [spell]
+    data._data_.items[sustainingFocus.id] = sustainingFocus
   } })
   const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
 
@@ -46,7 +67,7 @@ function renderWithSpell(spell: SpellData) {
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
 
-  render(<SpellSustainSection spellId={spell.id} />, { wrapper: Wrapper })
+  render(<SpellSustainSection spellId={spell.id} sustainingFocusId={sustainingFocusId} />, { wrapper: Wrapper })
 
   return store
 }
@@ -89,5 +110,34 @@ describe("SpellSustainSection", () => {
     // Assert
     expect(screen.queryByRole("button", { name: "Self" })).toBeNull()
     expect(screen.getByRole("button", { name: "Start Sustaining" })).toBeDefined()
+  })
+
+  it("starts sustaining the spell with the chosen focus holding it", async () => {
+    // Arrange
+    const store = renderWithSpell(increaseReflexes, sustainingFocus.id)
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Start Sustaining" }))
+
+    // Assert
+    await waitFor(() => expect(store.getState().runner.spells[0]).toMatchObject({
+      sustained: true,
+      sustainedBy: sustainingFocus.id,
+    }))
+    expect(screen.getByText("Held by Health Sustaining Focus — no sustaining penalty")).toBeDefined()
+  })
+
+  it("releases the focus when the spell stops being sustained", async () => {
+    // Arrange
+    const store = renderWithSpell({ ...increaseReflexes, sustained: true, sustainedBy: sustainingFocus.id })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Stop Sustaining" }))
+
+    // Assert
+    await waitFor(() => expect(store.getState().runner.spells[0]).toMatchObject({
+      sustained: false,
+      sustainedBy: null,
+    }))
   })
 })

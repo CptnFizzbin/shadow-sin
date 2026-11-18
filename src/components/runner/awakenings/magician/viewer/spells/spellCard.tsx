@@ -16,16 +16,18 @@ interface SpellCardProps {
   onOpen: () => void
   /** When provided on a sustainable Spell, adds a button to start or stop sustaining it. */
   onToggleSustained?: () => void
+  /** The name of the Sustaining Focus holding the Spell, while one does. */
+  sustainingFocusName?: string
 }
 
 /**
  * `SpellCard`'s own renderable frame — sits directly on `EntityCard`, with no intermediate
  * category tier: Spell has no subtypes the way Item does (Weapon, Armor, ...), so this is both
  * the category tier and the concrete typed card. Renders Type/Range/Duration/Drain/Damage via
- * `EntityCard.Stat`, plus a Sustained status (and, for a Spell with effects, who it's sustained on)
- * while the Spell is sustained.
+ * `EntityCard.Stat`, plus a Sustained status (and, for a Spell with effects, who it's sustained on,
+ * and the Sustaining Focus holding it, if any) while the Spell is sustained.
  */
-const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained }) => {
+const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained, sustainingFocusName }) => {
   const sustainAction = onToggleSustained && isSustainable(spell)
     ? {
         label: spell.sustained ? "Stop Sustaining" : "Sustain",
@@ -42,6 +44,7 @@ const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained })
           {hasSpellEffects(spell) && (
             <EntityCard.Stat label="Sustained on" value={spell.sustainedOn ?? SpellSustainTarget.Self} />
           )}
+          {sustainingFocusName && <EntityCard.Stat label="Held by" value={sustainingFocusName} />}
         </EntityCard.Layout.HeaderRow>
       )}
 

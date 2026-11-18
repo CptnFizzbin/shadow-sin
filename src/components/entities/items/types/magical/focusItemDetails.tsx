@@ -6,7 +6,6 @@ import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetails
 import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useFocusBonding } from "#/hooks/items/types/magical/useFocusBonding.tsx"
-import { useFocusEquipAction } from "#/hooks/items/types/magical/useFocusPrimaryAction.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -25,12 +24,11 @@ export interface FocusItemDetailsProps {
   onRemoved?: () => void
 }
 
-/** Item details view for a Focus, with Bond (or Equip / Unequip, once Bonded) as a quick action. */
+/** Item details view for a Focus, with Bond as a quick action until it's Bonded. */
 export const FocusItemDetails: FC<FocusItemDetailsProps> = ({ focus, onRemoved }) => {
   const dispatch = useRunnerStoreDispatch()
   const focusFormDialog = useFocusFormDialog()
   const focusBonding = useFocusBonding()
-  const equipAction = useFocusEquipAction(focus)
   const itemActionsDialog = useItemActionsDialogContext()
   const parent = useRunnerSelector(ItemSelectors.selectById, { itemId: focus.items.parentId ?? NullUuid })
 
@@ -64,16 +62,6 @@ export const FocusItemDetails: FC<FocusItemDetailsProps> = ({ focus, onRemoved }
             onClick={() => focusBonding.bond(focus)}
           />
         )}
-        {itemActionsDialog && focus.bonded && equipAction
-          ? (
-              <ItemDetailsSlot.QuickAction
-                label={equipAction.label}
-                icon={<equipAction.icon size={16} />}
-                disabled={equipAction.disabled}
-                onClick={equipAction.onClick}
-              />
-            )
-          : null}
 
         <ItemDetailsSlot.Section>
           <Label label="Effect" />

@@ -1,10 +1,11 @@
-import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
+import { getItemState, isItemOnHand } from "#/system/formulas/items/itemStateRules.ts"
 import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import type { DicePoolModEffect } from "#/system/model/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import type { FocusData } from "#/system/model/items/magicalData.ts"
 import { focusBondingKarmaMultiplier, focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
+import type { SpellData } from "#/system/model/magic/spellData.ts"
 
 /** The Karma it costs to Bond `focus`: its Force times its type's multiplier. */
 export function getFocusBondingCost(focus: Pick<FocusData, "focusType" | "force">): number {
@@ -54,6 +55,38 @@ export function getFocusGameEffects(focus: FocusData): DicePoolModEffect[] {
     case FocusType.Power:
       return [poolMod(DicePoolId.magicTests, force)]
   }
+}
+
+/**
+ * Whether `focus` can hold `spell` in place of its caster: a Bonded, On Hand Sustaining Focus with
+ * some Force, tied to the Spell's category.
+ */
+export function canFocusSustainSpell(
+  focus: Pick<FocusData, "focusType" | "force" | "spellCategory" | "bonded" | "state">,
+  spell: Pick<SpellData, "category">,
+): boolean {
+  return focus.focusType === FocusType.Sustaining
+    && focus.force > 0
+    && focus.spellCategory === spell.category
+    && !!focus.bonded
+    && isItemOnHand(focus)
+}
+
+/**
+ * The foci among `foci` free to hold `spell`: those that {@link canFocusSustainSpell can sustain it}
+ * and aren't already holding another sustained Spell among `spells`.
+ */
+export function getAvailableSustainingFoci(
+  foci: FocusData[],
+  spells: Pick<SpellData, "id" | "sustained" | "sustainedBy">[],
+  spell: Pick<SpellData, "id" | "category">,
+): FocusData[] {
+  const heldFocusIds = new Set(
+    spells
+      .filter((other) => other.id !== spell.id && other.sustained === true && other.sustainedBy)
+      .map((other) => other.sustainedBy),
+  )
+  return foci.filter((focus) => !heldFocusIds.has(focus.id) && canFocusSustainSpell(focus, spell))
 }
 
 /** How a Runner's Bonded foci measure up against the Bonded Foci Limit and the Foci Force Limit. */

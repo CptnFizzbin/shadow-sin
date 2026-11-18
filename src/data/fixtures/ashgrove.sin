@@ -2,7 +2,7 @@ kind: runner
 id: 01a1eed2-3f2e-75c6-8fac-ff53fc65a494
 name: Ashgrove
 _meta_:
-  sinVersion: '2026-11-15T18:06:00Z'
+  sinVersion: '2026-11-18T13:00:00Z'
   appVersion: null
   lastExportDate: null
 profile:
@@ -127,6 +127,7 @@ spells:
     duration: Instantaneous
     voluntaryTargetsOnly: false
     description: A direct mana attack against the target's life force. Only affects living or magical beings.
+    sustainedBy: null
   - kind: spell
     id: 384fd078-12a5-4b59-87ea-651127f45261
     name: Stunball
@@ -141,6 +142,7 @@ spells:
     duration: Instantaneous
     voluntaryTargetsOnly: false
     description: An area-effect mana blast that deals Stun damage to everyone in the radius.
+    sustainedBy: null
   - kind: spell
     id: dbba6f91-1f29-4fc7-9256-0fb02b246e21
     name: Detect Enemies
@@ -155,6 +157,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: false
     description: Detects living beings within range that intend harm to the subject.
+    sustainedBy: null
   - kind: spell
     id: fcd8ef23-48d9-4554-b2d5-24d756b117ca
     name: Heal
@@ -169,6 +172,7 @@ spells:
     duration: Permanent
     voluntaryTargetsOnly: true
     description: Heals Physical damage; each net hit removes one box.
+    sustainedBy: null
   - kind: spell
     id: e0f91ff9-b6f1-417d-a1b3-2a33f150fd40
     name: Armor
@@ -183,6 +187,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: true
     description: Wraps the subject in a glowing field that adds Ballistic and Impact armor.
+    sustainedBy: null
   - kind: spell
     id: d60b0ea3-9d10-48a4-8827-48a8154a6098
     name: Improved Invisibility
@@ -197,6 +202,67 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: true
     description: Renders the subject invisible to normal vision and technological sensors.
+    sustainedBy: null
+  - kind: spell
+    id: e4449010-b71e-4033-a0a1-79790cefbfc3
+    name: Mind Probe
+    category: Detection
+    type: Mana
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: false
+    description: Reads the subject's surface thoughts, and with enough hits their memories and subconscious.
+    sustainedBy: null
+  - kind: spell
+    id: ecb286dd-1ffb-4dfd-82b4-028f4cfcd13c
+    name: Increase Reflexes
+    category: Health
+    type: Physical
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: 0
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Heightens the subject's reflexes, granting extra Initiative Passes.
+    sustainedBy: null
+  - kind: spell
+    id: 94a0380d-9b1e-4b73-861a-706593d3aff7
+    name: Physical Mask
+    category: Illusion
+    type: Physical
+    range: Touch
+    damage: Stun
+    drain:
+      type: Force
+      value: -1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Cloaks the subject in an illusory appearance of the caster's choosing, fooling both eyes and cameras.
+    sustainedBy: null
+  - kind: spell
+    id: d341f475-6cf8-45e6-a078-58ed626ccb21
+    name: Levitate
+    category: Manipulation
+    type: Physical
+    range: LoS
+    damage: Stun
+    drain:
+      type: Force
+      value: 1
+    dealsDamage: false
+    duration: Sustained
+    voluntaryTargetsOnly: true
+    description: Lifts the subject into the air and lets the caster move them through it.
+    sustainedBy: null
 spirits: []
 powers: []
 complexForms: []

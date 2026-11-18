@@ -69,6 +69,11 @@ export interface SpellData {
   sustained?: boolean
   /** Who the Spell is sustained on; absent means `Self`. */
   sustainedOn?: SpellSustainTarget
+  /**
+   * The id of the Sustaining Focus holding the Spell while it is sustained, or `null` (or absent)
+   * when the caster sustains it themselves.
+   */
+  sustainedBy?: string | null
 }
 
 export const SpellDataSchema = z.object({
@@ -92,4 +97,5 @@ export const SpellDataSchema = z.object({
   effects: GameEffectDataSchema.array().optional(),
   sustained: z.boolean().optional(),
   sustainedOn: z.enum(SpellSustainTarget).optional(),
+  sustainedBy: z.uuid().nullable().optional(),
 }) satisfies z.ZodType<SpellData>

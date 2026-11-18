@@ -2,7 +2,7 @@ kind: runner
 id: 01a1eed2-3f2f-73aa-b7cf-b111e4ab8c4a
 name: Thistle
 _meta_:
-  sinVersion: '2026-11-15T18:06:00Z'
+  sinVersion: '2026-11-18T13:00:00Z'
   appVersion: null
   lastExportDate: null
 profile:
@@ -137,6 +137,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: false
     description: Floods the target with conflicting sensory input, imposing a penalty on all tests.
+    sustainedBy: null
   - kind: spell
     id: 1f7f5669-c638-4c03-9e0d-2d4e07af939d
     name: Improved Invisibility
@@ -151,6 +152,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: true
     description: Renders the subject invisible to normal vision and technological sensors.
+    sustainedBy: null
   - kind: spell
     id: 11b9a792-c908-40c8-aecf-fe4f3c552373
     name: Levitate
@@ -165,6 +167,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: false
     description: Lifts the subject into the air and moves it at the caster's direction.
+    sustainedBy: null
 spirits: []
 powers:
   - kind: adeptPower

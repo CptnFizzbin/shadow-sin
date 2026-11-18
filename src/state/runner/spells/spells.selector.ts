@@ -1,15 +1,41 @@
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { sustainingPenalty } from "#/system/formulas/magic/spellSustaining.ts"
+import { getAvailableSustainingFoci } from "#/system/formulas/magic/focusRules.ts"
+import { getSustainingFocus, sustainingPenalty } from "#/system/formulas/magic/spellSustaining.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
 import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
 
 const NO_GROUPS: DiceGroup[] = []
+const NO_FOCI: FocusData[] = []
 
 export namespace SpellsSelectors {
   export const selectAll = createMemoizedSelector(
     ViewerStateSelectors.selectRunner,
     (runner) => runner.spells,
+  )
+
+  export const selectById = createMemoizedSelector(
+    selectAll,
+    SelectorOptions.spellId,
+    (spells, spellId) => spells.find((spell) => spell.id === spellId),
+  )
+
+  /** The Sustaining Foci free to hold the Spell at `spellId`, including one already holding it. */
+  export const selectAvailableSustainingFoci = createMemoizedSelector(
+    selectAll,
+    selectById,
+    ItemSelectors.Foci.selectAll,
+    (spells, spell, foci) => (spell ? getAvailableSustainingFoci(foci, spells, spell) : NO_FOCI),
+  )
+
+  /** The Sustaining Focus holding the Spell at `spellId`, or `undefined` while its caster sustains it. */
+  export const selectSustainingFocus = createMemoizedSelector(
+    selectById,
+    ItemSelectors.Foci.selectAll,
+    (spell, foci) => (spell?.sustained ? getSustainingFocus(spell, foci) : undefined),
   )
 
   /** The Dice Groups spells contribute to a dice pool. See `createDicePoolSelector`. */
@@ -18,10 +44,11 @@ export namespace SpellsSelectors {
     export const selectSustainingPenalty = createMemoizedSelector(
       ViewerStateSelectors.selectEntity,
       selectAll,
-      (entity, spells): DiceGroup[] => {
+      ItemSelectors.Foci.selectAll,
+      (entity, spells, foci): DiceGroup[] => {
         // Spells belong to the Runner, so an Agent or other entity in scope never takes the penalty.
         if (!isRunnerWithBiology(entity)) return NO_GROUPS
-        const penalty = sustainingPenalty(spells)
+        const penalty = sustainingPenalty(spells, foci)
         return penalty === 0 ? NO_GROUPS : [{ name: "Sustaining", size: penalty, type: "penalty" }]
       },
     )

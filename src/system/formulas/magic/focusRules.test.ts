@@ -12,7 +12,14 @@ import { SpellCategory } from "#/system/model/magic/spellData.ts"
 import { SpiritType } from "#/system/model/magic/spiritData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { focusEffectsApply, getBondedFociLimits, getFocusBondingCost, getFocusGameEffects } from "./focusRules.ts"
+import {
+  canFocusSustainSpell,
+  focusEffectsApply,
+  getAvailableSustainingFoci,
+  getBondedFociLimits,
+  getFocusBondingCost,
+  getFocusGameEffects,
+} from "./focusRules.ts"
 
 const makeFocus = (overrides: Partial<FocusData> = {}): FocusData => ({
   kind: EntityKind.item,
@@ -185,5 +192,78 @@ describe.concurrent("getBondedFociLimits", () => {
     // Assert
     expect(limits.isOverCountLimit).toBe(false)
     expect(limits.isOverForceLimit).toBe(true)
+  })
+})
+
+const makeSustainingFocus = (overrides: Partial<FocusData> = {}): FocusData => makeFocus({
+  focusType: FocusType.Sustaining,
+  spellCategory: SpellCategory.Health,
+  bonded: true,
+  state: ItemState.available,
+  ...overrides,
+})
+
+describe.concurrent("canFocusSustainSpell", () => {
+  it.each([ItemState.available, ItemState.equipped])("holds a spell of its category while bonded and %s", (state) => {
+    // Arrange
+    const focus = makeSustainingFocus({ state })
+
+    // Act
+    const result = canFocusSustainSpell(focus, { category: SpellCategory.Health })
+
+    // Assert
+    expect(result).toBe(true)
+  })
+
+  it.each<[string, Partial<FocusData>]>([
+    ["is not bonded", { bonded: false }],
+    ["is stashed", { state: ItemState.stashed }],
+    ["is tied to another category", { spellCategory: SpellCategory.Combat }],
+    ["is not a Sustaining Focus", { focusType: FocusType.Spellcasting }],
+    ["has no Force", { force: 0 }],
+  ])("can't hold a spell when the focus %s", (_, overrides) => {
+    // Arrange
+    const focus = makeSustainingFocus(overrides)
+
+    // Act
+    const result = canFocusSustainSpell(focus, { category: SpellCategory.Health })
+
+    // Assert
+    expect(result).toBe(false)
+  })
+})
+
+describe.concurrent("getAvailableSustainingFoci", () => {
+  it("leaves out foci already holding another sustained spell", () => {
+    // Arrange
+    const free = makeSustainingFocus()
+    const held = makeSustainingFocus()
+    const spells = [{ id: "other", sustained: true, sustainedBy: held.id }]
+
+    // Act
+    const result = getAvailableSustainingFoci([free, held], spells, { id: "spell", category: SpellCategory.Health })
+
+    // Assert
+    expect(result).toEqual([free])
+  })
+
+  it("keeps the focus already holding the spell itself, and one named by a spell no longer sustained", () => {
+    // Arrange
+    const ownFocus = makeSustainingFocus()
+    const releasedFocus = makeSustainingFocus()
+    const spells = [
+      { id: "spell", sustained: true, sustainedBy: ownFocus.id },
+      { id: "other", sustained: false, sustainedBy: releasedFocus.id },
+    ]
+
+    // Act
+    const result = getAvailableSustainingFoci(
+      [ownFocus, releasedFocus],
+      spells,
+      { id: "spell", category: SpellCategory.Health },
+    )
+
+    // Assert
+    expect(result).toEqual([ownFocus, releasedFocus])
   })
 })

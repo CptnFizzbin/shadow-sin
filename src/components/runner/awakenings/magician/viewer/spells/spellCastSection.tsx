@@ -20,26 +20,44 @@ import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { TraditionSelectors } from "#/state/runner/tradition/tradition.selector.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 
 import { DrainResistanceDicePool } from "./drainResistanceDicePool.tsx"
 import { computeDrainValue } from "./spellDrainFormula.ts"
 import { SpellcastingDicePool } from "./spellcastingDicePool.tsx"
+import { SustainingFocusSelect } from "./sustainingFocusSelect.tsx"
 
 interface SpellCastSectionProps {
   spell: SpellData
   onClose: () => void
+  /** The Sustaining Foci free to hold the Spell; the focus picker shows only when there are some. */
+  sustainingFoci?: FocusData[]
+  /** The focus chosen to hold the Spell, which caps its Force. */
+  sustainingFocus?: FocusData
+  onSustainingFocusChange?: (focusId: string | null) => void
+  /** Disables the focus picker, as while the Spell is already being sustained. */
+  sustainingFocusLocked?: boolean
 }
 
-export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
+export const SpellCastSection: FC<SpellCastSectionProps> = ({
+  spell,
+  onClose,
+  sustainingFoci = [],
+  sustainingFocus,
+  onSustainingFocusChange,
+  sustainingFocusLocked,
+}) => {
   const magicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.magic })
   const tradition = useRunnerSelector(TraditionSelectors.select)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
-  const [force, setForce] = useState<number>(Math.max(1, magicAttr))
+  const [chosenForce, setForce] = useState<number>(Math.max(1, magicAttr))
   const [drainResistanceHits, setDrainResistanceHits] = useState<number>(0)
 
-  const maxForce = Math.max(1, magicAttr * 2)
+  const maxForce = Math.max(1, Math.min(magicAttr * 2, sustainingFocus?.force ?? Infinity))
+  // Choosing a focus can lower the cap below the Force already picked, so clamp rather than reset it.
+  const force = Math.min(chosenForce, maxForce)
   const isOvercasting = force > magicAttr
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
@@ -96,6 +114,15 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
           )}
         </Stack>
 
+        {sustainingFoci.length > 0 && onSustainingFocusChange && (
+          <SustainingFocusSelect
+            foci={sustainingFoci}
+            value={sustainingFocus?.id ?? null}
+            onChange={onSustainingFocusChange}
+            disabled={sustainingFocusLocked}
+          />
+        )}
+
         <CounterInput
           id="spell-force-select"
           label="Force"
@@ -105,7 +132,11 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
           max={maxForce}
           value={force}
           onChange={(newValue) => setForce(newValue ?? 1)}
-          helperText={`Magic ${magicAttr}${isOvercasting ? " — overcasting" : ""}`}
+          helperText={[
+            `Magic ${magicAttr}`,
+            isOvercasting && "overcasting",
+            sustainingFocus && `capped by ${sustainingFocus.name} (Force ${sustainingFocus.force})`,
+          ].filter(Boolean).join(" — ")}
         />
 
         <Grid container spacing={1} columns={2}>

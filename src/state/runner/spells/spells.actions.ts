@@ -6,7 +6,12 @@ import { NullUuid } from "#/utils/uuidUtils.ts"
 export const addSpell = createAction<SpellData>("spells/add")
 export const updateSpell = createAction<SpellData>("spells/update")
 export const removeSpell = createAction<string>("spells/remove")
-export const startSustainingSpell = createAction<{ id: string, target?: SpellSustainTarget }>("spells/startSustaining")
+export const startSustainingSpell = createAction<{
+  id: string
+  target?: SpellSustainTarget
+  /** The Sustaining Focus to hold the Spell; omitted or `null` means the caster sustains it. */
+  sustainedBy?: string | null
+}>("spells/startSustaining")
 export const stopSustainingSpell = createAction<string>("spells/stopSustaining")
 export const setSpellSustainTarget = createAction<{ id: string, target: SpellSustainTarget }>("spells/setSustainTarget")
 

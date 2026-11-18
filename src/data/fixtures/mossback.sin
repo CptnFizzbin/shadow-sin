@@ -2,7 +2,7 @@ kind: runner
 id: 01a1eed2-3f2e-75c6-8fad-0332fec01fc0
 name: Mossback
 _meta_:
-  sinVersion: '2026-11-15T18:06:00Z'
+  sinVersion: '2026-11-18T13:00:00Z'
   appVersion: null
   lastExportDate: null
 profile:
@@ -127,6 +127,7 @@ spells:
     duration: Permanent
     voluntaryTargetsOnly: true
     description: Heals Physical damage; each net hit removes one box.
+    sustainedBy: null
   - kind: spell
     id: 9a2e3e00-b011-4391-aeeb-4a8d262bcb78
     name: Confusion
@@ -141,6 +142,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: false
     description: Floods the target with conflicting sensory input, imposing a penalty on all tests.
+    sustainedBy: null
   - kind: spell
     id: 132e0f5b-e8b4-497e-873d-cc902ac53e61
     name: Detect Enemies
@@ -155,6 +157,7 @@ spells:
     duration: Sustained
     voluntaryTargetsOnly: false
     description: Detects living beings within range that intend harm to the subject.
+    sustainedBy: null
 spirits:
   - kind: spirit
     id: 7a33618a-e5b1-4f26-8d80-ce868e2b8b84

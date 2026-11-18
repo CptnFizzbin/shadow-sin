@@ -7,6 +7,11 @@ import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/system/model/items/itemState.ts"
+import { ItemType } from "#/system/model/items/itemType.ts"
+import type { FocusData } from "#/system/model/items/magicalData.ts"
+import { MagicalType } from "#/system/model/items/magicalData.ts"
+import { FocusType } from "#/system/model/magic/focusData.ts"
 import type { SpellData } from "#/system/model/magic/spellData.ts"
 import {
   SpellCategory,
@@ -17,6 +22,7 @@ import {
   SpellType,
 } from "#/system/model/magic/spellData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { SpellCastSection } from "./spellCastSection.tsx"
 
@@ -36,7 +42,21 @@ const manaball: SpellData = {
   sustained: false,
 }
 
-function renderWithMagic(magic: number) {
+const sustainingFocus: FocusData = {
+  kind: EntityKind.item,
+  id: "00000000-0000-0000-0000-0000000000f1" as UUID,
+  name: "Combat Sustaining Focus",
+  itemType: ItemType.magical,
+  magicalType: MagicalType.focus,
+  focusType: FocusType.Sustaining,
+  force: 2,
+  spellCategory: SpellCategory.Combat,
+  bonded: true,
+  state: ItemState.available,
+  items: { parentId: null, childIds: [] },
+}
+
+function renderWithMagic(magic: number, focusProps: Partial<Parameters<typeof SpellCastSection>[0]> = {}) {
   const runnerData = runnerDataFactory({ afterBuild: (data) => {
     data.attributes[AttributeKey.magic] = magic
   } })
@@ -47,7 +67,7 @@ function renderWithMagic(magic: number) {
   )
 
   const onClose = vi.fn()
-  render(<SpellCastSection spell={manaball} onClose={onClose} />, { wrapper: Wrapper })
+  render(<SpellCastSection spell={manaball} onClose={onClose} {...focusProps} />, { wrapper: Wrapper })
 
   return { store, onClose }
 }
@@ -95,5 +115,22 @@ describe("SpellCastSection", () => {
     // Assert
     await waitFor(() => expect(store.getState().runner.damage.stun).toBe(1))
     expect(onClose).toHaveBeenCalled()
+  })
+
+  it("caps Force at the Force of the chosen Sustaining Focus", () => {
+    // Arrange / Act
+    renderWithMagic(6, { sustainingFoci: [sustainingFocus], sustainingFocus, onSustainingFocusChange: vi.fn() })
+
+    // Assert — Force 6 is capped to the focus's 2, so DV = floor(2/2) + 0 = 1
+    expect(screen.getByRole("button", { name: "Apply 1 drain" })).toBeDefined()
+    expect(screen.getByText(/capped by Combat Sustaining Focus \(Force 2\)/)).toBeDefined()
+  })
+
+  it("hides the focus picker when no Sustaining Focus is free", () => {
+    // Arrange / Act
+    renderWithMagic(6, { onSustainingFocusChange: vi.fn() })
+
+    // Assert
+    expect(screen.queryByLabelText("Sustaining Focus")).toBeNull()
   })
 })

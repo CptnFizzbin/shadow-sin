@@ -2,7 +2,7 @@ kind: runner
 id: 01a1eed2-3f2e-75c6-8fac-f89d9e5f0ac8
 name: Kestrel
 _meta_:
-  sinVersion: '2026-11-15T18:06:00Z'
+  sinVersion: '2026-11-18T13:00:00Z'
   appVersion: null
   lastExportDate: null
 profile:
