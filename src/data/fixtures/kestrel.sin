@@ -1,0 +1,240 @@
+kind: runner
+id: 01a1eed2-3f2e-75c6-8fac-f89d9e5f0ac8
+name: Kestrel
+_meta_:
+  sinVersion: '2026-11-15T18:06:00Z'
+  appVersion: null
+  lastExportDate: null
+profile:
+  alias: Kestrel
+  name: Mei-Lin Zhao
+  archetype: Adept
+  description: Physical adept trained in a Hong Kong wuxia school. Fists, speed, and a quiet devotion to perfection.
+  personality: null
+lifestyle:
+  monthsPaid: 3
+  name: Low
+  upkeep: 2000
+biology:
+  metatype: Human
+  awakening: Adept
+  gender: null
+  age: null
+  weight: null
+  height: null
+qualities:
+  - kind: quality
+    id: 45fb24e3-1bcd-4190-9398-ecc344d98c20
+    name: Way of the Adept (Warrior)
+    type: positive
+    bpValue: 20
+  - kind: quality
+    id: 550f2485-ce73-45ef-9ac7-ac884b3ecfdc
+    name: Spirit Bane (Spirits of Man)
+    type: negative
+    bpValue: 10
+attributes:
+  body: 4
+  agility: 5
+  reaction: 5
+  strength: 4
+  charisma: 3
+  intuition: 4
+  logic: 2
+  willpower: 4
+  edge: 4
+  essence: 6
+  magic: 6
+  resonance: 0
+edge:
+  current: 4
+damage:
+  physical: 0
+  stun: 0
+  matrix: 0
+gameState:
+  matrix:
+    knownNodes: []
+    activePrograms: []
+skills:
+  activeSkills:
+    - name: Unarmed Combat
+      rating: 6
+      specialization: Martial Arts
+    - name: Dodge
+      rating: 4
+    - name: Perception
+      rating: 4
+    - name: Thrown Weapons
+      rating: 3
+    - name: Blades
+      rating: 3
+  skillGroups:
+    - name: Athletics
+      rating: 4
+    - name: Stealth
+      rating: 3
+  knowledgeSkills:
+    - id: 26db5891-8c6e-4b82-a365-8fddc253fabe
+      name: Martial Arts Styles
+      rating: 5
+    - id: f4d7ad54-a153-491d-a496-dd78418c0920
+      name: Triads
+      rating: 3
+    - id: 4988f932-c8c0-4695-9ef1-a291c6de003a
+      name: Wuxia Cinema
+      rating: 2
+  languageSkills:
+    - id: 22fba592-bddf-4c73-b76a-0fe51c768e7b
+      name: Cantonese
+      isNative: true
+    - id: 291ae61d-130e-44b3-a5d6-fc3de0905a74
+      name: English
+      isNative: false
+      rating: 4
+    - id: dba48189-785a-4aa2-9673-e94e6584cd0c
+      name: Mandarin
+      isNative: false
+      rating: 3
+initiative:
+  passesCompleted: []
+tradition: null
+spells: []
+spirits: []
+powers:
+  - kind: adeptPower
+    type: adeptPower
+    id: 9b37adcf-8329-40eb-85ee-a858a7228302
+    name: Improved Reflexes
+    rating: 2
+    costPerRating: 1.25
+    effects:
+      - type: attrMod
+        target: reaction
+        value: 2
+      - type: extraInitiativePasses
+        value: 2
+  - kind: adeptPower
+    type: adeptPower
+    id: 4ed7e330-a227-478e-b0d6-ef77402830a5
+    name: Killing Hands
+    rating: 1
+    costPerRating: 0.5
+    effects: []
+    description: Unarmed attacks may deal Physical damage and affect dual-natured critters.
+  - kind: adeptPower
+    type: adeptPower
+    id: ecca0910-291b-4ce7-a687-8859d5cf164d
+    name: Improved Ability (Unarmed Combat)
+    rating: 2
+    costPerRating: 0.5
+    effects:
+      - type: skillMod
+        target: Unarmed Combat
+        value: 2
+  - kind: adeptPower
+    type: adeptPower
+    id: 0f6b166f-e759-4489-9e82-b750fe997731
+    name: Critical Strike
+    rating: 2
+    costPerRating: 0.25
+    effects: []
+    description: +1 DV per rating to unarmed attacks.
+  - kind: adeptPower
+    type: adeptPower
+    id: d760eb96-b367-4935-8b06-a63cbeee93bf
+    name: Mystic Armor
+    rating: 1
+    costPerRating: 0.5
+    effects: []
+    description: +1 Ballistic / +1 Impact armor per rating, also against astral attacks.
+  - kind: adeptPower
+    type: adeptPower
+    id: 6ff1f73d-40b5-458f-9cad-fb15913df01c
+    name: Enhanced Perception
+    rating: 1
+    costPerRating: 0.5
+    effects:
+      - type: skillMod
+        target: Perception
+        value: 1
+complexForms: []
+sprites: []
+contacts:
+  - id: 910abcb0-e584-4ace-8cb4-65d737e241d4
+    name: Master Lo
+    role: Dojo Sifu
+    connection: 2
+    loyalty: 5
+    skills:
+      - id: 4753adbb-4152-4367-99e9-4cc47839cfdd
+        name: Martial Arts
+        type: knowledge
+  - id: 6b5f0f8c-2b43-4912-83f7-340395002ecd
+    name: Kenji
+    role: Street Doc
+    connection: 2
+    loyalty: 2
+    skills: []
+extendedTests: []
+notes: ''
+initiateGrade: 0
+submersionGrade: 0
+karma:
+  total: 0
+  current: 0
+  log: []
+reputation:
+  ledger: []
+nuyen:
+  current: 2600
+  loans: []
+items:
+  parentId: null
+  childIds: []
+_data_:
+  featureFlags: {}
+gear:
+  - name: Michelle Zhao
+    itemType: sin
+    isReal: false
+    rating: 3
+    cost: 3000
+    id: 9b156c16-0768-4654-8b64-41cc8ffdc82e
+    kind: item
+  - name: Erika Elite
+    itemType: device
+    deviceType: commlink
+    state: equipped
+    deviceRating: 3
+    response: 3
+    signal: 3
+    system: 3
+    firewall: 3
+    cost: 3000
+    id: b063fd1e-004a-43d7-a246-205bcc4d0cfb
+    kind: item
+  - name: Lined Coat
+    itemType: armor
+    state: equipped
+    ballistic: 6
+    impact: 4
+    cost: 700
+    id: c2ea7eb6-2da4-4e87-ac01-e7ea217ae6ed
+    kind: item
+  - name: Shuriken (x6)
+    itemType: weapon
+    weaponType: thrown
+    skill: Thrown Weapons
+    attribute: agility
+    dmg: (STR/2+1)P
+    quantity: 6
+    state: equipped
+    cost: 180
+    id: 255a9753-b180-4663-ba8a-324cc5b28f65
+    kind: item
+  - name: Climbing Gear
+    itemType: other
+    cost: 200
+    id: fd9cf7c3-ffef-4269-8827-076c7a36d523
+    kind: item

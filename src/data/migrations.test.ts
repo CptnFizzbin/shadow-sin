@@ -27,8 +27,7 @@ import LegacyV1Yaml from "#testUtils/fixtures/characters/legacy_v1.sin?raw"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { applyMigrations } from "./applyMigrations.ts"
-import { Artemis } from "./fixtures/artemis.ts"
-import { Hexen } from "./fixtures/hexen.ts"
+import { fixtureRunnerYaml } from "./fixtures/fixtureRunners.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "./migrations.ts"
 
 // `legacy_v0.sin`/`legacy_v1.sin` are full character-sheet snapshots at specific migration
@@ -247,9 +246,11 @@ describe.concurrent("runner migrations + yaml round-trip", () => {
 })
 
 describe.concurrent("runner migrations + fixtures", () => {
-  const fixtures: Record<string, RunnerData> = { Artemis, Hexen }
+  const fixtures: Record<string, RunnerData> = Object.fromEntries(
+    Object.entries(fixtureRunnerYaml).map(([name, yaml]) => [name, yamlToRunnerData(yaml)]),
+  )
 
-  // Both fixtures already carry `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting both
+  // Every fixture already carries `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting both
   // version fields forces every registered migration to run — first against the raw fixture, then
   // again against its own output, so the second pass exercises every migration's idempotency
   // guard. Deleting `appVersion` too matters on the second pass: by then it holds the live
@@ -308,7 +309,7 @@ const sinFixtureFiles = import.meta.glob("../../testUtils/fixtures/characters/*.
 
 describe.concurrent("runner migrations + every character fixture", () => {
   // Force every migration to run from scratch, regardless of what `_meta_` a fixture already
-  // carries — Artemis/Hexen already sit at `LATEST_MIGRATION_TIMESTAMP`, so without this a bare
+  // carries — the dev fixture Runners already sit at `LATEST_MIGRATION_TIMESTAMP`, so without this a bare
   // `applyMigrations` would run nothing and skip every defensive default a migration backfills
   // (see `migrateForcingRerun` above, which does the same for the same reason).
   function fullyMigrate(runner: object): RunnerData {
@@ -332,8 +333,7 @@ describe.concurrent("runner migrations + every character fixture", () => {
     }),
   )
 
-  fixtureLoaders.Artemis = runnerDataToYaml(Artemis)
-  fixtureLoaders.Hexen = runnerDataToYaml(Hexen)
+  Object.assign(fixtureLoaders, fixtureRunnerYaml)
 
   it.each(Object.entries(fixtureLoaders))(
     "%s loads and validates against the latest schema",
