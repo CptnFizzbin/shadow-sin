@@ -149,12 +149,13 @@ Before calling **any** change done — code, docs or config alike — run the `a
 spawn subagents; where none can be spawned, skip this step. If the harness hasn't registered the profile (e.g. a local
 session where the `.claude/agents` symlink hook didn't run), spawn a generic subagent and give it that file as its
 instructions. The reviewer is read-only and reports architecture findings only (ADRs, `AGENTS.md` rules,
-`GLOSSARY.md`, `src/` container placement).
+`GLOSSARY.md`, `src/` container placement) plus structural complexity worth simplifying.
 
 - **Fix or justify** every finding under *Blocking*: fix it, or say in your final report why you left it.
 - **Never edit an ADR to silence a finding.** If you believe the ADR is wrong rather than your change, leave the
   finding unfixed and explain the disagreement in your final report so the human can decide.
-- *Undocumented decisions* and *Pre-existing* findings are non-blocking — mention them in your final report.
+- *Undocumented decisions*, *Pre-existing* and *Simplification opportunities* findings are non-blocking — mention
+  them in your final report.
 - After fixing, re-run the reviewer **once** on the updated change. Report anything still open as justified or
   unresolved; don't loop.
 
