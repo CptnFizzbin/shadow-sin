@@ -17,8 +17,8 @@ Flags are defined in registries built by `createFlagRegistry(namespace, flags)`:
 (`"optionalRules"`) and one for House Rules (`"houseRules"`). The namespace is the kind of rule, so a flag's `ref` is
 `<namespace>.<key>` (e.g. `houseRules.karma.nuyenExchange`) and there is no separate `type` field. Every flag has a
 `default` that is a string or a boolean, may list `options` (`{ value, label }`), and keeps its `name`,
-`description` and optional `source` in the registry for display. `source` is optional for both kinds of rule: a House
-Rule may cite one when it adapts a published rule.
+`description` and optional `source` in the registry for display. `source` is optional on every entry, whatever its
+namespace.
 
 Callers pass the whole registry entry to read a flag (`useFeatureFlag(houseRules["karma.nuyenExchange"])`), which
 returns the stored value for its `ref`, else its `default`, typed by the `default`.
