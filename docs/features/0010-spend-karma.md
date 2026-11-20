@@ -42,12 +42,12 @@ Integration](#optional-rules-integration) below.
       separate decision.
 
 - [x] **Cost-formula deviations from SR4A — fix to SR4A defaults; route any intentional
-      group-level deviation through `optionalRulesRegistry`.** _v1 shipped:_ every cost in
+      group-level deviation through the `optionalRules` flag registry.** _v1 shipped:_ every cost in
       `improvementUtils.ts` now matches the SR4A advancement table (wiki:
       `rules/character-improvement.md`) by default. Group-level deviations remain a
       future hook through
-      [`optionalRulesRegistry.ts`](../../src/system/featureFlags/optionalRulesRegistry.ts)
-      (e.g. `cheaperSkillGroupAdvancement: createFlag<boolean>({ defaultValue: false, … })`)
+      [`optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
+      (e.g. `"karma.improvement.cheaperSkillGroups": { name: …, default: false }`)
       branched on inside `getImprovementCost`.
   - ✅ Fixed: `skillGroupIncrease` per-step → **`× 5`** (was `× 2`)
   - ✅ Fixed: `skillIncrease` for Knowledge / Language → **`× 1`** (was `× 2`)
@@ -123,7 +123,7 @@ Integration](#optional-rules-integration) below.
 - **SR4A is the rulebook source of truth.** Every cost formula in `improvementUtils.ts`
   must match the SR4A advancement table (wiki: `rules/character-improvement.md`) by
   default. Group-level deviations live in
-  [`optionalRulesRegistry`](../../src/system/featureFlags/optionalRulesRegistry.ts) and are
+  [`optionalRules`](../../src/system/model/featureFlags/optionalRules.ts) and are
   read at call time — they do not get hardcoded into `improvementUtils.ts`. See
   [Optional Rules Integration](#optional-rules-integration).
 - **The Spend Karma dialog lives on the character-sheet view, not the builder.** The view
@@ -243,21 +243,24 @@ Not implemented in v1. The spec is locked here so the future implementer doesn't
 
 Any deliberate deviation from SR4A (cheaper skill groups, no rating caps, karma-learnable
 native languages, etc.) is expressed as an entry in
-[`src/system/featureFlags/optionalRulesRegistry.ts`](../../src/system/featureFlags/optionalRulesRegistry.ts)
+[`src/system/model/featureFlags/optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
 rather than hardcoded in `improvementUtils.ts`. The pattern from
 [#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) /
 [#298](https://github.com/CptnFizzbin/shadow-sin/pull/298):
 
-1. **Register the variant** — add a `createFlag<Value>({ name, description, source: { book,
-   page }, defaultValue })` entry. **`defaultValue` must produce stock SR4A behaviour** so
-   absence of the flag is indistinguishable from the rulebook (per [ADR
+1. **Register the variant**: add an entry to the `createFlagRegistry("optionalRules", …)`
+   registry: `"<area>.<feature>.<flag>": { name, description, source: { book, page }, default }`.
+   **`default` must produce stock SR4A behaviour**, so absence of an override is
+   indistinguishable from the rulebook (per [ADR
    0002 — feature-flags-design](../adr/0002-feature-flags-design.md)).
-2. **Read at cost-calculation time** — `getImprovementCost` branches on
-   `useGameConfig().config.featureFlags?.optionalRules?.<key>` (with the runner-level
-   override at `characterSheet.featureFlags?.optionalRules?.<key>` taking precedence once
-   per-runner UI is wired).
-3. **Don't pollute the entry shape** — `ImprovementEntry` itself stays SR4A-typed; the
-   pricing branch is a pure function of `(entry, optionalRules)`.
+2. **Read at cost-calculation time**: read the flag by passing its registry entry
+   (`useFeatureFlag(optionalRules["<key>"])` in a component, or
+   `FeatureFlagSelectors.select(state, { flag })` outside React), which resolves the Runner's
+   override at the entry's `ref` or falls back to its `default` (per [ADR
+   0022 — flat-feature-flag-refs](../adr/0022-flat-feature-flag-refs.md)). `getImprovementCost`
+   receives the resolved value as an argument rather than reading state itself.
+3. **Don't pollute the entry shape**: `ImprovementEntry` itself stays SR4A-typed; the
+   pricing branch is a pure function of `(entry, resolved flag values)`.
 
 Concrete candidates surfaced by the resolved open questions:
 
@@ -365,7 +368,8 @@ function applyImprovements(
 - [`docs/features/0007-migration-system-improvement.md`](./0007-migration-system-improvement.md)
   — if a persistent karma ledger is added later, the new schema version scheme should
   be in place first
-- [ADR 0002 — feature-flags-design](../adr/0002-feature-flags-design.md) — the namespaced
+- [ADR 0002 — feature-flags-design](../adr/0002-feature-flags-design.md) and
+  [ADR 0022 — flat-feature-flag-refs](../adr/0022-flat-feature-flag-refs.md) — the
   registry pattern that any house-rule cost / cap deviations for this feature plug into
 - [#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) — `FeatureFlagsData`,
   `optionalRulesRegistry`, GameConfig type

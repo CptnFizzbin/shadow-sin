@@ -5,10 +5,10 @@ import type { FC } from "react"
 import { KarmaValue } from "#/components/runner/karma/viewer/karmaValue.tsx"
 import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
+import type { KarmaExchangeDirection } from "#/state/runner/karma/karma.selector.ts"
 
 import { KarmaBalanceChange } from "./karmaBalanceChange.tsx"
 import { useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
-import type { KarmaExchangeDirection } from "./useKarmaExchange.ts"
 import { useKarmaExchange } from "./useKarmaExchange.ts"
 
 interface ManageKarmaStepExchangeProps {

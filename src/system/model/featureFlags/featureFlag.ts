@@ -1,49 +1,57 @@
 import type { SourceData } from "#/system/model/sourceData.ts"
 
-/**
- * Describes a single feature flag — a named, typed setting backed by a
- * source book reference and a SR4e stock default value.
- *
- * @template Value - The type of the flag's value. Defaults to `boolean`.
- */
-export interface FeatureFlag<Value = boolean> {
+/** A value a feature flag can hold. */
+export type FlagValue = string | number | boolean
+
+/** One selectable value of a {@link FlagData} with `options`. */
+export interface FlagOption<Value extends FlagValue = FlagValue> {
+  readonly value: Value
+  /** Display label shown in the UI. */
+  readonly label: string
+}
+
+/** Defines a single feature flag: a named, typed setting with a default value. */
+export interface FlagData<Value extends FlagValue = FlagValue> {
   /** Display name shown in the UI. */
   readonly name: string
   /** Human-readable explanation of what this setting does. */
   readonly description?: string
-  /** The rulebook and page where this option is defined. */
-  readonly source: SourceData
-  /** The SR4e stock default for this flag. */
-  readonly defaultValue: Value
+  /** The rulebook and page where this option is defined, when it comes from one. */
+  readonly source?: SourceData
+  /** The value used when a Runner has no override for this flag. */
+  readonly default: Value
+  /** The values the flag may take, when it is limited to a fixed set. */
+  readonly options?: readonly FlagOption<Value>[]
 }
 
-/** Intentional widening — AnyFeatureFlag must accept FeatureFlag<V> for every concrete V in the registry. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyFeatureFlag = FeatureFlag<any>
+/** A registered {@link FlagData}, addressable by its namespaced `ref`. */
+export interface FlagEntry<Value extends FlagValue = FlagValue> extends FlagData<Value> {
+  /** The flag's key in `RunnerData`'s feature flags: `<namespace>.<key>`. */
+  readonly ref: string
+}
+
+type WidenFlagValue<Value extends FlagValue> = Value extends boolean ? boolean : Value extends number ? number : string
+
+/** The registry {@link createFlagRegistry} builds from `namespace` and `Flags`. */
+export type FlagRegistry<Namespace extends string, Flags extends Record<string, FlagData>> = {
+  readonly [Key in keyof Flags & string]: Flags[Key]
+    & FlagEntry<WidenFlagValue<Flags[Key]["default"]>>
+    & { readonly ref: `${Namespace}.${Key}` }
+}
 
 /**
- * Factory for defining a {@link FeatureFlag} entry in a registry.
- * Infers the flag's value type from `config.defaultValue`.
+ * Builds a registry of feature flags whose `ref`s are prefixed with `namespace`.
  *
  * @example
- * const encumbranceEnabled = createFlag<boolean>({
- *   name: "Encumbrance",
- *   source: { book: "SR4A", page: 160 },
- *   defaultValue: false,
+ * const houseRules = createFlagRegistry("houseRules", {
+ *   "karma.buy.enabled": { name: "Buy Karma", default: true },
  * })
+ * houseRules["karma.buy.enabled"].ref // "houseRules.karma.buy.enabled"
  */
-export function createFlag<Value = boolean>(config: FeatureFlag<Value>): FeatureFlag<Value> {
-  return config
+export function createFlagRegistry<Namespace extends string, Flags extends Record<string, FlagData>>(
+  namespace: Namespace,
+  flags: Flags,
+): FlagRegistry<Namespace, Flags> {
+  const entries = Object.entries(flags).map(([key, flag]) => [key, { ...flag, ref: `${namespace}.${key}` }])
+  return Object.fromEntries(entries) as FlagRegistry<Namespace, Flags>
 }
-
-/**
- * Extracts the value type `V` from a {@link FeatureFlag}<V>.
- *
- * @example
- * type Entry = FeatureFlag<boolean>
- * type Val = FeatureFlagValue<Entry> // boolean
- */
-export type FeatureFlagValue<F extends FeatureFlag<unknown>> =
-  F extends FeatureFlag<infer V>
-    ? V
-    : never

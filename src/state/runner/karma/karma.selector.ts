@@ -1,5 +1,25 @@
 import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { resolveFlagValue } from "#/system/model/featureFlags/featureFlagsData.ts"
+import { houseRules } from "#/system/model/featureFlags/houseRules.ts"
+
+/** Whether trading karma one way is allowed, and its rate. */
+interface KarmaExchangeRule {
+  enabled: boolean
+  nuyenPerKarma: number
+}
+
+/** The House Rules for trading karma for nuyen and back. */
+interface KarmaExchangeRules {
+  /** Trading nuyen for karma. */
+  buy: KarmaExchangeRule
+  /** Trading karma for nuyen. */
+  sell: KarmaExchangeRule
+}
+
+/** A direction karma can be traded in. */
+export type KarmaExchangeDirection = keyof KarmaExchangeRules
 
 export namespace KarmaSelectors {
   export const select = createMemoizedSelector(
@@ -20,5 +40,20 @@ export namespace KarmaSelectors {
   export const selectTotal = createMemoizedSelector(
     select,
     (karma) => karma.total,
+  )
+
+  /** Whether the Runner may buy and sell karma for nuyen, and at what rates. */
+  export const selectExchange = createMemoizedSelector(
+    FeatureFlagSelectors.selectAll,
+    (featureFlags): KarmaExchangeRules => ({
+      buy: {
+        enabled: resolveFlagValue(featureFlags, houseRules["karma.buy.enabled"]),
+        nuyenPerKarma: resolveFlagValue(featureFlags, houseRules["karma.buy.nuyenPerKarma"]),
+      },
+      sell: {
+        enabled: resolveFlagValue(featureFlags, houseRules["karma.sell.enabled"]),
+        nuyenPerKarma: resolveFlagValue(featureFlags, houseRules["karma.sell.nuyenPerKarma"]),
+      },
+    }),
   )
 }

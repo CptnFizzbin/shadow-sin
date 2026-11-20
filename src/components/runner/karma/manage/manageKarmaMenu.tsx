@@ -7,8 +7,6 @@ import Paper from "@mui/material/Paper"
 import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GameTableService } from "#/services/gameTable/gameTableService.ts"
-import { HouseRulesSelectors } from "#/state/runner/houseRules/houseRules.selector.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
@@ -20,10 +18,9 @@ import { createManageKarmaData, useManageKarmaWorkflow } from "./manageKarmaWork
 export const ManageKarmaMenu: FC = () => {
   const workflow = useManageKarmaWorkflow()
   const karma = useRunnerSelector(KarmaSelectors.select)
-  const isNuyenExchangeEnabled = useRunnerSelector(HouseRulesSelectors.select, { key: "karma.nuyenExchange" })
+  const exchangeRules = useRunnerSelector(KarmaSelectors.selectExchange)
   const visibleOptions = MANAGE_KARMA_OPTIONS.filter(
-    (option) => (isNuyenExchangeEnabled || !option.requiresNuyenExchange)
-      && (!option.requiresTableFeature || GameTableService.features[option.requiresTableFeature]),
+    (option) => option.exchange === undefined || exchangeRules[option.exchange].enabled,
   )
 
   const handleSelect = (step: ManageKarmaStep) => {
