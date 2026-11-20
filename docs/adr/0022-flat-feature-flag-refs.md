@@ -1,6 +1,6 @@
 # Feature flags: namespaced registries over one flat store of refs
 
-**Status:** proposed
+**Status:** implemented
 
 **Supersedes:** in [ADR-0002](./0002-feature-flags-design.md), "Why namespaced sub-objects, not a flat bag" and the
 per-namespace derived `OptionalRulesData` type; in [ADR-0005](./0005-house-rules-feature-flag-namespace.md), the
