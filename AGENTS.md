@@ -18,6 +18,7 @@ rather than relying on memory or older copies of this file.
 | Available scripts | `package.json` → `scripts` |
 | UI primitive usage (dialogs, prototypes, ...) | `docs/ui/` |
 | Agent skills | `.agents/skills/CLAUDE.md` (index; skills are vendored and pinned in `skills-lock.json`) |
+| Subagent profiles (e.g. the architecture reviewer) | `.agents/agents/` (symlinked to `.claude/agents/` at session start) |
 | Driving a browser (clicks, screenshots) | `.agents/scripts/browser/README.md` (`yarn browser --help`) |
 | Existing code patterns | The code itself — find a sibling that does what you need (e.g. the weapons item type) and follow it |
 
@@ -140,6 +141,23 @@ unused exports, files, or types were introduced or left behind. When applying au
 --dry-run --format json` first, then `yarn fallow fix --yes --format json` (`--yes` is required in non-TTY agent
 environments). When open GitHub issues reference Fallow findings, run `yarn fallow` to check whether the current
 change resolves them.
+
+## Architecture review
+
+Before calling **any** change done — code, docs or config alike — run the `architecture-reviewer` subagent
+(`.agents/agents/architecture-reviewer.md`) on the change, in a fresh context. This applies in any harness that can
+spawn subagents; where none can be spawned, skip this step. If the harness hasn't registered the profile (e.g. a local
+session where the `.claude/agents` symlink hook didn't run), spawn a generic subagent and give it that file as its
+instructions. The reviewer is read-only and reports architecture findings only (ADRs, `AGENTS.md` rules,
+`GLOSSARY.md`, `src/` container placement) plus structural complexity worth simplifying.
+
+- **Fix or justify** every finding under *Blocking*: fix it, or say in your final report why you left it.
+- **Never edit an ADR to silence a finding.** If you believe the ADR is wrong rather than your change, leave the
+  finding unfixed and explain the disagreement in your final report so the human can decide.
+- *Undocumented decisions*, *Pre-existing* and *Simplification opportunities* findings are non-blocking — mention
+  them in your final report.
+- After fixing, re-run the reviewer **once** on the updated change. Report anything still open as justified or
+  unresolved; don't loop.
 
 ## Version control
 
