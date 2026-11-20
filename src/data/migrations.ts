@@ -48,7 +48,7 @@ import v20261108_01_addSpellSustainTarget from "./migrations/20261108_01_addSpel
 import v20261114_00_replaceEquippedStashedWithState from "./migrations/20261114_00_replaceEquippedStashedWithState.ts"
 import v20261115_00_addNotes from "./migrations/20261115_00_addNotes.ts"
 import v20261118_00_addSpellSustainedBy from "./migrations/20261118_00_addSpellSustainedBy.ts"
-import v20261120_00_renameEncumbranceFlag from "./migrations/20261120_00_renameEncumbranceFlag.ts"
+import v20261120_00_flattenFeatureFlags from "./migrations/20261120_00_flattenFeatureFlags.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   v20250101_00_normalizeOldFormatCharacter,
@@ -100,7 +100,7 @@ export const migrations: AnyCharacterMigration[] = [
   v20261114_00_replaceEquippedStashedWithState,
   v20261115_00_addNotes,
   v20261118_00_addSpellSustainedBy,
-  v20261120_00_renameEncumbranceFlag,
+  v20261120_00_flattenFeatureFlags,
 ]
 
 migrations.forEach((migration, index) => {

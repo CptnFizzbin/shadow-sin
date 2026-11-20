@@ -2,10 +2,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { useFeatureFlag } from "#/hooks/runner/featureFlags/useFeatureFlag.ts"
 import { useLicenseCheckWorker } from "#/hooks/runner/licenseCheck/useLicenseCheckWorker.ts"
-import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { houseRules } from "#/system/model/featureFlags/houseRules.ts"
 
 import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"
@@ -48,9 +49,7 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
 }) => {
   const { scannerRating } = useLicenseCheck()
   const gear = useRunnerSelector(ItemSelectors.selectAll)
-  const ratingPlusRating = useRunnerSelector(FeatureFlagSelectors.select, {
-    key: "items.licenseCheck.ratingPlusRating",
-  })
+  const ratingPlusRating = useFeatureFlag(houseRules["items.licenseCheck.ratingPlusRating"])
 
   const { currentCheck, currentOutcome, credentialDice, scannerDice } = useLicenseCheckWorker({
     queue,

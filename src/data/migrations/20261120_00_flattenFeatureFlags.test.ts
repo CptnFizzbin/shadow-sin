@@ -1,9 +1,20 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./20261120_00_renameEncumbranceFlag.ts"
+import migration from "./20261120_00_flattenFeatureFlags.ts"
 
-describe.concurrent("20261120_00_renameEncumbranceFlag", () => {
-  it("moves an encumbranceEnabled override to items.armor.encumbrance", () => {
+describe.concurrent("20261120_00_flattenFeatureFlags", () => {
+  it("flattens nested House Rule overrides into namespaced refs", () => {
+    // Arrange
+    const character = { _data_: { featureFlags: { houseRules: { "karma.nuyenExchange": false } } } }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result._data_?.featureFlags).toEqual({ "houseRules.karma.nuyenExchange": false })
+  })
+
+  it("renames encumbranceEnabled to optionalRules.items.armor.encumbrance, keeping its value", () => {
     // Arrange
     const character = { _data_: { featureFlags: { optionalRules: { encumbranceEnabled: true } } } }
 
@@ -11,7 +22,7 @@ describe.concurrent("20261120_00_renameEncumbranceFlag", () => {
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.featureFlags).toEqual({ optionalRules: { "items.armor.encumbrance": true } })
+    expect(result._data_?.featureFlags).toEqual({ "optionalRules.items.armor.encumbrance": true })
   })
 
   it("keeps a false override rather than dropping it", () => {
@@ -22,12 +33,23 @@ describe.concurrent("20261120_00_renameEncumbranceFlag", () => {
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.featureFlags).toEqual({ optionalRules: { "items.armor.encumbrance": false } })
+    expect(result._data_?.featureFlags).toEqual({ "optionalRules.items.armor.encumbrance": false })
   })
 
-  it("leaves featureFlags untouched when there is no encumbranceEnabled override", () => {
+  it("drops empty nested namespaces", () => {
     // Arrange
-    const character = { _data_: { featureFlags: { optionalRules: {}, houseRules: { "karma.nuyenExchange": false } } } }
+    const character = { _data_: { featureFlags: { optionalRules: {}, houseRules: {} } } }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result._data_?.featureFlags).toEqual({})
+  })
+
+  it("leaves already-flat feature flags untouched", () => {
+    // Arrange
+    const character = { _data_: { featureFlags: { "houseRules.karma.nuyenExchange": false } } }
 
     // Act
     const result = migration.up(character)
@@ -55,7 +77,7 @@ describe.concurrent("20261120_00_renameEncumbranceFlag", () => {
     const twice = migration.up(migration.up(character))
 
     // Assert
-    expect(twice._data_?.featureFlags).toEqual({ optionalRules: { "items.armor.encumbrance": true } })
+    expect(twice._data_?.featureFlags).toEqual({ "optionalRules.items.armor.encumbrance": true })
   })
 
   it("does not mutate the input object", () => {

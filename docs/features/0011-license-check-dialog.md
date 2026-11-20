@@ -117,12 +117,11 @@ included):
   exists as a stub action ahead of that field for a future persisted-stash affordance, but License
   Check itself never dispatches it.
 - `rating × 2` is a **House Rule**, not an Optional Rule — it's a prototyping pacing choice, not a
-  published SR4e variant, so it carries no `Source` citation and is stored in `featureFlags.houseRules`
-  rather than `featureFlags.optionalRules`. See
+  published SR4e variant, so it carries no `Source` citation and is registered in the `houseRules` flag
+  registry (ref `houseRules.items.licenseCheck.ratingPlusRating`) rather than `optionalRules`. See
   [`docs/adr/0005-house-rules-feature-flag-namespace.md`](../adr/0005-house-rules-feature-flag-namespace.md)
   for why House Rules are a separate namespace, and
-  [`docs/adr/0022-single-feature-flag-registry.md`](../adr/0022-single-feature-flag-registry.md) for why
-  both kinds of flag share one `featureFlagsRegistry`.
+  [`docs/adr/0022-flat-feature-flag-refs.md`](../adr/0022-flat-feature-flag-refs.md) for how both are stored.
 - Implementation must follow the established dialog pattern (`useDialog` + compound `Dialog`
   component, per `docs/ui/dialog.md`) and MUI style-prop discipline (no restating theme
   defaults) — the prototypes are bespoke HTML/CSS mockups, not real MUI components, and should

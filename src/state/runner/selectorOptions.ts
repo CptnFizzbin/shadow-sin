@@ -3,7 +3,6 @@ import { selectorOption } from "#/integrations/reselect/selectorUtils.ts"
 import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 import type { AidSource } from "#/system/model/dicePool/aidSource.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import type { FeatureFlagKey } from "#/system/model/featureFlags/featureFlagsRegistry.ts"
 import type { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
 import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
 import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
@@ -20,12 +19,12 @@ import type { UUID } from "#/utils/uuidUtils.ts"
  * (`AttrSelectors.selectBase`, `ItemSelectors.selectById`, ...) reference an entry here directly
  * as a `reselect` input selector, rather than each domain calling `selectorOption` locally to
  * build its own — this is what keeps two unrelated options from quietly sharing a name:
- * `attributeKey` (an `AttributeKey`) and `key.featureFlag` (a `FeatureFlagKey`) both underlie an option
+ * `attributeKey` (an `AttributeKey`) and `key.skill` (a `SkillKey`) both underlie an option
  * field literally called `key`, and would look identical at a glance as two separate local
  * declarations in two files. Naming them distinctly here, side by side, makes that impossible.
  *
  * A `SelectorOptions.*` entry's own name doesn't have to match the `TOptions` field it reads
- * (`selectorOption`'s first type argument) — `attributeKey` and `key.featureFlag` both read a field
+ * (`selectorOption`'s first type argument) — `attributeKey` and `key.skill` both read a field
  * called `key`, just on different `TOptions` shapes.
  */
 export const SelectorOptions = {
@@ -65,7 +64,6 @@ export const SelectorOptions = {
     /** @deprecated - use {@link SelectorOptions.attr} instead */
     attr: selectorOption<{ key: AttributeKey }>("key"),
     skill: selectorOption<{ key: SkillKey }>("key"),
-    featureFlag: selectorOption<{ key: FeatureFlagKey }>("key"),
   },
 
   filter: {

@@ -7,10 +7,11 @@ import Paper from "@mui/material/Paper"
 import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useFeatureFlag } from "#/hooks/runner/featureFlags/useFeatureFlag.ts"
 import { GameTableService } from "#/services/gameTable/gameTableService.ts"
-import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { houseRules } from "#/system/model/featureFlags/houseRules.ts"
 
 import { MANAGE_KARMA_OPTIONS } from "./manageKarmaOptions.ts"
 import type { ManageKarmaStep } from "./manageKarmaWorkflow.ts"
@@ -20,7 +21,7 @@ import { createManageKarmaData, useManageKarmaWorkflow } from "./manageKarmaWork
 export const ManageKarmaMenu: FC = () => {
   const workflow = useManageKarmaWorkflow()
   const karma = useRunnerSelector(KarmaSelectors.select)
-  const isNuyenExchangeEnabled = useRunnerSelector(FeatureFlagSelectors.select, { key: "karma.nuyenExchange" })
+  const isNuyenExchangeEnabled = useFeatureFlag(houseRules["karma.nuyenExchange"])
   const visibleOptions = MANAGE_KARMA_OPTIONS.filter(
     (option) => (isNuyenExchangeEnabled || !option.requiresNuyenExchange)
       && (!option.requiresTableFeature || GameTableService.features[option.requiresTableFeature]),

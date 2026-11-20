@@ -18,7 +18,7 @@ describe.concurrent("016_addFeatureFlags", () => {
     // Arrange
     const character = {
       featureFlags: {
-        optionalRules: { "items.armor.encumbrance": true },
+        "optionalRules.items.armor.encumbrance": true,
       },
     }
 
@@ -27,7 +27,7 @@ describe.concurrent("016_addFeatureFlags", () => {
 
     // Assert
     expect(result.featureFlags).toEqual({
-      optionalRules: { "items.armor.encumbrance": true },
+      "optionalRules.items.armor.encumbrance": true,
     })
   })
 
