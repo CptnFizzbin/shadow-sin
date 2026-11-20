@@ -11,11 +11,11 @@ export namespace FeatureFlagSelectors {
 
   /**
    * The Runner's value for `flag`: its stored override, else the flag's `default`.
-   * Components read a single flag through `useFeatureFlag`; to check a list of flags, read
-   * {@link selectAll} once and resolve each with `resolveFlagValue`. Call this directly outside React.
+   * Components read a single flag through `useFeatureFlag`. A domain selector that combines several
+   * flags builds on {@link selectAll} and resolves each with `resolveFlagValue`.
    *
    * @example
-   * const isNuyenExchangeEnabled = FeatureFlagSelectors.select(state, { flag: houseRules["karma.nuyenExchange"] })
+   * const isKarmaBuyEnabled = FeatureFlagSelectors.select(state, { flag: houseRules["karma.buy.enabled"] })
    */
   export function select<Value extends FlagValue>(
     state: { runner: RunnerData },

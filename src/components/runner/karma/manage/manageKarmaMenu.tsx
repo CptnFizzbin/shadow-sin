@@ -7,10 +7,8 @@ import Paper from "@mui/material/Paper"
 import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { resolveFlagValue } from "#/system/model/featureFlags/featureFlagsData.ts"
 
 import { MANAGE_KARMA_OPTIONS } from "./manageKarmaOptions.ts"
 import type { ManageKarmaStep } from "./manageKarmaWorkflow.ts"
@@ -20,9 +18,9 @@ import { createManageKarmaData, useManageKarmaWorkflow } from "./manageKarmaWork
 export const ManageKarmaMenu: FC = () => {
   const workflow = useManageKarmaWorkflow()
   const karma = useRunnerSelector(KarmaSelectors.select)
-  const featureFlags = useRunnerSelector(FeatureFlagSelectors.selectAll)
+  const exchangeRules = useRunnerSelector(KarmaSelectors.selectExchange)
   const visibleOptions = MANAGE_KARMA_OPTIONS.filter(
-    (option) => option.requiredFlags.every((flag) => resolveFlagValue(featureFlags, flag)),
+    (option) => option.exchange === undefined || exchangeRules[option.exchange].enabled,
   )
 
   const handleSelect = (step: ManageKarmaStep) => {

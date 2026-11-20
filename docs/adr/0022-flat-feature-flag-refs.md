@@ -12,18 +12,19 @@ derived from that namespace's registry. Adding House Rules (ADR 0005) would have
 derived type and a namespace lookup in every reader. Before that existed, House Rules were read through a hardcoded
 `switch` that ignored `RunnerData` altogether.
 
-We store every override in one flat `featureFlags: Record<string, string | boolean>`, keyed by the flag's **ref**.
+We store every override in one flat `featureFlags: Record<string, string | number | boolean>`, keyed by the flag's **ref**.
 Flags are defined in registries built by `createFlagRegistry(namespace, flags)`: one for Optional Rules
 (`"optionalRules"`) and one for House Rules (`"houseRules"`). The namespace is the kind of rule, so a flag's `ref` is
-`<namespace>.<key>` (e.g. `houseRules.karma.nuyenExchange`) and there is no separate `type` field. Every flag has a
-`default` that is a string or a boolean, may list `options` (`{ value, label }`), and keeps its `name`,
+`<namespace>.<key>` (e.g. `houseRules.karma.buy.enabled`) and there is no separate `type` field. Every flag has a
+`default` that is a string, number or boolean, may list `options` (`{ value, label }`), and keeps its `name`,
 `description` and optional `source` in the registry for display. `source` is optional on every entry, whatever its
 namespace.
 
-Callers pass the whole registry entry to read a flag (`useFeatureFlag(houseRules["karma.nuyenExchange"])`), which
-returns the stored value for its `ref`, else its `default`, typed by the `default`. A component that checks a
-list of flags (hooks can't be called per list item) reads the whole store once with `FeatureFlagSelectors.selectAll`
-and resolves each entry with `resolveFlagValue(featureFlags, flag)`, the same function the single-flag read uses.
+Callers pass the whole registry entry to read a flag (`useFeatureFlag(houseRules["karma.buy.enabled"])`), which
+returns the stored value for its `ref`, else its `default`, typed by the `default`. When a feature's
+behaviour depends on several flags, a domain selector owns that logic in one place (e.g. `KarmaSelectors.selectExchange`
+for the karma buy/sell toggles and rates): it builds on `FeatureFlagSelectors.selectAll` and resolves each entry with
+`resolveFlagValue(featureFlags, flag)`, the same function the single-flag read uses.
 
 ## Considered Options
 
@@ -38,11 +39,14 @@ and resolves each entry with `resolveFlagValue(featureFlags, flag)`, the same fu
 
 ## Consequences
 
-- The value type is no longer per-flag in storage: any ref may hold any `string | boolean`. A stored value whose
+- The value type is no longer per-flag in storage: any ref may hold any `string | number | boolean`. A stored value whose
   type doesn't match the flag's `default` is ignored in favour of the `default`.
 - Moving a flag between namespaces, or renaming its key, changes its `ref`, and so needs a migration of stored
   overrides.
 - Migration `20261120_00_flattenFeatureFlags` flattens the old sub-objects into refs, renaming `encumbranceEnabled`
-  to `optionalRules.items.armor.encumbrance`.
+  to `optionalRules.items.armor.encumbrance` and `karma.nuyenExchange` to `houseRules.karma.buy.enabled`.
+- A flag may hold a tunable value, not just an on/off switch (e.g. `houseRules.karma.buy.nuyenPerKarma`). Like every
+  flag, it is a Table-level setting stored on `RunnerData` until Tables exist (ADR 0002's stopgap), so the karma
+  exchange rates moved there from the app-wide `GameTableService`.
 - Nothing enforces a `source` on an Optional Rule; that is left to review.
 - `options` describe the values a settings UI offers; the reader does not reject a stored string outside them.

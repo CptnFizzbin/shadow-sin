@@ -18,15 +18,15 @@ describe.concurrent("FeatureFlagSelectors.select", () => {
     expect(result).toBe(true)
   })
 
-  it("returns true for karma.nuyenExchange by default, so buying and selling karma is on", () => {
+  it("returns a number default for a numeric flag", () => {
     // Arrange
     const runner = runnerDataFactory()
 
     // Act
-    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["karma.nuyenExchange"] })
+    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["karma.buy.nuyenPerKarma"] })
 
     // Assert
-    expect(result).toBe(true)
+    expect(result).toBe(5000)
   })
 
   it("returns the default for an Optional Rule with no override", () => {
@@ -43,11 +43,11 @@ describe.concurrent("FeatureFlagSelectors.select", () => {
   it("returns a stored override keyed by the flag's ref", () => {
     // Arrange
     const runner = runnerDataFactory({ afterBuild: (draft) => {
-      draft._data_.featureFlags["houseRules.karma.nuyenExchange"] = false
+      draft._data_.featureFlags["houseRules.karma.buy.enabled"] = false
     } })
 
     // Act
-    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["karma.nuyenExchange"] })
+    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["karma.buy.enabled"] })
 
     // Assert
     expect(result).toBe(false)

@@ -6,7 +6,7 @@ import type { FlagEntry, FlagValue } from "#/system/model/featureFlags/featureFl
  * The current Runner's value for `flag`, typed by the flag's `default`.
  *
  * @example
- * const isNuyenExchangeEnabled = useFeatureFlag(houseRules["karma.nuyenExchange"])
+ * const isKarmaBuyEnabled = useFeatureFlag(houseRules["karma.buy.enabled"])
  */
 export function useFeatureFlag<Value extends FlagValue>(flag: FlagEntry<Value>): Value {
   // An inline selector rather than `useRunnerSelector(FeatureFlagSelectors.select, { flag })`:

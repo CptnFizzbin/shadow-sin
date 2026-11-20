@@ -57,7 +57,7 @@ describe("ManageKarmaDialog", () => {
     expect(screen.getByRole("button", { name: /earn karma/i })).toBeTruthy()
   })
 
-  it("hides Sell Karma while the karma.selling House Rule is off", () => {
+  it("hides Sell Karma while the karma.sell.enabled House Rule is off", () => {
     // Arrange / Act
     renderDialog()
 
@@ -65,7 +65,7 @@ describe("ManageKarmaDialog", () => {
     expect(screen.queryByRole("button", { name: /sell karma/i })).toBeNull()
   })
 
-  it("buys karma with nuyen at the Table's rate without raising total earned", async () => {
+  it("buys karma with nuyen at the karma.buy.nuyenPerKarma rate without raising total earned", async () => {
     // Arrange
     const { store } = renderDialog({ karma: 10, total: 20, nuyen: 12000 })
     fireEvent.click(screen.getByRole("button", { name: /buy karma/i }))
@@ -92,18 +92,35 @@ describe("ManageKarmaDialog", () => {
     expect(screen.getByText(/not enough nuyen/i)).toBeTruthy()
   })
 
-  describe("with the karma.selling House Rule on", () => {
-    const sellingOn: FeatureFlagsData = { [houseRules["karma.selling"].ref]: true }
+  it("hides Buy Karma while the karma.buy.enabled House Rule is off", () => {
+    // Arrange / Act
+    renderDialog({ featureFlags: { [houseRules["karma.buy.enabled"].ref]: false } })
 
-    it("still hides Sell Karma while the karma.nuyenExchange House Rule is off", () => {
-      // Arrange / Act
-      renderDialog({ featureFlags: { ...sellingOn, [houseRules["karma.nuyenExchange"].ref]: false } })
+    // Assert
+    expect(screen.queryByRole("button", { name: /buy karma/i })).toBeNull()
+  })
+
+  describe("with the karma.sell.enabled House Rule on", () => {
+    const sellingOn: FeatureFlagsData = { [houseRules["karma.sell.enabled"].ref]: true }
+
+    it("sells at the karma.sell.nuyenPerKarma rate", async () => {
+      // Arrange
+      const { store } = renderDialog({
+        karma: 10,
+        nuyen: 0,
+        featureFlags: { ...sellingOn, [houseRules["karma.sell.nuyenPerKarma"].ref]: 1000 },
+      })
+      fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))
+
+      // Act
+      setCounter(/karma/i, 2)
+      fireEvent.click(screen.getByRole("button", { name: /^sell$/i }))
 
       // Assert
-      expect(screen.queryByRole("button", { name: /sell karma/i })).toBeNull()
+      await waitFor(() => expect(store.getState().runner.nuyen.current).toBe(2000))
     })
 
-    it("sells karma for nuyen at the Table's rate", async () => {
+    it("sells karma for nuyen at the karma.sell.nuyenPerKarma rate", async () => {
       // Arrange
       const { store } = renderDialog({ karma: 10, total: 20, nuyen: 100, featureFlags: sellingOn })
       fireEvent.click(screen.getByRole("button", { name: /sell karma/i }))

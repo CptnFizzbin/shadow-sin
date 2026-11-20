@@ -5,13 +5,24 @@ import migration from "./20261120_00_flattenFeatureFlags.ts"
 describe.concurrent("20261120_00_flattenFeatureFlags", () => {
   it("flattens nested House Rule overrides into namespaced refs", () => {
     // Arrange
+    const character = { _data_: { featureFlags: { houseRules: { "items.licenseCheck.ratingPlusRating": false } } } }
+
+    // Act
+    const result = migration.up(character)
+
+    // Assert
+    expect(result._data_?.featureFlags).toEqual({ "houseRules.items.licenseCheck.ratingPlusRating": false })
+  })
+
+  it("renames karma.nuyenExchange to houseRules.karma.buy.enabled, keeping its value", () => {
+    // Arrange
     const character = { _data_: { featureFlags: { houseRules: { "karma.nuyenExchange": false } } } }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_?.featureFlags).toEqual({ "houseRules.karma.nuyenExchange": false })
+    expect(result._data_?.featureFlags).toEqual({ "houseRules.karma.buy.enabled": false })
   })
 
   it("renames encumbranceEnabled to optionalRules.items.armor.encumbrance, keeping its value", () => {
@@ -49,7 +60,7 @@ describe.concurrent("20261120_00_flattenFeatureFlags", () => {
 
   it("leaves already-flat feature flags untouched", () => {
     // Arrange
-    const character = { _data_: { featureFlags: { "houseRules.karma.nuyenExchange": false } } }
+    const character = { _data_: { featureFlags: { "houseRules.karma.buy.enabled": false } } }
 
     // Act
     const result = migration.up(character)

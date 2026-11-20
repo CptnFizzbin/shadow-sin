@@ -7,9 +7,11 @@ type MigratingFeatureFlags = Record<string, MigratingFlagValue | Record<string, 
 
 const NESTED_NAMESPACES = ["optionalRules", "houseRules"] as const
 
-// The Encumbrance Optional Rule was stored under a flat key before flags were feature-namespaced.
+// Flags whose key changed alongside the flattening: Encumbrance predates feature-namespaced keys, and the
+// karma-nuyen exchange toggle became one toggle per trade direction (selling was never stored per Runner).
 const RENAMED_KEYS: Record<string, string> = {
   "optionalRules.encumbranceEnabled": "optionalRules.items.armor.encumbrance",
+  "houseRules.karma.nuyenExchange": "houseRules.karma.buy.enabled",
 }
 
 const isFlagValue = (value: unknown): value is MigratingFlagValue =>
@@ -18,7 +20,7 @@ const isFlagValue = (value: unknown): value is MigratingFlagValue =>
 /**
  * Flatten the nested `featureFlags.optionalRules` / `featureFlags.houseRules` override objects into
  * one record keyed by each flag's `<namespace>.<key>` ref, renaming `encumbranceEnabled` to
- * `items.armor.encumbrance` on the way.
+ * `items.armor.encumbrance` and `karma.nuyenExchange` to `karma.buy.enabled` on the way.
  */
 const migration: CharacterMigration<{ _data_?: { featureFlags?: MigratingFeatureFlags } }> = {
   timestamp: "2026-11-20T13:25:00Z",

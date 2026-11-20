@@ -1,7 +1,7 @@
 import type { SourceData } from "#/system/model/sourceData.ts"
 
 /** A value a feature flag can hold. */
-export type FlagValue = string | boolean
+export type FlagValue = string | number | boolean
 
 /** One selectable value of a {@link FlagData} with `options`. */
 export interface FlagOption<Value extends FlagValue = FlagValue> {
@@ -30,7 +30,7 @@ export interface FlagEntry<Value extends FlagValue = FlagValue> extends FlagData
   readonly ref: string
 }
 
-type WidenFlagValue<Value extends FlagValue> = Value extends boolean ? boolean : string
+type WidenFlagValue<Value extends FlagValue> = Value extends boolean ? boolean : Value extends number ? number : string
 
 /** The registry {@link createFlagRegistry} builds from `namespace` and `Flags`. */
 export type FlagRegistry<Namespace extends string, Flags extends Record<string, FlagData>> = {
@@ -44,9 +44,9 @@ export type FlagRegistry<Namespace extends string, Flags extends Record<string, 
  *
  * @example
  * const houseRules = createFlagRegistry("houseRules", {
- *   "karma.nuyenExchange": { name: "Karma–Nuyen Exchange", default: true },
+ *   "karma.buy.enabled": { name: "Buy Karma", default: true },
  * })
- * houseRules["karma.nuyenExchange"].ref // "houseRules.karma.nuyenExchange"
+ * houseRules["karma.buy.enabled"].ref // "houseRules.karma.buy.enabled"
  */
 export function createFlagRegistry<Namespace extends string, Flags extends Record<string, FlagData>>(
   namespace: Namespace,
