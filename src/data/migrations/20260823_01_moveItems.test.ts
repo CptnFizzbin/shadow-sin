@@ -61,20 +61,20 @@ describe.concurrent("028_moveItems", () => {
   it("moves featureFlags into _data_.featureFlags", () => {
     // Arrange
     const character = {
-      featureFlags: { optionalRules: { encumbranceEnabled: true } },
+      featureFlags: { optionalRules: { "items.armor.encumbrance": true } },
     }
 
     // Act
     const result = migration.up(character)
 
     // Assert
-    expect(result._data_.featureFlags).toEqual({ optionalRules: { encumbranceEnabled: true } })
+    expect(result._data_.featureFlags).toEqual({ optionalRules: { "items.armor.encumbrance": true } })
   })
 
   it("removes the top-level featureFlags field", () => {
     // Arrange
     const character = {
-      featureFlags: { optionalRules: { encumbranceEnabled: true } },
+      featureFlags: { optionalRules: { "items.armor.encumbrance": true } },
     }
 
     // Act
@@ -99,7 +99,7 @@ describe.concurrent("028_moveItems", () => {
     // Arrange
     const character = {
       gear: { a1: armorItem },
-      featureFlags: { optionalRules: { encumbranceEnabled: true } },
+      featureFlags: { optionalRules: { "items.armor.encumbrance": true } },
     }
 
     // Act
@@ -109,6 +109,6 @@ describe.concurrent("028_moveItems", () => {
     // Assert — a second run must not overwrite the real _data_ with empty objects
     expect(twice._data_).toEqual(once._data_)
     expect(twice._data_.items).toEqual({ a1: armorItem })
-    expect(twice._data_.featureFlags).toEqual({ optionalRules: { encumbranceEnabled: true } })
+    expect(twice._data_.featureFlags).toEqual({ optionalRules: { "items.armor.encumbrance": true } })
   })
 })

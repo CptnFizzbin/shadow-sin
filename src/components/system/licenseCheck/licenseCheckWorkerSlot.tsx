@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useLicenseCheckWorker } from "#/hooks/runner/licenseCheck/useLicenseCheckWorker.ts"
-import { HouseRulesSelectors } from "#/state/runner/houseRules/houseRules.selector.ts"
+import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
@@ -48,7 +48,7 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
 }) => {
   const { scannerRating } = useLicenseCheck()
   const gear = useRunnerSelector(ItemSelectors.selectAll)
-  const ratingPlusRating = useRunnerSelector(HouseRulesSelectors.select, {
+  const ratingPlusRating = useRunnerSelector(FeatureFlagSelectors.select, {
     key: "items.licenseCheck.ratingPlusRating",
   })
 

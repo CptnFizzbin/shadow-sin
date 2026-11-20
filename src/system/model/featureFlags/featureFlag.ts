@@ -1,19 +1,31 @@
 import type { SourceData } from "#/system/model/sourceData.ts"
 
 /**
- * Describes a single feature flag — a named, typed setting backed by a
- * source book reference and a SR4e stock default value.
+ * Classifies a {@link FeatureFlag}:
+ *
+ * - `"optionalRule"` — a published variant rule from a Shadowrun source book that a table opts into.
+ * - `"houseRule"` — an app-invented design choice with no source book behind it.
+ *
+ * The type also decides which `FeatureFlagsData` namespace stores the flag's override.
+ */
+export type FeatureFlagType = "optionalRule" | "houseRule"
+
+/**
+ * Describes a single feature flag — a named, typed setting with a default value.
  *
  * @template Value - The type of the flag's value. Defaults to `boolean`.
+ * @template Type - The flag's {@link FeatureFlagType}.
  */
-export interface FeatureFlag<Value = boolean> {
+export interface FeatureFlag<Value = boolean, Type extends FeatureFlagType = FeatureFlagType> {
+  /** Whether this is an Optional Rule or a House Rule. */
+  readonly type: Type
   /** Display name shown in the UI. */
   readonly name: string
   /** Human-readable explanation of what this setting does. */
   readonly description?: string
-  /** The rulebook and page where this option is defined. */
-  readonly source: SourceData
-  /** The SR4e stock default for this flag. */
+  /** The rulebook and page where this option is defined, when it comes from one. */
+  readonly source?: SourceData
+  /** The value used when a Runner has no override for this flag. */
   readonly defaultValue: Value
 }
 
@@ -23,16 +35,19 @@ export type AnyFeatureFlag = FeatureFlag<any>
 
 /**
  * Factory for defining a {@link FeatureFlag} entry in a registry.
- * Infers the flag's value type from `config.defaultValue`.
+ * Infers the flag's value type from `config.defaultValue` and keeps `config.type` as a literal.
  *
  * @example
- * const encumbranceEnabled = createFlag<boolean>({
+ * const encumbrance = createFlag({
+ *   type: "optionalRule",
  *   name: "Encumbrance",
- *   source: { book: "SR4A", page: 160 },
+ *   source: { book: "SR4A", page: 161 },
  *   defaultValue: false,
  * })
  */
-export function createFlag<Value = boolean>(config: FeatureFlag<Value>): FeatureFlag<Value> {
+export function createFlag<Value, Type extends FeatureFlagType>(
+  config: FeatureFlag<Value, Type>,
+): FeatureFlag<Value, Type> {
   return config
 }
 
