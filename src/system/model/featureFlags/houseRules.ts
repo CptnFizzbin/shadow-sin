@@ -10,7 +10,12 @@ export const houseRules = createFlagRegistry("houseRules", {
   },
   "karma.nuyenExchange": {
     name: "Karma–Nuyen Exchange",
-    description: "Allow buying karma with nuyen and selling karma for nuyen.",
+    description: "Allow trading between karma and nuyen.",
     default: true,
+  },
+  "karma.selling": {
+    name: "Karma Selling",
+    description: "Allow selling karma for nuyen, on top of buying it, while the Karma–Nuyen Exchange is on.",
+    default: false,
   },
 })

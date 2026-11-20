@@ -1,11 +1,18 @@
 import type { FlagEntry, FlagValue } from "#/system/model/featureFlags/featureFlag.ts"
+import type { FeatureFlagsData } from "#/system/model/featureFlags/featureFlagsData.ts"
+import { resolveFlagValue } from "#/system/model/featureFlags/featureFlagsData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 export namespace FeatureFlagSelectors {
+  /** Every feature flag override the Runner has stored, keyed by flag `ref`. */
+  export function selectAll(state: { runner: RunnerData }): FeatureFlagsData {
+    return state.runner._data_.featureFlags
+  }
+
   /**
    * The Runner's value for `flag`: its stored override, else the flag's `default`.
-   *
-   * Components read flags through `useFeatureFlag`; call this directly outside React.
+   * Components read a single flag through `useFeatureFlag`; to check a list of flags, read
+   * {@link selectAll} once and resolve each with `resolveFlagValue`. Call this directly outside React.
    *
    * @example
    * const isNuyenExchangeEnabled = FeatureFlagSelectors.select(state, { flag: houseRules["karma.nuyenExchange"] })
@@ -14,9 +21,6 @@ export namespace FeatureFlagSelectors {
     state: { runner: RunnerData },
     { flag }: { flag: FlagEntry<Value> },
   ): Value {
-    const stored = state.runner._data_.featureFlags[flag.ref]
-    // A stored value of the wrong type (e.g. a string for a boolean flag) can't be trusted,
-    // so it falls back to the default rather than leaking an off-type value to callers.
-    return typeof stored === typeof flag.default ? stored as Value : flag.default
+    return resolveFlagValue(selectAll(state), flag)
   }
 }

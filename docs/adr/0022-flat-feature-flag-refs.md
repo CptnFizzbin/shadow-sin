@@ -21,7 +21,9 @@ Flags are defined in registries built by `createFlagRegistry(namespace, flags)`:
 namespace.
 
 Callers pass the whole registry entry to read a flag (`useFeatureFlag(houseRules["karma.nuyenExchange"])`), which
-returns the stored value for its `ref`, else its `default`, typed by the `default`.
+returns the stored value for its `ref`, else its `default`, typed by the `default`. A component that checks a
+list of flags (hooks can't be called per list item) reads the whole store once with `FeatureFlagSelectors.selectAll`
+and resolves each entry with `resolveFlagValue(featureFlags, flag)`, the same function the single-flag read uses.
 
 ## Considered Options
 
