@@ -6,8 +6,6 @@
 > - [#388 — `ItemData._state` object (equipped, stashed) + itemUtils everywhere it matters](https://github.com/CptnFizzbin/shadow-sin/issues/388)
 > - [#390 — Unified per-item action menu; Equip becomes universal](https://github.com/CptnFizzbin/shadow-sin/issues/390)
 > - [#392 — Multi-select bulk actions](https://github.com/CptnFizzbin/shadow-sin/issues/392)
-> - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) depends on
->   #388 for `ItemData.stashed`
 > - See [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md) — as implemented,
 >   `equipped`/`stashed` are plain top-level fields; `_state.equipOnUnstash` is narrower internal
 >   bookkeeping the gear reducer uses to force `equipped` off on Stash and restore it on Unstash,
@@ -15,7 +13,7 @@
 
 A general, persisted way to mark a piece of carried gear as unavailable for a given run — "left at
 the safehouse" — without deleting it or leaving the Builder. Discovered as a dependency while
-designing [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md): that
+designing a License Check dialog (since removed): that
 feature originally prototyped "stashing" as local, single-dialog state, but the mechanic clearly
 belongs on the item itself, since a stashed item should read as unavailable everywhere a Runner's
 gear is shown, not just inside one dialog.
@@ -59,9 +57,6 @@ that code) closes a pre-existing gap where item removal has no confirmation step
 - **No Nuyen/BP interaction.** Builder's gear-cost totaling (`gearUtils.ts`) never reads `equipped`
   today, so stashing an item doesn't change how it counts toward BP or Nuyen budgets either —
   consistent with existing precedent, not a new rule.
-- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) consumes this
-  flag directly: its per-run checklist reflects (and can toggle) `stashed` rather than keeping its
-  own local exclusion state.
 
 ### Per-item action menu
 
@@ -165,15 +160,9 @@ interface ItemData {
 
 ## Out of Scope
 
-- Any License-Check-specific behavior — that lives entirely in
-  [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md); this feature
-  only defines and persists the flag itself.
 - An undo feature for Remove (or anything else) — Remove's new confirmation step is a stopgap
   given no undo exists, not a substitute for one.
 - Extending the bulk action bar beyond Stash/Equip/Remove (e.g. bulk edit, bulk Buy License).
 
 ## Related Features
 
-- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) — the feature
-  that surfaced this as a dependency; License Check's per-run checklist reads and toggles
-  `stashed` rather than keeping its own local state

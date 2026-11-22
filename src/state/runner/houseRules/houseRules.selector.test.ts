@@ -5,12 +5,6 @@ import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { HouseRulesSelectors } from "./houseRules.selector.ts"
 
 describe.concurrent("HouseRulesSelectors.select", () => {
-  it("returns true for the known items.licenseCheck.ratingPlusRating key", () => {
-    const runner = runnerDataFactory()
-
-    expect(HouseRulesSelectors.select({ runner }, { key: "items.licenseCheck.ratingPlusRating" })).toBe(true)
-  })
-
   it("returns true for the karma.nuyenExchange key, so buying and selling karma is on by default", () => {
     // Arrange
     const runner = runnerDataFactory()
