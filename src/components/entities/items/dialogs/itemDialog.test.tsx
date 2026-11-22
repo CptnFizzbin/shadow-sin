@@ -41,6 +41,14 @@ const ItemDialogWrapper: FC<{
   return <ItemDialog ctrl={ctrl} form={form} {...props} />
 }
 
+/** Clicks the wizard's Next button and waits for its async step validation to settle. */
+const clickNext = async (dialog: HTMLElement) => {
+  fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+  })
+}
+
 describe("ItemDialog", () => {
   it("renders with a name field and save button", () => {
     renderInBuilder(
@@ -475,20 +483,37 @@ describe("ItemDialog", () => {
       expect(within(dialog).queryByText("This item provides Game Effects")).toBeNull()
     })
 
-    it("advances to the effects step and shows the effects toggle", () => {
+    it("advances to the effects step and shows the effects toggle", async () => {
       renderInBuilder(
         <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
       )
 
       const dialogs = screen.getAllByRole("dialog")
       const dialog = dialogs[dialogs.length - 1]
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), { target: { value: "My New Gadget" } })
+      await clickNext(dialog)
 
       expect(within(dialog).getByText("This item provides Game Effects")).toBeDefined()
       expect(within(dialog).queryByLabelText(/^name$/i)).toBeNull()
     })
 
-    it("shows the finalize preview and Save button on the last step", () => {
+    it("stays on the stats step when Next is clicked without a name", async () => {
+      // Arrange
+      renderInBuilder(
+        <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
+      )
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      // Act
+      await clickNext(dialog)
+
+      // Assert
+      expect(within(dialog).getByText("Name is required")).toBeDefined()
+      expect(within(dialog).queryByText("This item provides Game Effects")).toBeNull()
+    })
+
+    it("shows the finalize preview and Save button on the last step", async () => {
       renderInBuilder(
         <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={vi.fn()} wizard />,
       )
@@ -499,8 +524,8 @@ describe("ItemDialog", () => {
       fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
         target: { value: "My New Gadget" },
       })
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      await clickNext(dialog)
+      await clickNext(dialog)
 
       expect(within(dialog).getByText("My New Gadget")).toBeDefined()
       expect(within(dialog).getByRole("button", { name: /^save$/i })).toBeDefined()
@@ -519,8 +544,8 @@ describe("ItemDialog", () => {
       fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
         target: { value: "Finished Gadget" },
       })
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      await clickNext(dialog)
+      await clickNext(dialog)
       fireEvent.click(within(dialog).getByRole("button", { name: /^save$/i }))
 
       await waitFor(() => {
@@ -530,14 +555,15 @@ describe("ItemDialog", () => {
       })
     })
 
-    it("returns to the stats step when Back is clicked from the effects step", () => {
+    it("returns to the stats step when Back is clicked from the effects step", async () => {
       renderInBuilder(
         <ItemDialogWrapper title="Add Gadget" onSave={vi.fn()} wizard />,
       )
 
       const dialogs = screen.getAllByRole("dialog")
       const dialog = dialogs[dialogs.length - 1]
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), { target: { value: "My New Gadget" } })
+      await clickNext(dialog)
       fireEvent.click(within(dialog).getByRole("button", { name: /^back$/i }))
 
       expect(within(dialog).getByLabelText(/^name$/i)).toBeDefined()
@@ -570,7 +596,7 @@ describe("ItemDialog", () => {
       expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
     })
 
-    it("does not show tabs in wizard mode, even once past the stats step", () => {
+    it("does not show tabs in wizard mode, even once past the stats step", async () => {
       // Arrange — an existing item, which would otherwise get the Subitems tab
       renderInBuilder(
         <ItemDialogWrapper item={existingItem} title="Edit Gadget" onSave={vi.fn()} wizard />,
@@ -580,7 +606,7 @@ describe("ItemDialog", () => {
       expect(screen.queryByRole("tab", { name: "Subitems" })).toBeNull()
 
       // Act
-      fireEvent.click(within(dialog).getByRole("button", { name: /next/i }))
+      await clickNext(dialog)
 
       // Assert
       expect(within(dialog).queryByLabelText(/^name$/i)).toBeNull()
