@@ -72,6 +72,8 @@ export interface ItemDialogProps {
   parentItemFilter?: (item: ItemData) => boolean
   /** Override the "Attached To" section label and the parent select field label. */
   parentItemLabel?: string
+  /** Blocks submitting until a parent item is chosen in the "Attached To" dropdown. */
+  parentItemRequired?: boolean
   /** Maximum value for the hasRating CounterField. Defaults to 12. */
   ratingMax?: number
   /** When provided, shows a dice button in the Name field that fills it with a random suggestion (e.g. a cover name for a SIN). */
@@ -126,6 +128,7 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
   getCost,
   parentItemFilter,
   parentItemLabel,
+  parentItemRequired,
   ratingMax,
   slots,
   options: optionsProp,
@@ -191,6 +194,15 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
         : (values.cost ?? 0) * (values.quantity ?? 1)
       dispatch(Actions.nuyen.withdrawNuyen(totalCost))
     }
+  }
+
+  const handleWizardNext = async () => {
+    // A step's fields unmount once the wizard moves past it, so the submit on Finalize can't
+    // validate them — check the current step's fields before leaving it (e.g. a Licence's
+    // required SIN).
+    await form.validateAllFields("change")
+    if (!form.state.isFieldsValid) return
+    itemWizard.next(itemDialogWizardSteps[itemDialogWizardSteps.indexOf(wizardStep) + 1])
   }
 
   const handleBuyPurchase = (quantity: number, totalCost: number) => {
@@ -341,6 +353,7 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
                               isFixed={localOptions["fixed"] ?? false}
                               parentItemOptions={parentItemOptions}
                               fieldLabel={parentItemLabel ?? "Parent Item"}
+                              required={parentItemRequired ?? false}
                               attachmentSlot={slots?.attachmentFields}
                             />
                           </Stack>
@@ -418,7 +431,7 @@ const ItemDialogBody: FC<ItemDialogProps> = ({
             <ItemDialogWizardActions
               onCancel={() => ctrl.close()}
               onBack={!itemWizard.isFirstStep ? () => itemWizard.back() : undefined}
-              onNext={() => itemWizard.next(itemDialogWizardSteps[itemDialogWizardSteps.indexOf(wizardStep) + 1])}
+              onNext={() => void handleWizardNext()}
             />
           )}
 
