@@ -127,7 +127,7 @@ earlier migration, so they become Implanted. The PR that ships the migration mus
 
 - Needs a Runner schema migration (see `src/data/AGENTS.md`).
 - Every reader of `item.equipped`/`item.stashed` (encumbrance, armor totals, Game Effects, damage, attack weapon
-  selection, License Check, cards, details) moves to the new field or a helper built on it. There are about 40 call
+  selection, cards, details) moves to the new field or a helper built on it. There are about 40 call
   sites.
 - Weapons and armor still need to be told apart from other Equipped Items where a feature only cares about worn armor
   or wielded weapons (armor totals, encumbrance, the attack workflow). Those read sites keep filtering by type as well
@@ -142,8 +142,7 @@ New or changed `GLOSSARY.md` terms (now in `GLOSSARY.md`):
 - **Implanted** (new): an implant installed in the Runner's body. Active, like Equipped.
 - **Available** (changed): now *only* the resting state, on hand but neither Equipped nor Implanted. It previously
   meant "not Stashed".
-- **On Hand** (new): not Stashed, meaning Available, Equipped, or Implanted. This is what Available used to mean;
-  License Check's "what the Runner is carrying" reads On Hand.
+- **On Hand** (new): not Stashed, meaning Available, Equipped, or Implanted. This is what Available used to mean.
 - **Loaded** (Program, extended): also the on-screen label for a Program's or Software's Available state. A Program
   on hand is Loaded on its Matrix Entity; a Stashed Program is Loaded nowhere.
 - **Equipped** / **Stashed**: unchanged in meaning. Drop the note that un-stashing restores the previous state.
@@ -178,5 +177,4 @@ type ItemStateSets = Record<ItemType, readonly ItemState[]>
   and the restore-on-Unstash behaviour that this feature replaces.
 - [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md): superseded by
   [ADR 0021](../adr/0021-item-state-single-field.md).
-- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md): reads On Hand (was `!stashed`).
 - [`docs/features/0018-matrix-entities.md`](./0018-matrix-entities.md): owns the Matrix meaning of Loaded.

@@ -11,7 +11,8 @@ import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 import { GearSection } from "./gearSection.tsx"
 
 const trodes: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Trodes",
   itemType: ItemType.other,

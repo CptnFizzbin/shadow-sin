@@ -120,6 +120,8 @@ export function injectOption<
 ): Selector<TState, TReturn, RemainingOptions<TOptions, TInjected>> {
   return ((state: TState, options: Omit<TOptions, keyof TInjected>) =>
     selector(state, { ...options, ...injectedOptions } as MergedOptions)) as Selector<
-    TState, TReturn, RemainingOptions<TOptions, TInjected>
+    TState,
+    TReturn,
+    RemainingOptions<TOptions, TInjected>
   >
 }

@@ -19,12 +19,12 @@ import type { UUID } from "#/utils/uuidUtils.ts"
  * (`AttrSelectors.selectBase`, `ItemSelectors.selectById`, ...) reference an entry here directly
  * as a `reselect` input selector, rather than each domain calling `selectorOption` locally to
  * build its own — this is what keeps two unrelated options from quietly sharing a name:
- * `attributeKey` (an `AttributeKey`) and `houseRuleKey` (a bare `string`) both underlie an option
+ * `attributeKey` (an `AttributeKey`) and `key.skill` (a `SkillKey`) both underlie an option
  * field literally called `key`, and would look identical at a glance as two separate local
  * declarations in two files. Naming them distinctly here, side by side, makes that impossible.
  *
  * A `SelectorOptions.*` entry's own name doesn't have to match the `TOptions` field it reads
- * (`selectorOption`'s first type argument) — `attributeKey` and `houseRuleKey` both read a field
+ * (`selectorOption`'s first type argument) — `attributeKey` and `key.skill` both read a field
  * called `key`, just on different `TOptions` shapes.
  */
 export const SelectorOptions = {
@@ -64,7 +64,6 @@ export const SelectorOptions = {
     /** @deprecated - use {@link SelectorOptions.attr} instead */
     attr: selectorOption<{ key: AttributeKey }>("key"),
     skill: selectorOption<{ key: SkillKey }>("key"),
-    houseRule: selectorOption<{ key: string }>("key"),
   },
 
   filter: {
@@ -76,7 +75,4 @@ export const SelectorOptions = {
 
   /** @deprecated - use {@link SelectorOptions.key.skill} instead */
   skillKey: selectorOption<{ key: SkillKey }>("key"),
-
-  /** @deprecated - use {@link SelectorOptions.key.houseRule} instead */
-  houseRuleKey: selectorOption<{ key: string }>("key"),
 }

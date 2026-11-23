@@ -9,6 +9,5 @@ import type { ConsumableData } from "#/system/model/items/consumableData.ts"
  */
 export function useConsumeAction(consumable: ConsumableData): ItemStateActionOption | undefined {
   return useItemStateActions(consumable).find(({ action }) =>
-    action === ItemStateAction.consume || action === ItemStateAction.endEffect,
-  )
+    action === ItemStateAction.consume || action === ItemStateAction.endEffect)
 }

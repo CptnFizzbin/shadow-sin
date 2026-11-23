@@ -12,7 +12,8 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { CredstickSection } from "./credstickSection.tsx"
 
 const streetStick: CredstickData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Street Cred",
   itemType: ItemType.credstick,
@@ -43,6 +44,30 @@ describe("CredstickSection", () => {
 
     // Assert: the UI re-rendered off the updated store.
     expect(await screen.findByText("Backup Stick")).toBeDefined()
+  })
+
+  it("editing a credstick saves the rename through the shared item save path without moving nuyen", async () => {
+    // Arrange
+    const store = renderWithProviders(<CredstickSection />, {
+      runner: runnerDataFactory({
+        items: { [streetStick.id]: streetStick },
+        afterBuild: (data) => {
+          data.nuyen.current = 100
+        },
+      }),
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
+    await screen.findByRole("dialog", { name: "Edit Credstick" })
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Rainy Day Fund" } })
+    fireEvent.click(screen.getByRole("button", { name: /save/i }))
+
+    // Assert
+    expect(await screen.findByText("Rainy Day Fund")).toBeDefined()
+    expect(getItemCatalog(store.getState().runner)[streetStick.id]).toEqual({ ...streetStick, name: "Rainy Day Fund" })
+    expect(store.getState().runner.nuyen.current).toBe(100)
   })
 
   it("withdrawing a credstick removes it, once confirmed, and deposits its balance to nuyen", async () => {

@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor, within } from "@testing-library/react"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
@@ -26,6 +26,14 @@ function clickInLastDialog(name: RegExp) {
   fireEvent.click(within(dialogs[dialogs.length - 1]).getByRole("button", { name }))
 }
 
+/** Clicks the wizard's Next button and waits for its async step validation to settle. */
+async function clickNextInLastDialog() {
+  clickInLastDialog(/next/i)
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+  })
+}
+
 describe("useAddItemDialog", () => {
   it("adds a Misc item to the runner through the full Type → Stats → Effects → Finalize flow", async () => {
     // Arrange
@@ -39,10 +47,10 @@ describe("useAddItemDialog", () => {
     // tick, so wait for the new dialog's Name field to actually mount.
     const nameField = await screen.findByLabelText(/^name$/i)
     fireEvent.change(nameField, { target: { value: "Fake SIN Chip" } })
-    clickInLastDialog(/next/i)
+    await clickNextInLastDialog()
 
     // Select Effects
-    clickInLastDialog(/next/i)
+    await clickNextInLastDialog()
 
     // Finalize
     clickInLastDialog(/acquire|save/i)
@@ -75,8 +83,8 @@ describe("useAddItemDialog", () => {
 
     const nameField = await screen.findByLabelText(/^name$/i)
     fireEvent.change(nameField, { target: { value: "Plate Insert" } })
-    clickInLastDialog(/next/i)
-    clickInLastDialog(/next/i)
+    await clickNextInLastDialog()
+    await clickNextInLastDialog()
     clickInLastDialog(/acquire|save/i)
 
     // Assert

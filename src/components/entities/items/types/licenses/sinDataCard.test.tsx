@@ -13,7 +13,8 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
 const fakeSin: SinData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
@@ -22,7 +23,8 @@ const fakeSin: SinData = {
 }
 
 const realSin: SinData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,

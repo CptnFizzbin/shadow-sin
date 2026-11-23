@@ -16,8 +16,7 @@ function ShadowSinDevtoolsPanel() {
     const runners = await runnerManager.listRunners()
     await Promise.all(
       runners.map((savedChar) =>
-        runnerManager.deleteRunner(savedChar.id),
-      ),
+        runnerManager.deleteRunner(savedChar.id)),
     )
     await router.invalidate({ sync: true })
     setStatusMessage(`Cleared ${runners.length} runner(s).`)

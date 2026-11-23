@@ -35,8 +35,7 @@ export const ActiveSkillSelectInput: FC<ActiveSkillSelectInputProps> = ({
               {skill.group && <Typography sx={{ color: "text.secondary" }}>{skill.group}</Typography>}
             </Stack>
           </MenuItem>
-        ),
-        )}
+        ))}
     </Select>
   )
 }

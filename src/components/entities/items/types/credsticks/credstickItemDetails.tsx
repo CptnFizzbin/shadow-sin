@@ -1,12 +1,11 @@
 import type { FC } from "react"
 
+import { useEditItemDialog } from "#/components/entities/items/actions/useEditItemDialog.tsx"
 import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
 import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/model/items/credstickData.ts"
-
-import { useCredstickDialog } from "./credstickDialog.tsx"
 
 export interface CredstickItemDetailsProps {
   credstick: CredstickData
@@ -17,9 +16,9 @@ export interface CredstickItemDetailsProps {
 export const CredstickItemDetails: FC<CredstickItemDetailsProps> = ({ credstick }) => {
   const maxBalance = CredstickMaxBalance[credstick.credstickType]
   const fillPercent = maxBalance > 0 ? (credstick.balance / maxBalance) * 100 : 0
-  const credstickDialog = useCredstickDialog()
+  const editItemDialog = useEditItemDialog()
 
-  const handleEdit = () => credstickDialog.open({ mode: "edit", credstick })
+  const handleEdit = () => editItemDialog.open(credstick)
 
   return (
     <>
@@ -32,7 +31,7 @@ export const CredstickItemDetails: FC<CredstickItemDetailsProps> = ({ credstick 
         <ItemDetailsSlot.Stat label="Filled" value={`${fillPercent.toFixed(0)}%`} />
       </ItemDetailsRoot>
 
-      {credstickDialog.outlet}
+      {editItemDialog.outlet}
     </>
   )
 }

@@ -71,8 +71,7 @@ describe("RunnerErrorRoute", () => {
       expect(downloadTextFile).toHaveBeenCalledWith(
         expect.stringContaining("alias: Artemis"),
         `artemis.${isoDate}.error.sin`,
-      ),
-    )
+      ))
   })
 
   it("falls back to `runner` in the file name when no saved data has a usable name", async () => {
@@ -90,7 +89,6 @@ describe("RunnerErrorRoute", () => {
       expect(downloadTextFile).toHaveBeenCalledWith(
         expect.any(String),
         `runner.${isoDate}.error.sin`,
-      ),
-    )
+      ))
   })
 })

@@ -64,6 +64,86 @@ describe.concurrent("RunnerManager.listRunnersWithErrors", () => {
   })
 })
 
+describe.concurrent("RunnerManager.listRunnersWithErrors not-found handling", () => {
+  it("skips an indexed runner whose stored data is missing", async () => {
+    // Arrange
+    const { manager, storage } = makeTestRunnerManager()
+    await storage.setItem("index", [{ id: "missing", name: "missing", lastModified: "2024-01-01T00:00:00.000Z" }])
+
+    // Act
+    const result = await manager.listRunnersWithErrors()
+
+    // Assert
+    expect(result.runners).toEqual({})
+    expect(result.errors).toEqual([])
+  })
+
+  it("reports an unrelated storage error as an error entry instead of skipping it", async () => {
+    // Arrange
+    const { manager, storage } = makeTestRunnerManager()
+    vi.spyOn(storage, "getItem").mockImplementation((key) => key === "index"
+      ? Promise.resolve([{ id: "broken", name: "broken", lastModified: "2024-01-01T00:00:00.000Z" }])
+      : Promise.reject(new Error("Storage unavailable")))
+
+    // Act
+    const result = await manager.listRunnersWithErrors()
+
+    // Assert
+    expect(result.errors).toEqual([{ runnerId: "broken", errorMessage: "Storage unavailable", rawData: null }])
+  })
+
+  it("reports an error that only shares RunnerNotFoundError's name as an error entry", async () => {
+    // Arrange
+    const { manager, storage } = makeTestRunnerManager()
+    const lookalikeError = new Error("Not a real RunnerNotFoundError")
+    lookalikeError.name = "RunnerNotFoundError"
+    vi.spyOn(storage, "getItem").mockImplementation((key) => key === "index"
+      ? Promise.resolve([{ id: "lookalike", name: "lookalike", lastModified: "2024-01-01T00:00:00.000Z" }])
+      : Promise.reject(lookalikeError))
+
+    // Act
+    const result = await manager.listRunnersWithErrors()
+
+    // Assert
+    expect(result.errors).toEqual([
+      { runnerId: "lookalike", errorMessage: "Not a real RunnerNotFoundError", rawData: null },
+    ])
+  })
+})
+
+describe.concurrent("RunnerManager.findRunner", () => {
+  it("returns null for an unknown runner id", async () => {
+    // Arrange
+    const { manager } = makeTestRunnerManager()
+
+    // Act
+    const result = await manager.findRunner(crypto.randomUUID())
+
+    // Assert
+    expect(result).toBeNull()
+  })
+
+  it("rethrows an unrelated storage error", async () => {
+    // Arrange
+    const { manager, storage } = makeTestRunnerManager()
+    vi.spyOn(storage, "getItem").mockRejectedValue(new Error("Storage unavailable"))
+
+    // Act / Assert
+    await expect(manager.findRunner(crypto.randomUUID())).rejects.toThrow("Storage unavailable")
+  })
+
+  it("rethrows an error that only shares RunnerNotFoundError's name", async () => {
+    // Arrange
+    const { manager, storage } = makeTestRunnerManager()
+    const lookalikeError = new Error("Not a real RunnerNotFoundError")
+    lookalikeError.name = "RunnerNotFoundError"
+    vi.spyOn(storage, "getItem").mockRejectedValue(lookalikeError)
+
+    // Act / Assert
+    await expect(manager.findRunner(crypto.randomUUID())).rejects.toBe(lookalikeError)
+  })
+})
+
 describe.concurrent("RunnerManager.saveRunner / getRunner", () => {
   it("persists the runner so getRunner returns it immediately after saveRunner resolves", async () => {
     // Arrange

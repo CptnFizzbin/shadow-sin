@@ -69,27 +69,3 @@ export const calculateActiveSkillsBp = (
 
   return skillsBp + groupsBp
 }
-
-export const calculateKnowledgeAndLanguageSpUsed = (
-  knowledgeSkills: KnowledgeSkillData[],
-  languageSkills: LanguageSkillData[],
-): number => {
-  const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
-    return total + getKnowledgeSkillSp(skill)
-  }, 0)
-  const languageSp = languageSkills.reduce((total, skill) => {
-    return (
-      total
-      + getLanguageSkillSp(skill)
-    )
-  }, 0)
-  return knowledgeSp + languageSp
-}
-
-export const calculateExtraSpBp = (
-  totalSpUsed: number,
-  freeSkillPoints: number,
-): number => {
-  const extraSp = Math.max(0, totalSpUsed - freeSkillPoints)
-  return extraSp * BuilderConfig.skills.knowledge.bpCost.extraSkillPoint
-}

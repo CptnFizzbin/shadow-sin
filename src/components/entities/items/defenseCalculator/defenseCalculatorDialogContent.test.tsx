@@ -358,7 +358,8 @@ describe("DefenseCalculatorDialogContent", () => {
     it("Indirect: defenseCalculator uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item, items: { parentId: null, childIds: [] },
+          kind: EntityKind.item,
+          items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -394,7 +395,8 @@ describe("DefenseCalculatorDialogContent", () => {
     it("includes the worn effective armor value for a physical attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item, items: { parentId: null, childIds: [] },
+          kind: EntityKind.item,
+          items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,
@@ -421,7 +423,8 @@ describe("DefenseCalculatorDialogContent", () => {
     it("does not apply armor for a spell attack", () => {
       renderDialog((sheet) => {
         const jacket: ArmorData = {
-          kind: EntityKind.item, items: { parentId: null, childIds: [] },
+          kind: EntityKind.item,
+          items: { parentId: null, childIds: [] },
           id: "00000000-0000-0000-0000-000000000001",
           name: "Test Jacket",
           itemType: ItemType.armor,

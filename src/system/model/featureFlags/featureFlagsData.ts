@@ -1,15 +1,19 @@
-import type { OptionalRulesData } from "./optionalRulesData.ts"
+import type { FlagEntry, FlagValue } from "./featureFlag.ts"
 
 /**
- * Container for all feature flag namespaces on a Runner or in a GameConfig.
- * Every namespace is optional — an absent namespace means all flags in that
- * namespace use their SR4e stock defaults from the corresponding registry.
+ * A Runner's feature flag overrides, keyed by each flag's namespaced `ref`
+ * (e.g. `houseRules.karma.buy.enabled`). An absent key means the flag uses its registry `default`.
  */
-export interface FeatureFlagsData {
-  /**
-   * Optional rules from Shadowrun source books. An absent field within
-   * `optionalRules` falls back to the SR4e default defined in
-   * `optionalRulesRegistry`.
-   */
-  optionalRules?: OptionalRulesData
+export type FeatureFlagsData = Record<string, FlagValue>
+
+/**
+ * `flag`'s value in `featureFlags`: the stored override at its `ref`, else its `default`.
+ * A stored value whose type differs from the `default` is ignored in favour of the `default`.
+ */
+export function resolveFlagValue<Value extends FlagValue>(
+  featureFlags: FeatureFlagsData,
+  flag: FlagEntry<Value>,
+): Value {
+  const stored = featureFlags[flag.ref]
+  return typeof stored === typeof flag.default ? stored as Value : flag.default
 }

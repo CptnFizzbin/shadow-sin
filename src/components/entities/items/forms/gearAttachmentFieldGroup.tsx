@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { z } from "zod"
 
 import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
@@ -10,12 +11,18 @@ export const GearAttachmentFieldGroup = withFieldGroup({
     isFixed: false as boolean,
     parentItemOptions: [] as SelectOption[],
     fieldLabel: "Parent Item" as string,
+    required: false as boolean,
     attachmentSlot: undefined as (() => ReactNode) | undefined,
   },
-  render: ({ group, isFixed, parentItemOptions, fieldLabel, attachmentSlot }) => {
+  render: ({ group, isFixed, parentItemOptions, fieldLabel, required, attachmentSlot }) => {
     return (
       <>
-        <group.AppField name="items.parentId">
+        <group.AppField
+          name="items.parentId"
+          validators={required
+            ? { onChange: z.string(`${fieldLabel} is required`).min(1, `${fieldLabel} is required`) }
+            : undefined}
+        >
           {(field) => (
             <field.SelectField
               label={fieldLabel}

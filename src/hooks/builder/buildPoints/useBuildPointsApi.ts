@@ -1,24 +1,17 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import {
-  calculateActiveSkillsBp,
-  calculateExtraSpBp,
-  calculateKnowledgeAndLanguageSpUsed,
-  getFreeSkillPoints,
-} from "#/components/skills/builder/skillsBuilderUtils.ts"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { calculateActiveSkillsBp } from "#/components/skills/builder/skillsBuilderUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "./useAttributesBuildPoints.ts"
 import { useComplexFormsBuildPoints } from "./useComplexFormsBuildPoints.ts"
 import { useContactsBuildPoints } from "./useContactsBuildPoints.ts"
 import { useGearBuildPoints } from "./useGearBuildPoints.ts"
+import { useKnowledgeSkillsBuildPoints } from "./useKnowledgeSkillsBuildPoints.ts"
 import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
 import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
 import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
@@ -92,27 +85,5 @@ const useActiveSkillsBuildPoints = () => {
     sectionId: BuilderSectionId.activeSkills,
     label: "Active Skills",
     spent: activeSkillsBp,
-  }
-}
-
-const useKnowledgeSkillsBuildPoints = () => {
-  const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })
-  const intuitionAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.intuition })
-
-  const knowledgeSkills = useRunnerSelector(SkillsSelectors.selectKnowledgeSkills)
-  const languageSkills = useRunnerSelector(SkillsSelectors.selectLanguageSkills)
-
-  const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
-    knowledgeSkills,
-    languageSkills,
-  )
-
-  const freeSkillPoints = getFreeSkillPoints(logicAttr, intuitionAttr)
-  const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
-
-  return {
-    sectionId: BuilderSectionId.knowledgeSkills,
-    label: "Knowledge Skills",
-    spent: extraSpBp,
   }
 }

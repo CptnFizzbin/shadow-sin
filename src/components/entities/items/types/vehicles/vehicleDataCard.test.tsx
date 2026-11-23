@@ -14,7 +14,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
 const car: VehicleData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Americar",
   itemType: ItemType.vehicle,

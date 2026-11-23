@@ -12,7 +12,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { OtherDataCard } from "./otherDataCard.tsx"
 
 const survivalKit: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Survival Kit",
   itemType: ItemType.other,

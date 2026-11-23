@@ -11,6 +11,16 @@ import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
+import type { SpellData } from "#/system/model/magic/spellData.ts"
+import {
+  SpellCategory,
+  SpellDamage,
+  SpellDrainType,
+  SpellDuration,
+  SpellRange,
+  SpellSustainTarget,
+  SpellType,
+} from "#/system/model/magic/spellData.ts"
 import { AccessLevel } from "#/system/model/matrix/accessLevel.ts"
 import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
 import { NodeType } from "#/system/model/matrix/nodeType.ts"
@@ -18,6 +28,7 @@ import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
 import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { AttrSelectors } from "./attributes.selector.ts"
 
@@ -39,6 +50,22 @@ const improvedReflexes = (reactionBonus: number): AdeptPowerData => ({
   rating: reactionBonus,
   costPerRating: 1.5,
   effects: [{ type: GameEffectType.attrMod, target: AttributeKey.reaction, value: reactionBonus }],
+})
+
+const increaseAgility = (sustain: Pick<SpellData, "sustained" | "sustainedOn">): SpellData => ({
+  kind: EntityKind.spell,
+  id: NullUuid,
+  name: "Increase Agility",
+  type: SpellType.Physical,
+  range: SpellRange.Touch,
+  damage: SpellDamage.Physical,
+  category: SpellCategory.Health,
+  drain: { type: SpellDrainType.Force, value: -2 },
+  dealsDamage: false,
+  duration: SpellDuration.Sustained,
+  voluntaryTargetsOnly: true,
+  effects: [{ type: GameEffectType.attrMod, target: AttributeKey.agility, value: 2 }],
+  ...sustain,
 })
 
 /** @deprecated - use {@link stateFor} instead */
@@ -441,6 +468,41 @@ describe("AttrSelectors.selectRatingBreakdown", () => {
 
     // Assert
     expect(breakdown).toEqual({ rawValue: 3, modifiers: [{ name: "Improved Reflexes", value: 1 }], rating: 4 })
+  })
+
+  it("adds a Spell's attrMod GameEffects while it is sustained on its caster", () => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 4
+        s.spells = [increaseAgility({ sustained: true })]
+      },
+    })
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 4, modifiers: [{ name: "Increase Agility", value: 2 }], rating: 6 })
+  })
+
+  it.each([
+    { case: "isn't sustained", sustained: false, sustainedOn: undefined },
+    { case: "is sustained on someone else", sustained: true, sustainedOn: SpellSustainTarget.Other },
+  ])("ignores the attrMod GameEffects of a sustainable Spell that $case", ({ sustained, sustainedOn }) => {
+    // Arrange
+    const runner = runnerDataFactory({
+      afterBuild: (s) => {
+        s.attributes[AttributeKey.agility] = 4
+        s.spells = [increaseAgility({ sustained, sustainedOn })]
+      },
+    })
+
+    // Act
+    const breakdown = AttrSelectors.selectRatingBreakdown(ratingStateFor(runner), { attr: AttributeKey.agility })
+
+    // Assert
+    expect(breakdown).toEqual({ rawValue: 4, modifiers: [], rating: 4 })
   })
 
   it("caps the rating at the metatype's augmented maximum", () => {

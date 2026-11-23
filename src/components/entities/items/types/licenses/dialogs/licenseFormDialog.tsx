@@ -48,6 +48,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       ratingMax={6}
       parentItemFilter={(item: ItemData) => isSinData(item)}
       parentItemLabel="SIN"
+      parentItemRequired
       options={{
         hasRating: { forced: true },
         isSubItem: { forced: true },

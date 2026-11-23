@@ -18,7 +18,9 @@ import type { UUID } from "#/utils/uuidUtils.ts"
 
 export namespace ItemSelectors {
   export type ItemSelector<TReturn, TOptions extends object | never = never> = StandardSelector<
-    { items: ItemCatalog }, TReturn, TOptions
+    { items: ItemCatalog },
+    TReturn,
+    TOptions
   >
 
   export const selectAll = createSelector(
