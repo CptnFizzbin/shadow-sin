@@ -19,7 +19,6 @@ import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes
 import { GearViewSection } from "#/components/entities/items/viewer/gearViewSection.tsx"
 import { NuyenSection } from "#/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
 import { useAvailabilityTestDialog } from "#/components/system/availabilityTest/availabilityTestDialog.tsx"
-import { useLicenseCheckDialog } from "#/components/system/licenseCheck/licenseCheckDialog.tsx"
 import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
@@ -44,7 +43,6 @@ function RouteComponent() {
   const searchTerms = searchQuery.trim() ? searchQuery.trim().split(/\s+/) : []
   const isSearching = searchTerms.length > 0
   const isBuilder = !useEditorMode().isViewer
-  const licenseCheckDialog = useLicenseCheckDialog()
   const availabilityTestDialog = useAvailabilityTestDialog()
   const addItemDialog = useAddItemDialogContext()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
@@ -101,9 +99,6 @@ function RouteComponent() {
           {!isBuilder && (
             <Button onClick={() => availabilityTestDialog.open()}>Availability Test</Button>
           )}
-          {!isBuilder && (
-            <Button onClick={() => licenseCheckDialog.open()}>License Check</Button>
-          )}
         </ButtonGroup>
       </Stack>
 
@@ -122,7 +117,6 @@ function RouteComponent() {
       )}
 
       {availabilityTestDialog.outlet}
-      {licenseCheckDialog.outlet}
     </Stack>
   )
 }

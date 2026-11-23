@@ -66,7 +66,7 @@ available) but are illustrative — actual numbers depend on what else lands fir
 
 Slice 6 also needs a full pass over the ~20 call sites currently doing `rating === "real"` /
 `rating === "native"` (dice-pool sizing, cost calculation, display, form fields — see
-`docs/features/0011-license-check-dialog.md` and the language skill list/improvement components).
+the language skill list/improvement components).
 
 ## Constraints
 
@@ -118,12 +118,6 @@ Slice 6 also needs a full pass over the ~20 call sites currently doing `rating =
   and uses `isNative` rather than `isReal`, so it declares the same shape standalone rather than
   implementing `Credential`. (Revised from this doc's original discriminated-union proposal — see
   #535.)
-- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) hard-codes the
-  current `"real" | number` shape as a Constraint and in its Rough Interface Sketch — updated
-  alongside this doc so the two don't contradict each other. Its own Issues (`#391`, `#393`,
-  `#394`) are already closed/completed, so this is a follow-up migration on shipped code, not a
-  change to in-flight implementation work; only `#389` (unrelated House Rules infrastructure)
-  remains open.
 
 ## Domain Notes
 
@@ -283,9 +277,5 @@ interface LanguageSkillData {
   selector* layer. The two should be read together, not conflated.
 - [`docs/adr/0012-matrix-entity-model.md`](../adr/0012-matrix-entity-model.md) — this doc's
   `AttributeKey` extension continues ADR-0012's attribute-unification decision.
-- [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) — its Constraint
-  and Rough Interface Sketch depended on the now-retired `rating: "real" | number` shape; updated
-  to match. Its own Issues are closed/completed, so this is a follow-up migration on shipped
-  behavior, not a change to work in flight.
 - [`docs/features/0001-license-quick-buy.md`](./0001-license-quick-buy.md) — already derives
   `isReal` informally from `rating`; this doc promotes it to a real stored field.

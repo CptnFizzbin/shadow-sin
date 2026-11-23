@@ -94,7 +94,7 @@ colocate with the one feature that owns them.
 | Store/context | Consumers | Verdict |
 |---|---|---|
 | `DialogCtrl` | `items/`, `karma`, `magician/spirits`, `skills`, `combat`, `defenseCalculator`, `ui/dialog` itself — a reusable primitive many independent dialogs construct their own instance from, not one singleton behind one hook | Business logic → `services/dialog/`. Display (`Dialog`, `ControlledDialog`) stays in `components/ui/dialog/`; `useDialog`/`useDialogCtrl` stay in `hooks/ui/dialog/` |
-| `DiceRoller` + `DiceTrayApi` | `attackCalculator`, `licenseCheck`, builder's nuyen section, dice tray — but only ever through `useDiceRoller()`, never `DiceRoller`'s `.selectors`/`.state` directly | One service — both stores' logic merges into `services/dice/`. `useDiceRoller` stays in `hooks/dice/`; the Dice Tray display (dialog, header, inputs, results) stays in `components/dice/` |
+| `DiceRoller` + `DiceTrayApi` | `attackCalculator`, builder's nuyen section, dice tray — but only ever through `useDiceRoller()`, never `DiceRoller`'s `.selectors`/`.state` directly | One service — both stores' logic merges into `services/dice/`. `useDiceRoller` stays in `hooks/dice/`; the Dice Tray display (dialog, header, inputs, results) stays in `components/dice/` |
 | `ImprovementStore` | Spend Karma dialog only | Business logic → `services/improvements/`. Display stays in `components/karma/` |
 | `InitiativeTrackerStore` | Initiative Tracker feature only | Business logic → `services/initiativeTracker/`. Display stays in `components/initiativeTracker/` |
 | `contexts/entity/entityProvider.tsx` | Cross-cutting (ADR-0016 Phase 1 builds on it directly) | Shared — stays in `contexts/` |
@@ -194,7 +194,7 @@ karma-spend mechanism, not its own domain — `ImprovementStore` itself peels of
 
 Runner-only domains promote from `components/runner/<domain>/` straight to `components/<domain>/`
 with no mode split needed: `magician`, `matrix`, `quickPanel`, `reputation`, `technomancer`,
-`header`, `nav`, `licenseCheck`, `exportImport`, `sheet`.
+`header`, `nav`, `exportImport`, `sheet`.
 
 Builder-only domains promote from `components/builder/sections/<domain>/` the same way:
 `resources`, `summary`, `alerts`, `buildPoints`, `nav`.

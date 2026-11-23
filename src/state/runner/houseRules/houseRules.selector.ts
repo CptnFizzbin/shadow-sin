@@ -6,7 +6,6 @@ export namespace HouseRulesSelectors {
     SelectorOptions.houseRuleKey,
     (key) => {
       switch (key) {
-        case "items.licenseCheck.ratingPlusRating":
         case "karma.nuyenExchange":
           return true
         default:
