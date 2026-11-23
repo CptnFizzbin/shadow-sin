@@ -77,4 +77,94 @@ describe.concurrent("DurationUtils.simplify", () => {
       months: 128,
     })
   })
+
+  const carryCases: { name: string, duration: Duration, expected: Duration }[] = [
+    {
+      name: "combat rounds into seconds",
+      duration: { combatRounds: 2 },
+      expected: { seconds: 6 },
+    },
+    {
+      name: "seconds into minutes",
+      duration: { seconds: 61 },
+      expected: { minutes: 1, seconds: 1 },
+    },
+    {
+      name: "minutes into hours",
+      duration: { minutes: 61 },
+      expected: { hours: 1, minutes: 1 },
+    },
+    {
+      name: "hours into days",
+      duration: { hours: 25 },
+      expected: { days: 1, hours: 1 },
+    },
+    {
+      name: "days into weeks",
+      duration: { days: 8 },
+      expected: { weeks: 1, days: 1 },
+    },
+    {
+      name: "weeks into months",
+      duration: { weeks: 5 },
+      expected: { months: 1, weeks: 1 },
+    },
+    {
+      name: "hours into days that already has days",
+      duration: { hours: 25, days: 2 },
+      expected: { days: 3, hours: 1 },
+    },
+    {
+      name: "hours into days that pushes existing days into weeks",
+      duration: { hours: 48, days: 6 },
+      expected: { weeks: 1, days: 1, hours: 0 },
+    },
+    {
+      name: "minutes through hours into days",
+      duration: { minutes: 1500 },
+      expected: { days: 1, hours: 1, minutes: 0 },
+    },
+    {
+      name: "seconds through every temporal unit into months",
+      duration: { seconds: 2_419_200 },
+      expected: { months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0 },
+    },
+    {
+      name: "a chained carry into days that already has days",
+      duration: { minutes: 60, hours: 23, days: 1 },
+      expected: { days: 2, hours: 0, minutes: 0 },
+    },
+    {
+      name: "exact unit boundaries with no remainder",
+      duration: { seconds: 60, minutes: 60, hours: 24, days: 7, weeks: 4 },
+      expected: { months: 1, weeks: 1, days: 1, hours: 1, minutes: 1, seconds: 0 },
+    },
+    {
+      name: "values just below each boundary unchanged",
+      duration: { seconds: 59, minutes: 59, hours: 23, days: 6, weeks: 3 },
+      expected: { seconds: 59, minutes: 59, hours: 23, days: 6, weeks: 3 },
+    },
+  ]
+
+  it.each(carryCases)("carries $name", ({ duration, expected }) => {
+    // Arrange
+    const input = { ...duration }
+
+    // Act
+    const result = DurationUtils.simplify(input)
+
+    // Assert
+    expect(result).toEqual(expected)
+  })
+
+  it("does not mutate its input", () => {
+    // Arrange
+    const input: Duration = { hours: 25, days: 2 }
+
+    // Act
+    DurationUtils.simplify(input)
+
+    // Assert
+    expect(input).toEqual({ hours: 25, days: 2 })
+  })
 })
