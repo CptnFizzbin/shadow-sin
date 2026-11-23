@@ -5,6 +5,7 @@ import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 import { getItemGameEffects, itemEffectsApply } from "#/system/formulas/gameEffects/gameEffectUtils.ts"
+import { spellEffectsApply } from "#/system/formulas/magic/spellSustaining.ts"
 import type { SourcedGameEffect } from "#/system/formulas/ratings/ratingFormulas.ts"
 import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
 
@@ -17,7 +18,7 @@ const selectComplexForms = createMemoizedSelector(
 
 export namespace SourcedGameEffectSelectors {
   /**
-   * Every active GameEffect — from Qualities, Items whose effects apply, Spells, Complex Forms, and Powers —
+   * Every active GameEffect — from Qualities, Items whose effects apply, Spells whose effects apply, Complex Forms, and Powers —
    * paired with the name of its source, so a rating can show where each modifier came from.
    */
   export const selectAll = createMemoizedSelector(
@@ -32,7 +33,7 @@ export namespace SourcedGameEffectSelectors {
         ...Object.values(items)
           .filter(itemEffectsApply)
           .map((item) => ({ name: item.name, effects: getItemGameEffects(item) })),
-        ...spells,
+        ...spells.filter(spellEffectsApply),
         ...complexForms,
         ...powers,
       ]
