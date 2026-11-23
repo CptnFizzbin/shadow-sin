@@ -70,6 +70,10 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     ItemStateUtils.unbondFocusById(state, action.payload.id)
   })
 
+  addCase(ItemActions.setDamage, (state, action) => {
+    ItemStateUtils.setDamageById(state, action.payload.itemId, action.payload.track, action.payload.value)
+  })
+
   addCase(RunnerActions.load, (_state, { payload }) => {
     return getItemCatalog(payload)
   })
