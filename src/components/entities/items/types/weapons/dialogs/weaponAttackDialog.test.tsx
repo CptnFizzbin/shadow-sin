@@ -18,7 +18,8 @@ import { WeaponAttackDialogPom } from "./weaponAttackDialog.testLib.ts"
 import { useWeaponAttackDialog } from "./weaponAttackDialog.tsx"
 
 const pistol: FirearmData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Test Pistol",
   itemType: ItemType.weapon,
@@ -35,7 +36,8 @@ const pistol: FirearmData = {
 }
 
 const knife: MeleeWeaponData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000002",
   name: "Combat Knife",
   itemType: ItemType.weapon,

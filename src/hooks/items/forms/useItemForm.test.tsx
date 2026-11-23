@@ -15,8 +15,7 @@ describe("useItemForm", () => {
 
     // Act
     const { result } = renderHook(() =>
-      useItemForm({ defaultValues, onSubmit: vi.fn() }),
-    )
+      useItemForm({ defaultValues, onSubmit: vi.fn() }))
 
     // Assert
     expect(result.current.state.values).toEqual(itemDefaults)
@@ -38,8 +37,7 @@ describe("useItemForm", () => {
 
     // Act
     const { result } = renderHook(() =>
-      useItemForm({ item: existingItem, defaultValues, onSubmit: vi.fn() }),
-    )
+      useItemForm({ item: existingItem, defaultValues, onSubmit: vi.fn() }))
 
     // Assert
     expect(result.current.state.values).toMatchObject({
@@ -58,8 +56,7 @@ describe("useItemForm", () => {
 
     // Act
     const { result } = renderHook(() =>
-      useItemForm({ defaultValues, onSubmit: vi.fn() }),
-    )
+      useItemForm({ defaultValues, onSubmit: vi.fn() }))
 
     // Assert
     expect(result.current.state.values.itemType).toBe(ItemType.armor)
@@ -75,8 +72,7 @@ describe("useItemForm", () => {
 
     // Act
     const { result } = renderHook(() =>
-      useItemForm({ item: existingItem, defaultValues: itemDefaults, onSubmit: vi.fn() }),
-    )
+      useItemForm({ item: existingItem, defaultValues: itemDefaults, onSubmit: vi.fn() }))
 
     // Assert
     expect(result.current.state.values.itemType).toBe(ItemType.vehicle)

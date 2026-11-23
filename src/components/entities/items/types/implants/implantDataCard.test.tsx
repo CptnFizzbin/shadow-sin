@@ -14,7 +14,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ImplantDataCard } from "./implantDataCard.tsx"
 
 const alphaImplant: ImplantData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Wired Reflexes 2",
   itemType: ItemType.implant,
@@ -26,7 +27,8 @@ const alphaImplant: ImplantData = {
 }
 
 const standardImplant: ImplantData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Datajack",
   itemType: ItemType.implant,

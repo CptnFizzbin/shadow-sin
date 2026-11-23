@@ -15,7 +15,8 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { WeaponDataCard } from "./weaponDataCard.tsx"
 
 const weapon: WeaponData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -36,7 +37,8 @@ const firearm: FirearmData = {
 }
 
 const meleeWeapon: MeleeWeaponData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000002",
   name: "Combat Knife",
   itemType: ItemType.weapon,

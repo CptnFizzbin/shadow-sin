@@ -12,7 +12,8 @@ import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 const restrictedArmor: ArmorData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-0000000000a1",
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -28,7 +29,8 @@ const unrestrictedArmor: ArmorData = {
 }
 
 const fakeSin: SinData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000s01",
   name: "Fake SIN",
   itemType: ItemType.sin,

@@ -10,7 +10,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ProgramDataCard } from "./programDataCard.tsx"
 
 const fakeProgram: ProgramData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Exploit",
   itemType: ItemType.program,

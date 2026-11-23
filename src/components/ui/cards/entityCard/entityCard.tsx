@@ -20,7 +20,8 @@ export type { CardElementEffectsProps } from "#/components/ui/cards/entityCard/e
 export type { CardElementRatingProps } from "#/components/ui/cards/entityCard/elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "#/components/ui/cards/entityCard/elements/cardElementSource.tsx"
 export type {
-  CardElementStatProps, CardElementStatType,
+  CardElementStatProps,
+  CardElementStatType,
 } from "#/components/ui/cards/entityCard/elements/cardElementStat.tsx"
 export type { CardElementTitleProps } from "#/components/ui/cards/entityCard/elements/cardElementTitle.tsx"
 export type { BodyRowProps } from "#/components/ui/cards/entityCard/layout/bodyRow.tsx"

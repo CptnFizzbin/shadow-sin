@@ -41,8 +41,7 @@ export default function RunnerRosterList({
   const [menuState, setMenuState] = useState<{ anchorEl: HTMLElement, runner: RunnerData } | null>(null)
 
   const sortedRunners = Object.values(runners).sort((a, b) =>
-    a.profile.alias.localeCompare(b.profile.alias),
-  )
+    a.profile.alias.localeCompare(b.profile.alias))
 
   const totalItems = sortedRunners.length + errors.length
 

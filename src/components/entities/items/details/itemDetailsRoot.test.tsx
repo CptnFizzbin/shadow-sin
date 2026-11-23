@@ -13,7 +13,8 @@ import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "./itemDetailsSlot.tsx"
 
 const baseItem: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.other,
@@ -130,7 +131,8 @@ describe("ItemDetailsRoot", () => {
     // Arrange
     const onDamageChange = vi.fn()
     const accessory: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       id: "00000000-0000-0000-0000-000000000002",
       name: "GPS Jammer",
       itemType: ItemType.software,

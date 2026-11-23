@@ -14,7 +14,8 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { AnyItemDetails } from "./anyItemDetails.tsx"
 
 const weapon: WeaponData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -27,7 +28,8 @@ const runnerStoreWithWeapon = () =>
   runnerDataFactory({ items: { [weapon.id]: weapon } })
 
 const commlink: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: ["00000000-0000-0000-0000-000000000004"] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: ["00000000-0000-0000-0000-000000000004"] },
   id: "00000000-0000-0000-0000-000000000005",
   name: "Hermes Ikon",
   itemType: ItemType.device,
@@ -60,7 +62,8 @@ describe("AnyItemDetails", () => {
   it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
     // Arrange
     const item: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",
       itemType: ItemType.other,

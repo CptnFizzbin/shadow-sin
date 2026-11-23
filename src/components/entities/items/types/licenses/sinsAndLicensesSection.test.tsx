@@ -11,7 +11,8 @@ import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
 
 const fakeSin: SinData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "National ID (Fake)",
   itemType: ItemType.sin,
@@ -20,7 +21,8 @@ const fakeSin: SinData = {
 }
 
 const unattachedLicense: LicenseData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000002",
   name: "Firearms License",
   itemType: ItemType.license,

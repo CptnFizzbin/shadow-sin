@@ -10,7 +10,8 @@ import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 import { MiscSectionContent } from "./miscSectionContent.tsx"
 
 const trodes: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Trodes",
   itemType: ItemType.other,

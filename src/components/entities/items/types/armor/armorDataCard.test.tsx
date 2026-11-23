@@ -14,7 +14,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { ArmorDataCard } from "./armorDataCard.tsx"
 
 const jacket: ArmorData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Armor Jacket",
   itemType: ItemType.armor,

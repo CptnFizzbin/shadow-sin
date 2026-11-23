@@ -9,7 +9,8 @@ import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty }
 
 function armor(overrides: Partial<ArmorData>): ArmorData {
   return {
-    kind: EntityKind.item, items: { parentId: null, childIds: [] },
+    kind: EntityKind.item,
+    items: { parentId: null, childIds: [] },
     id: NullUuid,
     itemType: ItemType.armor,
     name: "Armor",
