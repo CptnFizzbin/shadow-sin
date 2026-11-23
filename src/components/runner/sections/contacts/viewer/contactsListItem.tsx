@@ -36,7 +36,9 @@ export const ContactRow: FC<ContactRowProps> = ({
       direction="row"
       onClick={onClick}
       sx={{
-        "alignItems": "center", "gap": 1, "padding": 1,
+        "alignItems": "center",
+        "gap": 1,
+        "padding": 1,
         "borderRadius": 1,
         "border": "1px solid",
         "borderColor": "divider",

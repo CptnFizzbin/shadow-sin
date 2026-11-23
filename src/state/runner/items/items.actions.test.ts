@@ -31,7 +31,8 @@ import { gearReducer } from "./items.state.ts"
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID() as UUID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -42,7 +43,8 @@ describe.concurrent("licenses.create", () => {
   it("adds the licence under a freshly generated id", () => {
     // Arrange
     const licenseDraft: Omit<LicenseData, "id"> = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       itemType: ItemType.license,
       isReal: false,
       name: "License: Ares Predator V",

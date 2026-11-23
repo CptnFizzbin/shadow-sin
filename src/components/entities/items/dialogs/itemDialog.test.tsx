@@ -132,7 +132,8 @@ describe("ItemDialog", () => {
     // Arrange
     const onSave = vi.fn()
     const item: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       id: crypto.randomUUID(),
       itemType: ItemType.other,
       name: "Holster",
@@ -388,7 +389,8 @@ describe("ItemDialog", () => {
 
   it("shows the correct title when passed in", () => {
     const existingItem: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       id: "test-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>,
       itemType: ItemType.other,
       name: "Old Name",
@@ -413,7 +415,8 @@ describe("ItemDialog", () => {
     it("shows the rating counter when the existing item has a non-zero rating", async () => {
       // Arrange
       const item: ItemData = {
-        kind: EntityKind.item, items: { parentId: null, childIds: [] },
+        kind: EntityKind.item,
+        items: { parentId: null, childIds: [] },
         id: existingItemId,
         itemType: ItemType.other,
         name: "Rated Gear",
@@ -432,7 +435,8 @@ describe("ItemDialog", () => {
     it("shows the quantity field when the existing item has a non-zero quantity", async () => {
       // Arrange
       const item: ItemData = {
-        kind: EntityKind.item, items: { parentId: null, childIds: [] },
+        kind: EntityKind.item,
+        items: { parentId: null, childIds: [] },
         id: existingItemId,
         itemType: ItemType.other,
         name: "Bulk Item",

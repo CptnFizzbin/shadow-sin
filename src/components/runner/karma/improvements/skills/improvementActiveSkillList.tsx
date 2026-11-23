@@ -60,8 +60,7 @@ export const ImprovementActiveSkillList: FC = () => {
       isGrouped: true,
       cap: getActiveSkillCap(sheet, skillKey),
       hasAptitude: hasAptitudeFor(sheet, skillKey),
-    })),
-  )
+    })))
 
   const standaloneRows: SkillRow[] = activeSkills.map((skill) => ({
     name: skill.name,

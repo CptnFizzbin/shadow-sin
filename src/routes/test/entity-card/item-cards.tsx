@@ -224,7 +224,8 @@ const WEAPON_ID = crypto.randomUUID()
 const WEAPON_ACCESSORY_ID = crypto.randomUUID()
 
 const BASE_CREDSTICK: CredstickData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: CREDSTICK_ID,
   name: "Personalized Credstick",
   itemType: ItemType.credstick,
@@ -242,7 +243,8 @@ const BASE_CREDSTICK: CredstickData = {
 }
 
 const BASE_LICENSE: LicenseData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -257,7 +259,8 @@ const BASE_LICENSE: LicenseData = {
 }
 
 const BASE_SIN: SinData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: SIN_ID,
   name: "Fake SIN (Chicago)",
   itemType: ItemType.sin,
@@ -272,7 +275,8 @@ const BASE_SIN: SinData = {
 }
 
 const COVERED_LICENSE: LicenseData = {
-  kind: EntityKind.item, items: { parentId: SIN_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: SIN_ID, childIds: [] },
   id: COVERED_LICENSE_ID,
   name: "License: Ares Predator",
   itemType: ItemType.license,
@@ -308,7 +312,8 @@ function buildSin(toggles: SinFieldToggles): SinData {
  * field-coverage check — so each item is seeded with its subitems/children.
  */
 const DEMO_ARMOR: ArmorData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [ARMOR_MOD_ID] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [ARMOR_MOD_ID] },
   id: ARMOR_ID,
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -322,7 +327,8 @@ const DEMO_ARMOR: ArmorData = {
 }
 
 const DEMO_ARMOR_MOD: ArmorData = {
-  kind: EntityKind.item, items: { parentId: ARMOR_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: ARMOR_ID, childIds: [] },
   id: ARMOR_MOD_ID,
   name: "Helmet",
   itemType: ItemType.armor,
@@ -332,7 +338,8 @@ const DEMO_ARMOR_MOD: ArmorData = {
 }
 
 const DEMO_DEVICE: DeviceData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [PROGRAM_ID] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [PROGRAM_ID] },
   id: DEVICE_ID,
   name: "Erika Elite",
   itemType: ItemType.device,
@@ -351,7 +358,8 @@ const DEMO_DEVICE: DeviceData = {
 }
 
 const DEMO_PROGRAM: ProgramData = {
-  kind: EntityKind.item, items: { parentId: DEVICE_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: DEVICE_ID, childIds: [] },
   id: PROGRAM_ID,
   name: "Analyze",
   itemType: ItemType.program,
@@ -363,7 +371,8 @@ const DEMO_PROGRAM: ProgramData = {
 }
 
 const DEMO_IMPLANT: ImplantData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [IMPLANT_ACCESSORY_ID] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [IMPLANT_ACCESSORY_ID] },
   id: IMPLANT_ID,
   name: "Wired Reflexes",
   itemType: ItemType.implant,
@@ -379,7 +388,8 @@ const DEMO_IMPLANT: ImplantData = {
 }
 
 const DEMO_IMPLANT_ACCESSORY: ImplantData = {
-  kind: EntityKind.item, items: { parentId: IMPLANT_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: IMPLANT_ID, childIds: [] },
   id: IMPLANT_ACCESSORY_ID,
   name: "Rating 3 Upgrade",
   itemType: ItemType.implant,
@@ -387,7 +397,8 @@ const DEMO_IMPLANT_ACCESSORY: ImplantData = {
 }
 
 const DEMO_VEHICLE: VehicleData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [VEHICLE_MOD_ID] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [VEHICLE_MOD_ID] },
   id: VEHICLE_ID,
   name: "Ares Roadmaster",
   itemType: ItemType.vehicle,
@@ -408,14 +419,16 @@ const DEMO_VEHICLE: VehicleData = {
 }
 
 const DEMO_VEHICLE_MOD: ItemData = {
-  kind: EntityKind.item, items: { parentId: VEHICLE_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: VEHICLE_ID, childIds: [] },
   id: VEHICLE_MOD_ID,
   name: "Run-Flat Tires",
   itemType: ItemType.other,
 }
 
 const DEMO_WEAPON: FirearmData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [WEAPON_ACCESSORY_ID] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [WEAPON_ACCESSORY_ID] },
   id: WEAPON_ID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -435,7 +448,8 @@ const DEMO_WEAPON: FirearmData = {
 }
 
 const DEMO_WEAPON_ACCESSORY: ItemData = {
-  kind: EntityKind.item, items: { parentId: WEAPON_ID, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: WEAPON_ID, childIds: [] },
   id: WEAPON_ACCESSORY_ID,
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,

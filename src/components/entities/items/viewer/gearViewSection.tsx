@@ -54,7 +54,8 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, forceExpand
         <Stack
           direction="row"
           sx={{
-            justifyContent: "space-between", flexGrow: 1,
+            justifyContent: "space-between",
+            flexGrow: 1,
             paddingRight: 1,
             marginRight: 1,
             borderRight: "1px solid",

@@ -14,7 +14,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { AvailableWeaponsSection } from "./availableWeaponsSection.tsx"
 
 const makeWeapon = (id: string, name: string, overrides: Partial<WeaponData> = {}): WeaponData => ({
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: id as UUID,
   name,
   itemType: ItemType.weapon,

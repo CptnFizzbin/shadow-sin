@@ -127,14 +127,25 @@ describe("EntityCard", () => {
 
   it("keeps Layout separate from the top-level content elements", () => {
     expect(Object.keys(EntityCard.Layout).sort()).toEqual([
-      "BodyRow", "FooterLeft", "FooterRight", "FooterRow", "HeaderRow", "TitleRight", "TopRight",
+      "BodyRow",
+      "FooterLeft",
+      "FooterRight",
+      "FooterRow",
+      "HeaderRow",
+      "TitleRight",
+      "TopRight",
     ])
     expect("Layout" in EntityCardElements).toBe(false)
   })
 
   it("excludes Layout regions from EntityCardElements", () => {
     expect(Object.keys(EntityCardElements).sort()).toEqual([
-      "Action", "Effects", "Rating", "Source", "Stat", "Title",
+      "Action",
+      "Effects",
+      "Rating",
+      "Source",
+      "Stat",
+      "Title",
     ])
   })
 

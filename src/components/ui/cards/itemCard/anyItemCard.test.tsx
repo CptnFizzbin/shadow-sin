@@ -14,7 +14,8 @@ import { renderWithProviders, ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { AnyItemCard } from "./anyItemCard.tsx"
 
 const weapon: WeaponData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: "00000000-0000-0000-0000-000000000001",
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -38,7 +39,8 @@ describe("AnyItemCard", () => {
 
   it("falls back to ItemCard for item types without a typed card", () => {
     const item: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
       id: "00000000-0000-0000-0000-000000000002",
       name: "Cyberdeck Firmware",
       itemType: ItemType.software,
@@ -64,13 +66,15 @@ describe("AnyItemCard", () => {
     const itemId = "00000000-0000-0000-0000-000000000003"
     const childId = "00000000-0000-0000-0000-000000000005"
     const item: ItemData = {
-      kind: EntityKind.item, items: { parentId: null, childIds: [childId] },
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [childId] },
       id: itemId,
       name: "Survival Kit",
       itemType: ItemType.other,
     }
     const child: ItemData = {
-      kind: EntityKind.item, items: { parentId: itemId, childIds: [] },
+      kind: EntityKind.item,
+      items: { parentId: itemId, childIds: [] },
       id: childId,
       name: "Flashlight",
       itemType: ItemType.other,

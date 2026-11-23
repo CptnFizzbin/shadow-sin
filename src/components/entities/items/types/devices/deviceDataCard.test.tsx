@@ -14,7 +14,8 @@ import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 import { DeviceDataCard } from "./deviceDataCard.tsx"
 
 const commlink: DeviceData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: crypto.randomUUID(),
   name: "Renraku Sensei",
   itemType: ItemType.device,

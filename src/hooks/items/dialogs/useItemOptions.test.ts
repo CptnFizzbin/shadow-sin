@@ -10,7 +10,8 @@ import { initializeOptions } from "./useItemOptions.ts"
 const existingItemId = crypto.randomUUID()
 
 const baseItem: ItemData = {
-  kind: EntityKind.item, items: { parentId: null, childIds: [] },
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
   id: existingItemId,
   name: "Test Item",
   itemType: ItemType.other,
