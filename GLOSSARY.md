@@ -514,8 +514,8 @@ _Avoid_: house rule
 
 **House Rule**:
 A mechanical choice the app itself invents, with no sourcebook behind it, that a table can still
-switch on or off. Each House Rule picks its own default — often on, since it's usually how a
-feature was designed to work.
+switch on or off or tune (e.g. a karma exchange rate). Each House Rule picks its own default — often
+on, since it's usually how a feature was designed to work.
 _Avoid_: optional rule
 
 ### Dice

@@ -2,7 +2,7 @@ kind: runner
 id: 01a1eed2-3f2d-70b3-9673-a4adf06fa8f3
 name: Razor
 _meta_:
-  sinVersion: '2026-11-18T13:00:00Z'
+  sinVersion: '2026-11-20T13:25:00Z'
   appVersion: null
   lastExportDate: null
 profile:
