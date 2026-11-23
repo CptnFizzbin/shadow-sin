@@ -77,6 +77,8 @@ export function useEditItemDialog() {
         const sin = item.items.parentId ? allItems[item.items.parentId] as SinData | undefined : undefined
         return licenseFormDialog.open({ sin, license: item as LicenseData })
       }
+      case ItemType.credstick:
+        return credstickDialog.open({ mode: "edit", credstick: item as CredstickData })
       case ItemType.consumable:
         if (isDrugData(item)) return drugFormDialog.open({ drug: item })
         return itemFormDialog.open({ item, itemType: item.itemType, label: "Item" })
@@ -89,12 +91,6 @@ export function useEditItemDialog() {
   }
 
   const open = async (item: ItemData) => {
-    // The credstick dialog saves its own changes, since editing one can move nuyen too.
-    if (item.itemType === ItemType.credstick) {
-      await credstickDialog.open({ mode: "edit", credstick: item as CredstickData })
-      return
-    }
-
     const saved = await openForm(item)
     if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }

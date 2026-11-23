@@ -31,12 +31,17 @@ import { ItemType } from "#/system/model/items/itemType.ts"
 
 type CredstickDialogMode = "add" | "add-certified" | "edit"
 
-interface CredstickDialogProps extends ControlledDialogProps<void> {
+interface CredstickDialogProps extends ControlledDialogProps<CredstickData> {
   mode: CredstickDialogMode
   credstick?: CredstickData
 }
 
-const CredstickDialog: FC<CredstickDialogProps> = ({
+/**
+ * Adds or edits a credstick. Adding writes the new credstick (and, when certified, its nuyen
+ * cost) itself; editing resolves with the renamed credstick for the caller to save, and leaves
+ * its type and balance as they were. Withdraw and Remove in edit mode write immediately.
+ */
+export const CredstickDialog: FC<CredstickDialogProps> = ({
   ctrl,
   mode,
   credstick,
@@ -71,24 +76,24 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   }
 
   const handleSave = () => {
+    if (isEditMode && credstick) {
+      ctrl.close({ ...credstick, name: credstickName })
+      return
+    }
+
     if (hasInsufficientNuyen) return
 
-    if (isEditMode && credstick) {
-      const updatedCredstick: CredstickData = { ...credstick, name: credstickName, balance: clampedBalance }
-      dispatch(Actions.item.setItem(updatedCredstick))
-    } else {
-      const credstickItemData: Omit<CredstickData, "id" | "items"> = {
-        kind: EntityKind.item,
-        name: credstickName,
-        itemType: ItemType.credstick,
-        credstickType,
-        balance: clampedBalance,
-      }
-      const [newCredstick] = createItem<CredstickData>(credstickItemData)
-      dispatch(Actions.item.setItem(newCredstick))
-      if (isCertified) {
-        dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
-      }
+    const credstickItemData: Omit<CredstickData, "id" | "items"> = {
+      kind: EntityKind.item,
+      name: credstickName,
+      itemType: ItemType.credstick,
+      credstickType,
+      balance: clampedBalance,
+    }
+    const [newCredstick] = createItem<CredstickData>(credstickItemData)
+    dispatch(Actions.item.setItem(newCredstick))
+    if (isCertified) {
+      dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
     }
 
     ctrl.close()
@@ -269,8 +274,8 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   )
 }
 
-type UseCredstickDialogProps = Omit<CredstickDialogProps, keyof ControlledDialogProps<void>>
+type UseCredstickDialogProps = Omit<CredstickDialogProps, keyof ControlledDialogProps<CredstickData>>
 
-export const useCredstickDialog = () => useDialog<void, UseCredstickDialogProps>(
+export const useCredstickDialog = () => useDialog<CredstickData, UseCredstickDialogProps>(
   (ctrl, props) => <CredstickDialog ctrl={ctrl} {...props} />,
 )
