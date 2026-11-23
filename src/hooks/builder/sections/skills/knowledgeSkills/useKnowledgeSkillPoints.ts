@@ -1,5 +1,9 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/skills/builder/skillsBuilderUtils.ts"
+import {
+  getFreeSkillPoints,
+  getKnowledgeSkillSp,
+  getLanguageSkillSp,
+} from "#/components/skills/builder/skillsBuilderUtils.ts"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -23,7 +27,7 @@ export const useKnowledgeSkillPoints = () => {
 
   const totalSpSpent = knowledgeSp + languageSp
   const maxSp = (logicAttr + intuitionAttr) * BuilderConfig.skills.knowledge.maxSkillPointsPerAttribute
-  const freeSp = (logicAttr + intuitionAttr) * BuilderConfig.skills.knowledge.freeSkillPointsPerAttribute
+  const freeSp = getFreeSkillPoints(logicAttr, intuitionAttr)
   const freeSpSpent = totalSpSpent > freeSp ? freeSp : totalSpSpent
   const extraSpSpent = Math.max(totalSpSpent - freeSp, 0)
 
