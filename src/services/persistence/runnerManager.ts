@@ -192,7 +192,7 @@ export class RunnerManager {
     try {
       return await this.getRunner(id)
     } catch (error) {
-      if (error instanceof Error && error.name === "RunnerNotFoundError") {
+      if (error instanceof RunnerNotFoundError) {
         return null
       }
       return {
