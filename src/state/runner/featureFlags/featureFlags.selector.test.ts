@@ -12,7 +12,7 @@ describe.concurrent("FeatureFlagSelectors.select", () => {
     const runner = runnerDataFactory()
 
     // Act
-    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["items.licenseCheck.ratingPlusRating"] })
+    const result = FeatureFlagSelectors.select({ runner }, { flag: houseRules["karma.buy.enabled"] })
 
     // Assert
     expect(result).toBe(true)

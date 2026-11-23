@@ -10,9 +10,8 @@ import { ItemStateSchema } from "./itemState.ts"
 import { ItemType } from "./itemType.ts"
 
 /**
- * A held identity. `isReal: true` is a Real SIN — issued by a government, never rolled, always
- * clears a License Check — while `isReal: false` is a fake SIN carrying a forgery-quality
- * `rating`. See GLOSSARY.md's **SIN** glossary entry.
+ * A held identity. `isReal: true` is a Real SIN — issued by a government, never rolled — while
+ * `isReal: false` is a fake SIN carrying a forgery-quality `rating`. See GLOSSARY.md's **SIN** glossary entry.
  */
 export interface SinData extends ItemData, Credential {
   itemType: ItemType.sin

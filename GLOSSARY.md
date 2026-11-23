@@ -470,15 +470,6 @@ _Avoid_: permit, registration
 How hard an Item is to obtain and whether owning it is legal: a rating plus a restriction —
 none (legal), **Restricted** (needs a Licence), or **Forbidden** (illegal to own).
 
-**License Check**:
-A simulated security scan of what a Runner is carrying: every SIN and every Restricted Item is
-tested against a **Verification System Rating** to see whether its credentials hold up. Only the
-Player runs it on themselves; there's no GM-triggered version.
-_Avoid_: security check, license scan
-
-**Verification System Rating**:
-The 1–6 strength of the scanning system in one License Check, chosen fresh by the Player each time.
-
 ### Effects & Rules
 
 **GameEffect**:

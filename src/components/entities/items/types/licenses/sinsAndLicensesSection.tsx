@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { useEditItemDialog } from "#/components/entities/items/actions/useEditItemDialog.tsx"
 import { ItemCardGrid } from "#/components/entities/items/card/itemCardGrid.tsx"
 import { useGearListView } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
@@ -13,6 +14,7 @@ import type { LicenseData } from "#/system/model/items/licenseData.ts"
 import type { SinData } from "#/system/model/items/sinData.ts"
 
 import { useSinFormDialog } from "./dialogs/sinFormDialog.tsx"
+import { LicenseDataCard } from "./licenseDataCard.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
 export const SinsAndLicensesSection: FC = () => {
@@ -22,7 +24,13 @@ export const SinsAndLicensesSection: FC = () => {
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
   const sinFormDialog = useSinFormDialog()
+  const editItemDialog = useEditItemDialog()
   const gearListView = useGearListView()
+
+  // A Licence whose parent isn't a SIN in gear (never attached, or its SIN was removed without
+  // its children) would otherwise appear nowhere, since Licences only render nested under a SIN card.
+  const unattachedLicenses = licenses.filter((license) =>
+    !sins.some((sin) => sin.id === license.items.parentId))
 
   const saveItem = (item: SinData) =>
     dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
@@ -63,10 +71,20 @@ export const SinsAndLicensesSection: FC = () => {
             onEdit={openItemDetails ? () => handleEditSin(sin) : undefined}
           />
         ))}
+
+        {gearListView(unattachedLicenses).map((license) => (
+          <LicenseDataCard
+            key={license.id}
+            license={license}
+            onOpen={openItemDetails ? () => openItemDetails(license.id) : () => editItemDialog.open(license)}
+            onEdit={openItemDetails ? () => editItemDialog.open(license) : undefined}
+          />
+        ))}
       </ItemCardGrid>
 
       {confirmDialog.outlet}
       {sinFormDialog.outlet}
+      {editItemDialog.outlet}
     </>
   )
 }
