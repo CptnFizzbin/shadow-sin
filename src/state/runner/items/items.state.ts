@@ -7,6 +7,7 @@ import {
   ItemStateAction,
   reconcileItemState,
 } from "#/system/formulas/items/itemStateRules.ts"
+import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
@@ -138,6 +139,13 @@ function unbondFocusById(state: ItemCatalog, id: UUID) {
   reconcileItemState(state, id, previousState)
 }
 
+/** Sets `id`'s `track` damage to `value`, floored at 0. A no-op unless the Item has damage tracks. */
+function setDamageById(state: ItemCatalog, id: UUID, track: DamageTrackKey, value: number) {
+  const item = state[id]
+  if (!item || !isEntityWithDamage(item)) return
+  item.damage[track] = Math.max(0, value)
+}
+
 export const ItemStateUtils = {
   relinkItem,
   removeItemById,
@@ -146,6 +154,7 @@ export const ItemStateUtils = {
   consumeItemById,
   bondFocusById,
   unbondFocusById,
+  setDamageById,
   /** Applies a write's Item State rules to one Item — see `reconcileItemState`. */
   reconcileState: reconcileItemState,
 }
@@ -206,8 +215,6 @@ export const gearReducer = createReducer(initialState, (builder) => {
       unbondFocusById(state, action.payload.id)
     })
     .addCase(setDamage, (state, action) => {
-      const item = state[action.payload.itemId]
-      if (!item || !isEntityWithDamage(item)) return
-      item.damage[action.payload.track] = Math.max(0, action.payload.value)
+      setDamageById(state, action.payload.itemId, action.payload.track, action.payload.value)
     })
 })
