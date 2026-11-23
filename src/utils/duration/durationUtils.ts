@@ -78,7 +78,7 @@ export class DurationUtils {
         case DurationUnit.hours: {
           if (periodValue < HOURS_PER_DAY) continue
           const [days, hours] = integerDevision(periodValue, HOURS_PER_DAY)
-          simplified.days = (duration.days ?? 0) + days
+          simplified.days = (simplified.days ?? 0) + days
           simplified.hours = hours
           break
         }
