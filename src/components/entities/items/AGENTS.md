@@ -11,4 +11,10 @@ The acquire / purchase / save submit decision is centralised in the shared item 
 adding a type, copy the structure of an existing one (e.g. weapons: `useWeaponForm`, `WeaponFormFields`,
 `WeaponFormDialog`).
 
+**Exception — adding credsticks.** `CredstickDialog` is a single hand-rolled dialog rather than the three layers, and
+its add modes ("Receive" / "Create") write the new credstick themselves: a certified credstick costs a flat fee plus
+the balance loaded onto it, which the shared cost-based purchase flow doesn't model. Its edit mode still follows the
+shared rule — it returns the renamed credstick and `useEditItemDialog` saves it like any other Item. Open every
+credstick edit through `useEditItemDialog`.
+
 Use **Item** for code identifiers and **Gear** only in UI copy — see `GLOSSARY.md`.

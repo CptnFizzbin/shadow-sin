@@ -5,6 +5,7 @@ import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
+import { useEditItemDialog } from "#/components/entities/items/actions/useEditItemDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/hooks/items/gearHooks.ts"
 import type { CredstickData } from "#/system/model/items/credstickData.ts"
@@ -17,6 +18,7 @@ export const CredstickSection: FC = () => {
   const navigate = useNavigate({ from: "/$runnerId" })
   const credsticks = useGearByType<CredstickData>(ItemType.credstick)
   const credstickDialog = useCredstickDialog()
+  const editItemDialog = useEditItemDialog()
 
   return (
 
@@ -36,7 +38,7 @@ export const CredstickSection: FC = () => {
                   key={credstick.id}
                   credstick={credstick}
                   onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: credstick.id } })}
-                  onEdit={() => credstickDialog.open({ mode: "edit", credstick })}
+                  onEdit={() => editItemDialog.open(credstick)}
                 />
               ))}
             </Stack>
@@ -64,6 +66,7 @@ export const CredstickSection: FC = () => {
       </Stack>
 
       {credstickDialog.outlet}
+      {editItemDialog.outlet}
     </Stack>
   )
 }
