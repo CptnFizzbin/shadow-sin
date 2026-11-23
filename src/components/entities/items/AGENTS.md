@@ -14,7 +14,8 @@ adding a type, copy the structure of an existing one (e.g. weapons: `useWeaponFo
 **Exception — adding credsticks.** `CredstickDialog` is a single hand-rolled dialog rather than the three layers, and
 its add modes ("Receive" / "Create") write the new credstick themselves: a certified credstick costs a flat fee plus
 the balance loaded onto it, which the shared cost-based purchase flow doesn't model. Its edit mode still follows the
-shared rule — it returns the renamed credstick and `useEditItemDialog` saves it like any other Item. Open every
-credstick edit through `useEditItemDialog`.
+shared rule — it returns the renamed credstick and `useEditItemDialog` saves it like any other Item. Its Withdraw
+(deposit the balance, then remove) and Remove actions are credstick-only and also write in the dialog, since they
+replace the save rather than produce an Item to save. Open every credstick edit through `useEditItemDialog`.
 
 Use **Item** for code identifiers and **Gear** only in UI copy — see `GLOSSARY.md`.
