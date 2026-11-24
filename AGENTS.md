@@ -18,7 +18,7 @@ rather than relying on memory or older copies of this file.
 | Available scripts | `package.json` → `scripts` |
 | UI primitive usage (dialogs, prototypes, ...) | `docs/ui/` |
 | Agent skills | `.agents/skills/CLAUDE.md` (index; skills are vendored and pinned in `skills-lock.json`) |
-| Subagent profiles (e.g. the architecture reviewer, the comment critic) | `.agents/agents/` (symlinked to `.claude/agents/` at session start) |
+| Subagent profiles (e.g. the architecture reviewer) | `.agents/agents/` (symlinked to `.claude/agents/` at session start) |
 | Driving a browser (clicks, screenshots) | `.agents/scripts/browser/README.md` (`yarn browser --help`) |
 | Existing code patterns | The code itself — find a sibling that does what you need (e.g. the weapons item type) and follow it |
 

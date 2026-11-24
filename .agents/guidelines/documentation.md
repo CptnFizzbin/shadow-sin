@@ -1,7 +1,7 @@
 # External documentation
 
 **External documentation** is prose that lives outside the code: `README.md`, `CONTRIBUTING.md`, `GLOSSARY.md`, every
-`AGENTS.md`, `docs/`, and `.agents/guidelines/`. Code comments follow `.agents/guidelines/comments.md` instead.
+`AGENTS.md`, `docs/`, `.agents/guidelines/` and `.agents/agents/`. Code comments follow `.agents/guidelines/comments.md` instead.
 
 External documentation is read long after it was written, by people who can't see the change that prompted it. It
 must stay true without being touched every time the code moves.
@@ -22,7 +22,8 @@ must stay true without being touched every time the code moves.
   line is high-churn.
 - MUST NOT refer to old versions of the code or docs ("previously", "renamed from", "the new X") — document what is
   true now. History belongs in commit messages and ADRs.
-- MUST NOT cite a rulebook page or GitHub issue the author hasn't checked (see root `AGENTS.md` → "Conventions").
+- MUST NOT cite a GitHub issue the author hasn't checked, nor a rulebook page (root `AGENTS.md` → "Conventions"
+  forbids fabricated page citations everywhere).
 
 ## Point-in-time records
 
@@ -30,6 +31,6 @@ Some documents record a moment rather than describe the present, and follow thei
 rules above:
 
 - **ADRs** (`docs/adr/`) record a decision and its context when it was made. They may name the code the decision is
-  about. Never edit an ADR's decision to keep it current — supersede it with a new ADR.
+  about. Don't edit one to keep it current; `CONTRIBUTING.md` → "ADRs (`docs/adr/`)" says how ADRs change.
 - **Feature docs** (`docs/features/`) capture design intent and track status; their content rules are in
-  `CONTRIBUTING.md` → "Feature docs". Archived feature docs (`docs/features/archive/`) are not kept current.
+  `CONTRIBUTING.md` → "Feature docs (`docs/features/`)". Archived feature docs (`docs/features/archive/`) are not kept current.
