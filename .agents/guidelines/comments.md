@@ -6,17 +6,31 @@ that don't fit any style (or that mix them) should be rewritten or removed.
 **Documentation** comments describe a class, function, or field
 
 - MUST be `/**` JSDoc block immediately above the declaration
+- MAY be omitted when the declaration is trivial — its name and signature already say everything a caller needs (a
+  one-line getter, a pass-through wrapper, a field whose name is the whole story). A JSDoc that only restates the
+  name (`/** Gets the name. */` on `getName`) is noise: remove it.
 - MUST NOT refer to old versions of the code (no "used to be", "previously", "renamed from", "legacy" framing) —
   document what the code *is*, not its history. History belongs in commit messages, ADRs, or migration files.
 - MUST NOT include implementation details — describe the contract (what it's for, inputs/outputs, invariants
   callers can rely on), not how the body is written internally. If the implementation changes, the doc shouldn't
   need to.
-- SHOULD include a usage example when the usage isn't self-evident from the signature alone.
+- SHOULD list every parameter with `@param` and describe the return value with `@returns` (omit `@returns` for
+  `void`). Each must match the signature — a renamed, added or removed parameter means updating the tags.
+- SHOULD include a usage example (`@example`) when the usage isn't self-evident from the signature alone.
 
 ```ts
 // ✅ — describes the contract, no history, no internals
-/** Returns the karma cost to raise `skill` from its current rating to `targetRating`. */
+/**
+ * Returns the karma cost to raise an Active Skill to a higher rating.
+ *
+ * @param skill - the skill being raised, at its current rating
+ * @param targetRating - the rating to raise it to; must be above the current rating
+ * @returns the total karma cost of every step from the current rating to `targetRating`
+ */
 export const skillRaiseCost = (skill: ActiveSkill, targetRating: number): number => { ... }
+
+// ❌ — restates the name; a trivial declaration needs no JSDoc at all
+/** Returns the skill raise cost. */
 
 // ❌ — refers to an old version of the code
 /** Computes the raise cost. Replaces the old flat-rate formula from before the karma rework. */
@@ -29,7 +43,7 @@ export const skillRaiseCost = (skill: ActiveSkill, targetRating: number): number
 
 - MUST use an inline `//` above or beside it
 - MUST NOT explain what the code does — if the code needs a line-by-line narration, prefer making the code clearer
-  (better names, extracted helper) over commenting it.
+  (better names, extracted helper) over commenting it. If the code is self-explanatory, the comment should be removed.
 - MUST explain *why* the code is there and what problem it fixed — the non-obvious reason the line exists in the
   form it does.
 - SHOULD reference a GitHub issue when one exists.
@@ -69,9 +83,17 @@ const daysUntil = (date: Date) => Math.floor((date.getTime() - Date.now()) / MS_
 // TODO: fix this later
 ```
 
+**Never in a comment** — whatever the style:
+
+- Commented-out code. Delete it; git history keeps it.
+- Notes addressed to the reviewer or about the change itself ("added for this PR", "as requested", "new helper",
+  "fixed the bug here") — a comment is read by the next maintainer, long after the change is merged.
+
 **Exemptions** — these don't need to fit any style:
 
 - The `// Arrange` / `// Act` / `// Assert` labels required by the testing conventions (`.agents/guidelines/testing.md`) — they're structural
   section labels, not documentation or explanation.
 - Tool directives such as `// eslint-disable-next-line` or `// @ts-expect-error` — they instruct tooling, not
   readers.
+
+For prose documentation outside the code (README, `AGENTS.md`, `docs/`, ...), see `.agents/guidelines/documentation.md`.

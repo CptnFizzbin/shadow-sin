@@ -18,7 +18,7 @@ rather than relying on memory or older copies of this file.
 | Available scripts | `package.json` → `scripts` |
 | UI primitive usage (dialogs, prototypes, ...) | `docs/ui/` |
 | Agent skills | `.agents/skills/CLAUDE.md` (index; skills are vendored and pinned in `skills-lock.json`) |
-| Subagent profiles (e.g. the architecture reviewer) | `.agents/agents/` (symlinked to `.claude/agents/` at session start) |
+| Subagent profiles (e.g. the architecture reviewer, the comment critic) | `.agents/agents/` (symlinked to `.claude/agents/` at session start) |
 | Driving a browser (clicks, screenshots) | `.agents/scripts/browser/README.md` (`yarn browser --help`) |
 | Existing code patterns | The code itself — find a sibling that does what you need (e.g. the weapons item type) and follow it |
 
@@ -89,14 +89,19 @@ before writing or editing a test:
 
 @.agents/guidelines/testing.md
 
-## Code comments
+## Code comments and documentation
 
-Every comment is one of three styles — **Documentation** (`/**` JSDoc: the contract, no history or internals),
-**Explanation** (inline `//`: *why* the code exists, not what it does), or **Task** (`// TODO:` / `// FIXME:`: specific
-outstanding work). Read the full rules and examples in `.agents/guidelines/comments.md` before writing or editing a
-comment:
+Every comment is one of three styles — **Documentation** (`/**` JSDoc: the contract, with `@param`/`@returns`, no
+history or internals; trivial declarations need none), **Explanation** (inline `//`: *why* the code exists, not what it
+does; self-explanatory code gets no comment), or **Task** (`// TODO:` / `// FIXME:`: specific outstanding work). Read the
+full rules and examples in `.agents/guidelines/comments.md` before writing or editing a comment:
 
 @.agents/guidelines/comments.md
+
+Prose documentation outside the code (README, `AGENTS.md`, `docs/`, ...) carries no implementation details and no
+high-churn information. Read `.agents/guidelines/documentation.md` before writing or editing it:
+
+@.agents/guidelines/documentation.md
 
 ## Type assertions
 
@@ -158,6 +163,22 @@ instructions. The reviewer is read-only and reports architecture findings only (
   them in your final report.
 - After fixing, re-run the reviewer **once** on the updated change. Report anything still open as justified or
   unresolved; don't loop.
+
+## Comment review
+
+Before calling any change done that adds, edits or deletes a comment or prose documentation — or changes code that
+existing comments or docs describe — run the `comment-critic` subagent (`.agents/agents/comment-critic.md`) on the
+change, in a fresh context. It can run alongside the architecture reviewer. The same harness rules apply: skip it
+where no subagent can be spawned, and give a generic subagent that file as its instructions if the profile isn't
+registered. The critic is read-only and adversarial: it checks every touched comment and doc against
+`.agents/guidelines/comments.md` and `.agents/guidelines/documentation.md`, and looks for comments the change made
+untrue.
+
+- **Fix or justify** every finding under *Blocking*, as for the architecture review.
+- **Confirm or remove** every *Needs confirmation* item (an unverifiable rulebook page, issue number or external
+  claim) — say in your final report which you confirmed and how.
+- *Nits* and *Pre-existing* findings are non-blocking — mention them in your final report.
+- After fixing, re-run the critic **once** on the updated change. Report anything still open; don't loop.
 
 ## Version control
 
