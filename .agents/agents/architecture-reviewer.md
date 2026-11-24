@@ -40,7 +40,7 @@ Out of scope — do not report these, even if you notice them:
 - Correctness bugs → `/code-review`.
 - Line-level style, naming nits, small duplication and local tidy-ups → `/simplify`, `yarn fix`, `yarn fallow`.
   Complexity is in scope only at the level of a module, component, hook or mechanism, not a single expression.
-- Comment style, test structure, formatting.
+- Comment and documentation style → the `comment-critic` subagent. Test structure, formatting.
 
 If you spot a serious bug while reviewing, add one line at the end suggesting `/code-review`; don't describe it.
 
