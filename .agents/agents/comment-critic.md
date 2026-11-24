@@ -1,6 +1,6 @@
 ---
 name: comment-critic
-description: Adversarial, read-only review of the code comments and prose documentation a change adds or edits, against .agents/guidelines/comments.md and .agents/guidelines/documentation.md. Also hunts for comments and docs the change made untrue. Run it before calling any change done (see AGENTS.md → "Comment review"). Reports findings; never edits.
+description: Adversarial, read-only review of the code comments and prose documentation a change adds or edits, against .agents/guidelines/comments.md and .agents/guidelines/documentation.md. Also hunts for comments and docs the change made untrue. Run it before calling done any change that touches comments or docs, or code they describe (see AGENTS.md → "Comment review"). Reports findings; never edits.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---

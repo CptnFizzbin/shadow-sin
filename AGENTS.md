@@ -91,7 +91,7 @@ before writing or editing a test:
 
 ## Code comments and documentation
 
-Every comment is one of three styles — **Documentation** (`/**` JSDoc: the contract, with `@param`/`@returns`, no
+Every comment is one of three styles — **Documentation** (`/**` JSDoc: the contract, ideally with `@param`/`@returns`, no
 history or internals; trivial declarations need none), **Explanation** (inline `//`: *why* the code exists, not what it
 does; self-explanatory code gets no comment), or **Task** (`// TODO:` / `// FIXME:`: specific outstanding work). Read the
 full rules and examples in `.agents/guidelines/comments.md` before writing or editing a comment:

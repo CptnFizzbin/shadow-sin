@@ -22,8 +22,8 @@ must stay true without being touched every time the code moves.
   line is high-churn.
 - MUST NOT refer to old versions of the code or docs ("previously", "renamed from", "the new X") — document what is
   true now. History belongs in commit messages and ADRs.
-- MUST NOT cite a GitHub issue the author hasn't checked, nor a rulebook page (root `AGENTS.md` → "Conventions"
-  forbids fabricated page citations everywhere).
+- MUST NOT cite a GitHub issue or rulebook page the author hasn't checked (for rulebook pages, see root `AGENTS.md` →
+  "Conventions").
 
 ## Point-in-time records
 
