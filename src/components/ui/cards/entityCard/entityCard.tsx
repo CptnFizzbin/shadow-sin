@@ -32,7 +32,7 @@ export type { FooterRowProps } from "#/components/ui/cards/entityCard/layout/foo
 export type { HeaderRowProps } from "#/components/ui/cards/entityCard/layout/headerRow.tsx"
 export type { TitleRightProps } from "#/components/ui/cards/entityCard/layout/titleRight.tsx"
 
-/** An icon button in the column on an `EntityCard`'s right edge, below the actions menu button. */
+/** An icon button in the column on an `EntityCard`'s right edge, below the actions menu button when there is one. */
 export interface EntityCardQuickAction {
   /** Accessible name of the button; defaults to "Action". */
   label?: string
@@ -59,7 +59,7 @@ export interface EntityCardProps extends PropsWithChildren {
    * a caller can show its actions somewhere else (e.g. a dialog).
    */
   onOpenActions?: () => void
-  /** Icon buttons stacked on the card's right edge, below the actions menu button. */
+  /** Icon buttons stacked on the card's right edge, below the actions menu button when there is one. */
   quickActions?: EntityCardQuickAction[]
   /**
    * Extra entries for the actions menu, rendered only while it is open and listed before Edit and

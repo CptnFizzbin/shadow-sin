@@ -7,7 +7,6 @@ import type { UUID } from "#/utils/uuidUtils.ts"
 
 /** Which Items the Player has picked in the gear list's selection mode. */
 export interface ItemSelectionState {
-  /** Whether selection mode is on: cards show checkboxes and the bulk action bar replaces the usual bottom bar. */
   isSelecting: boolean
   selectedIds: readonly UUID[]
 }

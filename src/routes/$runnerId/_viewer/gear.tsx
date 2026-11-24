@@ -49,8 +49,8 @@ function RouteComponent() {
   const addItemDialog = useAddItemDialogContext()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
   const fociAlerts = useFociAlerts()
-  // The selection lives in the viewer layout so its bar can take the bottom bar's slot, so it
-  // has to be dropped here when the Player leaves the Gear page mid-selection.
+  // The selection lives in the viewer layout so its bar can take the bottom bar's slot, which
+  // means it has to be dropped here when the Player leaves the Gear page mid-selection.
   useEndItemSelectionOnUnmount()
 
   const matchingIds = new Set(searchGear(allGear, searchTerms).map((item) => item.id))

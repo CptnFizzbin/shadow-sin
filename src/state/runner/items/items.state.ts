@@ -135,9 +135,8 @@ function consumeItemById(state: ItemCatalog, id: UUID) {
 }
 
 /**
- * Applies `action` to each of `ids` it applies to, parents first. Applicability is checked as each
- * Item is reached, so a parent's cascade (e.g. Unstash bringing its Attachments back) is already
- * reflected when its selected Attachments are considered.
+ * Applies `action` to each of `ids` it applies to, parents first. An Attachment is judged against
+ * its parent's state after the parent's own change, including its cascade, has applied.
  */
 function applyBulkStateActionByIds(state: ItemCatalog, ids: readonly UUID[], action: ItemBulkStateAction) {
   for (const { id } of orderParentsFirst(state, ids)) {

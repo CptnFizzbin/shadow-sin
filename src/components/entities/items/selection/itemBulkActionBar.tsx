@@ -31,8 +31,8 @@ const actionLabels: Record<ItemBulkStateAction, string> = {
 }
 
 /**
- * The gear list's bulk action bar: how many Items are selected, and Stash, Unstash, Equip, Unequip,
- * and Delete for all of them at once. Each action skips selected Items it doesn't apply to, and
+ * The gear list's bulk action bar: how many Items are selected, and every bulk state action plus
+ * Delete for all of them at once. Each action skips selected Items it doesn't apply to, and
  * any of them ends selection mode once it's done.
  */
 export const ItemBulkActionBar: FC = () => {

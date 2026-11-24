@@ -6,8 +6,8 @@ import type { ItemSelectionState, ItemSelectionStore } from "#/services/itemSele
 import { createItemSelectionStore, ItemSelectionActions } from "#/services/itemSelection/itemSelectionStore.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-// Read in place of a missing provider so the hooks below can always subscribe to a store; it's
-// never written to, so outside a provider selection mode simply stays off.
+// Read in place of a missing provider so the hooks below can always subscribe to a store. Nothing
+// outside a provider offers a way to start selecting, so there selection mode stays off.
 const inactiveStore = createItemSelectionStore()
 
 function useItemSelectionStore(): { store: ItemSelectionStore, isAvailable: boolean, getDescendantIds: (itemId: UUID) => UUID[] } {

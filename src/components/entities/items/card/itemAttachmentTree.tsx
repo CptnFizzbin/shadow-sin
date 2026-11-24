@@ -25,8 +25,8 @@ function getRatingStats(item: ItemData) {
 
 /**
  * Every Attachment of an Item, and theirs in turn, one row each and indented by depth. Inside an
- * `ItemActionsDialogProvider` each row has a button opening that Attachment's actions, or, while the
- * gear list is in selection mode, a checkbox selecting that Attachment on its own. Renders
+ * `ItemActionsDialogProvider` each row has a button opening that Attachment's actions. While the gear
+ * list is in selection mode, each row has a checkbox selecting that Attachment independently of its parent instead. Renders
  * nothing for an Item with no Attachments.
  */
 export const ItemAttachmentTree: FC<ItemAttachmentTreeProps> = ({ itemId }) => {
