@@ -1,7 +1,8 @@
 import type { UnknownAction } from "@reduxjs/toolkit"
+import { useDispatch } from "react-redux"
 
 import type { RunnerStateDispatch } from "#/state/runnerState.ts"
-import { createRunnerStateStore, useRunnerStateDispatch } from "#/state/runnerState.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
@@ -13,12 +14,8 @@ export type RunnerDispatch = RunnerStateDispatch
  * (`runnerRootReducer`); thunks (including `createAsyncThunk` actions) run natively via
  * `configureStore`'s default thunk middleware. Works unchanged in both the Viewer and the Builder,
  * since both are backed by the same singleton `RunnerState` store.
- *
- * @deprecated use {@link useRunnerStateDispatch} instead
  */
-export function useRunnerStoreDispatch(): RunnerDispatch {
-  return useRunnerStateDispatch()
-}
+export const useRunnerStoreDispatch = useDispatch.withTypes<RunnerDispatch>()
 
 /**
  * A one-shot, store-less version of {@link useRunnerStoreDispatch} for non-React contexts: tests

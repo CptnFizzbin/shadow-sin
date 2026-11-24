@@ -40,8 +40,8 @@ import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useEditorTabNavigation } from "#/hooks/builder/nav/useEditorTabNavigation.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { BuilderImportButton } from "./builderImportButton.tsx"
@@ -70,7 +70,7 @@ const tabComponents: Record<EditorTabId, FC> = {
 export const RunnerEditorContent: FC = () => {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false)
   const navigate = useNavigate()
-  const dispatch = useRunnerStateDispatch()
+  const dispatch = useRunnerStoreDispatch()
 
   const awakening = useRunnerSelector(BiologySelectors.selectAwakening)
   const tabOrder = useMemo(() => getVisibleTabOrder(editorTabOrder, awakening), [awakening])

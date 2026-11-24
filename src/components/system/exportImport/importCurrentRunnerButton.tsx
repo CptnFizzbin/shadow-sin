@@ -9,12 +9,12 @@ import { useYamlFileImport } from "#/hooks/runner/exportImport/useYamlFileImport
 import { mergeContacts } from "#/state/runner/contacts/contacts.actions.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { stringifyError } from "#/utils/errors/errorUtils.ts"
 
 export const ImportCurrentRunnerButton: FC = () => {
-  const dispatch = useRunnerStateDispatch()
+  const dispatch = useRunnerStoreDispatch()
   const runnerName = useRunnerSelector(ProfileSelectors.selectDisplayName)
 
   const confirmDialog = useConfirmDialog()

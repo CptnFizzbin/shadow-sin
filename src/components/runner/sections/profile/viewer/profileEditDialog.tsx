@@ -13,8 +13,8 @@ import { BiologyActions } from "#/state/runner/biology/biology.actions.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ProfileActions } from "#/state/runner/profile/profile.actions.ts"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 
 import type { ProfileFieldsValue } from "./profileFields.tsx"
 import { ProfileFields } from "./profileFields.tsx"
@@ -22,7 +22,7 @@ import { ProfileFields } from "./profileFields.tsx"
 type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
-  const dispatch = useRunnerStateDispatch()
+  const dispatch = useRunnerStoreDispatch()
   const profile = useRunnerSelector(ProfileSelectors.select)
   const biology = useRunnerSelector(BiologySelectors.select)
 

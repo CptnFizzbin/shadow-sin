@@ -7,6 +7,8 @@ store's shape, how it's created, and its selector/dispatch hooks are defined in 
 
 - Every write goes through a dispatched action and the domain reducers — never replace state wholesale from outside
   a reducer.
+- Components dispatch Runner writes with `useRunnerStoreDispatch` (`src/state/runner/runnerStore.dispatch.ts`) — the
+  one Runner dispatch hook. Don't add a parallel `useDispatch.withTypes` hook for the Runner store (#711).
 - Store instances are stable — never re-create one on every render.
 - When adding a slice, follow the layout of an existing sibling domain folder rather than inventing a new shape.
 - Small ad hoc UI stores (dice, dialogs, Karma-spend staging, ...) don't live here: they sit in

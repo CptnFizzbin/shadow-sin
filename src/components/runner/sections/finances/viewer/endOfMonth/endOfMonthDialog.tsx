@@ -14,8 +14,9 @@ import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
 import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { useRunnerStateDispatch, useRunnerStateStore } from "#/state/runnerState.ts"
+import { useRunnerStateStore } from "#/state/runnerState.ts"
 import { calculateMonthlyInterest } from "#/system/model/finances/loanData.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
@@ -60,7 +61,7 @@ function lifestyleLineItem(name: string, upkeep: number, monthsPaid: number): En
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const store = useRunnerStateStore()
-  const dispatch = useRunnerStateDispatch()
+  const dispatch = useRunnerStoreDispatch()
 
   const loans = useRunnerSelector(NuyenSelectors.selectLoans)
   const lifestyleName = useRunnerSelector(LifestyleSelectors.selectName)
