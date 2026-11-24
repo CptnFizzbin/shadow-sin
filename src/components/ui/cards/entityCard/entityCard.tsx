@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import Menu from "@mui/material/Menu"
 import Stack from "@mui/material/Stack"
 import type { Theme } from "@mui/material/styles"
@@ -31,8 +32,8 @@ export type { FooterRowProps } from "#/components/ui/cards/entityCard/layout/foo
 export type { HeaderRowProps } from "#/components/ui/cards/entityCard/layout/headerRow.tsx"
 export type { TitleRightProps } from "#/components/ui/cards/entityCard/layout/titleRight.tsx"
 
-/** An outline-style button pinned to the left edge of an `EntityCard`, spanning its full height. */
-export interface EntityCardLeftAction {
+/** An icon button in the column on an `EntityCard`'s right edge, below the actions menu button. */
+export interface EntityCardQuickAction {
   /** Accessible name of the button; defaults to "Action". */
   label?: string
   icon: ReactNode
@@ -58,8 +59,8 @@ export interface EntityCardProps extends PropsWithChildren {
    * a caller can show its actions somewhere else (e.g. a dialog).
    */
   onOpenActions?: () => void
-  /** Outline-style button pinned to the left edge of the card, spanning its full height. */
-  leftAction?: EntityCardLeftAction
+  /** Icon buttons stacked on the card's right edge, below the actions menu button. */
+  quickActions?: EntityCardQuickAction[]
   /**
    * Extra entries for the actions menu, rendered only while it is open and listed before Edit and
    * Remove. Receives a callback that closes the menu.
@@ -72,7 +73,7 @@ export interface EntityCardProps extends PropsWithChildren {
   allowCompact?: boolean
   /**
    * When provided, the card is in selection mode: tapping anywhere on it calls `onToggle`, a
-   * checkbox replaces `leftAction`, and the actions menu button is hidden. `onOpen` is ignored.
+   * checkbox leads its title, and the actions menu and quick action buttons are hidden. `onOpen` is ignored.
    */
   selection?: EntityCardSelection
 }
@@ -94,9 +95,9 @@ function getRatingDisplay(entity: EntityData): string | number | undefined {
  * header rows below its title, body rows, or extra footer rows renders its footer on the title's
  * row instead, as a single compact line, unless `allowCompact` is `false`. `onEdit`/`onRemove`
  * surface as items in a menu opened by a dedicated menu button on the card's right edge (or the
- * button calls `onOpenActions` instead, when given), and `leftAction` renders a matching
- * outline-style button on the left edge — both buttons span the card's full height. In selection
- * mode (`selection`) the card becomes a single checkbox instead, with no menu or left action.
+ * button calls `onOpenActions` instead, when given), and each of `quickActions` renders as an icon
+ * button stacked below it, the column spanning the card's full height. In selection mode
+ * (`selection`) the card becomes a single checkbox instead, with no menu or quick actions.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -104,7 +105,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onEdit,
   onRemove,
   onOpenActions,
-  leftAction,
+  quickActions = [],
   menuActions,
   allowCompact = true,
   selection,
@@ -114,6 +115,8 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   const hasMenu = !selection && !onOpenActions && !!(onEdit || onRemove)
   const hasActions = !selection && (!!onOpenActions || hasMenu)
   const onActivate = selection ? selection.onToggle : onOpen
+  const visibleQuickActions = selection ? [] : quickActions
+  const hasActionColumn = hasActions || visibleQuickActions.length > 0
   // A card with nothing but its title line and footer fits both on a single row.
   const isCompact = allowCompact
     && slots.layout.headerRows.length === 0
@@ -136,9 +139,9 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 
   const handleCloseMenu = () => setMenuAnchorEl(null)
 
-  const handleLeftActionClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+  const handleQuickActionClick = (event: ReactMouseEvent<HTMLButtonElement>, quickAction: EntityCardQuickAction) => {
     event.stopPropagation()
-    leftAction?.onClick()
+    quickAction.onClick()
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -151,42 +154,6 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   return (
     <>
       <Stack direction="row" sx={{ width: "100%", gap: 0 }}>
-        {selection && (
-          <Box
-            aria-hidden
-            onClick={selection.onToggle}
-            sx={{
-              display: "flex",
-              minWidth: 42,
-              justifyContent: "center",
-              padding: 1,
-              border: "1px solid",
-              borderRight: "none",
-              borderColor: selection.selected ? "secondary.main" : "primary.dark",
-              color: selection.selected ? "secondary.main" : "text.secondary",
-              cursor: "pointer",
-            }}
-          >
-            {selection.selected ? <RiCheckboxFill size={20} /> : <RiCheckboxBlankLine size={20} />}
-          </Box>
-        )}
-
-        {leftAction && !selection && (
-          <Button
-            variant="outlined"
-            aria-label={leftAction.label ?? "Action"}
-            onClick={handleLeftActionClick}
-            sx={{
-              minWidth: 42,
-              alignItems: "flex-start",
-              borderRight: "none",
-              padding: 1,
-            }}
-          >
-            {leftAction.icon}
-          </Button>
-        )}
-
         <Box
           role={selection ? "checkbox" : (onOpen ? "button" : undefined)}
           aria-checked={selection?.selected}
@@ -220,6 +187,19 @@ const EntityCardRoot: FC<EntityCardProps> = ({
           >
             <EntityCardLayout.HeaderRow data-card-row="header" sx={{ justifyContent: "space-between" }}>
               <Stack direction="row" sx={{ alignItems: "center" }}>
+                {selection && (
+                  <Box
+                    component="span"
+                    aria-hidden
+                    sx={{
+                      display: "flex",
+                      color: selection.selected ? "secondary.main" : "text.secondary",
+                    }}
+                  >
+                    {selection.selected ? <RiCheckboxFill size={18} /> : <RiCheckboxBlankLine size={18} />}
+                  </Box>
+                )}
+
                 <EntityCardElements.Title title={entity.name} />
 
                 {slots.layout.titleRight}
@@ -275,20 +255,33 @@ const EntityCardRoot: FC<EntityCardProps> = ({
           )}
         </Box>
 
-        {hasActions && (
-          <Button
+        {hasActionColumn && (
+          <ButtonGroup
+            orientation="vertical"
             variant="outlined"
-            aria-label="Actions menu"
-            onClick={handleOpenMenu}
             sx={{
-              minWidth: 42,
-              borderLeft: "none",
-              padding: 1,
-              alignItems: "flex-start",
+              "& > .MuiButton-root": { minWidth: 42, padding: 1, borderLeft: "none", borderRadius: 0 },
+              // The last button stretches to the card's full height so the column has no gap below it.
+              "& > .MuiButton-root:last-of-type": { flexGrow: 1, alignItems: "flex-start" },
             }}
           >
-            <RiMore2Line size={20} />
-          </Button>
+            {hasActions && (
+              <Button aria-label="Actions menu" onClick={handleOpenMenu}>
+                <RiMore2Line size={20} />
+              </Button>
+            )}
+
+            {visibleQuickActions.map((quickAction, index) => (
+              <Button
+                key={quickAction.label ?? index}
+                aria-label={quickAction.label ?? "Action"}
+                title={quickAction.label}
+                onClick={(event) => handleQuickActionClick(event, quickAction)}
+              >
+                {quickAction.icon}
+              </Button>
+            ))}
+          </ButtonGroup>
         )}
       </Stack>
 

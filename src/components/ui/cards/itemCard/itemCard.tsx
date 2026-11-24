@@ -34,7 +34,7 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
  * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
  * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
  * `onEdit`, when given, as its Edit action); elsewhere `onEdit`/`onRemove` fill `EntityCard`'s own
- * menu, alongside the item's state actions (Equip, Stash, ...). `onOpen`/`leftAction` pass
+ * menu, alongside the item's state actions (Equip, Stash, ...). `onOpen`/`quickActions` pass
  * straight through to `EntityCard`. While the gear list is in selection mode, the card is a
  * checkbox for the Item instead (see `useItemSelectionToggle`).
  */

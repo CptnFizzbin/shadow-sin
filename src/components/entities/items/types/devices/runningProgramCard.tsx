@@ -17,7 +17,7 @@ export const RunningProgramCard: FC<RunningProgramCardProps> = ({ program, node,
   <EntityCard
     entity={program}
     onOpen={onOpen}
-    leftAction={{ label: "Terminate", icon: <Icons.item.terminate />, onClick: onTerminate }}
+    quickActions={[{ label: "Terminate", icon: <Icons.item.terminate />, onClick: onTerminate }]}
   >
     <EntityCard.Layout.HeaderRow>
       <EntityCard.Stat label="On" value={node.name} />

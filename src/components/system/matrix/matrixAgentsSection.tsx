@@ -49,11 +49,11 @@ export const MatrixAgentsSection: FC = () => {
             agent={agent}
             onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: agent.id } })}
             onEdit={() => handleEdit(agent)}
-            leftAction={{
+            quickActions={[{
               label: "Run",
               icon: <Icons.item.run />,
               onClick: () => runProgramDialog.open({ program: agent }),
-            }}
+            }]}
           />
         ))}
 

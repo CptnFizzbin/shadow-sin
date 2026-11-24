@@ -113,13 +113,13 @@ function EntityCardTestPage() {
 
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
-          <Section title="leftAction plus Edit/Remove actions menu">
+          <Section title="Quick action plus Edit/Remove actions menu">
             <EntityCard
               entity={TEST_ENTITY}
               onOpen={() => alert("Open")}
               onEdit={() => alert("Edit")}
               onRemove={() => alert("Remove")}
-              leftAction={{ icon: <RiStarLine size={20} />, onClick: () => alert("Left action") }}
+              quickActions={[{ icon: <RiStarLine size={20} />, onClick: () => alert("Quick action") }]}
             />
           </Section>
         </Stack>

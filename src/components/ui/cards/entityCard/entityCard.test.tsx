@@ -205,27 +205,56 @@ describe("EntityCard", () => {
     expect(onRemove).toHaveBeenCalledOnce()
   })
 
-  it("renders a leftAction button and fires its onClick without triggering onOpen", () => {
+  it("renders a quick action button and fires its onClick without triggering onOpen", () => {
     const onOpen = vi.fn()
-    const onLeftAction = vi.fn()
+    const onQuickAction = vi.fn()
     render(
       <EntityCard
         entity={entity}
         onOpen={onOpen}
-        leftAction={{ icon: <span>icon</span>, onClick: onLeftAction }}
+        quickActions={[{ icon: <span>icon</span>, onClick: onQuickAction }]}
       />,
       { wrapper: ThemeWrapper },
     )
 
     fireEvent.click(screen.getByRole("button", { name: "Action" }))
 
-    expect(onLeftAction).toHaveBeenCalledOnce()
+    expect(onQuickAction).toHaveBeenCalledOnce()
     expect(onOpen).not.toHaveBeenCalled()
   })
 
-  it("renders no leftAction button when leftAction is not provided", () => {
+  it("renders no quick action button when quickActions is not provided", () => {
     render(<EntityCard entity={entity} />, { wrapper: ThemeWrapper })
 
     expect(screen.queryByRole("button", { name: "Action" })).toBeNull()
+  })
+})
+
+describe("EntityCard selection mode", () => {
+  const medkit: EntityData = { kind: EntityKind.item, id: "00000000-0000-0000-0000-000000000009", name: "Medkit" }
+
+  it("hides the menu and quick actions, and toggles when the card is tapped", () => {
+    // Arrange
+    const onToggle = vi.fn()
+    const onOpen = vi.fn()
+    render(
+      <EntityCard
+        entity={medkit}
+        onOpen={onOpen}
+        onEdit={vi.fn()}
+        quickActions={[{ label: "Use", icon: <span>icon</span>, onClick: vi.fn() }]}
+        selection={{ selected: false, onToggle }}
+      />,
+      { wrapper: ThemeWrapper },
+    )
+
+    // Act
+    fireEvent.click(screen.getByRole("checkbox", { name: "Select Medkit" }))
+
+    // Assert
+    expect(onToggle).toHaveBeenCalledOnce()
+    expect(onOpen).not.toHaveBeenCalled()
+    expect(screen.queryByRole("button", { name: "Actions menu" })).toBeNull()
+    expect(screen.queryByRole("button", { name: "Use" })).toBeNull()
   })
 })

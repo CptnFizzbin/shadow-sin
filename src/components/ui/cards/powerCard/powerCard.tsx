@@ -18,7 +18,7 @@ interface PowerCardProps extends Omit<EntityCardProps, "entity"> {
  * incremental elements of its own (unlike Item's Availability/Cost/...): `EntityCard` already
  * auto-renders Rating from `power.rating`, so `PowerCard` only adds CostPerRating, via
  * `EntityCard`'s generic `.Stat`, plus the power's total Power Point cost (rating × costPerRating)
- * alongside it in the body row. `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to
+ * alongside it in the body row. `onOpen`/`onEdit`/`onRemove`/`quickActions` pass straight through to
  * `EntityCard`.
  */
 const PowerCardRoot: FC<PowerCardProps> = ({ power, children, ...props }) => (
