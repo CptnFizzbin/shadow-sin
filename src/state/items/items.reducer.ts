@@ -46,12 +46,20 @@ export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => 
     }
   })
 
+  addCase(ItemActions.removeItems, (state, action) => {
+    ItemStateUtils.removeItemTrees(state, action.payload.ids)
+  })
+
   addCase(ItemActions.setState, (state, action) => {
     const item = state[action.payload.id]
     if (!item) return
     const previousState = getItemState(item)
     item.state = action.payload.state
     ItemStateUtils.reconcileState(state, action.payload.id, previousState)
+  })
+
+  addCase(ItemActions.applyBulkStateAction, (state, action) => {
+    ItemStateUtils.applyBulkStateActionByIds(state, action.payload.ids, action.payload.action)
   })
 
   addCase(ItemActions.sellItem, (state, action) => {

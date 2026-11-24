@@ -6,6 +6,7 @@ import { useItemActionsDialogContext } from "#/components/entities/items/actions
 import { ItemStateMenuActions } from "#/components/entities/items/state/itemStateMenuActions.tsx"
 import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import { useItemSelectionToggle } from "#/hooks/items/selection/useItemSelection.ts"
 import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
@@ -34,11 +35,13 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
  * Inside an `ItemActionsDialogProvider`, the menu button opens the Item actions dialog (with
  * `onEdit`, when given, as its Edit action); elsewhere `onEdit`/`onRemove` fill `EntityCard`'s own
  * menu, alongside the item's state actions (Equip, Stash, ...). `onOpen`/`leftAction` pass
- * straight through to `EntityCard`.
+ * straight through to `EntityCard`. While the gear list is in selection mode, the card is a
+ * checkbox for the Item instead (see `useItemSelectionToggle`).
  */
 const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onRemove, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
   const itemActionsDialog = useItemActionsDialogContext()
+  const selectionToggle = useItemSelectionToggle(item.id)
   const itemState = getItemState(item)
   const hasAvailability = !!item.availability && item.availability.rating !== 0
 
@@ -57,7 +60,13 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onEdit, onR
       }
 
   return (
-    <EntityCard entity={item} allowCompact={false} {...props} {...menuProps}>
+    <EntityCard
+      entity={item}
+      allowCompact={false}
+      {...props}
+      {...menuProps}
+      selection={selectionToggle && { selected: selectionToggle.isSelected, onToggle: selectionToggle.toggle }}
+    >
       <EntityCard.Layout.TitleRight>
         <ItemCardElements.Quantity value={item.quantity} />
       </EntityCard.Layout.TitleRight>

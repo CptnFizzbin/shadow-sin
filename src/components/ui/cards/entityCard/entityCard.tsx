@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu"
 import Stack from "@mui/material/Stack"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
-import { RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
+import { RiCheckboxBlankLine, RiCheckboxFill, RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
 import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, PropsWithChildren, ReactNode } from "react"
 import { useState } from "react"
 
@@ -39,6 +39,12 @@ export interface EntityCardLeftAction {
   onClick: () => void
 }
 
+/** Puts an `EntityCard` in selection mode, as one of several picked for a bulk action. */
+export interface EntityCardSelection {
+  selected: boolean
+  onToggle: () => void
+}
+
 export interface EntityCardProps extends PropsWithChildren {
   entity: EntityData
   /** When provided, the whole card becomes tappable/keyboard-activatable and invokes this (e.g. navigate to the entity's details page). */
@@ -64,6 +70,11 @@ export interface EntityCardProps extends PropsWithChildren {
    * single compact line. Defaults to `true`.
    */
   allowCompact?: boolean
+  /**
+   * When provided, the card is in selection mode: tapping anywhere on it calls `onToggle`, a
+   * checkbox replaces `leftAction`, and the actions menu button is hidden. `onOpen` is ignored.
+   */
+  selection?: EntityCardSelection
 }
 
 /** An Entity implementing `Credential` (a SIN/Licence) shows "Real" instead of its (absent)
@@ -84,7 +95,8 @@ function getRatingDisplay(entity: EntityData): string | number | undefined {
  * row instead, as a single compact line, unless `allowCompact` is `false`. `onEdit`/`onRemove`
  * surface as items in a menu opened by a dedicated menu button on the card's right edge (or the
  * button calls `onOpenActions` instead, when given), and `leftAction` renders a matching
- * outline-style button on the left edge — both buttons span the card's full height.
+ * outline-style button on the left edge — both buttons span the card's full height. In selection
+ * mode (`selection`) the card becomes a single checkbox instead, with no menu or left action.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -95,11 +107,13 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   leftAction,
   menuActions,
   allowCompact = true,
+  selection,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
-  const hasMenu = !onOpenActions && !!(onEdit || onRemove)
-  const hasActions = !!onOpenActions || hasMenu
+  const hasMenu = !selection && !onOpenActions && !!(onEdit || onRemove)
+  const hasActions = !selection && (!!onOpenActions || hasMenu)
+  const onActivate = selection ? selection.onToggle : onOpen
   // A card with nothing but its title line and footer fits both on a single row.
   const isCompact = allowCompact
     && slots.layout.headerRows.length === 0
@@ -128,16 +142,36 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!onOpen) return
+    if (!onActivate) return
     if (event.key !== "Enter" && event.key !== " ") return
     event.preventDefault()
-    onOpen()
+    onActivate()
   }
 
   return (
     <>
       <Stack direction="row" sx={{ width: "100%", gap: 0 }}>
-        {leftAction && (
+        {selection && (
+          <Box
+            aria-hidden
+            onClick={selection.onToggle}
+            sx={{
+              display: "flex",
+              minWidth: 42,
+              justifyContent: "center",
+              padding: 1,
+              border: "1px solid",
+              borderRight: "none",
+              borderColor: selection.selected ? "secondary.main" : "primary.dark",
+              color: selection.selected ? "secondary.main" : "text.secondary",
+              cursor: "pointer",
+            }}
+          >
+            {selection.selected ? <RiCheckboxFill size={20} /> : <RiCheckboxBlankLine size={20} />}
+          </Box>
+        )}
+
+        {leftAction && !selection && (
           <Button
             variant="outlined"
             aria-label={leftAction.label ?? "Action"}
@@ -154,20 +188,26 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         )}
 
         <Box
-          role={onOpen ? "button" : undefined}
-          tabIndex={onOpen ? 0 : undefined}
-          onClick={onOpen}
+          role={selection ? "checkbox" : (onOpen ? "button" : undefined)}
+          aria-checked={selection?.selected}
+          aria-label={selection ? `Select ${entity.name}` : undefined}
+          tabIndex={onActivate ? 0 : undefined}
+          onClick={onActivate}
           onKeyDown={handleKeyDown}
           sx={{
             border: "1px solid",
-            borderColor: "primary.dark",
+            borderColor: selection?.selected ? "secondary.main" : "primary.dark",
             flexGrow: 1,
             minWidth: 0,
             textAlign: "left",
-            ...(onOpen && {
+            ...(onActivate && {
               "cursor": "pointer",
               "&:hover": { bgcolor: "action.hover" },
             }),
+            ...(selection?.selected && { bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.08)" }),
+            // Selecting makes the whole card one tap target, so controls inside it (e.g. a damage
+            // track) mustn't swallow the tap and change the Entity instead.
+            ...(selection && { "& button, & [role=button]": { pointerEvents: "none" } }),
           }}
         >
           <Stack

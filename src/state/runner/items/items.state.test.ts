@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
+import { ItemStateAction } from "#/system/formulas/items/itemStateRules.ts"
 import { EntityKind } from "#/system/model/entities/entityKind.ts"
 import type { ItemData } from "#/system/model/items/itemData.ts"
 import { ItemState } from "#/system/model/items/itemState.ts"
 import { ItemType } from "#/system/model/items/itemType.ts"
 import type { UUID } from "#/utils/uuidUtils.ts"
 
-import { addItem, consumeItem, patchItem, removeItem, sellItem, setItem, setState } from "./items.actions.ts"
+import { addItem, applyBulkStateAction, removeItems, consumeItem, patchItem, removeItem, sellItem, setItem, setState } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -563,5 +564,105 @@ describe.concurrent("gearReducer sellItem", () => {
     // Assert
     expect(next[child.id]).toBeUndefined()
     expect(next[parent.id].items.childIds).toEqual([])
+  })
+})
+
+describe.concurrent("gearReducer applyBulkStateAction", () => {
+  const makeRifleWithScope = () => {
+    const rifle = makeItem({ name: "Rifle" })
+    const scope = makeItem({
+      name: "Scope",
+      itemType: ItemType.firearmAccessory,
+      items: { parentId: rifle.id, childIds: [] },
+    })
+    rifle.items = { parentId: null, childIds: [scope.id] }
+    return { rifle, scope }
+  }
+
+  it("Equip only reaches the selected Items that can be Equipped", () => {
+    // Arrange
+    const pistol = makeItem({ name: "Pistol" })
+    const license = makeItem({ name: "Gun License", itemType: ItemType.license })
+
+    // Act
+    const next = gearReducer(
+      { [pistol.id]: pistol, [license.id]: license },
+      applyBulkStateAction({ ids: [pistol.id, license.id], action: ItemStateAction.equip }),
+    )
+
+    // Assert
+    expect(next[pistol.id].state).toBe(ItemState.equipped)
+    expect(next[license.id].state).toBeUndefined()
+  })
+
+  it("Stash takes a selected parent's Attachments with it", () => {
+    // Arrange
+    const { rifle, scope } = makeRifleWithScope()
+
+    // Act
+    const next = gearReducer(
+      { [rifle.id]: rifle, [scope.id]: scope },
+      applyBulkStateAction({ ids: [rifle.id], action: ItemStateAction.stash }),
+    )
+
+    // Assert
+    expect(next[rifle.id].state).toBe(ItemState.stashed)
+    expect(next[scope.id].state).toBe(ItemState.stashed)
+  })
+
+  it("Unstash brings back a selected Attachment listed before its Stashed parent", () => {
+    // Arrange
+    const { rifle, scope } = makeRifleWithScope()
+    const stashed = gearReducer(
+      { [rifle.id]: rifle, [scope.id]: scope },
+      applyBulkStateAction({ ids: [rifle.id], action: ItemStateAction.stash }),
+    )
+
+    // Act
+    const next = gearReducer(
+      stashed,
+      applyBulkStateAction({ ids: [scope.id, rifle.id], action: ItemStateAction.unstash }),
+    )
+
+    // Assert
+    expect(next[rifle.id].state).toBe(ItemState.available)
+    expect(next[scope.id].state).toBe(ItemState.available)
+  })
+
+  it("Unequip leaves selected Items that aren't Equipped alone", () => {
+    // Arrange
+    const equipped = makeItem({ name: "Pistol", state: ItemState.equipped })
+    const stashed = makeItem({ name: "Shotgun", state: ItemState.stashed })
+
+    // Act
+    const next = gearReducer(
+      { [equipped.id]: equipped, [stashed.id]: stashed },
+      applyBulkStateAction({ ids: [equipped.id, stashed.id], action: ItemStateAction.unequip }),
+    )
+
+    // Assert
+    expect(next[equipped.id].state).toBe(ItemState.available)
+    expect(next[stashed.id].state).toBe(ItemState.stashed)
+  })
+})
+
+describe.concurrent("gearReducer removeItems", () => {
+  it("removes each Item with its Attachments but leaves a fixed Attachment selected on its own", () => {
+    // Arrange
+    const rifle = makeItem({ name: "Rifle" })
+    const scope = makeItem({ name: "Scope", itemType: ItemType.firearmAccessory, items: { parentId: rifle.id, childIds: [] } })
+    rifle.items = { parentId: null, childIds: [scope.id] }
+    const pistol = makeItem({ name: "Pistol" })
+    const grip = makeItem({ name: "Grip", itemType: ItemType.firearmAccessory, fixed: true, items: { parentId: pistol.id, childIds: [] } })
+    pistol.items = { parentId: null, childIds: [grip.id] }
+
+    // Act
+    const next = gearReducer(
+      { [rifle.id]: rifle, [scope.id]: scope, [pistol.id]: pistol, [grip.id]: grip },
+      removeItems({ ids: [rifle.id, grip.id] }),
+    )
+
+    // Assert
+    expect(Object.keys(next).sort()).toEqual([grip.id, pistol.id].sort())
   })
 })
