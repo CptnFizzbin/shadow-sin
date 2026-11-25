@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import { EntityKind } from "#data/entities/entityKind.ts"
@@ -22,6 +21,7 @@ import {
   SpellType,
 } from "#data/magic/spellData.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { SpellCastSection } from "./spellCastSection.tsx"

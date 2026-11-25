@@ -17,7 +17,6 @@ import { LicenseDataCard } from "#app/components/entities/items/types/licenses/l
 import { SinDataCard } from "#app/components/entities/items/types/licenses/sinDataCard.tsx"
 import { VehicleDataCard } from "#app/components/entities/items/types/vehicles/vehicleDataCard.tsx"
 import { WeaponDataCard } from "#app/components/entities/items/types/weapons/weaponDataCard.tsx"
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import { EntityKind } from "#data/entities/entityKind.ts"
 import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
 import type { ArmorData } from "#data/items/armorData.ts"
@@ -41,6 +40,7 @@ import { FirearmTypeKey } from "#data/items/weapons/firearms/firearmTypeKey.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { SkillKey } from "#data/skills/skillKey.ts"
 import { getActiveItemState } from "#rules/items/itemStateRules.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 export const Route = createFileRoute("/test/entity-card/item-cards")({

@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import { EntityKind } from "#data/entities/entityKind.ts"
 import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
 import type { SpellData } from "#data/magic/spellData.ts"
@@ -16,6 +15,7 @@ import {
   SpellType,
 } from "#data/magic/spellData.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { SpellsViewerSection } from "./spellsViewerSection.tsx"

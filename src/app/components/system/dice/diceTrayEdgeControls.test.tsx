@@ -2,10 +2,10 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { DiceTrayApi } from "#state/dice/diceTrayApi.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { DiceTrayEdgeControls } from "./diceTrayEdgeControls.tsx"

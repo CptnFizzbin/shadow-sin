@@ -2,12 +2,12 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import { MetatypeType } from "#data/biology/metatypeData.ts"
 import { AwakeningType } from "#data/magic/awakeningType.ts"
 import type { RunnerFactoryAfterBuildFn } from "#data/runner/runnerData.factory.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { AttrDecrementButton } from "./attrDecrementButton.tsx"
