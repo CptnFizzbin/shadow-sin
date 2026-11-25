@@ -4,11 +4,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
+import type { SpiritType } from "#/data/magic/spiritData.ts"
+import { SpiritTypeLabels } from "#/data/magic/spiritData.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { TraditionSelectors } from "#/state/runner/tradition/tradition.selector.ts"
-import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
-import type { SpiritType } from "#/system/model/magic/spiritData.ts"
-import { SpiritTypeLabels } from "#/system/model/magic/spiritData.ts"
 
 export const TraditionDisplay: FC = () => {
   const tradition = useRunnerSelector(TraditionSelectors.select)

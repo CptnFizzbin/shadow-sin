@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 /**
  * Add `extendedTests` (long-term Extended Tests tracked on the Notes page).

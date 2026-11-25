@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/data/attributes/attributeKey.ts"
 
 import { SpiritType, SpiritTypeLabels } from "./spiritData.ts"
 

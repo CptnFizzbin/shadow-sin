@@ -3,13 +3,13 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import type { ExtendedTestEntry } from "#/data/checks/extendedTestData.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import type { ExtendedTestEntry } from "#/system/model/checks/extendedTestData.ts"
 
 type ExtendedTestDialogProps = ControlledDialogProps<void> & (
   | { mode: "add" }

@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { uuid } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/common/uuid/uuidUtils.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 interface MigratingSkill {
   id?: string

@@ -3,19 +3,19 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { RatingChip } from "#/components/ui/chips/ratingChip.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import type { AnyItemForm, ItemForm } from "#/hooks/items/forms/useItemForm.tsx"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import type { AnyItemForm, ItemForm } from "#/forms/items/useItemForm.tsx"
+import { isLicenseQuickBuyEligible } from "#/rules/items/licenseUtils.ts"
+import { useEditorMode } from "#/state/editor/editorMode.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { RatingChip } from "#/ui/chips/ratingChip.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 import { useAssignLicenseDialog } from "./dialogs/assignLicenseDialog.tsx"
-import { isLicenseQuickBuyEligible } from "./licenseUtils.ts"
 
 const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
   const isBuilder = !useEditorMode().isViewer

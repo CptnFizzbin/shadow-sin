@@ -7,9 +7,9 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { ContactSkillData } from "#/system/model/contacts/contactSkillData.ts"
-import { ContactSkillType } from "#/system/model/contacts/contactSkillData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { ContactSkillData } from "#/data/contacts/contactSkillData.ts"
+import { ContactSkillType } from "#/data/contacts/contactSkillData.ts"
 
 export const contactSkillTypeLabels: Record<ContactSkillType, string> = {
   [ContactSkillType.keyActive]: "Key Active Skills",

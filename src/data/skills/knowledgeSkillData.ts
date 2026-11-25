@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 export interface KnowledgeSkillData {
   /** Stays the same when the skill is renamed. */

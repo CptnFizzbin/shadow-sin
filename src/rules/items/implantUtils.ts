@@ -1,5 +1,5 @@
-import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
+import type { ImplantData } from "#/data/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/data/items/implantData.ts"
 
 export const BASE_ESSENCE = 6
 

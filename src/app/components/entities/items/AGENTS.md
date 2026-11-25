@@ -2,7 +2,7 @@
 
 Each gear item type follows a three-layer pattern:
 
-1. a `useXxxForm` hook (under `src/hooks/items/`) that wraps the app form with type-specific defaults and maps form
+1. a `useXxxForm` hook (under `src/forms/items/`) that wraps the app form with type-specific defaults and maps form
    state back to the typed item data;
 2. an `XxxFormFields` component that renders the type's fields alongside the shared field groups;
 3. an `XxxFormDialog` that combines the two.

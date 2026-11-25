@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import type { FC } from "react"
 
-import type { FocusData } from "#/system/model/items/magicalData.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
 
 const NO_FOCUS = ""
 

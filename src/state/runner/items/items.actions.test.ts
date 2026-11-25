@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest"
 
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { AgentData } from "#/system/model/items/agentData.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { AgentData } from "#/data/items/agentData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
 import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 
 import {

@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { KarmaLedgerEntry, KarmaLedgerSource } from "#/system/model/karma/karmaLedgerEntry.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { KarmaLedgerEntry, KarmaLedgerSource } from "#/data/karma/karmaLedgerEntry.ts"
 
 const createLedgerEntry = (amount: number, description: string, source: KarmaLedgerSource): KarmaLedgerEntry => ({
   id: crypto.randomUUID() as UUID,

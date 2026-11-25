@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { BuildPoints } from "#/components/builder/buildPoints.tsx"
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { BuildPoints } from "#/app/components/builder/buildPoints.tsx"
+import type { SpellData } from "#/data/magic/spellData.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
 
 interface SpellListItemProps {
   spell: SpellData

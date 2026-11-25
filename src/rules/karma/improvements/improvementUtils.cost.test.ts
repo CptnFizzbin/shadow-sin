@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { uuid } from "#/common/uuid/uuidUtils.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
 import type {
   AttrIncreaseEntry,
   ComplexFormIncreaseEntry,
@@ -16,12 +18,10 @@ import type {
   SkillGroupIncreaseEntry,
   SkillIncreaseEntry,
   SubmersionIncreaseEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
-import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
-import { uuid } from "#/utils/uuidUtils.ts"
+} from "#/data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
+import { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 import { getImprovementCost } from "./improvementUtils.ts"
 

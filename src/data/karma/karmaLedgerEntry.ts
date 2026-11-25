@@ -1,4 +1,4 @@
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 import type { ImprovementEntry } from "./improvements/improvementEntry.ts"
 

@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import type { SxProps } from "@mui/material/styles"
 import type { FC } from "react"
 
-import { mergeSx } from "#/integrations/mui/muiUtils.ts"
+import { mergeSx } from "#/ui/mui/muiUtils.ts"
 
 import { KarmaIcon } from "./karmaIcon.tsx"
 

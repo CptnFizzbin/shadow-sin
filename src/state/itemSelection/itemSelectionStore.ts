@@ -1,9 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 
-import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { CompatStore } from "#/state/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
 
 /** Which Items the Player has picked in the gear list's selection mode. */
 export interface ItemSelectionState {

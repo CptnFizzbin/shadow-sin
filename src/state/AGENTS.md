@@ -13,6 +13,6 @@ store's shape, how it's created, and its selector/dispatch hooks are defined in 
 - Store instances are stable — never re-create one on every render.
 - When adding a slice, follow the layout of an existing sibling domain folder rather than inventing a new shape.
 - Small ad hoc UI stores (dice, dialogs, Karma-spend staging, ...) don't live here: they sit in
-  `src/services/<feature>/` and wrap `configureStore` via the compat-store helper in `src/integrations/reduxToolkit/`.
+  `src/state/<feature>/` and wrap `configureStore` via the compat-store helper in `src/state/reduxToolkit/`.
 - The root domain type is `RunnerData`. The older `character` naming deliberately survives only in the migration
   subsystem and localStorage key literals — see `docs/adr/0001-runner-data-not-character-sheet.md`.

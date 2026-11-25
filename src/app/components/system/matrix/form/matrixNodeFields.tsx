@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { KnownNodeForm } from "#/hooks/runner/matrix/form/useKnownNodeForm.ts"
-import { AccessLevel, AccessLevelLabels } from "#/system/model/matrix/accessLevel.ts"
-import { NodeType, NodeTypeLabels } from "#/system/model/matrix/nodeType.ts"
+import { AccessLevel, AccessLevelLabels } from "#/data/matrix/accessLevel.ts"
+import { NodeType, NodeTypeLabels } from "#/data/matrix/nodeType.ts"
+import type { KnownNodeForm } from "#/forms/matrix/useKnownNodeForm.ts"
 
 const NODE_STAT_MIN = 0
 const NODE_STAT_MAX = 99

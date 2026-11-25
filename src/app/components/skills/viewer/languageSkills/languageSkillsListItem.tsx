@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { SkillListItem } from "#/components/skills/viewer/skillListItem.tsx"
-import { useViewSkillDialog } from "#/components/skills/viewer/viewSkillDialog.tsx"
-import { useLanguageSkillDicePool } from "#/hooks/runner/skills/skillDicePools.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { LanguageSkillData } from "#/system/model/skills/languageSkillData.ts"
+import { SkillListItem } from "#/app/components/skills/viewer/skillListItem.tsx"
+import { useViewSkillDialog } from "#/app/components/skills/viewer/viewSkillDialog.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
+import { useLanguageSkillDicePool } from "#/state/runner/dicePool/skillDicePools.ts"
 
 interface LanguageSkillListItemProps {
   skill: LanguageSkillData

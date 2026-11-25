@@ -1,8 +1,8 @@
 import { dump, load } from "js-yaml"
 
-import type { DataPacketData } from "#/system/model/dataPacket/dataPacketData.ts"
-import { DataPacketDataSchema, DataPacketMetaSchema, DataPacketType } from "#/system/model/dataPacket/dataPacketData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { DataPacketData } from "#/data/dataPacket/dataPacketData.ts"
+import { DataPacketDataSchema, DataPacketMetaSchema, DataPacketType } from "#/data/dataPacket/dataPacketData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 import { yamlToRunnerData } from "./exportUtils.ts"
 

@@ -8,12 +8,12 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiFireLine, RiLoopLeftLine, RiSubtractLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
+import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
 import { EdgeSelectors } from "#/state/runner/edge/edge.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog()

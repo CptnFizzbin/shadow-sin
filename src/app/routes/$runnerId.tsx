@@ -1,18 +1,18 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useMemo } from "react"
 
-import { ItemActionsDialogProvider } from "#/components/entities/items/actions/itemActionsDialogProvider.tsx"
-import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
-import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
-import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
-import { DiceTrayProvider } from "#/components/system/dice/diceTrayProvider.tsx"
-import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
-import { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
-import { RunnerManager } from "#/services/persistence/runnerManager.ts"
-import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import { ItemActionsDialogProvider } from "#/app/components/entities/items/actions/itemActionsDialogProvider.tsx"
+import { AddItemDialogProvider } from "#/app/components/entities/items/dialogs/addItemDialogProvider.tsx"
+import { RunnerEntityProvider } from "#/app/components/runner/runnerEntityProvider.tsx"
+import { RunnerErrorRoute } from "#/app/components/runner/runnerErrorRoute.tsx"
+import { DiceTrayProvider } from "#/app/components/system/dice/diceTrayProvider.tsx"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { DiceTrayApi } from "#/state/dice/diceTrayApi.ts"
+import { RunnerManager } from "#/state/persistence/runnerManager.ts"
+import { useRunnerManager } from "#/state/persistence/useRunnerManager.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
+import { LocalStorageProvider } from "#/state/storage/providers/localStorageProvider.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })

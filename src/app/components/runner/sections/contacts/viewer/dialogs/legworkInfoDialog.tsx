@@ -6,14 +6,14 @@ import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { DetailDialog } from "#/forms/dialog/detailDialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 import { ContactPoolSelectors } from "#/state/runner/dicePool/contactPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 const hitLevels: [string, string][] = [
   ["0 hits", "Nothing relevant"],

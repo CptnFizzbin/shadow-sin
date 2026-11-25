@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/components/builder/builderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { isTechnomancer } from "#/components/runner/awakenings/technomancer/viewer/technomancerUtils.ts"
-import { useSpritesAlerts } from "#/hooks/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
+import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
+import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import { useSpritesAlerts } from "#/state/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

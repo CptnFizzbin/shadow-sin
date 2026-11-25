@@ -1,12 +1,12 @@
-import { CardElementAvailability } from "#/components/ui/cards/entityCard/elements/cardElementAvailability.tsx"
-import { CardElementCost } from "#/components/ui/cards/entityCard/elements/cardElementCost.tsx"
-import { CardElementDamageTrack } from "#/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
-import { CardElementFooterStat } from "#/components/ui/cards/entityCard/elements/cardElementFooterStat.tsx"
-import { CardElementQuantity } from "#/components/ui/cards/entityCard/elements/cardElementQuantity.tsx"
-import { CardElementStatusIcon } from "#/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
-import { CardElementSubType } from "#/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
-import { CardElementSubitem } from "#/components/ui/cards/entityCard/elements/cardElementSubitem.tsx"
-import { EntityCardElements } from "#/components/ui/cards/entityCard/entityCardElements.tsx"
+import { CardElementAvailability } from "#/app/components/ui/cards/entityCard/elements/cardElementAvailability.tsx"
+import { CardElementCost } from "#/app/components/ui/cards/entityCard/elements/cardElementCost.tsx"
+import { CardElementDamageTrack } from "#/app/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
+import { CardElementStatusIcon } from "#/app/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
+import { EntityCardElements } from "#/app/components/ui/cards/entityCard/entityCardElements.tsx"
+import { CardElementFooterStat } from "#/ui/cards/entityCard/elements/cardElementFooterStat.tsx"
+import { CardElementQuantity } from "#/ui/cards/entityCard/elements/cardElementQuantity.tsx"
+import { CardElementSubType } from "#/ui/cards/entityCard/elements/cardElementSubType.tsx"
+import { CardElementSubitem } from "#/ui/cards/entityCard/elements/cardElementSubitem.tsx"
 
 /**
  * Pure, dependency-free ItemCard content elements, flat — `EntityCard`'s content elements pulled

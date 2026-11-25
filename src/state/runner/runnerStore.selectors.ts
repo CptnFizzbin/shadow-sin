@@ -1,5 +1,5 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
 import type { EntityScope } from "#/state/entityScope.ts"
+import type { Selector } from "#/state/reselect/selectorUtils.ts"
 import { useRunnerState } from "#/state/runnerState.ts"
 
 /**

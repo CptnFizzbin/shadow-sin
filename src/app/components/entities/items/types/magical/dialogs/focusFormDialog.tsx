@@ -1,17 +1,17 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
-import { GearFormLicenseSection } from "#/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import { FocusFormFields } from "#/components/entities/items/types/magical/forms/focusFormFields.tsx"
-import { FocusWeaponField } from "#/components/entities/items/types/magical/forms/focusWeaponField.tsx"
-import { focusFieldMap, useFocusForm } from "#/hooks/items/types/magical/forms/useFocusForm.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
+import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import { FocusFormFields } from "#/app/components/entities/items/types/magical/forms/focusFormFields.tsx"
+import { FocusWeaponField } from "#/app/components/entities/items/types/magical/forms/focusWeaponField.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { focusFieldMap, useFocusForm } from "#/forms/items/types/magical/useFocusForm.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 interface FocusFormDialogProps {
   ctrl: AnyDialogCtrl

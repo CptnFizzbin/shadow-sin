@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
 
 export interface CardElementCostProps {
   value: number | undefined

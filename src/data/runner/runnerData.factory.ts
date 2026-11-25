@@ -1,15 +1,15 @@
 import { produce } from "immer"
 import * as uuid from "uuid"
 
-import { getAttributesValues } from "#/components/entities/attributes/viewer/getAttributesValues.ts"
-import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations.ts"
+import { metatypes, MetatypeType } from "#/data/biology/metatypeData.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { LifestyleType } from "#/data/finances/lifestyleType.ts"
+import { standardLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import { awakenings, AwakeningType } from "#/data/magic/awakeningType.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations/migrations.ts"
+import { getAttributesValues } from "#/rules/attributes/getAttributesValues.ts"
 
-import { metatypes, MetatypeType } from "./biology/metatypeData.ts"
-import { EntityKind } from "./entities/entityKind.ts"
-import { LifestyleType } from "./finances/lifestyleType.ts"
-import { standardLifestyle } from "./finances/runnerLifestyle.ts"
-import type { ItemCatalog } from "./items/itemUtils.ts"
-import { awakenings, AwakeningType } from "./magic/awakeningType.ts"
 import type { RunnerData } from "./runnerData.ts"
 
 export type RunnerFactoryAfterBuildFn = (runner: RunnerData) => void

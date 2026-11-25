@@ -1,8 +1,8 @@
-import type { SpendKarmaSectionKey } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
-import { selectAllImprovements } from "#/services/improvements/improvementSelectors.ts"
-import { getImprovementCost } from "#/system/formulas/karma/improvements/improvementUtils.ts"
-import type { ImprovementEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
+import type { SpendKarmaSectionKey } from "#/app/components/runner/karma/improvements/spendKarmaSections.tsx"
+import type { ImprovementEntry } from "#/data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
+import { getImprovementCost } from "#/rules/karma/improvements/improvementUtils.ts"
+import { selectAllImprovements } from "#/state/improvements/improvementSelectors.ts"
 
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 

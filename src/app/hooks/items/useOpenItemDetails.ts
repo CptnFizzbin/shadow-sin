@@ -1,9 +1,9 @@
 import { useNavigate } from "@tanstack/react-router"
 
-import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { useEditorMode } from "#/state/editor/editorMode.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 /**
  * Returns a callback that navigates to an item's details page, or

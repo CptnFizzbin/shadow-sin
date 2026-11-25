@@ -1,6 +1,6 @@
-import type { FocusType } from "#/system/model/magic/focusData.ts"
-import type { SpellCategory } from "#/system/model/magic/spellData.ts"
-import type { SpiritType } from "#/system/model/magic/spiritData.ts"
+import type { FocusType } from "#/data/magic/focusData.ts"
+import type { SpellCategory } from "#/data/magic/spellData.ts"
+import type { SpiritType } from "#/data/magic/spiritData.ts"
 
 import type { ItemData } from "./itemData.ts"
 import { ItemType } from "./itemType.ts"

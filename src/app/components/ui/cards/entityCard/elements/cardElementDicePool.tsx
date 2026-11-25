@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import type { DicePoolProps } from "#/components/system/dicePool/dicePool.tsx"
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import type { DicePoolProps } from "#/app/components/system/dicePool/dicePool.tsx"
+import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
 
 /**
  * Dice pool element for a card body — renders `pool` with a roll button, using the

@@ -8,19 +8,19 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useContactFormDialog } from "#/components/runner/sections/contacts/viewer/form/contactFormDialog.tsx"
+import { useContactFormDialog } from "#/app/components/runner/sections/contacts/viewer/form/contactFormDialog.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
 import {
   contactsDataPacket,
   DataPacketExtension,
   dataPacketToYaml,
-} from "#/components/system/exportImport/dataPacketUtils.ts"
-import { downloadTextFile, toFileNameSlug } from "#/components/system/exportImport/exportUtils.ts"
-import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { useGmContacts, useGmContactsDispatch } from "#/services/gmContacts/gmContactsStore.ts"
+} from "#/data/exportImport/dataPacketUtils.ts"
+import { downloadTextFile, toFileNameSlug } from "#/data/exportImport/exportUtils.ts"
+import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
+import { useGmContacts, useGmContactsDispatch } from "#/state/gmContacts/gmContactsStore.ts"
 import { addContact, removeContact, updateContact } from "#/state/runner/contacts/contacts.actions.ts"
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
 
 import { GmContactRow } from "./gmContactRow.tsx"
 

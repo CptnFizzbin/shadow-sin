@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
 
 export const addContact = createAction("contacts/add", (contact: ContactData) => {
   return { payload: { ...contact, id: crypto.randomUUID() } }

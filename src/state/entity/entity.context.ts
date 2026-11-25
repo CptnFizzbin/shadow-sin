@@ -1,6 +1,6 @@
 import { createContext } from "react"
 
-import type { EntityData } from "#/system/model/entities/entityData.ts"
+import type { EntityData } from "#/data/entities/entityData.ts"
 
 /**
  * The Entity currently in scope for `useEntitySelector`. Kept as `object` rather than

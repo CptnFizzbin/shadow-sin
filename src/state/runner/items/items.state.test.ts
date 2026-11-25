@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import { ItemStateAction } from "#/system/formulas/items/itemStateRules.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { ItemStateAction } from "#/rules/items/itemStateRules.ts"
 
 import { addItem, applyBulkStateAction, removeItems, consumeItem, patchItem, removeItem, sellItem, setItem, setState } from "./items.actions.ts"
 import { gearReducer } from "./items.state.ts"

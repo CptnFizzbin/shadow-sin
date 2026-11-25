@@ -1,8 +1,8 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import type { KnownNode } from "#/data/matrix/knownNode.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { Selector } from "#/state/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 export namespace MatrixSelectors {
   export const selectKnownNodes = createMemoizedSelector(

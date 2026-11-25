@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { bondFocus } from "#/state/runner/items/items.actions.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { addKarma, adjustKarma, buyKarma, sellKarma, spendKarma } from "./karma.actions.ts"
 

@@ -1,16 +1,15 @@
 import type { FC } from "react"
 
-import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
-import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
-import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { ItemAttachmentTree } from "#/app/components/entities/items/card/itemAttachmentTree.tsx"
+import { ItemCard } from "#/app/components/ui/cards/itemCard/itemCard.tsx"
+import type { ImplantData } from "#/data/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/data/items/implantData.ts"
+import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/rules/items/implantUtils.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
-
-import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "./implantUtils.ts"
 
 interface ImplantDataCardProps {
   implant: ImplantData

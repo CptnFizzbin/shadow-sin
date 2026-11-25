@@ -1,6 +1,5 @@
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-
-import { markOverlayClosed, markOverlayOpened } from "./openOverlayTracker.ts"
+import { markOverlayClosed, markOverlayOpened } from "#/common/overlay/openOverlayTracker.ts"
+import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
 
 /**
  * Controls the lifecycle of a single dialog. Created locally via `useDialogCtrl()`

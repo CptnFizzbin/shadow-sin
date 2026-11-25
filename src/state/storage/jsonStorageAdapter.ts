@@ -1,4 +1,4 @@
-import type { JsonValue } from "#/utils/jsonUtils.ts"
+import type { JsonValue } from "#/common/json/jsonUtils.ts"
 
 import type { AsyncJsonStorage, AsyncStorage } from "./asyncStorage.ts"
 

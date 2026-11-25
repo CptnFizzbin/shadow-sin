@@ -1,11 +1,11 @@
-import { getItemState, isItemOnHand } from "#/system/formulas/items/itemStateRules.ts"
-import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
-import type { DicePoolModEffect } from "#/system/model/gameEffects/gameEffectData.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { focusBondingKarmaMultiplier, focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { DicePoolId } from "#/data/gameEffects/dicePoolId.ts"
+import type { DicePoolModEffect } from "#/data/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { focusBondingKarmaMultiplier, focusEffectTag, FocusType } from "#/data/magic/focusData.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
+import { getItemState, isItemOnHand } from "#/rules/items/itemStateRules.ts"
 
 /** The Karma it costs to Bond `focus`: its Force times its type's multiplier. */
 export function getFocusBondingCost(focus: Pick<FocusData, "focusType" | "force">): number {

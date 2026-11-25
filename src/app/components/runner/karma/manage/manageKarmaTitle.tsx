@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { useVisibleSections } from "#/hooks/improvements/useVisibleSections.ts"
+import { useSpendKarmaDialogContext } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { useVisibleSections } from "#/app/hooks/improvements/useVisibleSections.ts"
 
 import { ManageKarmaStepHeader } from "./manageKarmaStepHeader.tsx"
 import { ManageKarmaStep, ManageKarmaStepLabels, useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"

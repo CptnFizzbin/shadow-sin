@@ -1,12 +1,12 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { MagicalType } from "#/system/model/items/magicalData.ts"
-import { FocusType } from "#/system/model/magic/focusData.ts"
-import { SpiritType } from "#/system/model/magic/spiritData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { MagicalType } from "#/data/items/magicalData.ts"
+import { FocusType } from "#/data/magic/focusData.ts"
+import { SpiritType } from "#/data/magic/spiritData.ts"
+import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { FocusFormDialog } from "./focusFormDialog.tsx"

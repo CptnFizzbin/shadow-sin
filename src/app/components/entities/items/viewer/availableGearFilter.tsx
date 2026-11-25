@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { isItemOnHand } from "#/system/formulas/items/itemStateRules.ts"
+import { isItemOnHand } from "#/rules/items/itemStateRules.ts"
 
 import type { GearListFilter } from "./gearListFilter.ts"
 import { GearListFilterContext } from "./gearListFilter.ts"

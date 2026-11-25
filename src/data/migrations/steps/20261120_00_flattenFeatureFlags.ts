@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 type MigratingFlagValue = string | boolean
 type MigratingFeatureFlags = Record<string, MigratingFlagValue | Record<string, unknown>>

@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/entities/items/availability/availabilityChip.tsx"
-import type { AvailabilityInfo } from "#/system/model/items/availabilityInfo.ts"
+import { AvailabilityChip } from "#/app/components/entities/items/availability/availabilityChip.tsx"
+import type { AvailabilityInfo } from "#/data/items/availabilityInfo.ts"
 
 export interface ItemDetailsAvailabilityProps {
   value: AvailabilityInfo | undefined

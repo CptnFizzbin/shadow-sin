@@ -1,7 +1,7 @@
 import { useContext } from "react"
 
-import { RunnerManagerContext } from "#/contexts/runner/runnerManager.context.ts"
-import type { RunnerManager } from "#/services/persistence/runnerManager.ts"
+import { RunnerManagerContext } from "./runnerManager.context.ts"
+import type { RunnerManager } from "./runnerManager.ts"
 
 export function useRunnerManager(): RunnerManager {
   const manager = useContext(RunnerManagerContext)

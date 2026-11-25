@@ -2,8 +2,8 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
 
 interface CostFieldGroupProps {
   enableQuantity?: boolean

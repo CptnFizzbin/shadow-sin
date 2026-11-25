@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useId } from "react"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 interface GmCounterFieldProps {
   label: string

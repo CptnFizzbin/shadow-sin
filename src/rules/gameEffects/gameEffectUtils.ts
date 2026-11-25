@@ -1,9 +1,9 @@
-import { isItemActive } from "#/system/formulas/items/itemStateRules.ts"
-import { focusEffectsApply, getFocusGameEffects } from "#/system/formulas/magic/focusRules.ts"
-import type { EffectByType, GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { isFocusData } from "#/system/model/items/magicalData.ts"
+import type { EffectByType, GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import type { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { isFocusData } from "#/data/items/magicalData.ts"
+import { isItemActive } from "#/rules/items/itemStateRules.ts"
+import { focusEffectsApply, getFocusGameEffects } from "#/rules/magic/focusRules.ts"
 
 export function filterByEffectType<TType extends GameEffectType>(type: TType) {
   return (item: GameEffectData): item is EffectByType[TType] => item.type === type

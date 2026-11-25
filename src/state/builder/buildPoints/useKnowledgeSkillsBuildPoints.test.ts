@@ -1,12 +1,12 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { KnowledgeSkillData } from "#/system/model/skills/knowledgeSkillData.ts"
-import type { LanguageSkillData } from "#/system/model/skills/languageSkillData.ts"
-import { uuid } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/common/uuid/uuidUtils.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
+import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useBuilderBuildPointsApi, useBuilderSkillsBuildPoints } from "./useBuildPointsApi.ts"

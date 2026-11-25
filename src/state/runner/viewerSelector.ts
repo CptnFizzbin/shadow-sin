@@ -1,6 +1,6 @@
-import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { createSelector } from "#/state/reselect/selectorUtils.ts"
 
 // Kept as `object` rather than `EntityBase` — not every Entity kind this can hold (starting with
 // `RunnerData`, which keys its display name under `profile.name` rather than a top-level `name`)

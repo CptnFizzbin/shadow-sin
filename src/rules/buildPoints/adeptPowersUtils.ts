@@ -1,5 +1,5 @@
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
+import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
 
 export const isAdept = (awakeningType: AwakeningType) => {
   return (

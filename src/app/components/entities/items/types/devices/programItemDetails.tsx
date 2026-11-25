@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
-import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
+import { ItemDetailsRoot } from "#/app/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/app/components/entities/items/details/itemDetailsSlot.tsx"
+import type { ProgramData } from "#/data/items/programData.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import type { ProgramData } from "#/system/model/items/programData.ts"
 
 import { useProgramFormDialog } from "./dialogs/programFormDialog.tsx"
 

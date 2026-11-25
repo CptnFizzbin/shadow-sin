@@ -3,13 +3,13 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SpiritFormFields } from "#/components/runner/awakenings/magician/viewer/spirits/form/spiritFormFields.tsx"
-import { SummoningSection } from "#/components/runner/awakenings/magician/viewer/spirits/summoningSection.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useSpiritForm } from "#/hooks/runner/magician/spirits/form/useSpiritForm.ts"
+import { SpiritFormFields } from "#/app/components/runner/awakenings/magician/viewer/spirits/form/spiritFormFields.tsx"
+import { SummoningSection } from "#/app/components/runner/awakenings/magician/viewer/spirits/summoningSection.tsx"
+import type { SpiritData, SpiritType } from "#/data/magic/spiritData.ts"
+import { Dialog } from "#/forms/dialog/dialog.tsx"
+import { useSpiritForm } from "#/forms/magician/spirits/useSpiritForm.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { TraditionSelectors } from "#/state/runner/tradition/tradition.selector.ts"
-import type { SpiritData, SpiritType } from "#/system/model/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {
   open: boolean

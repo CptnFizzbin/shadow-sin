@@ -1,7 +1,7 @@
-import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
-import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import type { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import type { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import type { OverrideReason } from "#/rules/gameEffects/effectTagStacking.ts"
+import { findOverriddenByTag } from "#/rules/gameEffects/effectTagStacking.ts"
 
 /** One named contribution to a rating, kept so the UI can show where a rating came from. */
 export interface RatingModifier {

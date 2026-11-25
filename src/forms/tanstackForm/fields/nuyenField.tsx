@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import type { NuyenInputProps } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
-import { NuyenInput } from "#/components/ui/form/inputs/nuyen/nuyenInput.tsx"
-import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
+import type { NuyenInputProps } from "#/forms/nuyen/nuyenInput.tsx"
+import { NuyenInput } from "#/forms/nuyen/nuyenInput.tsx"
+import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
 
 import { useFieldErrors } from "./useFieldError.ts"
 

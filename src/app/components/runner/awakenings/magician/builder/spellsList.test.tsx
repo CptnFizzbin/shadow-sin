@@ -2,12 +2,11 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -15,9 +14,10 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/system/model/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+} from "#/data/magic/spellData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 
 import { SpellsList } from "./spellsList.tsx"
 

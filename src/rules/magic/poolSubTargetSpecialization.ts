@@ -1,5 +1,5 @@
-import { SpellCategory } from "#/system/model/magic/spellData.ts"
-import { SpiritType } from "#/system/model/magic/spiritData.ts"
+import { SpellCategory } from "#/data/magic/spellData.ts"
+import { SpiritType } from "#/data/magic/spiritData.ts"
 
 import { spiritTypeMatchesSpecialization } from "./spiritSpecialization.ts"
 

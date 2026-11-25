@@ -3,7 +3,7 @@ import Tooltip from "@mui/material/Tooltip"
 import type { FC, KeyboardEvent, MouseEvent, ReactElement } from "react"
 import { cloneElement, useState } from "react"
 
-import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import type { OverrideReason } from "#/rules/gameEffects/effectTagStacking.ts"
 
 import { describeOverride } from "./overriddenNote.tsx"
 

@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/components/builder/builderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { useProfileAlerts } from "#/hooks/builder/sections/profile/useProfileAlerts.ts"
+import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import { useProfileAlerts } from "#/state/builder/sections/profile/useProfileAlerts.ts"
 
 import { ProfileSection } from "./profileSection.tsx"
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
 
 import {
   calculateSpiritAttributes,

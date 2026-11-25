@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { SpellData, SpellSustainTarget } from "#/system/model/magic/spellData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { SpellData, SpellSustainTarget } from "#/data/magic/spellData.ts"
 
 export const addSpell = createAction<SpellData>("spells/add")
 export const updateSpell = createAction<SpellData>("spells/update")

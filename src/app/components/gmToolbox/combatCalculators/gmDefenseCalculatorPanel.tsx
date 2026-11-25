@@ -7,18 +7,18 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { DefenseAttackType } from "#/components/entities/items/defenseCalculator/defenseCalculatorData.ts"
-import { defenseModifiersForAttackType } from "#/components/entities/items/defenseCalculator/defenseCalculatorData.ts"
-import { DefenseModifierList } from "#/components/entities/items/defenseCalculator/defenseModifierList.tsx"
+import type { DefenseAttackType } from "#/app/components/entities/items/defenseCalculator/defenseCalculatorData.ts"
+import { defenseModifiersForAttackType } from "#/app/components/entities/items/defenseCalculator/defenseCalculatorData.ts"
+import { DefenseModifierList } from "#/app/components/entities/items/defenseCalculator/defenseModifierList.tsx"
 import {
   defenseModifierGroups,
   emptyDefenseModifierSelection,
-} from "#/components/entities/items/defenseCalculator/defenseModifierSelection.ts"
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
+} from "#/app/components/entities/items/defenseCalculator/defenseModifierSelection.ts"
+import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
+import { buildGmDicePool } from "#/rules/dicePool/gmDicePool.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { GmCounterField } from "./gmCounterField.tsx"
-import { buildGmDicePool } from "./gmDicePool.ts"
 import { GmToggleButtons } from "./gmToggleButtons.tsx"
 
 type SpellType = "direct" | "indirect"

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
-import { createItem } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+import type { ImplantData } from "#/data/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/data/items/implantData.ts"
+import { createItem } from "#/data/items/itemData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 
 import { getEssenceSpent, getEssenceUsage } from "./implantUtils.ts"
 

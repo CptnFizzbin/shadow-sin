@@ -2,9 +2,9 @@ import { fireEvent, screen, within } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
-import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import type { ReputationFilter } from "./reputationLedgerFilters.tsx"

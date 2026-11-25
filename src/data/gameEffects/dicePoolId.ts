@@ -1,4 +1,4 @@
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 /**
  * Pool Ids a `dicePoolMod` GameEffect can target. Its `subTarget`, when set, narrows it further to

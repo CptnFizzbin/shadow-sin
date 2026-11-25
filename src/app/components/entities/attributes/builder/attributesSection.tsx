@@ -2,21 +2,21 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { BuildPoints } from "#/components/builder/buildPoints.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { EditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useAttributesBuildPoints } from "#/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { BuildPoints } from "#/app/components/builder/buildPoints.tsx"
+import { getProgress } from "#/common/number/progressUtils.ts"
 import {
   AttributeKey,
   MatrixAttributes,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/system/model/attributes/attributeKey.ts"
-import { getProgress } from "#/utils/progressUtils.ts"
+} from "#/data/attributes/attributeKey.ts"
+import { useAttributesBuildPoints } from "#/state/builder/buildPoints/useAttributesBuildPoints.ts"
+import { EditorMode } from "#/state/editor/editorMode.tsx"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { AttributesList } from "./attributesList.tsx"
 

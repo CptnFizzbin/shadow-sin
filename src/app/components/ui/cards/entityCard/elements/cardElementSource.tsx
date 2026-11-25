@@ -1,8 +1,8 @@
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { SourceData } from "#/system/model/sourceData.ts"
-import { formatBookRef } from "#/system/model/sourceData.ts"
+import type { SourceData } from "#/data/source/sourceData.ts"
+import { formatBookRef } from "#/data/source/sourceData.ts"
 
 export interface CardElementSourceProps {
   source: SourceData | undefined | null

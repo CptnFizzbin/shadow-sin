@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 
 import { contactsDataPacket, dataPacketToYaml, parseImportedYaml } from "./dataPacketUtils.ts"
 import { runnerDataToYaml } from "./exportUtils.ts"

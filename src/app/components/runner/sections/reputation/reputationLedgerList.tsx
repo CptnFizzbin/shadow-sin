@@ -12,11 +12,11 @@ import Typography from "@mui/material/Typography"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
+import type { ReputationLedgerEntry } from "#/data/reputation/reputationLedgerEntry.ts"
+import { ReputationStatTypeData } from "#/data/reputation/reputationLedgerEntry.ts"
 import { ReputationSelectors } from "#/state/runner/reputation/reputation.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ReputationLedgerEntry } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { ReputationStatTypeData } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { Icons } from "#/utils/icons.ts"
+import { Icons } from "#/ui/icons/icons.ts"
 
 import type { ReputationFilter } from "./reputationLedgerFilters.tsx"
 

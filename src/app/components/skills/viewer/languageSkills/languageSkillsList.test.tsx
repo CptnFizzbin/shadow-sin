@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { uuid } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/common/uuid/uuidUtils.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { LanguageSkillsList } from "./languageSkillsList.tsx"

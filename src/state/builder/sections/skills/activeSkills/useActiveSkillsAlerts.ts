@@ -1,6 +1,6 @@
-import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
+import { getSkillsInGroup } from "#/data/skills/skillGroupUtils.ts"
+import { useEditorMode } from "#/state/editor/editorMode.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 

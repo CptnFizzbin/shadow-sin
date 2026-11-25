@@ -1,12 +1,12 @@
 import type { FC } from "react"
 
-import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
-import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
+import { ItemAttachmentTree } from "#/app/components/entities/items/card/itemAttachmentTree.tsx"
+import { ItemCard } from "#/app/components/ui/cards/itemCard/itemCard.tsx"
+import type { DeviceData } from "#/data/items/deviceData.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { DeviceData } from "#/system/model/items/deviceData.ts"
 
 interface DeviceDataCardProps {
   device: DeviceData

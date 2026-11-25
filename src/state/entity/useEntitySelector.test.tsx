@@ -2,16 +2,16 @@ import { act, renderHook } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { EntityProvider } from "#/contexts/entity/entity.provider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { EntityData } from "#/data/entities/entityData.ts"
+import type { EntityWithAttrs } from "#/data/entities/traits/entityWithAttrs.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { EntityData } from "#/system/model/entities/entityData.ts"
-import type { EntityWithAttrs } from "#/system/model/entities/traits/entityWithAttrs.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
+import { EntityProvider } from "./entity.provider.tsx"
 import { useEntitySelector } from "./useEntitySelector.ts"
 
 const wrapperFor = (entity: Partial<EntityData>): FC<PropsWithChildren> => {

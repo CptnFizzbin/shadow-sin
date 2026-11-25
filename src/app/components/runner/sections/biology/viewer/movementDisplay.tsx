@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import type { MovementData } from "#/system/model/attributes/movementData.ts"
+import type { MovementData } from "#/data/attributes/movementData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 interface MovementDisplayProps {
   movement: MovementData | MovementData[]

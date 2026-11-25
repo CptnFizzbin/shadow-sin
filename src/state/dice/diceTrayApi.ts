@@ -1,12 +1,12 @@
 import { produce } from "immer"
 
-import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { markOverlayClosed, markOverlayOpened } from "#/services/dialog/openOverlayTracker.ts"
+import { markOverlayClosed, markOverlayOpened } from "#/common/overlay/openOverlayTracker.ts"
+import { ExtendedInterval, TestType } from "#/rules/dice/testType.ts"
+import type { CompatStore } from "#/state/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
 
 import { DiceRoller } from "./diceRoller.ts"
 import { selectWasRolled } from "./state/diceRoller.selector.ts"
-import { ExtendedInterval, TestType } from "./testType.ts"
 
 export interface ExtendedRollEntry {
   hits: number

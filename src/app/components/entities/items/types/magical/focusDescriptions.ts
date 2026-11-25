@@ -1,6 +1,6 @@
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { FocusType } from "#/system/model/magic/focusData.ts"
-import { SpiritTypePluralLabels } from "#/system/model/magic/spiritData.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { FocusType } from "#/data/magic/focusData.ts"
+import { SpiritTypePluralLabels } from "#/data/magic/spiritData.ts"
 
 /**
  * What `focus` is tied to, in on-screen words — e.g. "Combat spells", "Spirits of Fire", or the

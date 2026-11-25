@@ -2,10 +2,10 @@ import { fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
 import { loadMouse } from "#testUtils/fixtures/characters/mouse.ts"
 
 import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"

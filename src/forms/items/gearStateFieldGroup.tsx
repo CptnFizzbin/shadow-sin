@@ -3,16 +3,17 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Tooltip from "@mui/material/Tooltip"
 
-import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
 import {
   getActiveItemState,
   getAllowedItemStates,
   getItemStateLabel,
   isItemStateWithinParent,
-} from "#/system/formulas/items/itemStateRules.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+} from "#/rules/items/itemStateRules.ts"
+
+import { itemFormOpts } from "./useItemForm.tsx"
 
 /**
  * A toggle with one button per Item State the item's type allows (e.g. [Equipped | Available |

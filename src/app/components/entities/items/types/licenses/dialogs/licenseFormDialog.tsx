@@ -1,15 +1,15 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
-import { LicenseCoveredItemsSection } from "#/components/entities/items/types/licenses/licenseCoveredItemsSection.tsx"
-import { getLicenseCost } from "#/components/entities/items/types/licenses/licenseUtils.ts"
-import { useLicenseForm } from "#/hooks/items/types/licenses/forms/useLicenseForm.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import type { SinData } from "#/system/model/items/sinData.ts"
-import { isSinData } from "#/system/model/items/sinData.ts"
+import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
+import { LicenseCoveredItemsSection } from "#/app/components/entities/items/types/licenses/licenseCoveredItemsSection.tsx"
+import type { ItemData } from "#/data/items/itemData.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
+import type { SinData } from "#/data/items/sinData.ts"
+import { isSinData } from "#/data/items/sinData.ts"
+import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { useLicenseForm } from "#/forms/items/types/licenses/useLicenseForm.tsx"
+import { getLicenseCost } from "#/rules/items/licenseUtils.ts"
 
 interface LicenseFormDialogProps {
   ctrl: AnyDialogCtrl

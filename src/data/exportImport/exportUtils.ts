@@ -1,11 +1,11 @@
 import { dump, load } from "js-yaml"
 
-import { applyMigrations } from "#/data/applyMigrations.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
-import type { JsonObject } from "#/utils/jsonUtils.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { JsonObject } from "#/common/json/jsonUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { applyMigrations } from "#/data/migrations/applyMigrations.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
 
 export interface GearTreeNode extends Omit<ItemData, "items"> {
   children?: GearTreeNode[]

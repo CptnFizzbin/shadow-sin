@@ -1,6 +1,6 @@
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
+import type { DiceGroup } from "./diceGroup.tsx"
+import type { DicePoolData } from "./dicePoolData.tsx"
+import { getPoolSize } from "./dicePoolData.tsx"
 
 interface GmDicePoolOptions {
   id: string

@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 import { useEffect } from "react"
 
-import type { DiceTrayApi } from "#/services/dice/diceTrayApi.ts"
+import type { DiceTrayApi } from "#/state/dice/diceTrayApi.ts"
 
 import { DiceTrayContext } from "./diceTrayContext.ts"
 import { DiceTrayDialog } from "./diceTrayDialog.tsx"

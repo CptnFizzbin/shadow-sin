@@ -1,6 +1,6 @@
-import type { FocusType } from "#/system/model/magic/focusData.ts"
-import { focusBondingKarmaMultiplier } from "#/system/model/magic/focusData.ts"
-import type { QualityData } from "#/system/model/qualities/qualityData.ts"
+import type { FocusType } from "#/data/magic/focusData.ts"
+import { focusBondingKarmaMultiplier } from "#/data/magic/focusData.ts"
+import type { QualityData } from "#/data/qualities/qualityData.ts"
 
 export const ImprovementsConfig = {
   skills: {

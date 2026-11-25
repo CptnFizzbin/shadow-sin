@@ -1,7 +1,7 @@
 import type { RemixiconComponentType } from "@remixicon/react"
 import { RiFireLine, RiSparklingLine, RiSwordLine } from "@remixicon/react"
 
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 export type DefenseAttackType = "melee" | "ranged" | "spell"
 

@@ -2,10 +2,10 @@ import { act, renderHook, waitFor } from "@testing-library/react"
 import type { ChangeEvent } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { contactsDataPacket, dataPacketToYaml } from "#/components/system/exportImport/dataPacketUtils.ts"
-import { runnerDataToYaml } from "#/components/system/exportImport/exportUtils.ts"
+import { contactsDataPacket, dataPacketToYaml } from "#/data/exportImport/dataPacketUtils.ts"
+import { runnerDataToYaml } from "#/data/exportImport/exportUtils.ts"
 import { loadFixtureRunner } from "#/data/fixtures/fixtureRunners.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 

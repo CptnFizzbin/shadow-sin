@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getKnowledgeSkillSp } from "#/components/skills/builder/skillsBuilderUtils.ts"
-import type { KnowledgeSkillData } from "#/system/model/skills/knowledgeSkillData.ts"
+import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
+import { getKnowledgeSkillSp } from "#/rules/buildPoints/skillsBuilderUtils.ts"
 
 interface KnowledgeSkillsListItemProps {
   skill: KnowledgeSkillData

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 import { useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
 

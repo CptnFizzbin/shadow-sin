@@ -1,12 +1,13 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
+import { isMagician } from "#/data/magic/magicianUtils.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useActiveSkill } from "#/state/runner/runnerUtils.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { useActiveSkill } from "#/utils/runnerUtils.ts"
+
+import type { BpLineItem } from "./bpLineItem.ts"
 
 export const useSpellsBuildPoints = (): BpLineItem => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

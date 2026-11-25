@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
+import type { EntityCardLeftAction } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { ItemCard } from "#/app/components/ui/cards/itemCard/itemCard.tsx"
+import type { ProgramData } from "#/data/items/programData.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import type { ProgramData } from "#/system/model/items/programData.ts"
 
 interface ProgramDataCardProps {
   program: ProgramData

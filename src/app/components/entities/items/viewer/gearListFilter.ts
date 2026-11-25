@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
-import { isItemActive } from "#/system/formulas/items/itemStateRules.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { isItemActive } from "#/rules/items/itemStateRules.ts"
 
 /** Narrows the top-level Items a gear list shows, e.g. to the Gear page's current tab and search. */
 export interface GearListFilter {

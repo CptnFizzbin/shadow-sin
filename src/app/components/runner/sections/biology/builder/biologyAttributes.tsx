@@ -2,21 +2,21 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { createAttrInfo } from "#/components/entities/attributes/viewer/attributeInfo.ts"
-import { Label } from "#/components/ui/text/label.tsx"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
 import {
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/system/model/attributes/attributeKey.ts"
-import { metatypes } from "#/system/model/biology/metatypeData.ts"
-import { awakenings } from "#/system/model/magic/awakeningType.ts"
+} from "#/data/attributes/attributeKey.ts"
+import { metatypes } from "#/data/biology/metatypeData.ts"
+import { awakenings } from "#/data/magic/awakeningType.ts"
+import { AiAttrFormulas } from "#/rules/attributes/aiAttrFormulas.ts"
+import { createAttrInfo } from "#/rules/attributes/attributeInfo.ts"
+import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
+import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 export const BiologyAttributes: FC = () => {
   return (

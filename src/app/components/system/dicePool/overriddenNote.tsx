@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box"
 import type { FC } from "react"
 
-import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import type { OverrideReason } from "#/rules/gameEffects/effectTagStacking.ts"
 
 /** Why an overridden dice group or Modifier doesn't count, in on-screen words. */
 export function describeOverride({ name, value, tag }: OverrideReason): string {

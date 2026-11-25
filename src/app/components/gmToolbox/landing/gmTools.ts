@@ -1,11 +1,11 @@
 import type { AnyRoute } from "@tanstack/react-router"
 
-import { Route as AttackCalculatorRoute } from "#/routes/gm/attack-calculator.tsx"
-import { Route as ContactsRoute } from "#/routes/gm/contacts.tsx"
-import { Route as DefenseCalculatorRoute } from "#/routes/gm/defense-calculator.tsx"
-import { Route as EncounterBuilderRoute } from "#/routes/gm/encounter-builder.tsx"
-import { Route as InitiativeTrackerRoute } from "#/routes/gm/initiative-tracker.tsx"
-import { Route as NpcBuilderRoute } from "#/routes/gm/npc-builder.tsx"
+import { Route as AttackCalculatorRoute } from "#/app/routes/gm/attack-calculator.tsx"
+import { Route as ContactsRoute } from "#/app/routes/gm/contacts.tsx"
+import { Route as DefenseCalculatorRoute } from "#/app/routes/gm/defense-calculator.tsx"
+import { Route as EncounterBuilderRoute } from "#/app/routes/gm/encounter-builder.tsx"
+import { Route as InitiativeTrackerRoute } from "#/app/routes/gm/initiative-tracker.tsx"
+import { Route as NpcBuilderRoute } from "#/app/routes/gm/npc-builder.tsx"
 
 enum GmToolKey {
   initiativeTracker = "initiativeTracker",

@@ -7,12 +7,12 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { CheckFormulas } from "#/system/formulas/checks/checkFormulas.ts"
-import type { ExtendedTestEntry } from "#/system/model/checks/extendedTestData.ts"
-import { isExtendedTestComplete } from "#/system/model/checks/extendedTestData.ts"
-import { DurationUtils } from "#/utils/duration/durationUtils.ts"
-import { Icons } from "#/utils/icons.ts"
+import type { ExtendedTestEntry } from "#/data/checks/extendedTestData.ts"
+import { isExtendedTestComplete } from "#/data/checks/extendedTestData.ts"
+import { DurationUtils } from "#/data/duration/durationUtils.ts"
+import { CheckFormulas } from "#/rules/checks/checkFormulas.ts"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import { Icons } from "#/ui/icons/icons.ts"
 
 interface ExtendedTestCardProps {
   test: ExtendedTestEntry

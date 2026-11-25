@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 import type { DefenseModifierDatum } from "./defenseCalculatorData.ts"
 import type { DefenseModifierSelection } from "./defenseModifierSelection.ts"

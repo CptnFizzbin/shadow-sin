@@ -1,13 +1,13 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
+import type { SinData } from "#/data/items/sinData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import type { SinData } from "#/system/model/items/sinData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { SinDataCard } from "./sinDataCard.tsx"

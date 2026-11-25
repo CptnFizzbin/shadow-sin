@@ -6,9 +6,9 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getActiveSkillBp } from "#/components/skills/builder/skillsBuilderUtils.ts"
-import { EditorMode } from "#/contexts/builder/editorMode.tsx"
-import type { ActiveSkillData } from "#/system/model/skills/activeSkillData.ts"
+import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
+import { getActiveSkillBp } from "#/rules/buildPoints/skillsBuilderUtils.ts"
+import { EditorMode } from "#/state/editor/editorMode.tsx"
 
 interface ActiveSkillsListItemProps {
   skill: ActiveSkillData

@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { SpendKarmaDialogFooter } from "#/components/runner/karma/improvements/spendKarmaDialogFooter.tsx"
-import { useSpendKarmaSummary } from "#/hooks/improvements/useSpendKarmaSummary.ts"
-import type { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { SpendKarmaDialogFooter } from "#/app/components/runner/karma/improvements/spendKarmaDialogFooter.tsx"
+import { useSpendKarmaSummary } from "#/app/hooks/improvements/useSpendKarmaSummary.ts"
+import type { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"

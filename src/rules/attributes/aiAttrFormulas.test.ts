@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { MetatypeType } from "#/data/biology/metatypeData.ts"
 
 import { AiAttrFormulas } from "./aiAttrFormulas.ts"
 

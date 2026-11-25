@@ -3,14 +3,14 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { SpellSustainTarget } from "#/data/magic/spellData.ts"
+import { hasSpellEffects } from "#/rules/magic/spellSustaining.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { hasSpellEffects } from "#/system/formulas/magic/spellSustaining.ts"
-import { SpellSustainTarget } from "#/system/model/magic/spellData.ts"
-import { Icons } from "#/utils/icons.ts"
+import { Icons } from "#/ui/icons/icons.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { SpellSustainTargetToggle } from "./spellSustainTargetToggle.tsx"
 

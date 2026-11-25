@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
-import type { AddItemSelection } from "#/system/model/items/addItemSelection.ts"
+import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 
+import type { AddItemSelection } from "./addItemSelection.ts"
 import { AddItemTypeDialogContent } from "./addItemTypeDialogContent.tsx"
 import { AddItemTypeStep, AddItemTypeWorkflow } from "./addItemTypeWorkflow.ts"
 

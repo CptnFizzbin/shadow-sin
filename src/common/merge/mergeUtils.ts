@@ -1,4 +1,4 @@
-import type { JsonObject } from "./jsonUtils.ts"
+import type { JsonObject } from "#/common/json/jsonUtils.ts"
 
 function isObject(item: unknown): item is object {
   return typeof item === "object" && item !== null

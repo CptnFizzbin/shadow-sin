@@ -1,8 +1,8 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { LoanData } from "#/system/model/finances/loanData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { LoanData } from "#/data/finances/loanData.ts"
 
 export const setNuyenAmount = createAction<number>("nuyen/setAmount")
 export const depositNuyen = createAction<number>("nuyen/deposit")

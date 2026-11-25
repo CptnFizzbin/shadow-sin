@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { JsonObject } from "#/utils/jsonUtils.ts"
+import type { JsonObject } from "#/common/json/jsonUtils.ts"
 
 import { migrateOldLocalStorageFormat } from "./migrateLocalStorage.ts"
 

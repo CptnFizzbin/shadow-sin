@@ -1,4 +1,4 @@
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
 
 export namespace PowersSelectors {

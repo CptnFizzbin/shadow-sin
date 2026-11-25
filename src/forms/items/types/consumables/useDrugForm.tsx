@@ -1,14 +1,14 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { GearSubmitMeta } from "#/components/entities/items/gearSubmitMeta.ts"
-import { useItemForm } from "#/hooks/items/forms/useItemForm.tsx"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { DrugData } from "#/system/model/items/consumableData.ts"
-import { ConsumableType } from "#/system/model/items/consumableData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { DrugData } from "#/data/items/consumableData.ts"
+import { ConsumableType } from "#/data/items/consumableData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { GearSubmitMeta } from "#/forms/items/gearSubmitMeta.ts"
+import { useItemForm } from "#/forms/items/useItemForm.tsx"
 
 interface DrugFormOptions {
   drug?: DrugData

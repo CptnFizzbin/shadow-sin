@@ -1,8 +1,9 @@
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 
-import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+
+import { itemFormOpts } from "./useItemForm.tsx"
 
 /**
  * Checkbox for whether the item has a Matrix presence: checked unless `matrixDisabled` is set, and

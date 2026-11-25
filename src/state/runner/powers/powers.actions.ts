@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
 
 export const addPower = createAction<AdeptPowerData>("powers/add")
 export const updatePower = createAction<AdeptPowerData>("powers/update")

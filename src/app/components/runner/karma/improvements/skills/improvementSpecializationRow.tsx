@@ -7,7 +7,7 @@ import Tooltip from "@mui/material/Tooltip"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import { KarmaChip } from "#/components/runner/karma/viewer/karmaChip.tsx"
+import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
 
 interface ImprovementSpecializationRowProps {
   primary: ReactNode

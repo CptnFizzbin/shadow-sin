@@ -1,5 +1,5 @@
-import type { SpiritType } from "#/system/model/magic/spiritData.ts"
-import { SpiritTypeLabels } from "#/system/model/magic/spiritData.ts"
+import type { SpiritType } from "#/data/magic/spiritData.ts"
+import { SpiritTypeLabels } from "#/data/magic/spiritData.ts"
 
 const STOP_WORDS = new Set(["of", "the", "a", "an", "spirit", "spirits"])
 

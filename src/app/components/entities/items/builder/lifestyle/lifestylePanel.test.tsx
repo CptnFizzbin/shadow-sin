@@ -2,12 +2,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { LifestyleType } from "#/data/finances/lifestyleType.ts"
+import type { RunnerLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import { standardLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
-import type { RunnerLifestyle } from "#/system/model/finances/runnerLifestyle.ts"
-import { standardLifestyle } from "#/system/model/finances/runnerLifestyle.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { LifestylePanel } from "./lifestylePanel.tsx"
 

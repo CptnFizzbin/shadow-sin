@@ -32,7 +32,7 @@ export default defineConfig([
     },
     languageOptions: {
       // __APP_VERSION__ is a build-time constant injected by vite.config.ts's `define` — see
-      // src/data/appVersion.ts and src/viteEnv.d.ts.
+      // src/data/migrations/appVersion.ts and src/viteEnv.d.ts.
       globals: { ...globals.browser, __APP_VERSION__: "readonly" },
       parserOptions: {
         projectService: true,
@@ -165,7 +165,7 @@ export default defineConfig([
   },
   {
     files: [
-      "src/routes/**",
+      "src/app/routes/**",
       "src/data/migrations/**",
     ],
     rules: {

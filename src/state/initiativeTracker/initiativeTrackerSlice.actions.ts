@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 import type { Combatant } from "./initiativeTrackerData.ts"
 

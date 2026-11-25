@@ -1,8 +1,8 @@
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { AgentData } from "#/system/model/items/agentData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { ProgramType } from "#/system/model/items/programData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { AgentData } from "#/data/items/agentData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { ProgramType } from "#/data/items/programData.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 /** A Rating 3 / System 4 / Firewall 2 Agent named "Griffin", with a fresh id unless overridden. */
 export const makeAgent = (overrides: Partial<AgentData> = {}): AgentData => ({

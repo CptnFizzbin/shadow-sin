@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { EntityData } from "#/system/model/entities/entityData.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { GameEffectDataSchema } from "#/system/model/gameEffects/gameEffectData.ts"
-import { SourceDataSchema } from "#/system/model/sourceData.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { EntityData } from "#/data/entities/entityData.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { GameEffectDataSchema } from "#/data/gameEffects/gameEffectData.ts"
+import { SourceDataSchema } from "#/data/source/sourceData.ts"
 
 import { NodeType } from "./nodeType.ts"
 

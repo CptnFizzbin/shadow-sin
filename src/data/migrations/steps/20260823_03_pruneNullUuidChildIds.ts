@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 const NULL_UUID = "00000000-0000-0000-0000-000000000000"
 

@@ -3,12 +3,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
-import { useDialogCtrl } from "#/hooks/ui/dialog/useDialogCtrl.ts"
-import type { AttributeCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import type { RollType } from "#/system/model/magic/critterPowerData.ts"
-import { computeSpiritPowerPool, formatSpiritPoolLabel, lookupCritterPower } from "#/system/model/magic/critterPowerData.ts"
-import { bookOptions } from "#/system/model/sourceData.ts"
+import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
+import type { RollType } from "#/data/magic/critterPowerData.ts"
+import { computeSpiritPowerPool, formatSpiritPoolLabel, lookupCritterPower } from "#/data/magic/critterPowerData.ts"
+import { bookOptions } from "#/data/source/sourceData.ts"
+import { DetailDialog } from "#/forms/dialog/detailDialog.tsx"
+import { useDialogCtrl } from "#/forms/dialog/useDialogCtrl.ts"
 
 const ROLL_TYPE_COLORS: Record<RollType, "warning" | "info" | "default"> = {
   Opposed: "warning",

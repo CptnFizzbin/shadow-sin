@@ -1,4 +1,4 @@
-import { uuid } from "#/utils/uuidUtils.ts"
+import { uuid } from "#/common/uuid/uuidUtils.ts"
 
 import type { ReputationLedgerEntry } from "./reputationLedgerEntry.ts"
 

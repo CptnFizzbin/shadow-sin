@@ -2,16 +2,16 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { MagicalType } from "#/system/model/items/magicalData.ts"
-import { FocusType } from "#/system/model/magic/focusData.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { MagicalType } from "#/data/items/magicalData.ts"
+import { FocusType } from "#/data/magic/focusData.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -20,9 +20,9 @@ import {
   SpellRange,
   SpellSustainTarget,
   SpellType,
-} from "#/system/model/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+} from "#/data/magic/spellData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 
 import { SpellSustainSection } from "./spellSustainSection.tsx"
 

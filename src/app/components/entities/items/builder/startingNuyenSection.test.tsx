@@ -1,12 +1,12 @@
 import { act, fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import type { BuilderState } from "#/components/builder/builderState.ts"
-import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { DiceRoller } from "#/services/dice/diceRoller.ts"
-import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
-import { standardLifestyle } from "#/system/model/finances/runnerLifestyle.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { LifestyleType } from "#/data/finances/lifestyleType.ts"
+import { standardLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { BuilderState } from "#/state/builder/builderState.ts"
+import { builderStateFactory } from "#/state/builder/builderState.ts"
+import { DiceRoller } from "#/state/dice/diceRoller.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"

@@ -1,7 +1,7 @@
 import { createContext } from "react"
 
-import type { ItemSelectionStore } from "#/services/itemSelection/itemSelectionStore.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { ItemSelectionStore } from "#/state/itemSelection/itemSelectionStore.ts"
 
 export interface ItemSelectionContextValue {
   store: ItemSelectionStore

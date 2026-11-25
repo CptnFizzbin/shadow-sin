@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { EntityProvider } from "#/contexts/entity/entity.provider.tsx"
-import { useRunner } from "#/hooks/runner/useRunnerStore.ts"
+import { EntityProvider } from "#/state/entity/entity.provider.tsx"
+import { useRunner } from "#/state/runner/useRunnerStore.ts"
 
 /**
  * Reads the runner sheet's attribute values and provides them via `EntityProvider`, so

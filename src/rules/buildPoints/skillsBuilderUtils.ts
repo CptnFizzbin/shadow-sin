@@ -1,8 +1,9 @@
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import type { ActiveSkillData } from "#/system/model/skills/activeSkillData.ts"
-import type { KnowledgeSkillData } from "#/system/model/skills/knowledgeSkillData.ts"
-import type { LanguageSkillData } from "#/system/model/skills/languageSkillData.ts"
-import type { SkillGroupData } from "#/system/model/skills/skillGroupData.ts"
+import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
+import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
+import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
+import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
+
+import { BuilderConfig } from "./builderConfig.ts"
 
 export const getFreeSkillPoints = (
   logic: number,

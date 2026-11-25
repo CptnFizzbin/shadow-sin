@@ -1,15 +1,16 @@
-import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { SkillPoolSelectors } from "#/state/runner/dicePool/skillPools.selector.ts"
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { DicePoolId, magicalSkillPoolIds } from "#/data/gameEffects/dicePoolId.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { isWeaponData } from "#/data/items/weaponData.ts"
+import { SpiritType, SpiritTypePluralLabels } from "#/data/magic/spiritData.ts"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
+import { skillList } from "#/data/skills/skillList.ts"
+import type { DicePoolData } from "#/rules/dicePool/dicePoolData.tsx"
 import { DicePoolModSelectors } from "#/state/runner/gameEffects/dicePoolMods.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { DicePoolId, magicalSkillPoolIds } from "#/system/model/gameEffects/dicePoolId.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { isWeaponData } from "#/system/model/items/weaponData.ts"
-import { SpiritType, SpiritTypePluralLabels } from "#/system/model/magic/spiritData.ts"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { skillList } from "#/system/model/skills/skillList.ts"
+
+import { SkillPoolSelectors } from "./skillPools.selector.ts"
 
 /**
  * Names a skill pool after its skill (and specialization or variant, if any). The pool selectors use

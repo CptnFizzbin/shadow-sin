@@ -1,9 +1,9 @@
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 export namespace ComplexFormsSelectors {
   export const selectAll = createMemoizedSelector(

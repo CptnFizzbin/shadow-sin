@@ -9,18 +9,18 @@ import type { FC } from "react"
 
 import {
   DrainResistanceDicePool,
-} from "#/components/runner/awakenings/magician/viewer/spells/drainResistanceDicePool.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
+} from "#/app/components/runner/awakenings/magician/viewer/spells/drainResistanceDicePool.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import type { SpiritType } from "#/data/magic/spiritData.ts"
+import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { TraditionSelectors } from "#/state/runner/tradition/tradition.selector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import type { SpiritType } from "#/system/model/magic/spiritData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { SummoningDicePool } from "./summoningDicePool.tsx"
 

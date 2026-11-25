@@ -1,10 +1,10 @@
-import { useSpendKarmaDialogContext } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { selectHasImprovements, selectImprovementsTotalCost } from "#/services/improvements/improvementSelectors.ts"
+import { useSpendKarmaDialogContext } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { applyImprovements } from "#/rules/karma/improvements/improvementUtils.ts"
+import { selectHasImprovements, selectImprovementsTotalCost } from "#/state/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { applyImprovements } from "#/system/formulas/karma/improvements/improvementUtils.ts"
 
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 

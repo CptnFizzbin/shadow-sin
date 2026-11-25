@@ -1,31 +1,31 @@
 import { z } from "zod"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
-
-import type { AttributeCatalog } from "./attributes/attributeCatalog.ts"
-import type { ExtendedTestEntry } from "./checks/extendedTestData.ts"
-import type { ContactData } from "./contacts/contactData.ts"
-import type { EntityKind } from "./entities/entityKind.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
+import type { ExtendedTestEntry } from "#/data/checks/extendedTestData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import type { EntityKind } from "#/data/entities/entityKind.ts"
 import type {
   EntityBase,
   EntityWithAttrs,
   EntityWithDamage,
   EntityWithItems,
   EntityWithQualities,
-} from "./entities/entityTraits.ts"
-import type { EntityWithSkills } from "./entities/traits/entityWithSkills.ts"
-import type { LoanData } from "./finances/loanData.ts"
-import type { RunnerLifestyle } from "./finances/runnerLifestyle.ts"
-import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
-import type { ComplexFormData } from "./magic/complexFormData.ts"
-import type { SpellData } from "./magic/spellData.ts"
-import type { SpiritData } from "./magic/spiritData.ts"
-import type { SpriteData } from "./magic/spriteData.ts"
-import type { TraditionData } from "./magic/traditionData.ts"
-import type { MatrixGameState } from "./matrix/matrixGameState.ts"
-import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
-import type { QualityData } from "./qualities/qualityData.ts"
-import type { ReputationLedgerEntry } from "./reputation/reputationLedgerEntry.ts"
+} from "#/data/entities/entityTraits.ts"
+import type { EntityWithSkills } from "#/data/entities/traits/entityWithSkills.ts"
+import type { LoanData } from "#/data/finances/loanData.ts"
+import type { RunnerLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import type { KarmaLedgerEntry } from "#/data/karma/karmaLedgerEntry.ts"
+import type { ComplexFormData } from "#/data/magic/complexFormData.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
+import type { SpiritData } from "#/data/magic/spiritData.ts"
+import type { SpriteData } from "#/data/magic/spriteData.ts"
+import type { TraditionData } from "#/data/magic/traditionData.ts"
+import type { MatrixGameState } from "#/data/matrix/matrixGameState.ts"
+import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
+import type { QualityData } from "#/data/qualities/qualityData.ts"
+import type { ReputationLedgerEntry } from "#/data/reputation/reputationLedgerEntry.ts"
+
 import type { RunnerWithBiology, RunnerWithData } from "./runnerTraits.ts"
 
 /** Sentinel `sinVersion` for a runner that has never had any migration applied to it. */

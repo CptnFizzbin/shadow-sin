@@ -9,16 +9,16 @@ import type { FC, PropsWithChildren } from "react"
 import { useMemo } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import type * as ExportUtils from "#/components/system/exportImport/exportUtils.ts"
-import { downloadTextFile } from "#/components/system/exportImport/exportUtils.ts"
-import { RunnerManagerProvider } from "#/contexts/runner/runnerManager.provider.tsx"
-import type { RunnerManager } from "#/services/persistence/runnerManager.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import type * as ExportUtils from "#/data/exportImport/exportUtils.ts"
+import { downloadTextFile } from "#/data/exportImport/exportUtils.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { RunnerManagerProvider } from "#/state/persistence/runnerManager.provider.tsx"
+import type { RunnerManager } from "#/state/persistence/runnerManager.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { RunnerErrorRoute } from "./runnerErrorRoute.tsx"
 
-vi.mock("#/components/system/exportImport/exportUtils.ts", async (importOriginal) => {
+vi.mock("#/data/exportImport/exportUtils.ts", async (importOriginal) => {
   const actual = await importOriginal<typeof ExportUtils>()
   return { ...actual, downloadTextFile: vi.fn() }
 })

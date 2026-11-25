@@ -1,4 +1,4 @@
-import { GameEffectTypeOptions } from "#/system/model/gameEffects/gameEffectTypeOptions.ts"
+import { GameEffectTypeOptions } from "./gameEffectTypeOptions.ts"
 
 /**
  * Retrieve the target options associated with a game effect type.

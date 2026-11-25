@@ -1,11 +1,11 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { ActiveSkillData } from "#/system/model/skills/activeSkillData.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
+import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ActiveSkillFormDialog } from "./activeSkillFormDialog.tsx"

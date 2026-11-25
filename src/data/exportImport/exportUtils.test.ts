@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 
+import { EntityKind } from "#/data/entities/entityKind.ts"
 import { loadFixtureRunner } from "#/data/fixtures/fixtureRunners.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import type { SinData } from "#/system/model/items/sinData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { createItem, createItemMap } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
+import type { SinData } from "#/data/items/sinData.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
 
 import type { GearTreeNode } from "./exportUtils.ts"
 import { gearFromTree, gearToTree, runnerDataToYaml, yamlToRunnerData } from "./exportUtils.ts"

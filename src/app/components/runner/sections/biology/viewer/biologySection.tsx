@@ -2,10 +2,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { metatypes } from "#/data/biology/metatypeData.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { metatypes } from "#/system/model/biology/metatypeData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { InnatePowersDisplay } from "./innatePowersDisplay.tsx"
 import { MovementDisplay } from "./movementDisplay.tsx"

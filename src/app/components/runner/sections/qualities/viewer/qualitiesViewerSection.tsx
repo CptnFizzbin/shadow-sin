@@ -4,10 +4,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import type { QualityData } from "#/data/qualities/qualityData.ts"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { QualityData } from "#/system/model/qualities/qualityData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { useQualityInfoDialog } from "./dialogs/qualityInfoDialog.tsx"
 

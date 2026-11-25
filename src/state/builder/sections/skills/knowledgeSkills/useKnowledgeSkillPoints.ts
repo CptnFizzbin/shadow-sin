@@ -1,14 +1,14 @@
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
 import {
   getFreeSkillPoints,
   getKnowledgeSkillSp,
   getLanguageSkillSp,
-} from "#/components/skills/builder/skillsBuilderUtils.ts"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
+} from "#/rules/buildPoints/skillsBuilderUtils.ts"
+import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {
   const logicAttr = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.logic })

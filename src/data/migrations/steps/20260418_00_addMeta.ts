@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 /**
  * Ensures `_meta_` exists as an object.  `applyMigrations` always seeds

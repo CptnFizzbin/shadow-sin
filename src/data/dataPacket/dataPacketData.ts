@@ -1,7 +1,7 @@
 import { z } from "zod"
 
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { ContactDataSchema } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import { ContactDataSchema } from "#/data/contacts/contactData.ts"
 
 /** The `_meta_.type` discriminator that marks a file as a Data Packet rather than a whole Runner. */
 export const DataPacketType = "dataPacket"

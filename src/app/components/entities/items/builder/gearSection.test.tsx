@@ -1,11 +1,11 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { GearSection as GearItemSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { GearSection as GearItemSection } from "#/app/components/entities/items/viewer/gearSectionTypes.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { GearSection } from "./gearSection.tsx"

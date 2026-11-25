@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 import { sellItem } from "#/state/runner/items/items.actions.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { nuyenReducer } from "./nuyen.state.ts"
 

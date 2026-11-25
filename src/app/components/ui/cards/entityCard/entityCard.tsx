@@ -9,28 +9,28 @@ import { RiCheckboxBlankLine, RiCheckboxFill, RiDeleteBinLine, RiEditLine, RiMor
 import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, PropsWithChildren, ReactNode } from "react"
 import { useState } from "react"
 
-import type { EntityData } from "#/system/model/entities/entityData.ts"
-import { isCredential } from "#/system/model/entities/entityTraits.ts"
+import type { EntityData } from "#/data/entities/entityData.ts"
+import { isCredential } from "#/data/entities/entityTraits.ts"
+import EntityCardLayout from "#/ui/cards/entityCard/entityCardLayout.tsx"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
-import EntityCardLayout from "./entityCardLayout.tsx"
 import { EntityCardSlotManager } from "./entityCardSlotManager.ts"
 
-export type { CardElementActionProps } from "#/components/ui/cards/entityCard/elements/cardElementAction.tsx"
-export type { CardElementEffectsProps } from "#/components/ui/cards/entityCard/elements/cardElementEffects.tsx"
-export type { CardElementRatingProps } from "#/components/ui/cards/entityCard/elements/cardElementRating.tsx"
-export type { CardElementSourceProps } from "#/components/ui/cards/entityCard/elements/cardElementSource.tsx"
+export type { CardElementActionProps } from "#/ui/cards/entityCard/elements/cardElementAction.tsx"
+export type { CardElementEffectsProps } from "#/app/components/ui/cards/entityCard/elements/cardElementEffects.tsx"
+export type { CardElementRatingProps } from "#/ui/cards/entityCard/elements/cardElementRating.tsx"
+export type { CardElementSourceProps } from "#/app/components/ui/cards/entityCard/elements/cardElementSource.tsx"
 export type {
   CardElementStatProps,
   CardElementStatType,
-} from "#/components/ui/cards/entityCard/elements/cardElementStat.tsx"
-export type { CardElementTitleProps } from "#/components/ui/cards/entityCard/elements/cardElementTitle.tsx"
-export type { BodyRowProps } from "#/components/ui/cards/entityCard/layout/bodyRow.tsx"
-export type { FooterLeftProps } from "#/components/ui/cards/entityCard/layout/footerLeft.tsx"
-export type { FooterRightProps } from "#/components/ui/cards/entityCard/layout/footerRight.tsx"
-export type { FooterRowProps } from "#/components/ui/cards/entityCard/layout/footerRow.tsx"
-export type { HeaderRowProps } from "#/components/ui/cards/entityCard/layout/headerRow.tsx"
-export type { TitleRightProps } from "#/components/ui/cards/entityCard/layout/titleRight.tsx"
+} from "#/ui/cards/entityCard/elements/cardElementStat.tsx"
+export type { CardElementTitleProps } from "#/ui/cards/entityCard/elements/cardElementTitle.tsx"
+export type { BodyRowProps } from "#/ui/cards/entityCard/layout/bodyRow.tsx"
+export type { FooterLeftProps } from "#/ui/cards/entityCard/layout/footerLeft.tsx"
+export type { FooterRightProps } from "#/ui/cards/entityCard/layout/footerRight.tsx"
+export type { FooterRowProps } from "#/ui/cards/entityCard/layout/footerRow.tsx"
+export type { HeaderRowProps } from "#/ui/cards/entityCard/layout/headerRow.tsx"
+export type { TitleRightProps } from "#/ui/cards/entityCard/layout/titleRight.tsx"
 
 /** An icon button in the column on an `EntityCard`'s right edge, below the actions menu button when there is one. */
 export interface EntityCardQuickAction {

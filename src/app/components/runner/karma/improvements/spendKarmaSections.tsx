@@ -14,10 +14,10 @@ import {
 } from "@remixicon/react"
 import type { FC } from "react"
 
-import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
-import { isTechnomancer } from "#/components/runner/awakenings/technomancer/viewer/technomancerUtils.ts"
-import type { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import { isMagical } from "#/system/model/magic/awakeningType.ts"
+import type { AwakeningType } from "#/data/magic/awakeningType.ts"
+import { isMagical } from "#/data/magic/awakeningType.ts"
+import { isMagician } from "#/data/magic/magicianUtils.ts"
+import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
 
 import { ImprovementAttributeList } from "./attributes/improvementAttributeList.tsx"
 import { ImprovementComplexFormList } from "./complexForm/improvementComplexFormList.tsx"

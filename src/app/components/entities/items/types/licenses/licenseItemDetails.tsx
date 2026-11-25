@@ -1,15 +1,15 @@
 import type { FC } from "react"
 
-import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
-import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
+import { ItemDetailsRoot } from "#/app/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/app/components/entities/items/details/itemDetailsSlot.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
+import type { SinData } from "#/data/items/sinData.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
-import type { SinData } from "#/system/model/items/sinData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 import { useLicenseFormDialog } from "./dialogs/licenseFormDialog.tsx"
 

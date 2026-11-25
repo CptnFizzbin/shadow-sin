@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 import { createItemSelectionStore, ItemSelectionActions } from "./itemSelectionStore.ts"
 

@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { useEditItemDialog } from "#/components/entities/items/actions/useEditItemDialog.tsx"
-import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
-import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
-import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { CredstickData } from "#/system/model/items/credstickData.ts"
-import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/model/items/credstickData.ts"
+import { useEditItemDialog } from "#/app/components/entities/items/actions/useEditItemDialog.tsx"
+import { ItemDetailsRoot } from "#/app/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/app/components/entities/items/details/itemDetailsSlot.tsx"
+import type { CredstickData } from "#/data/items/credstickData.ts"
+import { CredstickMaxBalance, CredstickTypeLabel } from "#/data/items/credstickData.ts"
+import { formatNuyen } from "#/forms/nuyen/nuyen.tsx"
 
 export interface CredstickItemDetailsProps {
   credstick: CredstickData

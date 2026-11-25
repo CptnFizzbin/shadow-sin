@@ -1,5 +1,5 @@
-import type { AttributeCatalog, AttributeInfoCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import type { AttrKey } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeCatalog, AttributeInfoCatalog } from "#/data/attributes/attributeCatalog.ts"
+import type { AttrKey } from "#/data/attributes/attributeKey.ts"
 
 export const attrValue = (catalog: AttributeCatalog, attr: AttrKey) => {
   return catalog[attr] ?? 0

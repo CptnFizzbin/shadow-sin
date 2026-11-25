@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { MatrixGameState } from "#/system/model/matrix/matrixGameState.ts"
+import type { MatrixGameState } from "#/data/matrix/matrixGameState.ts"
 
 import {
   addKnownNode,

@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { BuilderState } from "#/components/builder/builderState.ts"
+import type { BuilderState } from "./builderState.ts"
 
 export const BuilderActions = {
   reset: createAction("builder/reset"),

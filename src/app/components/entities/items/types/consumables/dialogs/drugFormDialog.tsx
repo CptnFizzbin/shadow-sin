@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/components/entities/items/dialogs/itemDialog.tsx"
-import { DrugFormFields } from "#/components/entities/items/types/consumables/forms/drugFormFields.tsx"
-import { GearFormLicenseSection } from "#/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import { drugFieldMap, useDrugForm } from "#/hooks/items/types/consumables/forms/useDrugForm.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
-import type { DrugData } from "#/system/model/items/consumableData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
+import { DrugFormFields } from "#/app/components/entities/items/types/consumables/forms/drugFormFields.tsx"
+import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { DrugData } from "#/data/items/consumableData.ts"
+import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { drugFieldMap, useDrugForm } from "#/forms/items/types/consumables/useDrugForm.tsx"
 
 interface DrugFormDialogProps {
   ctrl: AnyDialogCtrl

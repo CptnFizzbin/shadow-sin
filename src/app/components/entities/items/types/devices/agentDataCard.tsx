@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityProvider } from "#/contexts/entity/entity.provider.tsx"
-import type { AgentData } from "#/system/model/items/agentData.ts"
+import type { EntityCardLeftAction } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import type { AgentData } from "#/data/items/agentData.ts"
+import { EntityProvider } from "#/state/entity/entity.provider.tsx"
 
 import { AgentDataCardBody } from "./agentDataCardBody.tsx"
 

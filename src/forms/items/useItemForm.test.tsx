@@ -1,10 +1,10 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { createItem } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { createItem } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 
 import { itemDefaults, useItemForm } from "./useItemForm.tsx"
 

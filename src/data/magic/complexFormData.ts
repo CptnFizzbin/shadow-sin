@@ -1,5 +1,5 @@
-import type { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
+import type { EntityKind } from "#/data/entities/entityKind.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
 
 export interface ComplexFormData {
   kind: EntityKind.complexForm

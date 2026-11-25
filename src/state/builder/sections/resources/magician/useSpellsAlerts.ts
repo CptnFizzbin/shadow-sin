@@ -1,15 +1,15 @@
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { isMagician } from "#/data/magic/magicianUtils.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
+import { useEditorMode } from "#/state/editor/editorMode.tsx"
+import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useActiveSkill } from "#/state/runner/runnerUtils.ts"
 import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { useActiveSkill } from "#/utils/runnerUtils.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

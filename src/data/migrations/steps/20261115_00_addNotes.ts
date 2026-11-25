@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 /** Add a top-level `notes` string (free-form text on the Notes page), empty for every runner. */
 const migration: CharacterMigration<{ notes?: string }> = {

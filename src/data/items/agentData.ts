@@ -1,7 +1,7 @@
-import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import type { EntityDamage } from "#/system/model/entities/entityData.ts"
-import type { EntityWithAttrs } from "#/system/model/entities/traits/entityWithAttrs.ts"
-import type { EntityWithDamage } from "#/system/model/entities/traits/entityWithDamage.ts"
+import type { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import type { EntityDamage } from "#/data/entities/entityData.ts"
+import type { EntityWithAttrs } from "#/data/entities/traits/entityWithAttrs.ts"
+import type { EntityWithDamage } from "#/data/entities/traits/entityWithDamage.ts"
 
 import type { ItemData } from "./itemData.ts"
 import { ItemType } from "./itemType.ts"

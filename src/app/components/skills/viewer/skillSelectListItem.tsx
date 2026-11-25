@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box"
 import type { FC } from "react"
 
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
+import { skillList } from "#/data/skills/skillList.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { skillList } from "#/system/model/skills/skillList.ts"
 
 import { SkillListItem } from "./skillListItem.tsx"
 

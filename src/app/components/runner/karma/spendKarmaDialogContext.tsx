@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext, useMemo } from "react"
 
-import { ImprovementStore } from "#/services/improvements/improvementStore.ts"
-import { OutOfContextError } from "#/utils/errors/outOfContextError.ts"
+import { OutOfContextError } from "#/common/errors/outOfContextError.ts"
+import { ImprovementStore } from "#/state/improvements/improvementStore.ts"
 
 interface SpendKarmaDialogContextValue {
   improvementStore: ImprovementStore

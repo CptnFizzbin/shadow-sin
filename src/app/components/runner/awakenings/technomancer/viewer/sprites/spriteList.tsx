@@ -2,14 +2,14 @@ import Stack from "@mui/material/Stack"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import { ItemList } from "#/components/entities/items/card/itemList.tsx"
-import { useSpriteDialog } from "#/components/runner/awakenings/technomancer/viewer/dialogs/spriteDialog.tsx"
-import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { ItemList } from "#/app/components/entities/items/card/itemList.tsx"
+import { useSpriteDialog } from "#/app/components/runner/awakenings/technomancer/viewer/dialogs/spriteDialog.tsx"
+import type { SpriteData } from "#/data/magic/spriteData.ts"
+import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpriteSelectors } from "#/state/runner/sprites/sprites.selector.ts"
-import type { SpriteData } from "#/system/model/magic/spriteData.ts"
 
 import { SpriteDataCard } from "./spriteDataCard.tsx"
 

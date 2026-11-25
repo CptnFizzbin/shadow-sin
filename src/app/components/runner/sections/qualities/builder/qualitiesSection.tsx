@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useQualityFormDialog } from "#/components/runner/sections/qualities/viewer/dialogs/qualityFormDialog.tsx"
+import { useQualityFormDialog } from "#/app/components/runner/sections/qualities/viewer/dialogs/qualityFormDialog.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 

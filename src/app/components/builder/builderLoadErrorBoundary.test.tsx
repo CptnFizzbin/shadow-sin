@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { getRunnerStorageKey } from "#/services/persistence/builderDraftKey.ts"
+import { getRunnerStorageKey } from "#/state/persistence/builderDraftKey.ts"
 
 import { BuilderLoadErrorBoundary } from "./builderLoadErrorBoundary.tsx"
 

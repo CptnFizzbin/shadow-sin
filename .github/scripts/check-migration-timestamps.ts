@@ -11,7 +11,7 @@
 import { execFileSync } from "node:child_process"
 import { readFileSync } from "node:fs"
 
-const MIGRATIONS_DIR = "src/data/migrations/"
+const MIGRATIONS_DIR = "src/data/migrations/steps/"
 
 /** Mirrors `RUNNER_META_EPOCH` (`src/system/runnerData.ts`) — the sentinel SIN version for a base branch with no registered migrations at all. */
 const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
@@ -49,7 +49,7 @@ function addedMigrationFiles(): string[] {
 /**
  * The SIN version the base branch produces once fully migrated — the highest `timestamp` among
  * every migration already registered there (mirrors `LATEST_MIGRATION_TIMESTAMP`,
- * `src/data/migrations.ts`), or {@link RUNNER_META_EPOCH} if the base branch has none yet.
+ * `src/data/migrations/migrations.ts`), or {@link RUNNER_META_EPOCH} if the base branch has none yet.
  */
 function baseSinVersion(): string {
   const paths = git(["ls-tree", "-r", "--name-only", baseRef, "--", MIGRATIONS_DIR])

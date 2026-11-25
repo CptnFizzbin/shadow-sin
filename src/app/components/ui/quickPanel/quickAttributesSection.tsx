@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { AttributesSection } from "#/components/entities/attributes/viewer/attributesSection.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
+import { AttributesSection } from "#/app/components/entities/attributes/viewer/attributesSection.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 export const QuickAttributesSection: FC = () => {
   return (

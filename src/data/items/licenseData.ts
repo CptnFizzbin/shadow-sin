@@ -1,9 +1,9 @@
 import { z } from "zod"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { Credential } from "#/system/model/entities/entityTraits.ts"
-import { GameEffectDataSchema } from "#/system/model/gameEffects/gameEffectData.ts"
-import { SourceDataSchema } from "#/system/model/sourceData.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { Credential } from "#/data/entities/entityTraits.ts"
+import { GameEffectDataSchema } from "#/data/gameEffects/gameEffectData.ts"
+import { SourceDataSchema } from "#/data/source/sourceData.ts"
 
 import type { ItemData } from "./itemData.ts"
 import { ItemStateSchema } from "./itemState.ts"

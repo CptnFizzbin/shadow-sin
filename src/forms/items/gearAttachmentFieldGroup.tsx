@@ -1,9 +1,10 @@
 import type { ReactNode } from "react"
 import { z } from "zod"
 
-import { itemFormOpts } from "#/hooks/items/forms/useItemForm.tsx"
-import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import type { SelectOption } from "#/forms/tanstackForm/fields/selectField.tsx"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+
+import { itemFormOpts } from "./useItemForm.tsx"
 
 export const GearAttachmentFieldGroup = withFieldGroup({
   ...itemFormOpts,

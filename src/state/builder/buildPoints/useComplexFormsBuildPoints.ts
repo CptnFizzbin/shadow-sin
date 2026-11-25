@@ -1,10 +1,11 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { isTechnomancer } from "#/components/runner/awakenings/technomancer/viewer/technomancerUtils.ts"
+import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+
+import type { BpLineItem } from "./bpLineItem.ts"
 
 export const useComplexFormsBuildPoints = (): BpLineItem => {
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)

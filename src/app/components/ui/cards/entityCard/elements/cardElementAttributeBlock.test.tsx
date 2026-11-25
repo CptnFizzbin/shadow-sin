@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import type { AttributeCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { CardElementAttributeBlock } from "./cardElementAttributeBlock.tsx"

@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { SxProps } from "@mui/material/styles"
 import type { FC, PropsWithChildren, ReactNode } from "react"
 
-import { mergeSx } from "#/integrations/mui/muiUtils.ts"
+import { mergeSx } from "#/ui/mui/muiUtils.ts"
 
 interface LabelProps extends PropsWithChildren, Omit<TypographyProps, "variant"> {
   label?: ReactNode

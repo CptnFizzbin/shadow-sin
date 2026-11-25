@@ -1,5 +1,5 @@
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
+import { useEditorMode } from "#/state/editor/editorMode.tsx"
 import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

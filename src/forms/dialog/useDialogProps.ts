@@ -1,6 +1,7 @@
 // fallow-ignore-file unused-file
-import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import type { AnyDialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+
+import type { AnyDialogCtrl } from "./dialogCtrl.ts"
 
 /**
  * Reactive `{ open, onClose }` for spreading directly onto a raw `Dialog`

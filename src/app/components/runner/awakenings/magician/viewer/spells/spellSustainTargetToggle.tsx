@@ -4,7 +4,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { SpellSustainTarget } from "#/system/model/magic/spellData.ts"
+import { SpellSustainTarget } from "#/data/magic/spellData.ts"
 
 interface SpellSustainTargetToggleProps {
   value: SpellSustainTarget

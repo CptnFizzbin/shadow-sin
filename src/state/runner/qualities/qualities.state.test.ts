@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { QualityData } from "#/system/model/qualities/qualityData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { QualityData } from "#/data/qualities/qualityData.ts"
 
 import { addQuality, removeQuality, updateQuality } from "./qualities.actions.ts"
 import { qualitiesReducer } from "./qualities.state.ts"

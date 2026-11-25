@@ -1,11 +1,11 @@
-import { GearMaxAvailability } from "#/components/entities/items/gearUtils.ts"
-import { getLicenseAvailability } from "#/components/entities/items/types/licenses/licenseUtils.ts"
-import { getSinAvailability } from "#/components/entities/items/types/licenses/sinUtils.ts"
+import { isImplant } from "#/data/items/implantData.ts"
+import { isLicenseData } from "#/data/items/licenseData.ts"
+import { isSinData } from "#/data/items/sinData.ts"
+import { GearMaxAvailability } from "#/rules/items/gearUtils.ts"
+import { getLicenseAvailability } from "#/rules/items/licenseUtils.ts"
+import { getSinAvailability } from "#/rules/items/sinUtils.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { isImplant } from "#/system/model/items/implantData.ts"
-import { isLicenseData } from "#/system/model/items/licenseData.ts"
-import { isSinData } from "#/system/model/items/sinData.ts"
 
 import { SectionHeader } from "./sectionHeader.tsx"
 

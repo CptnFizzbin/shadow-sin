@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 export const setProfileName = createAction<string>("profile/setName")
 export const setProfileAlias = createAction<string>("profile/setAlias")

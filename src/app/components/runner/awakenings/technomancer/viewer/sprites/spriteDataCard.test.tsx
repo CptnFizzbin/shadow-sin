@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { SpriteData } from "#/system/model/magic/spriteData.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { SpriteData } from "#/data/magic/spriteData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { SpriteDataCard } from "./spriteDataCard.tsx"

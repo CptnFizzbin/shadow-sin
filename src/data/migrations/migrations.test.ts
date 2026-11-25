@@ -1,19 +1,20 @@
 import { load } from "js-yaml"
 import { describe, expect, it } from "vitest"
 
-import type { GearTreeNode } from "#/components/system/exportImport/exportUtils.ts"
-import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
+import type { JsonObject } from "#/common/json/jsonUtils.ts"
+import { toJsonValue } from "#/common/json/jsonUtils.ts"
 import {
   isEntityWithAttrs,
   isEntityWithDamage,
   isEntityWithItems,
   isEntityWithQualities,
-} from "#/system/model/entities/entityTraits.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { RunnerMetaSchema } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
-import type { JsonObject } from "#/utils/jsonUtils.ts"
-import { toJsonValue } from "#/utils/jsonUtils.ts"
+} from "#/data/entities/entityTraits.ts"
+import type { GearTreeNode } from "#/data/exportImport/exportUtils.ts"
+import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#/data/exportImport/exportUtils.ts"
+import { fixtureRunnerYaml } from "#/data/fixtures/fixtureRunners.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { RunnerMetaSchema } from "#/data/runner/runnerData.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.2026-04-18.sin?raw"
 import {
   TEST_CHARACTER_ID,
@@ -27,7 +28,6 @@ import LegacyV1Yaml from "#testUtils/fixtures/characters/legacy_v1.sin?raw"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { applyMigrations } from "./applyMigrations.ts"
-import { fixtureRunnerYaml } from "./fixtures/fixtureRunners.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "./migrations.ts"
 
 // `legacy_v0.sin`/`legacy_v1.sin` are full character-sheet snapshots at specific migration
@@ -301,7 +301,7 @@ function parseExportedYaml(parsed: JsonObject): JsonObject {
 // files (post-`20260823_01_moveItems`) already carry `_data_` and store gear as a tree, so they
 // need the same tree -> flat-map conversion `yamlToRunnerData` does; the raw pre-`_data_` legacy
 // snapshots (`legacy_v*.sin`, `blur.2026-04-18.sin`) go to `applyMigrations` as-is.
-const sinFixtureFiles = import.meta.glob("../../testUtils/fixtures/characters/*.sin", {
+const sinFixtureFiles = import.meta.glob("../../../testUtils/fixtures/characters/*.sin", {
   query: "?raw",
   import: "default",
   eager: true,

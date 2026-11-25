@@ -8,15 +8,15 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillSelectList } from "#/components/skills/viewer/skillSelectList.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import type { FirearmData } from "#/system/model/items/weaponData.ts"
-import { isFirearmData } from "#/system/model/items/weaponData.ts"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { SkillSelectList } from "#/app/components/skills/viewer/skillSelectList.tsx"
+import type { FirearmData } from "#/data/items/weaponData.ts"
+import { isFirearmData } from "#/data/items/weaponData.ts"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
+import { getSkillCandidates } from "#/rules/combat/weaponSkillCandidates.ts"
+import { UnderConstruction } from "#/ui/alerts/underConstruction.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 import { useActiveAttackWeapon, useAttackWorkflow } from "./attackWorkflow.ts"
-import { getSkillCandidates } from "./weaponSkillCandidates.ts"
 
 /** Attack Skill step: weapon stats, fire mode (firearms), and the skill picker. */
 export const AttackWorkflowStepSelectSkill: FC = () => {

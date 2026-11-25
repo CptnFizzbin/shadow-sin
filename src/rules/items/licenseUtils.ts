@@ -1,7 +1,7 @@
-import type { AvailabilityInfo } from "#/system/model/items/availabilityInfo.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { LicenseData } from "#/system/model/items/licenseData.ts"
+import type { AvailabilityInfo } from "#/data/items/availabilityInfo.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { LicenseData } from "#/data/items/licenseData.ts"
 
 /** `rating` is ignored (and may be a placeholder) when `isReal` is `true` — a Real Licence is always free and unrestricted. */
 export const getLicenseAvailability = (

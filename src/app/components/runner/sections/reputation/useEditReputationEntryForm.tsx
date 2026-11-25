@@ -1,5 +1,5 @@
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { ReputationLedgerEntry } from "#/system/model/reputation/reputationLedgerEntry.ts"
+import type { ReputationLedgerEntry } from "#/data/reputation/reputationLedgerEntry.ts"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 
 import { ReputationEntryForm } from "./reputationEntryForm.tsx"
 

@@ -3,8 +3,8 @@ import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import type { FC } from "react"
 
-import { SpendKarmaHubList } from "#/components/runner/karma/improvements/spendKarmaHubList.tsx"
-import { SpendKarmaSectionContent } from "#/components/runner/karma/improvements/spendKarmaSections.tsx"
+import { SpendKarmaHubList } from "#/app/components/runner/karma/improvements/spendKarmaHubList.tsx"
+import { SpendKarmaSectionContent } from "#/app/components/runner/karma/improvements/spendKarmaSections.tsx"
 
 import { useManageKarmaWorkflow } from "./manageKarmaWorkflow.ts"
 

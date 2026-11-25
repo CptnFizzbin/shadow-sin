@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
-import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import { ItemAttachmentTree } from "#/app/components/entities/items/card/itemAttachmentTree.tsx"
+import type { EntityCardLeftAction } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import type { WeaponData } from "#/data/items/weaponData.ts"
+import { isFirearmData, isMeleeWeaponData } from "#/data/items/weaponData.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { WeaponData } from "#/system/model/items/weaponData.ts"
-import { isFirearmData, isMeleeWeaponData } from "#/system/model/items/weaponData.ts"
 
 import { WeaponCard } from "./weaponCard.tsx"
 

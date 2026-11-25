@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
 
 import { addContact, mergeContacts, removeContact, updateContact } from "./contacts.actions.ts"
 

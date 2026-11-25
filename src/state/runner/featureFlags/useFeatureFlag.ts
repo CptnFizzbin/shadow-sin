@@ -1,6 +1,7 @@
-import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
+import type { FlagEntry, FlagValue } from "#/data/featureFlags/featureFlag.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { FlagEntry, FlagValue } from "#/system/model/featureFlags/featureFlag.ts"
+
+import { FeatureFlagSelectors } from "./featureFlags.selector.ts"
 
 /**
  * The current Runner's value for `flag`, typed by the flag's `default`.

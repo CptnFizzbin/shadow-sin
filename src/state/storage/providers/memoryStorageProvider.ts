@@ -1,5 +1,5 @@
-import type { AsyncJsonStorage, AsyncStorage } from "#/services/storage/asyncStorage.ts"
-import { JsonStorageAdapter } from "#/services/storage/jsonStorageAdapter.ts"
+import type { AsyncJsonStorage, AsyncStorage } from "#/state/storage/asyncStorage.ts"
+import { JsonStorageAdapter } from "#/state/storage/jsonStorageAdapter.ts"
 
 class MemoryAsyncStorage implements AsyncStorage {
   private readonly map: Map<string, string>

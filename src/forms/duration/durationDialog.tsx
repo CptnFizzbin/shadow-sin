@@ -4,13 +4,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { Duration } from "#/utils/duration/duration.ts"
-import { DurationUnit, DurationUnitLabels } from "#/utils/duration/duration.ts"
-
-import type { ControlledDialogProps } from "./controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "./dialog.tsx"
+import type { Duration } from "#/data/duration/duration.ts"
+import { DurationUnit, DurationUnitLabels } from "#/data/duration/duration.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 interface CustomDurationDialogProps extends ControlledDialogProps<Duration> {
   initialValue: Duration

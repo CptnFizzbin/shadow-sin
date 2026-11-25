@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -13,7 +13,7 @@ import {
   SpellRange,
   SpellSustainTarget,
   SpellType,
-} from "#/system/model/magic/spellData.ts"
+} from "#/data/magic/spellData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { SpellCard } from "./spellCard.tsx"

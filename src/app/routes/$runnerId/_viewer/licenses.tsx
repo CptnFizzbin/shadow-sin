@@ -4,13 +4,13 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useLicenseFormDialog } from "#/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
-import { useSinFormDialog } from "#/components/entities/items/types/licenses/dialogs/sinFormDialog.tsx"
-import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
-import { AvailableGearFilter } from "#/components/entities/items/viewer/availableGearFilter.tsx"
-import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { useLicenseFormDialog } from "#/app/components/entities/items/types/licenses/dialogs/licenseFormDialog.tsx"
+import { useSinFormDialog } from "#/app/components/entities/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { SinsAndLicensesSection } from "#/app/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
+import { AvailableGearFilter } from "#/app/components/entities/items/viewer/availableGearFilter.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/licenses")({
   component: RouteComponent,

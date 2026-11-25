@@ -1,17 +1,17 @@
 import type { FC } from "react"
 
-import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
-import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
+import type { EntityCardLeftAction } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { ItemCard } from "#/app/components/ui/cards/itemCard/itemCard.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import type { AgentData } from "#/data/items/agentData.ts"
+import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import type { AgentData } from "#/system/model/items/agentData.ts"
 
 interface AgentDataCardBodyProps {
   agent: AgentData

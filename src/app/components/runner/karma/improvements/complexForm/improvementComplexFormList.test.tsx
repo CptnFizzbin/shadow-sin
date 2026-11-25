@@ -1,11 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { SpendKarmaDialogProvider } from "#/components/runner/karma/spendKarmaDialogContext.tsx"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { SpendKarmaDialogProvider } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementComplexFormList } from "./improvementComplexFormList.tsx"

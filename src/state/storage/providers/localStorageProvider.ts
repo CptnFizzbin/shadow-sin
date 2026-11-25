@@ -1,9 +1,9 @@
 import { milliseconds } from "date-fns"
 
-import type { AsyncJsonStorage, AsyncStorage } from "#/services/storage/asyncStorage.ts"
-import { CachedStorageAdaptor } from "#/services/storage/cachedStorage.ts"
-import { JsonStorageAdapter } from "#/services/storage/jsonStorageAdapter.ts"
-import { migrateOldLocalStorageFormat } from "#/services/storage/migrateLocalStorage.ts"
+import type { AsyncJsonStorage, AsyncStorage } from "#/state/storage/asyncStorage.ts"
+import { CachedStorageAdaptor } from "#/state/storage/cachedStorage.ts"
+import { JsonStorageAdapter } from "#/state/storage/jsonStorageAdapter.ts"
+import { migrateOldLocalStorageFormat } from "#/state/storage/migrateLocalStorage.ts"
 
 class BrowserLocalStorage implements AsyncStorage {
   private readonly namespacePath: string

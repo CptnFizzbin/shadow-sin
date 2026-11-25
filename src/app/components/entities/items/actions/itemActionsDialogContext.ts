@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import type { ItemData } from "#/system/model/items/itemData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
 
 export interface ItemActionsDialogOpenOptions {
   item: ItemData

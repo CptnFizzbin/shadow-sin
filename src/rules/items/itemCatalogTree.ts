@@ -1,6 +1,6 @@
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import type { ItemCatalog, ItemCatalogTree } from "#/system/model/items/itemUtils.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import type { ItemCatalog, ItemCatalogTree } from "#/data/items/itemUtils.ts"
 
 export function toItemCatalogTree(catalog: ItemCatalog): ItemCatalogTree {
   const isRoot = (item: ItemData) => item.items.parentId === null || !(item.items.parentId in catalog)

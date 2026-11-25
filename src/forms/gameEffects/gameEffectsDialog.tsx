@@ -5,15 +5,15 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { getDefaultTarget } from "#/data/gameEffects/gameEffectUtils.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 
 import { GameEffectRow } from "./gameEffectRow.tsx"
-import { getDefaultTarget } from "./gameEffectUtils.ts"
 
 interface GameEffectsDialogProps extends ControlledDialogProps<GameEffectData[]> {
   initialEffects: GameEffectData[]

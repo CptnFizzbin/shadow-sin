@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import { deviceFormOpts } from "#/hooks/items/types/devices/forms/useDeviceForm.tsx"
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { deviceFormOpts } from "#/forms/items/types/devices/useDeviceForm.tsx"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 const deviceTypeOptions = [
   { label: "Commlink", value: "commlink" },

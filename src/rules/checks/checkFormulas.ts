@@ -1,5 +1,5 @@
-import type { Duration, DurationUnit } from "#/utils/duration/duration.ts"
-import { DurationUtils } from "#/utils/duration/durationUtils.ts"
+import type { Duration, DurationUnit } from "#/data/duration/duration.ts"
+import { DurationUtils } from "#/data/duration/durationUtils.ts"
 
 export class CheckFormulas {
   public static getDuration(inputs: { interval: Duration, attempts: number, simplify?: boolean }): Duration {

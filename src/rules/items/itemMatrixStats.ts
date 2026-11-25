@@ -1,6 +1,6 @@
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { itemIsType } from "#/system/model/items/itemUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { itemIsType } from "#/data/items/itemUtils.ts"
 
 /** The stats making up an Item's Matrix node, in display order. */
 export const itemMatrixStatKeys = ["rating", "response", "system", "firewall", "signal"] as const

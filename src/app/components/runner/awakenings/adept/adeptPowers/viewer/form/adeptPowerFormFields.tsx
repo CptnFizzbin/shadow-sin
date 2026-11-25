@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
-import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import type { AdeptPowerForm } from "#/hooks/runner/adeptPowers/form/useAdeptPowerForm.ts"
+import type { AdeptPowerForm } from "#/forms/adeptPowers/useAdeptPowerForm.ts"
+import { GameEffectsFieldGroup } from "#/forms/gameEffects/gameEffectsFieldGroup.tsx"
+import { SourceFieldGroup } from "#/forms/sources/sourceFieldGroup.tsx"
 
 interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm

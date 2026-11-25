@@ -9,14 +9,13 @@ import MuiTextField from "@mui/material/TextField"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { GameEffectTypeOptions } from "#/system/model/gameEffects/gameEffectTypeOptions.ts"
-import { focusEffectTag } from "#/system/model/magic/focusData.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import { skillList } from "#/system/model/skills/skillList.ts"
-
-import { getDefaultTarget, getTargetOptions } from "./gameEffectUtils.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { GameEffectTypeOptions } from "#/data/gameEffects/gameEffectTypeOptions.ts"
+import { getDefaultTarget, getTargetOptions } from "#/data/gameEffects/gameEffectUtils.ts"
+import { focusEffectTag } from "#/data/magic/focusData.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
+import { skillList } from "#/data/skills/skillList.ts"
 
 const CUSTOM_SENTINEL = "__custom__"
 

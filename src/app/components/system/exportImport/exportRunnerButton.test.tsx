@@ -1,12 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
+import type * as ExportUtils from "#/data/exportImport/exportUtils.ts"
+import { downloadTextFile, yamlToRunnerData } from "#/data/exportImport/exportUtils.ts"
 import { renderWithRunner } from "#testUtils/renderWithRunner.tsx"
 
-import type * as ExportUtils from "./exportUtils.ts"
-import { downloadTextFile, yamlToRunnerData } from "./exportUtils.ts"
-
-vi.mock("./exportUtils.ts", async (importOriginal) => {
+vi.mock("#/data/exportImport/exportUtils.ts", async (importOriginal) => {
   const actual = await importOriginal<typeof ExportUtils>()
   return { ...actual, downloadTextFile: vi.fn() }
 })

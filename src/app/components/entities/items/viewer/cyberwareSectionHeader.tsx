@@ -1,8 +1,8 @@
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { BASE_ESSENCE } from "#/components/entities/items/types/implants/implantUtils.ts"
-import { useEssenceInfo } from "#/utils/runnerUtils.ts"
+import { BASE_ESSENCE } from "#/rules/items/implantUtils.ts"
+import { useEssenceInfo } from "#/state/runner/runnerUtils.ts"
 
 export const CyberwareSectionHeader: FC = () => {
   const essenceInfo = useEssenceInfo()

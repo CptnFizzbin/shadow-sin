@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { LandingModeSwitch } from "#/components/gmToolbox/landing/landingModeSwitch.tsx"
-import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
+import { LandingModeSwitch } from "#/app/components/gmToolbox/landing/landingModeSwitch.tsx"
+import { UnderConstruction } from "#/ui/alerts/underConstruction.tsx"
+import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/gm/encounter-builder")({
   component: RouteComponent,

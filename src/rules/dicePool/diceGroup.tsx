@@ -1,5 +1,5 @@
-import type { OverrideReason } from "#/system/formulas/gameEffects/effectTagStacking.ts"
-import type { RatingBreakdown } from "#/system/formulas/ratings/ratingFormulas.ts"
+import type { OverrideReason } from "#/rules/gameEffects/effectTagStacking.ts"
+import type { RatingBreakdown } from "#/rules/ratings/ratingFormulas.ts"
 
 export type DiceGroupType = "attribute" | "skill" | "bonus" | "defaulting" | "penalty"
 

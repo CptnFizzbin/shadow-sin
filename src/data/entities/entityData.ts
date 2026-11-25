@@ -1,5 +1,5 @@
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/system/model/sourceData.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import type { SourceData } from "#/data/source/sourceData.ts"
 
 import type { DamageTrackKey } from "./damageTrackKey.ts"
 import type { EntityKind } from "./entityKind.ts"

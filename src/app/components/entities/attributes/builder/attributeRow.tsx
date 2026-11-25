@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
 
 import { AttrDecrementButton } from "./attrDecrementButton.tsx"
 import { AttrIncrementButton } from "./attrIncrementButton.tsx"

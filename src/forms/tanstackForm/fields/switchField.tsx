@@ -2,7 +2,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
-import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
+import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
 
 interface SwitchFieldProps {
   label: string

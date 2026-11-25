@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
-import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

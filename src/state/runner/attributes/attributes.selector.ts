@@ -1,34 +1,34 @@
-import { BASE_ESSENCE, getEssenceSpent } from "#/components/entities/items/types/implants/implantUtils.ts"
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { ratingDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector, injectOption } from "#/integrations/reselect/selectorUtils.ts"
+import type {
+  AttributeCatalog,
+  AttributeInfoCatalog,
+  EntityAttributeCatalog,
+} from "#/data/attributes/attributeCatalog.ts"
+import type { EntityAttributeInfo } from "#/data/attributes/attributeInfo.ts"
+import { AttributeKey, AttributeLabels } from "#/data/attributes/attributeKey.ts"
+import { MetatypeType } from "#/data/biology/metatypeData.ts"
+import type { EntityBase, EntityWithAttrs } from "#/data/entities/entityTraits.ts"
+import { isEntityWithAttrs } from "#/data/entities/entityTraits.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import { isMatrixNode } from "#/data/matrix/matrixNodeData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { isRunnerWithBiology } from "#/data/runner/runnerTraits.ts"
+import { AiAttrFormulas } from "#/rules/attributes/aiAttrFormulas.ts"
+import { attrAugmentedMax } from "#/rules/attributes/attributeFormulas.ts"
+import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
+import { ratingDiceGroup } from "#/rules/dicePool/diceGroup.tsx"
+import { calculateEncumbrancePenalty, isEncumberedAttribute } from "#/rules/items/encumbranceUtils.ts"
+import { BASE_ESSENCE, getEssenceSpent } from "#/rules/items/implantUtils.ts"
+import type { RatingBreakdown, RatingModifier } from "#/rules/ratings/ratingFormulas.ts"
+import { RatingFormulas } from "#/rules/ratings/ratingFormulas.ts"
+import type { Selector } from "#/state/reselect/selectorUtils.ts"
+import { createMemoizedSelector, injectOption } from "#/state/reselect/selectorUtils.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { SourcedGameEffectSelectors } from "#/state/runner/gameEffects/gameEffects.selector.ts"
 import { MatrixSelectors } from "#/state/runner/gameState/matrix/matrix.selector.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
-import { attrAugmentedMax } from "#/system/formulas/attributes/attributeFormulas.ts"
-import { calculateEncumbrancePenalty, isEncumberedAttribute } from "#/system/formulas/items/encumbranceUtils.ts"
-import type { RatingBreakdown, RatingModifier } from "#/system/formulas/ratings/ratingFormulas.ts"
-import { RatingFormulas } from "#/system/formulas/ratings/ratingFormulas.ts"
-import type {
-  AttributeCatalog,
-  AttributeInfoCatalog,
-  EntityAttributeCatalog,
-} from "#/system/model/attributes/attributeCatalog.ts"
-import type { EntityAttributeInfo } from "#/system/model/attributes/attributeInfo.ts"
-import { AttributeKey, AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
-import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
-import type { EntityBase, EntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
-import { isEntityWithAttrs } from "#/system/model/entities/entityTraits.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import { isMatrixNode } from "#/system/model/matrix/matrixNodeData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
 
 export namespace AttrSelectors {
   export type AttrSelector<TReturn, TOptions extends object | never = never> = Selector<{

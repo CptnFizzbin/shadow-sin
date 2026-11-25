@@ -1,10 +1,10 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ArmorData } from "#/system/model/items/armorData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ArmorData } from "#/data/items/armorData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ArmorSectionContent } from "./armorSectionContent.tsx"

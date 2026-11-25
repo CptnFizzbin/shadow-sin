@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { useItemSelectionMode } from "#/hooks/items/selection/useItemSelection.ts"
+import { useItemSelectionMode } from "#/app/hooks/items/selection/useItemSelection.ts"
 
 import { ItemBulkActionBar } from "./itemBulkActionBar.tsx"
 

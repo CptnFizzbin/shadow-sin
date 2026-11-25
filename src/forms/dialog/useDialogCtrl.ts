@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { DialogCtrl } from "#/services/dialog/dialogCtrl.ts"
+import { DialogCtrl } from "./dialogCtrl.ts"
 
 export function useDialogCtrl<TReturn>() {
   const [ctrl] = useState(() => new DialogCtrl<TReturn>())

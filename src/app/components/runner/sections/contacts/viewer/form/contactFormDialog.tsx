@@ -3,11 +3,11 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useId } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { contactFieldMap, useContactForm } from "#/hooks/runner/contacts/form/useContactForm.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import { contactFieldMap, useContactForm } from "#/forms/contacts/useContactForm.tsx"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
 

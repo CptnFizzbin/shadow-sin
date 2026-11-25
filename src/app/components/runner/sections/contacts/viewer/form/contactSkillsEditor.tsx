@@ -6,9 +6,9 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import type { ContactSkillData } from "#/system/model/contacts/contactSkillData.ts"
-import { ContactSkillType } from "#/system/model/contacts/contactSkillData.ts"
+import type { ContactSkillData } from "#/data/contacts/contactSkillData.ts"
+import { ContactSkillType } from "#/data/contacts/contactSkillData.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { ContactSkillTypeList, contactSkillTypeLabels } from "./contactSkillTypeList.tsx"
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
 
 import { loadGmContacts, saveGmContacts } from "./gmContactsStore.ts"
 

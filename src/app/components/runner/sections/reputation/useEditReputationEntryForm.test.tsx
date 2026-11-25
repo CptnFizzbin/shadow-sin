@@ -2,12 +2,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import type { ReputationLedgerEntry } from "#/data/reputation/reputationLedgerEntry.ts"
+import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import type { ReputationLedgerEntry } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import { useEditReputationEntryForm } from "./useEditReputationEntryForm.tsx"
 

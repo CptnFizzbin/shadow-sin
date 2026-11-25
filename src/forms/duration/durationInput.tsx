@@ -9,10 +9,11 @@ import Select from "@mui/material/Select"
 import { RiPencilLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import { useDurationDialog } from "#/components/ui/dialog/durationDialog.tsx"
-import type { Duration } from "#/utils/duration/duration.ts"
-import { StandardDurations } from "#/utils/duration/duration.ts"
-import { DurationUtils } from "#/utils/duration/durationUtils.ts"
+import type { Duration } from "#/data/duration/duration.ts"
+import { StandardDurations } from "#/data/duration/duration.ts"
+import { DurationUtils } from "#/data/duration/durationUtils.ts"
+
+import { useDurationDialog } from "./durationDialog.tsx"
 
 const CUSTOM_OPTION_VALUE = "custom"
 

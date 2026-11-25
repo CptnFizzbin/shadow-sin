@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { AvailabilityInfo } from "#/system/model/items/availabilityInfo.ts"
+import type { AvailabilityInfo } from "#/data/items/availabilityInfo.ts"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
 
 const defaultValues: AvailabilityInfo = {
   rating: 0,

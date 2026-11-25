@@ -6,7 +6,7 @@ import { RiSearchLine } from "@remixicon/react"
 import type { Key, ReactNode } from "react"
 import { Fragment } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 interface SkillListPanelProps<T> {
   searchPlaceholder: string

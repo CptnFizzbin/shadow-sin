@@ -1,4 +1,4 @@
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 

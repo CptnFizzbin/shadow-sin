@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { WeaponCard } from "#/components/entities/items/types/weapons/weaponCard.tsx"
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import { WeaponCard } from "#/app/components/entities/items/types/weapons/weaponCard.tsx"
+import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
 import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"

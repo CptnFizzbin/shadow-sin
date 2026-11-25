@@ -6,16 +6,16 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { hasLifestyleUpkeep, lifestylePrepayCost } from "#/data/finances/runnerLifestyle.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
 import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { hasLifestyleUpkeep, lifestylePrepayCost } from "#/system/model/finances/runnerLifestyle.ts"
 
 type PrepayLifestyleDialogProps = ControlledDialogProps<void>
 

@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import { MarkdownText } from "#/components/ui/text/markdownText.tsx"
 import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Label } from "#/ui/text/label.tsx"
+import { MarkdownText } from "#/ui/text/markdownText.tsx"
 
 export const ProfileSection: FC = () => {
   const profile = useRunnerSelector(ProfileSelectors.select)

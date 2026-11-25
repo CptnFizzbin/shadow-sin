@@ -1,6 +1,6 @@
-import type { AttributeInfoCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import { createAttrInfoCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import type { QualityData } from "#/system/model/qualities/qualityData.ts"
+import type { AttributeInfoCatalog } from "#/data/attributes/attributeCatalog.ts"
+import { createAttrInfoCatalog } from "#/data/attributes/attributeCatalog.ts"
+import type { QualityData } from "#/data/qualities/qualityData.ts"
 
 export enum AwakeningType {
   Mundane = "Mundane",

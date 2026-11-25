@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import type { useFocusForm } from "#/hooks/items/types/magical/forms/useFocusForm.tsx"
-import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
-import { FocusLink, focusLinkByType } from "#/system/model/magic/focusData.ts"
+import { FocusLink, focusLinkByType } from "#/data/magic/focusData.ts"
+import type { useFocusForm } from "#/forms/items/types/magical/useFocusForm.tsx"
+import type { SelectOption } from "#/forms/tanstackForm/fields/selectField.tsx"
 
 interface FocusWeaponFieldProps {
   form: ReturnType<typeof useFocusForm>

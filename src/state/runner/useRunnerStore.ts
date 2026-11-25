@@ -1,6 +1,6 @@
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { useRunnerState } from "#/state/runnerState.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 export const useRunner = (): RunnerData => {
   return useRunnerState(({ runner }) => runner)

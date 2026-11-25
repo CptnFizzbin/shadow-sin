@@ -5,13 +5,13 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useTraditionForm } from "#/hooks/runner/magician/spells/form/useTraditionForm.ts"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
-import type { TraditionData } from "#/system/model/magic/traditionData.ts"
-import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/model/magic/traditionData.ts"
+import type { TraditionData } from "#/data/magic/traditionData.ts"
+import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/data/magic/traditionData.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { useTraditionForm } from "#/forms/magician/spells/useTraditionForm.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 interface TraditionFormDialogProps extends ControlledDialogProps<TraditionData> {
   tradition?: TraditionData | null

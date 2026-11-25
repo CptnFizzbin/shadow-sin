@@ -1,10 +1,10 @@
 import { createSelector } from "reselect"
 
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { ObjectUtils } from "#/common/object/objectUtils.ts"
+import type { ImprovementEntry } from "#/data/karma/improvements/improvementEntry.ts"
+import { getImprovementCost } from "#/rules/karma/improvements/improvementUtils.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { getImprovementCost } from "#/system/formulas/karma/improvements/improvementUtils.ts"
-import type { ImprovementEntry } from "#/system/model/karma/improvements/improvementEntry.ts"
-import { ObjectUtils } from "#/utils/objectUtils.ts"
 
 import type { ImprovementsState } from "./improvementStore.ts"
 

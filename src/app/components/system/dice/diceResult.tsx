@@ -1,13 +1,13 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { DiceRoller } from "#/services/dice/diceRoller.ts"
+import type { DiceRoller } from "#/state/dice/diceRoller.ts"
 import {
   selectAllDice,
   selectAllSettled,
   selectIsGlitch,
   useDiceRollerSelector,
-} from "#/services/dice/state/diceRoller.selector.ts"
+} from "#/state/dice/state/diceRoller.selector.ts"
 
 import { getDiceOffset } from "./diceUtils.ts"
 import { DieFace } from "./dieFace.tsx"

@@ -7,9 +7,9 @@ import { Navigate, useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { runnerSections } from "#/components/runner/sections/runnerSections.ts"
-import { useCurrentRunnerSection } from "#/hooks/runner/nav/useRunnerNav.ts"
-import { useRunnerTabs } from "#/hooks/runner/nav/useRunnerTabs.ts"
+import { runnerSections } from "#/app/components/runner/sections/runnerSections.ts"
+import { useCurrentRunnerSection } from "#/app/hooks/runner/nav/useRunnerNav.ts"
+import { useRunnerTabs } from "#/app/hooks/runner/nav/useRunnerTabs.ts"
 
 import { NavMenuDrawer } from "./navMenuDrawer.tsx"
 

@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 import {
   addExtendedTest,

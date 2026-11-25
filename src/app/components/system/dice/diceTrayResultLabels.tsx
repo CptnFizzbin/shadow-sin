@@ -2,16 +2,16 @@ import Stack from "@mui/material/Stack"
 import pluralize from "pluralize"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { TestType } from "#/rules/dice/testType.ts"
 import {
   selectHits,
   selectRollState,
   selectWasRolled,
   useDiceRollerSelector,
-} from "#/services/dice/state/diceRoller.selector.ts"
-import { RollState } from "#/services/dice/state/rollState.ts"
-import { TestType } from "#/services/dice/testType.ts"
+} from "#/state/dice/state/diceRoller.selector.ts"
+import { RollState } from "#/state/dice/state/rollState.ts"
+import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { useDiceTray } from "./diceTrayContext.ts"
 

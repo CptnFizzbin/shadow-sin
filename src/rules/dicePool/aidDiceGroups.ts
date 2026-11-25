@@ -1,6 +1,7 @@
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { AidDiceFormulas } from "#/system/formulas/dicePool/aidDiceFormulas.ts"
-import type { AidSource } from "#/system/model/dicePool/aidSource.ts"
+import type { AidSource } from "#/data/dicePool/aidSource.ts"
+
+import { AidDiceFormulas } from "./aidDiceFormulas.ts"
+import type { DiceGroup } from "./diceGroup.tsx"
 
 const NO_GROUPS: DiceGroup[] = []
 

@@ -5,12 +5,12 @@ import { RiArrowLeftLine } from "@remixicon/react"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 
-import { AnyItemDetails } from "#/components/entities/items/details/anyItemDetails.tsx"
+import { AnyItemDetails } from "#/app/components/entities/items/details/anyItemDetails.tsx"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
 
 export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
   component: ItemDetailsRoute,

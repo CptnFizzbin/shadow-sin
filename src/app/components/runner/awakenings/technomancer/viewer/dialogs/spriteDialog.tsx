@@ -5,15 +5,15 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { SpriteData } from "#/data/magic/spriteData.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SpriteSelectors } from "#/state/runner/sprites/sprites.selector.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { SpriteData } from "#/system/model/magic/spriteData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 interface SpriteDialogProps extends ControlledDialogProps<SpriteData> {
   sprite?: SpriteData

@@ -2,14 +2,14 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import DamageTrack from "#/components/system/damage/damageTrack.tsx"
-import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
+import DamageTrack from "#/app/components/system/damage/damageTrack.tsx"
+import { WoundModLabel } from "#/app/components/system/damage/woundModLabel.tsx"
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 export const QuickDamageSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()

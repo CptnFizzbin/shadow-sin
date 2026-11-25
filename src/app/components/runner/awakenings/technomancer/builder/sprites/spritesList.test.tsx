@@ -2,13 +2,13 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import type { SpriteData } from "#/data/magic/spriteData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import type { SpriteData } from "#/system/model/magic/spriteData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { SpritesList } from "./spritesList.tsx"
 

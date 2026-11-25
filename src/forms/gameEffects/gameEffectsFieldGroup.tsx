@@ -1,5 +1,5 @@
-import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
 
 import { GameEffectsSummary } from "./gameEffectsSummary.tsx"
 

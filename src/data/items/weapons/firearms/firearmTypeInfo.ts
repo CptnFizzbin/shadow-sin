@@ -1,5 +1,5 @@
-import type { WeaponRangeInfo } from "#/system/model/items/weapons/weaponRangeInfo.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import type { WeaponRangeInfo } from "#/data/items/weapons/weaponRangeInfo.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 import { FirearmTypeKey } from "./firearmTypeKey.ts"
 

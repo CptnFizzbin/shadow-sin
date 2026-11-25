@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
+import type { ArmorRatingType } from "#/data/items/armorData.ts"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
 import { CombatPoolSelectors } from "#/state/runner/dicePool/combatPools.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ArmorRatingType } from "#/system/model/items/armorData.ts"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
 
 export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => {
   const pool = useRunnerSelector(CombatPoolSelectors.selectResistDamageTest, { damageType: type, armor })

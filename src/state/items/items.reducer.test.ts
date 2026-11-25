@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
 
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import type { AgentData } from "#/data/items/agentData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { setDamage } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import type { AgentData } from "#/system/model/items/agentData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 
 describe.concurrent("itemsRootReducer setDamage", () => {

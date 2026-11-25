@@ -4,7 +4,7 @@ import MuiTextField from "@mui/material/TextField"
 import type { ChangeEvent, FC, FocusEvent, KeyboardEvent } from "react"
 import { useEffect, useRef, useState } from "react"
 
-import { formatNuyen } from "#/components/ui/nuyen.tsx"
+import { formatNuyen } from "./nuyen.tsx"
 
 export interface NuyenInputProps extends Omit<MuiTextFieldProps, "type" | "value" | "onChange"> {
   value: number | undefined

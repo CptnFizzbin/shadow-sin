@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { RunnerFactoryAfterBuildFn } from "#/data/runner/runnerData.factory.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { RunnerFactoryAfterBuildFn } from "#/system/model/runnerData.factory.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { RunnerHeaderSummary } from "./runnerHeaderSummary.tsx"
 

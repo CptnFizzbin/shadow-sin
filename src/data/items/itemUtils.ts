@@ -1,4 +1,4 @@
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 import type { ArmorData } from "./armorData.ts"
 import type { DrugData } from "./consumableData.ts"

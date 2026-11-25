@@ -2,11 +2,10 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/runnerStoreProvider.tsx"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import type { SpellData } from "#/data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -15,8 +14,9 @@ import {
   SpellRange,
   SpellSustainTarget,
   SpellType,
-} from "#/system/model/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
+} from "#/data/magic/spellData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#/state/runnerState.ts"
 
 import { SpellsViewerSection } from "./spellsViewerSection.tsx"
 

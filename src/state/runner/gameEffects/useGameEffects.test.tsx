@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { createItem, createItemMap } from "#/data/items/itemData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -14,10 +15,9 @@ import {
   SpellRange,
   SpellSustainTarget,
   SpellType,
-} from "#/system/model/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+} from "#/data/magic/spellData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
 
 import { GameEffectSelectors } from "./useGameEffects.ts"
 

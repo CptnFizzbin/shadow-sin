@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { SpriteList } from "#/components/runner/awakenings/technomancer/viewer/sprites/spriteList.tsx"
-import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { SpriteList } from "#/app/components/runner/awakenings/technomancer/viewer/sprites/spriteList.tsx"
+import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/sprites")({
   component: RouteComponent,

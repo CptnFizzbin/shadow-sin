@@ -1,9 +1,9 @@
-import { AiAttrFormulas } from "#/system/formulas/attributes/aiAttrFormulas.ts"
-import { AttributeKey, AttributeLabels, AttrKey } from "#/system/model/attributes/attributeKey.ts"
-import { metatypes } from "#/system/model/biology/metatypeData.ts"
-import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/model/magic/awakeningType.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { AttributeKey, AttributeLabels, AttrKey } from "#/data/attributes/attributeKey.ts"
+import { metatypes } from "#/data/biology/metatypeData.ts"
+import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/data/magic/awakeningType.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
+import { AiAttrFormulas } from "#/rules/attributes/aiAttrFormulas.ts"
 
 // SR4A defaults (p. 87). The "optional rules" registry overrides can relax
 // these in a future slice; for now the defaults are hard-coded.

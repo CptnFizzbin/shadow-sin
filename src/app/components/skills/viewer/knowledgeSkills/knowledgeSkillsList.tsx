@@ -2,7 +2,7 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillListPanel } from "#/components/skills/viewer/skillListPanel.tsx"
+import { SkillListPanel } from "#/app/components/skills/viewer/skillListPanel.tsx"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 

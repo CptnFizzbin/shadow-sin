@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
-import type { FeatureFlagsData } from "#/system/model/featureFlags/featureFlagsData.ts"
+import type { FeatureFlagsData } from "#/data/featureFlags/featureFlagsData.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 const migration: CharacterMigration<{
   featureFlags?: FeatureFlagsData

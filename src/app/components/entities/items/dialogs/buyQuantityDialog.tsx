@@ -5,15 +5,15 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
-import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
+import { NuyenField } from "#/forms/nuyen/nuyenField.tsx"
 import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { NumberField } from "#/ui/form/fields/numberField.tsx"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
 
 interface BuyQuantityDialogProps extends ControlledDialogProps<void> {
   defaultCost: number

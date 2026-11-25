@@ -1,8 +1,8 @@
-import { BuilderSectionId, builderSectionOrder, builderSections } from "#/components/builder/builderSectionId.ts"
-import { isAdept } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersUtils.ts"
-import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
-import { isTechnomancer } from "#/components/runner/awakenings/technomancer/viewer/technomancerUtils.ts"
-import type { AwakeningType } from "#/system/model/magic/awakeningType.ts"
+import type { AwakeningType } from "#/data/magic/awakeningType.ts"
+import { isMagician } from "#/data/magic/magicianUtils.ts"
+import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
+import { isAdept } from "#/rules/buildPoints/adeptPowersUtils.ts"
+import { BuilderSectionId, builderSectionOrder, builderSections } from "#/state/builder/builderSectionId.ts"
 
 export const FINALIZE_TAB_ID = "finalize" as const
 

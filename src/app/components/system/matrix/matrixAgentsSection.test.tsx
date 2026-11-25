@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { isAgentData } from "#/system/model/items/agentData.ts"
+import { isAgentData } from "#/data/items/agentData.ts"
 import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 

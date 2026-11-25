@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { markOverlayClosed, markOverlayOpened } from "#/services/dialog/openOverlayTracker.ts"
+import { markOverlayClosed, markOverlayOpened } from "#/common/overlay/openOverlayTracker.ts"
 
 import { SwipeSurface } from "./swipeSurface.tsx"
 

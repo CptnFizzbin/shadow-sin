@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { PowerPoints } from "#/components/builder/powerPoints.tsx"
-import { getAdeptPowerBpCost } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersUtils.ts"
-import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityCardElements } from "#/components/ui/cards/entityCard/entityCardElements.tsx"
-import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
+import { PowerPoints } from "#/app/components/builder/powerPoints.tsx"
+import type { EntityCardProps } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityCardElements } from "#/app/components/ui/cards/entityCard/entityCardElements.tsx"
+import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
+import { getAdeptPowerBpCost } from "#/rules/buildPoints/adeptPowersUtils.ts"
 
 interface PowerCardProps extends Omit<EntityCardProps, "entity"> {
   power: AdeptPowerData

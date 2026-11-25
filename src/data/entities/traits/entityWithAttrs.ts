@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
 
 /** An Entity with attribute ratings. Implemented by `RunnerData`; consumed by `AttrSelectors`
  *  (`attributesSlice.selectors.ts`). */

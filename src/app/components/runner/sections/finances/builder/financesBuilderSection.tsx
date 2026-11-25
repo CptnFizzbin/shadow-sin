@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/components/builder/builderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { FinancesSection } from "#/components/runner/sections/finances/viewer/financesSection.tsx"
+import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
+import { FinancesSection } from "#/app/components/runner/sections/finances/viewer/financesSection.tsx"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
 
 export const FinancesBuilderSection: FC = () => {
   return (

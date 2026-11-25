@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import type { SxProps, Theme } from "@mui/material/styles"
 import type { ReactNode } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 interface DamageTrackProps {
   label: string

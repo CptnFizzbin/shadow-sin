@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 import { ProfileActions } from "./profile.actions.ts"
 import { profileReducer } from "./profile.state.ts"

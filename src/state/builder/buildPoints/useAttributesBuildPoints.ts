@@ -1,9 +1,10 @@
-import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
+import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/data/attributes/attributeKey.ts"
+import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/model/attributes/attributeKey.ts"
+
+import type { BpLineItem } from "./bpLineItem.ts"
 
 interface AttributesBuildPoints extends BpLineItem {
   physicalBp: number

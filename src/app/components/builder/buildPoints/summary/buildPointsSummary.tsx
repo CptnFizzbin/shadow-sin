@@ -14,10 +14,10 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { BuildPoints } from "#/components/builder/buildPoints.tsx"
-import { builderSections } from "#/components/builder/builderSectionId.ts"
-import { useBuilderBuildPointsApi } from "#/hooks/builder/buildPoints/useBuildPointsApi.ts"
-import { getProgress } from "#/utils/progressUtils.ts"
+import { BuildPoints } from "#/app/components/builder/buildPoints.tsx"
+import { getProgress } from "#/common/number/progressUtils.ts"
+import { useBuilderBuildPointsApi } from "#/state/builder/buildPoints/useBuildPointsApi.ts"
+import { builderSections } from "#/state/builder/builderSectionId.ts"
 
 export const BuildPointsSummary: FC = () => {
   const [isExpanded, setIsExpanded] = useState(false)

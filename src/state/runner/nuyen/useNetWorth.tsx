@@ -1,10 +1,11 @@
-import type { Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { isCredstickData } from "#/data/items/credstickData.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { Selector } from "#/state/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { isCredstickData } from "#/system/model/items/credstickData.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+
+import { NuyenSelectors } from "./nuyen.selector.ts"
 
 /** `items` is only pulled in for `ItemSelectors.selectAll` — see docs/adr/0014-selector-input-decomposition.md
  *  on why a multi-source selector intersects the wrapper shapes it needs instead of taking bare `RunnerData`. */

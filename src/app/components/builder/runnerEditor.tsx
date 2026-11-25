@@ -1,14 +1,14 @@
 import type { FC } from "react"
 import { useMemo } from "react"
 
-import { ItemActionsDialogProvider } from "#/components/entities/items/actions/itemActionsDialogProvider.tsx"
-import { AddItemDialogProvider } from "#/components/entities/items/dialogs/addItemDialogProvider.tsx"
-import { RunnerEntityProvider } from "#/components/runner/runnerEntityProvider.tsx"
-import { LocalStorageProvider } from "#/services/storage/providers/localStorageProvider.ts"
+import { ItemActionsDialogProvider } from "#/app/components/entities/items/actions/itemActionsDialogProvider.tsx"
+import { AddItemDialogProvider } from "#/app/components/entities/items/dialogs/addItemDialogProvider.tsx"
+import { RunnerEntityProvider } from "#/app/components/runner/runnerEntityProvider.tsx"
+import { toJsonValue } from "#/common/json/jsonUtils.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import { RunnerStateProvider, createRunnerStateStore } from "#/state/runnerState.ts"
+import { LocalStorageProvider } from "#/state/storage/providers/localStorageProvider.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { toJsonValue } from "#/utils/jsonUtils.ts"
 
 import { RunnerEditorContent } from "./runnerEditorContent.tsx"
 

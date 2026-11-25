@@ -1,6 +1,6 @@
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
 
 import { getItemState, getItemStateActions, isItemStateWithinParent, ItemStateAction, itemStateActionTargets } from "./itemStateRules.ts"
 

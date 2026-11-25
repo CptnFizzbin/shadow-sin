@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest"
 
+import { TestType } from "#/rules/dice/testType.ts"
+
 import { DiceTrayApi } from "./diceTrayApi.ts"
-import { TestType } from "./testType.ts"
 
 // Each test gets its own `DiceTrayApi` (and spied roller) so the suite can run
 // concurrently — a shared instance from `beforeEach` would race across tests.

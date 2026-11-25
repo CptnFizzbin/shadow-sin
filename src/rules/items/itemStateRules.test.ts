@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 
 import {
   getActiveItemState,

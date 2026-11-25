@@ -1,19 +1,19 @@
 import type { FC } from "react"
 
-import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
-import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
-import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { ItemDetailsRoot } from "#/app/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/app/components/entities/items/details/itemDetailsSlot.tsx"
+import type { ImplantData } from "#/data/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/data/items/implantData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/rules/items/implantUtils.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ImplantData } from "#/system/model/items/implantData.ts"
-import { ImplantGrade, ImplantType } from "#/system/model/items/implantData.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
 
 import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
-import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "./implantUtils.ts"
 
 export interface ImplantItemDetailsProps {
   implant: ImplantData

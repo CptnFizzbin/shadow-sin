@@ -9,8 +9,8 @@ import Typography from "@mui/material/Typography"
 import { RiCheckLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { KarmaChip } from "#/components/runner/karma/viewer/karmaChip.tsx"
-import type { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
+import type { SkillKey } from "#/data/skills/skillKey.ts"
 
 interface ImprovementActiveSkillRowProps {
   skillName: SkillKey

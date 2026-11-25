@@ -1,7 +1,7 @@
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemState, itemStatesByType } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemState, itemStatesByType } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
 
 /** The state `item` is in; an Item with no stored state is Available. */
 export function getItemState(item: Pick<ItemData, "state">): ItemState {

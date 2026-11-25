@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import type { ItemData } from "#/data/items/itemData.ts"
+import type { ProgramData } from "#/data/items/programData.ts"
 import { MatrixSelectors } from "#/state/runner/gameState/matrix/matrix.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import type { ProgramData } from "#/system/model/items/programData.ts"
 
 import { RunningProgramCard } from "./runningProgramCard.tsx"
 

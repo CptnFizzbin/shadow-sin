@@ -1,8 +1,8 @@
 import { z } from "zod"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 import { GameEffectType } from "./gameEffectType.ts"
 

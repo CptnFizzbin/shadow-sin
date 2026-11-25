@@ -6,10 +6,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import { CounterInput } from "#/components/ui/form/inputs/counter/counterInput.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { useDiceRoller } from "#/hooks/system/dice/useDiceRoller.ts"
+import { DiceResult } from "#/app/components/system/dice/diceResult.tsx"
+import { applyNetHitsToDamage } from "#/rules/items/weapons/weaponDamage.ts"
 import {
   selectAllSettled,
   selectHits,
@@ -17,8 +15,10 @@ import {
   selectIsGlitch,
   selectWasRolled,
   useDiceRollerSelector,
-} from "#/services/dice/state/diceRoller.selector.ts"
-import { applyNetHitsToDamage } from "#/system/formulas/items/weapons/weaponDamage.ts"
+} from "#/state/dice/state/diceRoller.selector.ts"
+import { useDiceRoller } from "#/state/dice/useDiceRoller.ts"
+import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import { Label } from "#/ui/text/label.tsx"
 
 interface AttackTestResolutionProps {
   /** Number of dice in the Attack Test. */

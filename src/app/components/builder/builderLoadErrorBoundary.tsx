@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import type { ReactNode } from "react"
 import { Component } from "react"
 
-import { clearSavedRunnerDraft } from "#/services/persistence/builderDraftStorage.ts"
+import { clearSavedRunnerDraft } from "#/state/persistence/builderDraftStorage.ts"
 
 interface BuilderLoadErrorBoundaryProps {
   /** Storage key of the draft the wrapped Builder/Editor loads on mount (see `getRunnerStorageKey`). */

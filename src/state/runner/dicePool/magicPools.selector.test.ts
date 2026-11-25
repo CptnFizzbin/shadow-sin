@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { SpellCategory } from "#/system/model/magic/spellData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { SpellCategory } from "#/data/magic/spellData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
 import { loadMouse } from "#testUtils/fixtures/characters/mouse.ts"
 
 import { MagicPoolSelectors } from "./magicPools.selector.ts"

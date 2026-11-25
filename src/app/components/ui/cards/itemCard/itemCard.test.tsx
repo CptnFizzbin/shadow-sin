@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
+import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { ItemCard } from "./itemCard.tsx"

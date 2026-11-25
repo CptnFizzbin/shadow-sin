@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/components/builder/builderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { AdeptPowersList } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersList.tsx"
-import { isAdept } from "#/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersUtils.ts"
-import { useAdeptPowersAlerts } from "#/hooks/builder/sections/resources/adept/useAdeptPowersAlerts.ts"
+import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
+import { AdeptPowersList } from "#/app/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersList.tsx"
+import { isAdept } from "#/rules/buildPoints/adeptPowersUtils.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import { useAdeptPowersAlerts } from "#/state/builder/sections/resources/adept/useAdeptPowersAlerts.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

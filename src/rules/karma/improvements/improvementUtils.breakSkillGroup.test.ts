@@ -1,15 +1,15 @@
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 import type {
   SkillIncreaseEntry,
   SkillSpecializationEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+} from "#/data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 import { applyImprovement } from "./improvementUtils.ts"
 

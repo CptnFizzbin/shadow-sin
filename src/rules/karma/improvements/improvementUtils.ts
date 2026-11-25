@@ -1,10 +1,8 @@
 import type { Draft } from "immer"
 import { produce } from "immer"
 
-import { ImprovementsConfig } from "#/components/runner/karma/improvements/improvementsConfig.ts"
-import { getSkillsInGroup } from "#/components/skills/builder/activeSkills/skillGroupUtils.ts"
-import type { ImprovementStore } from "#/services/improvements/improvementStore.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
 import type {
   ComplexFormIncreaseEntry,
   ImprovementEntry,
@@ -16,14 +14,16 @@ import type {
   SkillGroupIncreaseEntry,
   SkillIncreaseEntry,
   SkillSpecializationEntry,
-} from "#/system/model/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/system/model/karma/improvements/improvementType.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import type { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
-import { skillList } from "#/system/model/skills/skillList.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+} from "#/data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
+import { getSkillsInGroup } from "#/data/skills/skillGroupUtils.ts"
+import { skillList } from "#/data/skills/skillList.ts"
+import type { ImprovementStore } from "#/state/improvements/improvementStore.ts"
 
 import { describeImprovement } from "./improvementDescription.ts"
+import { ImprovementsConfig } from "./improvementsConfig.ts"
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,

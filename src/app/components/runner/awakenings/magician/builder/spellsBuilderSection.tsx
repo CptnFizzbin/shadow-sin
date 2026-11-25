@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/components/builder/builderSection.tsx"
-import { BuilderSectionId } from "#/components/builder/builderSectionId.ts"
-import { isMagician } from "#/components/runner/awakenings/magician/viewer/magicianUtils.ts"
-import { useSpellsAlerts } from "#/hooks/builder/sections/resources/magician/useSpellsAlerts.ts"
+import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
+import { isMagician } from "#/data/magic/magicianUtils.ts"
+import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import { useSpellsAlerts } from "#/state/builder/sections/resources/magician/useSpellsAlerts.ts"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 

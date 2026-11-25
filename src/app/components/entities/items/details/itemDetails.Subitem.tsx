@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { AnyItemCard } from "#/components/ui/cards/itemCard/anyItemCard.tsx"
-import type { ItemData } from "#/system/model/items/itemData.ts"
+import { AnyItemCard } from "#/app/components/ui/cards/itemCard/anyItemCard.tsx"
+import type { ItemData } from "#/data/items/itemData.ts"
 
 export interface ItemDetailsSubitemProps {
   item: ItemData

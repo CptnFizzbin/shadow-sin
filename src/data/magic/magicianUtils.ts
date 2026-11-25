@@ -1,4 +1,4 @@
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
+import { AwakeningType } from "./awakeningType.ts"
 
 export const isMagician = (awakeningType: AwakeningType) => {
   return (

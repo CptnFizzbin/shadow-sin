@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { AttributeLabels } from "#/system/model/attributes/attributeKey.ts"
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 interface AttributeValueRowProps {
   values: Partial<Record<AttributeKey, number>>

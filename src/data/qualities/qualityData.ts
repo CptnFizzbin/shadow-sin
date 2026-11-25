@@ -1,7 +1,7 @@
-import type { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { GameEffectData } from "#/system/model/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/system/model/sourceData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { EntityKind } from "#/data/entities/entityKind.ts"
+import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
+import type { SourceData } from "#/data/source/sourceData.ts"
 
 /**
  * Represents a quality (positive or negative) that a runner can possess.

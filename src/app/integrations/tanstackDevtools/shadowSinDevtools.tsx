@@ -5,7 +5,7 @@ import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { loadFixtureRunners } from "#/data/fixtures/fixtureRunners.ts"
-import { useRunnerManager } from "#/hooks/runner/useRunnerManager.ts"
+import { useRunnerManager } from "#/state/persistence/useRunnerManager.ts"
 
 function ShadowSinDevtoolsPanel() {
   const router = useRouter()

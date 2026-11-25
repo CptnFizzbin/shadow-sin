@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import type { ProgramData } from "#/system/model/items/programData.ts"
-import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
-import { Icons } from "#/utils/icons.ts"
+import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import type { ProgramData } from "#/data/items/programData.ts"
+import type { KnownNode } from "#/data/matrix/knownNode.ts"
+import { Icons } from "#/ui/icons/icons.ts"
 
 export interface RunningProgramCardProps {
   program: ProgramData

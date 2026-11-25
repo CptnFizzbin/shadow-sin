@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
+import { LifestyleType } from "#/data/finances/lifestyleType.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
 import { runnerRootReducer } from "#/state/runner/runnerStore.reducer.ts"
-import { LifestyleType } from "#/system/model/finances/lifestyleType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
 
 import { patchLifestyle, prepayLifestyle, setLifestyleMonthsPaid, setStandardLifestyle } from "./lifestyle.actions.ts"
 

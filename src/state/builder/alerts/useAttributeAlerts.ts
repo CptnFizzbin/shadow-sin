@@ -1,4 +1,4 @@
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
 
 export const useAttributeAlerts = (): AlertInfo[] => {
   return []

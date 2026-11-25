@@ -1,5 +1,6 @@
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import type { ComplexFormData } from "#/system/model/magic/complexFormData.ts"
+import type { ComplexFormData } from "#/data/magic/complexFormData.ts"
+
+import { BuilderConfig } from "./builderConfig.ts"
 
 export const getComplexFormBp = (complexForm: ComplexFormData): number => {
   return complexForm.rating * BuilderConfig.technomancer.complexForms.bpCost.perRating

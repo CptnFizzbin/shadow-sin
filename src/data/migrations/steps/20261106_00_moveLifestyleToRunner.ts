@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/characterMigration.ts"
+import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
 
 // Frozen copy of the standard lifestyle upkeeps at the time of this migration, so later changes to
 // the live lifestyle table can't change what this migration produces.

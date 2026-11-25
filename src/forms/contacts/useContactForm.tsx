@@ -1,8 +1,8 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
 
 const defaultValues: ContactData = {
   id: NullUuid,

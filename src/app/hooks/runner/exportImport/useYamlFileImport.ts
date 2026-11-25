@@ -1,10 +1,10 @@
 import type { ChangeEvent, InputHTMLAttributes, RefObject } from "react"
 import { useRef } from "react"
 
-import type { ImportedFile } from "#/components/system/exportImport/dataPacketUtils.ts"
-import { DataPacketExtension, parseImportedYaml } from "#/components/system/exportImport/dataPacketUtils.ts"
-import type { DataPacketData } from "#/system/model/dataPacket/dataPacketData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { DataPacketData } from "#/data/dataPacket/dataPacketData.ts"
+import type { ImportedFile } from "#/data/exportImport/dataPacketUtils.ts"
+import { DataPacketExtension, parseImportedYaml } from "#/data/exportImport/dataPacketUtils.ts"
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 
 interface UseYamlFileImportOptions {
   /** Called with the parsed runner sheet after a successful YAML parse. */

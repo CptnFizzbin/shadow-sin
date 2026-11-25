@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { AdeptPowerData } from "#/system/model/powers/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
 
 import { addPower, removePower, savePower, updatePower } from "./powers.actions.ts"
 

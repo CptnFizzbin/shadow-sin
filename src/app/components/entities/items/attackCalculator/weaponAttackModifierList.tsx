@@ -3,12 +3,12 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import type { WeaponAttackModifier } from "#/rules/combat/weaponAttackCalculatorData.ts"
 import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
 
 import { AttackModifierChecklist } from "./attackModifierChecklist.tsx"
 import { useAttackWorkflow } from "./attackWorkflow.ts"
-import type { WeaponAttackModifier } from "./weaponAttackCalculatorData.ts"
 
 interface WeaponAttackModifierListProps {
   modifiers: WeaponAttackModifier[]

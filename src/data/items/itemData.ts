@@ -1,7 +1,7 @@
-import type { EntityData } from "#/system/model/entities/entityData.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { EntityWithItems } from "#/system/model/entities/entityTraits.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { EntityData } from "#/data/entities/entityData.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { EntityWithItems } from "#/data/entities/entityTraits.ts"
 
 import type { AvailabilityInfo } from "./availabilityInfo.ts"
 import type { ItemState } from "./itemState.ts"

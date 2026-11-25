@@ -1,19 +1,19 @@
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useBuildPointsAlerts } from "#/hooks/builder/buildPoints/useBuildPointsAlerts.ts"
-import { useBiologyAlerts } from "#/hooks/builder/sections/biology/useBiologyAlerts.ts"
-import { useGearAlerts } from "#/hooks/builder/sections/gear/useGearAlerts.ts"
-import { useProfileAlerts } from "#/hooks/builder/sections/profile/useProfileAlerts.ts"
-import { useQualitiesAlerts } from "#/hooks/builder/sections/qualities/useQualitiesAlerts.ts"
-import { useAdeptPowersAlerts } from "#/hooks/builder/sections/resources/adept/useAdeptPowersAlerts.ts"
-import { useSpellsAlerts } from "#/hooks/builder/sections/resources/magician/useSpellsAlerts.ts"
+import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
+import { useBuildPointsAlerts } from "#/state/builder/buildPoints/useBuildPointsAlerts.ts"
+import { useBiologyAlerts } from "#/state/builder/sections/biology/useBiologyAlerts.ts"
+import { useGearAlerts } from "#/state/builder/sections/gear/useGearAlerts.ts"
+import { useProfileAlerts } from "#/state/builder/sections/profile/useProfileAlerts.ts"
+import { useQualitiesAlerts } from "#/state/builder/sections/qualities/useQualitiesAlerts.ts"
+import { useAdeptPowersAlerts } from "#/state/builder/sections/resources/adept/useAdeptPowersAlerts.ts"
+import { useSpellsAlerts } from "#/state/builder/sections/resources/magician/useSpellsAlerts.ts"
 import {
   useComplexFormsAlerts,
-} from "#/hooks/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
+} from "#/state/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
 import {
   useSpritesAlerts,
-} from "#/hooks/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
-import { useSkillsAlerts } from "#/hooks/builder/sections/skills/useSkillsAlerts.ts"
-import { useSkillsSummaryAlerts } from "#/hooks/builder/sections/skills/useSkillsSummaryAlerts.ts"
+} from "#/state/builder/sections/resources/technomancer/sprites/useSpritesAlerts.ts"
+import { useSkillsAlerts } from "#/state/builder/sections/skills/useSkillsAlerts.ts"
+import { useSkillsSummaryAlerts } from "#/state/builder/sections/skills/useSkillsSummaryAlerts.ts"
 
 import { useAttributeAlerts } from "./useAttributeAlerts.ts"
 import { useContactsAlerts } from "./useContactsAlerts.ts"

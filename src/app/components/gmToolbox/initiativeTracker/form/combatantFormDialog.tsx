@@ -1,11 +1,11 @@
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import type { CombatantInput } from "#/hooks/system/initiativeTracker/form/useCombatantForm.ts"
-import { useCombatantForm } from "#/hooks/system/initiativeTracker/form/useCombatantForm.ts"
-import { useDialog } from "#/hooks/ui/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import type { CombatantInput } from "#/forms/initiativeTracker/useCombatantForm.ts"
+import { useCombatantForm } from "#/forms/initiativeTracker/useCombatantForm.ts"
 
 import { CombatantFormFields } from "./combatantFormFields.tsx"
 

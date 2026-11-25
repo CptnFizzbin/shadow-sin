@@ -1,11 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
+import { getItemState } from "#/rules/items/itemStateRules.ts"
 import { ItemActions, setItem } from "#/state/runner/items/items.actions.ts"
 import { ItemStateUtils } from "#/state/runner/items/items.state.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
-import { getItemState } from "#/system/formulas/items/itemStateRules.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
 
 export const itemsRootReducer = createReducer<ItemCatalog>({}, ({ addCase }) => {
   // Copy `action.payload` rather than storing it by reference: the same action also reaches

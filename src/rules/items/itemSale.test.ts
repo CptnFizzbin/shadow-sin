@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { ItemCatalog } from "#/data/items/itemUtils.ts"
 
 import { getDefaultSalePrice, planItemSale } from "./itemSale.ts"
 

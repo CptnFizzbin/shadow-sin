@@ -3,7 +3,7 @@ import type { TypographyProps } from "@mui/material/Typography"
 import Typography from "@mui/material/Typography"
 import type { FC, PropsWithChildren } from "react"
 
-import { mergeSx } from "#/integrations/mui/muiUtils.ts"
+import { mergeSx } from "#/ui/mui/muiUtils.ts"
 
 interface SectionHeaderProps extends PropsWithChildren, TypographyProps {}
 

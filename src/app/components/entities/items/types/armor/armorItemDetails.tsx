@@ -1,15 +1,15 @@
 import type { FC } from "react"
 
-import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
-import { ItemDetailsRoot } from "#/components/entities/items/details/itemDetailsRoot.tsx"
-import { ItemDetailsSlot } from "#/components/entities/items/details/itemDetailsSlot.tsx"
+import { useAddItemDialogContext } from "#/app/components/entities/items/addItemDialogContext.ts"
+import { ItemDetailsRoot } from "#/app/components/entities/items/details/itemDetailsRoot.tsx"
+import { ItemDetailsSlot } from "#/app/components/entities/items/details/itemDetailsSlot.tsx"
+import type { ArmorData } from "#/data/items/armorData.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
 import { isNewItem } from "#/state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import type { ArmorData } from "#/system/model/items/armorData.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
 
 import { useArmorFormDialog } from "./dialogs/armorFormDialog.tsx"
 

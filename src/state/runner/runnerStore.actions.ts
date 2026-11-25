@@ -1,9 +1,9 @@
 import { createAction } from "@reduxjs/toolkit"
 import { produce } from "immer"
 
+import type { RunnerData } from "#/data/runner/runnerData.ts"
 import type { RunnerStateDispatch, RunnerState } from "#/state/runnerState.ts"
 import { toRunnerData } from "#/state/toRunnerData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
 
 import * as attributesActions from "./attributes/attributes.actions.ts"
 import * as biologyActions from "./biology/biology.actions.ts"

@@ -6,13 +6,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import type { ReputationLedgerEntry } from "#/data/reputation/reputationLedgerEntry.ts"
+import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
+import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import type { ReputationLedgerEntry } from "#/system/model/reputation/reputationLedgerEntry.ts"
-import { ReputationStatType } from "#/system/model/reputation/reputationLedgerEntry.ts"
 
 type ReputationEntryFormProps = ControlledDialogProps<void> & (
   | { mode: "create" }

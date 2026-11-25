@@ -9,7 +9,7 @@
 - Read Runner state reactively through the selector hooks in `src/state/` and write through dispatched actions, so
   every write goes through the domain reducers. Never read a store snapshot (`getState()` or equivalent) in a
   component — it won't re-render when the state changes.
-- Read ad hoc stores (from `src/services/`) with `useSelector(store, selector)` from `src/integrations/reduxToolkit/`.
+- Read ad hoc stores (from `src/state/`) with `useSelector(store, selector)` from `src/state/reduxToolkit/`.
   `@tanstack/react-store`'s `useSelector` is only for `@tanstack/react-form`'s own internal form stores — never for
   ours.
 

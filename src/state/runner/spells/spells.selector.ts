@@ -1,12 +1,12 @@
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { isRunnerWithBiology } from "#/data/runner/runnerTraits.ts"
+import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
+import { getAvailableSustainingFoci } from "#/rules/magic/focusRules.ts"
+import { getSustainingFocus, sustainingPenalty } from "#/rules/magic/spellSustaining.ts"
+import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
 import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { getAvailableSustainingFoci } from "#/system/formulas/magic/focusRules.ts"
-import { getSustainingFocus, sustainingPenalty } from "#/system/formulas/magic/spellSustaining.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { isRunnerWithBiology } from "#/system/model/runnerTraits.ts"
 
 const NO_GROUPS: DiceGroup[] = []
 const NO_FOCI: FocusData[] = []

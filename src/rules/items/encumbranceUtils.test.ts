@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { ArmorData } from "#/system/model/items/armorData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { ArmorData } from "#/data/items/armorData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
 
 import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "./encumbranceUtils.ts"
 

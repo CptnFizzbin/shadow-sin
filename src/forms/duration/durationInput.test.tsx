@@ -3,7 +3,7 @@ import type { FC } from "react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
-import type { Duration } from "#/utils/duration/duration.ts"
+import type { Duration } from "#/data/duration/duration.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { DurationInput } from "./durationInput.tsx"

@@ -1,6 +1,6 @@
 import { purple } from "@mui/material/colors"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 export enum ReputationStatType {
   streetCred = "streetCred",

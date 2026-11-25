@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { ProgramData } from "#/system/model/items/programData.ts"
-import { ProgramType } from "#/system/model/items/programData.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { ItemData } from "#/data/items/itemData.ts"
+import { createItem, createItemMap } from "#/data/items/itemData.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { ProgramData } from "#/data/items/programData.ts"
+import { ProgramType } from "#/data/items/programData.ts"
+import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
+import { SkillKey } from "#/data/skills/skillKey.ts"
 
 import { MatrixPoolSelectors } from "./matrixPools.selector.ts"
 

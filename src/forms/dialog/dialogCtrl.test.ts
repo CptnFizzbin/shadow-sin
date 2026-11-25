@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
+import { isAnyOverlayOpen } from "#/common/overlay/openOverlayTracker.ts"
+
 import { DialogCtrl } from "./dialogCtrl.ts"
-import { isAnyOverlayOpen } from "./openOverlayTracker.ts"
 
 describe.concurrent("DialogCtrl", () => {
   it("result() resolves with the value passed to close()", async () => {

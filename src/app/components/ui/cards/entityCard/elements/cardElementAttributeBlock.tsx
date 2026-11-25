@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { AttributeValueRow } from "#/components/entities/attributes/viewer/attributeValueRow.tsx"
-import type { AttributeCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import type { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeValueRow } from "#/app/components/entities/attributes/viewer/attributeValueRow.tsx"
+import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
+import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
 
 export interface CardElementAttributeBlockProps {
   values: AttributeCatalog

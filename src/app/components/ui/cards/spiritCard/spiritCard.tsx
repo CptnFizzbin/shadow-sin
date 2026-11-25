@@ -1,15 +1,15 @@
 import type { FC } from "react"
 
-import { CardElementAttributeBlock } from "#/components/ui/cards/entityCard/elements/cardElementAttributeBlock.tsx"
-import { CardElementDamageTrack } from "#/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
-import { CardElementNotes } from "#/components/ui/cards/entityCard/elements/cardElementNotes.tsx"
-import { CardElementPowerList } from "#/components/ui/cards/entityCard/elements/cardElementPowerList.tsx"
-import { CardElementSkillList } from "#/components/ui/cards/entityCard/elements/cardElementSkillList.tsx"
-import { CardElementSubType } from "#/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
-import type { EntityCardProps } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityCard } from "#/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityCardElements } from "#/components/ui/cards/entityCard/entityCardElements.tsx"
-import type { EntityKind } from "#/system/model/entities/entityKind.ts"
+import { CardElementAttributeBlock } from "#/app/components/ui/cards/entityCard/elements/cardElementAttributeBlock.tsx"
+import { CardElementDamageTrack } from "#/app/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
+import type { EntityCardProps } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityCardElements } from "#/app/components/ui/cards/entityCard/entityCardElements.tsx"
+import type { EntityKind } from "#/data/entities/entityKind.ts"
+import { CardElementNotes } from "#/ui/cards/entityCard/elements/cardElementNotes.tsx"
+import { CardElementPowerList } from "#/ui/cards/entityCard/elements/cardElementPowerList.tsx"
+import { CardElementSkillList } from "#/ui/cards/entityCard/elements/cardElementSkillList.tsx"
+import { CardElementSubType } from "#/ui/cards/entityCard/elements/cardElementSubType.tsx"
 
 interface SpiritCardProps extends Omit<EntityCardProps, "entity"> {
   id: string

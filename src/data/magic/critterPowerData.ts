@@ -1,7 +1,7 @@
-import { attrValue } from "#/system/formulas/attributes/attributeFormulas.ts"
-import type { AttributeCatalog } from "#/system/model/attributes/attributeCatalog.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import type { SourceData } from "#/system/model/sourceData.ts"
+import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
+import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { SourceData } from "#/data/source/sourceData.ts"
+import { attrValue } from "#/rules/attributes/attributeFormulas.ts"
 
 export type RollType = "Opposed" | "Standard" | "Hidden"
 

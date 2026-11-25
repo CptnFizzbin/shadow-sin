@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import { DicePoolId } from "#/system/model/gameEffects/dicePoolId.ts"
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import type { FocusData } from "#/system/model/items/magicalData.ts"
-import { MagicalType } from "#/system/model/items/magicalData.ts"
-import { focusEffectTag, FocusType } from "#/system/model/magic/focusData.ts"
-import { SpellCategory } from "#/system/model/magic/spellData.ts"
-import { SpiritType } from "#/system/model/magic/spiritData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import { DicePoolId } from "#/data/gameEffects/dicePoolId.ts"
+import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { ItemState } from "#/data/items/itemState.ts"
+import { ItemType } from "#/data/items/itemType.ts"
+import type { FocusData } from "#/data/items/magicalData.ts"
+import { MagicalType } from "#/data/items/magicalData.ts"
+import { focusEffectTag, FocusType } from "#/data/magic/focusData.ts"
+import { SpellCategory } from "#/data/magic/spellData.ts"
+import { SpiritType } from "#/data/magic/spiritData.ts"
 
 import {
   canFocusSustainSpell,

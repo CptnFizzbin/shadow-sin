@@ -1,6 +1,6 @@
 import { createSelector } from "reselect"
 
-import type { UUID } from "#/utils/uuidUtils.ts"
+import type { UUID } from "#/common/uuid/uuidUtils.ts"
 
 import type { Combatant, InitiativeTrackerState } from "./initiativeTrackerData.ts"
 import { sortCombatants } from "./initiativeTrackerData.ts"

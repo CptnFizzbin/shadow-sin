@@ -4,17 +4,17 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { AttackModifierChecklist } from "#/components/entities/items/attackCalculator/attackModifierChecklist.tsx"
-import { AttackTestResolution } from "#/components/entities/items/attackCalculator/attackTestResolution.tsx"
+import { AttackModifierChecklist } from "#/app/components/entities/items/attackCalculator/attackModifierChecklist.tsx"
+import { AttackTestResolution } from "#/app/components/entities/items/attackCalculator/attackTestResolution.tsx"
+import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
 import {
   meleeAttackModifiers,
   rangedAttackModifiers,
-} from "#/components/entities/items/attackCalculator/weaponAttackCalculatorData.ts"
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
+} from "#/rules/combat/weaponAttackCalculatorData.ts"
+import { buildGmDicePool } from "#/rules/dicePool/gmDicePool.ts"
+import { Label } from "#/ui/text/label.tsx"
 
 import { GmCounterField } from "./gmCounterField.tsx"
-import { buildGmDicePool } from "./gmDicePool.ts"
 import { GmToggleButtons } from "./gmToggleButtons.tsx"
 
 type GmAttackType = "melee" | "ranged"

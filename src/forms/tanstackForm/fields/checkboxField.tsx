@@ -2,7 +2,7 @@ import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import type { FC } from "react"
 
-import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
+import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
 
 interface CheckboxFieldProps {
   label: string

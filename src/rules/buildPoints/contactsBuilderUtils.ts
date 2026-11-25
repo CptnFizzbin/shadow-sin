@@ -1,5 +1,6 @@
-import { BuilderConfig } from "#/components/builder/builderConfig.ts"
-import type { ContactData } from "#/system/model/contacts/contactData.ts"
+import type { ContactData } from "#/data/contacts/contactData.ts"
+
+import { BuilderConfig } from "./builderConfig.ts"
 
 export const getContactBpCost = (contact: ContactData): number => {
   return (

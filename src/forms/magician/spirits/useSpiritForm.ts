@@ -1,10 +1,10 @@
 import { useRef } from "react"
 
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { EntityKind } from "#/system/model/entities/entityKind.ts"
-import type { SpiritData } from "#/system/model/magic/spiritData.ts"
-import { generateSpiritName, SpiritType } from "#/system/model/magic/spiritData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#/common/uuid/uuidUtils.ts"
+import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { SpiritData } from "#/data/magic/spiritData.ts"
+import { generateSpiritName, SpiritType } from "#/data/magic/spiritData.ts"
+import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
 
 const defaultValues: SpiritData = {
   kind: EntityKind.spirit,
