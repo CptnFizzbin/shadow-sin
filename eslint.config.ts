@@ -20,8 +20,8 @@ const sectionAliasPattern = {
 const sections = ["common", "data", "rules", "state", "ui", "forms", "app"] as const
 type Section = typeof sections[number]
 
-// The section layering from docs/features/0022-src-sections.md: the sections each section may import ("Allowed
-// imports") and the third-party packages it may not use ("Placement rules").
+// The section layering from docs/features/0022-src-sections.md: the sections each section may import and the
+// third-party packages it may not use.
 const reduxPackages = ["@reduxjs", "react-redux", "reselect"]
 const noUiPackages = ["react", "react-dom", "@mui", "@tanstack", ...reduxPackages]
 
