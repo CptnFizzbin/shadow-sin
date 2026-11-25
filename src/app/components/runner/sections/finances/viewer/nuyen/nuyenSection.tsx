@@ -5,13 +5,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
-import { NuyenInput } from "#/forms/nuyen/nuyenInput.tsx"
-import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
+import { NuyenInput } from "#forms/nuyen/nuyenInput.tsx"
+import { NuyenSelectors } from "#state/runner/nuyen/nuyen.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 export const NuyenSection: FC = () => {
   const currentNuyen = useRunnerSelector(NuyenSelectors.selectAmount)

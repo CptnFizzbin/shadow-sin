@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { z } from "zod"
 
-import type { SelectOption } from "#/forms/tanstackForm/fields/selectField.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import type { SelectOption } from "#forms/tanstackForm/fields/selectField.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 
 import { itemFormOpts } from "./useItemForm.tsx"
 

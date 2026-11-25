@@ -1,7 +1,7 @@
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { MetatypeData } from "#/data/biology/metatypeData.ts"
-import type { AwakeningData } from "#/data/magic/awakeningType.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { MetatypeData } from "#data/biology/metatypeData.ts"
+import type { AwakeningData } from "#data/magic/awakeningType.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { createAttrInfo } from "./attributeInfo.ts"
 

@@ -1,4 +1,4 @@
-import type { SourceData } from "#/data/source/sourceData.ts"
+import type { SourceData } from "#data/source/sourceData.ts"
 
 /** A value a feature flag can hold. */
 export type FlagValue = string | number | boolean

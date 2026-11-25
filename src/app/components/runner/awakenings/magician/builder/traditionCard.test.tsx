@@ -2,12 +2,12 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { TraditionData } from "#/data/magic/traditionData.ts"
-import { SpiritType } from "#/data/magic/traditionData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { TraditionData } from "#data/magic/traditionData.ts"
+import { SpiritType } from "#data/magic/traditionData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { TraditionCard } from "./traditionCard.tsx"
 

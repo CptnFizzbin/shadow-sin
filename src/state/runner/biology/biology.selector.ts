@@ -1,9 +1,9 @@
-import { metatypes, MetatypeType } from "#/data/biology/metatypeData.ts"
-import { awakenings, AwakeningType } from "#/data/magic/awakeningType.ts"
-import type { RunnerWithBiology } from "#/data/runner/runnerTraits.ts"
-import { isRunnerWithBiology } from "#/data/runner/runnerTraits.ts"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { metatypes, MetatypeType } from "#data/biology/metatypeData.ts"
+import { awakenings, AwakeningType } from "#data/magic/awakeningType.ts"
+import type { RunnerWithBiology } from "#data/runner/runnerTraits.ts"
+import { isRunnerWithBiology } from "#data/runner/runnerTraits.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 type BiologyData = RunnerWithBiology["biology"]
 

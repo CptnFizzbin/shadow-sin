@@ -1,11 +1,11 @@
 import { z } from "zod"
 
-import { MetatypeType } from "#/data/biology/metatypeData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { EntityBase } from "#/data/entities/entityTraits.ts"
-import type { FeatureFlagsData } from "#/data/featureFlags/featureFlagsData.ts"
-import type { ItemCatalog } from "#/data/items/itemUtils.ts"
-import { AwakeningType } from "#/data/magic/awakeningType.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { EntityBase } from "#data/entities/entityTraits.ts"
+import type { FeatureFlagsData } from "#data/featureFlags/featureFlagsData.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
 
 export interface RunnerBase extends EntityBase {
   kind: EntityKind.runner

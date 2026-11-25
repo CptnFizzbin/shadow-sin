@@ -1,8 +1,8 @@
 import Checkbox from "@mui/material/Checkbox"
 import type { FC } from "react"
 
-import { useItemSelectionToggle } from "#/app/hooks/items/selection/useItemSelection.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
+import { useItemSelectionToggle } from "#app/hooks/items/selection/useItemSelection.ts"
+import type { ItemData } from "#data/items/itemData.ts"
 
 interface ItemAttachmentSelectCheckboxProps {
   attachment: ItemData

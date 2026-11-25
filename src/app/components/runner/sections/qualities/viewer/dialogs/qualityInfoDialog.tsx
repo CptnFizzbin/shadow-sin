@@ -2,13 +2,13 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { QualityData } from "#/data/qualities/qualityData.ts"
-import { bookOptions } from "#/data/source/sourceData.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { DetailDialog } from "#/forms/dialog/detailDialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { Label } from "#/ui/text/label.tsx"
-import { MarkdownText } from "#/ui/text/markdownText.tsx"
+import type { QualityData } from "#data/qualities/qualityData.ts"
+import { bookOptions } from "#data/source/sourceData.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { DetailDialog } from "#forms/dialog/detailDialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { Label } from "#ui/text/label.tsx"
+import { MarkdownText } from "#ui/text/markdownText.tsx"
 
 interface QualityInfoDialogProps extends ControlledDialogProps<void> {
   quality: QualityData

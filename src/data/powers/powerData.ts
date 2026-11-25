@@ -1,5 +1,5 @@
-import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/data/source/sourceData.ts"
+import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
+import type { SourceData } from "#data/source/sourceData.ts"
 
 /**
  * Base interface shared by all power types (adept powers, critter powers, etc.).

@@ -2,8 +2,8 @@ import Chip from "@mui/material/Chip"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
-import { getEffectLabel } from "#/forms/gameEffects/gameEffectsSummary.tsx"
+import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
+import { getEffectLabel } from "#forms/gameEffects/gameEffectsSummary.tsx"
 
 export interface CardElementEffectsProps {
   effects: GameEffectData[] | undefined

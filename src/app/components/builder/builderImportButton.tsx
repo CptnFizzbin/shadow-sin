@@ -5,8 +5,8 @@ import Snackbar from "@mui/material/Snackbar"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useYamlFileImport } from "#/app/hooks/runner/exportImport/useYamlFileImport.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { useYamlFileImport } from "#app/hooks/runner/exportImport/useYamlFileImport.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 interface BuilderImportButtonProps {
   onImport: (importedRunner: RunnerData) => void

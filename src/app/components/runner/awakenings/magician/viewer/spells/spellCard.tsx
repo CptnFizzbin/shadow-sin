@@ -1,14 +1,14 @@
 import type { FC } from "react"
 
-import { CardElementDicePool } from "#/app/components/ui/cards/entityCard/elements/cardElementDicePool.tsx"
-import { CardElementStatusIcon } from "#/app/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
-import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
-import type { SpellData } from "#/data/magic/spellData.ts"
-import { SpellSustainTarget } from "#/data/magic/spellData.ts"
-import { formatDrainFormula } from "#/rules/magic/spellDrainFormula.ts"
-import { hasSpellEffects, isSustainable } from "#/rules/magic/spellSustaining.ts"
-import { Icons } from "#/ui/icons/icons.ts"
-import { MarkdownText } from "#/ui/text/markdownText.tsx"
+import { CardElementDicePool } from "#app/components/ui/cards/entityCard/elements/cardElementDicePool.tsx"
+import { CardElementStatusIcon } from "#app/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
+import { EntityCard } from "#app/components/ui/cards/entityCard/entityCard.tsx"
+import type { SpellData } from "#data/magic/spellData.ts"
+import { SpellSustainTarget } from "#data/magic/spellData.ts"
+import { formatDrainFormula } from "#rules/magic/spellDrainFormula.ts"
+import { hasSpellEffects, isSustainable } from "#rules/magic/spellSustaining.ts"
+import { Icons } from "#ui/icons/icons.ts"
+import { MarkdownText } from "#ui/text/markdownText.tsx"
 
 interface SpellCardProps {
   spell: SpellData

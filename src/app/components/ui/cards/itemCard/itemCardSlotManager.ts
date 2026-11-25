@@ -1,4 +1,4 @@
-import { EntityCardSlotManager } from "#/app/components/ui/cards/entityCard/entityCardSlotManager.ts"
+import { EntityCardSlotManager } from "#app/components/ui/cards/entityCard/entityCardSlotManager.ts"
 
 import { ItemCardElements } from "./itemCardElements.tsx"
 

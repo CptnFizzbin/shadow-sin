@@ -1,7 +1,7 @@
-import type { FocusData } from "#/data/items/magicalData.ts"
-import type { SpellData } from "#/data/magic/spellData.ts"
-import { SpellDuration, SpellSustainTarget } from "#/data/magic/spellData.ts"
-import { SRC } from "#/rules/systemValues/systemValues.ts"
+import type { FocusData } from "#data/items/magicalData.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
+import { SpellDuration, SpellSustainTarget } from "#data/magic/spellData.ts"
+import { SRC } from "#rules/systemValues/systemValues.ts"
 
 import { canFocusSustainSpell } from "./focusRules.ts"
 

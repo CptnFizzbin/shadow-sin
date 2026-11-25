@@ -1,4 +1,4 @@
-import type { SpriteData } from "#/data/magic/spriteData.ts"
+import type { SpriteData } from "#data/magic/spriteData.ts"
 
 import { BuilderConfig } from "./builderConfig.ts"
 

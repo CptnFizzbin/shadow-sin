@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { dispatchThunk } from "#/state/runner/runnerStore.dispatch.ts"
-import { runnerRootReducer } from "#/state/runner/runnerStore.reducer.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { dispatchThunk } from "#state/runner/runnerStore.dispatch.ts"
+import { runnerRootReducer } from "#state/runner/runnerStore.reducer.ts"
 
 import { burnEdge, spendEdge } from "./edge.actions.ts"
 

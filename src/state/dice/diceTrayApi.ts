@@ -1,9 +1,9 @@
 import { produce } from "immer"
 
-import { markOverlayClosed, markOverlayOpened } from "#/common/overlay/openOverlayTracker.ts"
-import { ExtendedInterval, TestType } from "#/rules/dice/testType.ts"
-import type { CompatStore } from "#/state/reduxToolkit/compatStore.ts"
-import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
+import { markOverlayClosed, markOverlayOpened } from "#common/overlay/openOverlayTracker.ts"
+import { ExtendedInterval, TestType } from "#rules/dice/testType.ts"
+import type { CompatStore } from "#state/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#state/reduxToolkit/compatStore.ts"
 
 import { DiceRoller } from "./diceRoller.ts"
 import { selectWasRolled } from "./state/diceRoller.selector.ts"

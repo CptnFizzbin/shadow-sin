@@ -9,9 +9,9 @@ import Select from "@mui/material/Select"
 import { RiPencilLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import type { Duration } from "#/data/duration/duration.ts"
-import { StandardDurations } from "#/data/duration/duration.ts"
-import { DurationUtils } from "#/data/duration/durationUtils.ts"
+import type { Duration } from "#data/duration/duration.ts"
+import { StandardDurations } from "#data/duration/duration.ts"
+import { DurationUtils } from "#data/duration/durationUtils.ts"
 
 import { useDurationDialog } from "./durationDialog.tsx"
 

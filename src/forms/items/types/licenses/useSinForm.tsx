@@ -1,9 +1,9 @@
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { SinData } from "#/data/items/sinData.ts"
-import type { GearSubmitMeta } from "#/forms/items/gearSubmitMeta.ts"
-import { useItemForm, itemDefaults } from "#/forms/items/useItemForm.tsx"
-import { getSinCost } from "#/rules/items/sinUtils.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { SinData } from "#data/items/sinData.ts"
+import type { GearSubmitMeta } from "#forms/items/gearSubmitMeta.ts"
+import { useItemForm, itemDefaults } from "#forms/items/useItemForm.tsx"
+import { getSinCost } from "#rules/items/sinUtils.ts"
 
 interface SinFormOptions {
   sin?: SinData

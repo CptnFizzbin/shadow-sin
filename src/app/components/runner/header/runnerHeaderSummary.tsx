@@ -4,14 +4,14 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { KarmaValue } from "#/app/components/runner/karma/viewer/karmaValue.tsx"
-import { AttributeKey, AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
-import { ReputationSelectors } from "#/state/runner/reputation/reputation.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { KarmaValue } from "#app/components/runner/karma/viewer/karmaValue.tsx"
+import { AttributeKey, AttributeLabels } from "#data/attributes/attributeKey.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { DamageSelectors } from "#state/runner/damage/damage.selector.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { ProfileSelectors } from "#state/runner/profile/profile.selector.ts"
+import { ReputationSelectors } from "#state/runner/reputation/reputation.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 /**
  * Compact, always-visible summary of the Runner currently being viewed, rendered as a second

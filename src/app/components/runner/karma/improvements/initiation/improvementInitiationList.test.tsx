@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { SpendKarmaDialogProvider } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { SpendKarmaDialogProvider } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementInitiationList } from "./improvementInitiationList.tsx"

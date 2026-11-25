@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
-import { ArmorRatingType } from "#/data/items/armorData.ts"
-import { createItem, createItemMap } from "#/data/items/itemData.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
+import { ArmorRatingType } from "#data/items/armorData.ts"
+import { createItem, createItemMap } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -14,11 +14,11 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/data/magic/spellData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+} from "#data/magic/spellData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 import { loadMouse } from "#testUtils/fixtures/characters/mouse.ts"
 
 import { CombatPoolSelectors } from "./combatPools.selector.ts"

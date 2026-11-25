@@ -1,11 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { ItemActionsDialogProvider } from "#/app/components/entities/items/actions/itemActionsDialogProvider.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
+import { ItemActionsDialogProvider } from "#app/components/entities/items/actions/itemActionsDialogProvider.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ItemAttachmentTree } from "./itemAttachmentTree.tsx"

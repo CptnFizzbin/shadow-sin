@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ItemType } from "#/data/items/itemType.ts"
+import { ItemType } from "#data/items/itemType.ts"
 
 import { useDeviceForm } from "./useDeviceForm.tsx"
 

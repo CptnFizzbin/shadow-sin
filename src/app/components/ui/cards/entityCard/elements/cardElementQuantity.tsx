@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { StatChip } from "#/ui/chips/statChip.tsx"
+import { StatChip } from "#ui/chips/statChip.tsx"
 
 export interface CardElementQuantityProps {
   value: number | undefined

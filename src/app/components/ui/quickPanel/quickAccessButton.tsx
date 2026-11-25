@@ -9,7 +9,7 @@ import { RiBugLine, RiCloseLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
-import { NuyenSection } from "#/app/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
+import { NuyenSection } from "#app/components/runner/sections/finances/viewer/nuyen/nuyenSection.tsx"
 
 import { QuickAttributesSection } from "./quickAttributesSection.tsx"
 import { QuickDamageSection } from "./quickDamageSection.tsx"

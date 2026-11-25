@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import type { EntityCardLeftAction } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
-import { isAgentData } from "#/data/items/agentData.ts"
-import type { ProgramData } from "#/data/items/programData.ts"
+import type { EntityCardLeftAction } from "#app/components/ui/cards/entityCard/entityCard.tsx"
+import { isAgentData } from "#data/items/agentData.ts"
+import type { ProgramData } from "#data/items/programData.ts"
 
 import { AgentDataCard } from "./agentDataCard.tsx"
 import { ProgramDataCard } from "./programDataCard.tsx"

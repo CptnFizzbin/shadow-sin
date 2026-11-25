@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 interface OldVehicleGear {
   itemType?: string

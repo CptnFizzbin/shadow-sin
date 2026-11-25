@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest"
 
-import type { Duration } from "#/data/duration/duration.ts"
+import type { Duration } from "#data/duration/duration.ts"
 
 import { CheckFormulas } from "./checkFormulas.ts"
 

@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import type { AvailabilityInfo } from "#/data/items/availabilityInfo.ts"
-import { availabilityToString } from "#/data/items/availabilityInfo.ts"
+import type { AvailabilityInfo } from "#data/items/availabilityInfo.ts"
+import { availabilityToString } from "#data/items/availabilityInfo.ts"
 
 export interface CardElementAvailabilityProps {
   value: AvailabilityInfo | undefined

@@ -10,6 +10,27 @@
     "jsx": "react-jsx",
     "module": "esnext",
     "paths": {
+      "#common/*": [
+        "./src/common/*"
+      ],
+      "#data/*": [
+        "./src/data/*"
+      ],
+      "#rules/*": [
+        "./src/rules/*"
+      ],
+      "#state/*": [
+        "./src/state/*"
+      ],
+      "#ui/*": [
+        "./src/ui/*"
+      ],
+      "#forms/*": [
+        "./src/forms/*"
+      ],
+      "#app/*": [
+        "./src/app/*"
+      ],
       "#/*": [
         "./src/*"
       ],

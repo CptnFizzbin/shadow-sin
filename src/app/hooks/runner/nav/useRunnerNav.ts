@@ -1,9 +1,9 @@
 import { useMatches, useNavigate } from "@tanstack/react-router"
 import { useCallback } from "react"
 
-import type { RunnerSection } from "#/app/components/runner/sections/runnerSections.ts"
-import { runnerSections } from "#/app/components/runner/sections/runnerSections.ts"
-import { NumberUtils } from "#/common/number/numberUtils.ts"
+import type { RunnerSection } from "#app/components/runner/sections/runnerSections.ts"
+import { runnerSections } from "#app/components/runner/sections/runnerSections.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
 
 import { useRunnerTabs } from "./useRunnerTabs.ts"
 

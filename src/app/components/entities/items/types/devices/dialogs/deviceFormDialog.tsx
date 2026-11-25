@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
-import { DeviceFormFields } from "#/app/components/entities/items/types/devices/forms/deviceFormFields.tsx"
-import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { DeviceData } from "#/data/items/deviceData.ts"
-import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { deviceFieldMap, useDeviceForm } from "#/forms/items/types/devices/useDeviceForm.tsx"
+import { ItemDialog } from "#app/components/entities/items/dialogs/itemDialog.tsx"
+import { DeviceFormFields } from "#app/components/entities/items/types/devices/forms/deviceFormFields.tsx"
+import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { DeviceData } from "#data/items/deviceData.ts"
+import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { deviceFieldMap, useDeviceForm } from "#forms/items/types/devices/useDeviceForm.tsx"
 
 interface DeviceFormDialogProps {
   ctrl: AnyDialogCtrl

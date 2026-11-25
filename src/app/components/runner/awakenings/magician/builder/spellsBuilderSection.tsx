@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { BuilderSection } from "#/app/components/builder/builderSection.tsx"
-import { isMagician } from "#/data/magic/magicianUtils.ts"
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
-import { useSpellsAlerts } from "#/state/builder/sections/resources/magician/useSpellsAlerts.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { BuilderSection } from "#app/components/builder/builderSection.tsx"
+import { isMagician } from "#data/magic/magicianUtils.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { useSpellsAlerts } from "#state/builder/sections/resources/magician/useSpellsAlerts.ts"
+import { BiologySelectors } from "#state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import { SpellsList } from "./spellsList.tsx"
 

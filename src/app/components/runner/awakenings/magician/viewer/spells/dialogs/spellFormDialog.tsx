@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import { SpellFormFields } from "#/app/components/runner/awakenings/magician/viewer/spells/form/spellFormFields.tsx"
-import type { SpellData } from "#/data/magic/spellData.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { FormDialog } from "#/forms/dialog/formDialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { useSpellForm } from "#/forms/magician/spells/useSpellForm.ts"
+import { SpellFormFields } from "#app/components/runner/awakenings/magician/viewer/spells/form/spellFormFields.tsx"
+import type { SpellData } from "#data/magic/spellData.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { FormDialog } from "#forms/dialog/formDialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { useSpellForm } from "#forms/magician/spells/useSpellForm.ts"
 
 interface SpellFormDialogProps extends ControlledDialogProps<SpellData> {
   spell?: SpellData

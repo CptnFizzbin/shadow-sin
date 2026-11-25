@@ -1,7 +1,7 @@
 # Prototype
 
 **Location:** `src/ui/prototype/`
-**Import:** `import { Prototype } from "#/ui/prototype/prototype.tsx"`
+**Import:** `import { Prototype } from "#ui/prototype/prototype.tsx"`
 
 A compound component for switching between several in-progress prototypes/mockups in place. `Prototype` takes an
 explicit `versions` list, and `Prototype.Item`s can be nested arbitrarily deep inside it — they don't need to be
@@ -19,7 +19,7 @@ the screen switches between versions.
 ## Usage
 
 ```tsx
-import { Prototype } from "#/ui/prototype/prototype.tsx"
+import { Prototype } from "#ui/prototype/prototype.tsx"
 
 const versions = [
   { key: "grid", name: "Grid layout" },

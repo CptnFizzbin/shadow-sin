@@ -1,8 +1,8 @@
-import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/data/attributes/attributeKey.ts"
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#data/attributes/attributeKey.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import type { BpLineItem } from "./bpLineItem.ts"
 

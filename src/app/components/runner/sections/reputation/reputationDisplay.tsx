@@ -8,9 +8,9 @@ import { RiQuestionLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { ReputationSelectors } from "#/state/runner/reputation/reputation.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { ReputationSelectors } from "#state/runner/reputation/reputation.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 interface ReputationDisplayProps {
   descriptionStyle?: "tooltip" | "inline"

@@ -9,10 +9,10 @@ import TextField from "@mui/material/TextField"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { z } from "zod"
 
-import { FavourDirection } from "#/data/contacts/favourData.ts"
-import { contactFormOpts } from "#/forms/contacts/useContactForm.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { FavourDirection } from "#data/contacts/favourData.ts"
+import { contactFormOpts } from "#forms/contacts/useContactForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { ContactSkillsEditor } from "./contactSkillsEditor.tsx"
 

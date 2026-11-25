@@ -5,12 +5,12 @@ import type { FC } from "react"
 
 import {
   useTraditionFormDialog,
-} from "#/app/components/runner/awakenings/magician/viewer/spells/dialogs/traditionFormDialog.tsx"
-import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { TraditionSelectors } from "#/state/runner/tradition/tradition.selector.ts"
+} from "#app/components/runner/awakenings/magician/viewer/spells/dialogs/traditionFormDialog.tsx"
+import { AttributeLabels } from "#data/attributes/attributeKey.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { TraditionSelectors } from "#state/runner/tradition/tradition.selector.ts"
 
 export const TraditionCard: FC = () => {
   const dispatch = useRunnerStoreDispatch()

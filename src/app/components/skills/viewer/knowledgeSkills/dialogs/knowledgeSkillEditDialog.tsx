@@ -5,13 +5,13 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { uuid } from "#/common/uuid/uuidUtils.ts"
-import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
-import { SkillRatingMax } from "#/data/skills/skillUtils.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import { uuid } from "#common/uuid/uuidUtils.ts"
+import type { KnowledgeSkillData } from "#data/skills/knowledgeSkillData.ts"
+import { SkillRatingMax } from "#data/skills/skillUtils.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 interface KnowledgeSkillEditDialogProps extends ControlledDialogProps<KnowledgeSkillData> {
   skill?: KnowledgeSkillData

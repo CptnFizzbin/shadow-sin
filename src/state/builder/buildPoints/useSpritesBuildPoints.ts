@@ -1,9 +1,9 @@
-import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
-import { getSpriteTasksBp } from "#/rules/buildPoints/spritesUtils.ts"
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SpriteSelectors } from "#/state/runner/sprites/sprites.selector.ts"
+import { isTechnomancer } from "#data/magic/technomancerUtils.ts"
+import { getSpriteTasksBp } from "#rules/buildPoints/spritesUtils.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { BiologySelectors } from "#state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SpriteSelectors } from "#state/runner/sprites/sprites.selector.ts"
 
 import type { BpLineItem } from "./bpLineItem.ts"
 

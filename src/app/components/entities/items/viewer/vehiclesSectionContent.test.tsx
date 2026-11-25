@@ -1,11 +1,11 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { VehicleData } from "#/data/items/vehicleData.ts"
-import { VehicleCategory } from "#/data/items/vehicleData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { VehicleData } from "#data/items/vehicleData.ts"
+import { VehicleCategory } from "#data/items/vehicleData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { VehiclesSectionContent } from "./vehiclesSectionContent.tsx"

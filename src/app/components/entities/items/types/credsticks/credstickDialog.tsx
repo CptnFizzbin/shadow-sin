@@ -10,24 +10,24 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { CredstickData } from "#/data/items/credstickData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { CredstickData } from "#data/items/credstickData.ts"
 import {
   CredstickMaxBalance,
   CredstickPurchaseCost,
   CredstickType,
   CredstickTypeLabel,
-} from "#/data/items/credstickData.ts"
-import { createItem } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { formatNuyen } from "#/forms/nuyen/nuyen.tsx"
-import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+} from "#data/items/credstickData.ts"
+import { createItem } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { formatNuyen } from "#forms/nuyen/nuyen.tsx"
+import { NuyenSelectors } from "#state/runner/nuyen/nuyen.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 type CredstickDialogMode = "add" | "add-certified" | "edit"
 

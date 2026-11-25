@@ -1,14 +1,14 @@
 import { produce } from "immer"
 import * as uuid from "uuid"
 
-import { metatypes, MetatypeType } from "#/data/biology/metatypeData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { LifestyleType } from "#/data/finances/lifestyleType.ts"
-import { standardLifestyle } from "#/data/finances/runnerLifestyle.ts"
-import type { ItemCatalog } from "#/data/items/itemUtils.ts"
-import { awakenings, AwakeningType } from "#/data/magic/awakeningType.ts"
-import { LATEST_MIGRATION_TIMESTAMP } from "#/data/migrations/migrations.ts"
-import { getAttributesValues } from "#/rules/attributes/getAttributesValues.ts"
+import { metatypes, MetatypeType } from "#data/biology/metatypeData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { LifestyleType } from "#data/finances/lifestyleType.ts"
+import { standardLifestyle } from "#data/finances/runnerLifestyle.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import { awakenings, AwakeningType } from "#data/magic/awakeningType.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "#data/migrations/migrations.ts"
+import { getAttributesValues } from "#rules/attributes/getAttributesValues.ts"
 
 import type { RunnerData } from "./runnerData.ts"
 

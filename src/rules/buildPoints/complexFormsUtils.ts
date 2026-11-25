@@ -1,4 +1,4 @@
-import type { ComplexFormData } from "#/data/magic/complexFormData.ts"
+import type { ComplexFormData } from "#data/magic/complexFormData.ts"
 
 import { BuilderConfig } from "./builderConfig.ts"
 

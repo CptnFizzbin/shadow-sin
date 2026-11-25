@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { AttributeLabels, AttributeOrder } from "#/data/attributes/attributeKey.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { DetailDialog } from "#/forms/dialog/detailDialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import type { Combatant } from "#/state/initiativeTracker/initiativeTrackerData.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { AttributeLabels, AttributeOrder } from "#data/attributes/attributeKey.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { DetailDialog } from "#forms/dialog/detailDialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { Combatant } from "#state/initiativeTracker/initiativeTrackerData.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { PassPips } from "./passPips.tsx"
 

@@ -4,12 +4,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { AttributeLabels } from "#data/attributes/attributeKey.ts"
+import { useEntitySelector } from "#state/entity/useEntitySelector.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { DamageSelectors } from "#state/runner/damage/damage.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 interface SkillListItemProps {
   name: string

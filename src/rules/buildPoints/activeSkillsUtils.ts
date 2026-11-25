@@ -1,8 +1,8 @@
-import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
-import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
-import type { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
-import { getSkillsInGroup } from "#/data/skills/skillGroupUtils.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
+import type { ActiveSkillData } from "#data/skills/activeSkillData.ts"
+import type { SkillGroupData } from "#data/skills/skillGroupData.ts"
+import type { SkillGroupKey } from "#data/skills/skillGroupKey.ts"
+import { getSkillsInGroup } from "#data/skills/skillGroupUtils.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
 
 export function getDisabledSkills(
   activeSkills: ActiveSkillData[],

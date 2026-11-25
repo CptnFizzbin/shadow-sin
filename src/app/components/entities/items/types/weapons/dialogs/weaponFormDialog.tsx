@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
-import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import { WeaponFormFields } from "#/app/components/entities/items/types/weapons/forms/weaponFormFields.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { WeaponData, WeaponType } from "#/data/items/weaponData.ts"
-import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { useWeaponForm, weaponFieldMap } from "#/forms/items/types/weapons/useWeaponForm.tsx"
+import { ItemDialog } from "#app/components/entities/items/dialogs/itemDialog.tsx"
+import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import { WeaponFormFields } from "#app/components/entities/items/types/weapons/forms/weaponFormFields.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { WeaponData, WeaponType } from "#data/items/weaponData.ts"
+import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { useWeaponForm, weaponFieldMap } from "#forms/items/types/weapons/useWeaponForm.tsx"
 
 interface WeaponFormDialogProps {
   ctrl: AnyDialogCtrl

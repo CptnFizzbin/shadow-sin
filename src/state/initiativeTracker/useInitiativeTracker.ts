@@ -1,4 +1,4 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 import type { Combatant } from "./initiativeTrackerData.ts"
 import {

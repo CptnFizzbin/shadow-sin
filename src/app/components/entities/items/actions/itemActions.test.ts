@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { FocusData } from "#/data/items/magicalData.ts"
-import { MagicalType } from "#/data/items/magicalData.ts"
-import { FocusType } from "#/data/magic/focusData.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { FocusData } from "#data/items/magicalData.ts"
+import { MagicalType } from "#data/items/magicalData.ts"
+import { FocusType } from "#data/magic/focusData.ts"
 
 import { getItemActions, getItemActionTargetState, getItemStateDisplayLabel, ItemAction } from "./itemActions.ts"
 

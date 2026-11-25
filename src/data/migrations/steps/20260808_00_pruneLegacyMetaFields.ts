@@ -1,4 +1,4 @@
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 /**
  * No-op transform on the character data itself. `_meta_.appliedMigrations` — the old

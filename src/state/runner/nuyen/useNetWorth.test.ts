@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import type { CredstickData } from "#/data/items/credstickData.ts"
-import { CredstickType } from "#/data/items/credstickData.ts"
-import { createItem, createItemMap } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
+import type { CredstickData } from "#data/items/credstickData.ts"
+import { CredstickType } from "#data/items/credstickData.ts"
+import { createItem, createItemMap } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 
 import { selectNetWorth } from "./useNetWorth.tsx"
 

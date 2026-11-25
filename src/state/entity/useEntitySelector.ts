@@ -1,13 +1,13 @@
 import { useContext } from "react"
 
-import { OutOfContextError } from "#/common/errors/outOfContextError.ts"
-import type { EntityData } from "#/data/entities/entityData.ts"
-import type { ItemCatalog } from "#/data/items/itemUtils.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import type { EntityScope } from "#/state/entityScope.ts"
-import { getEntityScope } from "#/state/entityScope.ts"
-import type { Selector } from "#/state/reselect/selectorUtils.ts"
-import { useRunner } from "#/state/runner/useRunnerStore.ts"
+import { OutOfContextError } from "#common/errors/outOfContextError.ts"
+import type { EntityData } from "#data/entities/entityData.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import type { EntityScope } from "#state/entityScope.ts"
+import { getEntityScope } from "#state/entityScope.ts"
+import type { Selector } from "#state/reselect/selectorUtils.ts"
+import { useRunner } from "#state/runner/useRunnerStore.ts"
 
 import { EntityContext } from "./entity.context.ts"
 

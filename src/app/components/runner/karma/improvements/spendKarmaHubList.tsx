@@ -8,9 +8,9 @@ import Stack from "@mui/material/Stack"
 import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
-import { useSectionQueuedSummaries } from "#/app/hooks/improvements/useSectionQueuedSummaries.ts"
-import { useVisibleSections } from "#/app/hooks/improvements/useVisibleSections.ts"
+import { KarmaChip } from "#app/components/runner/karma/viewer/karmaChip.tsx"
+import { useSectionQueuedSummaries } from "#app/hooks/improvements/useSectionQueuedSummaries.ts"
+import { useVisibleSections } from "#app/hooks/improvements/useVisibleSections.ts"
 
 import type { SpendKarmaSectionKey } from "./spendKarmaSections.tsx"
 

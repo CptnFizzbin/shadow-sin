@@ -1,4 +1,4 @@
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
 
 import {
   useActiveSkillsAlerts,

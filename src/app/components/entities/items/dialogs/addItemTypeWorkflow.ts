@@ -1,5 +1,5 @@
-import type { GearSection } from "#/app/components/entities/items/viewer/gearSectionTypes.ts"
-import { createWorkflow, useWorkflow } from "#/ui/workflow/createWorkflow.tsx"
+import type { GearSection } from "#app/components/entities/items/viewer/gearSectionTypes.ts"
+import { createWorkflow, useWorkflow } from "#ui/workflow/createWorkflow.tsx"
 
 export enum AddItemTypeStep {
   Category = "Category",

@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { LocalStorageProvider } from "#/state/storage/providers/localStorageProvider.ts"
+import { LocalStorageProvider } from "#state/storage/providers/localStorageProvider.ts"
 
 import { RunnerManagerContext } from "./runnerManager.context.ts"
 import { RunnerManager } from "./runnerManager.ts"

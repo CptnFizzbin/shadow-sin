@@ -1,5 +1,5 @@
 // fallow-ignore-file unused-file
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
 
 import type { AnyDialogCtrl } from "./dialogCtrl.ts"
 

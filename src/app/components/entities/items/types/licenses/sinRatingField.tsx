@@ -3,8 +3,8 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
-import type { SinForm } from "#/forms/items/types/licenses/useSinForm.tsx"
-import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import type { SinForm } from "#forms/items/types/licenses/useSinForm.tsx"
+import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 interface SinRatingFieldProps {
   form: SinForm

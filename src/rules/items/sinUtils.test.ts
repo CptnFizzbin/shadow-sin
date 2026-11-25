@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { SinNameList } from "#/data/items/sinNameList.ts"
+import { SinNameList } from "#data/items/sinNameList.ts"
 
 import { getRandomSinName } from "./sinUtils.ts"
 

@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { LoanData } from "#/data/finances/loanData.ts"
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
+import type { LoanData } from "#data/finances/loanData.ts"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
 
 interface LoanCardProps {
   loan: LoanData

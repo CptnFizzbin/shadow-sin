@@ -1,8 +1,8 @@
 import { z } from "zod"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { GameEffectDataSchema } from "#/data/gameEffects/gameEffectData.ts"
-import { SourceDataSchema } from "#/data/source/sourceData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { GameEffectDataSchema } from "#data/gameEffects/gameEffectData.ts"
+import { SourceDataSchema } from "#data/source/sourceData.ts"
 
 import type { PowerData } from "./powerData.ts"
 

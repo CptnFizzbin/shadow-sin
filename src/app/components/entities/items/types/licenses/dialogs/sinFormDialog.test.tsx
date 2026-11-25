@@ -1,9 +1,9 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import type { SinData } from "#/data/items/sinData.ts"
-import { SinNameList } from "#/data/items/sinNameList.ts"
-import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import type { SinData } from "#data/items/sinData.ts"
+import { SinNameList } from "#data/items/sinNameList.ts"
+import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { SinFormDialog } from "./sinFormDialog.tsx"

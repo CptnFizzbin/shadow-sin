@@ -1,7 +1,7 @@
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 
 import { itemFormOpts } from "./useItemForm.tsx"
 

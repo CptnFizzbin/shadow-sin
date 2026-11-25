@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
+import { useFieldContext } from "#forms/tanstackForm/fieldContext.ts"
 
 interface ErrorLike {
   message: string

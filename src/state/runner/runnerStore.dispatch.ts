@@ -1,10 +1,10 @@
 import type { UnknownAction } from "@reduxjs/toolkit"
 import { useDispatch } from "react-redux"
 
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import type { RunnerStateDispatch } from "#/state/runnerState.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
-import { toRunnerData } from "#/state/toRunnerData.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import type { RunnerStateDispatch } from "#state/runnerState.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
+import { toRunnerData } from "#state/toRunnerData.ts"
 
 export type RunnerDispatch = RunnerStateDispatch
 

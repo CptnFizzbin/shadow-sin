@@ -7,8 +7,8 @@ import classnames from "classnames"
 import type { ChangeEventHandler, FC } from "react"
 import { useState } from "react"
 
-import { NumberUtils } from "#/common/number/numberUtils.ts"
-import { mergeSx } from "#/ui/mui/muiUtils.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
+import { mergeSx } from "#ui/mui/muiUtils.ts"
 
 import styles from "./counterInput.module.css"
 

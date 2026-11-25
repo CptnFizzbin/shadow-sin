@@ -3,15 +3,15 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Tooltip from "@mui/material/Tooltip"
 
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 import {
   getActiveItemState,
   getAllowedItemStates,
   getItemStateLabel,
   isItemStateWithinParent,
-} from "#/rules/items/itemStateRules.ts"
+} from "#rules/items/itemStateRules.ts"
 
 import { itemFormOpts } from "./useItemForm.tsx"
 

@@ -9,22 +9,22 @@ import Stack from "@mui/material/Stack"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useSpendKarmaDialogContext } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
-import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
-import { useImprovementSelector } from "#/app/hooks/improvements/useImprovementSelector.ts"
-import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import type { AttrIncreaseEntry } from "#/data/karma/improvements/improvementEntry.ts"
-import { isAttrIncreaseEntry } from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import { getAttributeCap } from "#/rules/karma/improvements/improvementCaps.ts"
+import { useSpendKarmaDialogContext } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { KarmaChip } from "#app/components/runner/karma/viewer/karmaChip.tsx"
+import { useImprovementSelector } from "#app/hooks/improvements/useImprovementSelector.ts"
+import { AttributeLabels } from "#data/attributes/attributeKey.ts"
+import type { AttrIncreaseEntry } from "#data/karma/improvements/improvementEntry.ts"
+import { isAttrIncreaseEntry } from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import { getAttributeCap } from "#rules/karma/improvements/improvementCaps.ts"
 import {
   ImprovementsSelectors,
   selectAllImprovements,
   selectImprovementsTotalCost,
-} from "#/state/improvements/improvementSelectors.ts"
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+} from "#state/improvements/improvementSelectors.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

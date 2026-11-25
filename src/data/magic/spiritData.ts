@@ -1,11 +1,11 @@
 import { z } from "zod"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
-import { AttrKey } from "#/data/attributes/attributeKey.ts"
-import type { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
-import type { EntityDamage } from "#/data/entities/entityData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { AttributeCatalog } from "#data/attributes/attributeCatalog.ts"
+import { AttrKey } from "#data/attributes/attributeKey.ts"
+import type { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import type { EntityDamage } from "#data/entities/entityData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
 
 export enum SpiritType {
   wind = "wind",

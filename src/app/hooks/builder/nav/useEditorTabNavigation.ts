@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-import type { EditorTabId } from "#/app/components/ui/nav/builder/editorTabId.ts"
-import { FINALIZE_TAB_ID } from "#/app/components/ui/nav/builder/editorTabId.ts"
-import { NumberUtils } from "#/common/number/numberUtils.ts"
+import type { EditorTabId } from "#app/components/ui/nav/builder/editorTabId.ts"
+import { FINALIZE_TAB_ID } from "#app/components/ui/nav/builder/editorTabId.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
 
 export interface UseEditorTabNavigation {
   activeTab: EditorTabId

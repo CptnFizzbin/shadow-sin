@@ -1,9 +1,9 @@
 import { produce } from "immer"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ImprovementEntry } from "#/data/karma/improvements/improvementEntry.ts"
-import type { CompatStore } from "#/state/reduxToolkit/compatStore.ts"
-import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ImprovementEntry } from "#data/karma/improvements/improvementEntry.ts"
+import type { CompatStore } from "#state/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#state/reduxToolkit/compatStore.ts"
 
 export type ImprovementsState = Record<UUID, ImprovementEntry>
 

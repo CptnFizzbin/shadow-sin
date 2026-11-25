@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtendedTestEntry } from "#/data/checks/extendedTestData.ts"
+import type { ExtendedTestEntry } from "#data/checks/extendedTestData.ts"
 
 import {
   addExtendedTest,

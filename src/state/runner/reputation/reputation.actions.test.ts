@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
 
 import { addReputationEntry, editReputationEntry, removeReputationEntry } from "./reputation.actions.ts"
 import { reputationReducer } from "./reputation.state.ts"

@@ -12,7 +12,7 @@ import Select from "@mui/material/Select"
 import { sort } from "fast-sort"
 import type { FC, ReactNode } from "react"
 
-import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
+import { useFieldContext } from "#forms/tanstackForm/fieldContext.ts"
 
 import { useFieldErrors } from "./useFieldError.ts"
 

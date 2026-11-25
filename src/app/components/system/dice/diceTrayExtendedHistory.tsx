@@ -3,8 +3,8 @@ import Typography from "@mui/material/Typography"
 import pluralize from "pluralize"
 import type { FC } from "react"
 
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { useDiceTray } from "./diceTrayContext.ts"
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { uuid } from "#/common/uuid/uuidUtils.ts"
+import { uuid } from "#common/uuid/uuidUtils.ts"
 
 import { LanguageSkillDataSchema } from "./languageSkillData.ts"
 

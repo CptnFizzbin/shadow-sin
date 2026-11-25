@@ -1,4 +1,4 @@
-import type { ContactData } from "#/data/contacts/contactData.ts"
+import type { ContactData } from "#data/contacts/contactData.ts"
 
 import { BuilderConfig } from "./builderConfig.ts"
 

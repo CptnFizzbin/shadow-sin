@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { SkillPoolSelectors } from "./skillPools.selector.ts"
 

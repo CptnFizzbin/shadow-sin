@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { DicePool } from "#/app/components/system/dicePool/dicePool.tsx"
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
-import type { SkillPoolVariant } from "#/state/runner/dicePool/skillDicePools.ts"
-import { useActiveSkillDicePool } from "#/state/runner/dicePool/skillDicePools.ts"
+import { DicePool } from "#app/components/system/dicePool/dicePool.tsx"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
+import type { SkillPoolVariant } from "#state/runner/dicePool/skillDicePools.ts"
+import { useActiveSkillDicePool } from "#state/runner/dicePool/skillDicePools.ts"
 
 interface ActiveSkillVariantDicePoolProps {
   skillKey: SkillKey

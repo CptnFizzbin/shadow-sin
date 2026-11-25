@@ -1,7 +1,7 @@
-import type { KarmaExchangeDirection } from "#/state/runner/karma/karma.selector.ts"
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { NuyenSelectors } from "#/state/runner/nuyen/nuyen.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { KarmaExchangeDirection } from "#state/runner/karma/karma.selector.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { NuyenSelectors } from "#state/runner/nuyen/nuyen.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export interface KarmaExchange {
   nuyenPerKarma: number

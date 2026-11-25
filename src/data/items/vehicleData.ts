@@ -1,5 +1,5 @@
-import type { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
-import type { EntityDamage } from "#/data/entities/entityData.ts"
+import type { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import type { EntityDamage } from "#data/entities/entityData.ts"
 
 import type { ItemData } from "./itemData.ts"
 import { ItemType } from "./itemType.ts"

@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import { meleeWeaponTypes, rangedWeaponTypes } from "#/data/items/weapons/weaponTypeGroups.ts"
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import { meleeWeaponTypes, rangedWeaponTypes } from "#data/items/weapons/weaponTypeGroups.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 interface GearItem {
   id: string

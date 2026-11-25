@@ -106,6 +106,13 @@ export default defineConfig([
 
       ...{ // import-alias rules
         "@dword-design/import-alias/prefer-alias": "error",
+        // Each src/ section has its own alias (#data/, #rules/, ...) standing in for its future package name.
+        "no-restricted-imports": ["error", {
+          patterns: [{
+            regex: "^#/(common|data|rules|state|ui|forms|app)/",
+            message: "Import a section through its own alias (e.g. #data/...), not #/<section>/....",
+          }],
+        }],
       },
 
       ...{ // eslint-plugin-import-x rules

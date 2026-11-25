@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { SpellData } from "#/data/magic/spellData.ts"
-import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/data/magic/spellData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
+import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#data/magic/spellData.ts"
 
 import { computeDrainValue, formatDrainFormula } from "./spellDrainFormula.ts"
 

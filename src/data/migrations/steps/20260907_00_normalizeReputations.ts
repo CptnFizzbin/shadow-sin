@@ -1,9 +1,9 @@
 import { produce } from "immer"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { uuid } from "#/common/uuid/uuidUtils.ts"
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
-import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { uuid } from "#common/uuid/uuidUtils.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
+import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
 
 interface Character {
   profile?: {

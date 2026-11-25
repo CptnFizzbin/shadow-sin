@@ -1,5 +1,5 @@
-import type { JsonObject, JsonValue } from "#/common/json/jsonUtils.ts"
-import { getRunnerStorageKey } from "#/state/persistence/builderDraftKey.ts"
+import type { JsonObject, JsonValue } from "#common/json/jsonUtils.ts"
+import { getRunnerStorageKey } from "#state/persistence/builderDraftKey.ts"
 
 export function migrateOldLocalStorageFormat(ls: Storage): void {
   const oldCharacterPrefix = "shadow-sin:json:characters/"

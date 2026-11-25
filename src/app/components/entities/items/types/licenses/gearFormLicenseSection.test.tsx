@@ -1,14 +1,14 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { ArmorFormDialog } from "#/app/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { LicenseData } from "#/data/items/licenseData.ts"
-import type { SinData } from "#/data/items/sinData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { ArmorFormDialog } from "#app/components/entities/items/types/armor/dialogs/armorFormDialog.tsx"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { LicenseData } from "#data/items/licenseData.ts"
+import type { SinData } from "#data/items/sinData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 const restrictedArmor: ArmorData = {

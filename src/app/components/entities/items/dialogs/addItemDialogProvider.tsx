@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { AddItemDialogContext } from "#/app/components/entities/items/addItemDialogContext.ts"
-import { useAddItemDialog } from "#/app/hooks/items/dialogs/useAddItemDialog.tsx"
+import { AddItemDialogContext } from "#app/components/entities/items/addItemDialogContext.ts"
+import { useAddItemDialog } from "#app/hooks/items/dialogs/useAddItemDialog.tsx"
 
 /**
  * Provides the Add Item workflow to the subtree via `AddItemDialogContext` and renders its

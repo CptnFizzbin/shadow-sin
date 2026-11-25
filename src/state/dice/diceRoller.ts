@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import { NumberUtils } from "#/common/number/numberUtils.ts"
-import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
+import { createCompatStore } from "#state/reduxToolkit/compatStore.ts"
 
 import { selectAllSettled, selectIsRolling } from "./state/diceRoller.selector.ts"
 import type { DiceRollerState } from "./state/diceRoller.state.ts"

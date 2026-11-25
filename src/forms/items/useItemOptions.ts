@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import type { ItemData } from "#data/items/itemData.ts"
 
 import type { ItemForm } from "./useItemForm.tsx"
 

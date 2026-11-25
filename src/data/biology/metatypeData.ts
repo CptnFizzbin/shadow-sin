@@ -1,9 +1,9 @@
-import type { AttributeInfoCatalog } from "#/data/attributes/attributeCatalog.ts"
-import { createAttrInfoCatalog } from "#/data/attributes/attributeCatalog.ts"
-import type { MovementData } from "#/data/attributes/movementData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { CritterPowerData } from "#/data/powers/critterPowerData.ts"
-import type { QualityData } from "#/data/qualities/qualityData.ts"
+import type { AttributeInfoCatalog } from "#data/attributes/attributeCatalog.ts"
+import { createAttrInfoCatalog } from "#data/attributes/attributeCatalog.ts"
+import type { MovementData } from "#data/attributes/movementData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { CritterPowerData } from "#data/powers/critterPowerData.ts"
+import type { QualityData } from "#data/qualities/qualityData.ts"
 
 enum MetatypeGroup {
   metahuman = "metahuman",

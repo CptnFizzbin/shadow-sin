@@ -1,9 +1,9 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { WeaponData } from "#/data/items/weaponData.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { createWorkflow, useWorkflow } from "#/ui/workflow/createWorkflow.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { WeaponData } from "#data/items/weaponData.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { createWorkflow, useWorkflow } from "#ui/workflow/createWorkflow.tsx"
 
 export enum AttackWorkflowStep {
   SelectWeapon = "SelectWeapon",

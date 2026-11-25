@@ -1,8 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { burnEdge } from "#/state/runner/edge/edge.actions.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { burnEdge } from "#state/runner/edge/edge.actions.ts"
 
 import { adjustAttribute, setAttribute } from "./attributes.actions.ts"
 

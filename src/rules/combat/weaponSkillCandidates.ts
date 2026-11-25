@@ -1,7 +1,7 @@
-import type { WeaponData } from "#/data/items/weaponData.ts"
-import { WeaponType } from "#/data/items/weaponData.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
-import { skillList } from "#/data/skills/skillList.ts"
+import type { WeaponData } from "#data/items/weaponData.ts"
+import { WeaponType } from "#data/items/weaponData.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import { skillList } from "#data/skills/skillList.ts"
 
 export const allWeaponSkills = Object.entries(skillList)
   .filter(([, info]) => info.isWeaponSkill)

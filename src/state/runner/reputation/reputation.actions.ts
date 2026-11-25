@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ReputationLedgerEntry, ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ReputationLedgerEntry, ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
 
 /**
  * Add a reputation ledger entry.

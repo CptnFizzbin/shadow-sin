@@ -2,17 +2,17 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
 import {
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/data/attributes/attributeKey.ts"
-import { attrAugmentedMax, attrMin, attrNaturalMax } from "#/rules/attributes/attributeFormulas.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+} from "#data/attributes/attributeKey.ts"
+import { attrAugmentedMax, attrMin, attrNaturalMax } from "#rules/attributes/attributeFormulas.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { AttributeValueRow } from "./attributeValueRow.tsx"
 

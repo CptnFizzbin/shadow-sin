@@ -2,9 +2,9 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { vehicleFormOpts } from "#/forms/items/types/vehicles/useVehicleForm.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { vehicleFormOpts } from "#forms/items/types/vehicles/useVehicleForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
+import { Label } from "#ui/text/label.tsx"
 
 const accelPattern = /^\d+\/\d+$/
 

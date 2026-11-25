@@ -9,8 +9,8 @@ import Typography from "@mui/material/Typography"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 const formatSignedAmount = (amount: number) => (amount > 0 ? `+${amount}` : `${amount}`)
 

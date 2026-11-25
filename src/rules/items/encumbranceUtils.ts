@@ -1,5 +1,5 @@
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
 
 function effectiveRatings(armor: ArmorData): { ballistic: number, impact: number } {
   return {

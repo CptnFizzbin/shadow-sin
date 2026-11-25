@@ -2,7 +2,7 @@ import type { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextFiel
 import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 
-import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
+import { useFieldContext } from "#forms/tanstackForm/fieldContext.ts"
 
 import { useFieldErrors } from "./useFieldError.ts"
 

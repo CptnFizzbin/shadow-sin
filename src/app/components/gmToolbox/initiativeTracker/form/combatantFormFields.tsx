@@ -8,9 +8,9 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { AttributeLabels, AttributeOrder } from "#/data/attributes/attributeKey.ts"
-import type { CombatantForm } from "#/forms/initiativeTracker/useCombatantForm.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { AttributeLabels, AttributeOrder } from "#data/attributes/attributeKey.ts"
+import type { CombatantForm } from "#forms/initiativeTracker/useCombatantForm.ts"
+import { Label } from "#ui/text/label.tsx"
 
 interface CombatantFormFieldsProps {
   form: CombatantForm

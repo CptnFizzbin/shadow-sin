@@ -1,5 +1,5 @@
-import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+import { createCompatStore } from "#state/reduxToolkit/compatStore.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
 
 import type { InitiativeTrackerState } from "./initiativeTrackerData.ts"
 import { initialState, initiativeTrackerReducer } from "./initiativeTrackerSlice.ts"

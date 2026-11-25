@@ -6,9 +6,9 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { WeaponAttackModifier } from "#/rules/combat/weaponAttackCalculatorData.ts"
-import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
-import { Label } from "#/ui/text/label.tsx"
+import type { WeaponAttackModifier } from "#rules/combat/weaponAttackCalculatorData.ts"
+import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
+import { Label } from "#ui/text/label.tsx"
 
 interface AttackModifierChecklistProps {
   modifiers: WeaponAttackModifier[]

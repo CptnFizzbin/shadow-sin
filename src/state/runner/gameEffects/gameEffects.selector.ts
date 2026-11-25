@@ -1,13 +1,13 @@
-import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
-import { getItemGameEffects, itemEffectsApply } from "#/rules/gameEffects/gameEffectUtils.ts"
-import { spellEffectsApply } from "#/rules/magic/spellSustaining.ts"
-import type { SourcedGameEffect } from "#/rules/ratings/ratingFormulas.ts"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { PowersSelectors } from "#/state/runner/powers/powers.selector.ts"
-import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
-import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
+import { getItemGameEffects, itemEffectsApply } from "#rules/gameEffects/gameEffectUtils.ts"
+import { spellEffectsApply } from "#rules/magic/spellSustaining.ts"
+import type { SourcedGameEffect } from "#rules/ratings/ratingFormulas.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { PowersSelectors } from "#state/runner/powers/powers.selector.ts"
+import { QualitiesSelectors } from "#state/runner/qualities/qualities.selector.ts"
+import { SpellsSelectors } from "#state/runner/spells/spells.selector.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 // Read directly rather than through `ComplexFormsSelectors.selectAll`: that module imports
 // `AttrSelectors`, which reads this namespace, and the cycle would break at module load.

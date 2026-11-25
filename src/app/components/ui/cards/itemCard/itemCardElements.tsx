@@ -1,12 +1,12 @@
-import { CardElementAvailability } from "#/app/components/ui/cards/entityCard/elements/cardElementAvailability.tsx"
-import { CardElementCost } from "#/app/components/ui/cards/entityCard/elements/cardElementCost.tsx"
-import { CardElementDamageTrack } from "#/app/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
-import { CardElementFooterStat } from "#/app/components/ui/cards/entityCard/elements/cardElementFooterStat.tsx"
-import { CardElementQuantity } from "#/app/components/ui/cards/entityCard/elements/cardElementQuantity.tsx"
-import { CardElementStatusIcon } from "#/app/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
-import { CardElementSubType } from "#/app/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
-import { CardElementSubitem } from "#/app/components/ui/cards/entityCard/elements/cardElementSubitem.tsx"
-import { EntityCardElements } from "#/app/components/ui/cards/entityCard/entityCardElements.tsx"
+import { CardElementAvailability } from "#app/components/ui/cards/entityCard/elements/cardElementAvailability.tsx"
+import { CardElementCost } from "#app/components/ui/cards/entityCard/elements/cardElementCost.tsx"
+import { CardElementDamageTrack } from "#app/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
+import { CardElementFooterStat } from "#app/components/ui/cards/entityCard/elements/cardElementFooterStat.tsx"
+import { CardElementQuantity } from "#app/components/ui/cards/entityCard/elements/cardElementQuantity.tsx"
+import { CardElementStatusIcon } from "#app/components/ui/cards/entityCard/elements/cardElementStatusIcon.tsx"
+import { CardElementSubType } from "#app/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
+import { CardElementSubitem } from "#app/components/ui/cards/entityCard/elements/cardElementSubitem.tsx"
+import { EntityCardElements } from "#app/components/ui/cards/entityCard/entityCardElements.tsx"
 
 /**
  * Pure, dependency-free ItemCard content elements, flat — `EntityCard`'s content elements pulled

@@ -1,14 +1,14 @@
 import pluralize from "pluralize"
 
-import { useGearAvailabilityIssues } from "#/app/components/entities/items/builder/gearUtils.ts"
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { useGearBuildPoints } from "#/state/builder/buildPoints/useGearBuildPoints.ts"
-import { useFociAlerts } from "#/state/builder/items/useFociAlerts.ts"
-import { useEditorMode } from "#/state/editor/editorMode.tsx"
-import { useEncumbrance } from "#/state/encumbrance/useEncumbrance.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { useGearAvailabilityIssues } from "#app/components/entities/items/builder/gearUtils.ts"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { useGearBuildPoints } from "#state/builder/buildPoints/useGearBuildPoints.ts"
+import { useFociAlerts } from "#state/builder/items/useFociAlerts.ts"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
+import { useEncumbrance } from "#state/encumbrance/useEncumbrance.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()

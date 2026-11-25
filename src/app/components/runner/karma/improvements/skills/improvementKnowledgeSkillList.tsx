@@ -11,31 +11,31 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiLightbulbLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ImprovementQueuedLearnRow } from "#/app/components/runner/karma/improvements/improvementQueuedLearnRow.tsx"
-import { useSpendKarmaDialogContext } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
-import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
-import { KarmaValue } from "#/app/components/runner/karma/viewer/karmaValue.tsx"
+import { ImprovementQueuedLearnRow } from "#app/components/runner/karma/improvements/improvementQueuedLearnRow.tsx"
+import { useSpendKarmaDialogContext } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { KarmaChip } from "#app/components/runner/karma/viewer/karmaChip.tsx"
+import { KarmaValue } from "#app/components/runner/karma/viewer/karmaValue.tsx"
 import {
   useKnowledgeSkillDialog,
-} from "#/app/components/skills/viewer/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
-import { useImprovementSelector } from "#/app/hooks/improvements/useImprovementSelector.ts"
+} from "#app/components/skills/viewer/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
+import { useImprovementSelector } from "#app/hooks/improvements/useImprovementSelector.ts"
 import type {
   LearnKnowledgeSkillEntry,
   SkillIncreaseEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
 import {
   isLearnKnowledgeSkillEntry,
   isSkillIncreaseEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
-import { getKnowledgeSkillCap } from "#/rules/karma/improvements/improvementCaps.ts"
-import { getImprovementCost } from "#/rules/karma/improvements/improvementUtils.ts"
-import { ImprovementsConfig } from "#/rules/karma/improvements/improvementsConfig.ts"
-import { selectAllImprovements, selectImprovementsTotalCost } from "#/state/improvements/improvementSelectors.ts"
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
+import { getKnowledgeSkillCap } from "#rules/karma/improvements/improvementCaps.ts"
+import { getImprovementCost } from "#rules/karma/improvements/improvementUtils.ts"
+import { ImprovementsConfig } from "#rules/karma/improvements/improvementsConfig.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#state/improvements/improvementSelectors.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
 
 export const ImprovementKnowledgeSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

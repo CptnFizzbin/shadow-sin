@@ -4,7 +4,7 @@ import { yellow } from "@mui/material/colors"
 import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
-import { mergeSx } from "#/ui/mui/muiUtils.ts"
+import { mergeSx } from "#ui/mui/muiUtils.ts"
 
 interface SkillPointsProps {
   type?: string

@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ItemDialogSubitemsTab } from "./itemDialogSubitemsTab.tsx"

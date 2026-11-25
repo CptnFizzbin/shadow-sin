@@ -4,9 +4,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
-import { KarmaValue } from "#/app/components/runner/karma/viewer/karmaValue.tsx"
-import { useSpendKarmaSummary } from "#/app/hooks/improvements/useSpendKarmaSummary.ts"
+import { KarmaChip } from "#app/components/runner/karma/viewer/karmaChip.tsx"
+import { KarmaValue } from "#app/components/runner/karma/viewer/karmaValue.tsx"
+import { useSpendKarmaSummary } from "#app/hooks/improvements/useSpendKarmaSummary.ts"
 
 interface SpendKarmaDialogFooterProps {
   onCancel: () => void

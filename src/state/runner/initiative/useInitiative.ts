@@ -1,11 +1,11 @@
 import { useMemo } from "react"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
-import { useEntitySelector } from "#/state/entity/useEntitySelector.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { GameEffectSelectors } from "#/state/runner/gameEffects/useGameEffects.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
+import { useEntitySelector } from "#state/entity/useEntitySelector.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { GameEffectSelectors } from "#state/runner/gameEffects/useGameEffects.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 interface InitiativeInfo {
   dicePool: number

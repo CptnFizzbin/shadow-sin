@@ -4,10 +4,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/app/components/entities/items/availability/availabilityChip.tsx"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
-import { MarkdownText } from "#/ui/text/markdownText.tsx"
+import { AvailabilityChip } from "#app/components/entities/items/availability/availabilityChip.tsx"
+import type { ItemData } from "#data/items/itemData.ts"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
+import { MarkdownText } from "#ui/text/markdownText.tsx"
 
 interface ItemDialogFinalizePreviewProps {
   values: ItemData

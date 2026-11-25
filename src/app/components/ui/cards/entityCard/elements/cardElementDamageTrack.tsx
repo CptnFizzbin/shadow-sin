@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import type { InlineDamageTrackProps } from "#/app/components/system/damage/inlineDamageTrack.tsx"
-import { InlineDamageTrack } from "#/app/components/system/damage/inlineDamageTrack.tsx"
+import type { InlineDamageTrackProps } from "#app/components/system/damage/inlineDamageTrack.tsx"
+import { InlineDamageTrack } from "#app/components/system/damage/inlineDamageTrack.tsx"
 
 /**
  * Wraps `InlineDamageTrack` for use as a card element. Shared by `ItemCard` (Vehicle) and

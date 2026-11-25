@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
 
 import { SkillSelectListItem } from "./skillSelectListItem.tsx"
 

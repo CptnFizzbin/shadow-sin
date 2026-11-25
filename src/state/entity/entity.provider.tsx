@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import type { EntityData } from "#/data/entities/entityData.ts"
+import type { EntityData } from "#data/entities/entityData.ts"
 
 import { EntityContext } from "./entity.context.ts"
 

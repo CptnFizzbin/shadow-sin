@@ -1,6 +1,6 @@
-import { AiAttributes, AttributeKey, AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { AiAttributes, AttributeKey, AttributeLabels } from "#data/attributes/attributeKey.ts"
+import { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { GameEffectType } from "./gameEffectType.ts"
 

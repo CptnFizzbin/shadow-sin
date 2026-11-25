@@ -1,10 +1,10 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ArmorFormDialog } from "./armorFormDialog.tsx"

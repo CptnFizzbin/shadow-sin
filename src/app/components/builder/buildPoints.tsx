@@ -4,8 +4,8 @@ import { lightBlue } from "@mui/material/colors"
 import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
-import { EditorMode } from "#/state/editor/editorMode.tsx"
-import { mergeSx } from "#/ui/mui/muiUtils.ts"
+import { EditorMode } from "#state/editor/editorMode.tsx"
+import { mergeSx } from "#ui/mui/muiUtils.ts"
 
 interface BuildPointsProps {
   value: number

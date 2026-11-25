@@ -2,11 +2,11 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { InitiativeSelectors } from "#/state/runner/initiative/initiative.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { InitiativeSelectors } from "#state/runner/initiative/initiative.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 interface InitiativePassTrackerProps {
   numPasses: number

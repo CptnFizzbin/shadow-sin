@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { SpiritData } from "#/data/magic/spiritData.ts"
-import { SpiritType } from "#/data/magic/spiritData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { SpiritData } from "#data/magic/spiritData.ts"
+import { SpiritType } from "#data/magic/spiritData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { SpiritDataCard } from "./spiritDataCard.tsx"

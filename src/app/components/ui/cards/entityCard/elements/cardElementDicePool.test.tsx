@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import type { DicePoolData } from "#/rules/dicePool/dicePoolData.tsx"
+import type { DicePoolData } from "#rules/dicePool/dicePoolData.tsx"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { CardElementDicePool } from "./cardElementDicePool.tsx"

@@ -3,7 +3,7 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import Stack from "@mui/material/Stack"
 import type { ReactNode } from "react"
 
-import { Label } from "#/ui/text/label.tsx"
+import { Label } from "#ui/text/label.tsx"
 
 interface GmToggleButtonsProps<TValue extends string> {
   label: string

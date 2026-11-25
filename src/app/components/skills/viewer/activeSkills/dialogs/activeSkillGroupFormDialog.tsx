@@ -9,14 +9,14 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
-import { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
-import { getSkillsInGroup } from "#/data/skills/skillGroupUtils.ts"
-import { SkillGroupRatingMax } from "#/data/skills/skillUtils.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import type { SkillGroupData } from "#data/skills/skillGroupData.ts"
+import { SkillGroupKey } from "#data/skills/skillGroupKey.ts"
+import { getSkillsInGroup } from "#data/skills/skillGroupUtils.ts"
+import { SkillGroupRatingMax } from "#data/skills/skillUtils.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 interface ActiveSkillGroupFormDialogProps extends ControlledDialogProps<SkillGroupData> {
   group?: SkillGroupData

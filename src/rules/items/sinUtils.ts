@@ -1,5 +1,5 @@
-import type { AvailabilityInfo } from "#/data/items/availabilityInfo.ts"
-import { SinNameList } from "#/data/items/sinNameList.ts"
+import type { AvailabilityInfo } from "#data/items/availabilityInfo.ts"
+import { SinNameList } from "#data/items/sinNameList.ts"
 
 /** Picks a random cover name from `SinNameList`, e.g. for the SIN form's "Randomize" button. */
 export const getRandomSinName = (): string => {

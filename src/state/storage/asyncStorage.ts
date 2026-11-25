@@ -1,4 +1,4 @@
-import type { JsonValue } from "#/common/json/jsonUtils.ts"
+import type { JsonValue } from "#common/json/jsonUtils.ts"
 
 export interface AsyncStorage {
   hasKey(key: string): Promise<boolean>

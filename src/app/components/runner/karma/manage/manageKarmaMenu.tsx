@@ -7,8 +7,8 @@ import Paper from "@mui/material/Paper"
 import { RiArrowRightSLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import { MANAGE_KARMA_OPTIONS } from "./manageKarmaOptions.ts"
 import type { ManageKarmaStep } from "./manageKarmaWorkflow.ts"

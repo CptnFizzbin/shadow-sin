@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 const migration: CharacterMigration<{ spirits?: unknown[] }> = {
   timestamp: "2026-04-24T00:00:00Z",

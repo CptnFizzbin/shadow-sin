@@ -1,9 +1,9 @@
-import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
-import { isRunnerWithBiology } from "#/data/runner/runnerTraits.ts"
-import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
+import { isRunnerWithBiology } from "#data/runner/runnerTraits.ts"
+import type { DiceGroup } from "#rules/dicePool/diceGroup.tsx"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { SelectorOptions } from "#state/runner/selectorOptions.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 import { SourcedGameEffectSelectors } from "./gameEffects.selector.ts"
 

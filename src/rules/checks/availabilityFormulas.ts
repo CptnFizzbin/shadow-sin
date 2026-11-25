@@ -1,4 +1,4 @@
-import type { Duration } from "#/data/duration/duration.ts"
+import type { Duration } from "#data/duration/duration.ts"
 
 export class AvailabilityFormulas {
   /**

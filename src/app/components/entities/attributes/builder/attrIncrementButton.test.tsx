@@ -1,8 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { AttrDecrementButton } from "./attrDecrementButton.tsx"

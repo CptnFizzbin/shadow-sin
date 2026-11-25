@@ -2,13 +2,13 @@ import Button from "@mui/material/Button"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { useEditorMode } from "#/state/editor/editorMode.tsx"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { RunnerActions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 interface AttrDecrementButtonProps {
   attr: AttributeKey

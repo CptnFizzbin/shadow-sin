@@ -32,7 +32,7 @@ if (options.help) {
 // `src/data/migrations/appVersion.ts` reads a constant Vite normally injects at build time; this script runs
 // outside Vite, so supply it before loading any app code (hence the dynamic import below).
 Object.assign(globalThis, { __APP_VERSION__: new Date().toISOString() })
-const { runnerDataToYaml, yamlToRunnerData } = await import("#/data/exportImport/exportUtils.ts")
+const { runnerDataToYaml, yamlToRunnerData } = await import("#data/exportImport/exportUtils.ts")
 
 const files = positionals.length > 0
   ? positionals.map((file) => path.resolve(file))

@@ -3,7 +3,7 @@ import Button from "@mui/material/Button"
 import { RiCheckboxMultipleLine, RiCloseLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useItemSelectionMode } from "#/app/hooks/items/selection/useItemSelection.ts"
+import { useItemSelectionMode } from "#app/hooks/items/selection/useItemSelection.ts"
 
 type ItemSelectToggleButtonProps = Omit<ButtonProps, "onClick" | "children" | "startIcon">
 

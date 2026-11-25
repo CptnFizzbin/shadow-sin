@@ -1,5 +1,5 @@
-import EntityCardLayout from "#/ui/cards/entityCard/entityCardLayout.tsx"
-import { SlotManager } from "#/ui/slots/slotUtils.ts"
+import EntityCardLayout from "#ui/cards/entityCard/entityCardLayout.tsx"
+import { SlotManager } from "#ui/slots/slotUtils.ts"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
 

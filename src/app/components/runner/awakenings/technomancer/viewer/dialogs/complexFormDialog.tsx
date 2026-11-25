@@ -2,14 +2,14 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ComplexFormData } from "#/data/magic/complexFormData.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { FormDialog } from "#/forms/dialog/formDialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { GameEffectsFieldGroup } from "#/forms/gameEffects/gameEffectsFieldGroup.tsx"
-import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ComplexFormData } from "#data/magic/complexFormData.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { FormDialog } from "#forms/dialog/formDialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { GameEffectsFieldGroup } from "#forms/gameEffects/gameEffectsFieldGroup.tsx"
+import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 
 interface ComplexFormDialogProps extends ControlledDialogProps<ComplexFormData> {
   form?: ComplexFormData

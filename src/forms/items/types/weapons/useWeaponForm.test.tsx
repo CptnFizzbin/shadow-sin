@@ -1,12 +1,12 @@
 import { act, renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { WeaponData } from "#/data/items/weaponData.ts"
-import { WeaponType } from "#/data/items/weaponData.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { WeaponData } from "#data/items/weaponData.ts"
+import { WeaponType } from "#data/items/weaponData.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { useWeaponForm } from "./useWeaponForm.tsx"
 

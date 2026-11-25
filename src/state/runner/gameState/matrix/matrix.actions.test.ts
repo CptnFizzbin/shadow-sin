@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { AccessLevel } from "#/data/matrix/accessLevel.ts"
-import type { KnownNode } from "#/data/matrix/knownNode.ts"
-import { NodeType } from "#/data/matrix/nodeType.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { AccessLevel } from "#data/matrix/accessLevel.ts"
+import type { KnownNode } from "#data/matrix/knownNode.ts"
+import { NodeType } from "#data/matrix/nodeType.ts"
 
 import {
   addKnownNode,

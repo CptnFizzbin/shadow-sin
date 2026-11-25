@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { formatNuyen } from "#/forms/nuyen/nuyen.tsx"
+import { formatNuyen } from "#forms/nuyen/nuyen.tsx"
 
 export interface ItemDetailsCostProps {
   value: number | undefined

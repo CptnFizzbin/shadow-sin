@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { meleeAttackModifiers } from "#/rules/combat/weaponAttackCalculatorData.ts"
+import { meleeAttackModifiers } from "#rules/combat/weaponAttackCalculatorData.ts"
 
 import { WeaponAttackModifierList } from "./weaponAttackModifierList.tsx"
 

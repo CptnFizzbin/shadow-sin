@@ -1,4 +1,4 @@
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
 
 import { SpiritType } from "./spiritData.ts"
 

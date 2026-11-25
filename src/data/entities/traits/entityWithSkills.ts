@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
-import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
-import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
-import { LanguageSkillDataSchema } from "#/data/skills/languageSkillData.ts"
-import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
+import type { ActiveSkillData } from "#data/skills/activeSkillData.ts"
+import type { KnowledgeSkillData } from "#data/skills/knowledgeSkillData.ts"
+import type { LanguageSkillData } from "#data/skills/languageSkillData.ts"
+import { LanguageSkillDataSchema } from "#data/skills/languageSkillData.ts"
+import type { SkillGroupData } from "#data/skills/skillGroupData.ts"
 
 export interface EntityWithSkills {
   skills: {

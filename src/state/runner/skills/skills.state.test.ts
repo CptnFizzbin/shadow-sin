@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { uuid } from "#/common/uuid/uuidUtils.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { uuid } from "#common/uuid/uuidUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { removeKnowledgeSkill, removeLanguageSkill, setKnowledgeSkill, setLanguageSkill } from "./skills.actions.ts"
 import { skillsReducer } from "./skills.state.ts"

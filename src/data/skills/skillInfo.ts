@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { AwakeningType } from "#/data/magic/awakeningType.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { AwakeningType } from "#data/magic/awakeningType.ts"
 
 import type { SkillCategory } from "./skillCategory"
 import type { SkillGroupKey } from "./skillGroupKey"

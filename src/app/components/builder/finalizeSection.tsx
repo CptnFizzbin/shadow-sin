@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useEditorMode } from "#/state/editor/editorMode.tsx"
-import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
+import { SectionHeader } from "#ui/text/sectionHeader.tsx"
 
 import { AllBuilderAlerts } from "./allBuilderAlerts.tsx"
 import { SaveRunnerButton } from "./saveRunnerButton.tsx"

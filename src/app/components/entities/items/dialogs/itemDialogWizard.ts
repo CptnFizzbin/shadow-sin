@@ -1,4 +1,4 @@
-import { createWorkflow, useWorkflow } from "#/ui/workflow/createWorkflow.tsx"
+import { createWorkflow, useWorkflow } from "#ui/workflow/createWorkflow.tsx"
 
 export enum ItemDialogWizardStep {
   Stats = "Stats",

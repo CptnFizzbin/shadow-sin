@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { SpriteData } from "#/data/magic/spriteData.ts"
+import type { SpriteData } from "#data/magic/spriteData.ts"
 
 import { addSprite, removeSprite, saveSprite, updateSprite } from "./sprites.actions.ts"
 

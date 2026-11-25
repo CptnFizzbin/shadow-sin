@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 /**
  * A language a Runner speaks — one of the three Skill flavours from GLOSSARY.md's **Skill**

@@ -1,22 +1,22 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
-import { isEntityWithDamage } from "#/data/entities/entityTraits.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import type { ItemCatalog } from "#/data/items/itemUtils.ts"
-import { isFocusData } from "#/data/items/magicalData.ts"
-import type { ItemBulkStateAction } from "#/rules/items/itemBulkActions.ts"
-import { canApplyBulkStateAction, canRemoveItemOnItsOwn, orderParentsFirst } from "#/rules/items/itemBulkActions.ts"
-import { planItemSale } from "#/rules/items/itemSale.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import { isEntityWithDamage } from "#data/entities/entityTraits.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import { isFocusData } from "#data/items/magicalData.ts"
+import type { ItemBulkStateAction } from "#rules/items/itemBulkActions.ts"
+import { canApplyBulkStateAction, canRemoveItemOnItsOwn, orderParentsFirst } from "#rules/items/itemBulkActions.ts"
+import { planItemSale } from "#rules/items/itemSale.ts"
 import {
   getItemState,
   getItemStateActions,
   ItemStateAction,
   itemStateActionTargets,
   reconcileItemState,
-} from "#/rules/items/itemStateRules.ts"
+} from "#rules/items/itemStateRules.ts"
 
 import {
   addItem,

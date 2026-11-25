@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { TraditionData } from "#/data/magic/traditionData.ts"
+import type { TraditionData } from "#data/magic/traditionData.ts"
 
 import { saveTradition } from "./tradition.actions.ts"
 

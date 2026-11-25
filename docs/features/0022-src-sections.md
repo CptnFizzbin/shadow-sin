@@ -31,6 +31,9 @@ follow this yet: `app` keeps its technical split (`components`, `hooks`, `routes
 Runner store's root files beside its feature folders. The app entry points (`main.tsx`, `router.ts`,
 `routeTree.gen.ts`, `env.ts`) stay at the root of `src/`.
 
+Each section is imported through its own path alias, such as `#data/` or `#rules/`. The alias stands in for the
+section's future package name, so the later split only has to swap the alias for the package name.
+
 ## Allowed imports
 
 Imports go one way, down the layers. An arrow means "may import from".

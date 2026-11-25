@@ -1,7 +1,7 @@
-import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
-import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
-import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
-import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
+import type { ActiveSkillData } from "#data/skills/activeSkillData.ts"
+import type { KnowledgeSkillData } from "#data/skills/knowledgeSkillData.ts"
+import type { LanguageSkillData } from "#data/skills/languageSkillData.ts"
+import type { SkillGroupData } from "#data/skills/skillGroupData.ts"
 
 import { BuilderConfig } from "./builderConfig.ts"
 

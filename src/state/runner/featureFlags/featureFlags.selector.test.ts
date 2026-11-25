@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { houseRules } from "#/data/featureFlags/houseRules.ts"
-import { optionalRules } from "#/data/featureFlags/optionalRules.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { houseRules } from "#data/featureFlags/houseRules.ts"
+import { optionalRules } from "#data/featureFlags/optionalRules.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 
 import { FeatureFlagSelectors } from "./featureFlags.selector.ts"
 

@@ -1,7 +1,7 @@
-import type { AttributeCatalog } from "#/data/attributes/attributeCatalog.ts"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { MetatypeType } from "#/data/biology/metatypeData.ts"
-import type { MatrixNodeData } from "#/data/matrix/matrixNodeData.ts"
+import type { AttributeCatalog } from "#data/attributes/attributeCatalog.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
+import type { MatrixNodeData } from "#data/matrix/matrixNodeData.ts"
 
 function getRating(attrs: {
   charisma: number

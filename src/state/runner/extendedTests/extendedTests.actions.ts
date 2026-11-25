@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ExtendedTestEntry } from "#/data/checks/extendedTestData.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ExtendedTestEntry } from "#data/checks/extendedTestData.ts"
 
 export const addExtendedTest = createAction("extendedTests/add", (test: Omit<ExtendedTestEntry, "id">) => {
   return { payload: { ...test, id: crypto.randomUUID() as UUID } }

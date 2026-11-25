@@ -1,10 +1,10 @@
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
-import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
-import { createMemoizedSelector, injectOption } from "#/state/reselect/selectorUtils.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { SelectorOptions } from "#/state/runner/selectorOptions.ts"
-import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import type { DiceGroup } from "#rules/dicePool/diceGroup.tsx"
+import { createMemoizedSelector, injectOption } from "#state/reselect/selectorUtils.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { SelectorOptions } from "#state/runner/selectorOptions.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 

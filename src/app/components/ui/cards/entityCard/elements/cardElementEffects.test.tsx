@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { CardElementEffects } from "./cardElementEffects.tsx"

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { RunnerManager } from "./runnerManager.ts"

@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { useRunnerState } from "#/state/runnerState.ts"
+import { useRunnerState } from "#state/runnerState.ts"
 
 export interface EditorModeInfo {
   isViewer: boolean

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
 
 import { ItemType } from "./itemType.ts"
 import { SinDataSchema } from "./sinData.ts"

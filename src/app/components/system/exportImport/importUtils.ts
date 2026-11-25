@@ -1,6 +1,6 @@
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import type { RunnerManager } from "#/state/persistence/runnerManager.ts"
-import { resolveAlias } from "#/state/runner/runnerUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import type { RunnerManager } from "#state/persistence/runnerManager.ts"
+import { resolveAlias } from "#state/runner/runnerUtils.ts"
 
 import type { useImportConflictDialog } from "./importConflictDialog.tsx"
 

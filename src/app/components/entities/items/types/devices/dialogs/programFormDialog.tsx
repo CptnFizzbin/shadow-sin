@@ -1,15 +1,15 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
-import { ProgramFormFields } from "#/app/components/entities/items/types/devices/forms/programFormFields.tsx"
-import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { isAgentData } from "#/data/items/agentData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { ProgramData } from "#/data/items/programData.ts"
-import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { programFieldMap, useProgramForm } from "#/forms/items/types/devices/useProgramForm.tsx"
+import { ItemDialog } from "#app/components/entities/items/dialogs/itemDialog.tsx"
+import { ProgramFormFields } from "#app/components/entities/items/types/devices/forms/programFormFields.tsx"
+import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { isAgentData } from "#data/items/agentData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { ProgramData } from "#data/items/programData.ts"
+import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { programFieldMap, useProgramForm } from "#forms/items/types/devices/useProgramForm.tsx"
 
 interface ProgramFormDialogProps {
   ctrl: AnyDialogCtrl

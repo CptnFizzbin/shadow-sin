@@ -6,11 +6,11 @@ import type { FC } from "react"
 
 import {
   AdeptPowersViewerSection,
-} from "#/app/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersViewerSection.tsx"
-import { AwakeningType } from "#/data/magic/awakeningType.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
+} from "#app/components/runner/awakenings/adept/adeptPowers/viewer/adeptPowersViewerSection.tsx"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
+import { BiologySelectors } from "#state/runner/biology/biology.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SectionHeader } from "#ui/text/sectionHeader.tsx"
 
 interface Props {}
 

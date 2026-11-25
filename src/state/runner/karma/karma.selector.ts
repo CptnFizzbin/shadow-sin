@@ -1,8 +1,8 @@
-import { resolveFlagValue } from "#/data/featureFlags/featureFlagsData.ts"
-import { houseRules } from "#/data/featureFlags/houseRules.ts"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { FeatureFlagSelectors } from "#/state/runner/featureFlags/featureFlags.selector.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { resolveFlagValue } from "#data/featureFlags/featureFlagsData.ts"
+import { houseRules } from "#data/featureFlags/houseRules.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { FeatureFlagSelectors } from "#state/runner/featureFlags/featureFlags.selector.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 /** Whether trading karma one way is allowed, and its rate. */
 interface KarmaExchangeRule {

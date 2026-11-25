@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import type {
   AttrIncreaseEntry,
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
-import { ImprovementStore } from "#/state/improvements/improvementStore.ts"
-import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import { ImprovementStore } from "#state/improvements/improvementStore.ts"
+import { RunnerActions } from "#state/runner/runnerStore.actions.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { applyImprovements } from "./improvementUtils.ts"
 

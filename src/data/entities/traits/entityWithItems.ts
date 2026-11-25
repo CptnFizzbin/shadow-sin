@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 /**
  * The `{ parentId, childIds }` attachment position of an item within the parent/child gear

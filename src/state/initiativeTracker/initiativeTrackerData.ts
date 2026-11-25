@@ -1,5 +1,5 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
 
 export interface SkillEntry {
   name: string

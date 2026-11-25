@@ -6,10 +6,10 @@ import Typography from "@mui/material/Typography"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import type { SkillInfo } from "#/data/skills/skillInfo.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import type { SkillInfo } from "#data/skills/skillInfo.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
 
 export interface ActiveSkillSelectInputProps extends Omit<BaseSelectProps<SkillKey>, "children"> {
   filterOption?: (key: SkillKey, info: SkillInfo) => boolean

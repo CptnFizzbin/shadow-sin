@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { loadFixtureRunners } from "#/data/fixtures/fixtureRunners.ts"
-import { useRunnerManager } from "#/state/persistence/useRunnerManager.ts"
+import { loadFixtureRunners } from "#data/fixtures/fixtureRunners.ts"
+import { useRunnerManager } from "#state/persistence/useRunnerManager.ts"
 
 function ShadowSinDevtoolsPanel() {
   const router = useRouter()

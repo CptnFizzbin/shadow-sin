@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { AwakeningType } from "#/data/magic/awakeningType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { SpriteSelectors } from "./sprites.selector.ts"
 

@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
 
 import { KarmaLedgerList } from "./karmaLedgerList.tsx"
 

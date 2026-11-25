@@ -5,14 +5,14 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { GearMatrixFieldGroup } from "#/forms/items/gearMatrixFieldGroup.tsx"
-import type { ItemForm } from "#/forms/items/useItemForm.tsx"
-import { itemFieldMap } from "#/forms/items/useItemForm.tsx"
-import type { ItemOptionKey } from "#/forms/items/useItemOptions.ts"
+import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { GearMatrixFieldGroup } from "#forms/items/gearMatrixFieldGroup.tsx"
+import type { ItemForm } from "#forms/items/useItemForm.tsx"
+import { itemFieldMap } from "#forms/items/useItemForm.tsx"
+import type { ItemOptionKey } from "#forms/items/useItemOptions.ts"
 
 interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
   /** The item form, for options stored on the item itself (e.g. its Matrix presence). */

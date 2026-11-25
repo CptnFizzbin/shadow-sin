@@ -1,5 +1,5 @@
-import type { SpellData } from "#/data/magic/spellData.ts"
-import { SpellDrainType } from "#/data/magic/spellData.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
+import { SpellDrainType } from "#data/magic/spellData.ts"
 
 function applyMod(base: string | number, mod: number): string {
   if (mod > 0) return `${base}+${mod}`

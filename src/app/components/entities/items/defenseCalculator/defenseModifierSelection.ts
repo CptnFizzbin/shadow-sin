@@ -1,4 +1,4 @@
-import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
+import type { DiceGroup } from "#rules/dicePool/diceGroup.tsx"
 
 import type { DefenseModifierDatum } from "./defenseCalculatorData.ts"
 

@@ -2,8 +2,8 @@ import Alert from "@mui/material/Alert"
 import { differenceInCalendarDays } from "date-fns"
 import type { FC } from "react"
 
-import { MetaSelectors } from "#/state/runner/meta/meta.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { MetaSelectors } from "#state/runner/meta/meta.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 const BACKUP_REMINDER_THRESHOLD_DAYS = 7
 

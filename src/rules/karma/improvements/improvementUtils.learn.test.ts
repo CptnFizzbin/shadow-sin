@@ -1,18 +1,18 @@
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { uuid } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { uuid } from "#common/uuid/uuidUtils.ts"
 import type {
   LearnActiveSkillEntry,
   LearnKnowledgeSkillEntry,
   LearnLanguageSkillEntry,
   LearnSkillGroupEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { SkillGroupKey } from "#/data/skills/skillGroupKey.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { SkillGroupKey } from "#data/skills/skillGroupKey.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import {
   applyImprovement,

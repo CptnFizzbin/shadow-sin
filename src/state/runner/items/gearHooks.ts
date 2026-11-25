@@ -1,6 +1,6 @@
-import type { ItemData } from "#/data/items/itemData.ts"
-import type { ItemType } from "#/data/items/itemType.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import type { ItemType } from "#data/items/itemType.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import { ItemSelectors } from "./items.selector.ts"
 

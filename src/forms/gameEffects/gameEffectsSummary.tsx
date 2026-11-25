@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography"
 import { RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
-import { GameEffectTypeOptions } from "#/data/gameEffects/gameEffectTypeOptions.ts"
+import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
+import { GameEffectTypeOptions } from "#data/gameEffects/gameEffectTypeOptions.ts"
 
 import { useGameEffectsDialog } from "./gameEffectsDialog.tsx"
 

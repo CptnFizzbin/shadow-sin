@@ -1,4 +1,4 @@
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 export interface EditorState {
   original: RunnerData

@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import type { SpriteData } from "#/data/magic/spriteData.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import type { SpriteData } from "#data/magic/spriteData.ts"
 
 export const addSprite = createAction<SpriteData>("sprites/add")
 export const updateSprite = createAction<SpriteData>("sprites/update")

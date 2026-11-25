@@ -2,12 +2,12 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { AdeptPowerData } from "#data/powers/adeptPowerData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { AdeptPowersViewerSection } from "./adeptPowersViewerSection.tsx"
 

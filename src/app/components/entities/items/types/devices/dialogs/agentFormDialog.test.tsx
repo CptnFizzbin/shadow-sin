@@ -1,10 +1,10 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import type { AgentData } from "#/data/items/agentData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { ProgramType } from "#/data/items/programData.ts"
-import { DialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
+import type { AgentData } from "#data/items/agentData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { ProgramType } from "#data/items/programData.ts"
+import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { AgentFormDialog } from "./agentFormDialog.tsx"

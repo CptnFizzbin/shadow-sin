@@ -2,8 +2,8 @@ import { sort } from "fast-sort"
 import { produce } from "immer"
 import { z } from "zod"
 
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { RUNNER_META_EPOCH, RunnerMetaSchema } from "#/data/runner/runnerData.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { RUNNER_META_EPOCH, RunnerMetaSchema } from "#data/runner/runnerData.ts"
 
 import { APP_VERSION } from "./appVersion.ts"
 import { migrations } from "./migrations.ts"

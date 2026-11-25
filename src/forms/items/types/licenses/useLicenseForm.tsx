@@ -1,10 +1,10 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { LicenseData } from "#/data/items/licenseData.ts"
-import type { GearSubmitMeta } from "#/forms/items/gearSubmitMeta.ts"
-import { useItemForm, itemDefaults } from "#/forms/items/useItemForm.tsx"
-import { DefaultFakeLicenseRating, getLicenseCost } from "#/rules/items/licenseUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { LicenseData } from "#data/items/licenseData.ts"
+import type { GearSubmitMeta } from "#forms/items/gearSubmitMeta.ts"
+import { useItemForm, itemDefaults } from "#forms/items/useItemForm.tsx"
+import { DefaultFakeLicenseRating, getLicenseCost } from "#rules/items/licenseUtils.ts"
 
 interface LicenseFormOptions {
   parentId?: UUID

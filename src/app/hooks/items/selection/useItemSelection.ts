@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react"
 
-import { ItemSelectionContext } from "#/app/components/entities/items/selection/itemSelectionContext.ts"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ItemSelectionState, ItemSelectionStore } from "#/state/itemSelection/itemSelectionStore.ts"
-import { createItemSelectionStore, ItemSelectionActions } from "#/state/itemSelection/itemSelectionStore.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+import { ItemSelectionContext } from "#app/components/entities/items/selection/itemSelectionContext.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ItemSelectionState, ItemSelectionStore } from "#state/itemSelection/itemSelectionStore.ts"
+import { createItemSelectionStore, ItemSelectionActions } from "#state/itemSelection/itemSelectionStore.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
 
 // Read in place of a missing provider so the hooks below can always subscribe to a store. Nothing
 // outside a provider offers a way to start selecting, so there selection mode stays off.

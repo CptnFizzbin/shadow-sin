@@ -8,20 +8,20 @@ import Typography from "@mui/material/Typography"
 import { RiCloseLine, RiDeleteBinLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useItemSelectionMode } from "#/app/hooks/items/selection/useItemSelection.ts"
-import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
-import type { ItemBulkStateAction } from "#/rules/items/itemBulkActions.ts"
+import { useItemSelectionMode } from "#app/hooks/items/selection/useItemSelection.ts"
+import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
+import type { ItemBulkStateAction } from "#rules/items/itemBulkActions.ts"
 import {
   canApplyBulkStateAction,
   canRemoveItemOnItsOwn,
   itemBulkStateActions,
-} from "#/rules/items/itemBulkActions.ts"
-import { ItemStateAction } from "#/rules/items/itemStateRules.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Icons } from "#/ui/icons/icons.ts"
+} from "#rules/items/itemBulkActions.ts"
+import { ItemStateAction } from "#rules/items/itemStateRules.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Icons } from "#ui/icons/icons.ts"
 
 const actionLabels: Record<ItemBulkStateAction, string> = {
   [ItemStateAction.stash]: "Stash",

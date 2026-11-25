@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 
 import { ContactPoolSelectors } from "./contactPools.selector.ts"
 

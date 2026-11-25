@@ -4,13 +4,13 @@ import Stack from "@mui/material/Stack"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
-import Footer from "#/app/components/ui/footer.tsx"
-import { Header } from "#/app/components/ui/header.tsx"
-import { ShadowSinDevtools } from "#/app/integrations/tanstackDevtools/shadowSinDevtools.tsx"
-import { TanStackPacerDevtools } from "#/app/integrations/tanstackPacer/devtools.tsx"
-import { TanStackQueryDevtools } from "#/app/integrations/tanstackQuery/devtools.tsx"
-import TanStackQueryProvider from "#/app/integrations/tanstackQuery/rootProvider.tsx"
-import { TanStackRouterDevtools } from "#/app/integrations/tanstackRouter/devtools.tsx"
+import Footer from "#app/components/ui/footer.tsx"
+import { Header } from "#app/components/ui/header.tsx"
+import { ShadowSinDevtools } from "#app/integrations/tanstackDevtools/shadowSinDevtools.tsx"
+import { TanStackPacerDevtools } from "#app/integrations/tanstackPacer/devtools.tsx"
+import { TanStackQueryDevtools } from "#app/integrations/tanstackQuery/devtools.tsx"
+import TanStackQueryProvider from "#app/integrations/tanstackQuery/rootProvider.tsx"
+import { TanStackRouterDevtools } from "#app/integrations/tanstackRouter/devtools.tsx"
 
 type RouterContext = object
 

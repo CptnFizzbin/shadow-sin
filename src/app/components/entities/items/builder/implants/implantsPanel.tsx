@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { ImplantItemList } from "#/app/components/entities/items/types/implants/implantItemList.tsx"
-import { BASE_ESSENCE } from "#/rules/items/implantUtils.ts"
-import { useEssenceInfo } from "#/state/runner/runnerUtils.ts"
+import { ImplantItemList } from "#app/components/entities/items/types/implants/implantItemList.tsx"
+import { BASE_ESSENCE } from "#rules/items/implantUtils.ts"
+import { useEssenceInfo } from "#state/runner/runnerUtils.ts"
 
 export const ImplantsPanel: FC = () => {
   const essenceInfo = useEssenceInfo()

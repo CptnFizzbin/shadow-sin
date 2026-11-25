@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
-import type { ProfileFieldsValue } from "#/app/components/runner/sections/profile/viewer/profileFields.tsx"
-import { ProfileFields } from "#/app/components/runner/sections/profile/viewer/profileFields.tsx"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { ProfileFieldsValue } from "#app/components/runner/sections/profile/viewer/profileFields.tsx"
+import { ProfileFields } from "#app/components/runner/sections/profile/viewer/profileFields.tsx"
+import { ProfileSelectors } from "#state/runner/profile/profile.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()

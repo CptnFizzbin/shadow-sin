@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
-import { OutOfContextError } from "#/common/errors/outOfContextError.ts"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import { OutOfContextError } from "#common/errors/outOfContextError.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 export interface AddItemDialogOpenOptions {
   /**

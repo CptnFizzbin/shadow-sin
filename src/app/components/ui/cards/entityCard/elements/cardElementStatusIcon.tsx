@@ -2,8 +2,8 @@ import IconButton from "@mui/material/IconButton"
 import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
-import type { IconComponent } from "#/ui/icons/icons.ts"
-import { Icons } from "#/ui/icons/icons.ts"
+import type { IconComponent } from "#ui/icons/icons.ts"
+import { Icons } from "#ui/icons/icons.ts"
 
 export type CardElementStatusIconStatus =
   | "equipped"

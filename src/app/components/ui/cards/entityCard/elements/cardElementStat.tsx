@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { StatChip } from "#/ui/chips/statChip.tsx"
+import { StatChip } from "#ui/chips/statChip.tsx"
 
 export type CardElementStatType =
   | "damage"

@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { GameEffectData } from "#/data/gameEffects/gameEffectData.ts"
-import { GameEffectDataSchema } from "#/data/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/data/source/sourceData.ts"
-import { SourceDataSchema } from "#/data/source/sourceData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "#data/gameEffects/gameEffectData.ts"
+import type { SourceData } from "#data/source/sourceData.ts"
+import { SourceDataSchema } from "#data/source/sourceData.ts"
 
 export enum SpellType {
   Physical = "Physical",

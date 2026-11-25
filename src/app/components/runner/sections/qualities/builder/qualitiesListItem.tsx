@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { QualityData } from "#/data/qualities/qualityData.ts"
-import { EditorMode } from "#/state/editor/editorMode.tsx"
+import type { QualityData } from "#data/qualities/qualityData.ts"
+import { EditorMode } from "#state/editor/editorMode.tsx"
 
 interface QualityRowProps {
   quality: QualityData

@@ -10,29 +10,29 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiTerminalBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useComplexFormDialog } from "#/app/components/runner/awakenings/technomancer/viewer/dialogs/complexFormDialog.tsx"
-import { ImprovementQueuedLearnRow } from "#/app/components/runner/karma/improvements/improvementQueuedLearnRow.tsx"
-import { useSpendKarmaDialogContext } from "#/app/components/runner/karma/spendKarmaDialogContext.tsx"
-import { KarmaChip } from "#/app/components/runner/karma/viewer/karmaChip.tsx"
-import { KarmaValue } from "#/app/components/runner/karma/viewer/karmaValue.tsx"
-import { useImprovementSelector } from "#/app/hooks/improvements/useImprovementSelector.ts"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import { useComplexFormDialog } from "#app/components/runner/awakenings/technomancer/viewer/dialogs/complexFormDialog.tsx"
+import { ImprovementQueuedLearnRow } from "#app/components/runner/karma/improvements/improvementQueuedLearnRow.tsx"
+import { useSpendKarmaDialogContext } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { KarmaChip } from "#app/components/runner/karma/viewer/karmaChip.tsx"
+import { KarmaValue } from "#app/components/runner/karma/viewer/karmaValue.tsx"
+import { useImprovementSelector } from "#app/hooks/improvements/useImprovementSelector.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import type {
   ComplexFormIncreaseEntry,
   LearnComplexFormEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
 import {
   isComplexFormIncreaseEntry,
   isLearnComplexFormEntry,
-} from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import { getImprovementCost } from "#/rules/karma/improvements/improvementUtils.ts"
-import { ImprovementsConfig } from "#/rules/karma/improvements/improvementsConfig.ts"
-import { selectAllImprovements, selectImprovementsTotalCost } from "#/state/improvements/improvementSelectors.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"
-import { KarmaSelectors } from "#/state/runner/karma/karma.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+} from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import { getImprovementCost } from "#rules/karma/improvements/improvementUtils.ts"
+import { ImprovementsConfig } from "#rules/karma/improvements/improvementsConfig.ts"
+import { selectAllImprovements, selectImprovementsTotalCost } from "#state/improvements/improvementSelectors.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { ComplexFormsSelectors } from "#state/runner/complexForms/complexForms.selector.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export const ImprovementComplexFormList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

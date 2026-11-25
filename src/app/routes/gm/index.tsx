@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { GmToolList } from "#/app/components/gmToolbox/landing/gmToolList.tsx"
-import { LandingModeSwitch } from "#/app/components/gmToolbox/landing/landingModeSwitch.tsx"
+import { GmToolList } from "#app/components/gmToolbox/landing/gmToolList.tsx"
+import { LandingModeSwitch } from "#app/components/gmToolbox/landing/landingModeSwitch.tsx"
 
 export const Route = createFileRoute("/gm/")({
   component: GmScreenRoute,

@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { SkillKey } from "#/data/skills/skillKey.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
 
 import type { ItemData } from "./itemData.ts"
 import { ItemType } from "./itemType.ts"

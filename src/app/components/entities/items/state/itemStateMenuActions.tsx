@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
-import { useItemStateActions } from "#/app/hooks/items/state/useItemStateActions.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
+import { EntityCard } from "#app/components/ui/cards/entityCard/entityCard.tsx"
+import { useItemStateActions } from "#app/hooks/items/state/useItemStateActions.ts"
+import type { ItemData } from "#data/items/itemData.ts"
 
 export interface ItemStateMenuActionsProps {
   item: ItemData

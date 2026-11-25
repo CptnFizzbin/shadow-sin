@@ -2,10 +2,10 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { DefenseCalculatorButton } from "#/app/components/entities/items/defenseCalculator/defenseCalculatorButton.tsx"
-import { AvailableArmorSection } from "#/app/components/entities/items/types/armor/availableArmorSection.tsx"
-import { AvailableGearFilter } from "#/app/components/entities/items/viewer/availableGearFilter.tsx"
-import DamageTrack from "#/app/components/system/damage/damageTrack.tsx"
+import { DefenseCalculatorButton } from "#app/components/entities/items/defenseCalculator/defenseCalculatorButton.tsx"
+import { AvailableArmorSection } from "#app/components/entities/items/types/armor/availableArmorSection.tsx"
+import { AvailableGearFilter } from "#app/components/entities/items/viewer/availableGearFilter.tsx"
+import DamageTrack from "#app/components/system/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
   MeleeBlockDicePool,
@@ -18,18 +18,18 @@ import {
   RangedDefenseDicePool,
   RangedFullDefenseDicePool,
   ResistDamageDicePool,
-} from "#/app/components/system/damage/resistanceDicePools.tsx"
-import { WoundModLabel } from "#/app/components/system/damage/woundModLabel.tsx"
-import { DicePoolList } from "#/app/components/system/dicePool/dicePoolList.tsx"
-import { DamageTrackKey } from "#/data/entities/damageTrackKey.ts"
-import { ArmorRatingType } from "#/data/items/armorData.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
-import { SectionHeader } from "#/ui/text/sectionHeader.tsx"
+} from "#app/components/system/damage/resistanceDicePools.tsx"
+import { WoundModLabel } from "#app/components/system/damage/woundModLabel.tsx"
+import { DicePoolList } from "#app/components/system/dicePool/dicePoolList.tsx"
+import { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import { ArmorRatingType } from "#data/items/armorData.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import { DamageSelectors } from "#state/runner/damage/damage.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
+import { SectionHeader } from "#ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$runnerId/_viewer/defense")({
   component: RouteComponent,

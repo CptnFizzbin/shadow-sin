@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { RatingFormulas } from "./ratingFormulas.ts"
 

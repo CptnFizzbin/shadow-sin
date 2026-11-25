@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import type { JsonObject } from "#/common/json/jsonUtils.ts"
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import type { JsonObject } from "#common/json/jsonUtils.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 type WithSource = JsonObject & {
   source?: { book?: string }

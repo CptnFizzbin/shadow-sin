@@ -1,8 +1,8 @@
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
-import { getSkillsInGroup } from "#/data/skills/skillGroupUtils.ts"
-import { useEditorMode } from "#/state/editor/editorMode.tsx"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { getSkillsInGroup } from "#data/skills/skillGroupUtils.ts"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
 
 export const useActiveSkillsAlerts = (): AlertInfo[] => {
   const activeSkills = useRunnerSelector(SkillsSelectors.selectActiveSkills)

@@ -4,11 +4,11 @@ import Typography from "@mui/material/Typography"
 import { RiInfinityLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { LifestyleFields } from "#/app/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
-import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { LifestyleFields } from "#app/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
+import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { usePrepayLifestyleDialog } from "./prepayLifestyleDialog.tsx"
 

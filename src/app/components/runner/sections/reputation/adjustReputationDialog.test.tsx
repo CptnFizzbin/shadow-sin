@@ -2,9 +2,9 @@ import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
-import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { useAdjustReputationDialog } from "./adjustReputationDialog.tsx"

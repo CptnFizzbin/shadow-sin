@@ -1,5 +1,5 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { Duration } from "#/data/duration/duration.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { Duration } from "#data/duration/duration.ts"
 
 export interface ExtendedTestEntry {
   id: UUID

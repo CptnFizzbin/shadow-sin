@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { LifestyleType } from "#/data/finances/lifestyleType.ts"
-import type { RunnerLifestyle } from "#/data/finances/runnerLifestyle.ts"
+import type { LifestyleType } from "#data/finances/lifestyleType.ts"
+import type { RunnerLifestyle } from "#data/finances/runnerLifestyle.ts"
 
 /** Switches to a standard lifestyle, keeping the prepaid months and notes. */
 export const setStandardLifestyle = createAction<LifestyleType>("lifestyle/setStandard")

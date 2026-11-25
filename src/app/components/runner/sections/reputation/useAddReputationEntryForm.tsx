@@ -1,4 +1,4 @@
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
 
 import { ReputationEntryForm } from "./reputationEntryForm.tsx"
 

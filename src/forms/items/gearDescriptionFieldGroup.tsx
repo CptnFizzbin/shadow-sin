@@ -1,4 +1,4 @@
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 
 import { itemFormOpts } from "./useItemForm.tsx"
 

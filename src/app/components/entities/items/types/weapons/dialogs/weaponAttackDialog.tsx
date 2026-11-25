@@ -3,17 +3,17 @@ import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import type { FC } from "react"
 
-import { AttackCalculatorTitle } from "#/app/components/entities/items/attackCalculator/attackCalculatorTitle.tsx"
+import { AttackCalculatorTitle } from "#app/components/entities/items/attackCalculator/attackCalculatorTitle.tsx"
 import {
   AttackWorkflow,
   AttackWorkflowStep,
   createAttackWorkflowData,
-} from "#/app/components/entities/items/attackCalculator/attackWorkflow.ts"
-import { AttackWorkflowContent } from "#/app/components/entities/items/attackCalculator/attackWorkflowContent.tsx"
-import type { WeaponData } from "#/data/items/weaponData.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
+} from "#app/components/entities/items/attackCalculator/attackWorkflow.ts"
+import { AttackWorkflowContent } from "#app/components/entities/items/attackCalculator/attackWorkflowContent.tsx"
+import type { WeaponData } from "#data/items/weaponData.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
 
 interface WeaponAttackDialogProps extends ControlledDialogProps<void> {
   weapon: WeaponData

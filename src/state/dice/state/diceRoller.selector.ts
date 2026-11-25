@@ -1,7 +1,7 @@
 import { createSelector } from "reselect"
 
-import type { DiceRoller } from "#/state/dice/diceRoller.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+import type { DiceRoller } from "#state/dice/diceRoller.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
 
 import type { DiceRollerState } from "./diceRoller.state.ts"
 import type { DieState, SettledDieState } from "./dieState.ts"

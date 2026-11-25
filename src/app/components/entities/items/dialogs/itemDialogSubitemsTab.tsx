@@ -2,13 +2,13 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { ItemActionsDialogContext } from "#/app/components/entities/items/actions/itemActionsDialogContext.ts"
-import { useAddItemDialogContext } from "#/app/components/entities/items/addItemDialogContext.ts"
-import { AnyItemCard } from "#/app/components/ui/cards/itemCard/anyItemCard.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Icons } from "#/ui/icons/icons.ts"
+import { ItemActionsDialogContext } from "#app/components/entities/items/actions/itemActionsDialogContext.ts"
+import { useAddItemDialogContext } from "#app/components/entities/items/addItemDialogContext.ts"
+import { AnyItemCard } from "#app/components/ui/cards/itemCard/anyItemCard.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Icons } from "#ui/icons/icons.ts"
 
 interface ItemDialogSubitemsTabProps {
   itemId: UUID

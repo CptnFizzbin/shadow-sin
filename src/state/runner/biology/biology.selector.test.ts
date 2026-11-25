@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { metatypes, MetatypeType } from "#/data/biology/metatypeData.ts"
-import { awakenings, AwakeningType } from "#/data/magic/awakeningType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { metatypes, MetatypeType } from "#data/biology/metatypeData.ts"
+import { awakenings, AwakeningType } from "#data/magic/awakeningType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { BiologySelectors } from "./biology.selector.ts"
 

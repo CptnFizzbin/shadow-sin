@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
-import { VehicleCategory } from "#/data/items/vehicleData.ts"
-import type { CharacterMigration } from "#/data/migrations/characterMigration.ts"
+import { VehicleCategory } from "#data/items/vehicleData.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
 
 interface GearItem {
   itemType?: string

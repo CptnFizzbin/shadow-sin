@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest"
 
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { AttributeKey, AttrKey } from "#/data/attributes/attributeKey.ts"
-import { MetatypeType } from "#/data/biology/metatypeData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { GameEffectType } from "#/data/gameEffects/gameEffectType.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
-import type { ImplantData } from "#/data/items/implantData.ts"
-import { ImplantType } from "#/data/items/implantData.ts"
-import { createItem, createItemMap } from "#/data/items/itemData.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { AwakeningType } from "#/data/magic/awakeningType.ts"
-import type { SpellData } from "#/data/magic/spellData.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { AttributeKey, AttrKey } from "#data/attributes/attributeKey.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
+import type { ImplantData } from "#data/items/implantData.ts"
+import { ImplantType } from "#data/items/implantData.ts"
+import { createItem, createItemMap } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -21,14 +21,14 @@ import {
   SpellRange,
   SpellSustainTarget,
   SpellType,
-} from "#/data/magic/spellData.ts"
-import { AccessLevel } from "#/data/matrix/accessLevel.ts"
-import type { KnownNode } from "#/data/matrix/knownNode.ts"
-import { NodeType } from "#/data/matrix/nodeType.ts"
-import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
+} from "#data/magic/spellData.ts"
+import { AccessLevel } from "#data/matrix/accessLevel.ts"
+import type { KnownNode } from "#data/matrix/knownNode.ts"
+import { NodeType } from "#data/matrix/nodeType.ts"
+import type { AdeptPowerData } from "#data/powers/adeptPowerData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 
 import { AttrSelectors } from "./attributes.selector.ts"
 

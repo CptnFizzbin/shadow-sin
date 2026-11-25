@@ -1,9 +1,9 @@
-import { isTechnomancer } from "#/data/magic/technomancerUtils.ts"
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
-import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
-import { ComplexFormsSelectors } from "#/state/runner/complexForms/complexForms.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { isTechnomancer } from "#data/magic/technomancerUtils.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { BiologySelectors } from "#state/runner/biology/biology.selector.ts"
+import { ComplexFormsSelectors } from "#state/runner/complexForms/complexForms.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import type { BpLineItem } from "./bpLineItem.ts"
 

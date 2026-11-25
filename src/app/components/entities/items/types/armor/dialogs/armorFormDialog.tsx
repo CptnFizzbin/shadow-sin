@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
-import { ArmorFormFields } from "#/app/components/entities/items/types/armor/forms/armorFormFields.tsx"
-import { GearFormLicenseSection } from "#/app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ArmorData } from "#/data/items/armorData.ts"
-import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { armorFieldMap, useArmorForm } from "#/forms/items/types/armor/useArmorForm.tsx"
+import { ItemDialog } from "#app/components/entities/items/dialogs/itemDialog.tsx"
+import { ArmorFormFields } from "#app/components/entities/items/types/armor/forms/armorFormFields.tsx"
+import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ArmorData } from "#data/items/armorData.ts"
+import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { armorFieldMap, useArmorForm } from "#forms/items/types/armor/useArmorForm.tsx"
 
 interface ArmorFormDialogProps {
   ctrl: AnyDialogCtrl

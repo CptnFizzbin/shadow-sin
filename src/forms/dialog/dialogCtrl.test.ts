@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { isAnyOverlayOpen } from "#/common/overlay/openOverlayTracker.ts"
+import { isAnyOverlayOpen } from "#common/overlay/openOverlayTracker.ts"
 
 import { DialogCtrl } from "./dialogCtrl.ts"
 

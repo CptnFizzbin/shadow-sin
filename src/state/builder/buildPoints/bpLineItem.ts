@@ -1,4 +1,4 @@
-import type { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import type { BuilderSectionId } from "#state/builder/builderSectionId.ts"
 
 export interface BpLineItem {
   sectionId: BuilderSectionId

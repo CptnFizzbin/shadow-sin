@@ -1,5 +1,5 @@
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 export namespace TraditionSelectors {
   export const select = createMemoizedSelector(

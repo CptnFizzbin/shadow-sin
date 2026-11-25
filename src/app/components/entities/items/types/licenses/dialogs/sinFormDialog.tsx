@@ -1,12 +1,12 @@
 import type { FC } from "react"
 
-import { ItemDialog } from "#/app/components/entities/items/dialogs/itemDialog.tsx"
-import { SinRatingField } from "#/app/components/entities/items/types/licenses/sinRatingField.tsx"
-import type { SinData } from "#/data/items/sinData.ts"
-import type { AnyDialogCtrl } from "#/forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { useSinForm } from "#/forms/items/types/licenses/useSinForm.tsx"
-import { getRandomSinName, getSinCost } from "#/rules/items/sinUtils.ts"
+import { ItemDialog } from "#app/components/entities/items/dialogs/itemDialog.tsx"
+import { SinRatingField } from "#app/components/entities/items/types/licenses/sinRatingField.tsx"
+import type { SinData } from "#data/items/sinData.ts"
+import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { useSinForm } from "#forms/items/types/licenses/useSinForm.tsx"
+import { getRandomSinName, getSinCost } from "#rules/items/sinUtils.ts"
 
 interface SinFormDialogProps {
   ctrl: AnyDialogCtrl

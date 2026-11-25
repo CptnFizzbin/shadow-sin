@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { MetatypeType } from "#/data/biology/metatypeData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { AwakeningType } from "#/data/magic/awakeningType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import {
   APTITUDE_ACTIVE_SKILL_CAP,

@@ -1,9 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { sellItem } from "#/state/runner/items/items.actions.ts"
-import { buyKarma, sellKarma } from "#/state/runner/karma/karma.actions.ts"
-import { prepayLifestyle } from "#/state/runner/lifestyle/lifestyle.actions.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { sellItem } from "#state/runner/items/items.actions.ts"
+import { buyKarma, sellKarma } from "#state/runner/karma/karma.actions.ts"
+import { prepayLifestyle } from "#state/runner/lifestyle/lifestyle.actions.ts"
 
 import {
   addLoan,

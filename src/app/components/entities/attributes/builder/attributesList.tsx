@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
 
 import { AttributeRow } from "./attributeRow.tsx"
 

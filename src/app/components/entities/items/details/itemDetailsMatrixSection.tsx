@@ -3,12 +3,12 @@ import Chip from "@mui/material/Chip"
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import type { ItemMatrixStatKey } from "#/rules/items/itemMatrixStats.ts"
-import { itemMatrixStatKeys } from "#/rules/items/itemMatrixStats.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { Label } from "#/ui/text/label.tsx"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { ItemMatrixStatKey } from "#rules/items/itemMatrixStats.ts"
+import { itemMatrixStatKeys } from "#rules/items/itemMatrixStats.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import { ItemDetailsStat } from "./itemDetails.Stat.tsx"
 

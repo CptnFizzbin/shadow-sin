@@ -11,11 +11,11 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/data/magic/spellData.ts"
-import { GameEffectsFieldGroup } from "#/forms/gameEffects/gameEffectsFieldGroup.tsx"
-import type { SpellForm } from "#/forms/magician/spells/useSpellForm.ts"
-import { SourceFieldGroup } from "#/forms/sources/sourceFieldGroup.tsx"
-import { Label } from "#/ui/text/label.tsx"
+} from "#data/magic/spellData.ts"
+import { GameEffectsFieldGroup } from "#forms/gameEffects/gameEffectsFieldGroup.tsx"
+import type { SpellForm } from "#forms/magician/spells/useSpellForm.ts"
+import { SourceFieldGroup } from "#forms/sources/sourceFieldGroup.tsx"
+import { Label } from "#ui/text/label.tsx"
 
 interface SpellFormFieldsProps {
   form: SpellForm

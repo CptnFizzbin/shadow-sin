@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
-import type { Duration } from "#/data/duration/duration.ts"
-import type { DurationInputProps } from "#/forms/duration/durationInput.tsx"
-import { DurationInput } from "#/forms/duration/durationInput.tsx"
-import { useFieldContext } from "#/forms/tanstackForm/fieldContext.ts"
+import type { Duration } from "#data/duration/duration.ts"
+import type { DurationInputProps } from "#forms/duration/durationInput.tsx"
+import { DurationInput } from "#forms/duration/durationInput.tsx"
+import { useFieldContext } from "#forms/tanstackForm/fieldContext.ts"
 
 import { useFieldErrors } from "./useFieldError.ts"
 

@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { AdeptPowerData } from "#/data/powers/adeptPowerData.ts"
+import { EntityCard } from "#app/components/ui/cards/entityCard/entityCard.tsx"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { AdeptPowerData } from "#data/powers/adeptPowerData.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { PowerCard } from "./powerCard.tsx"

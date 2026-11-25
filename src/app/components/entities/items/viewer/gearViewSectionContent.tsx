@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { ImplantItemList } from "#/app/components/entities/items/types/implants/implantItemList.tsx"
-import { SinsAndLicensesSection } from "#/app/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
+import { ImplantItemList } from "#app/components/entities/items/types/implants/implantItemList.tsx"
+import { SinsAndLicensesSection } from "#app/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
 
 import { ArmorSectionContent } from "./armorSectionContent.tsx"
 import { ConsumablesSectionContent } from "./consumablesSectionContent.tsx"

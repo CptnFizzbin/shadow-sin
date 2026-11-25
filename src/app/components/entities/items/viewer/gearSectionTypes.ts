@@ -1,5 +1,5 @@
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
 
 export enum GearSection {
   Cyberware = "Cyberware",

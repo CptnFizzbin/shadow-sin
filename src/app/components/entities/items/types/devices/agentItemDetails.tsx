@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import type { AgentData } from "#/data/items/agentData.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { EntityProvider } from "#/state/entity/entity.provider.tsx"
+import type { AgentData } from "#data/items/agentData.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { EntityProvider } from "#state/entity/entity.provider.tsx"
 
 import { AgentItemDetailsBody } from "./agentItemDetailsBody.tsx"
 

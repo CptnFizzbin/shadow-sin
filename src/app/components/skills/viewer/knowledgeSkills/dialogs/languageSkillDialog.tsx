@@ -5,12 +5,12 @@ import type { FC } from "react"
 
 import {
   LanguageSkillFormFields,
-} from "#/app/components/skills/viewer/knowledgeSkills/forms/languageSkillFormFields.tsx"
-import type { LanguageSkillData } from "#/data/skills/languageSkillData.ts"
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { useLanguageSkillForm } from "#/forms/skills/knowledgeSkills/useLanguageSkillForm.ts"
+} from "#app/components/skills/viewer/knowledgeSkills/forms/languageSkillFormFields.tsx"
+import type { LanguageSkillData } from "#data/skills/languageSkillData.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { useLanguageSkillForm } from "#forms/skills/knowledgeSkills/useLanguageSkillForm.ts"
 
 interface LanguageSkillDialogProps extends ControlledDialogProps<LanguageSkillData> {
   skill?: LanguageSkillData

@@ -7,10 +7,10 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
-import { ExtendedInterval, ExtendedIntervalLabels, TestType } from "#/rules/dice/testType.ts"
-import { selectIsRolling, useDiceRollerSelector } from "#/state/dice/state/diceRoller.selector.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
-import { CounterInput } from "#/ui/form/inputs/counter/counterInput.tsx"
+import { ExtendedInterval, ExtendedIntervalLabels, TestType } from "#rules/dice/testType.ts"
+import { selectIsRolling, useDiceRollerSelector } from "#state/dice/state/diceRoller.selector.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
+import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 import { useDiceTray } from "./diceTrayContext.ts"
 

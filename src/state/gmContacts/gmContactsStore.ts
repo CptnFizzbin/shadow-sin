@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import type { ContactData } from "#/data/contacts/contactData.ts"
-import { ContactDataSchema } from "#/data/contacts/contactData.ts"
-import { createCompatStore } from "#/state/reduxToolkit/compatStore.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
-import { contactsReducer } from "#/state/runner/contacts/contacts.state.ts"
+import type { ContactData } from "#data/contacts/contactData.ts"
+import { ContactDataSchema } from "#data/contacts/contactData.ts"
+import { createCompatStore } from "#state/reduxToolkit/compatStore.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
+import { contactsReducer } from "#state/runner/contacts/contacts.state.ts"
 
 const storageKey = "shadowsin:gm/contacts"
 

@@ -1,4 +1,4 @@
-import { WeaponType } from "#/data/items/weaponData.ts"
+import { WeaponType } from "#data/items/weaponData.ts"
 
 /** Weapon types that use melee combat skills. */
 export const meleeWeaponTypes: WeaponType[] = [WeaponType.melee, WeaponType.thrown]

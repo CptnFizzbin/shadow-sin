@@ -1,4 +1,4 @@
-import type { AidSource } from "#/data/dicePool/aidSource.ts"
+import type { AidSource } from "#data/dicePool/aidSource.ts"
 
 /** The dice one `source` adds to a pool. */
 interface AidContribution {

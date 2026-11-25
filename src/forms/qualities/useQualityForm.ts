@@ -1,8 +1,8 @@
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { NullUuid } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { QualityData } from "#/data/qualities/qualityData.ts"
-import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { QualityData } from "#data/qualities/qualityData.ts"
+import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 
 interface QualityFormOptions {
   quality?: QualityData

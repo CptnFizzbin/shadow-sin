@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { QualityData } from "#/data/qualities/qualityData.ts"
+import type { QualityData } from "#data/qualities/qualityData.ts"
 
 import { addQuality, removeQuality, updateQuality } from "./qualities.actions.ts"
 

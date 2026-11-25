@@ -7,7 +7,7 @@ import {
   RiTrophyLine,
 } from "@remixicon/react"
 
-import type { KarmaExchangeDirection } from "#/state/runner/karma/karma.selector.ts"
+import type { KarmaExchangeDirection } from "#state/runner/karma/karma.selector.ts"
 
 import { ManageKarmaStep, ManageKarmaStepLabels } from "./manageKarmaWorkflow.ts"
 

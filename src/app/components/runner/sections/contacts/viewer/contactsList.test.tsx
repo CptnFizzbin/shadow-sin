@@ -2,14 +2,14 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
-import type { ContactData } from "#/data/contacts/contactData.ts"
-import { ContactSkillType } from "#/data/contacts/contactSkillData.ts"
-import { FavourDirection } from "#/data/contacts/favourData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { ContactsSelectors } from "#/state/runner/contacts/contacts.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import type { ContactData } from "#data/contacts/contactData.ts"
+import { ContactSkillType } from "#data/contacts/contactSkillData.ts"
+import { FavourDirection } from "#data/contacts/favourData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { ContactsSelectors } from "#state/runner/contacts/contacts.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { ContactsList } from "./contactsList.tsx"
 

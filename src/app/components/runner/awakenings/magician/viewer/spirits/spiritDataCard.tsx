@@ -1,17 +1,17 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SpiritCard } from "#/app/components/ui/cards/spiritCard/spiritCard.tsx"
-import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/data/attributes/attributeKey.ts"
-import type { SpiritData } from "#/data/magic/spiritData.ts"
+import { SpiritCard } from "#app/components/ui/cards/spiritCard/spiritCard.tsx"
+import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#data/attributes/attributeKey.ts"
+import type { SpiritData } from "#data/magic/spiritData.ts"
 import {
   calculateSpiritAttributes,
   calculateSpiritConditionMonitor,
   calculateSpiritInitiative,
   SpiritTypeLabels,
-} from "#/data/magic/spiritData.ts"
-import { SpiritRegistry } from "#/data/magic/spiritRegistry.ts"
-import { attrValue } from "#/rules/attributes/attributeFormulas.ts"
+} from "#data/magic/spiritData.ts"
+import { SpiritRegistry } from "#data/magic/spiritRegistry.ts"
+import { attrValue } from "#rules/attributes/attributeFormulas.ts"
 
 import { CritterPowerChip } from "./critterPowerChip.tsx"
 

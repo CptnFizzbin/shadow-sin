@@ -3,11 +3,11 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import type { FC } from "react"
 
-import { weaponTypeOptions } from "#/app/components/entities/items/types/weapons/forms/weaponFormFields.tsx"
-import { GearSection } from "#/app/components/entities/items/viewer/gearSectionTypes.ts"
-import { ConsumableType, ConsumableTypeLabel } from "#/data/items/consumableData.ts"
-import { MagicalType, MagicalTypeLabel } from "#/data/items/magicalData.ts"
-import { VehicleCategory } from "#/data/items/vehicleData.ts"
+import { weaponTypeOptions } from "#app/components/entities/items/types/weapons/forms/weaponFormFields.tsx"
+import { GearSection } from "#app/components/entities/items/viewer/gearSectionTypes.ts"
+import { ConsumableType, ConsumableTypeLabel } from "#data/items/consumableData.ts"
+import { MagicalType, MagicalTypeLabel } from "#data/items/magicalData.ts"
+import { VehicleCategory } from "#data/items/vehicleData.ts"
 
 import type { AddItemSectionWithSubtype, AddItemSelection, LicenseKind } from "./addItemSelection.ts"
 

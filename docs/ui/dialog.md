@@ -1,7 +1,7 @@
 # Dialog
 
 **Location:** `src/forms/dialog/`
-**Import:** `import { Dialog, ControlledDialog } from "#/forms/dialog/dialog.tsx"`
+**Import:** `import { Dialog, ControlledDialog } from "#forms/dialog/dialog.tsx"`
 
 A compound modal dialog that wraps MUI's dialog family and enforces a consistent look across the application. Dialogs
 are always full-width; use `maxWidth` to control how wide they can grow.
@@ -58,8 +58,8 @@ ctrl.open()` from wherever you want to trigger it.
 ```tsx
 import Button from "@mui/material/Button"
 
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialogCtrl } from "#/forms/dialog/useDialogCtrl.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialogCtrl } from "#forms/dialog/useDialogCtrl.ts"
 
 export const DeleteItemButton = ({ onConfirm }: { onConfirm: () => void }) => {
   const ctrl = useDialogCtrl<boolean>()
@@ -95,10 +95,10 @@ Don't destructure the returned object at the call site — keep it named and acc
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/forms/dialog/dialog.tsx"
-import { useDialog } from "#/forms/dialog/useDialog.tsx"
-import { useAppForm } from "#/forms/tanstackForm/useAppForm.ts"
+import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
+import { useDialog } from "#forms/dialog/useDialog.tsx"
+import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 
 interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
 
@@ -163,7 +163,7 @@ confirm-before-destructive-action and error-alert cases. Both return an `outlet`
 — render it once next to whatever calls the trigger:
 
 ```tsx
-import { useConfirmDialog } from "#/forms/dialog/confirmDialog.tsx"
+import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 
 const confirmDialog = useConfirmDialog()
 
@@ -187,7 +187,7 @@ For cases needing more control than `ControlledDialog` offers (e.g. custom close
 `useDialogProps(ctrl)` directly onto the raw `Dialog` instead:
 
 ```tsx
-import { useDialogProps } from "#/forms/dialog/useDialogProps.ts"
+import { useDialogProps } from "#forms/dialog/useDialogProps.ts"
 
 const ctrl = useDialogCtrl<boolean>()
 const dialogProps = useDialogProps(ctrl)
@@ -215,7 +215,7 @@ is still the simplest option:
 import Button from "@mui/material/Button"
 import { useState } from "react"
 
-import { Dialog } from "#/forms/dialog/dialog.tsx"
+import { Dialog } from "#forms/dialog/dialog.tsx"
 
 export const ExamplePage = () => {
   const [dialogOpen, setDialogOpen] = useState(false)

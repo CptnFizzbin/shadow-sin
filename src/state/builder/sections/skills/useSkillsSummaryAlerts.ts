@@ -1,6 +1,6 @@
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {
   const active = useRunnerSelector(SkillsSelectors.selectActiveSkills)

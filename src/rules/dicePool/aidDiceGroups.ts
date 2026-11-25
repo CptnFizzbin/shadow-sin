@@ -1,4 +1,4 @@
-import type { AidSource } from "#/data/dicePool/aidSource.ts"
+import type { AidSource } from "#data/dicePool/aidSource.ts"
 
 import { AidDiceFormulas } from "./aidDiceFormulas.ts"
 import type { DiceGroup } from "./diceGroup.tsx"

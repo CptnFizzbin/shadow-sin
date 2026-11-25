@@ -1,5 +1,5 @@
-import type { FlagEntry, FlagValue } from "#/data/featureFlags/featureFlag.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { FlagEntry, FlagValue } from "#data/featureFlags/featureFlag.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import { FeatureFlagSelectors } from "./featureFlags.selector.ts"
 

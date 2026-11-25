@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { CritterPowerData } from "#/data/powers/critterPowerData.ts"
-import { Label } from "#/ui/text/label.tsx"
+import type { CritterPowerData } from "#data/powers/critterPowerData.ts"
+import { Label } from "#ui/text/label.tsx"
 
 interface InnatePowersDisplayProps {
   powers: CritterPowerData[]

@@ -1,6 +1,6 @@
-import { drugFormOpts } from "#/forms/items/types/consumables/useDrugForm.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { drugFormOpts } from "#forms/items/types/consumables/useDrugForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
+import { Label } from "#ui/text/label.tsx"
 
 export const DrugFormFields = withFieldGroup({
   ...drugFormOpts,

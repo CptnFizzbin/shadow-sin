@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { ItemDetailsQuickAction } from "#/app/components/entities/items/details/itemDetails.QuickAction.tsx"
-import { useItemStateActions } from "#/app/hooks/items/state/useItemStateActions.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
+import { ItemDetailsQuickAction } from "#app/components/entities/items/details/itemDetails.QuickAction.tsx"
+import { useItemStateActions } from "#app/hooks/items/state/useItemStateActions.ts"
+import type { ItemData } from "#data/items/itemData.ts"
 
 export interface ItemStateQuickActionsProps {
   item: ItemData

@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { QualityData } from "#/data/qualities/qualityData.ts"
+import type { QualityData } from "#data/qualities/qualityData.ts"
 
 export const addQuality = createAction<QualityData>("qualities/add")
 export const updateQuality = createAction<QualityData>("qualities/update")

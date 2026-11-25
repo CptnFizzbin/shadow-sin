@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 import type { ContactSkillData } from "./contactSkillData.ts"
 import { ContactSkillDataSchema } from "./contactSkillData.ts"

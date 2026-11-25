@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 
-import { NumberUtils } from "#/common/number/numberUtils.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
 
 export const getDiceOffset = (isRolling: boolean): CSSProperties => {
   const rotate = isRolling ? NumberUtils.randomIntInRange(-45, 45) : 0

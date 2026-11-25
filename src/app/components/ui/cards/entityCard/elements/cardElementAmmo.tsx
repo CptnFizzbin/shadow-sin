@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import type { FirearmData } from "#/data/items/weaponData.ts"
+import type { FirearmData } from "#data/items/weaponData.ts"
 
 import { CardElementStat } from "./cardElementStat.tsx"
 

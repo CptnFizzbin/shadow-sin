@@ -1,6 +1,6 @@
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { useEditorMode } from "#/state/editor/editorMode.tsx"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
 
 import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
 

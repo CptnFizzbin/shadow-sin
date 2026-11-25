@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { ItemCard } from "#/app/components/ui/cards/itemCard/itemCard.tsx"
-import { useConsumeAction } from "#/app/hooks/items/types/consumables/useConsumeAction.ts"
-import type { DrugData } from "#/data/items/consumableData.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
+import { ItemCard } from "#app/components/ui/cards/itemCard/itemCard.tsx"
+import { useConsumeAction } from "#app/hooks/items/types/consumables/useConsumeAction.ts"
+import type { DrugData } from "#data/items/consumableData.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 
 interface DrugDataCardProps {
   drug: DrugData

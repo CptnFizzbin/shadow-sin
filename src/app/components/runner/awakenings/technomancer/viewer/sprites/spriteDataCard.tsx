@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { SpriteCard } from "#/app/components/ui/cards/spiritCard/spiritCard.tsx"
-import type { SpriteData } from "#/data/magic/spriteData.ts"
+import { SpriteCard } from "#app/components/ui/cards/spiritCard/spiritCard.tsx"
+import type { SpriteData } from "#data/magic/spriteData.ts"
 
 interface SpriteDataCardProps {
   sprite: SpriteData

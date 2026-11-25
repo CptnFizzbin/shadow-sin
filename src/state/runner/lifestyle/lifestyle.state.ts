@@ -1,8 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import { LifestyleType } from "#/data/finances/lifestyleType.ts"
-import { standardLifestyle } from "#/data/finances/runnerLifestyle.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { LifestyleType } from "#data/finances/lifestyleType.ts"
+import { standardLifestyle } from "#data/finances/runnerLifestyle.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { patchLifestyle, prepayLifestyle, setLifestyleMonthsPaid, setStandardLifestyle } from "./lifestyle.actions.ts"
 

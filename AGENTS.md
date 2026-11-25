@@ -56,14 +56,17 @@ Rules that only apply to one part of the tree live in an `AGENTS.md` next to tha
 
 ## Conventions
 
-- **Path aliases**: `#/` → `src/`, `#testUtils/*` → `testUtils/` (in unit tests). Use `#/` instead of parent-relative
-  (`../`) imports — ESLint enforces this. Sibling-relative (`./`) imports within a directory are fine.
+- **Path aliases**: each `src/` section has its own alias, standing in for its future package name: `#common/`,
+  `#data/`, `#rules/`, `#state/`, `#ui/`, `#forms/` and `#app/` (see `tsconfig.json` → `paths`). `#/` → `src/` is
+  only for the entry files at the root of `src/`, and `#testUtils/*` → `testUtils/` is for unit tests. Use an alias
+  instead of parent-relative (`../`) imports — ESLint enforces this and its autofix picks the section alias.
+  Sibling-relative (`./`) imports within a directory are fine.
 - **All local imports include the file extension** (`.ts` or `.tsx`):
   ```ts
   // ✅
-  import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+  import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
   // ❌
-  import { useRunnerSelector } from "#/state/runner/runnerStore.selectors"
+  import { useRunnerSelector } from "#state/runner/runnerStore.selectors"
   ```
 - New client-side environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env.ts"`. `env.node.ts` at the repo root covers Node-side tooling env vars.

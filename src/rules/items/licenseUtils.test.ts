@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { LicenseData } from "#/data/items/licenseData.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { LicenseData } from "#data/items/licenseData.ts"
 
 import {
   DefaultFakeLicenseRating,

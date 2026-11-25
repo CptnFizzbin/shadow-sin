@@ -1,6 +1,6 @@
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { MetatypeData } from "#/data/biology/metatypeData.ts"
-import type { AwakeningData } from "#/data/magic/awakeningType.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { MetatypeData } from "#data/biology/metatypeData.ts"
+import type { AwakeningData } from "#data/magic/awakeningType.ts"
 
 import { attrAugmentedMax, attrMin, attrNaturalMax } from "./attributeFormulas.ts"
 

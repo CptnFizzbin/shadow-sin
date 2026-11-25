@@ -1,5 +1,5 @@
-import type { SpendKarmaSectionKey } from "#/app/components/runner/karma/improvements/spendKarmaSections.tsx"
-import { createWorkflow, useWorkflow } from "#/ui/workflow/createWorkflow.tsx"
+import type { SpendKarmaSectionKey } from "#app/components/runner/karma/improvements/spendKarmaSections.tsx"
+import { createWorkflow, useWorkflow } from "#ui/workflow/createWorkflow.tsx"
 
 export enum ManageKarmaStep {
   Menu = "Menu",

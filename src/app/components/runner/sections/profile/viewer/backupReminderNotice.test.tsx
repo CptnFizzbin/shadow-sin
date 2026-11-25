@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { RunnerStoreProvider } from "#/app/components/runner/runnerStoreProvider.tsx"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { createRunnerStateStore } from "#/state/runnerState.ts"
+import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { BackupReminderNotice } from "./backupReminderNotice.tsx"
 

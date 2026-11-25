@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { SkillListItem } from "#/app/components/skills/viewer/skillListItem.tsx"
-import { useViewSkillDialog } from "#/app/components/skills/viewer/viewSkillDialog.tsx"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import type { KnowledgeSkillData } from "#/data/skills/knowledgeSkillData.ts"
-import { useKnowledgeSkillDicePool } from "#/state/runner/dicePool/skillDicePools.ts"
+import { SkillListItem } from "#app/components/skills/viewer/skillListItem.tsx"
+import { useViewSkillDialog } from "#app/components/skills/viewer/viewSkillDialog.tsx"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { KnowledgeSkillData } from "#data/skills/knowledgeSkillData.ts"
+import { useKnowledgeSkillDicePool } from "#state/runner/dicePool/skillDicePools.ts"
 
 interface KnowledgeSkillListItemProps {
   skill: KnowledgeSkillData

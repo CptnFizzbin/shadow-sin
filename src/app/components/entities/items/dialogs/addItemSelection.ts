@@ -1,8 +1,8 @@
-import { GearSection } from "#/app/components/entities/items/viewer/gearSectionTypes.ts"
-import type { ConsumableType } from "#/data/items/consumableData.ts"
-import type { MagicalType } from "#/data/items/magicalData.ts"
-import type { VehicleCategory } from "#/data/items/vehicleData.ts"
-import type { WeaponType } from "#/data/items/weaponData.ts"
+import { GearSection } from "#app/components/entities/items/viewer/gearSectionTypes.ts"
+import type { ConsumableType } from "#data/items/consumableData.ts"
+import type { MagicalType } from "#data/items/magicalData.ts"
+import type { VehicleCategory } from "#data/items/vehicleData.ts"
+import type { WeaponType } from "#data/items/weaponData.ts"
 
 /**
  * The kind of License gear the "SINs & Licenses" category resolves to — a SIN

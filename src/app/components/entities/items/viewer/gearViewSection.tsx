@@ -7,8 +7,8 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useContext, useState } from "react"
 
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
 import { GearListFilterContext } from "./gearListFilter.ts"

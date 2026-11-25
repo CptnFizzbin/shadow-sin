@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { AttributeKey } from "#/data/attributes/attributeKey.ts"
+import type { AttributeKey } from "#data/attributes/attributeKey.ts"
 
 export const setAttribute = createAction<{ key: AttributeKey, value: number }>("attributes/set")
 

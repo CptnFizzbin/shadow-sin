@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { FeatureFlagsData } from "#/data/featureFlags/featureFlagsData.ts"
+import type { FeatureFlagsData } from "#data/featureFlags/featureFlagsData.ts"
 
 const initialState: FeatureFlagsData = {}
 

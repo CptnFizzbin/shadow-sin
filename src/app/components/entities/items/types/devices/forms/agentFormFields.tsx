@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 
-import { agentFormOpts } from "#/forms/items/types/devices/useAgentForm.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { agentFormOpts } from "#forms/items/types/devices/useAgentForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 
 const ATTRIBUTE_MIN = 0
 const ATTRIBUTE_MAX = 99

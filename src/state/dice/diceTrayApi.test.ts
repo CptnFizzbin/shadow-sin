@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 
-import { TestType } from "#/rules/dice/testType.ts"
+import { TestType } from "#rules/dice/testType.ts"
 
 import { DiceTrayApi } from "./diceTrayApi.ts"
 

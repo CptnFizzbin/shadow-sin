@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 /** Which of a Contact's skill lists a skill belongs to. */
 export enum ContactSkillType {

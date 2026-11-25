@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 /**
  * Whole-object replace, kept for the rare caller (e.g. metatype/awakening changes) that needs to

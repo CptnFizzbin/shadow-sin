@@ -1,13 +1,13 @@
 import Typography from "@mui/material/Typography"
 
-import { FocusLink, focusLinkByType, FocusType } from "#/data/magic/focusData.ts"
-import { SpellCategory } from "#/data/magic/spellData.ts"
-import { SpiritType, SpiritTypeLabels } from "#/data/magic/spiritData.ts"
-import { focusFormOpts } from "#/forms/items/types/magical/useFocusForm.tsx"
-import type { SelectOption } from "#/forms/tanstackForm/fields/selectField.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
-import { getFocusBondingCost } from "#/rules/magic/focusRules.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { FocusLink, focusLinkByType, FocusType } from "#data/magic/focusData.ts"
+import { SpellCategory } from "#data/magic/spellData.ts"
+import { SpiritType, SpiritTypeLabels } from "#data/magic/spiritData.ts"
+import { focusFormOpts } from "#forms/items/types/magical/useFocusForm.tsx"
+import type { SelectOption } from "#forms/tanstackForm/fields/selectField.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
+import { getFocusBondingCost } from "#rules/magic/focusRules.ts"
+import { Label } from "#ui/text/label.tsx"
 
 const focusTypeOptions: SelectOption[] = Object.values(FocusType).map((value) => ({ label: value, value }))
 const spellCategoryOptions: SelectOption[] = Object.values(SpellCategory).map((value) => ({ label: value, value }))

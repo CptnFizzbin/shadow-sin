@@ -1,8 +1,8 @@
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import { SkillKey } from "#/data/skills/skillKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { ActiveSkillsList } from "./activeSkillsList.tsx"

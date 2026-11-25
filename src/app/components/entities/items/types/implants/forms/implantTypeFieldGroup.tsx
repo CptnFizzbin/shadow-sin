@@ -1,6 +1,6 @@
-import { ImplantType } from "#/data/items/implantData.ts"
-import { implantFormOpts } from "#/forms/items/types/implants/useImplantForm.tsx"
-import { withFieldGroup } from "#/forms/tanstackForm/useAppForm.ts"
+import { ImplantType } from "#data/items/implantData.ts"
+import { implantFormOpts } from "#forms/items/types/implants/useImplantForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
 
 const implantTypeOptions = [
   { label: "Cyberware", value: ImplantType.cyberware },

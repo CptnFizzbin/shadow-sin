@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { FocusData } from "#/data/items/magicalData.ts"
-import { MagicalType } from "#/data/items/magicalData.ts"
-import { FocusType } from "#/data/magic/focusData.ts"
-import type { SpellData } from "#/data/magic/spellData.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { FocusData } from "#data/items/magicalData.ts"
+import { MagicalType } from "#data/items/magicalData.ts"
+import { FocusType } from "#data/magic/focusData.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -15,12 +15,12 @@ import {
   SpellDuration,
   SpellRange,
   SpellType,
-} from "#/data/magic/spellData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import { getItemCatalog } from "#/data/runner/runnerTraits.ts"
-import type { DiceGroup } from "#/rules/dicePool/diceGroup.tsx"
-import type { EntityScope } from "#/state/entityScope.ts"
+} from "#data/magic/spellData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import type { DiceGroup } from "#rules/dicePool/diceGroup.tsx"
+import type { EntityScope } from "#state/entityScope.ts"
 
 import { createDicePoolSelector } from "./createDicePoolSelector.ts"
 

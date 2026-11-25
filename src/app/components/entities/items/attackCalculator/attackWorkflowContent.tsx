@@ -3,8 +3,8 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { WeaponType } from "#/data/items/weaponData.ts"
-import { Label } from "#/ui/text/label.tsx"
+import { WeaponType } from "#data/items/weaponData.ts"
+import { Label } from "#ui/text/label.tsx"
 
 import {
   AttackWorkflow,

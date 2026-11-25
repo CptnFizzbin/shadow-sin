@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import type { AidSource } from "#/data/dicePool/aidSource.ts"
+import type { AidSource } from "#data/dicePool/aidSource.ts"
 
 import { AidDiceFormulas } from "./aidDiceFormulas.ts"
 

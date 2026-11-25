@@ -1,6 +1,6 @@
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
-import { QualitiesSelectors } from "#/state/runner/qualities/qualities.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { QualitiesSelectors } from "#state/runner/qualities/qualities.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 import type { BpLineItem } from "./bpLineItem.ts"
 

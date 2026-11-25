@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { SpiritData } from "#/data/magic/spiritData.ts"
+import type { SpiritData } from "#data/magic/spiritData.ts"
 
 import { removeSpirit, saveSpirit } from "./spirits.actions.ts"
 

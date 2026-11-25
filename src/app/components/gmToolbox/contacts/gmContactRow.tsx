@@ -2,8 +2,8 @@ import Checkbox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { ContactRow } from "#/app/components/runner/sections/contacts/viewer/contactsListItem.tsx"
-import type { ContactData } from "#/data/contacts/contactData.ts"
+import { ContactRow } from "#app/components/runner/sections/contacts/viewer/contactsListItem.tsx"
+import type { ContactData } from "#data/contacts/contactData.ts"
 
 interface GmContactRowProps {
   contact: ContactData

@@ -1,6 +1,6 @@
-import { lifestylePrepayCost, matchStandardLifestyle, startingNuyenLifestyle } from "#/data/finances/runnerLifestyle.ts"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
+import { lifestylePrepayCost, matchStandardLifestyle, startingNuyenLifestyle } from "#data/finances/runnerLifestyle.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 export namespace LifestyleSelectors {
   export const select = createMemoizedSelector(

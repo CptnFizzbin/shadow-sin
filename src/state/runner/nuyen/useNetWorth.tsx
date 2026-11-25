@@ -1,9 +1,9 @@
-import { isCredstickData } from "#/data/items/credstickData.ts"
-import type { ItemCatalog } from "#/data/items/itemUtils.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
-import type { Selector } from "#/state/reselect/selectorUtils.ts"
-import { createMemoizedSelector } from "#/state/reselect/selectorUtils.ts"
-import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
+import { isCredstickData } from "#data/items/credstickData.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import type { Selector } from "#state/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 
 import { NuyenSelectors } from "./nuyen.selector.ts"
 

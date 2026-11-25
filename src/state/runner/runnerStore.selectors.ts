@@ -1,6 +1,6 @@
-import type { EntityScope } from "#/state/entityScope.ts"
-import type { Selector } from "#/state/reselect/selectorUtils.ts"
-import { useRunnerState } from "#/state/runnerState.ts"
+import type { EntityScope } from "#state/entityScope.ts"
+import type { Selector } from "#state/reselect/selectorUtils.ts"
+import { useRunnerState } from "#state/runnerState.ts"
 
 /**
  * The standardized way to read `RunnerData` in a component — assembles whatever `TState` a

@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line, RiSearchLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { ContactData } from "#/data/contacts/contactData.ts"
-import type { ContactSkillData } from "#/data/contacts/contactSkillData.ts"
-import { ContactSkillType } from "#/data/contacts/contactSkillData.ts"
+import type { ContactData } from "#data/contacts/contactData.ts"
+import type { ContactSkillData } from "#data/contacts/contactSkillData.ts"
+import { ContactSkillType } from "#data/contacts/contactSkillData.ts"
 
 const skillChipLabel = (skill: ContactSkillData) =>
   skill.specialization ? `${skill.name} (${skill.specialization})` : skill.name

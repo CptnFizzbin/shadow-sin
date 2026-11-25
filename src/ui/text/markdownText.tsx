@@ -6,7 +6,7 @@ import type { Components } from "react-markdown"
 import Markdown from "react-markdown"
 import remarkBreaks from "remark-breaks"
 
-import { mergeSx } from "#/ui/mui/muiUtils.ts"
+import { mergeSx } from "#ui/mui/muiUtils.ts"
 
 import { MarkdownHeading } from "./markdownHeading.tsx"
 import { remarkDisableIndentedCode } from "./remarkDisableIndentedCode.ts"

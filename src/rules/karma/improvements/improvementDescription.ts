@@ -1,6 +1,6 @@
-import { AttributeLabels } from "#/data/attributes/attributeKey.ts"
-import type { ImprovementEntry } from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
+import { AttributeLabels } from "#data/attributes/attributeKey.ts"
+import type { ImprovementEntry } from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
 
 /**
  * Render a short human-friendly description of an improvement, suitable for

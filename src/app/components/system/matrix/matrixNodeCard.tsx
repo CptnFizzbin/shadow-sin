@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
-import { AttributeKey } from "#/data/attributes/attributeKey.ts"
-import { AccessLevelLabels } from "#/data/matrix/accessLevel.ts"
-import type { KnownNode } from "#/data/matrix/knownNode.ts"
-import { NodeTypeLabels } from "#/data/matrix/nodeType.ts"
+import { EntityCard } from "#app/components/ui/cards/entityCard/entityCard.tsx"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { AccessLevelLabels } from "#data/matrix/accessLevel.ts"
+import type { KnownNode } from "#data/matrix/knownNode.ts"
+import { NodeTypeLabels } from "#data/matrix/nodeType.ts"
 
 const MATRIX_STAT_LABELS: { key: AttributeKey, label: string }[] = [
   { key: AttributeKey.system, label: "Sys" },

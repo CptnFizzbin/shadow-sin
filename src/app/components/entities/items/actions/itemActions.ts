@@ -1,7 +1,7 @@
-import type { ItemData } from "#/data/items/itemData.ts"
-import type { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import { isFocusData } from "#/data/items/magicalData.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import type { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { isFocusData } from "#data/items/magicalData.ts"
 import {
   getItemState,
   getItemStateActions,
@@ -10,7 +10,7 @@ import {
   isItemStateWithinParent,
   ItemStateAction,
   itemStateActionTargets,
-} from "#/rules/items/itemStateRules.ts"
+} from "#rules/items/itemStateRules.ts"
 
 /** Something a Player can do with an Item from its actions dialog. */
 export enum ItemAction {

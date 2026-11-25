@@ -1,8 +1,8 @@
-import { BuilderConfig } from "#/rules/buildPoints/builderConfig.ts"
-import { BuilderSectionId } from "#/state/builder/builderSectionId.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
 import {
   useKnowledgeSkillPoints,
-} from "#/state/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
+} from "#state/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
 
 import type { BpLineItem } from "./bpLineItem.ts"
 

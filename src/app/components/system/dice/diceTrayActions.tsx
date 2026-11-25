@@ -2,14 +2,14 @@ import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import type { FC } from "react"
 
-import { TestType } from "#/rules/dice/testType.ts"
+import { TestType } from "#rules/dice/testType.ts"
 import {
   selectHits,
   selectIsRolling,
   selectWasRolled,
   useDiceRollerSelector,
-} from "#/state/dice/state/diceRoller.selector.ts"
-import { useSelector } from "#/state/reduxToolkit/useSelector.ts"
+} from "#state/dice/state/diceRoller.selector.ts"
+import { useSelector } from "#state/reduxToolkit/useSelector.ts"
 
 import { useDiceTray } from "./diceTrayContext.ts"
 

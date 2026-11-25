@@ -6,9 +6,9 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { BuildPoints } from "#/app/components/builder/buildPoints.tsx"
-import type { SpriteData } from "#/data/magic/spriteData.ts"
-import { getSpriteTasksBp } from "#/rules/buildPoints/spritesUtils.ts"
+import { BuildPoints } from "#app/components/builder/buildPoints.tsx"
+import type { SpriteData } from "#data/magic/spriteData.ts"
+import { getSpriteTasksBp } from "#rules/buildPoints/spritesUtils.ts"
 
 interface SpriteRowProps {
   sprite: SpriteData

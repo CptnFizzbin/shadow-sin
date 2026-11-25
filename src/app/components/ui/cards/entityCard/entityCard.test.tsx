@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import type { EntityData } from "#/data/entities/entityData.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { Credential } from "#/data/entities/entityTraits.ts"
+import type { EntityData } from "#data/entities/entityData.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { Credential } from "#data/entities/entityTraits.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { EntityCard } from "./entityCard.tsx"

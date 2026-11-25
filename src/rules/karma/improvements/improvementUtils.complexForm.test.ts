@@ -1,11 +1,11 @@
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
-import type { UUID } from "#/common/uuid/uuidUtils.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { ComplexFormIncreaseEntry } from "#/data/karma/improvements/improvementEntry.ts"
-import { ImprovementType } from "#/data/karma/improvements/improvementType.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ComplexFormIncreaseEntry } from "#data/karma/improvements/improvementEntry.ts"
+import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 
 import { applyImprovement } from "./improvementUtils.ts"
 

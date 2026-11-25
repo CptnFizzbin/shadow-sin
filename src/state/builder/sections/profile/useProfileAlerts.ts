@@ -1,6 +1,6 @@
-import type { AlertInfo } from "#/common/alerts/alertInfo.ts"
-import { ProfileSelectors } from "#/state/runner/profile/profile.selector.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { ProfileSelectors } from "#state/runner/profile/profile.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {
   const addAlert = (alert: Omit<AlertInfo, "section">) => {

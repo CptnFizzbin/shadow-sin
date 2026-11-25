@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { ReputationUtils } from "#/data/reputation/createLedgerEntry.ts"
-import { ReputationStatType } from "#/data/reputation/reputationLedgerEntry.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
-import type { RunnerData } from "#/data/runner/runnerData.ts"
+import { ReputationUtils } from "#data/reputation/createLedgerEntry.ts"
+import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { ReputationSelectors } from "./reputation.selector.ts"
 

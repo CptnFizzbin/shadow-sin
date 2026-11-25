@@ -1,12 +1,12 @@
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import type { DeviceData } from "#/data/items/deviceData.ts"
-import type { ItemData } from "#/data/items/itemData.ts"
-import { createItemMap } from "#/data/items/itemData.ts"
-import { ItemState } from "#/data/items/itemState.ts"
-import { ItemType } from "#/data/items/itemType.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { DeviceData } from "#data/items/deviceData.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { createItemMap } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
 import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"

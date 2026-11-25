@@ -3,12 +3,12 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { LifestyleFields } from "#/app/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
-import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { LifestyleFields } from "#app/components/runner/sections/finances/lifestyle/lifestyleFields.tsx"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
+import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 export const LifestylePanel: FC = () => {
   const dispatch = useRunnerStoreDispatch()

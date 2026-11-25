@@ -11,12 +11,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { Lifestyles, LifestyleType } from "#/data/finances/lifestyleType.ts"
-import { Nuyen } from "#/forms/nuyen/nuyen.tsx"
-import { LifestyleSelectors } from "#/state/runner/lifestyle/lifestyle.selector.ts"
-import { Actions } from "#/state/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
-import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+import { Lifestyles, LifestyleType } from "#data/finances/lifestyleType.ts"
+import { Nuyen } from "#forms/nuyen/nuyen.tsx"
+import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
 const CUSTOM_OPTION = "Custom"
 

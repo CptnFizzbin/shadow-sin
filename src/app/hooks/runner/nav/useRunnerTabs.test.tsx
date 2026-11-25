@@ -1,12 +1,12 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { runnerSections } from "#/app/components/runner/sections/runnerSections.ts"
-import { EntityKind } from "#/data/entities/entityKind.ts"
-import { ItemType } from "#/data/items/itemType.ts"
-import type { VehicleData } from "#/data/items/vehicleData.ts"
-import { VehicleCategory } from "#/data/items/vehicleData.ts"
-import { runnerDataFactory } from "#/data/runner/runnerData.factory.ts"
+import { runnerSections } from "#app/components/runner/sections/runnerSections.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { VehicleData } from "#data/items/vehicleData.ts"
+import { VehicleCategory } from "#data/items/vehicleData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useRunnerTabs } from "./useRunnerTabs.ts"
