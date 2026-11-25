@@ -76,7 +76,7 @@ fixtures live in `testUtils/`.
 
 Key conventions:
 
-- **Path alias `#/`** → `src/` (configured in `tsconfig.json`)
+- **Path aliases**: each `src/` section is imported through its own alias (see `tsconfig.json` → `paths`); `#/` → `src/` is only for the entry files at the root of `src/`
 - **All local imports must include the file extension** (`.ts` or `.tsx`)
 - Runner state lives in a Redux Toolkit store (`RunnerStore`) — subscribe reactively via
   `useRunnerStoreSelector(selector)`
