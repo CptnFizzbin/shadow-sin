@@ -20,14 +20,17 @@ const sectionAliasPattern = {
 const sections = ["common", "data", "rules", "state", "ui", "forms", "app"] as const
 type Section = typeof sections[number]
 
-// The section layering from docs/features/0022-src-sections.md → "Allowed imports": which sections and
-// third-party packages each section may not import.
+// The section layering from docs/features/0022-src-sections.md: the sections each section may import ("Allowed
+// imports") and the third-party packages it may not use ("Placement rules").
+const reduxPackages = ["@reduxjs", "react-redux", "reselect"]
+const noUiPackages = ["react", "react-dom", "@mui", "@tanstack", ...reduxPackages]
+
 const sectionLayering: Record<Section, { allowedSections: Section[], bannedPackages: string[] }> = {
-  common: { allowedSections: [], bannedPackages: ["react", "@mui", "@reduxjs", "@tanstack"] },
-  data: { allowedSections: ["common"], bannedPackages: ["react", "@mui", "@reduxjs", "@tanstack"] },
-  rules: { allowedSections: ["data", "common"], bannedPackages: ["react", "@mui", "@reduxjs", "@tanstack"] },
+  common: { allowedSections: [], bannedPackages: [...noUiPackages] },
+  data: { allowedSections: ["common"], bannedPackages: [...noUiPackages] },
+  rules: { allowedSections: ["data", "common"], bannedPackages: [...noUiPackages] },
   state: { allowedSections: ["rules", "data", "common"], bannedPackages: ["@mui"] },
-  ui: { allowedSections: ["common"], bannedPackages: ["@reduxjs", "reselect", "@tanstack/react-router"] },
+  ui: { allowedSections: ["common"], bannedPackages: [...reduxPackages, "@tanstack/react-router", "@tanstack/router-core"] },
   forms: { allowedSections: ["ui", "state", "rules", "data", "common"], bannedPackages: [] },
   app: { allowedSections: ["forms", "ui", "state", "rules", "data", "common"], bannedPackages: [] },
 }

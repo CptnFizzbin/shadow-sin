@@ -26,8 +26,8 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
  * Provides `@tanstack/react-router` context so components under test can call
  * `useNavigate`/`useRouter` (e.g. to open an item's detail route) without
  * logging "useRouter must be used inside a <RouterProvider> component!" on
- * every render, and backs dialogs' back-button handling with the same router
- * history the app uses. Uses `RouterContextProvider` rather than `RouterProvider`:
+ * every render, and routes dialogs' back-button handling through the same
+ * `RouterDialogHistoryProvider` the app uses, backed by the test router's memory history. Uses `RouterContextProvider` rather than `RouterProvider`:
  * it only supplies the router via context, it doesn't render matched routes,
  * so a bare root route is enough and no route loaders run.
  */

@@ -16,8 +16,8 @@ export interface DialogHistory {
   /** Steps back one entry, as the browser's back button does. */
   back: () => void
   /**
-   * Registers `listener` to be called whenever history steps back one or more entries,
-   * whether by the browser's back button or by `back()`.
+   * Registers `listener` to be called whenever history steps back a single entry, whether by the
+   * browser's back button or by `back()`. Jumps of more than one entry are not reported.
    *
    * @param listener - called after each back navigation
    * @returns a function that unregisters `listener`

@@ -54,7 +54,8 @@ belongs in that section.
 adapter that `app` supplies through a context provider.
 
 ESLint enforces these rules, including which third-party packages each section may use (see `eslint.config.ts`).
-It checks static imports only, not dynamic imports or `vi.mock` paths.
+It checks static imports only, not dynamic imports or `vi.mock` paths, and it doesn't check the shared test helpers
+in `testUtils/`, which sit outside every section.
 
 ## Open Questions
 
