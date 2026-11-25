@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { Provider, useDispatch, useSelector, useStore } from "react-redux"
+import { Provider, useSelector, useStore } from "react-redux"
 
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
@@ -77,7 +77,6 @@ export type RunnerStateStore = ReturnType<typeof createRunnerStateStore>
 export const useRunnerStateStore = useStore.withTypes<RunnerStateStore>()
 
 export type RunnerStateDispatch = RunnerStateStore["dispatch"]
-export const useRunnerStateDispatch = useDispatch.withTypes<RunnerStateDispatch>()
 
 export const useRunnerState = useSelector.withTypes<RunnerState>()
 

@@ -12,15 +12,15 @@ import { InnatePowersDisplay } from "#/components/runner/sections/biology/viewer
 import { MovementDisplay } from "#/components/runner/sections/biology/viewer/movementDisplay.tsx"
 import { BiologySelectors } from "#/state/runner/biology/biology.selector.ts"
 import { RunnerActions } from "#/state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { useRunnerStateDispatch } from "#/state/runnerState.ts"
 import { metatypes, MetatypeType } from "#/system/model/biology/metatypeData.ts"
 import { awakenings, AwakeningType } from "#/system/model/magic/awakeningType.ts"
 
 import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
-  const dispatch = useRunnerStateDispatch()
+  const dispatch = useRunnerStoreDispatch()
   const metatypeKey = useRunnerSelector(BiologySelectors.selectMetatype)
   const awakeningType = useRunnerSelector(BiologySelectors.selectAwakening)
 
