@@ -46,7 +46,7 @@ Integration](#optional-rules-integration) below.
       `improvementUtils.ts` now matches the SR4A advancement table (wiki:
       `rules/character-improvement.md`) by default. Group-level deviations remain a
       future hook through
-      [`optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
+      [`optionalRules.ts`](../../src/data/featureFlags/optionalRules.ts)
       (e.g. `"karma.improvement.cheaperSkillGroups": { name: …, default: false }`)
       branched on inside `getImprovementCost`.
   - ✅ Fixed: `skillGroupIncrease` per-step → **`× 5`** (was `× 2`)
@@ -123,7 +123,7 @@ Integration](#optional-rules-integration) below.
 - **SR4A is the rulebook source of truth.** Every cost formula in `improvementUtils.ts`
   must match the SR4A advancement table (wiki: `rules/character-improvement.md`) by
   default. Group-level deviations live in
-  [`optionalRules`](../../src/system/model/featureFlags/optionalRules.ts) and are
+  [`optionalRules`](../../src/data/featureFlags/optionalRules.ts) and are
   read at call time — they do not get hardcoded into `improvementUtils.ts`. See
   [Optional Rules Integration](#optional-rules-integration).
 - **The Spend Karma dialog lives on the character-sheet view, not the builder.** The view
@@ -243,7 +243,7 @@ Not implemented in v1. The spec is locked here so the future implementer doesn't
 
 Any deliberate deviation from SR4A (cheaper skill groups, no rating caps, karma-learnable
 native languages, etc.) is expressed as an entry in
-[`src/data/featureFlags/optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
+[`src/data/featureFlags/optionalRules.ts`](../../src/data/featureFlags/optionalRules.ts)
 rather than hardcoded in `improvementUtils.ts`. The pattern from
 [#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) /
 [#298](https://github.com/CptnFizzbin/shadow-sin/pull/298):

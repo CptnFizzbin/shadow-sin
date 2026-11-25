@@ -1,6 +1,7 @@
 # Top-Level Directory Restructuring
 
-> **Status:** Implemented
+> **Status:** Implemented — the container layout is replaced by the sections in
+> [`0022-src-sections.md`](./0022-src-sections.md)
 >
 > **GitHub Issues / PRs:**
 > - [#614](https://github.com/CptnFizzbin/shadow-sin/pull/614) — the mechanical renames/moves this

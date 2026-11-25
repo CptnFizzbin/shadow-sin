@@ -103,7 +103,7 @@ not follow that structure:
   looking at, a blanket select-all risks silently sweeping in forgotten items — selection stays
   manual, per item.
 - **Bar placement:** a sticky bottom bar that *replaces* the existing sticky-bottom
-  dice-tray/quick-access `ButtonGroup` (`src/routes/$runnerId.tsx:76-84`) in the same slot while
+  dice-tray/quick-access `ButtonGroup` (`src/app/routes/$runnerId.tsx`) in the same slot while
   selection mode is active, styled with a distinct color so the mode change is unmistakable. Shows
   the bulk action bar supporting Stash/Unstash, Equip/Unequip, and Remove (same confirmation as
   single Remove).

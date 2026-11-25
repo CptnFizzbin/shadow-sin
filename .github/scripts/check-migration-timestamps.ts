@@ -2,7 +2,7 @@
 /**
  * Verifies that every runner migration added in this PR has a `timestamp` newer than the base
  * branch's SIN version — i.e. newer than every migration already registered on the base branch —
- * see "Character migrations" in AGENTS.md.
+ * see `src/data/migrations/AGENTS.md`.
  *
  * Usage:
  *   npx tsx check-migration-timestamps.ts <base-ref>
@@ -13,7 +13,7 @@ import { readFileSync } from "node:fs"
 
 const MIGRATIONS_DIR = "src/data/migrations/steps/"
 
-/** Mirrors `RUNNER_META_EPOCH` (`src/system/runnerData.ts`) — the sentinel SIN version for a base branch with no registered migrations at all. */
+/** Mirrors `RUNNER_META_EPOCH` (`src/data/runner/runnerData.ts`) — the sentinel SIN version for a base branch with no registered migrations at all. */
 const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
 
 const [, , baseRef] = process.argv

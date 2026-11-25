@@ -70,25 +70,9 @@ immediately without a full reload.
 
 ## Project Structure
 
-```
-src/
-  components/       React display components (runner sheet, builder, gear, UI), grouped by feature
-  data/             Runner fixtures and schema migrations
-  integrations/     TanStack Query/Router/Form wiring, MUI theme setup
-  lib/
-    hooks/          Custom React hooks (useXyz), grouped by feature
-    stores/         Redux Toolkit store slices, grouped by feature
-    contexts/       createContext definitions, grouped by feature
-    persistence/    RunnerManager: loads, saves, and migrates runner files
-    storage/        Pluggable persistence layer (IStorageProvider + StorageManager)
-                    ...plus generic utilities at the lib/ root (arrayUtils, numberUtils, etc.)
-  routes/           File-based TanStack Router routes
-  system/           Domain types — RunnerData, gear, magic, skills, etc.
-  env.ts            Environment variable declarations (@t3-oss/env-core)
-  main.tsx          App entry point
-
-testUtils/          Shared test helpers and fixtures
-```
+`src/` is divided into sections, one folder per layer: `common`, `data`, `rules`, `state`, `ui`, `forms` and
+`app`. See `docs/features/0022-src-sections.md` → "Placement rules" for what goes where. Shared test helpers and
+fixtures live in `testUtils/`.
 
 Key conventions:
 

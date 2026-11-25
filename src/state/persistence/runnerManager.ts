@@ -43,7 +43,7 @@ export class RunnerManager {
     })
   }
 
-  // called on the RunnerManagerContext instance in src/routes/$runnerId.tsx
+  // called on the RunnerManagerContext instance in src/app/routes/$runnerId.tsx
   public save(runner: RunnerData): Promise<void> {
     return this.getOrCreateDebouncer(runner.id).maybeExecute(runner) as Promise<void>
   }

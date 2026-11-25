@@ -1,6 +1,6 @@
 ---
 name: architecture-reviewer
-description: Read-only architecture review of the current change against the repo's ADRs, AGENTS.md rules, GLOSSARY.md and the src/ container layout, plus structural complexity that could be simplified. Run it before calling any change done (see AGENTS.md → "Architecture review"), or on demand against a design doc path. Reports findings; never edits.
+description: Read-only architecture review of the current change against the repo's ADRs, AGENTS.md rules, GLOSSARY.md and the src/ section layout, plus structural complexity that could be simplified. Run it before calling any change done (see AGENTS.md → "Architecture review"), or on demand against a design doc path. Reports findings; never edits.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---
@@ -19,7 +19,7 @@ commands, `ls`, `cat`).
 In scope — architecture and structural complexity:
 
 - **State ownership** — where state lives and how it is read and written (`src/state/AGENTS.md`, the state ADRs).
-- **Layering and dependencies** — which container may depend on which; imports that cross a boundary the docs forbid.
+- **Layering and dependencies** — which section may depend on which; imports that cross a boundary the docs forbid.
 - **Placement** — whether a new or moved file sits in the right `src/` section, per the "Placement rules" and
   "Allowed imports" sections of `docs/features/0022-src-sections.md` and the directory `AGENTS.md` files.
 - **ADR compliance** — the change honours every binding ADR in `docs/adr/` (see "Which rules bind" below).
@@ -84,12 +84,12 @@ Read each ADR's status line:
   ADR describes. Code that simply hasn't reached the target yet is not a finding.
 - **Deprecated / superseded** → ignore it; follow the ADR that superseded it if one is named.
 
-`AGENTS.md` files, `GLOSSARY.md` and the 0017 container definitions are always binding.
+`AGENTS.md` files, `GLOSSARY.md` and the 0022 placement rules and allowed imports are always binding.
 
 ## What counts as a finding
 
 - **Blocking** — the diff *introduces or worsens* a violation, and you can cite the specific written rule it breaks
-  (ADR number and section, `AGENTS.md` path and rule, glossary term, or 0017 container definition). No citation, not
+  (ADR number and section, `AGENTS.md` path and rule, glossary term, or 0022 placement rule). No citation, not
   blocking.
 - **Undocumented decision** — an architectural concern no written rule covers, or a decision the change makes that
   future work will depend on. Non-blocking; suggest what an ADR for it would decide.
@@ -112,7 +112,7 @@ Reply with exactly these sections, omitting any that are empty, and nothing else
 
 ### Blocking
 1. **<short title>** — `path/to/file.ts:LINE`
-   - **Rule:** <ADR-NNNN § section | path/AGENTS.md → rule | GLOSSARY: term | 0017 → container>
+   - **Rule:** <ADR-NNNN § section | path/AGENTS.md → rule | GLOSSARY: term | 0022 → section>
    - **Problem:** <what the change does that breaks the rule>
    - **Direction:** <which way a fix should go — no patches>
 

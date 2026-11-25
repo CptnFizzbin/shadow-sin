@@ -26,8 +26,10 @@ Check the sections from the bottom up. A file goes in the first section whose te
 Optional rules are split across three sections: the flag definitions go in `data`, what each rule changes goes in
 `rules`, and the toggle state goes in `state`.
 
-Inside a section, the top-level folders are feature areas, such as `rules/karma` or `ui/cards`. The app entry
-points (`main.tsx`, `router.ts`, `routeTree.gen.ts`, `env.ts`) stay at the root of `src/`.
+Inside a section, the top-level folders are feature areas, such as `rules/karma` or `ui/cards`. Two sections don't
+follow this yet: `app` keeps its technical split (`components`, `hooks`, `routes`, ...), and `state` keeps the
+Runner store's root files beside its feature folders. The app entry points (`main.tsx`, `router.ts`,
+`routeTree.gen.ts`, `env.ts`) stay at the root of `src/`.
 
 ## Allowed imports
 
@@ -48,12 +50,16 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
 - [ ] Which files must be split before every import goes downward? The known cases include the Runner utilities,
   the improvement utilities, the builder gear utilities, the defense calculator data, the export utilities, and
   the entity card slot manager and elements. Each one was placed whole in the section that fits most of its content.
+- [ ] Two more `data` files reach upward: the critter power data uses an attribute formula from `rules`, and the
+  reputation ledger entry imports MUI colours.
 - [ ] The Runner factory in `data` reads attribute defaults from `rules`. Should those defaults move into `data`,
   or should the factory carry literal defaults instead?
 - [ ] The dialog stack sits in `forms` because it keeps its state in Redux and uses the router. Should it move to
   `ui` once its store no longer uses Redux?
 - [ ] Should `ui` be allowed to depend on the router?
 - [ ] How should ESLint enforce the allowed imports between sections?
+- [ ] Should `app` be regrouped into feature areas? Its `components/ui/` folder (cards, navigation, header, quick
+  panel) is also easy to confuse with the `ui` section.
 
 ## Constraints
 

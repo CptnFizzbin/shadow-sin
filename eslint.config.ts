@@ -166,7 +166,7 @@ export default defineConfig([
   {
     files: [
       "src/app/routes/**",
-      "src/data/migrations/**",
+      "src/data/migrations/steps/**",
     ],
     rules: {
       "check-file/filename-naming-convention": "off",

@@ -58,10 +58,10 @@ const config = defineConfig(({ command }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Runner migrations (src/data/migrations.ts, statically imported — no top-level await)
+          // Runner migrations (src/data/migrations/migrations.ts, statically imported — no top-level await)
           // always need to load and run together, so keep them in one dedicated chunk instead of
           // wherever Rollup's default chunking happens to put them.
-          if (id.includes("/src/data/migrations")) {
+          if (id.includes("/src/data/migrations/steps/") || id.endsWith("/src/data/migrations/migrations.ts")) {
             return "runner-migrations"
           }
 

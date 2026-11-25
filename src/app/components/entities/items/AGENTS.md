@@ -1,4 +1,4 @@
-# src/components/entities/items — gear items
+# src/app/components/entities/items — gear items
 
 Each gear item type follows a three-layer pattern:
 

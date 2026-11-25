@@ -11,6 +11,6 @@ export interface ItemSelectionContextValue {
 
 /**
  * The gear list's selection, or `null` outside an `ItemSelectionProvider` — where Item cards never
- * enter selection mode. Read it through the hooks in `#/hooks/items/selection/`.
+ * enter selection mode. Read it through the hooks in `#/app/hooks/items/selection/`.
  */
 export const ItemSelectionContext = createContext<ItemSelectionContextValue | null>(null)

@@ -1,4 +1,4 @@
-# src/components — React components
+# src/app/components — React components
 
 - One React component per `.tsx` file — including small internal helpers.
 - Functional components as a named exported const with an explicit props interface
@@ -9,7 +9,7 @@
 - Read Runner state reactively through the selector hooks in `src/state/` and write through dispatched actions, so
   every write goes through the domain reducers. Never read a store snapshot (`getState()` or equivalent) in a
   component — it won't re-render when the state changes.
-- Read ad hoc stores (from `src/state/`) with `useSelector(store, selector)` from `src/state/reduxToolkit/`.
+- Read ad hoc stores (in `src/state/<feature>/`, plus the dialog store in `src/forms/dialog/`) with `useSelector(store, selector)` from `src/state/reduxToolkit/`.
   `@tanstack/react-store`'s `useSelector` is only for `@tanstack/react-form`'s own internal form stores — never for
   ours.
 
@@ -18,7 +18,7 @@
 Only pass MUI style props that deviate from the theme defaults, and use MUI CSS variables (not palette callbacks) for
 theme-responsive styles. Read the full rules in `.agents/guidelines/mui.md` before writing or editing MUI code:
 
-@../../.agents/guidelines/mui.md
+@../../../.agents/guidelines/mui.md
 
 ## Dialogs and forms
 

@@ -1,6 +1,6 @@
-# src/data — Runner schema migrations
+# src/data/migrations — Runner schema migrations
 
-Migrations live in `migrations/` and are registered in `migrations.ts`; `applyMigrations.ts` decides which ones run
+Migrations live in `steps/` and are registered in `migrations.ts`; `applyMigrations.ts` decides which ones run
 (every migration whose `timestamp` is newer than the runner's `_meta_.sinVersion`, in ascending order). Read both
 before adding one.
 
@@ -25,6 +25,6 @@ characters.
 
 ## Fixture Runners
 
-`fixtures/*.sin` are the sample Runners seeded on the landing page in dev (and with `VITE_SEED_FIXTURES`); every
-`.sin` file there is picked up automatically by `fixtures/fixtureRunners.ts`. After adding a migration, run
+`src/data/fixtures/*.sin` are the sample Runners seeded on the landing page in dev (and with `VITE_SEED_FIXTURES`); every
+`.sin` file there is picked up automatically by `src/data/fixtures/fixtureRunners.ts`. After adding a migration, run
 `yarn fixtures:update` to rewrite them at the latest schema — `fixtureRunners.test.ts` fails until you do.

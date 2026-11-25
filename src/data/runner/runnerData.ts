@@ -37,12 +37,12 @@ export const RUNNER_META_EPOCH = "1970-01-01T00:00:00.000Z"
 export interface RunnerMeta {
   /**
    * ISO 8601 timestamp identifying this runner's most recent successful migration run — see
-   * `src/data/applyMigrations.ts`. Compared against each registered migration's `timestamp` to
+   * `src/data/migrations/applyMigrations.ts`. Compared against each registered migration's `timestamp` to
    * decide which migrations still need to run; individual migrations never read or write it.
    */
   sinVersion: string
   /**
-   * ISO 8601 timestamp of the app version (`src/data/appVersion.ts`'s `APP_VERSION`) that most
+   * ISO 8601 timestamp of the app version (`src/data/migrations/appVersion.ts`'s `APP_VERSION`) that most
    * recently ran a migration against this runner, or `null` if none has. Informational only — it
    * plays no part in deciding which migrations run; see `sinVersion` for that.
    */

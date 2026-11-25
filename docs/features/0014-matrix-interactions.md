@@ -7,7 +7,7 @@
 
 Player-facing helper tools for managing Matrix presence during a run: an active `MatrixNode`,
 a roster of Known Nodes, running Programs/Agents, and a Matrix Actions cheatsheet — on the
-existing Matrix tab (`src/routes/$runnerId/_viewer/matrix.tsx`). This pass is explicitly
+existing Matrix tab (`src/app/routes/$runnerId/_viewer/matrix.tsx`). This pass is explicitly
 bookkeeping, not simulation: it does not compute Matrix Test dice pools, run the Hacking on the
 Fly/Probing extended tests, or model matrix combat. It establishes the entity model (`MatrixNode`,
 `Program`/`Agent` as `Item` subtypes, the shared Matrix attribute system) that a later pass can
