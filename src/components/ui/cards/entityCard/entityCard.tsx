@@ -62,10 +62,9 @@ export interface EntityCardProps extends PropsWithChildren {
   /** Icon buttons stacked on the card's right edge, below the actions menu button when there is one. */
   quickActions?: EntityCardQuickAction[]
   /**
-   * A button pinned to the card's left edge. Hidden in selection mode.
+   * Rendered before `quickActions`, in the same right-edge column.
    *
-   * @deprecated Pass the action in `quickActions` instead, which stacks it below the actions menu
-   * button on the card's right edge.
+   * @deprecated Pass the action in `quickActions` instead.
    */
   leftAction?: EntityCardQuickAction
   /**
@@ -123,7 +122,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   const hasMenu = !selection && !onOpenActions && !!(onEdit || onRemove)
   const hasActions = !selection && (!!onOpenActions || hasMenu)
   const onActivate = selection ? selection.onToggle : onOpen
-  const visibleQuickActions = selection ? [] : quickActions
+  const visibleQuickActions = selection ? [] : [...(leftAction ? [leftAction] : []), ...quickActions]
   const hasActionColumn = hasActions || visibleQuickActions.length > 0
   // A card with nothing but its title line and footer fits both on a single row.
   const isCompact = allowCompact
@@ -162,17 +161,6 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   return (
     <>
       <Stack direction="row" sx={{ width: "100%", gap: 0 }}>
-        {leftAction && !selection && (
-          <Button
-            variant="outlined"
-            aria-label={leftAction.label ?? "Action"}
-            onClick={(event) => handleQuickActionClick(event, leftAction)}
-            sx={{ minWidth: 42, alignItems: "flex-start", borderRight: "none", padding: 1 }}
-          >
-            {leftAction.icon}
-          </Button>
-        )}
-
         <Box
           role={selection ? "checkbox" : (onOpen ? "button" : undefined)}
           aria-checked={selection?.selected}
