@@ -53,7 +53,8 @@ belongs in that section.
 `onClick` prop, or, for needs a prop can't express (such as a dialog closing on the browser's back button), an
 adapter that `app` supplies through a context provider.
 
-Nothing enforces these rules yet. Code that breaks them is tracked under Open Questions until it is untangled.
+ESLint enforces these rules, including which third-party packages each section may use (see `eslint.config.ts`).
+It checks static imports only, not dynamic imports or `vi.mock` paths.
 
 ## Open Questions
 
@@ -61,8 +62,6 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
   fits most of its content.
 - [ ] Some entity card elements are domain-free and would pass the `ui` test, but ADR-0010 keeps every element in
   one folder, so they all sit in `app`. Should the generic ones move to `ui` under a superseding ADR?
-- [ ] How should ESLint enforce the allowed imports between sections? The rule against `#/<section>/` imports
-  checks static imports only, not dynamic imports or `vi.mock` paths.
 - [ ] What will each package expose? If packages offer only named entry points instead of deep imports, the deep
   `#<section>/...` imports must move to those entry points when the sections become packages.
 - [ ] Should `app` be regrouped into feature areas? Its `components/ui/` folder (cards, navigation, header, quick
