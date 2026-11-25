@@ -1,7 +1,7 @@
 import { createHashHistory, createRouter as createTanStackRouter } from "@tanstack/react-router"
 
 import { getContext } from "./app/integrations/tanstackQuery/rootProvider.tsx"
-import { createDialogAwareScrollRestoration } from "./forms/dialog/dialogBackGuard.ts"
+import { createDialogAwareScrollRestoration } from "./app/integrations/tanstackRouter/dialogAwareScrollRestoration.ts"
 import { routeTree } from "./routeTree.gen.ts"
 
 export function getRouter() {

@@ -5,8 +5,8 @@ import { AwakeningType } from "#data/magic/awakeningType.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import type { ActiveSkillData } from "#data/skills/activeSkillData.ts"
 import { SkillKey } from "#data/skills/skillKey.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { ActiveSkillFormDialog } from "./activeSkillFormDialog.tsx"
 

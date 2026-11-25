@@ -4,9 +4,9 @@ import type { FC } from "react"
 
 import type { QualityData } from "#data/qualities/qualityData.ts"
 import { bookOptions } from "#data/source/sourceData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { DetailDialog } from "#forms/dialog/detailDialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { DetailDialog } from "#ui/dialog/detailDialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 import { Label } from "#ui/text/label.tsx"
 import { MarkdownText } from "#ui/text/markdownText.tsx"
 

@@ -7,11 +7,11 @@ import { FocusWeaponField } from "#app/components/entities/items/types/magical/f
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import { ItemType } from "#data/items/itemType.ts"
 import type { FocusData } from "#data/items/magicalData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { focusFieldMap, useFocusForm } from "#forms/items/types/magical/useFocusForm.tsx"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface FocusFormDialogProps {
   ctrl: AnyDialogCtrl

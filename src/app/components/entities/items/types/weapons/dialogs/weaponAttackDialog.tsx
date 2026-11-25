@@ -11,9 +11,9 @@ import {
 } from "#app/components/entities/items/attackCalculator/attackWorkflow.ts"
 import { AttackWorkflowContent } from "#app/components/entities/items/attackCalculator/attackWorkflowContent.tsx"
 import type { WeaponData } from "#data/items/weaponData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface WeaponAttackDialogProps extends ControlledDialogProps<void> {
   weapon: WeaponData

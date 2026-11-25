@@ -9,9 +9,9 @@ import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import type { GameEffectData } from "#data/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
 import { getDefaultTarget } from "#data/gameEffects/gameEffectUtils.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 import { GameEffectRow } from "./gameEffectRow.tsx"
 

@@ -18,9 +18,9 @@ import {
   dataPacketToYaml,
 } from "#data/exportImport/dataPacketUtils.ts"
 import { downloadTextFile, toFileNameSlug } from "#data/exportImport/exportUtils.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { useGmContacts, useGmContactsDispatch } from "#state/gmContacts/gmContactsStore.ts"
 import { addContact, removeContact, updateContact } from "#state/runner/contacts/contacts.actions.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 import { GmContactRow } from "./gmContactRow.tsx"
 

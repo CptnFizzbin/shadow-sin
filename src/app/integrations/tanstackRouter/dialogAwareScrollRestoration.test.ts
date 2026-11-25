@@ -1,7 +1,9 @@
 import type { ParsedLocation } from "@tanstack/react-router"
 import { describe, expect, it } from "vitest"
 
-import { createDialogAwareScrollRestoration, dialogBackGuardState } from "./dialogBackGuard.ts"
+import { dialogBackGuardState } from "#ui/dialog/dialogBackGuard.ts"
+
+import { createDialogAwareScrollRestoration } from "./dialogAwareScrollRestoration.ts"
 
 const makeLocation = (key: string, state: object = {}) => ({
   location: { state: { __TSR_key: key, ...state } } as ParsedLocation,

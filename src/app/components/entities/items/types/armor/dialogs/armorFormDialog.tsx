@@ -5,9 +5,9 @@ import { ArmorFormFields } from "#app/components/entities/items/types/armor/form
 import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import type { ArmorData } from "#data/items/armorData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { armorFieldMap, useArmorForm } from "#forms/items/types/armor/useArmorForm.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface ArmorFormDialogProps {
   ctrl: AnyDialogCtrl

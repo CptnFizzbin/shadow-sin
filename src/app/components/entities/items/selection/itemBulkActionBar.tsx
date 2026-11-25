@@ -9,7 +9,6 @@ import { RiCloseLine, RiDeleteBinLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useItemSelectionMode } from "#app/hooks/items/selection/useItemSelection.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import type { ItemBulkStateAction } from "#rules/items/itemBulkActions.ts"
 import {
   canApplyBulkStateAction,
@@ -21,6 +20,7 @@ import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 import { Icons } from "#ui/icons/icons.ts"
 
 const actionLabels: Record<ItemBulkStateAction, string> = {

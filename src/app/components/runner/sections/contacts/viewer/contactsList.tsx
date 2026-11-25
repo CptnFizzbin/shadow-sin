@@ -6,9 +6,9 @@ import type { FC, ReactNode } from "react"
 
 import { NullUuid } from "#common/uuid/uuidUtils.ts"
 import type { ContactData } from "#data/contacts/contactData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 import { ContactRow } from "./contactsListItem.tsx"
 import { useLegworkInfoDialog } from "./dialogs/legworkInfoDialog.tsx"

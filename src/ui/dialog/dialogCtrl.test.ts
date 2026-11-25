@@ -31,6 +31,21 @@ describe.concurrent("DialogCtrl", () => {
     expect(ctrl.store.getState().open).toBe(false)
   })
 
+  it("notifies store subscribers when the open state changes, but not on a redundant close()", () => {
+    // Arrange
+    const ctrl = new DialogCtrl<void>()
+    const notifiedOpenStates: boolean[] = []
+    ctrl.store.subscribe(() => notifiedOpenStates.push(ctrl.store.getState().open))
+
+    // Act
+    ctrl.open()
+    ctrl.close()
+    ctrl.close()
+
+    // Assert
+    expect(notifiedOpenStates).toEqual([true, false])
+  })
+
   it("result() resolves only once even if close() is called multiple times", async () => {
     const ctrl = new DialogCtrl<string>()
 

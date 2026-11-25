@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import type { ImplantData } from "#data/items/implantData.ts"
 import { ItemType } from "#data/items/itemType.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { ImplantFormDialog } from "./implantFormDialog.tsx"
 

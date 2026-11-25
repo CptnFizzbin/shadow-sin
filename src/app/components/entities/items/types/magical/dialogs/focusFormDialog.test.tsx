@@ -6,8 +6,8 @@ import type { FocusData } from "#data/items/magicalData.ts"
 import { MagicalType } from "#data/items/magicalData.ts"
 import { FocusType } from "#data/magic/focusData.ts"
 import { SpiritType } from "#data/magic/spiritData.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { FocusFormDialog } from "./focusFormDialog.tsx"
 

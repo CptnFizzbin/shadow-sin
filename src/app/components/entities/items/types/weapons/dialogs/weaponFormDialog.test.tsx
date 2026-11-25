@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import { ItemType } from "#data/items/itemType.ts"
 import type { WeaponData } from "#data/items/weaponData.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { WeaponFormDialog } from "./weaponFormDialog.tsx"
 

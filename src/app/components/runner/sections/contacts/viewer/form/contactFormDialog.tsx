@@ -5,9 +5,9 @@ import { useId } from "react"
 
 import type { ContactData } from "#data/contacts/contactData.ts"
 import { contactFieldMap, useContactForm } from "#forms/contacts/useContactForm.tsx"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
 

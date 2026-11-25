@@ -1,11 +1,13 @@
 # UI Components
 
-Reusable UI primitives in `src/ui/`, plus the dialog stack in `src/forms/dialog/`
-(see `docs/features/0022-src-sections.md` for why it sits in `forms`). These components wrap MUI (or
+Reusable UI primitives in `src/ui/`. These components wrap MUI (or
 other base libraries) and enforce the application's visual language. They
 intentionally expose **only functional/behavioural props** — no `sx`,
 `className`, or other styling overrides — so the look of common UI elements
 stays uniform across the application.
+
+They never use the router. Anything navigational comes in from the caller: an `href` or `onClick` prop, or an
+adapter supplied through a context provider (as the dialog's back-button handling does).
 
 ## Components
 

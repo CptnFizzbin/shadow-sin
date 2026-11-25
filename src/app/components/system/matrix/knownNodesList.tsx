@@ -4,11 +4,11 @@ import type { FC } from "react"
 
 import { ItemList } from "#app/components/entities/items/card/itemList.tsx"
 import type { KnownNode } from "#data/matrix/knownNode.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { MatrixSelectors } from "#state/runner/gameState/matrix/matrix.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 import { useKnownNodeFormDialog } from "./dialogs/knownNodeFormDialog.tsx"
 import { MatrixNodeCard } from "./matrixNodeCard.tsx"

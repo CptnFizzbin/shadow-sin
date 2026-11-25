@@ -1,11 +1,11 @@
 import type { FocusData } from "#data/items/magicalData.ts"
-import { useAlertDialog } from "#forms/dialog/alertDialog.tsx"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { getFocusBondingCost } from "#rules/magic/focusRules.ts"
 import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useAlertDialog } from "#ui/dialog/alertDialog.tsx"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 /**
  * Bonding and unbonding a Focus, each behind a confirmation. `bond` spends the Karma the Focus

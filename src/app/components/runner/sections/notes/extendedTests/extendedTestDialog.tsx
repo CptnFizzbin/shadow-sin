@@ -4,12 +4,12 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import type { ExtendedTestEntry } from "#data/checks/extendedTestData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 type ExtendedTestDialogProps = ControlledDialogProps<void> & (
   | { mode: "add" }

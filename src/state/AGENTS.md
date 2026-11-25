@@ -14,6 +14,6 @@ store's shape, how it's created, and its selector/dispatch hooks are defined in 
 - When adding a slice, follow the layout of an existing sibling domain folder rather than inventing a new shape.
 - Small ad hoc UI stores (dice, Karma-spend staging, ...) are not part of the Runner store (`src/state/runner/`):
   each gets its own `src/state/<feature>/` folder and wraps `configureStore` via the compat-store helper in
-  `src/state/reduxToolkit/`. The dialog store is the exception: it sits with the dialog stack in `src/forms/dialog/`.
+  `src/state/reduxToolkit/`.
 - The root domain type is `RunnerData`. The older `character` naming deliberately survives only in the migration
   subsystem and localStorage key literals — see `docs/adr/0001-runner-data-not-character-sheet.md`.

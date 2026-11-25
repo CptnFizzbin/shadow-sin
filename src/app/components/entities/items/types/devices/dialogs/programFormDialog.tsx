@@ -7,9 +7,9 @@ import type { UUID } from "#common/uuid/uuidUtils.ts"
 import { isAgentData } from "#data/items/agentData.ts"
 import { ItemType } from "#data/items/itemType.ts"
 import type { ProgramData } from "#data/items/programData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { programFieldMap, useProgramForm } from "#forms/items/types/devices/useProgramForm.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface ProgramFormDialogProps {
   ctrl: AnyDialogCtrl

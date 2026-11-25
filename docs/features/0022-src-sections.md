@@ -49,6 +49,10 @@ Imports go one way, down the layers. An arrow means "may import from".
 Tests follow the same rules as the code they sit beside. A test that renders a component from a higher section
 belongs in that section.
 
+`ui` never uses the router. A `ui` component that navigates takes the navigation from its caller: an `href` or
+`onClick` prop, or, for needs a prop can't express (such as a dialog closing on the browser's back button), an
+adapter that `app` supplies through a context provider.
+
 Nothing enforces these rules yet. Code that breaks them is tracked under Open Questions until it is untangled.
 
 ## Open Questions
@@ -57,9 +61,6 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
   fits most of its content.
 - [ ] Some entity card elements are domain-free and would pass the `ui` test, but ADR-0010 keeps every element in
   one folder, so they all sit in `app`. Should the generic ones move to `ui` under a superseding ADR?
-- [ ] The dialog stack sits in `forms` because it keeps its state in Redux and uses the router. Should it move to
-  `ui` once its store no longer uses Redux?
-- [ ] Should `ui` be allowed to depend on the router?
 - [ ] How should ESLint enforce the allowed imports between sections? The rule against `#/<section>/` imports
   checks static imports only, not dynamic imports or `vi.mock` paths.
 - [ ] What will each package expose? If packages offer only named entry points instead of deep imports, the deep

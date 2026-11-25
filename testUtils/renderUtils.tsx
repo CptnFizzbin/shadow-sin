@@ -7,6 +7,7 @@ import { afterEach } from "vitest"
 
 import type { BuilderState } from "#state/builder/builderState.ts"
 import { AddItemDialogProvider } from "#app/components/entities/items/dialogs/addItemDialogProvider.tsx"
+import { RouterDialogHistoryProvider } from "#app/integrations/tanstackRouter/routerDialogHistory.tsx"
 import { RunnerEntityProvider } from "#state/runner/runnerEntityProvider.tsx"
 import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { BuilderActions } from "#state/builder/builderStore.actions.ts"
@@ -25,7 +26,8 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
  * Provides `@tanstack/react-router` context so components under test can call
  * `useNavigate`/`useRouter` (e.g. to open an item's detail route) without
  * logging "useRouter must be used inside a <RouterProvider> component!" on
- * every render. Uses `RouterContextProvider` rather than `RouterProvider`:
+ * every render, and backs dialogs' back-button handling with the same router
+ * history the app uses. Uses `RouterContextProvider` rather than `RouterProvider`:
  * it only supplies the router via context, it doesn't render matched routes,
  * so a bare root route is enough and no route loaders run.
  */
@@ -34,7 +36,11 @@ const TestRouterProvider: FC<PropsWithChildren> = ({ children }) => {
     () => createRouter({ routeTree: createRootRoute(), history: createMemoryHistory() }),
     [],
   )
-  return <RouterContextProvider router={router}>{children}</RouterContextProvider>
+  return (
+    <RouterContextProvider router={router}>
+      <RouterDialogHistoryProvider>{children}</RouterDialogHistoryProvider>
+    </RouterContextProvider>
+  )
 }
 
 export interface RenderWithProvidersOptions {

@@ -1,10 +1,9 @@
 import type { ReactNode } from "react"
 
-import { useSelector } from "#state/reduxToolkit/useSelector.ts"
-
 import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import type { DialogRootProps } from "./dialogRoot.tsx"
 import { DialogRoot } from "./dialogRoot.tsx"
+import { useIsDialogOpen } from "./useIsDialogOpen.ts"
 
 type ControlledDialogOwnProps<TReturn> = ControlledDialogProps<TReturn> & {
   onClosed?: () => void
@@ -13,7 +12,6 @@ type ControlledDialogOwnProps<TReturn> = ControlledDialogProps<TReturn> & {
 
 /**
  * Wraps `Dialog` and wires the ctrl lifecycle automatically.
- * Reads `ctrl.store` for the open state.
  *
  * @example Inline usage
  * ```tsx
@@ -40,7 +38,7 @@ export const ControlledDialog = <TReturn = void>({
   children,
   ...dialogProps
 }: ControlledDialogOwnProps<TReturn> & Omit<DialogRootProps, "open" | "onClose" | "onClosed">) => {
-  const isOpen = useSelector(ctrl.store, (state) => state.open)
+  const isOpen = useIsDialogOpen(ctrl)
 
   const handleClose =
     onClose === false

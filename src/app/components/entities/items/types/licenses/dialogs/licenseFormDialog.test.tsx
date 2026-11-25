@@ -6,8 +6,8 @@ import { ItemType } from "#data/items/itemType.ts"
 import type { LicenseData } from "#data/items/licenseData.ts"
 import type { SinData } from "#data/items/sinData.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { LicenseFormDialog } from "./licenseFormDialog.tsx"
 

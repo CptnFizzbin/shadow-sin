@@ -5,13 +5,13 @@ import type { FC } from "react"
 
 import { useYamlFileImport } from "#app/hooks/runner/exportImport/useYamlFileImport.ts"
 import { stringifyError } from "#common/errors/errorUtils.ts"
-import { useAlertDialog } from "#forms/dialog/alertDialog.tsx"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { mergeContacts } from "#state/runner/contacts/contacts.actions.ts"
 import { ProfileSelectors } from "#state/runner/profile/profile.selector.ts"
 import { RunnerActions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useAlertDialog } from "#ui/dialog/alertDialog.tsx"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 export const ImportCurrentRunnerButton: FC = () => {
   const dispatch = useRunnerStoreDispatch()
