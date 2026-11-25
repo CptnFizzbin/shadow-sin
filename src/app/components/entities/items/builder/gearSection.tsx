@@ -33,15 +33,15 @@ import { Nuyen } from "#forms/nuyen/nuyen.tsx"
 import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
 import { getImplantEffectiveNuyenCost } from "#rules/items/implantUtils.ts"
 import { useGearBuildPoints, useGearTotalCost } from "#state/builder/buildPoints/useGearBuildPoints.ts"
+import { SectionHeader } from "#state/builder/sections/gear/sectionHeader.ts"
+import { useGearAvailabilityIssues } from "#state/builder/sections/gear/useGearAvailabilityIssues.ts"
 import { EditorMode } from "#state/editor/editorMode.tsx"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
-import { useGearAvailabilityIssues } from "./gearUtils.ts"
 import { ImplantsPanel } from "./implants/implantsPanel.tsx"
 import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
-import { SectionHeader } from "./sectionHeader.tsx"
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
 const itemSectionTypes: Record<Exclude<SectionHeader, SectionHeader.Lifestyle>, ItemType[]> = {
