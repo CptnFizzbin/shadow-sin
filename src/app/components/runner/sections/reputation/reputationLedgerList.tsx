@@ -13,12 +13,12 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 
 import type { ReputationLedgerEntry } from "#data/reputation/reputationLedgerEntry.ts"
-import { ReputationStatTypeData } from "#data/reputation/reputationLedgerEntry.ts"
 import { ReputationSelectors } from "#state/runner/reputation/reputation.selector.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 import { Icons } from "#ui/icons/icons.ts"
 
 import type { ReputationFilter } from "./reputationLedgerFilters.tsx"
+import { ReputationStatTypeData } from "./reputationStatTypeData.ts"
 
 interface ReputationLedgerListProps {
   filters?: ReputationFilter

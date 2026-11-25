@@ -2,9 +2,9 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import type { LoanData } from "#data/finances/loanData.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
 import { LoansSection } from "./loansSection.tsx"

@@ -7,22 +7,7 @@ import { getSinAvailability } from "#rules/items/sinUtils.ts"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 
-import { SectionHeader } from "./sectionHeader.tsx"
-
-type ItemCostInfo = {
-  cost?: number
-  quantity?: number
-}
-
-export const getTotalCost = (...items: ItemCostInfo[]) => {
-  return items
-    .map((item) => ({
-      cost: item.cost ?? 0,
-      quantity: item.quantity ?? 1,
-    }))
-    .map(({ cost, quantity }) => cost * quantity)
-    .reduce((sum, itemCost) => sum + itemCost, 0)
-}
+import { SectionHeader } from "./sectionHeader.ts"
 
 export const useGearAvailabilityIssues = () => {
   const gear = useRunnerSelector(ItemSelectors.selectAll)

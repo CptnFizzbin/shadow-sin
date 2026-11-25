@@ -10,8 +10,8 @@ import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import type { RunnerData } from "#data/runner/runnerData.ts"
 import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 import { SkillKey } from "#data/skills/skillKey.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { DefenseCalculatorDialogContent } from "./defenseCalculatorDialogContent.tsx"
 

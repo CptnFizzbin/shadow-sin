@@ -1,5 +1,5 @@
-import { getTotalCost } from "#app/components/entities/items/builder/gearUtils.ts"
 import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { getTotalCost } from "#rules/items/gearUtils.ts"
 import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"

@@ -20,14 +20,14 @@ import {
 } from "#data/items/credstickData.ts"
 import { createItem } from "#data/items/itemData.ts"
 import { ItemType } from "#data/items/itemType.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { formatNuyen } from "#forms/nuyen/nuyen.tsx"
 import { NuyenSelectors } from "#state/runner/nuyen/nuyen.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 type CredstickDialogMode = "add" | "add-certified" | "edit"
 

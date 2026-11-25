@@ -3,10 +3,10 @@ import { use, useMemo } from "react"
 
 import { ItemActionsDialogProvider } from "#app/components/entities/items/actions/itemActionsDialogProvider.tsx"
 import { AddItemDialogProvider } from "#app/components/entities/items/dialogs/addItemDialogProvider.tsx"
-import { RunnerEntityProvider } from "#app/components/runner/runnerEntityProvider.tsx"
 import { toJsonValue } from "#common/json/jsonUtils.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import type { RunnerData } from "#data/runner/runnerData.ts"
+import { RunnerEntityProvider } from "#state/runner/runnerEntityProvider.tsx"
 import { RunnerStateProvider, createRunnerStateStore } from "#state/runnerState.ts"
 import { LocalStorageProvider } from "#state/storage/providers/localStorageProvider.ts"
 

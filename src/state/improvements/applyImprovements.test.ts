@@ -10,11 +10,11 @@ import { ImprovementType } from "#data/karma/improvements/improvementType.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import type { RunnerData } from "#data/runner/runnerData.ts"
 import { SkillKey } from "#data/skills/skillKey.ts"
-import { ImprovementStore } from "#state/improvements/improvementStore.ts"
 import { RunnerActions } from "#state/runner/runnerStore.actions.ts"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 
-import { applyImprovements } from "./improvementUtils.ts"
+import { applyImprovements } from "./applyImprovements.ts"
+import { ImprovementStore } from "./improvementStore.ts"
 
 function makeRunnerStore(sheet: RunnerData) {
   const store = createRunnerStateStore({ mode: "viewer", runner: sheet })

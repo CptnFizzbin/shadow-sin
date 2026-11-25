@@ -2,10 +2,10 @@ import type { FC } from "react"
 
 import { QualityFormFields } from "#app/components/runner/sections/qualities/viewer/form/qualityFormFields.tsx"
 import type { QualityData } from "#data/qualities/qualityData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { FormDialog } from "#forms/dialog/formDialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { useQualityForm } from "#forms/qualities/useQualityForm.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { FormDialog } from "#ui/dialog/formDialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface QualityFormDialogProps extends ControlledDialogProps<QualityData> {
   quality?: QualityData

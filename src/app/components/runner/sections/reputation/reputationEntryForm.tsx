@@ -8,11 +8,11 @@ import { z } from "zod"
 
 import type { ReputationLedgerEntry } from "#data/reputation/reputationLedgerEntry.ts"
 import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
 import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
 
 type ReputationEntryFormProps = ControlledDialogProps<void> & (
   | { mode: "create" }

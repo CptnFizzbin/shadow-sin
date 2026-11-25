@@ -1,5 +1,5 @@
 import { useSpendKarmaDialogContext } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
-import { applyImprovements } from "#rules/karma/improvements/improvementUtils.ts"
+import { applyImprovements } from "#state/improvements/applyImprovements.ts"
 import { selectHasImprovements, selectImprovementsTotalCost } from "#state/improvements/improvementSelectors.ts"
 import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
 import { RunnerActions } from "#state/runner/runnerStore.actions.ts"

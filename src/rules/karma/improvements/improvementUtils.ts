@@ -1,7 +1,5 @@
 import type { Draft } from "immer"
-import { produce } from "immer"
 
-import type { UUID } from "#common/uuid/uuidUtils.ts"
 import { EntityKind } from "#data/entities/entityKind.ts"
 import type {
   ComplexFormIncreaseEntry,
@@ -20,36 +18,8 @@ import type { RunnerData } from "#data/runner/runnerData.ts"
 import type { SkillGroupKey } from "#data/skills/skillGroupKey.ts"
 import { getSkillsInGroup } from "#data/skills/skillGroupUtils.ts"
 import { skillList } from "#data/skills/skillList.ts"
-import type { ImprovementStore } from "#state/improvements/improvementStore.ts"
 
-import { describeImprovement } from "./improvementDescription.ts"
 import { ImprovementsConfig } from "./improvementsConfig.ts"
-
-export const applyImprovements = (
-  improvementsStore: ImprovementStore,
-  runnerStore: {
-    setState: (
-      updater: (runner: RunnerData) => RunnerData,
-    ) => void
-  },
-): void => {
-  const improvementsState = improvementsStore.store.getState()
-
-  runnerStore.setState(produce((sheet) => {
-    for (const entry of Object.values(improvementsState)) {
-      const cost = getImprovementCost(entry)
-      applyImprovement(sheet, entry, cost)
-      sheet.karma.log.push({
-        id: crypto.randomUUID() as UUID,
-        timestamp: new Date().toISOString(),
-        amount: -cost,
-        description: describeImprovement(entry),
-        source: "spendKarma",
-        improvement: entry,
-      })
-    }
-  }))
-}
 
 export const getImprovementCost = (entry: ImprovementEntry) => {
   switch (entry.type) {

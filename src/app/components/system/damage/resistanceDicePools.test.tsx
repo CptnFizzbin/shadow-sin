@@ -3,10 +3,10 @@ import { render, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import type { RunnerData } from "#data/runner/runnerData.ts"
 import { SkillKey } from "#data/skills/skillKey.ts"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { createRunnerStateStore } from "#state/runnerState.ts"
 import { theme } from "#ui/theme/theme.ts"
 

@@ -1,6 +1,7 @@
 import importAlias from "@dword-design/eslint-plugin-import-alias"
 import js from "@eslint/js"
 import stylistic from "@stylistic/eslint-plugin"
+import type { Linter } from "eslint"
 import { defineConfig } from "eslint/config"
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript"
 import checkFile from "eslint-plugin-check-file"
@@ -9,6 +10,54 @@ import pluginReact from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
+
+// Each src/ section has its own alias (#data/, #rules/, ...) standing in for its future package name.
+const sectionAliasPattern = {
+  regex: "^#/(common|data|rules|state|ui|forms|app)/",
+  message: "Import a section through its own alias (e.g. #data/...), not #/<section>/....",
+}
+
+const sections = ["common", "data", "rules", "state", "ui", "forms", "app"] as const
+type Section = typeof sections[number]
+
+// The section layering from docs/features/0022-src-sections.md: the sections each section may import and the
+// third-party packages it may not use.
+const reduxPackages = ["@reduxjs", "react-redux", "reselect"]
+const noUiPackages = ["react", "react-dom", "@mui", "@tanstack", ...reduxPackages]
+
+const sectionLayering: Record<Section, { allowedSections: Section[], bannedPackages: string[] }> = {
+  common: { allowedSections: [], bannedPackages: [...noUiPackages] },
+  data: { allowedSections: ["common"], bannedPackages: [...noUiPackages] },
+  rules: { allowedSections: ["data", "common"], bannedPackages: [...noUiPackages] },
+  state: { allowedSections: ["rules", "data", "common"], bannedPackages: ["@mui"] },
+  ui: { allowedSections: ["common"], bannedPackages: [...reduxPackages, "@tanstack/react-router", "@tanstack/router-core"] },
+  forms: { allowedSections: ["ui", "state", "rules", "data", "common"], bannedPackages: [] },
+  app: { allowedSections: ["forms", "ui", "state", "rules", "data", "common"], bannedPackages: [] },
+}
+
+const sectionLayeringConfigs = sections.map((section): Linter.Config => {
+  const { allowedSections, bannedPackages } = sectionLayering[section]
+  const forbiddenSections = sections.filter((other) => other !== section && !allowedSections.includes(other))
+  const patterns = [
+    sectionAliasPattern,
+    ...(forbiddenSections.length > 0
+      ? [{
+        regex: `^#(${forbiddenSections.join("|")})/`,
+        message: `The ${section} section may import only ${allowedSections.join(", ") || "no other section"} (docs/features/0022-src-sections.md).`,
+      }]
+      : []),
+    ...(bannedPackages.length > 0
+      ? [{
+        regex: `^(${bannedPackages.map((name) => name.replaceAll("/", "\\/")).join("|")})(\\/|$)`,
+        message: `The ${section} section may not use ${bannedPackages.join(", ")} (docs/features/0022-src-sections.md).`,
+      }]
+      : []),
+  ]
+  return {
+    files: [`src/${section}/**`],
+    rules: { "no-restricted-imports": ["error", { patterns }] },
+  }
+})
 
 export default defineConfig([
   tseslint.configs.recommended,
@@ -106,13 +155,7 @@ export default defineConfig([
 
       ...{ // import-alias rules
         "@dword-design/import-alias/prefer-alias": "error",
-        // Each src/ section has its own alias (#data/, #rules/, ...) standing in for its future package name.
-        "no-restricted-imports": ["error", {
-          patterns: [{
-            regex: "^#/(common|data|rules|state|ui|forms|app)/",
-            message: "Import a section through its own alias (e.g. #data/...), not #/<section>/....",
-          }],
-        }],
+        "no-restricted-imports": ["error", { patterns: [sectionAliasPattern] }],
       },
 
       ...{ // eslint-plugin-import-x rules
@@ -195,6 +238,7 @@ export default defineConfig([
       "no-shadow": "off",
     },
   },
+  ...sectionLayeringConfigs,
   {
     files: [
       "./env.node.ts",

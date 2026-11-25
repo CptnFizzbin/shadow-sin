@@ -1,7 +1,6 @@
 // fallow-ignore-file unused-file
-import { useSelector } from "#state/reduxToolkit/useSelector.ts"
-
 import type { AnyDialogCtrl } from "./dialogCtrl.ts"
+import { useIsDialogOpen } from "./useIsDialogOpen.ts"
 
 /**
  * Reactive `{ open, onClose }` for spreading directly onto a raw `Dialog`
@@ -10,6 +9,6 @@ import type { AnyDialogCtrl } from "./dialogCtrl.ts"
  * cleanup; override `onClose` after the spread for a non-default close value.
  */
 export function useDialogProps(ctrl: AnyDialogCtrl): { open: boolean, onClose: () => void } {
-  const open = useSelector(ctrl.store, (state) => state.open)
+  const open = useIsDialogOpen(ctrl)
   return { open, onClose: () => ctrl.close() }
 }

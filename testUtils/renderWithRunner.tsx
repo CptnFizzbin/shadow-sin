@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 
-import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import { RunnerStoreProvider } from "#state/runner/runnerStoreProvider.tsx"
 import { ExportRunnerButton } from "#app/components/system/exportImport/exportRunnerButton.tsx"
 import type { RunnerStateStore } from "#state/runnerState.ts"
 import { createRunnerStateStore } from "#state/runnerState.ts"

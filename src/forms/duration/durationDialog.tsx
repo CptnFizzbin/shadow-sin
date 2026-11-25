@@ -6,9 +6,9 @@ import { useState } from "react"
 
 import type { Duration } from "#data/duration/duration.ts"
 import { DurationUnit, DurationUnitLabels } from "#data/duration/duration.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 interface CustomDurationDialogProps extends ControlledDialogProps<Duration> {

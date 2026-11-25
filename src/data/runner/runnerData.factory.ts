@@ -1,14 +1,13 @@
 import { produce } from "immer"
 import * as uuid from "uuid"
 
-import { metatypes, MetatypeType } from "#data/biology/metatypeData.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
 import { EntityKind } from "#data/entities/entityKind.ts"
 import { LifestyleType } from "#data/finances/lifestyleType.ts"
 import { standardLifestyle } from "#data/finances/runnerLifestyle.ts"
 import type { ItemCatalog } from "#data/items/itemUtils.ts"
-import { awakenings, AwakeningType } from "#data/magic/awakeningType.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
 import { LATEST_MIGRATION_TIMESTAMP } from "#data/migrations/migrations.ts"
-import { getAttributesValues } from "#rules/attributes/getAttributesValues.ts"
 
 import type { RunnerData } from "./runnerData.ts"
 
@@ -48,7 +47,22 @@ export function runnerDataFactory(options?: {
 
     qualities: [],
 
-    attributes: getAttributesValues(metatypes[MetatypeType.Human], awakenings[AwakeningType.Mundane]),
+    // The starting values of a Mundane Human. Written out because `data` can't import the attribute rules;
+    // getAttributesValues.test.ts keeps them equal to what those rules derive.
+    attributes: {
+      body: 1,
+      agility: 1,
+      reaction: 1,
+      strength: 1,
+      charisma: 1,
+      intuition: 1,
+      logic: 1,
+      willpower: 1,
+      edge: 2,
+      essence: 6,
+      magic: 0,
+      resonance: 0,
+    },
 
     edge: {
       current: 0,

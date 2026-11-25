@@ -1,3 +1,4 @@
+import type { RouterHistory } from "@tanstack/react-router"
 import {
   createBrowserHistory,
   createMemoryHistory,
@@ -6,10 +7,13 @@ import {
   RouterProvider,
 } from "@tanstack/react-router"
 import { act, fireEvent, render, screen } from "@testing-library/react"
+import type { FC } from "react"
 import { StrictMode, useState } from "react"
 import { describe, expect, it } from "vitest"
 
-import { useCloseOnBrowserBack } from "./useCloseOnBrowserBack.ts"
+import { useCloseOnBrowserBack } from "#ui/dialog/useCloseOnBrowserBack.ts"
+
+import { RouterDialogHistoryProvider } from "./routerDialogHistory.tsx"
 
 function TestDialog() {
   const [open, setOpen] = useState(true)
@@ -22,14 +26,23 @@ function TestDialog() {
   )
 }
 
+function createTestRouter(Component: FC, history: RouterHistory) {
+  const RootComponent = () => (
+    <RouterDialogHistoryProvider>
+      <Component />
+    </RouterDialogHistoryProvider>
+  )
+  return createRouter({ routeTree: createRootRoute({ component: RootComponent }), history })
+}
+
 function renderTestDialog() {
   const history = createMemoryHistory({ initialEntries: ["/"] })
-  const router = createRouter({ routeTree: createRootRoute({ component: TestDialog }), history })
+  const router = createTestRouter(TestDialog, history)
   render(<RouterProvider router={router} />)
   return { router, history }
 }
 
-describe("useCloseOnBrowserBack", () => {
+describe("RouterDialogHistoryProvider with useCloseOnBrowserBack", () => {
   it("pushes a history entry while open and pops it again on normal close", async () => {
     const { history } = renderTestDialog()
     await act(async () => {})
@@ -72,10 +85,7 @@ describe("useCloseOnBrowserBack", () => {
     }
 
     const history = createMemoryHistory({ initialEntries: ["/"] })
-    const router = createRouter({
-      routeTree: createRootRoute({ component: NonDismissableDialog }),
-      history,
-    })
+    const router = createTestRouter(NonDismissableDialog, history)
     render(<RouterProvider router={router} />)
     await act(async () => {})
 
@@ -90,10 +100,7 @@ describe("useCloseOnBrowserBack", () => {
     // history's push/back are both synchronous and wouldn't race here.
     window.history.pushState(null, "", "/three")
     const history = createBrowserHistory({ window })
-    const router = createRouter({
-      routeTree: createRootRoute({ component: TestDialog }),
-      history,
-    })
+    const router = createTestRouter(TestDialog, history)
     render(
       <StrictMode>
         <RouterProvider router={router} />
@@ -143,7 +150,7 @@ describe("useCloseOnBrowserBack", () => {
       )
     }
     const history = createMemoryHistory({ initialEntries: ["/"] })
-    const router = createRouter({ routeTree: createRootRoute({ component: ChainedDialogs }), history })
+    const router = createTestRouter(ChainedDialogs, history)
     render(<RouterProvider router={router} />)
     await act(async () => {})
 

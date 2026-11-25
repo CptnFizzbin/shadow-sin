@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 import type { AddItemSelection } from "./addItemSelection.ts"
 import { AddItemTypeDialogContent } from "./addItemTypeDialogContent.tsx"

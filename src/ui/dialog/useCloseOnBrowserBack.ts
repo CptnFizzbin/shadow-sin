@@ -1,7 +1,7 @@
-import { useRouter } from "@tanstack/react-router"
 import { useEffect, useRef } from "react"
 
 import { dialogBackGuardState } from "./dialogBackGuard.ts"
+import { useDialogHistory } from "./dialogHistory.tsx"
 
 interface GuardState {
   /** Whether a guard entry is currently believed to be on top of history. */
@@ -25,11 +25,11 @@ let pendingPop: { guard: GuardState } | undefined
  *
  * No-ops when `onClose` is undefined — those dialogs already opt out of
  * backdrop/Escape dismissal, so back-button dismissal is skipped too. Also
- * no-ops outside a `RouterProvider` (e.g. in component tests rendered
- * without a router).
+ * no-ops outside a `DialogHistoryProvider` (e.g. in component tests rendered
+ * without one).
  */
 export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | undefined): void {
-  const router = useRouter({ warn: false })
+  const history = useDialogHistory()
   const onCloseRef = useRef(onClose)
   const guardRef = useRef<GuardState>({ pushed: false, popTimer: undefined })
 
@@ -38,7 +38,7 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
   }, [onClose])
 
   useEffect(() => {
-    if (!open || !onCloseRef.current || !router) return
+    if (!open || !onCloseRef.current || !history) return
 
     const guard = guardRef.current
 
@@ -64,17 +64,12 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
     }
 
     if (!guard.pushed) {
-      router.history.push(router.history.location.href, dialogBackGuardState)
-      // TanStack's browser history batches the real pushState onto a
-      // microtask (to smooth out rapid calls). Force it to land synchronously
-      // so the entry actually exists in real browser history before anything
-      // else (e.g. the pop below) can act on it.
-      router.history.flush()
+      history.push(dialogBackGuardState)
       guard.pushed = true
     }
 
-    const unsubscribe = router.history.subscribe(({ action }) => {
-      if (guard.pushed && action.type === "BACK") {
+    const unsubscribe = history.subscribeToBack(() => {
+      if (guard.pushed) {
         guard.pushed = false
         onCloseRef.current?.()
       }
@@ -82,12 +77,12 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
 
     return () => {
       unsubscribe()
-      // Unlike push/replace, `.back()` triggers a real (asynchronously
-      // observed) browser navigation that can't be forced to land
-      // synchronously. Popping right here would race a same-tick remount's
-      // setup, which pushes its own entry before this pop's navigation has
-      // actually happened — leaving an orphaned entry behind. Defer the pop
-      // one tick so a same-tick setup (above) can cancel it instead.
+      // Unlike `push()`, `back()` triggers a real (asynchronously observed)
+      // browser navigation that can't be forced to land synchronously.
+      // Popping right here would race a same-tick remount's setup, which
+      // pushes its own entry before this pop's navigation has actually
+      // happened — leaving an orphaned entry behind. Defer the pop one tick
+      // so a same-tick setup (above) can cancel it instead.
       const pop = { guard }
       pendingPop = pop
       guard.popTimer = setTimeout(() => {
@@ -95,9 +90,9 @@ export function useCloseOnBrowserBack(open: boolean, onClose: (() => void) | und
         if (pendingPop === pop) pendingPop = undefined
         if (guard.pushed) {
           guard.pushed = false
-          router.history.back()
+          history.back()
         }
       }, 0)
     }
-  }, [open, router])
+  }, [open, history])
 }

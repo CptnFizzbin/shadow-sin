@@ -5,9 +5,9 @@ import { DeviceFormFields } from "#app/components/entities/items/types/devices/f
 import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import type { DeviceData } from "#data/items/deviceData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { deviceFieldMap, useDeviceForm } from "#forms/items/types/devices/useDeviceForm.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface DeviceFormDialogProps {
   ctrl: AnyDialogCtrl

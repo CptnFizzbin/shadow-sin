@@ -7,10 +7,10 @@ import type { FC } from "react"
 
 import type { TraditionData } from "#data/magic/traditionData.ts"
 import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#data/magic/traditionData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { useTraditionForm } from "#forms/magician/spells/useTraditionForm.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 import { Label } from "#ui/text/label.tsx"
 
 interface TraditionFormDialogProps extends ControlledDialogProps<TraditionData> {

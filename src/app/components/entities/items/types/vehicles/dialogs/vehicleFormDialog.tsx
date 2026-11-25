@@ -8,9 +8,9 @@ import { VehicleFormFields } from "#app/components/entities/items/types/vehicles
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import type { VehicleData } from "#data/items/vehicleData.ts"
 import { VehicleCategory } from "#data/items/vehicleData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { useVehicleForm, vehicleFieldMap } from "#forms/items/types/vehicles/useVehicleForm.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface VehicleFormDialogProps {
   ctrl: AnyDialogCtrl
