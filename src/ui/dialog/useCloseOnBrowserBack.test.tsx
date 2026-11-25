@@ -1,14 +1,11 @@
-import {
-  createBrowserHistory,
-  createMemoryHistory,
-  createRootRoute,
-  createRouter,
-  RouterProvider,
-} from "@tanstack/react-router"
 import { act, fireEvent, render, screen } from "@testing-library/react"
-import { StrictMode, useState } from "react"
-import { describe, expect, it } from "vitest"
+import type { ReactNode } from "react"
+import { useState } from "react"
+import { describe, expect, it, vi } from "vitest"
 
+import { dialogBackGuardState } from "./dialogBackGuard.ts"
+import type { DialogHistory } from "./dialogHistory.tsx"
+import { DialogHistoryProvider } from "./dialogHistory.tsx"
 import { useCloseOnBrowserBack } from "./useCloseOnBrowserBack.ts"
 
 function TestDialog() {
@@ -22,139 +19,65 @@ function TestDialog() {
   )
 }
 
-function renderTestDialog() {
-  const history = createMemoryHistory({ initialEntries: ["/"] })
-  const router = createRouter({ routeTree: createRootRoute({ component: TestDialog }), history })
-  render(<RouterProvider router={router} />)
-  return { router, history }
+function createFakeHistory() {
+  const backListeners = new Set<() => void>()
+  const history = {
+    push: vi.fn<DialogHistory["push"]>(),
+    back: vi.fn<DialogHistory["back"]>(),
+    subscribeToBack: (listener: () => void) => {
+      backListeners.add(listener)
+      return () => {
+        backListeners.delete(listener)
+      }
+    },
+  }
+  const pressBrowserBack = () => backListeners.forEach((listener) => listener())
+  return { history, pressBrowserBack }
 }
 
+const renderWithHistory = (history: DialogHistory, element: ReactNode) =>
+  render(<DialogHistoryProvider history={history}>{element}</DialogHistoryProvider>)
+
 describe("useCloseOnBrowserBack", () => {
-  it("pushes a history entry while open and pops it again on normal close", async () => {
-    const { history } = renderTestDialog()
-    await act(async () => {})
-
-    // Opening the dialog pushed a new (marked) history entry on top.
-    expect(history.length).toBeGreaterThan(1)
-    expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBe(true)
-
-    await act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "close" }))
-    })
-
-    // The pop is deferred by a tick (so a same-tick remount can cancel it
-    // instead of racing it — see useCloseOnBrowserBack.ts), so wait for it.
-    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
-
-    // Closing by another means (not the back button) steps back off that
-    // entry again rather than leaving it in history.
-    expect(screen.getByText("closed")).toBeTruthy()
-    expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBeUndefined()
-  })
-
-  it("closes the dialog when the browser back button is pressed", async () => {
-    const { router } = renderTestDialog()
-    await act(async () => {})
-
-    expect(screen.getByText("open")).toBeTruthy()
-
-    await act(() => {
-      router.history.back()
-    })
-
-    expect(screen.getByText("closed")).toBeTruthy()
-  })
-
-  it("does not intercept back when onClose is undefined", async () => {
-    function NonDismissableDialog() {
-      useCloseOnBrowserBack(true, undefined)
-      return <span>open</span>
-    }
-
-    const history = createMemoryHistory({ initialEntries: ["/"] })
-    const router = createRouter({
-      routeTree: createRootRoute({ component: NonDismissableDialog }),
-      history,
-    })
-    render(<RouterProvider router={router} />)
-    await act(async () => {})
-
-    expect(history.length).toBe(1)
-  })
-
-  it("survives a same-tick unmount/remount (React StrictMode) without cascading back navigation", async () => {
-    // StrictMode synchronously mounts, cleans up, and remounts every effect
-    // once in dev. This only reproduces the original bug against a real
-    // browser history: it batches pushState onto a microtask while back()
-    // navigates immediately, so it's the combination that raced — a memory
-    // history's push/back are both synchronous and wouldn't race here.
-    window.history.pushState(null, "", "/three")
-    const history = createBrowserHistory({ window })
-    const router = createRouter({
-      routeTree: createRootRoute({ component: TestDialog }),
-      history,
-    })
-    render(
-      <StrictMode>
-        <RouterProvider router={router} />
-      </StrictMode>,
-    )
-    await act(async () => {})
-    // Let any deferred pop from the StrictMode "practice" unmount resolve.
-    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
-
-    expect(screen.getByText("open")).toBeTruthy()
-    // Exactly one guard entry on top of the real route history — not walked
-    // back through earlier real navigation.
-    expect(history.location.pathname).toBe("/three")
-    expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBe(true)
-
-    await act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "close" }))
-    })
-    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
-
-    // Closing steps back exactly one entry, landing on the real prior page.
-    expect(screen.getByText("closed")).toBeTruthy()
-    expect(history.location.pathname).toBe("/three")
-    expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBeUndefined()
-  })
-
-  it("a dialog opened as another closes keeps its own guard entry", async () => {
-    // Arrange — closing one dialog and opening the next in the same tick, as an action list does
-    // when a picked action opens its own dialog.
-    function ChainedDialogs() {
-      const [first, setFirst] = useState(true)
-      const [second, setSecond] = useState(false)
-      useCloseOnBrowserBack(first, () => setFirst(false))
-      useCloseOnBrowserBack(second, () => setSecond(false))
-      return (
-        <div>
-          <span>{second ? "second open" : "second closed"}</span>
-          <button
-            onClick={() => {
-              setFirst(false)
-              setSecond(true)
-            }}
-          >
-            next
-          </button>
-        </div>
-      )
-    }
-    const history = createMemoryHistory({ initialEntries: ["/"] })
-    const router = createRouter({ routeTree: createRootRoute({ component: ChainedDialogs }), history })
-    render(<RouterProvider router={router} />)
-    await act(async () => {})
+  it("pushes a guard entry while open and steps back off it on a normal close", async () => {
+    // Arrange
+    const { history } = createFakeHistory()
+    renderWithHistory(history, <TestDialog />)
 
     // Act
     await act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "next" }))
+      fireEvent.click(screen.getByRole("button", { name: "close" }))
     })
     await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
 
-    // Assert — the first dialog's pop didn't close the second, which owns the one guard entry.
-    expect(screen.getByText("second open")).toBeTruthy()
-    expect(history.length).toBe(2)
+    // Assert
+    expect(history.push).toHaveBeenCalledExactlyOnceWith(dialogBackGuardState)
+    expect(history.back).toHaveBeenCalledOnce()
+  })
+
+  it("closes the dialog on a back navigation without stepping back again", async () => {
+    // Arrange
+    const { history, pressBrowserBack } = createFakeHistory()
+    renderWithHistory(history, <TestDialog />)
+
+    // Act
+    await act(() => pressBrowserBack())
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
+
+    // Assert
+    expect(screen.getByText("closed")).toBeTruthy()
+    expect(history.back).not.toHaveBeenCalled()
+  })
+
+  it("does nothing outside a DialogHistoryProvider", () => {
+    // Arrange
+    const historyLength = window.history.length
+
+    // Act
+    render(<TestDialog />)
+
+    // Assert
+    expect(screen.getByText("open")).toBeTruthy()
+    expect(window.history.length).toBe(historyLength)
   })
 })

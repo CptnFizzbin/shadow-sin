@@ -1,6 +1,6 @@
 # Dialog
 
-**Location:** `src/forms/dialog/`
+**Location:** `src/ui/dialog/`
 **Import:** `import { Dialog, ControlledDialog } from "#ui/dialog/dialog.tsx"`
 
 A compound modal dialog that wraps MUI's dialog family and enforces a consistent look across the application. Dialogs
@@ -252,6 +252,10 @@ automatically on every `open()` call (the outlet always renders fresh).
   per call. Use the plain inline `ControlledDialog` pattern for genuinely one-off dialogs.
 - Every dialog renders at its caller's real position in the tree — React context (`CharacterSheetProvider`, etc.)
   propagates normally with no provider or scoping to set up.
+- **Browser back button**: a dialog with an `onClose` closes when the user presses back, as long as it renders below
+  a `DialogHistoryProvider` (`src/ui/dialog/dialogHistory.tsx`). The dialog never touches the router itself; the app
+  supplies a router-backed history at its root. Outside a provider, such as in a bare component test, the back
+  button is ignored.
 - **`onClosed` vs `onClose`**: `onClose` triggers the close animation; `onClosed` fires after it finishes. Reset form
   state in `onClosed` to avoid a flash of empty fields while the animation runs.
 - **`maxWidth`**: default is `"sm"`. Use `"xs"` for simple confirmation prompts and `"md"` / `"lg"` for complex forms

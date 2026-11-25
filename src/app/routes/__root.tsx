@@ -11,6 +11,7 @@ import { TanStackPacerDevtools } from "#app/integrations/tanstackPacer/devtools.
 import { TanStackQueryDevtools } from "#app/integrations/tanstackQuery/devtools.tsx"
 import TanStackQueryProvider from "#app/integrations/tanstackQuery/rootProvider.tsx"
 import { TanStackRouterDevtools } from "#app/integrations/tanstackRouter/devtools.tsx"
+import { RouterDialogHistoryProvider } from "#app/integrations/tanstackRouter/routerDialogHistory.tsx"
 
 type RouterContext = object
 
@@ -26,28 +27,30 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   return (
     <TanStackQueryProvider>
-      <Stack direction="column" sx={{ minHeight: "100vh", gap: 0 }}>
-        <Header />
+      <RouterDialogHistoryProvider>
+        <Stack direction="column" sx={{ minHeight: "100vh", gap: 0 }}>
+          <Header />
 
-        <Container
-          disableGutters
-          sx={{
-            maxWidth: 1200,
-            mx: "auto",
-            width: "100%",
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Outlet />
-        </Container>
+          <Container
+            disableGutters
+            sx={{
+              maxWidth: 1200,
+              mx: "auto",
+              width: "100%",
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Outlet />
+          </Container>
 
-        <Stack sx={{ padding: 1 }}>
-          <Divider />
-          <Footer />
+          <Stack sx={{ padding: 1 }}>
+            <Divider />
+            <Footer />
+          </Stack>
         </Stack>
-      </Stack>
+      </RouterDialogHistoryProvider>
 
       <TanStackDevtools
         plugins={[
