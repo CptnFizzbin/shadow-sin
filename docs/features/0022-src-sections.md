@@ -32,7 +32,7 @@ Runner store's root files beside its feature folders. The app entry points (`mai
 `routeTree.gen.ts`, `env.ts`) stay at the root of `src/`.
 
 Each section is imported through its own path alias, such as `#data/` or `#rules/`. The alias stands in for the
-section's future package name, so the later split only has to swap the alias for the package name.
+section's future package name.
 
 ## Allowed imports
 
@@ -63,7 +63,10 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
 - [ ] The dialog stack sits in `forms` because it keeps its state in Redux and uses the router. Should it move to
   `ui` once its store no longer uses Redux?
 - [ ] Should `ui` be allowed to depend on the router?
-- [ ] How should ESLint enforce the allowed imports between sections?
+- [ ] How should ESLint enforce the allowed imports between sections? The rule against `#/<section>/` imports
+  checks static imports only, not dynamic imports or `vi.mock` paths.
+- [ ] What will each package expose? If packages offer only named entry points instead of deep imports, the deep
+  `#<section>/...` imports must move to those entry points when the sections become packages.
 - [ ] Should `app` be regrouped into feature areas? Its `components/ui/` folder (cards, navigation, header, quick
   panel) is also easy to confuse with the `ui` section.
 
