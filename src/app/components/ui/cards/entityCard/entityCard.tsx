@@ -16,15 +16,15 @@ import EntityCardLayout from "#/ui/cards/entityCard/entityCardLayout.tsx"
 import { EntityCardElements } from "./entityCardElements.tsx"
 import { EntityCardSlotManager } from "./entityCardSlotManager.ts"
 
-export type { CardElementActionProps } from "#/ui/cards/entityCard/elements/cardElementAction.tsx"
+export type { CardElementActionProps } from "#/app/components/ui/cards/entityCard/elements/cardElementAction.tsx"
 export type { CardElementEffectsProps } from "#/app/components/ui/cards/entityCard/elements/cardElementEffects.tsx"
-export type { CardElementRatingProps } from "#/ui/cards/entityCard/elements/cardElementRating.tsx"
+export type { CardElementRatingProps } from "#/app/components/ui/cards/entityCard/elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "#/app/components/ui/cards/entityCard/elements/cardElementSource.tsx"
 export type {
   CardElementStatProps,
   CardElementStatType,
-} from "#/ui/cards/entityCard/elements/cardElementStat.tsx"
-export type { CardElementTitleProps } from "#/ui/cards/entityCard/elements/cardElementTitle.tsx"
+} from "#/app/components/ui/cards/entityCard/elements/cardElementStat.tsx"
+export type { CardElementTitleProps } from "#/app/components/ui/cards/entityCard/elements/cardElementTitle.tsx"
 export type { BodyRowProps } from "#/ui/cards/entityCard/layout/bodyRow.tsx"
 export type { FooterLeftProps } from "#/ui/cards/entityCard/layout/footerLeft.tsx"
 export type { FooterRightProps } from "#/ui/cards/entityCard/layout/footerRight.tsx"

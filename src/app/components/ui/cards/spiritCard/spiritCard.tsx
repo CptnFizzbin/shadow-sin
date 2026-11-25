@@ -2,14 +2,14 @@ import type { FC } from "react"
 
 import { CardElementAttributeBlock } from "#/app/components/ui/cards/entityCard/elements/cardElementAttributeBlock.tsx"
 import { CardElementDamageTrack } from "#/app/components/ui/cards/entityCard/elements/cardElementDamageTrack.tsx"
+import { CardElementNotes } from "#/app/components/ui/cards/entityCard/elements/cardElementNotes.tsx"
+import { CardElementPowerList } from "#/app/components/ui/cards/entityCard/elements/cardElementPowerList.tsx"
+import { CardElementSkillList } from "#/app/components/ui/cards/entityCard/elements/cardElementSkillList.tsx"
+import { CardElementSubType } from "#/app/components/ui/cards/entityCard/elements/cardElementSubType.tsx"
 import type { EntityCardProps } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCard } from "#/app/components/ui/cards/entityCard/entityCard.tsx"
 import { EntityCardElements } from "#/app/components/ui/cards/entityCard/entityCardElements.tsx"
 import type { EntityKind } from "#/data/entities/entityKind.ts"
-import { CardElementNotes } from "#/ui/cards/entityCard/elements/cardElementNotes.tsx"
-import { CardElementPowerList } from "#/ui/cards/entityCard/elements/cardElementPowerList.tsx"
-import { CardElementSkillList } from "#/ui/cards/entityCard/elements/cardElementSkillList.tsx"
-import { CardElementSubType } from "#/ui/cards/entityCard/elements/cardElementSubType.tsx"
 
 interface SpiritCardProps extends Omit<EntityCardProps, "entity"> {
   id: string

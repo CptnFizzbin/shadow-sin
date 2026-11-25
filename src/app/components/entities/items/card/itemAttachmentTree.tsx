@@ -4,13 +4,13 @@ import { RiMore2Line } from "@remixicon/react"
 import type { FC, MouseEvent } from "react"
 
 import { useItemActionsDialogContext } from "#/app/components/entities/items/actions/itemActionsDialogContext.ts"
+import { CardElementSubitem } from "#/app/components/ui/cards/entityCard/elements/cardElementSubitem.tsx"
 import { useItemSelectionMode } from "#/app/hooks/items/selection/useItemSelection.ts"
 import type { UUID } from "#/common/uuid/uuidUtils.ts"
 import { isCredential } from "#/data/entities/entityTraits.ts"
 import type { ItemData } from "#/data/items/itemData.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
-import { CardElementSubitem } from "#/ui/cards/entityCard/elements/cardElementSubitem.tsx"
 
 import { ItemAttachmentSelectCheckbox } from "./itemAttachmentSelectCheckbox.tsx"
 

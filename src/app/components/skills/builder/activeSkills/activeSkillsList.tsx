@@ -10,6 +10,7 @@ import {
 } from "#/app/components/skills/viewer/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
 import type { ActiveSkillData } from "#/data/skills/activeSkillData.ts"
 import type { SkillGroupData } from "#/data/skills/skillGroupData.ts"
+import { getDisabledGroups, getDisabledSkills } from "#/rules/buildPoints/activeSkillsUtils.ts"
 import { useBuilderSkillsBuildPoints } from "#/state/builder/buildPoints/useBuildPointsApi.ts"
 import { EditorMode } from "#/state/editor/editorMode.tsx"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
@@ -19,7 +20,6 @@ import { SkillsSelectors } from "#/state/runner/skills/skills.selector.ts"
 
 import { ActiveSkillGroupsListItem } from "./activeSkillGroupsListItem.tsx"
 import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
-import { getDisabledGroups, getDisabledSkills } from "./activeSkillsUtils.ts"
 
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()

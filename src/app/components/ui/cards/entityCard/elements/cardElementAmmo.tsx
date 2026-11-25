@@ -1,7 +1,8 @@
 import type { FC } from "react"
 
 import type { FirearmData } from "#/data/items/weaponData.ts"
-import { CardElementStat } from "#/ui/cards/entityCard/elements/cardElementStat.tsx"
+
+import { CardElementStat } from "./cardElementStat.tsx"
 
 export interface CardElementAmmoProps {
   value: FirearmData["ammo"] | undefined
