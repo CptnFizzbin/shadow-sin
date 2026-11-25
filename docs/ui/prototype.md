@@ -1,6 +1,6 @@
 # Prototype
 
-**Location:** `src/components/ui/prototype/`
+**Location:** `src/ui/prototype/`
 **Import:** `import { Prototype } from "#/components/ui/prototype/prototype.tsx"`
 
 A compound component for switching between several in-progress prototypes/mockups in place. `Prototype` takes an

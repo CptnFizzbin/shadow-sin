@@ -124,7 +124,7 @@ yarn fixtures:update --check  # Exit non-zero if any fixture is out of date
 
 ## Adding a New Route
 
-Create a file under `src/routes/` — TanStack Router's Vite plugin picks it up automatically and regenerates
+Create a file under `src/app/routes/` — TanStack Router's Vite plugin picks it up automatically and regenerates
 `src/routeTree.gen.ts` on the next `yarn dev` / `yarn build`.
 
 ---

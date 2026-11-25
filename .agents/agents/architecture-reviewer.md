@@ -20,8 +20,8 @@ In scope — architecture and structural complexity:
 
 - **State ownership** — where state lives and how it is read and written (`src/state/AGENTS.md`, the state ADRs).
 - **Layering and dependencies** — which container may depend on which; imports that cross a boundary the docs forbid.
-- **Placement** — whether a new or moved file sits in the right `src/` container, per the "Container definitions"
-  section of `docs/features/0017-top-level-directory-restructuring.md` and the directory `AGENTS.md` files.
+- **Placement** — whether a new or moved file sits in the right `src/` section, per the "Placement rules" and
+  "Allowed imports" sections of `docs/features/0022-src-sections.md` and the directory `AGENTS.md` files.
 - **ADR compliance** — the change honours every binding ADR in `docs/adr/` (see "Which rules bind" below).
 - **Domain vocabulary** — identifiers, types and docs use `GLOSSARY.md` terms, and naming rules set by ADRs and
   `AGENTS.md` (e.g. ADR-0001 and root `AGENTS.md` → "Architecture principles" on `RunnerData` vs `character`).
@@ -70,7 +70,7 @@ Every review, read in full:
 - All of `docs/adr/` (it is small enough to read entirely; skim nothing).
 - `GLOSSARY.md`.
 - Root `AGENTS.md` and every directory `AGENTS.md` whose directory the change touches.
-- The "Container definitions" section of `docs/features/0017-top-level-directory-restructuring.md`.
+- The "Placement rules" and "Allowed imports" sections of `docs/features/0022-src-sections.md`.
 
 Then read the touched files with enough surrounding context (callers, sibling files) to judge the change. Running
 `yarn fallow --format json` for architecture-boundary or circular-dependency output is allowed when it helps.

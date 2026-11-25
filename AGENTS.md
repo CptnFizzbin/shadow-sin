@@ -12,7 +12,7 @@ rather than relying on memory or older copies of this file.
 |---|---|
 | Domain terms (Runner, Item vs Gear, Viewer/Builder/Editor, ...) | [`GLOSSARY.md`](./GLOSSARY.md) — use its terms consistently in code, comments, and docs |
 | How features, Issues, and ADRs relate | [`CONTRIBUTING.md`](./CONTRIBUTING.md) |
-| Where a file belongs in `src/` | `docs/features/0017-top-level-directory-restructuring.md` → "Container definitions" |
+| Where a file belongs in `src/` | `docs/features/0022-src-sections.md` → "Placement rules" |
 | Why the code is shaped the way it is | `docs/adr/` — read the ADRs touching the area you're working in |
 | In-progress feature designs | `docs/features/` |
 | Available scripts | `package.json` → `scripts` |
@@ -49,10 +49,10 @@ Rules that only apply to one part of the tree live in an `AGENTS.md` next to tha
 | File | Covers |
 |---|---|
 | `src/state/AGENTS.md` | The Redux store: shape, writes, ad hoc stores |
-| `src/data/AGENTS.md` | Runner schema migrations |
-| `src/routes/AGENTS.md` | File-based routing |
-| `src/components/AGENTS.md` | React components: reading state, MUI, dialogs and forms |
-| `src/components/entities/items/AGENTS.md` | Gear item types |
+| `src/data/migrations/AGENTS.md` | Runner schema migrations |
+| `src/app/routes/AGENTS.md` | File-based routing |
+| `src/app/components/AGENTS.md` | React components: reading state, MUI, dialogs and forms |
+| `src/app/components/entities/items/AGENTS.md` | Gear item types |
 
 ## Conventions
 

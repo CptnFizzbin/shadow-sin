@@ -1,6 +1,6 @@
 # Dialog
 
-**Location:** `src/components/ui/dialog/`
+**Location:** `src/forms/dialog/`
 **Import:** `import { Dialog, ControlledDialog } from "#/components/ui/dialog/dialog.tsx"`
 
 A compound modal dialog that wraps MUI's dialog family and enforces a consistent look across the application. Dialogs
@@ -243,7 +243,7 @@ export const ExamplePage = () => {
 
 If this pattern reuses a single mounted instance to edit different targets (like `SpiritList` does), add
 `key={item?.id ?? "new"}` to the `Dialog` element so it remounts (and re-initializes any form) when the target
-changes — see `src/components/AGENTS.md` → *Dialogs and forms*. `useDialog`-based dialogs don't need this since they remount
+changes — see `src/app/components/AGENTS.md` → *Dialogs and forms*. `useDialog`-based dialogs don't need this since they remount
 automatically on every `open()` call (the outlet always renders fresh).
 
 ## Guidelines

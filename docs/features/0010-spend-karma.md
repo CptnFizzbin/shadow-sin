@@ -243,7 +243,7 @@ Not implemented in v1. The spec is locked here so the future implementer doesn't
 
 Any deliberate deviation from SR4A (cheaper skill groups, no rating caps, karma-learnable
 native languages, etc.) is expressed as an entry in
-[`src/system/model/featureFlags/optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
+[`src/data/featureFlags/optionalRules.ts`](../../src/system/model/featureFlags/optionalRules.ts)
 rather than hardcoded in `improvementUtils.ts`. The pattern from
 [#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) /
 [#298](https://github.com/CptnFizzbin/shadow-sin/pull/298):
