@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { SpellData } from "#/system/model/magic/spellData.ts"
+import type { SpellData } from "#data/magic/spellData.ts"
 
 import {
   addSpell,

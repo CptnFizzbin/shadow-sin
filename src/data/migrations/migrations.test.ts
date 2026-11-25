@@ -1,0 +1,357 @@
+import { load } from "js-yaml"
+import { describe, expect, it } from "vitest"
+
+import type { JsonObject } from "#common/json/jsonUtils.ts"
+import { toJsonValue } from "#common/json/jsonUtils.ts"
+import {
+  isEntityWithAttrs,
+  isEntityWithDamage,
+  isEntityWithItems,
+  isEntityWithQualities,
+} from "#data/entities/entityTraits.ts"
+import type { GearTreeNode } from "#data/exportImport/exportUtils.ts"
+import { gearFromTree, runnerDataToYaml, yamlToRunnerData } from "#data/exportImport/exportUtils.ts"
+import { fixtureRunnerYaml } from "#data/fixtures/fixtureRunners.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { RunnerMetaSchema } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import BlurYaml from "#testUtils/fixtures/characters/blur.2026-04-18.sin?raw"
+import {
+  TEST_CHARACTER_ID,
+  TEST_LOAN_ID,
+  TEST_OLD_FORMAT_CHARACTER_ID,
+  TEST_OLD_FORMAT_LICENSE_ID,
+  TEST_OLD_FORMAT_SIN_ID,
+} from "#testUtils/fixtures/characters/ids.ts"
+import LegacyV0Yaml from "#testUtils/fixtures/characters/legacy_v0.sin?raw"
+import LegacyV1Yaml from "#testUtils/fixtures/characters/legacy_v1.sin?raw"
+import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
+
+import { applyMigrations } from "./applyMigrations.ts"
+import { LATEST_MIGRATION_TIMESTAMP } from "./migrations.ts"
+
+// `legacy_v0.sin`/`legacy_v1.sin` are full character-sheet snapshots at specific migration
+// boundaries (see `testUtils/fixtures/characters/legacy/`); parse them back into plain objects so
+// tests can seed storage with them the same way a real exported/imported `.sin` file would be.
+const characterV0 = load(LegacyV0Yaml) as JsonObject
+const characterV1 = load(LegacyV1Yaml) as RunnerData
+
+// Each test seeds its own manager/storage (rather than sharing one from `beforeEach`) so the
+// suite can run concurrently.
+async function makeMigratedRunnerManager() {
+  const { manager, storage } = makeTestRunnerManager()
+  await storage.setItem(
+    `characters/${TEST_CHARACTER_ID}`,
+    toJsonValue(characterV1),
+  )
+  return { manager, storage }
+}
+
+describe.concurrent("runner migrations + yaml round-trip", () => {
+  it("applies all pending migrations to a partially-migrated runner", async () => {
+    // Arrange — a runner at legacy _meta_.version 7
+    const { manager } = await makeMigratedRunnerManager()
+
+    // Act
+    const migrated = await manager.getRunner(TEST_CHARACTER_ID)
+
+    // Assert
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+    expect("version" in (migrated as object)).toBe(false)
+  })
+
+  it("migrates a fully-shaped runner that has no _meta_ field at all", async () => {
+    // Arrange — a runner already carrying every field the migrations would add, but never
+    // stamped with `_meta_` (e.g. hand-authored or created before the field existed at all)
+    const { _meta_, ...withoutMeta } = characterV1
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+    await freshStorage.setItem(
+      `characters/${TEST_CHARACTER_ID}`,
+      toJsonValue(withoutMeta),
+    )
+
+    // Act
+    const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
+
+    // Assert — treated as unmigrated (sinVersion defaults to the epoch) but every migration is
+    // idempotent, so it still lands at the latest migration timestamp with no error
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+  })
+
+  it("safely re-runs every migration for a runner still on the legacy _meta_.version scheme", async () => {
+    // Arrange — characterV1 is shaped as if migrations 001–007 (legacy version 7) had already
+    // run, with a loan carrying a known stable ID; a legacy `version` is treated as unmigrated,
+    // so all 32 migrations run again — every one is idempotent, so this doesn't change the data
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+    await freshStorage.setItem(
+      `characters/${TEST_CHARACTER_ID}`,
+      toJsonValue(characterV1),
+    )
+
+    // Act
+    const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
+
+    // Assert — loan ID unchanged (addLoanIdAndInterestRate only assigns one when missing)
+    expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+  })
+
+  it("yaml export/import round-trips a fully migrated runner", async () => {
+    // Arrange — migrate the partially-migrated runner
+    const { manager } = await makeMigratedRunnerManager()
+    const migrated = await manager.getRunner(TEST_CHARACTER_ID)
+
+    // Act
+    const yaml = runnerDataToYaml(migrated)
+    const restored = yamlToRunnerData(yaml)
+
+    // Assert
+    expect(restored).toEqual(migrated)
+  })
+
+  it("yaml-imported runner is already at the current version", async () => {
+    // Arrange — migrate, then clear appVersion: it is only restamped when a migration runs, so a
+    // surviving null shows that neither import nor reload re-ran any migration
+    const { manager } = await makeMigratedRunnerManager()
+    const migrated = await manager.getRunner(TEST_CHARACTER_ID)
+    const exported = runnerDataToYaml({ ...migrated, _meta_: { ...migrated._meta_, appVersion: null } })
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+
+    // Act
+    const restored = yamlToRunnerData(exported)
+    await freshStorage.setItem(`characters/${restored.id}`, toJsonValue(restored))
+    const reloaded = await freshManager.getRunner(restored.id)
+
+    // Assert
+    expect(restored._meta_).toEqual({ sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null })
+    expect(reloaded._meta_).toEqual({ sinVersion: LATEST_MIGRATION_TIMESTAMP, appVersion: null, lastExportDate: null })
+  })
+
+  it("normalises an old-format runner into the current RunnerData shape", async () => {
+    // Arrange — save the old-format runner into fresh storage
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+    await freshStorage.setItem(
+      `characters/${TEST_OLD_FORMAT_CHARACTER_ID}`,
+      toJsonValue(characterV0),
+    )
+
+    // Act
+    const migrated = await freshManager.getRunner(TEST_OLD_FORMAT_CHARACTER_ID)
+
+    // Assert — runner loaded without error
+
+    // id migrated from runnerId
+    expect(migrated.id).toBe(TEST_OLD_FORMAT_CHARACTER_ID)
+
+    // profile/biology populated from flat fields
+    expect(migrated.profile.alias).toBe("Blur")
+    expect(migrated.profile.name).toBe("Long")
+    expect(migrated.lifestyle).toEqual({ name: "Low", upkeep: 2_000, monthsPaid: 3 })
+    expect(migrated.biology.metatype).toBe("Human")
+    expect(migrated.biology.awakening).toBe("Mystic Adept")
+    expect(migrated.biology.age).toBe(0)
+
+    // attributes are flat numbers
+    expect(migrated.attributes.body).toBe(4)
+    expect(migrated.attributes.agility).toBe(5)
+    expect(migrated.attributes.magic).toBe(5)
+    expect(migrated.attributes.essence).toBe(6)
+
+    // skill groups use `name` instead of `groupName`
+    expect(migrated.skills.skillGroups).toHaveLength(1)
+    expect(migrated.skills.skillGroups[0].name).toBe("Athletics")
+    expect(migrated.skills.skillGroups[0].rating).toBe(2)
+
+    // native language skill carries the isNative flag, not a rating
+    const english = migrated.skills.languageSkills.find((s) => s.name === "English")
+    expect(english?.isNative).toBe(true)
+    const sylvan = migrated.skills.languageSkills.find((s) => s.name === "Sylvan")
+    expect(sylvan?.isNative).toBe(false)
+    expect(sylvan && !sylvan.isNative ? sylvan.rating : undefined).toBe(4)
+
+    // spells promoted from awakened to top-level
+    expect(migrated.spells).toHaveLength(2)
+    expect(migrated.powers).toHaveLength(4)
+    expect(migrated.complexForms).toHaveLength(0)
+
+    // gear is a Record, empty items stripped, itemTypes normalised
+    const gearValues = Object.values(getItemCatalog(migrated))
+    const weapon = gearValues.find((item) => item.name === "SM-4")
+    expect(weapon?.itemType).toBe("weapon")
+    const device = gearValues.find((item) => item.name === "Contact Lenses 3")
+    expect(device?.itemType).toBe("device")
+    const other = gearValues.find((item) => item.name === "Power Foci 2")
+    expect(other?.itemType).toBe("other")
+    const vehicle = gearValues.find((item) => item.name === "Indian Pathfinder")
+    expect(vehicle?.itemType).toBe("vehicle")
+
+    // license linked to SIN via parentId
+    const sin = getItemCatalog(migrated)[TEST_OLD_FORMAT_SIN_ID]
+    expect(sin).toBeDefined()
+    expect(sin.itemType).toBe("sin")
+    const license = getItemCatalog(migrated)[TEST_OLD_FORMAT_LICENSE_ID]
+    expect(license).toBeDefined()
+    expect(license.itemType).toBe("license")
+    expect(license.items.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
+    expect(sin.items.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
+
+    // fully migrated
+    expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+  })
+
+  it("imports blur.yaml (v0 export) via yamlToRunnerData into a valid RunnerData", () => {
+    // Act
+    const runner = yamlToRunnerData(BlurYaml)
+
+    // Assert — top-level RunnerData fields
+    expect(runner.id).toBe("31e8a690-6082-4177-8512-c41911c3f1bb")
+    expect(runner.profile.alias).toBe("Blur")
+    expect(runner.profile.name).toBe("Long")
+    expect(runner.lifestyle).toEqual({ name: "Low", upkeep: 2_000, monthsPaid: 3 })
+    expect(runner.biology.metatype).toBe("Human")
+    expect(runner.biology.awakening).toBe("Mystic Adept")
+
+    // attributes are flat numbers
+    expect(runner.attributes.body).toBe(4)
+    expect(runner.attributes.agility).toBe(5)
+    expect(runner.attributes.magic).toBe(5)
+
+    // skills migrated
+    expect(runner.skills.skillGroups).toHaveLength(1)
+    expect(runner.skills.skillGroups[0].name).toBe("Athletics")
+    const english = runner.skills.languageSkills.find((s) => s.name === "English")
+    expect(english?.isNative).toBe(true)
+
+    // spells promoted from awakened wrapper
+    expect(runner.spells).toHaveLength(2)
+    expect(runner.powers).toHaveLength(4)
+
+    // gear is a Record, empty entries stripped, itemTypes normalised
+    const gearValues = Object.values(getItemCatalog(runner))
+    expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toBe("weapon")
+    expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toBe("device")
+    expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toBe("other")
+
+    // license linked to its parent SIN
+    const sin = gearValues.find((item) => item.itemType === "sin")
+    const license = gearValues.find((item) => item.itemType === "license")
+    expect(sin).toBeDefined()
+    expect(license).toBeDefined()
+    expect(license!.items.parentId).toBe(sin!.id)
+    expect(sin!.items.childIds).toContain(license!.id)
+
+    // fully migrated
+    expect(runner._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+  })
+})
+
+describe.concurrent("runner migrations + fixtures", () => {
+  const fixtures: Record<string, RunnerData> = Object.fromEntries(
+    Object.entries(fixtureRunnerYaml).map(([name, yaml]) => [name, yamlToRunnerData(yaml)]),
+  )
+
+  // Every fixture already carries `_meta_.sinVersion: LATEST_MIGRATION_TIMESTAMP`, so deleting both
+  // version fields forces every registered migration to run — first against the raw fixture, then
+  // again against its own output, so the second pass exercises every migration's idempotency
+  // guard. Deleting `appVersion` too matters on the second pass: by then it holds the live
+  // `APP_VERSION` (stamped after the first pass actually ran migrations), and
+  // `resolveRunnerSinVersion`'s pre-split fallback would otherwise mistake that live build
+  // timestamp for an already-applied `sinVersion`.
+  function migrateForcingRerun(runner: object): RunnerData {
+    const raw = structuredClone(runner) as Omit<RunnerData, "_meta_"> & {
+      _meta_: Partial<RunnerData["_meta_"]>
+    }
+    delete raw._meta_.sinVersion
+    delete raw._meta_.appVersion
+    return applyMigrations(raw)
+  }
+
+  it.each(Object.entries(fixtures))(
+    "running every migration twice against %s produces the same result each time",
+    (_name, fixture) => {
+      // Arrange / Act — first pass from the raw fixture, second pass forced to re-run on top of
+      // the first pass's own output
+      const first = migrateForcingRerun(fixture)
+      const second = migrateForcingRerun(first)
+
+      // Assert
+      expect(second).toEqual(first)
+    },
+  )
+})
+
+// Mirrors `yamlToRunnerData`'s new-format branch (tree gear -> flat `_data_.items` map), without
+// also calling `applyMigrations` itself, so callers can clear `_meta_` first to force a full
+// re-run — see `fullyMigrate` below.
+function parseExportedYaml(parsed: JsonObject): JsonObject {
+  const rawGear: unknown = parsed.gear
+
+  const payload: unknown = {
+    ...parsed,
+    _data_: {
+      ...(parsed._data_ as object | undefined),
+      items: gearFromTree(Array.isArray(rawGear) ? (rawGear as GearTreeNode[]) : []),
+    },
+  }
+  return payload as JsonObject
+}
+
+// Every character-sheet fixture under `testUtils/fixtures/characters/`, loaded automatically —
+// adding a new `.sin` fixture there gets covered here with no import to remember. Real exported
+// files (post-`20260823_01_moveItems`) already carry `_data_` and store gear as a tree, so they
+// need the same tree -> flat-map conversion `yamlToRunnerData` does; the raw pre-`_data_` legacy
+// snapshots (`legacy_v*.sin`, `blur.2026-04-18.sin`) go to `applyMigrations` as-is.
+const sinFixtureFiles = import.meta.glob("../../../testUtils/fixtures/characters/*.sin", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>
+
+describe.concurrent("runner migrations + every character fixture", () => {
+  // Force every migration to run from scratch, regardless of what `_meta_` a fixture already
+  // carries — the dev fixture Runners already sit at `LATEST_MIGRATION_TIMESTAMP`, so without this a bare
+  // `applyMigrations` would run nothing and skip every defensive default a migration backfills
+  // (see `migrateForcingRerun` above, which does the same for the same reason).
+  function fullyMigrate(runner: object): RunnerData {
+    const raw = structuredClone(runner) as Omit<RunnerData, "_meta_"> & {
+      _meta_?: Partial<RunnerData["_meta_"]>
+    }
+    if (raw._meta_) {
+      delete raw._meta_.sinVersion
+      delete raw._meta_.appVersion
+    }
+    return applyMigrations(raw)
+  }
+
+  // Deferred, one loader per fixture — parsing and migrating happens inside the `it` body below,
+  // not here at describe-collection time, so a fixture that fails to load fails only its own test
+  // instead of throwing during collection and taking down the whole file's test run.
+  const fixtureLoaders: Record<string, string> = Object.fromEntries(
+    Object.entries(sinFixtureFiles).map(([path, yaml]) => {
+      const name = path.replace(/^.*\//, "").replace(/\.sin$/, "")
+      return [name, yaml]
+    }),
+  )
+
+  Object.assign(fixtureLoaders, fixtureRunnerYaml)
+
+  it.each(Object.entries(fixtureLoaders))(
+    "%s loads and validates against the latest schema",
+    (_name, yaml) => {
+      // Arrange
+      const parsed = load(yaml) as JsonObject
+      const payload = "_data_" in parsed ? parseExportedYaml(parsed) : parsed
+
+      // Act
+      const migrated = fullyMigrate(payload)
+
+      // Assert — fully migrated, and shaped as every RunnerData trait requires
+      expect(migrated._meta_.sinVersion).toBe(LATEST_MIGRATION_TIMESTAMP)
+      expect(RunnerMetaSchema.safeParse(migrated._meta_).success).toBe(true)
+      expect(isEntityWithAttrs(migrated)).toBe(true)
+      expect(isEntityWithDamage(migrated)).toBe(true)
+      expect(isEntityWithItems(migrated)).toBe(true)
+      expect(isEntityWithQualities(migrated)).toBe(true)
+    },
+  )
+})

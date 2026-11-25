@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { builderStateFactory } from "#/components/builder/builderState.ts"
-
+import { builderStateFactory } from "./builderState.ts"
 import { BuilderActions } from "./builderStore.actions.ts"
 import { builderStoreReducer } from "./builderStore.reducer.ts"
 

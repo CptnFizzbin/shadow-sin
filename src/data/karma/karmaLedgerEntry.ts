@@ -1,0 +1,46 @@
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+
+import type { ImprovementEntry } from "./improvements/improvementEntry.ts"
+
+/**
+ * The source that produced a karma ledger entry.
+ *
+ * - `addKarma` — positive entry for karma awarded by the GM
+ * - `spendKarma` — negative entry written by `applyImprovements` (one per improvement)
+ * - `buyKarma` — positive entry for karma bought with nuyen
+ * - `sellKarma` — negative entry for karma sold for nuyen
+ * - `adjustKarma` — entry for a manual correction outside the rules; its amount is the change to
+ *   current karma, and may be zero when only the total earned changed
+ * - `bondFocus` — negative entry for the karma spent Bonding a Focus
+ * - `undo` — refund entry produced by post-Save undo (reserved for v2; unused in v1)
+ */
+export type KarmaLedgerSource =
+  | "addKarma"
+  | "spendKarma"
+  | "buyKarma"
+  | "sellKarma"
+  | "adjustKarma"
+  | "bondFocus"
+  | "undo"
+
+/**
+ * One immutable, append-only audit-trail entry for a karma earn or spend.
+ *
+ * Stored on `RunnerData.karma.log`. Entries are never edited or removed —
+ * corrections happen via counter-entries (e.g. a post-Save `undo` writes a
+ * positive refund entry pointing back to the original via `undoes`).
+ */
+export interface KarmaLedgerEntry {
+  id: UUID
+  /** ISO 8601 timestamp of when the entry was written. */
+  timestamp: string
+  /** Signed amount: negative for spends, positive for earns and refunds. */
+  amount: number
+  /** Human-friendly summary, e.g. `"Raised AGI 4 → 5"`. */
+  description: string
+  source: KarmaLedgerSource
+  /** Present when `source === "spendKarma"`. Enables future undo / export / replay. */
+  improvement?: ImprovementEntry
+  /** Present when `source === "undo"` (v2). Points at the entry being undone. */
+  undoes?: UUID
+}

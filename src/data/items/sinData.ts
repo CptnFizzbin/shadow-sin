@@ -1,0 +1,57 @@
+import { z } from "zod"
+
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { Credential } from "#data/entities/entityTraits.ts"
+import { GameEffectDataSchema } from "#data/gameEffects/gameEffectData.ts"
+import { SourceDataSchema } from "#data/source/sourceData.ts"
+
+import type { ItemData } from "./itemData.ts"
+import { ItemStateSchema } from "./itemState.ts"
+import { ItemType } from "./itemType.ts"
+
+/**
+ * A held identity. `isReal: true` is a Real SIN — issued by a government, never rolled — while
+ * `isReal: false` is a fake SIN carrying a forgery-quality `rating`. See GLOSSARY.md's **SIN** glossary entry.
+ */
+export interface SinData extends ItemData, Credential {
+  itemType: ItemType.sin
+}
+
+export function isSinData(item: ItemData): item is SinData {
+  return item.itemType === ItemType.sin
+}
+
+/**
+ * Zod schema for validating SinData.
+ */
+export const SinDataSchema = z.object({
+  kind: z.literal(EntityKind.item),
+  id: z.uuid(),
+  itemType: z.literal(ItemType.sin),
+  name: z.string().min(1, "Name is required"),
+  isReal: z.boolean(),
+  rating: z.number().int().min(1).optional(),
+  description: z.string().optional(),
+  source: SourceDataSchema.optional(),
+  effects: z.array(GameEffectDataSchema).optional(),
+  cost: z.number().optional(),
+  quantity: z.number().optional(),
+  availability: z.object({
+    rating: z.number(),
+    restricted: z.boolean().optional(),
+    forbidden: z.boolean().optional(),
+  }).optional(),
+  licenseId: z.uuid().nullable().optional(),
+  notes: z.string().optional(),
+  state: ItemStateSchema.optional(),
+  fixed: z.boolean().optional(),
+  wireless: z.object({
+    enabled: z.boolean().optional(),
+    removed: z.boolean().optional(),
+  }).optional(),
+  matrixDisabled: z.boolean().optional(),
+  items: z.object({
+    parentId: z.uuid().nullable(),
+    childIds: z.uuid().array(),
+  }),
+}) satisfies z.ZodType<SinData>

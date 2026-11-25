@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { ComplexFormData } from "#/system/model/magic/complexFormData.ts"
+import type { ComplexFormData } from "#data/magic/complexFormData.ts"
 
 import { addComplexForm, removeComplexForm, saveComplexForm, updateComplexForm } from "./complexForms.actions.ts"
 

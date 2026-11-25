@@ -1,8 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import { MetatypeType } from "#/system/model/biology/metatypeData.ts"
-import { AwakeningType } from "#/system/model/magic/awakeningType.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { MetatypeType } from "#data/biology/metatypeData.ts"
+import { AwakeningType } from "#data/magic/awakeningType.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { setBiology } from "./biology.actions.ts"
 

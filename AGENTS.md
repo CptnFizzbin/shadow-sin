@@ -12,7 +12,7 @@ rather than relying on memory or older copies of this file.
 |---|---|
 | Domain terms (Runner, Item vs Gear, Viewer/Builder/Editor, ...) | [`GLOSSARY.md`](./GLOSSARY.md) — use its terms consistently in code, comments, and docs |
 | How features, Issues, and ADRs relate | [`CONTRIBUTING.md`](./CONTRIBUTING.md) |
-| Where a file belongs in `src/` | `docs/features/0017-top-level-directory-restructuring.md` → "Container definitions" |
+| Where a file belongs in `src/` | `docs/features/0022-src-sections.md` → "Placement rules" |
 | Why the code is shaped the way it is | `docs/adr/` — read the ADRs touching the area you're working in |
 | In-progress feature designs | `docs/features/` |
 | Available scripts | `package.json` → `scripts` |
@@ -49,21 +49,24 @@ Rules that only apply to one part of the tree live in an `AGENTS.md` next to tha
 | File | Covers |
 |---|---|
 | `src/state/AGENTS.md` | The Redux store: shape, writes, ad hoc stores |
-| `src/data/AGENTS.md` | Runner schema migrations |
-| `src/routes/AGENTS.md` | File-based routing |
-| `src/components/AGENTS.md` | React components: reading state, MUI, dialogs and forms |
-| `src/components/entities/items/AGENTS.md` | Gear item types |
+| `src/data/migrations/AGENTS.md` | Runner schema migrations |
+| `src/app/routes/AGENTS.md` | File-based routing |
+| `src/app/components/AGENTS.md` | React components: reading state, MUI, dialogs and forms |
+| `src/app/components/entities/items/AGENTS.md` | Gear item types |
 
 ## Conventions
 
-- **Path aliases**: `#/` → `src/`, `#testUtils/*` → `testUtils/` (in unit tests). Use `#/` instead of parent-relative
-  (`../`) imports — ESLint enforces this. Sibling-relative (`./`) imports within a directory are fine.
+- **Path aliases**: each `src/` section has its own alias, standing in for its future package name: `#common/`,
+  `#data/`, `#rules/`, `#state/`, `#ui/`, `#forms/` and `#app/` (see `tsconfig.json` → `paths`). `#/` → `src/` is
+  only for the entry files at the root of `src/`, and `#testUtils/*` → `testUtils/` is for unit tests. Use an alias
+  instead of parent-relative (`../`) imports — ESLint enforces this and its autofix picks the section alias.
+  Sibling-relative (`./`) imports within a directory are fine.
 - **All local imports include the file extension** (`.ts` or `.tsx`):
   ```ts
   // ✅
-  import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
+  import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
   // ❌
-  import { useRunnerSelector } from "#/state/runner/runnerStore.selectors"
+  import { useRunnerSelector } from "#state/runner/runnerStore.selectors"
   ```
 - New client-side environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env.ts"`. `env.node.ts` at the repo root covers Node-side tooling env vars.
@@ -154,7 +157,7 @@ Before calling **any** change done — code, docs or config alike — run the `a
 spawn subagents; where none can be spawned, skip this step. If the harness hasn't registered the profile (e.g. a local
 session where the `.claude/agents` symlink hook didn't run), spawn a generic subagent and give it that file as its
 instructions. The reviewer is read-only and reports architecture findings only (ADRs, `AGENTS.md` rules,
-`GLOSSARY.md`, `src/` container placement) plus structural complexity worth simplifying.
+`GLOSSARY.md`, `src/` section placement) plus structural complexity worth simplifying.
 
 - **Fix or justify** every finding under *Blocking*: fix it, or say in your final report why you left it.
 - **Never edit an ADR to silence a finding.** If you believe the ADR is wrong rather than your change, leave the

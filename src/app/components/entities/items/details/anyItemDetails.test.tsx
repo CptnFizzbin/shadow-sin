@@ -1,0 +1,85 @@
+import { fireEvent, screen } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
+
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { WeaponData } from "#data/items/weaponData.ts"
+import { WeaponType } from "#data/items/weaponData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import { makeAgent } from "#testUtils/fixtures/makeAgent.ts"
+import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import { AnyItemDetails } from "./anyItemDetails.tsx"
+
+const weapon: WeaponData = {
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
+  id: "00000000-0000-0000-0000-000000000001",
+  name: "Ares Predator V",
+  itemType: ItemType.weapon,
+  weaponType: WeaponType.firearm,
+  skill: SkillKey.pistols,
+  dmg: "8P",
+}
+
+const runnerStoreWithWeapon = () =>
+  runnerDataFactory({ items: { [weapon.id]: weapon } })
+
+const commlink: ItemData = {
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: ["00000000-0000-0000-0000-000000000004"] },
+  id: "00000000-0000-0000-0000-000000000005",
+  name: "Hermes Ikon",
+  itemType: ItemType.device,
+}
+
+const agent = makeAgent({
+  id: "00000000-0000-0000-0000-000000000004",
+  items: { parentId: commlink.id, childIds: [] },
+})
+
+describe("AnyItemDetails", () => {
+  it("dispatches weapons to WeaponItemDetails", () => {
+    renderWithProviders(<AnyItemDetails item={weapon} />, { runner: runnerStoreWithWeapon() })
+
+    expect(screen.getByText("Ares Predator V")).toBeDefined()
+    expect(screen.getByText("DV")).toBeDefined()
+    expect(screen.getByText("8P")).toBeDefined()
+  })
+
+  it("dispatches Agents (Program items with programType agent) to AgentItemDetails", () => {
+    renderWithProviders(<AnyItemDetails item={agent} />, {
+      runner: runnerDataFactory({ items: { [commlink.id]: commlink, [agent.id]: agent } }),
+    })
+
+    expect(screen.getByText("Griffin")).toBeDefined()
+    expect(screen.getByText("System")).toBeDefined()
+    expect(screen.getByText("Firewall")).toBeDefined()
+  })
+
+  it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
+    // Arrange
+    const item: ItemData = {
+      kind: EntityKind.item,
+      items: { parentId: null, childIds: [] },
+      id: "00000000-0000-0000-0000-000000000002",
+      name: "Fake SIN",
+      itemType: ItemType.other,
+    }
+    const onRemove = vi.fn()
+
+    // Act
+    renderWithProviders(<AnyItemDetails item={item} onRemove={onRemove} />, {
+      runner: runnerDataFactory({ items: { [item.id]: item } }),
+    })
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
+
+    // Assert
+    expect(screen.getByText("Fake SIN")).toBeDefined()
+    // Only the fallback calls onRemove directly; typed views manage removal internally.
+    expect(screen.getByRole("button", { name: "Edit" })).toBeDefined()
+    expect(onRemove).toHaveBeenCalledOnce()
+  })
+})

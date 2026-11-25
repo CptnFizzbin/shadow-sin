@@ -1,0 +1,23 @@
+import type { AlertInfo } from "#common/alerts/alertInfo.ts"
+import { useEditorMode } from "#state/editor/editorMode.tsx"
+import { QualitiesSelectors } from "#state/runner/qualities/qualities.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+
+export const useQualitiesAlerts = (): AlertInfo[] => {
+  const qualities = useRunnerSelector(QualitiesSelectors.selectAll)
+  const editorMode = useEditorMode()
+
+  const statuses: AlertInfo[] = []
+
+  if (qualities.length === 0 && editorMode.isBuilder) {
+    statuses.push({
+      section: "Qualities",
+      severity: "warning",
+      title: "No qualities selected",
+      message: "You haven't selected any qualities. Consider adding positive qualities or balancing with negative ones for extra BP.",
+      summaryOnly: true,
+    })
+  }
+
+  return statuses
+}

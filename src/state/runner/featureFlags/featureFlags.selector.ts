@@ -1,7 +1,7 @@
-import type { FlagEntry, FlagValue } from "#/system/model/featureFlags/featureFlag.ts"
-import type { FeatureFlagsData } from "#/system/model/featureFlags/featureFlagsData.ts"
-import { resolveFlagValue } from "#/system/model/featureFlags/featureFlagsData.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import type { FlagEntry, FlagValue } from "#data/featureFlags/featureFlag.ts"
+import type { FeatureFlagsData } from "#data/featureFlags/featureFlagsData.ts"
+import { resolveFlagValue } from "#data/featureFlags/featureFlagsData.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 export namespace FeatureFlagSelectors {
   /** Every feature flag override the Runner has stored, keyed by flag `ref`. */

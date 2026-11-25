@@ -1,0 +1,34 @@
+import Stack from "@mui/material/Stack"
+
+import { ProgramType } from "#data/items/programData.ts"
+import { programFormOpts } from "#forms/items/types/devices/useProgramForm.tsx"
+import { withFieldGroup } from "#forms/tanstackForm/useAppForm.ts"
+
+const splitCamelCase = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+const titleCase = (s: string) => s.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
+
+// Agents carry stats a plain Program doesn't, so they're added through the Agent form instead.
+const programTypeOptions = Object.values(ProgramType).filter((programType) => programType !== ProgramType.agent).map((programType) => ({
+  label: titleCase(splitCamelCase(programType)),
+  value: programType,
+}))
+
+export const ProgramFormFields = withFieldGroup({
+  ...programFormOpts,
+  render: ({ group }) => {
+    return (
+      <Stack>
+        <group.AppField name="programType">
+          {(field) => (
+            <field.SelectField
+              label="Program Type"
+              fullWidth
+              size="small"
+              options={programTypeOptions}
+            />
+          )}
+        </group.AppField>
+      </Stack>
+    )
+  },
+})

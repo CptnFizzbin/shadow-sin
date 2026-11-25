@@ -32,7 +32,7 @@ export default defineConfig([
     },
     languageOptions: {
       // __APP_VERSION__ is a build-time constant injected by vite.config.ts's `define` — see
-      // src/data/appVersion.ts and src/viteEnv.d.ts.
+      // src/data/migrations/appVersion.ts and src/viteEnv.d.ts.
       globals: { ...globals.browser, __APP_VERSION__: "readonly" },
       parserOptions: {
         projectService: true,
@@ -106,6 +106,13 @@ export default defineConfig([
 
       ...{ // import-alias rules
         "@dword-design/import-alias/prefer-alias": "error",
+        // Each src/ section has its own alias (#data/, #rules/, ...) standing in for its future package name.
+        "no-restricted-imports": ["error", {
+          patterns: [{
+            regex: "^#/(common|data|rules|state|ui|forms|app)/",
+            message: "Import a section through its own alias (e.g. #data/...), not #/<section>/....",
+          }],
+        }],
       },
 
       ...{ // eslint-plugin-import-x rules
@@ -165,8 +172,8 @@ export default defineConfig([
   },
   {
     files: [
-      "src/routes/**",
-      "src/data/migrations/**",
+      "src/app/routes/**",
+      "src/data/migrations/steps/**",
     ],
     rules: {
       "check-file/filename-naming-convention": "off",

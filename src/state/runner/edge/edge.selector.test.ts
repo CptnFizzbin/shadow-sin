@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 
 import { EdgeSelectors } from "./edge.selector.ts"
 

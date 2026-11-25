@@ -24,7 +24,7 @@ becomes a **Formula** (`XxxFormulas.get*`, `system/`), reached only through a ma
 ## Open Questions
 
 - [x] **Does `components/system/` get renamed?** Resolved: out of scope for this doc — see Out of
-      Scope below. The naming collision with `src/system/` stands for now.
+      Scope below. The `src/system/` folder no longer exists — see `docs/features/0022-src-sections.md`.
 - [ ] **Do the fused hooks get split now or left alone?** Partially resolved — the Build Points
       portion (`useGearBuildPoints`, `useGearTotalCost`, `getTotalCost`) is folded into Slice 4
       below. `hooks/runner/skills/skillDicePools.ts` and

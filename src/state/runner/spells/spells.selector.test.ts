@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import { SpellsSelectors } from "./spells.selector.ts"
 

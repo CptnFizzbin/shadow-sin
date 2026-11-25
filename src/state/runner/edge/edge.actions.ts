@@ -1,9 +1,9 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
 
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import type { RunnerState } from "#/state/runnerState.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
-import { NumberUtils } from "#/utils/numberUtils.ts"
+import { NumberUtils } from "#common/number/numberUtils.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import type { RunnerState } from "#state/runnerState.ts"
 
 export const setCurrentEdge = createAsyncThunk<number, number, {
   state: RunnerState

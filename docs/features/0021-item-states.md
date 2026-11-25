@@ -125,7 +125,7 @@ earlier migration, so they become Implanted. The PR that ships the migration mus
 
 ## Constraints
 
-- Needs a Runner schema migration (see `src/data/AGENTS.md`).
+- Needs a Runner schema migration (see `src/data/migrations/AGENTS.md`).
 - Every reader of `item.equipped`/`item.stashed` (encumbrance, armor totals, Game Effects, damage, attack weapon
   selection, cards, details) moves to the new field or a helper built on it. There are about 40 call
   sites.

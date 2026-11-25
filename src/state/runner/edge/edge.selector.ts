@@ -1,7 +1,7 @@
-import { createMemoizedSelector } from "#/integrations/reselect/selectorUtils.ts"
-import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
-import { ViewerStateSelectors } from "#/state/runner/viewerSelector.ts"
-import { AttributeKey } from "#/system/model/attributes/attributeKey.ts"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { ViewerStateSelectors } from "#state/runner/viewerSelector.ts"
 
 export namespace EdgeSelectors {
   export const selectMax = AttrSelectors.forAttr(AttributeKey.edge).selectValue

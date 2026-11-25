@@ -1,0 +1,63 @@
+import { produce } from "immer"
+
+import { meleeWeaponTypes, rangedWeaponTypes } from "#data/items/weapons/weaponTypeGroups.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
+
+interface GearItem {
+  id: string
+  itemType: string
+  weaponType?: string
+  parentId?: string
+  equipped?: boolean
+  state?: string
+}
+
+// A runner that already went through the later `replaceEquippedStashedWithState` migration (and is
+// re-running every migration) records an equipped weapon as `state: "equipped"` instead.
+function isEquipped(item: GearItem): boolean {
+  return item.equipped === true || item.state === "equipped"
+}
+
+const migration: CharacterMigration<{
+  gear?: Record<string, GearItem>
+}> = {
+  timestamp: "2026-04-17T00:00:00Z",
+  up: (character) => {
+    return produce(character, (draft) => {
+      const gear = (draft.gear ??= {})
+
+      const weapons = Object.values(gear).filter(
+        (item) => item.itemType === "weapon" && !item.parentId,
+      )
+
+      const meleeTypeStrings = meleeWeaponTypes.map(String)
+      const rangedTypeStrings = rangedWeaponTypes.map(String)
+
+      const anyMeleeEquipped = weapons.some(
+        (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && isEquipped(w),
+      )
+      if (!anyMeleeEquipped) {
+        const firstMelee = weapons.find(
+          (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType),
+        )
+        if (firstMelee) {
+          gear[firstMelee.id] = { ...gear[firstMelee.id], equipped: true }
+        }
+      }
+
+      const anyRangedEquipped = weapons.some(
+        (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && isEquipped(w),
+      )
+      if (!anyRangedEquipped) {
+        const firstRanged = weapons.find(
+          (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType),
+        )
+        if (firstRanged) {
+          gear[firstRanged.id] = { ...gear[firstRanged.id], equipped: true }
+        }
+      }
+    })
+  },
+}
+
+export default migration

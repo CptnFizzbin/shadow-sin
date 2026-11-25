@@ -1,0 +1,85 @@
+import type { FC } from "react"
+
+import { ItemAttachmentTree } from "#app/components/entities/items/card/itemAttachmentTree.tsx"
+import { ItemCard } from "#app/components/ui/cards/itemCard/itemCard.tsx"
+import type { ImplantData } from "#data/items/implantData.ts"
+import { ImplantGrade, ImplantType } from "#data/items/implantData.ts"
+import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#rules/items/implantUtils.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+
+interface ImplantDataCardProps {
+  implant: ImplantData
+  onOpen?: () => void
+  onEdit?: () => void
+}
+
+const gradeLabel: Partial<Record<string, string>> = {
+  [ImplantGrade.standard]: "Std",
+  [ImplantGrade.alpha]: "Alpha",
+  [ImplantGrade.beta]: "Beta",
+  [ImplantGrade.delta]: "Delta",
+}
+
+const typeLabel: Partial<Record<string, string>> = {
+  [ImplantType.cyberware]: "Cyber",
+  [ImplantType.bioware]: "Bio",
+}
+
+export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onEdit }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const confirmDialog = useConfirmDialog()
+  const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: implant.id })
+  const hasAccessories = Object.keys(accessories).length > 0
+  const effectiveEssence = getImplantEffectiveEssenceCost(implant)
+  const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
+
+  const removeImplant = async () => {
+    const result = await confirmDialog.confirm({
+      title: <>Remove {implant.name}?</>,
+      body: "Are you sure you want to remove this implant? This action cannot be undone.",
+      confirmLabel: "Remove Implant",
+    })
+    if (result) dispatch(Actions.item.removeItem({ id: implant.id, removeChildren: true }))
+  }
+
+  return (
+    <>
+      <ItemCard
+        item={implant}
+        costEffectiveValue={effectiveNuyen}
+        onOpen={onOpen}
+        onEdit={onEdit}
+        onRemove={removeImplant}
+      >
+        {implant.implantType && <ItemCard.SubType label={typeLabel[implant.implantType] ?? implant.implantType} />}
+
+        <ItemCard.FooterStat
+          label="Ess"
+          value={implant.essenceCost.toFixed(2)}
+          effectiveValue={effectiveEssence.toFixed(2)}
+        />
+
+        {implant.location && <ItemCard.Stat value={implant.location} type="rating" />}
+
+        {implant.grade && implant.grade !== ImplantGrade.standard && (
+          <ItemCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
+        )}
+
+        {hasAccessories && (
+          <ItemCard.Layout.BodyRow
+            direction="column"
+            sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
+          >
+            <ItemAttachmentTree itemId={implant.id} />
+          </ItemCard.Layout.BodyRow>
+        )}
+      </ItemCard>
+
+      {confirmDialog.outlet}
+    </>
+  )
+}

@@ -1,0 +1,51 @@
+import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import Stack from "@mui/material/Stack"
+import { createFileRoute, useRouter } from "@tanstack/react-router"
+
+import { env } from "#/env.ts"
+import { LandingModeSwitch } from "#app/components/gmToolbox/landing/landingModeSwitch.tsx"
+import RunnerRosterList from "#app/components/runner/runnerRosterList.tsx"
+import { ImportRunnerButton } from "#app/components/system/exportImport/importRunnerButton.tsx"
+import { loadFixtureRunners } from "#data/fixtures/fixtureRunners.ts"
+import { RunnerManager } from "#state/persistence/runnerManager.ts"
+import { LocalStorageProvider } from "#state/storage/providers/localStorageProvider.ts"
+
+// Module-level manager for use in loaders (outside React context)
+const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })
+
+export const Route = createFileRoute("/")({
+  loader: () => {
+    const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? loadFixtureRunners() : []
+    return loaderManager.ensureRunners(fixtures)
+  },
+  component: IndexRoute,
+})
+
+function IndexRoute() {
+  const navigate = Route.useNavigate()
+  const router = useRouter()
+  const { runners, errors } = Route.useLoaderData()
+
+  return (
+    <Stack sx={{ gap: 1 }}>
+      <LandingModeSwitch />
+
+      <Stack sx={{ paddingX: 1 }}>
+        <ButtonGroup fullWidth>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate({ to: "/new" })
+            }}
+          >
+            Create New
+          </Button>
+          <ImportRunnerButton onImported={() => router.invalidate({ sync: true })} />
+        </ButtonGroup>
+
+        <RunnerRosterList runners={runners} errors={errors} />
+      </Stack>
+    </Stack>
+  )
+}

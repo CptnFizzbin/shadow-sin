@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest"
 
-import { GameEffectType } from "#/system/model/gameEffects/gameEffectType.ts"
-import { createItem, createItemMap } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import { ItemType } from "#/system/model/items/itemType.ts"
-import { runnerDataFactory } from "#/system/model/runnerData.factory.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
-import { SkillGroupKey } from "#/system/model/skills/skillGroupKey.ts"
-import { SkillKey } from "#/system/model/skills/skillKey.ts"
+import { GameEffectType } from "#data/gameEffects/gameEffectType.ts"
+import { createItem, createItemMap } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
+import { SkillGroupKey } from "#data/skills/skillGroupKey.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
 
 import { SkillsSelectors } from "./skills.selector.ts"
 

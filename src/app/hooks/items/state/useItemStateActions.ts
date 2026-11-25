@@ -1,0 +1,61 @@
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import {
+  getItemState,
+  getItemStateActions,
+  isItemStateWithinParent,
+  ItemStateAction,
+  itemStateActionTargets,
+} from "#rules/items/itemStateRules.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+import { Actions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import type { IconComponent } from "#ui/icons/icons.ts"
+import { Icons } from "#ui/icons/icons.ts"
+
+/** One state change an Item's action menu offers. */
+export interface ItemStateActionOption {
+  action: ItemStateAction
+  label: string
+  icon: IconComponent
+  /** Set when the Item's parent is less present than the target state (e.g. Unstash under a Stashed parent). */
+  disabled: boolean
+  onClick: () => void
+}
+
+const actionLabels: Record<ItemStateAction, string> = {
+  [ItemStateAction.equip]: "Equip",
+  [ItemStateAction.unequip]: "Unequip",
+  [ItemStateAction.implant]: "Implant",
+  [ItemStateAction.extract]: "Extract",
+  [ItemStateAction.stash]: "Stash",
+  [ItemStateAction.unstash]: "Unstash",
+  [ItemStateAction.consume]: "Consume",
+  [ItemStateAction.endEffect]: "End Effect",
+}
+
+/**
+ * The state actions (Equip, Unequip, Implant, Extract, Consume, End Effect, Stash, Unstash) valid
+ * for `item` right now, most active first.
+ */
+export function useItemStateActions(item: ItemData): ItemStateActionOption[] {
+  const dispatch = useRunnerStoreDispatch()
+  const parent = useRunnerSelector(ItemSelectors.selectById, { itemId: item.items.parentId ?? NullUuid })
+  const parentState = parent ? getItemState(parent) : undefined
+
+  return getItemStateActions(item).map((action) => {
+    const target = itemStateActionTargets[action]
+    return {
+      action,
+      label: actionLabels[action],
+      icon: Icons.item.state[action],
+      disabled: !isItemStateWithinParent(target, parentState),
+      onClick: () => dispatch(
+        action === ItemStateAction.consume
+          ? Actions.item.consumeItem({ id: item.id })
+          : Actions.item.setState({ id: item.id, state: target }),
+      ),
+    }
+  })
+}

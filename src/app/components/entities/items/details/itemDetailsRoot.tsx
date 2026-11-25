@@ -1,0 +1,263 @@
+import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import Chip from "@mui/material/Chip"
+import Grid from "@mui/material/Grid"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import type { Theme } from "@mui/material/styles"
+import { alpha } from "@mui/material/styles"
+import { RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
+import type { FC, PropsWithChildren, ReactNode } from "react"
+
+import { useItemActionsDialogContext } from "#app/components/entities/items/actions/itemActionsDialogContext.ts"
+import { ItemStateQuickActions } from "#app/components/entities/items/state/itemStateQuickActions.tsx"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { getEffectLabel } from "#forms/gameEffects/gameEffectsSummary.tsx"
+import { getItemState } from "#rules/items/itemStateRules.ts"
+import { Icons } from "#ui/icons/icons.ts"
+import { Label } from "#ui/text/label.tsx"
+import { MarkdownText } from "#ui/text/markdownText.tsx"
+
+import { ItemDetailsMatrixSection } from "./itemDetailsMatrixSection.tsx"
+import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
+
+export interface ItemDetailsRootProps extends PropsWithChildren {
+  item: ItemData
+  type?: ReactNode
+  /**
+   * When provided, adds a persistent "Edit" action that opens the item's edit dialog, alongside the
+   * item's state actions (Equip, Stash, ...).
+   */
+  onEdit?: () => void
+  /** When provided, adds a persistent "Remove" action. */
+  onRemove?: () => void
+
+  subitemsName?: string
+
+  onAddSubitem?: () => void
+  onMoveSubitem?: () => void
+}
+
+/**
+ * Generic ItemDetails body: renders every common `ItemData` field present on
+ * the item (title, type, description, notes, cost, quantity, availability,
+ * source, effects, item state and wireless status), its Matrix section when it
+ * has a Matrix presence, plus whichever
+ * `ItemDetailsSlot.*` children are passed in for item-type-specific content.
+ * `Title`/`Type`/`Source`/`Availability`/`Quantity`/`Cost` can be passed as
+ * children to override the field auto-rendered from `item`/`type`; `Rating`
+ * and `Content` are purely additive, with no default rendering of their own.
+ * Inside an `ItemActionsDialogProvider`, `onEdit` becomes the Edit action of a single Actions
+ * button; elsewhere `onEdit`/`onRemove` render as buttons of their own. Typed details views (e.g.
+ * `WeaponItemDetails`) wrap this; the
+ * `AnyItemDetails` dispatcher falls back to this directly for item types
+ * without a typed details view.
+ */
+export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
+  item,
+  type,
+  onEdit,
+  onRemove,
+  subitemsName = "Attachments",
+  onAddSubitem,
+  onMoveSubitem,
+  children,
+}) => {
+  const slots = new ItemDetailsSlotManager(children)
+  const itemActionsDialog = useItemActionsDialogContext()
+
+  const effects = item.effects ?? []
+  const itemState = getItemState(item)
+
+  return (
+    <Stack sx={{ padding: 2 }}>
+      <Stack
+        sx={{
+          bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.1),
+          padding: 2,
+          margin: -2,
+          marginBottom: 0,
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ justifyContent: "space-between", alignItems: { xs: "flex-start", sm: "center" }, flexWrap: "wrap" }}
+        >
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {slots.title ?? <ItemDetailsSlot.Title title={item.name} />}
+            {slots.quantity ?? <ItemDetailsSlot.Quantity value={item.quantity} />}
+            {slots.cost ?? <ItemDetailsSlot.Cost value={item.cost} />}
+          </Stack>
+
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {itemActionsDialog
+              ? (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<RiMore2Line size={16} />}
+                    onClick={() => itemActionsDialog.open({ item, onEdit })}
+                  >
+                    Actions
+                  </Button>
+                )
+              : (
+                  <ButtonGroup>
+                    {onEdit && (
+                      <ItemDetailsSlot.QuickAction label="Edit" icon={<RiEditLine size={16} />} onClick={onEdit} />
+                    )}
+
+                    {onRemove && (
+                      <ItemDetailsSlot.QuickAction
+                        label="Remove"
+                        icon={<RiDeleteBinLine size={16} />}
+                        onClick={onRemove}
+                      />
+                    )}
+                  </ButtonGroup>
+                )}
+          </Stack>
+        </Stack>
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ justifyContent: "space-between", alignItems: { xs: "flex-start", sm: "center" } }}
+        >
+          <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
+            {slots.type ?? (type && <ItemDetailsSlot.Type label={type} />)}
+            {slots.availability ?? <ItemDetailsSlot.Availability value={item.availability} />}
+            {slots.rating}
+            {slots.source ?? <ItemDetailsSlot.Source source={item.source} />}
+          </Stack>
+
+          <Stack direction="row">
+            {itemState === ItemState.equipped && (
+              <ItemDetailsSlot.Status icon={Icons.item.equipped} label="Equipped" color="success" />
+            )}
+            {itemState === ItemState.implanted && (
+              <ItemDetailsSlot.Status icon={Icons.item.implanted} label="Implanted" color="success" />
+            )}
+            {itemState === ItemState.active && (
+              <ItemDetailsSlot.Status icon={Icons.item.active} label="Active" color="success" />
+            )}
+            {itemState === ItemState.stashed && (
+              <ItemDetailsSlot.Status icon={Icons.item.stashed} label="Stashed" />
+            )}
+            {item.wireless && (() => {
+              const { removed, enabled } = item.wireless
+
+              if (removed) {
+                return (
+                  <ItemDetailsSlot.Status
+                    icon={Icons.item.wireless.removed}
+                    label="Wireless Removed"
+                    color="error"
+                  />
+                )
+              } else if (enabled) {
+                return <ItemDetailsSlot.Status icon={Icons.item.wireless.enabled} label="Wireless On" />
+              } else {
+                return <ItemDetailsSlot.Status icon={Icons.item.wireless.disabled} label="Wireless Off" />
+              }
+            })()}
+            {slots.statuses}
+          </Stack>
+        </Stack>
+
+        {((onEdit && !itemActionsDialog) || slots.quickActions.length > 0) && (
+          <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {onEdit && !itemActionsDialog && <ItemStateQuickActions item={item} />}
+            {slots.quickActions}
+          </Stack>
+        )}
+      </Stack>
+
+      {item.description && (
+        <Stack sx={{ gap: 0.5 }}>
+          <Label>Description</Label>
+          <MarkdownText color="text.secondary">{item.description}</MarkdownText>
+        </Stack>
+      )}
+
+      {(slots.stats.length > 0) && (
+        <Stack>
+          <Label>Stats</Label>
+
+          <Grid container columns={{ sm: 3, md: 6, lg: 8, xl: 12 }} spacing={1}>
+            {slots.stats.map((stat, index) => (
+              <Grid key={index} size={1}>{stat}</Grid>
+            ))}
+          </Grid>
+        </Stack>
+      )}
+
+      {slots.damageTracks.length >= 1 && (
+        <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
+          {slots.damageTracks}
+        </Stack>
+      )}
+
+      <ItemDetailsMatrixSection itemId={item.id}>{slots.matrix}</ItemDetailsMatrixSection>
+
+      {item.notes && (
+        <Stack>
+          <Label>Notes</Label>
+          <Typography sx={{ whiteSpace: "pre-wrap" }}>{item.notes}</Typography>
+        </Stack>
+      )}
+
+      {slots.sections}
+
+      <Stack>
+        <Label>{subitemsName}</Label>
+        <Stack>
+          {slots.subitems}
+
+          <ButtonGroup fullWidth>
+            {onAddSubitem && (
+              <Button
+                variant="outlined"
+                startIcon={<Icons.item.add />}
+                onClick={onAddSubitem}
+              >
+                Add Item
+              </Button>
+            )}
+            {onMoveSubitem && (
+              <Button
+                variant="outlined"
+                startIcon={<Icons.item.move />}
+                onClick={onMoveSubitem}
+              >
+                Move Item
+              </Button>
+            )}
+          </ButtonGroup>
+        </Stack>
+      </Stack>
+
+      {effects.length > 0 && (
+        <Stack>
+          <Label>Effects</Label>
+
+          <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
+            {effects.map((effect, index) => (
+              <Chip
+                key={`${effect.type}-${effect.target ?? "none"}-${index}`}
+                size="small"
+                variant="outlined"
+                label={getEffectLabel(effect)}
+                sx={{ "height": "auto", "& .MuiChip-label": { whiteSpace: "normal" } }}
+              />
+            ))}
+          </Stack>
+        </Stack>
+      )}
+
+      {slots.content}
+
+      {slots.footer}
+    </Stack>
+  )
+}

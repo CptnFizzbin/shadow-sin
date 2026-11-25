@@ -1,0 +1,64 @@
+import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#data/attributes/attributeKey.ts"
+import { BuilderConfig } from "#rules/buildPoints/builderConfig.ts"
+import { BuilderSectionId } from "#state/builder/builderSectionId.ts"
+import { AttrSelectors } from "#state/runner/attributes/attributes.selector.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+
+import type { BpLineItem } from "./bpLineItem.ts"
+
+interface AttributesBuildPoints extends BpLineItem {
+  physicalBp: number
+  mentalBp: number
+  specialBp: number
+  budget: {
+    spent: number
+    remaining: number
+    limit: number
+  }
+}
+
+export const useAttributesBuildPoints = (): AttributesBuildPoints => {
+  const attrs = useRunnerSelector(AttrSelectors.selectAllInfo)
+
+  const activeAttributeCosts = Object.values(attrs)
+    .filter((attrData) => !attrData.computed)
+    .map((attrData) => {
+      let spent = 0
+      spent += (attrData.value - attrData.min) * BuilderConfig.attributes.bpCost.base
+
+      const isMaxedOut = attrData.max >= 1 && attrData.value >= attrData.max
+      if (isMaxedOut) {
+        spent += BuilderConfig.attributes.bpCost.maxOut - BuilderConfig.attributes.bpCost.base
+      }
+
+      return { ...attrData, spent }
+    })
+
+  const physicalBpSpent = activeAttributeCosts
+    .filter(({ attr }) => PhysicalAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const mentalBpSpent = activeAttributeCosts
+    .filter(({ attr }) => MentalAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const specialBpSpent = activeAttributeCosts
+    .filter(({ attr }) => SpecialAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const totalBpSpent = physicalBpSpent + mentalBpSpent + specialBpSpent
+  const budgetedBpSpent = physicalBpSpent + mentalBpSpent
+
+  return {
+    sectionId: BuilderSectionId.attributes,
+    spent: totalBpSpent,
+    physicalBp: physicalBpSpent,
+    mentalBp: mentalBpSpent,
+    specialBp: specialBpSpent,
+    budget: {
+      spent: budgetedBpSpent,
+      remaining: BuilderConfig.attributes.bpAllowance - budgetedBpSpent,
+      limit: BuilderConfig.attributes.bpAllowance,
+    },
+  }
+}

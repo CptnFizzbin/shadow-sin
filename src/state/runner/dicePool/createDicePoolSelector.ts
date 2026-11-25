@@ -1,14 +1,14 @@
 import type { GetStateFromSelectors } from "reselect"
 import { createSelector as createReselectSelector } from "reselect"
 
-import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { flattenDiceGroups } from "#/components/system/dicePool/diceGroup.tsx"
-import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
-import type { ComboSelectorOptions, Selector } from "#/integrations/reselect/selectorUtils.ts"
-import { DamageSelectors } from "#/state/runner/damage/damage.selector.ts"
-import { SpellsSelectors } from "#/state/runner/spells/spells.selector.ts"
-import { findOverriddenByTag } from "#/system/formulas/gameEffects/effectTagStacking.ts"
+import type { DiceGroup, DiceGroupList } from "#rules/dicePool/diceGroup.tsx"
+import { flattenDiceGroups } from "#rules/dicePool/diceGroup.tsx"
+import type { DicePoolData } from "#rules/dicePool/dicePoolData.tsx"
+import { getPoolSize } from "#rules/dicePool/dicePoolData.tsx"
+import { findOverriddenByTag } from "#rules/gameEffects/effectTagStacking.ts"
+import type { ComboSelectorOptions, Selector } from "#state/reselect/selectorUtils.ts"
+import { DamageSelectors } from "#state/runner/damage/damage.selector.ts"
+import { SpellsSelectors } from "#state/runner/spells/spells.selector.ts"
 
 /**
  * A selector for one or more Dice Groups — `(state)` or `(state, options)`. Its parameters stay

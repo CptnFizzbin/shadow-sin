@@ -1,7 +1,7 @@
-import type { EntityData } from "#/system/model/entities/entityData.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import type { EntityData } from "#data/entities/entityData.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 
 export interface EntityScope {
   runner: RunnerData

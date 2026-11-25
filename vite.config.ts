@@ -12,7 +12,7 @@ console.log(`Building ${nodeEnv.VITE_APP_TITLE}...`)
 
 /**
  * The app's version: the timestamp of the latest commit on the current branch for a production
- * build, or this process's start time for the dev server — see `src/data/appVersion.ts`. Falls
+ * build, or this process's start time for the dev server — see `src/data/migrations/appVersion.ts`. Falls
  * back to the process start time if `git log` fails (e.g. a source archive with no `.git` dir).
  */
 function resolveAppVersion(command: "build" | "serve"): string {
@@ -43,7 +43,7 @@ const config = defineConfig(({ command }) => ({
 
   plugins: [
     devtools(),
-    tanstackRouter({ autoCodeSplitting: true }),
+    tanstackRouter({ autoCodeSplitting: true, routesDirectory: "./src/app/routes" }),
     react({
       useAtYourOwnRisk_mutateSwcOptions(options) {
         // Workaround to enable React Compiler in SWC
@@ -58,10 +58,10 @@ const config = defineConfig(({ command }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Runner migrations (src/data/migrations.ts, statically imported — no top-level await)
+          // Runner migrations (src/data/migrations/migrations.ts, statically imported — no top-level await)
           // always need to load and run together, so keep them in one dedicated chunk instead of
           // wherever Rollup's default chunking happens to put them.
-          if (id.includes("/src/data/migrations")) {
+          if (id.includes("/src/data/migrations/steps/") || id.endsWith("/src/data/migrations/migrations.ts")) {
             return "runner-migrations"
           }
 

@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { ComplexFormData } from "#/system/model/magic/complexFormData.ts"
-import { NullUuid } from "#/utils/uuidUtils.ts"
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import type { ComplexFormData } from "#data/magic/complexFormData.ts"
 
 export const addComplexForm = createAction<ComplexFormData>("complexForms/add")
 export const updateComplexForm = createAction<ComplexFormData>("complexForms/update")

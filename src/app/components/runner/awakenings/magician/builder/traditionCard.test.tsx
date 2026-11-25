@@ -1,0 +1,78 @@
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
+import type { FC, PropsWithChildren } from "react"
+import { describe, expect, it } from "vitest"
+
+import { RunnerStoreProvider } from "#app/components/runner/runnerStoreProvider.tsx"
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import type { TraditionData } from "#data/magic/traditionData.ts"
+import { SpiritType } from "#data/magic/traditionData.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { createRunnerStateStore } from "#state/runnerState.ts"
+
+import { TraditionCard } from "./traditionCard.tsx"
+
+const hermeticTradition: TraditionData = {
+  name: "Hermetic",
+  spiritTypes: {
+    combat: SpiritType.fire,
+    detection: SpiritType.wind,
+    health: SpiritType.earth,
+    illusion: SpiritType.water,
+    manipulation: SpiritType.fire,
+  },
+  drainAttribute: AttributeKey.logic,
+  concept: "",
+}
+
+function renderWithTradition(tradition: TraditionData | null) {
+  const runnerData = runnerDataFactory({ afterBuild: (data) => {
+    data.tradition = tradition
+  } })
+  const store = createRunnerStateStore({ mode: "viewer", runner: runnerData })
+
+  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
+  )
+
+  render(<TraditionCard />, { wrapper: Wrapper })
+
+  return store
+}
+
+describe("TraditionCard", () => {
+  it("shows a prompt to set a tradition when none is set", () => {
+    // Arrange / Act
+    renderWithTradition(null)
+
+    // Assert
+    expect(screen.getByText("Set Tradition")).toBeDefined()
+  })
+
+  it("shows the runner's current tradition name and drain attribute", () => {
+    // Arrange / Act
+    renderWithTradition(hermeticTradition)
+
+    // Assert
+    expect(screen.getByText("Hermetic")).toBeDefined()
+    expect(screen.getByText(/WIL \+ LOG/)).toBeDefined()
+  })
+
+  it("editing and saving the tradition dispatches saveTradition and updates the store", async () => {
+    // Arrange
+    const store = renderWithTradition(hermeticTradition)
+
+    // Act: open the pre-filled edit dialog, change the name, and save
+    fireEvent.click(screen.getByText("Hermetic"))
+    const dialog = await screen.findByRole("dialog", { name: "Tradition" })
+    const nameField = within(dialog).getByLabelText(/^name/i)
+    fireEvent.change(nameField, { target: { value: "Shamanic" } })
+    fireEvent.blur(nameField)
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert: state updated...
+    await waitFor(() => expect(store.getState().runner.tradition?.name).toBe("Shamanic"), { timeout: 3000 })
+    // ...and the UI re-rendered off that same state.
+    expect(await screen.findByText("Shamanic")).toBeDefined()
+    expect(screen.queryByText("Hermetic")).toBeNull()
+  })
+})

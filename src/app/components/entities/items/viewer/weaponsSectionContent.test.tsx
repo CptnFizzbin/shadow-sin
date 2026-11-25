@@ -1,0 +1,78 @@
+import { fireEvent, screen, waitFor } from "@testing-library/react"
+import { describe, expect, it } from "vitest"
+
+import { AttributeKey } from "#data/attributes/attributeKey.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import { ItemType } from "#data/items/itemType.ts"
+import type { FirearmData } from "#data/items/weaponData.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#data/items/weaponData.ts"
+import { FirearmTypeKey } from "#data/items/weapons/firearms/firearmTypeKey.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { SkillKey } from "#data/skills/skillKey.ts"
+import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { WeaponsSectionContent } from "./weaponsSectionContent.tsx"
+
+const pistol: FirearmData = {
+  kind: EntityKind.item,
+  items: { parentId: null, childIds: [] },
+  id: "00000000-0000-0000-0000-000000000001",
+  name: "Ares Predator",
+  itemType: ItemType.weapon,
+  weaponType: WeaponType.firearm,
+  firearmType: FirearmTypeKey.heavyPistol,
+  dmg: "5P",
+  ap: -1,
+  skill: SkillKey.pistols,
+  attribute: AttributeKey.agility,
+  state: ItemState.available,
+  recoil: 0,
+  firemodes: ["SA"],
+  attachmentPoints: [FirearmAttachmentPoint.Top],
+  ammo: {
+    size: 15,
+    remaining: 15,
+    type: "clip",
+  },
+}
+
+describe("WeaponsSectionContent", () => {
+  it("shows weapons from the store", () => {
+    // Arrange / Act
+    renderInBuilder(<WeaponsSectionContent />, {
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
+    })
+
+    // Assert
+    expect(screen.getByText("Ares Predator")).toBeDefined()
+  })
+
+  it("tapping a weapon opens the edit dialog directly — the Builder has no details page", () => {
+    // Arrange
+    renderInBuilder(<WeaponsSectionContent />, {
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /ares predator/i }))
+
+    // Assert: the weapon form dialog opened, pre-filled for editing.
+    expect(screen.getByRole("dialog", { name: /edit weapon/i })).toBeDefined()
+  })
+
+  it("removing a weapon dispatches removeItem and updates the store", async () => {
+    // Arrange
+    renderInBuilder(<WeaponsSectionContent />, {
+      runner: runnerDataFactory({ items: { [pistol.id]: pistol } }),
+    })
+    expect(screen.getByText("Ares Predator")).toBeDefined()
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
+
+    // Assert: the UI re-rendered off the updated store.
+    await waitFor(() => expect(screen.queryByText("Ares Predator")).toBeNull())
+  })
+})

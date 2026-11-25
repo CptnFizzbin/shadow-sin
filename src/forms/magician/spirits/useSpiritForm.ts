@@ -1,0 +1,71 @@
+import { useRef } from "react"
+
+import { NullUuid } from "#common/uuid/uuidUtils.ts"
+import { EntityKind } from "#data/entities/entityKind.ts"
+import type { SpiritData } from "#data/magic/spiritData.ts"
+import { generateSpiritName, SpiritType } from "#data/magic/spiritData.ts"
+import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
+
+const defaultValues: SpiritData = {
+  kind: EntityKind.spirit,
+  id: NullUuid,
+  name: "",
+  spiritType: SpiritType.man,
+  force: 1,
+  services: {
+    max: 1,
+    used: 0,
+  },
+  bound: false,
+  optionalPowers: [],
+  notes: "",
+  damage: {
+    physical: 0,
+    stun: 0,
+  },
+}
+
+interface SpiritFormOptions {
+  spirit?: SpiritData
+  onSubmit: (values: SpiritData) => void
+}
+
+export function useSpiritForm(props: SpiritFormOptions) {
+  const isNew = !props.spirit
+  const initialType = props.spirit?.spiritType ?? defaultValues.spiritType
+  const initialForce = props.spirit?.force ?? defaultValues.force
+  const initialGenerated = generateSpiritName(initialType, initialForce)
+
+  // Tracks the last auto-generated name so we can tell if the user has overwritten it
+  const lastGenerated = useRef(isNew ? initialGenerated : "")
+
+  return useAppForm({
+    defaultValues: {
+      ...defaultValues,
+      ...props.spirit,
+      name: isNew ? initialGenerated : (props.spirit?.name ?? ""),
+      id: isNew || props.spirit?.id === NullUuid ? crypto.randomUUID() : props.spirit!.id,
+    },
+    listeners: {
+      onChange: ({ formApi, fieldApi }) => {
+        if (fieldApi.name !== "spiritType" && fieldApi.name !== "force") return
+
+        if (fieldApi.name === "spiritType") {
+          formApi.setFieldValue("optionalPowers", [])
+        }
+
+        const { name, spiritType, force } = formApi.state.values
+        if (name !== "" && name !== lastGenerated.current) return
+
+        const generated = generateSpiritName(spiritType, force)
+        if (generated === name) return
+
+        lastGenerated.current = generated
+        formApi.setFieldValue("name", generated)
+      },
+    },
+    onSubmit: ({ value }) => props.onSubmit(value),
+  })
+}
+
+export type SpiritForm = ReturnType<typeof useSpiritForm>

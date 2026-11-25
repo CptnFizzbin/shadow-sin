@@ -1,22 +1,22 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import type { ItemBulkStateAction } from "#/system/formulas/items/itemBulkActions.ts"
-import { canApplyBulkStateAction, canRemoveItemOnItsOwn, orderParentsFirst } from "#/system/formulas/items/itemBulkActions.ts"
-import { planItemSale } from "#/system/formulas/items/itemSale.ts"
+import type { UUID } from "#common/uuid/uuidUtils.ts"
+import type { DamageTrackKey } from "#data/entities/damageTrackKey.ts"
+import { isEntityWithDamage } from "#data/entities/entityTraits.ts"
+import type { ItemData } from "#data/items/itemData.ts"
+import { ItemState } from "#data/items/itemState.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import { isFocusData } from "#data/items/magicalData.ts"
+import type { ItemBulkStateAction } from "#rules/items/itemBulkActions.ts"
+import { canApplyBulkStateAction, canRemoveItemOnItsOwn, orderParentsFirst } from "#rules/items/itemBulkActions.ts"
+import { planItemSale } from "#rules/items/itemSale.ts"
 import {
   getItemState,
   getItemStateActions,
   ItemStateAction,
   itemStateActionTargets,
   reconcileItemState,
-} from "#/system/formulas/items/itemStateRules.ts"
-import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
-import { isEntityWithDamage } from "#/system/model/entities/entityTraits.ts"
-import type { ItemData } from "#/system/model/items/itemData.ts"
-import { ItemState } from "#/system/model/items/itemState.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import { isFocusData } from "#/system/model/items/magicalData.ts"
-import type { UUID } from "#/utils/uuidUtils.ts"
+} from "#rules/items/itemStateRules.ts"
 
 import {
   addItem,

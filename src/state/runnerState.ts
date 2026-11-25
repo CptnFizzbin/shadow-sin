@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { Provider, useSelector, useStore } from "react-redux"
 
-import type { BuilderState } from "#/components/builder/builderState.ts"
-import { builderStateFactory } from "#/components/builder/builderState.ts"
-import type { ItemCatalog } from "#/system/model/items/itemUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
-import { getItemCatalog } from "#/system/model/runnerTraits.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import { getItemCatalog } from "#data/runner/runnerTraits.ts"
 
+import type { BuilderState } from "./builder/builderState.ts"
+import { builderStateFactory } from "./builder/builderState.ts"
 import { builderStoreReducer } from "./builder/builderStore.reducer.ts"
 import type { EditorState } from "./editor/editor.state.ts"
 import { editorStateFactory } from "./editor/editor.state.ts"

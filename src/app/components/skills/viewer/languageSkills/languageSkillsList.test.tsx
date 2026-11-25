@@ -1,0 +1,42 @@
+import { screen } from "@testing-library/react"
+import { describe, expect, it } from "vitest"
+
+import { uuid } from "#common/uuid/uuidUtils.ts"
+import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
+import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import { LanguageSkillsList } from "./languageSkillsList.tsx"
+
+describe("LanguageSkillsList", () => {
+  it("renders skills with native badge and lingo label", () => {
+    // Arrange / Act
+    renderWithProviders(<LanguageSkillsList />, {
+      runner: runnerDataFactory({ afterBuild: (runnerData) => {
+        runnerData.skills.languageSkills = [
+          { id: uuid.v7(), name: "Sperethiel", isNative: true },
+          { id: uuid.v7(), name: "English", isNative: false, rating: 5, lingo: "Seattle Sprawl" },
+        ]
+      } }),
+    })
+
+    // Assert
+    expect(screen.getByText("Languages")).toBeTruthy()
+    expect(screen.getByText("Sperethiel")).toBeTruthy()
+    expect(screen.getByText("English")).toBeTruthy()
+    expect(screen.getByText("Seattle Sprawl")).toBeTruthy()
+    expect(screen.getAllByText("INT")).toHaveLength(2)
+    expect(screen.queryByText("LOG")).toBeNull()
+    expect(screen.getAllByText("5").length).toBeGreaterThanOrEqual(1)
+    // Only the native language shows the "N" rating badge and "Auto" dice pool.
+    expect(screen.getAllByText("N")).toHaveLength(1)
+    expect(screen.getAllByText("Auto")).toHaveLength(1)
+  })
+
+  it("renders an empty state when no language skills exist", () => {
+    // Arrange / Act
+    renderWithProviders(<LanguageSkillsList />)
+
+    // Assert
+    expect(screen.getByText("No language skills added")).toBeTruthy()
+  })
+})

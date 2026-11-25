@@ -1,5 +1,6 @@
-import type { BuilderState } from "#/components/builder/builderState.ts"
-import { createSelector } from "#/integrations/reselect/selectorUtils.ts"
+import { createSelector } from "#state/reselect/selectorUtils.ts"
+
+import type { BuilderState } from "./builderState.ts"
 
 /**
  * Namespaced access to `BuilderState`'s selectors (`Selectors.nuyen.selectStartingNuyen`).

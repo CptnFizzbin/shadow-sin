@@ -1,0 +1,112 @@
+import FormControl from "@mui/material/FormControl"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import Select from "@mui/material/Select"
+import Stack from "@mui/material/Stack"
+import type { FC } from "react"
+import { useState } from "react"
+
+import { SkillListItem } from "#app/components/skills/viewer/skillListItem.tsx"
+import { DicePoolsStack, useViewSkillDialog } from "#app/components/skills/viewer/viewSkillDialog.tsx"
+import { AiAttributes, AttributeKey, AttributeLabels } from "#data/attributes/attributeKey.ts"
+import type { SkillKey } from "#data/skills/skillKey.ts"
+import { skillList } from "#data/skills/skillList.ts"
+import { specializationCoversPoolSubTarget } from "#rules/magic/poolSubTargetSpecialization.ts"
+import type { SkillPoolVariant } from "#state/runner/dicePool/skillDicePools.ts"
+import { useActiveSkillDicePool, useActiveSkillPoolVariants } from "#state/runner/dicePool/skillDicePools.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { SkillsSelectors } from "#state/runner/skills/skills.selector.ts"
+
+import { ActiveSkillVariantDicePool } from "./activeSkillVariantDicePool.tsx"
+
+interface ActiveSkillsListItemProps {
+  skillKey: SkillKey
+  rating: number
+}
+
+// AI's Rating/System/Firewall/Response/Signal are always computed, never stored on
+// RunnerData.attributes — picking one here would silently lock the dice pool to 0.
+const selectableAttributes = Object.values(AttributeKey).filter(
+  (key) => key !== AttributeKey.essence && !AiAttributes.includes(key),
+)
+
+const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }> = ({
+  skillKey,
+  specialization,
+}) => {
+  const skillInfo = skillList[skillKey]
+  const [selectedAttr, setSelectedAttr] = useState<AttributeKey>(skillInfo.attr)
+
+  const skillDicePool = useActiveSkillDicePool({ skillKey, attrOverride: selectedAttr })
+  const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
+  const poolVariants = useActiveSkillPoolVariants(skillKey)
+  // A Specialization that covers a variant (e.g. "Combat Spells" for a Combat Spellcasting Focus)
+  // is shown in that variant's pool instead of a pool of its own, so the same test isn't listed twice.
+  const specializationCovers = (variant: SkillPoolVariant) =>
+    specializationCoversPoolSubTarget(specialization, variant.poolSubTarget)
+  const showSpecializationPool = !!specialization && !poolVariants.some(specializationCovers)
+
+  return (
+    <Stack spacing={1}>
+      <FormControl size="small" fullWidth>
+        <InputLabel>Attribute</InputLabel>
+        <Select
+          label="Attribute"
+          value={selectedAttr}
+          onChange={(event) => setSelectedAttr(event.target.value)}
+        >
+          {selectableAttributes.map((attrKey) => (
+            <MenuItem key={attrKey} value={attrKey}>
+              {AttributeLabels[attrKey]} — {attrKey}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <DicePoolsStack
+        dicePools={[
+          skillDicePool,
+          showSpecializationPool && specializationDicePool,
+        ]}
+      />
+
+      {/* Each bonus variant gets its own row, since its label names what it's narrowed to. */}
+      {poolVariants.map((variant) => (
+        <ActiveSkillVariantDicePool
+          key={`${variant.modPoolId}.${variant.poolSubTarget}`}
+          skillKey={skillKey}
+          attr={selectedAttr}
+          variant={variant}
+          specialization={specializationCovers(variant) ? specialization : undefined}
+          plainPoolSize={skillDicePool.size}
+        />
+      ))}
+    </Stack>
+  )
+}
+
+export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
+  const skillInfo = skillList[skillKey]
+  const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
+
+  const specialization = useRunnerSelector(SkillsSelectors.selectSpecialization, { skillName: skillKey })
+
+  const viewSkillDialog = useViewSkillDialog()
+
+  return (
+    <>
+      <SkillListItem
+        name={skillKey}
+        rating={rating}
+        specialization={specialization}
+        attr={skillInfo.attr}
+        isDefaulted={isDefaulted}
+        onClick={() => viewSkillDialog.open({
+          name: skillKey,
+          body: <ActiveSkillDialogBody skillKey={skillKey} specialization={specialization} />,
+        })}
+      />
+      {viewSkillDialog.outlet}
+    </>
+  )
+}

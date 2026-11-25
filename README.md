@@ -70,29 +70,13 @@ immediately without a full reload.
 
 ## Project Structure
 
-```
-src/
-  components/       React display components (runner sheet, builder, gear, UI), grouped by feature
-  data/             Runner fixtures and schema migrations
-  integrations/     TanStack Query/Router/Form wiring, MUI theme setup
-  lib/
-    hooks/          Custom React hooks (useXyz), grouped by feature
-    stores/         Redux Toolkit store slices, grouped by feature
-    contexts/       createContext definitions, grouped by feature
-    persistence/    RunnerManager: loads, saves, and migrates runner files
-    storage/        Pluggable persistence layer (IStorageProvider + StorageManager)
-                    ...plus generic utilities at the lib/ root (arrayUtils, numberUtils, etc.)
-  routes/           File-based TanStack Router routes
-  system/           Domain types — RunnerData, gear, magic, skills, etc.
-  env.ts            Environment variable declarations (@t3-oss/env-core)
-  main.tsx          App entry point
-
-testUtils/          Shared test helpers and fixtures
-```
+`src/` is divided into sections, one folder per layer: `common`, `data`, `rules`, `state`, `ui`, `forms` and
+`app`. See `docs/features/0022-src-sections.md` → "Placement rules" for what goes where. Shared test helpers and
+fixtures live in `testUtils/`.
 
 Key conventions:
 
-- **Path alias `#/`** → `src/` (configured in `tsconfig.json`)
+- **Path aliases**: each `src/` section is imported through its own alias (see `tsconfig.json` → `paths`); `#/` → `src/` is only for the entry files at the root of `src/`
 - **All local imports must include the file extension** (`.ts` or `.tsx`)
 - Runner state lives in a Redux Toolkit store (`RunnerStore`) — subscribe reactively via
   `useRunnerStoreSelector(selector)`
@@ -124,7 +108,7 @@ yarn fixtures:update --check  # Exit non-zero if any fixture is out of date
 
 ## Adding a New Route
 
-Create a file under `src/routes/` — TanStack Router's Vite plugin picks it up automatically and regenerates
+Create a file under `src/app/routes/` — TanStack Router's Vite plugin picks it up automatically and regenerates
 `src/routeTree.gen.ts` on the next `yarn dev` / `yarn build`.
 
 ---

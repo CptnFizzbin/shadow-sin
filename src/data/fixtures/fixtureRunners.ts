@@ -1,5 +1,5 @@
-import { yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { yamlToRunnerData } from "#data/exportImport/exportUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 // Every `.sin` file beside this module is a fixture Runner — dropping a new export in here is all
 // it takes to seed it. Keep them current with `yarn fixtures:update`.

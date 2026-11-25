@@ -1,0 +1,44 @@
+import { useSpendKarmaDialogContext } from "#app/components/runner/karma/spendKarmaDialogContext.tsx"
+import { applyImprovements } from "#rules/karma/improvements/improvementUtils.ts"
+import { selectHasImprovements, selectImprovementsTotalCost } from "#state/improvements/improvementSelectors.ts"
+import { KarmaSelectors } from "#state/runner/karma/karma.selector.ts"
+import { RunnerActions } from "#state/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+
+import { useImprovementSelector } from "./useImprovementSelector.ts"
+
+export interface SpendKarmaSummary {
+  currentKarma: number
+  karmaCost: number
+  remainingKarma: number
+  isOverBudget: boolean
+  canSave: boolean
+  /** Applies the queued improvements to the runner. No-op when `canSave` is false. */
+  saveImprovements: () => void
+}
+
+/** Karma budget numbers + save action for the Spend Karma dialog. */
+export const useSpendKarmaSummary = (): SpendKarmaSummary => {
+  const { improvementStore } = useSpendKarmaDialogContext()
+  const dispatch = useRunnerStoreDispatch()
+
+  const currentKarma = useRunnerSelector(KarmaSelectors.selectCurrent)
+  const karmaCost = useImprovementSelector(selectImprovementsTotalCost)
+  const hasImprovements = useImprovementSelector(selectHasImprovements)
+
+  const remainingKarma = currentKarma - karmaCost
+  const isOverBudget = remainingKarma < 0
+  const canSave = hasImprovements && !isOverBudget
+
+  const saveImprovements = () => {
+    if (!canSave) return
+    applyImprovements(improvementStore, {
+      setState: (updater) => {
+        dispatch(RunnerActions.update(updater))
+      },
+    })
+  }
+
+  return { currentKarma, karmaCost, remainingKarma, isOverBudget, canSave, saveImprovements }
+}

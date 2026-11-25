@@ -4,10 +4,10 @@ import { RouterProvider } from "@tanstack/react-router"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
-import { RunnerManagerProvider } from "./contexts/runner/runnerManager.provider.tsx"
-import TanStackQueryProvider from "./integrations/tanstackQuery/rootProvider.tsx"
+import TanStackQueryProvider from "./app/integrations/tanstackQuery/rootProvider.tsx"
 import { getRouter } from "./router.ts"
-import { theme } from "./theme.ts"
+import { RunnerManagerProvider } from "./state/persistence/runnerManager.provider.tsx"
+import { theme } from "./ui/theme/theme.ts"
 
 const router = getRouter()
 const rootElement = document.getElementById("root")

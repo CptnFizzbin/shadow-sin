@@ -1,0 +1,37 @@
+import { isCredstickData } from "#data/items/credstickData.ts"
+import type { ItemCatalog } from "#data/items/itemUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
+import type { Selector } from "#state/reselect/selectorUtils.ts"
+import { createMemoizedSelector } from "#state/reselect/selectorUtils.ts"
+import { ItemSelectors } from "#state/runner/items/items.selector.ts"
+
+import { NuyenSelectors } from "./nuyen.selector.ts"
+
+/** `items` is only pulled in for `ItemSelectors.selectAll` — see docs/adr/0014-selector-input-decomposition.md
+ *  on why a multi-source selector intersects the wrapper shapes it needs instead of taking bare `RunnerData`. */
+type NetWorthState = { runner: RunnerData } & { items: ItemCatalog }
+
+/**
+ * Nuyen on hand, plus every credstick's balance and the sale value of all other gear, minus
+ * outstanding loans.
+ */
+export const selectNetWorth: Selector<NetWorthState, number> = createMemoizedSelector(
+  NuyenSelectors.selectAmount,
+  NuyenSelectors.selectLoans,
+  ItemSelectors.selectAll,
+  (currentNuyen, loans, items) => {
+    const allGear = Object.values(items)
+
+    const credstickTotal = allGear
+      .filter(isCredstickData)
+      .reduce((sum, credstick) => sum + credstick.balance, 0)
+
+    const gearTotal = allGear
+      .filter((item) => !isCredstickData(item))
+      .reduce((sum, item) => sum + (item.cost ?? 0) * (item.quantity ?? 1), 0)
+
+    const loansTotal = loans.reduce((sum, loan) => sum + loan.amount, 0)
+
+    return currentNuyen + gearTotal + credstickTotal - loansTotal
+  },
+)

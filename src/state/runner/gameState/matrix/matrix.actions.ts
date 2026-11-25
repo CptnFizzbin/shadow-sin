@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 
-import type { ActiveProgram } from "#/system/model/matrix/activeProgram.ts"
-import type { KnownNode } from "#/system/model/matrix/knownNode.ts"
+import type { ActiveProgram } from "#data/matrix/activeProgram.ts"
+import type { KnownNode } from "#data/matrix/knownNode.ts"
 
 export const addKnownNode = createAction("gameState/matrix/addKnownNode", (node: KnownNode) => {
   return { payload: { ...node, id: crypto.randomUUID() } }

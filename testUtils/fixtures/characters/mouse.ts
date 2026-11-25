@@ -1,5 +1,5 @@
-import { yamlToRunnerData } from "#/components/system/exportImport/exportUtils.ts"
-import type { RunnerData } from "#/system/model/runnerData.ts"
+import { yamlToRunnerData } from "#data/exportImport/exportUtils.ts"
+import type { RunnerData } from "#data/runner/runnerData.ts"
 
 import MouseYaml from "./mouse.2026-11-17.sin?raw"
 

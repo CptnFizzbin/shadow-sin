@@ -1,0 +1,45 @@
+import { produce } from "immer"
+
+import type { JsonObject } from "#common/json/jsonUtils.ts"
+import type { CharacterMigration } from "#data/migrations/characterMigration.ts"
+
+type WithSource = JsonObject & {
+  source?: { book?: string }
+}
+
+function renameBookInPlace(item: WithSource): void {
+  if (item.source?.book === "SR20A") {
+    item.source.book = "SR4A"
+  }
+}
+
+type OldCharacter = {
+  gear?: Record<string, WithSource>
+  qualities?: WithSource[]
+  spells?: WithSource[]
+  adeptPowers?: WithSource[]
+  sprites?: WithSource[]
+}
+
+const migration: CharacterMigration<OldCharacter> = {
+  timestamp: "2026-05-09T00:00:00Z",
+  up: (character) => {
+    return produce(character, (draft) => {
+      if (draft.gear) {
+        for (const item of Object.values(draft.gear)) {
+          renameBookInPlace(item)
+        }
+      }
+
+      for (const collection of [draft.qualities, draft.spells, draft.adeptPowers, draft.sprites]) {
+        if (Array.isArray(collection)) {
+          for (const item of collection) {
+            renameBookInPlace(item)
+          }
+        }
+      }
+    })
+  },
+}
+
+export default migration
