@@ -230,6 +230,28 @@ describe("EntityCard", () => {
   })
 })
 
+describe("EntityCard leftAction", () => {
+  const medkit: EntityData = { kind: EntityKind.item, id: "00000000-0000-0000-0000-000000000010", name: "Medkit" }
+
+  it("renders the leftAction button and fires its onClick without triggering onOpen", () => {
+    // Arrange
+    const onOpen = vi.fn()
+    const onLeftAction = vi.fn()
+    render(
+
+      <EntityCard entity={medkit} onOpen={onOpen} leftAction={{ label: "Use", icon: <span>icon</span>, onClick: onLeftAction }} />,
+      { wrapper: ThemeWrapper },
+    )
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Use" }))
+
+    // Assert
+    expect(onLeftAction).toHaveBeenCalledOnce()
+    expect(onOpen).not.toHaveBeenCalled()
+  })
+})
+
 describe("EntityCard selection mode", () => {
   const medkit: EntityData = { kind: EntityKind.item, id: "00000000-0000-0000-0000-000000000009", name: "Medkit" }
 

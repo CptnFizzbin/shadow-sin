@@ -62,6 +62,13 @@ export interface EntityCardProps extends PropsWithChildren {
   /** Icon buttons stacked on the card's right edge, below the actions menu button when there is one. */
   quickActions?: EntityCardQuickAction[]
   /**
+   * A button pinned to the card's left edge. Hidden in selection mode.
+   *
+   * @deprecated Pass the action in `quickActions` instead, which stacks it below the actions menu
+   * button on the card's right edge.
+   */
+  leftAction?: EntityCardQuickAction
+  /**
    * Extra entries for the actions menu, rendered only while it is open and listed before Edit and
    * Remove. Receives a callback that closes the menu.
    */
@@ -106,6 +113,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   onRemove,
   onOpenActions,
   quickActions = [],
+  leftAction,
   menuActions,
   allowCompact = true,
   selection,
@@ -154,6 +162,17 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   return (
     <>
       <Stack direction="row" sx={{ width: "100%", gap: 0 }}>
+        {leftAction && !selection && (
+          <Button
+            variant="outlined"
+            aria-label={leftAction.label ?? "Action"}
+            onClick={(event) => handleQuickActionClick(event, leftAction)}
+            sx={{ minWidth: 42, alignItems: "flex-start", borderRight: "none", padding: 1 }}
+          >
+            {leftAction.icon}
+          </Button>
+        )}
+
         <Box
           role={selection ? "checkbox" : (onOpen ? "button" : undefined)}
           aria-checked={selection?.selected}
