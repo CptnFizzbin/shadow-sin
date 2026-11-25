@@ -49,11 +49,11 @@ export const DeviceLoadedProgramsList: FC<DeviceLoadedProgramsListProps> = ({ de
           key={program.id}
           program={program}
           onOpen={onOpenProgram ? () => onOpenProgram(program) : undefined}
-          quickActions={[{
+          leftAction={{
             label: "Run",
             icon: <Icons.item.run />,
             onClick: () => runProgramDialog.open({ program }),
-          }]}
+          }}
         />
       ))}
 

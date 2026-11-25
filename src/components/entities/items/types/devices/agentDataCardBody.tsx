@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import type { EntityCardQuickAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { useEntitySelector } from "#/hooks/entity/useEntitySelector.ts"
 import { AttrSelectors } from "#/state/runner/attributes/attributes.selector.ts"
@@ -17,11 +17,11 @@ interface AgentDataCardBodyProps {
   agent: AgentData
   onOpen?: () => void
   onEdit?: () => void
-  quickActions?: EntityCardQuickAction[]
+  leftAction?: EntityCardLeftAction
 }
 
 /** `AgentDataCard`'s actual rendering, reached through `EntityProvider` so `useEntitySelector` resolves against the Agent, not the Runner. */
-export const AgentDataCardBody: FC<AgentDataCardBodyProps> = ({ agent, onOpen, onEdit, quickActions }) => {
+export const AgentDataCardBody: FC<AgentDataCardBodyProps> = ({ agent, onOpen, onEdit, leftAction }) => {
   const dispatch = useRunnerStoreDispatch()
   const system = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.system })
   const firewall = useEntitySelector(AttrSelectors.selectValue, { key: AttributeKey.firewall })
@@ -34,7 +34,7 @@ export const AgentDataCardBody: FC<AgentDataCardBodyProps> = ({ agent, onOpen, o
     dispatch(Actions.item.setDamage({ itemId: agent.id, track: DamageTrackKey.matrix, value }))
 
   return (
-    <ItemCard item={agent} onOpen={onOpen} onEdit={onEdit} onRemove={removeAgent} quickActions={quickActions}>
+    <ItemCard item={agent} onOpen={onOpen} onEdit={onEdit} onRemove={removeAgent} leftAction={leftAction}>
       <ItemCard.Stat label="System" value={system} type="rating" />
       <ItemCard.Stat label="Firewall" value={firewall} type="rating" />
 

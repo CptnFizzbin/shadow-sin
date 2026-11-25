@@ -20,12 +20,12 @@ export const DrugDataCard: FC<DrugDataCardProps> = ({ drug, onOpen, onEdit }) =>
   const removeDrug = () => dispatch(Actions.item.removeItem({ id: drug.id, removeChildren: true }))
 
   // The card's edge button has no disabled look, so a blocked action is left to the actions menu.
-  const quickActions = consumeAction && !consumeAction.disabled
-    ? [{ label: consumeAction.label, icon: <consumeAction.icon />, onClick: consumeAction.onClick }]
-    : []
+  const leftAction = consumeAction && !consumeAction.disabled
+    ? { label: consumeAction.label, icon: <consumeAction.icon />, onClick: consumeAction.onClick }
+    : undefined
 
   return (
-    <ItemCard item={drug} onOpen={onOpen} onEdit={onEdit} onRemove={removeDrug} quickActions={quickActions}>
+    <ItemCard item={drug} onOpen={onOpen} onEdit={onEdit} onRemove={removeDrug} leftAction={leftAction}>
       {drug.duration ? <ItemCard.Stat label="Duration" value={drug.duration} /> : null}
     </ItemCard>
   )

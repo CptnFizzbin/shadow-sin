@@ -40,6 +40,9 @@ export interface EntityCardQuickAction {
   onClick: () => void
 }
 
+/** @deprecated Use `EntityCardQuickAction` with `quickActions` instead. */
+export type EntityCardLeftAction = EntityCardQuickAction
+
 /** Puts an `EntityCard` in selection mode, as one of several picked for a bulk action. */
 export interface EntityCardSelection {
   selected: boolean

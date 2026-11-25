@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import type { EntityCardQuickAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { ItemCard } from "#/components/ui/cards/itemCard/itemCard.tsx"
 import { useFocusBonding } from "#/hooks/items/types/magical/useFocusBonding.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
@@ -28,15 +28,15 @@ export const FocusDataCard: FC<FocusDataCardProps> = ({ focus, onOpen, onEdit })
 
   const removeFocus = () => dispatch(Actions.item.removeItem({ id: focus.id, removeChildren: true }))
 
-  const quickActions: EntityCardQuickAction[] = focus.bonded
-    ? []
-    : [{ label: "Bond", icon: <Icons.item.bond />, onClick: () => focusBonding.bond(focus) }]
+  const leftAction: EntityCardLeftAction | undefined = focus.bonded
+    ? undefined
+    : { label: "Bond", icon: <Icons.item.bond />, onClick: () => focusBonding.bond(focus) }
 
   const linkLabel = getFocusLinkLabel(focus, parent?.name)
 
   return (
     <>
-      <ItemCard item={focus} onOpen={onOpen} onEdit={onEdit} onRemove={removeFocus} quickActions={quickActions}>
+      <ItemCard item={focus} onOpen={onOpen} onEdit={onEdit} onRemove={removeFocus} leftAction={leftAction}>
         <ItemCard.SubType label={`${focus.focusType} Focus`} />
 
         <ItemCard.Stat label="Force" value={focus.force} type="rating" />

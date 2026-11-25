@@ -28,16 +28,16 @@ interface SpellCardProps {
  * and the Sustaining Focus holding it, if any) while the Spell is sustained.
  */
 const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained, sustainingFocusName }) => {
-  const quickActions = onToggleSustained && isSustainable(spell)
-    ? [{
+  const sustainAction = onToggleSustained && isSustainable(spell)
+    ? {
         label: spell.sustained ? "Stop Sustaining" : "Sustain",
         icon: spell.sustained ? <Icons.spell.stopSustaining /> : <Icons.spell.startSustaining />,
         onClick: onToggleSustained,
-      }]
-    : []
+      }
+    : undefined
 
   return (
-    <EntityCard entity={spell} onOpen={onOpen} quickActions={quickActions}>
+    <EntityCard entity={spell} onOpen={onOpen} leftAction={sustainAction}>
       {spell.sustained && isSustainable(spell) && (
         <EntityCard.Layout.HeaderRow sx={{ alignItems: "center" }}>
           <CardElementStatusIcon status="sustained" />

@@ -41,11 +41,11 @@ export const MatrixProgramsSection: FC = () => {
           program={program}
           onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: program.id } })}
           onEdit={() => handleEdit(program)}
-          quickActions={[{
+          leftAction={{
             label: "Run",
             icon: <Icons.item.run />,
             onClick: () => runProgramDialog.open({ program }),
-          }]}
+          }}
         />
       ))}
 

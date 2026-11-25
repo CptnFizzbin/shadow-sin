@@ -40,11 +40,11 @@ export const AvailableWeaponsSection: FC = () => {
             key={weapon.id}
             weapon={weapon}
             onOpen={openItemDetails ? () => openItemDetails(weapon.id) : undefined}
-            quickActions={[{
+            leftAction={{
               label: "Attack",
               onClick: () => weaponAttackDialog.open({ weapon }),
               icon: <Icons.item.attack />,
-            }]}
+            }}
           />
         ))}
       </ItemCardGrid>

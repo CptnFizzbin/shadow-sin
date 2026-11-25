@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { ItemAttachmentTree } from "#/components/entities/items/card/itemAttachmentTree.tsx"
-import type { EntityCardQuickAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
+import type { EntityCardLeftAction } from "#/components/ui/cards/entityCard/entityCard.tsx"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { Actions } from "#/state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/state/runner/runnerStore.dispatch.ts"
@@ -15,14 +15,14 @@ interface WeaponDataCardProps {
   weapon: WeaponData
   onOpen?: () => void
   onEdit?: () => void
-  quickActions?: EntityCardQuickAction[]
+  leftAction?: EntityCardLeftAction
 }
 
 export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   weapon,
   onOpen,
   onEdit,
-  quickActions,
+  leftAction,
 }) => {
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerSelector(ItemSelectors.selectChildrenOf, { itemId: weapon.id })
@@ -31,7 +31,7 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   const removeWeapon = () => dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
-    <WeaponCard item={weapon} onOpen={onOpen} onEdit={onEdit} onRemove={removeWeapon} quickActions={quickActions}>
+    <WeaponCard item={weapon} onOpen={onOpen} onEdit={onEdit} onRemove={removeWeapon} leftAction={leftAction}>
       <WeaponCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
         <WeaponCard.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap ? <WeaponCard.Stat label="AP" value={weapon.ap} type="damage" /> : null}
