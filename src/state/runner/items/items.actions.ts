@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit"
 
+import type { ItemBulkStateAction } from "#/system/formulas/items/itemBulkActions.ts"
 import { getFocusBondingCost } from "#/system/formulas/magic/focusRules.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
 import type { ArmorData } from "#/system/model/items/armorData.ts"
@@ -30,6 +31,12 @@ export const patchItem = createAction<{ itemId: UUID, data: Partial<ItemData> }>
 export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("gear/remove")
 
 /**
+ * Removes every Item in `ids` along with its Attachments, skipping fixed Attachments, which only
+ * go when their parent does.
+ */
+export const removeItems = createAction<{ ids: UUID[] }>("gear/removeMany")
+
+/**
  * Moves an Item into `state`. A state its type doesn't allow is ignored, an Attachment is capped at
  * its parent's presence, and the change cascades to its own Attachments.
  */
@@ -41,6 +48,13 @@ export const setState = createAction<{ id: UUID, state: ItemState }>("gear/setSt
  * End the effect with `setState` back to Available.
  */
 export const consumeItem = createAction<{ id: UUID }>("gear/consume")
+
+/**
+ * Applies `action` to every Item in `ids` it applies to, parents before their Attachments, silently
+ * skipping the rest (e.g. Equip on an Item that can't be Equipped). Each change cascades to the
+ * Item's own Attachments, the same as `setState`.
+ */
+export const applyBulkStateAction = createAction<{ ids: UUID[], action: ItemBulkStateAction }>("gear/applyBulkStateAction")
 
 /**
  * Bonds a Focus to the Runner for `karmaCost` Karma, recorded on the karma ledger as `entry`. Once
@@ -128,7 +142,9 @@ export const ItemActions = {
   setItem,
   patchItem,
   removeItem,
+  removeItems,
   setState,
+  applyBulkStateAction,
   consumeItem,
   bondFocus,
   unbondFocus,

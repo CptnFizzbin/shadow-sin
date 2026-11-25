@@ -1,10 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit"
 
+import type { ItemBulkStateAction } from "#/system/formulas/items/itemBulkActions.ts"
+import { canApplyBulkStateAction, canRemoveItemOnItsOwn, orderParentsFirst } from "#/system/formulas/items/itemBulkActions.ts"
 import { planItemSale } from "#/system/formulas/items/itemSale.ts"
 import {
   getItemState,
   getItemStateActions,
   ItemStateAction,
+  itemStateActionTargets,
   reconcileItemState,
 } from "#/system/formulas/items/itemStateRules.ts"
 import type { DamageTrackKey } from "#/system/model/entities/damageTrackKey.ts"
@@ -17,10 +20,12 @@ import type { UUID } from "#/utils/uuidUtils.ts"
 
 import {
   addItem,
+  applyBulkStateAction,
   bondFocus,
   consumeItem,
   patchItem,
   removeItem,
+  removeItems,
   sellItem,
   setDamage,
   setItem,
@@ -90,6 +95,12 @@ function removeItemTree(state: ItemCatalog, id: UUID) {
   removeItemById(state, id)
 }
 
+/** Removes each of `ids` that can be removed on its own, with its Attachments. */
+function removeItemTrees(state: ItemCatalog, ids: readonly UUID[]) {
+  const removableIds = ids.filter((id) => canRemoveItemOnItsOwn(state, id))
+  for (const id of removableIds) removeItemTree(state, id)
+}
+
 /** Sells `id` as planned by `planItemSale`: removes what's sold and detaches what stays behind. */
 function sellItemById(state: ItemCatalog, id: UUID, sellAttachments: boolean) {
   const { soldIds, detachedIds } = planItemSale(state, id, sellAttachments)
@@ -123,6 +134,20 @@ function consumeItemById(state: ItemCatalog, id: UUID) {
   }
 }
 
+/**
+ * Applies `action` to each of `ids` it applies to, parents first. An Attachment is judged against
+ * its parent's state after the parent's own change, including its cascade, has applied.
+ */
+function applyBulkStateActionByIds(state: ItemCatalog, ids: readonly UUID[], action: ItemBulkStateAction) {
+  for (const { id } of orderParentsFirst(state, ids)) {
+    const item = state[id]
+    if (!canApplyBulkStateAction(state, id, action)) continue
+    const previousState = getItemState(item)
+    item.state = itemStateActionTargets[action]
+    reconcileItemState(state, id, previousState)
+  }
+}
+
 /** Marks `id` Bonded. A no-op unless it's an unbonded Focus. */
 function bondFocusById(state: ItemCatalog, id: UUID) {
   const item = state[id]
@@ -150,8 +175,10 @@ export const ItemStateUtils = {
   relinkItem,
   removeItemById,
   removeItemTree,
+  removeItemTrees,
   sellItemById,
   consumeItemById,
+  applyBulkStateActionByIds,
   bondFocusById,
   unbondFocusById,
   setDamageById,
@@ -195,12 +222,18 @@ export const gearReducer = createReducer(initialState, (builder) => {
         removeItemById(state, id)
       }
     })
+    .addCase(removeItems, (state, action) => {
+      removeItemTrees(state, action.payload.ids)
+    })
     .addCase(setState, (state, action) => {
       const item = state[action.payload.id]
       if (!item) return
       const previousState = getItemState(item)
       item.state = action.payload.state
       reconcileItemState(state, action.payload.id, previousState)
+    })
+    .addCase(applyBulkStateAction, (state, action) => {
+      applyBulkStateActionByIds(state, action.payload.ids, action.payload.action)
     })
     .addCase(sellItem, (state, action) => {
       sellItemById(state, action.payload.id, action.payload.sellAttachments)

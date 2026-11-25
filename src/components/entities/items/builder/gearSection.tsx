@@ -1,7 +1,9 @@
 import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -12,6 +14,8 @@ import { useState } from "react"
 import { BuildPoints } from "#/components/builder/buildPoints.tsx"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
+import { ItemBulkActionSlot } from "#/components/entities/items/selection/itemBulkActionSlot.tsx"
+import { ItemSelectToggleButton } from "#/components/entities/items/selection/itemSelectToggleButton.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/entities/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/entities/items/types/licenses/sinsAndLicensesSection.tsx"
 import { ArmorSectionContent } from "#/components/entities/items/viewer/armorSectionContent.tsx"
@@ -103,16 +107,12 @@ export const GearSection: FC = () => {
         </Stack>
       </EditorMode.IsBuilder>
 
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => addItemDialog.open()}
-        color="secondary"
-        fullWidth
-      >
-        Add Item
-      </Button>
+      <ButtonGroup size="small" color="secondary" fullWidth>
+        <Button startIcon={<RiAddLine size={14} />} onClick={() => addItemDialog.open()}>
+          Add Item
+        </Button>
+        <ItemSelectToggleButton />
+      </ButtonGroup>
 
       {visibleSections.map((sectionName) => (
         <Accordion
@@ -168,6 +168,10 @@ export const GearSection: FC = () => {
       <EditorMode.IsBuilder>
         <StartingNuyenSection />
       </EditorMode.IsBuilder>
+
+      <Box sx={{ position: "sticky", bottom: 12, zIndex: "appBar" }}>
+        <ItemBulkActionSlot />
+      </Box>
     </Stack>
   )
 }

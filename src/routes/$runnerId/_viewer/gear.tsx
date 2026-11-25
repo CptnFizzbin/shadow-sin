@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { useAddItemDialogContext } from "#/components/entities/items/addItemDialogContext.ts"
+import { ItemSelectToggleButton } from "#/components/entities/items/selection/itemSelectToggleButton.tsx"
 import type { GearListFilter } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { GearListFilterContext } from "#/components/entities/items/viewer/gearListFilter.ts"
 import { GearSection } from "#/components/entities/items/viewer/gearSectionTypes.ts"
@@ -23,6 +24,7 @@ import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useEditorMode } from "#/contexts/builder/editorMode.tsx"
 import { searchGear } from "#/hooks/items/gearHooks.ts"
+import { useEndItemSelectionOnUnmount } from "#/hooks/items/selection/useItemSelection.ts"
 import { useFociAlerts } from "#/hooks/items/types/magical/useFociAlerts.ts"
 import { ItemSelectors } from "#/state/runner/items/items.selector.ts"
 import { useRunnerSelector } from "#/state/runner/runnerStore.selectors.ts"
@@ -47,6 +49,9 @@ function RouteComponent() {
   const addItemDialog = useAddItemDialogContext()
   const allGear = useRunnerSelector(ItemSelectors.selectAll)
   const fociAlerts = useFociAlerts()
+  // The selection lives in the viewer layout so its bar can take the bottom bar's slot, which
+  // means it has to be dropped here when the Player leaves the Gear page mid-selection.
+  useEndItemSelectionOnUnmount()
 
   const matchingIds = new Set(searchGear(allGear, searchTerms).map((item) => item.id))
   const filter: GearListFilter = {
@@ -96,6 +101,7 @@ function RouteComponent() {
           <Button startIcon={<RiAddLine size={14} />} onClick={() => addItemDialog.open()}>
             Add Item
           </Button>
+          <ItemSelectToggleButton />
           {!isBuilder && (
             <Button onClick={() => availabilityTestDialog.open()}>Availability Test</Button>
           )}
