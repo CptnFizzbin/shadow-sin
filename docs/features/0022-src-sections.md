@@ -48,7 +48,7 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
 ## Open Questions
 
 - [ ] Which files must be split before every import goes downward? The known cases include the Runner utilities,
-  the improvement utilities, the builder gear utilities, the defense calculator data and the export utilities. Each
+  the improvement utilities, the builder gear utilities and the export utilities. Each
   one was placed whole in the section that fits most of its content.
 - [ ] Should tests follow the allowed imports too? Some `state` and `rules` tests render through `app` helpers.
 - [ ] Some entity card elements are domain-free and would pass the `ui` test, but ADR-0010 keeps every element in
