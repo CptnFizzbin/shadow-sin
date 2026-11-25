@@ -46,20 +46,17 @@ Imports go one way, down the layers. An arrow means "may import from".
 - `forms` → `ui`, `state`, `rules`, `data`, `common`; only `app` imports `forms`
 - `app` → every section
 
+Tests follow the same rules as the code they sit beside. A test that renders a component from a higher section
+belongs in that section.
+
 Nothing enforces these rules yet. Code that breaks them is tracked under Open Questions until it is untangled.
 
 ## Open Questions
 
-- [ ] Which files must be split before every import goes downward? The known cases include the Runner utilities,
-  the improvement utilities, the builder gear utilities and the export utilities. Each
-  one was placed whole in the section that fits most of its content.
-- [ ] Should tests follow the allowed imports too? Some `state` and `rules` tests render through `app` helpers.
+- [ ] Should the Runner utilities and the export utilities be split? Each one was placed whole in the section that
+  fits most of its content.
 - [ ] Some entity card elements are domain-free and would pass the `ui` test, but ADR-0010 keeps every element in
   one folder, so they all sit in `app`. Should the generic ones move to `ui` under a superseding ADR?
-- [ ] Two more `data` files reach upward: the critter power data uses an attribute formula from `rules`, and the
-  reputation ledger entry imports MUI colours.
-- [ ] The Runner factory in `data` reads attribute defaults from `rules`. Should those defaults move into `data`,
-  or should the factory carry literal defaults instead?
 - [ ] The dialog stack sits in `forms` because it keeps its state in Redux and uses the router. Should it move to
   `ui` once its store no longer uses Redux?
 - [ ] Should `ui` be allowed to depend on the router?
@@ -78,7 +75,7 @@ Nothing enforces these rules yet. Code that breaks them is tracked under Open Qu
 
 ## Out of Scope
 
-- Splitting files or changing behaviour. This step is moves and renames only.
+- Changing behaviour. Files are moved, renamed or split, never rewritten.
 - Turning sections into Yarn workspace packages with their own entry points.
 
 ## Related Features
