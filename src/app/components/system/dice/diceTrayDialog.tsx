@@ -3,8 +3,8 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { Dialog } from "#forms/dialog/dialog.tsx"
 import { useSelector } from "#state/reduxToolkit/useSelector.ts"
+import { Dialog } from "#ui/dialog/dialog.tsx"
 
 import { DiceTrayActions } from "./diceTrayActions.tsx"
 import { useDiceTray } from "./diceTrayContext.ts"

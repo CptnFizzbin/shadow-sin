@@ -3,11 +3,11 @@ import type { FC } from "react"
 import { ItemAttachmentTree } from "#app/components/entities/items/card/itemAttachmentTree.tsx"
 import { ItemCard } from "#app/components/ui/cards/itemCard/itemCard.tsx"
 import type { SinData } from "#data/items/sinData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 interface SinDataCardProps {
   sin: SinData

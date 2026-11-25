@@ -9,10 +9,10 @@ import { SustainingFocusSelect } from "#app/components/runner/awakenings/magicia
 import type { FocusData } from "#data/items/magicalData.ts"
 import type { SpellData } from "#data/magic/spellData.ts"
 import { SpellSustainTarget } from "#data/magic/spellData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { hasSpellEffects } from "#rules/magic/spellSustaining.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 /** How a Spell is to be sustained: who it's on, and the Sustaining Focus holding it (`null` for the caster). */
 interface SustainSpellChoice {

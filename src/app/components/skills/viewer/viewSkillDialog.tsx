@@ -2,10 +2,10 @@ import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
 import { DicePool } from "#app/components/system/dicePool/dicePool.tsx"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import type { DicePoolData } from "#rules/dicePool/dicePoolData.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface ViewSkillDialogProps extends ControlledDialogProps<void> {
   name: string

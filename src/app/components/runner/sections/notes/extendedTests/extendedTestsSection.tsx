@@ -5,11 +5,11 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import type { ExtendedTestEntry } from "#data/checks/extendedTestData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { TestTrackerActions } from "#state/runner/extendedTests/extendedTests.actions.ts"
 import { ExtendedTestsSelectors } from "#state/runner/extendedTests/extendedTests.selector.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 import { Label } from "#ui/text/label.tsx"
 
 import { ExtendedTestCard } from "./extendedTestCard.tsx"

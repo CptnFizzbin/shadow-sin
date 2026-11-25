@@ -4,12 +4,12 @@ import { ItemDetailsRoot } from "#app/components/entities/items/details/itemDeta
 import { ItemDetailsSlot } from "#app/components/entities/items/details/itemDetailsSlot.tsx"
 import type { ItemData } from "#data/items/itemData.ts"
 import type { SinData } from "#data/items/sinData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { isNewItem } from "#state/runner/items/items.actions.ts"
 import { ItemSelectors } from "#state/runner/items/items.selector.ts"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 import { useLicenseFormDialog } from "./dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "./dialogs/sinFormDialog.tsx"

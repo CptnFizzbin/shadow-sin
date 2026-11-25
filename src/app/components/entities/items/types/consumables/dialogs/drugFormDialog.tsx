@@ -5,9 +5,9 @@ import { DrugFormFields } from "#app/components/entities/items/types/consumables
 import { GearFormLicenseSection } from "#app/components/entities/items/types/licenses/gearFormLicenseSection.tsx"
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import type { DrugData } from "#data/items/consumableData.ts"
-import type { AnyDialogCtrl } from "#forms/dialog/dialogCtrl.ts"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { drugFieldMap, useDrugForm } from "#forms/items/types/consumables/useDrugForm.tsx"
+import type { AnyDialogCtrl } from "#ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface DrugFormDialogProps {
   ctrl: AnyDialogCtrl

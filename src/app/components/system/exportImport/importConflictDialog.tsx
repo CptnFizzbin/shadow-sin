@@ -3,9 +3,9 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import type { RunnerData } from "#data/runner/runnerData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
 

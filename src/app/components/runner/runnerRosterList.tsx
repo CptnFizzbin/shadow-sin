@@ -20,10 +20,10 @@ import { useState } from "react"
 
 import { downloadTextFile } from "#data/exportImport/exportUtils.ts"
 import type { RunnerData } from "#data/runner/runnerData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import type { RunnerLoadError } from "#state/persistence/runnerLoadError.ts"
 import { useRunnerManager } from "#state/persistence/useRunnerManager.ts"
 import { resolveAlias } from "#state/runner/runnerUtils.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 interface RunnerRosterListProps {
   runners: Record<string, RunnerData>

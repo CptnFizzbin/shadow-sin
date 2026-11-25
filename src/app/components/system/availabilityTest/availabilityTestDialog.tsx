@@ -8,15 +8,15 @@ import { z } from "zod"
 
 import { DicePool } from "#app/components/system/dicePool/dicePool.tsx"
 import { DurationUtils } from "#data/duration/durationUtils.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { useAppForm } from "#forms/tanstackForm/useAppForm.ts"
 import { AvailabilityFormulas } from "#rules/checks/availabilityFormulas.ts"
 import { SkillPoolSelectors } from "#state/runner/dicePool/skillPools.selector.ts"
 import { TestTrackerActions } from "#state/runner/extendedTests/extendedTests.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 type AvailabilityTestDialogProps = ControlledDialogProps<void>
 

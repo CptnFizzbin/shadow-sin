@@ -6,9 +6,9 @@ import { useFocusBonding } from "#app/hooks/items/types/magical/useFocusBonding.
 import { isFocusData } from "#data/items/magicalData.ts"
 import type { ProgramData } from "#data/items/programData.ts"
 import type { WeaponData } from "#data/items/weaponData.ts"
-import { useConfirmDialog } from "#forms/dialog/confirmDialog.tsx"
 import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
+import { useConfirmDialog } from "#ui/dialog/confirmDialog.tsx"
 
 import { getItemActionTargetState, ItemAction } from "./itemActions.ts"
 import { useItemActionsDialog } from "./itemActionsDialog.tsx"

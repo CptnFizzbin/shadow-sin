@@ -6,9 +6,9 @@ import type { FC } from "react"
 import { AdeptPowerFormFields } from "#app/components/runner/awakenings/adept/adeptPowers/viewer/form/adeptPowerFormFields.tsx"
 import type { AdeptPowerData } from "#data/powers/adeptPowerData.ts"
 import { useAdeptPowerForm } from "#forms/adeptPowers/useAdeptPowerForm.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface AdeptPowerFormDialogProps extends ControlledDialogProps<AdeptPowerData> {
   power?: AdeptPowerData

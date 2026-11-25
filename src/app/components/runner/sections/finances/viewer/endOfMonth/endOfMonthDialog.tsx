@@ -9,9 +9,6 @@ import { useState } from "react"
 
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 import { calculateMonthlyInterest } from "#data/finances/loanData.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
 import { Nuyen } from "#forms/nuyen/nuyen.tsx"
 import { LifestyleSelectors } from "#state/runner/lifestyle/lifestyle.selector.ts"
 import { NuyenSelectors } from "#state/runner/nuyen/nuyen.selector.ts"
@@ -19,6 +16,9 @@ import { Actions } from "#state/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#state/runner/runnerStore.dispatch.ts"
 import { useRunnerSelector } from "#state/runner/runnerStore.selectors.ts"
 import { useRunnerStateStore } from "#state/runnerState.ts"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 
 interface EndOfMonthLineItem {
   id: string

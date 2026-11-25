@@ -8,9 +8,9 @@ import { useState } from "react"
 import { uuid } from "#common/uuid/uuidUtils.ts"
 import type { KnowledgeSkillData } from "#data/skills/knowledgeSkillData.ts"
 import { SkillRatingMax } from "#data/skills/skillUtils.ts"
-import type { ControlledDialogProps } from "#forms/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#forms/dialog/dialog.tsx"
-import { useDialog } from "#forms/dialog/useDialog.tsx"
+import type { ControlledDialogProps } from "#ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#ui/dialog/dialog.tsx"
+import { useDialog } from "#ui/dialog/useDialog.tsx"
 import { CounterInput } from "#ui/form/inputs/counter/counterInput.tsx"
 
 interface KnowledgeSkillEditDialogProps extends ControlledDialogProps<KnowledgeSkillData> {

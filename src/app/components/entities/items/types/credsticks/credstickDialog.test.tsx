@@ -8,8 +8,8 @@ import { CredstickMaxBalance, CredstickType } from "#data/items/credstickData.ts
 import { ItemType } from "#data/items/itemType.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
 import { getItemCatalog } from "#data/runner/runnerTraits.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { CredstickDialog } from "./credstickDialog.tsx"
 

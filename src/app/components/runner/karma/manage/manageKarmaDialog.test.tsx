@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest"
 import type { FeatureFlagsData } from "#data/featureFlags/featureFlagsData.ts"
 import { houseRules } from "#data/featureFlags/houseRules.ts"
 import { runnerDataFactory } from "#data/runner/runnerData.factory.ts"
-import { DialogCtrl } from "#forms/dialog/dialogCtrl.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { DialogCtrl } from "#ui/dialog/dialogCtrl.ts"
 
 import { ManageKarmaDialog } from "./manageKarmaDialog.tsx"
 
