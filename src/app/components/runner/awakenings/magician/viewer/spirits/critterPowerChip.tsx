@@ -5,10 +5,11 @@ import type { FC } from "react"
 
 import type { AttributeCatalog } from "#data/attributes/attributeCatalog.ts"
 import type { RollType } from "#data/magic/critterPowerData.ts"
-import { computeSpiritPowerPool, formatSpiritPoolLabel, lookupCritterPower } from "#data/magic/critterPowerData.ts"
+import { formatSpiritPoolLabel, lookupCritterPower } from "#data/magic/critterPowerData.ts"
 import { bookOptions } from "#data/source/sourceData.ts"
 import { DetailDialog } from "#forms/dialog/detailDialog.tsx"
 import { useDialogCtrl } from "#forms/dialog/useDialogCtrl.ts"
+import { computeSpiritPowerPool } from "#rules/magic/spiritPowerPool.ts"
 
 const ROLL_TYPE_COLORS: Record<RollType, "warning" | "info" | "default"> = {
   Opposed: "warning",

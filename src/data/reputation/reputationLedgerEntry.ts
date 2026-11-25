@@ -1,37 +1,9 @@
-import { purple } from "@mui/material/colors"
-
 import type { UUID } from "#common/uuid/uuidUtils.ts"
 
 export enum ReputationStatType {
   streetCred = "streetCred",
   notoriety = "notoriety",
   publicAwareness = "publicAwareness",
-}
-
-export const ReputationStatTypeData: Record<ReputationStatType, {
-  label: string
-  chipColor: string
-  positiveColor: string
-  negativeColor: string
-}> = {
-  [ReputationStatType.streetCred]: {
-    label: "Street Cred",
-    chipColor: "success.main",
-    positiveColor: "success.main",
-    negativeColor: "error.main",
-  },
-  [ReputationStatType.notoriety]: {
-    label: "Notoriety",
-    chipColor: "error.main",
-    positiveColor: "error.main",
-    negativeColor: "success.main",
-  },
-  [ReputationStatType.publicAwareness]: {
-    label: "Public Awareness",
-    chipColor: purple[400],
-    positiveColor: "info.main",
-    negativeColor: purple[400],
-  },
 }
 
 /**

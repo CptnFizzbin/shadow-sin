@@ -1,7 +1,5 @@
-import type { AttributeCatalog } from "#data/attributes/attributeCatalog.ts"
 import { AttributeKey } from "#data/attributes/attributeKey.ts"
 import type { SourceData } from "#data/source/sourceData.ts"
-import { attrValue } from "#rules/attributes/attributeFormulas.ts"
 
 export type RollType = "Opposed" | "Standard" | "Hidden"
 
@@ -18,21 +16,6 @@ export interface CritterPowerData {
   targetPool?: string
   description: string
   source?: SourceData
-}
-
-export function computeSpiritPowerPool(
-  formula: SpiritPoolFormula,
-  force: number,
-  attrs: AttributeCatalog,
-): number {
-  switch (formula.type) {
-    case "force":
-      return force
-    case "force_plus":
-      return force + attrValue(attrs, formula.attribute)
-    default:
-      return force
-  }
 }
 
 export function formatSpiritPoolLabel(formula: SpiritPoolFormula): string {

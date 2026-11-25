@@ -2,7 +2,9 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
-import { ReputationStatType, ReputationStatTypeData } from "#data/reputation/reputationLedgerEntry.ts"
+import { ReputationStatType } from "#data/reputation/reputationLedgerEntry.ts"
+
+import { ReputationStatTypeData } from "./reputationStatTypeData.ts"
 
 export interface ReputationFilter {
   statTypes: ReputationStatType[]
