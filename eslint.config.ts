@@ -1,6 +1,7 @@
 import importAlias from "@dword-design/eslint-plugin-import-alias"
 import js from "@eslint/js"
 import stylistic from "@stylistic/eslint-plugin"
+import type { Linter } from "eslint"
 import { defineConfig } from "eslint/config"
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript"
 import checkFile from "eslint-plugin-check-file"
@@ -31,7 +32,7 @@ const sectionLayering: Record<Section, { allowedSections: Section[], bannedPacka
   app: { allowedSections: ["forms", "ui", "state", "rules", "data", "common"], bannedPackages: [] },
 }
 
-const sectionLayeringConfigs = sections.map((section) => {
+const sectionLayeringConfigs = sections.map((section): Linter.Config => {
   const { allowedSections, bannedPackages } = sectionLayering[section]
   const forbiddenSections = sections.filter((other) => other !== section && !allowedSections.includes(other))
   const patterns = [

@@ -75,7 +75,8 @@ It checks static imports only, not dynamic imports or `vi.mock` paths.
 
 ## Out of Scope
 
-- Changing behaviour. Files are moved, renamed or split, never rewritten.
+- Changing behaviour. Files are moved, renamed or split. Code changes only where a section's dependency had to be
+  swapped out, such as the dialog's Redux store.
 - Turning sections into Yarn workspace packages with their own entry points.
 
 ## Related Features
